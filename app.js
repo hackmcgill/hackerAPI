@@ -2,9 +2,6 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
-const log = require('./services/logger');
-
-log.info("Testing log statement!!");
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
