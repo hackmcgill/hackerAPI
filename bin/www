@@ -7,6 +7,7 @@
 const app = require('../app');
 const debug = require('debug')('hackboard:server');
 const http = require('http');
+const fs = require('fs');
 
 /**
  * Get port from environment and store in Express.
@@ -20,6 +21,7 @@ app.set('port', port);
  */
 
 const server = http.createServer(app);
+
 
 /**
  * Listen on provided port, on all network interfaces.
@@ -87,4 +89,8 @@ function onListening() {
     ? 'pipe ' + addr
     : 'port ' + addr.port;
   debug('Listening on ' + bind);
+  fs.readFile('VERSION', (err, data) => {
+      if (err) throw err;
+      debug(`VERSION ${data}`);
+  })
 }
