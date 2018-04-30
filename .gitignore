@@ -50,5 +50,7 @@ fabric.properties
 # Editor-based Rest Client
 .idea/httpRequests
 
+# Root Idea Folder
+
 # Node JS
 node_modules
