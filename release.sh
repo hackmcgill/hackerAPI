@@ -21,8 +21,8 @@ echo "Version: ${version}"
 git add -A
 git commit -m "version ${version}"
 git tag -a "${version}" -m "version ${version}"
-git push
-git push --tags
+git push origin development
+git push origin development --tags
 
 docker tag ${GCR}/${PROJECT}/${IMAGE}:latest ${GCR}/${PROJECT}/${IMAGE}:${version}
 
