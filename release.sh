@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+set -ex
 # Variables
 GCR=gcr.io
 PROJECT=hackboard6
