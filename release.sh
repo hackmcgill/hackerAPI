@@ -5,8 +5,7 @@ GCR=gcr.io
 PROJECT=hackboard6
 IMAGE=hackboard
 
-BRANCH="$(git symbolic-ref HEAD 2>/dev/null)" ||
-BRANCH="(unnamed branch)"     # detached HEAD
+BRANCH="$(git symbolic-ref HEAD 2>/dev/null)" || BRANCH="(unnamed branch)"     # detached HEAD
 BRANCH=${BRANCH##refs/heads/}
 
 if [ ! ${BRANCH} = "master" ]; then
@@ -19,7 +18,7 @@ fi
 git pull origin master
 
 # bump version
-docker run --rm -v "$PWD":/app treeder/bump patch
+docker run --rm -v "$PWD":/app treeder/bump "$(git log -1 --pretty=%B)"
 version=`cat VERSION`
 echo "Version: ${version}"
 
