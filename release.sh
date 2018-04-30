@@ -1,13 +1,22 @@
 #!/usr/bin/env bash
 
-set -ex
-
+# Variables
 GCR=gcr.io
 PROJECT=hackboard6
 IMAGE=hackboard
 
+BRANCH="$(git symbolic-ref HEAD 2>/dev/null)" ||
+BRANCH="(unnamed branch)"     # detached HEAD
+BRANCH=${BRANCH##refs/heads/}
+
+if [ ! ${BRANCH} = "master" ]; then
+    echo "Current branch: ${BRANCH}"
+    echo "Release operation is only available on master branch..."
+    exit 1
+fi
+
 # Update current branch
-git pull origin development
+git pull origin master
 
 # bump version
 docker run --rm -v "$PWD":/app treeder/bump patch
@@ -21,8 +30,8 @@ echo "Version: ${version}"
 git add -A
 git commit -m "version ${version}"
 git tag -a "${version}" -m "version ${version}"
-git push origin development
-git push origin development --tags
+git push origin master
+git push origin master --tags
 
 # Update the image tags
 docker tag ${GCR}/${PROJECT}/${IMAGE}:latest ${GCR}/${PROJECT}/${IMAGE}:${version}
