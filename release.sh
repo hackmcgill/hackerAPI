@@ -18,7 +18,7 @@ fi
 git pull origin master
 
 # bump version
-docker run --rm -v "$PWD":/app treeder/bump "$(git log -1 --pretty=%B)"
+docker run --rm -v "$PWD":/app treeder/bump pre
 version=`cat VERSION`
 echo "Version: ${version}"
 
