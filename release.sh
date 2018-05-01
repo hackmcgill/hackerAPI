@@ -9,37 +9,48 @@ MODE=$1
 BRANCH="$(git symbolic-ref HEAD 2>/dev/null)" || BRANCH="(unnamed branch)"     # detached HEAD
 BRANCH=${BRANCH##refs/heads/}
 
-if [ -z "${MODE}" ]; then
-    echo "Error: Expected a mode as first argument!"
-    echo "Options: "
-    echo "	* patch"
-    echo "	* minor"
-    echo "	* major"
-    echo "Please try again."
-    exit 1
-fi
-
-if [ ! ${MODE} = "patch" && ! ${MODE} = "minor" && ! ${MODE} = "major" ]; then
-    echo "Error: Expected one of the following modes:"
-    echo "	* patch"
-    echo "	* minor"
-    echo "	* major"
-    exit 1
-fi
+echo "Welcome to Hackboard's HackerAPI Deployment Script!"
+echo "==================================================="
 
 # Only allow release on master branch
 
 if [ ! ${BRANCH} = "master" ]; then
     echo "Current branch: ${BRANCH}"
-    echo "Release operation is only available on master branch..."
+    echo "ERROR: Release operation is only available on master branch."
+    echo "Deployment failed. Exiting."
     exit 1
 fi
+echo "Release modes:"
+PS3='Please select one of the above release version modes:'
+options=("Patch" "Minor" "Major" "Quit")
+select opt in "${options[@]}"
+do
+    case ${opt} in
+	"Patch")
+	    MODE=patch
+	    break
+	    ;;
+	"Minor")
+	    MODE=minor
+	    break
+	    ;;
+	"Major")
+	    MODE=major
+	    break
+	    ;;
+	"Quit")
+	    echo "Deployment cancelled. Exiting."
+	    exit 1
+	    ;;
+	*) echo "Invalid option";;
+    esac
+done
 
 # Update current branch
 git pull origin master
 
 # bump version
-docker run --rm -v "$PWD":/app treeder/bump patch
+docker run --rm -v "$PWD":/app treeder/bump ${MODE}
 version=`cat VERSION`
 echo "Version: ${version}"
 
