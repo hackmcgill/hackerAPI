@@ -9,7 +9,8 @@ const errorLogger = expressWinston.errorLogger({
         new StackDriverTransport(),
         new winston.transports.Console({
             json: true,
-            colorize: colorize
+            colorize: colorize,
+	        timestamp: true
         })
     ]
 });
@@ -19,7 +20,8 @@ const requestLogger = expressWinston.logger({
         new StackDriverTransport(),
         new winston.transports.Console({
             json: false,
-            colorize: colorize
+            colorize: colorize,
+	        timestamp: true
         })
     ],
     expressFormat: true,
