@@ -10,10 +10,12 @@
     "@google-cloud/logging-winston": "^0.9.0",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
+    "dotenv": "^5.0.1",
     "express": "~4.16.0",
     "express-winston": "^2.5.1",
     "mongoose": "^5.1.0",
     "morgan": "~1.9.0",
+    "q": "^1.5.1",
     "winston": "^2.4.2"
   },
   "devDependencies": {

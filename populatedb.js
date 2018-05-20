@@ -28,7 +28,7 @@ var accounts = [
         "password": "probsShouldBeHashed1", 
         "permissions": [permissions[1]._id, permissions[6]._id],
         "dietaryRestrictions": [],
-        "shirtSize": "Small"
+        "shirtSize": "S"
     },
     {
         "_id": new ObjectID(),
@@ -36,7 +36,7 @@ var accounts = [
         "password": "probsShouldBeHashed2", 
         "permissions": [permissions[2]._id, permissions[7]._id],
         "dietaryRestrictions": ["vegetarian"],
-        "shirtSize": "Medium"
+        "shirtSize": "M"
     },
     {
         "_id": new ObjectID(),
@@ -44,7 +44,7 @@ var accounts = [
         "password": "probsShouldBeHashed3", 
         "permissions": [permissions[3]._id, permissions[8]._id],
         "dietaryRestrictions": ["vegan"],
-        "shirtSize": "Large"
+        "shirtSize": "L"
     },
     {
         "_id": new ObjectID(),
@@ -52,7 +52,7 @@ var accounts = [
         "password": "probsShouldBeHashed4", 
         "permissions": [permissions[4]._id, permissions[9]._id],
         "dietaryRestrictions": ["vegetarian", "lactose intolerant"],
-        "shirtSize": "Extra Large"
+        "shirtSize": "XL"
     },
     {
         "_id": new ObjectID(),
@@ -60,7 +60,7 @@ var accounts = [
         "password": "probsShouldBeHashed5", 
         "permissions": [permissions[5]._id, permissions[10]._id],
         "dietaryRestrictions": ["something1", "something2"],
-        "shirtSize": "American?"
+        "shirtSize": "XXL"
     },
 ];
 var busses = [
@@ -147,8 +147,6 @@ var teams = [
         "name": "BronzeTeam",
         "members": {
             "type": [hackers[1]._id],
-            // ??? validate?
-            "validate": "yes"
         },
         "hackSubmitted": false,
         "devpostURL": "justanother.post",
