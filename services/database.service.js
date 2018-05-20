@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const logger = require("../services/logger.server.service");
+const logger = require("./logger.service");
 const Q = require("q");
 
 const TAG = "[ DATABASE SERVICE ]"
