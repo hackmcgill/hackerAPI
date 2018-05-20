@@ -1,3 +1,4 @@
+"use strict";
 console.log("Populates some test values into mongoDB");
 
 const Account = require("./models/account.model");
@@ -267,7 +268,7 @@ function permissionCreate(name, _id = new mongoose.ObjectID()) {
     });
 }
 
-function skillCreate(name, _id = new mongoose.ObjectID()) {
+function skillCreate(name, category, _id = new mongoose.ObjectID()) {
     const skillDetail = {
         _id: _id,
         name: name,
@@ -331,7 +332,7 @@ function teamCreate(name, members, hackSubmitted, devpostURL, projectName, _id =
     const teamDetail = {
         _id: _id,
         name: name,
-        member: member,
+        members: members,
         hackSubmitted: hackSubmitted,
         devpostURL: devpostURL,
         projectName: projectName
@@ -366,3 +367,35 @@ function volunteerCreate(accountId, _id = new mongoose.ObjectID()) {
         return;
     });
 }
+
+
+permissions.forEach(function (permission) {
+    permissionCreate(permission.name, permission._id);
+});
+accounts.forEach(function (account) {
+    accountCreate(account.firstName, account.lastName, account.email, account.password, account.permissions, account.dietaryRestrictions, account.shirtSize, account._id);
+});
+hackers.forEach(function (hacker) {
+    hackerCreate(hacker.accountID, hacker.status, hacker.school, hacker.gender, hacker.needsBus, hacker.application, hacker._id);
+});
+busses.forEach(function (bus) {
+    busCreate(bus.origin, bus.capacity, bus.hackers, bus._id);
+});
+defaultPermissions.forEach(function (defaultPermission) {
+    defaultPermissionCreate(defaultPermission.userType, defaultPermission.permissions, defaultPermission._id);
+});
+skills.forEach(function (skill) {
+    skillCreate(skill.name, skill.category, skill._id);
+});
+sponsors.forEach(function (sponsor) {
+    sponsorCreate(sponsor.accountId, sponsor.tier, sponsor.company, sponsor.contractURL, sponsor.nominees, sponsor._id);
+});
+staffs.forEach(function (staff) {
+    staffCreate(staff.accountId, staff.godMode, staff._id);
+});
+teams.forEach(function (team) {
+    teamCreate(team.name, team.members, team.hackSubmitted, team.devpostURL, team.projectName, team._id);
+});
+volunteers.forEach(function (volunteer) {
+    volunteerCreate(volunteer.accountId, volunteer._id);
+});
