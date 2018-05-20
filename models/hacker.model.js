@@ -1,18 +1,18 @@
 "use strict";
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 //describes the data type
 const HackerSchema = new mongoose.Schema({
     //account id
     accountId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Account',
-        required:true
+        ref: "Account",
+        required: true
     },
     status: {
         type: String,
-        enum: ['None', 'Applied', 'Accepted', 'Waitlisted', 'Confirmed', 'Cancelled', 'Checked-in'],
+        enum: ["None", "Applied", "Accepted", "Waitlisted", "Confirmed", "Cancelled", "Checked-in"],
         required: true,
-        default: 'None'
+        default: "None"
     },
     school: {
         name: String,
@@ -31,44 +31,44 @@ const HackerSchema = new mongoose.Schema({
                 required: true
             },
             github: {
-                type: String,
+                type: String
             },
             dropler: {
-                type: String,
+                type: String
             },
             personal: {
-                type: String,
+                type: String
             },
             linkedIn: {
-                type: String,
+                type: String
             },
             other: {
-                type: String,
+                type: String
             }
         },
         jobInterest: {
             type: String,
-            enum: ['Internship','Full-time','None'],
+            enum: ["Internship", "Full-time", "None"],
             required: true,
-            default: 'None'
+            default: "None"
         },
         skills: [{
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'Skill'
+            ref: "Skill"
         }],
         //any miscelaneous comments that the user has
         comments: {
             type: String,
-            default: ''
+            default: ""
         },
         //"Why do you want to come to our hackathon?"
         essay: {
             type: String,
-            default: ''
+            default: ""
         },
         team: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'Team'
+            ref: "Team"
         }
     }
 
@@ -82,4 +82,4 @@ HackerSchema.methods.toJSON = function () {
     return hs;
 };
 //export the model
-module.exports = mongoose.model('Hacker', HackerSchema);
+module.exports = mongoose.model("Hacker", HackerSchema);

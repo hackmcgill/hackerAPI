@@ -1,5 +1,5 @@
 "use strict";
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 //describes the data type
 const AccountSchema = new mongoose.Schema({
     firstName: {
@@ -15,9 +15,9 @@ const AccountSchema = new mongoose.Schema({
         trim: true,
         lowercase: true,
         unique: true,
-        required: 'Email address is required',
-        validate: [validateEmail, 'Please fill a valid email address'],
-        match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please fill a valid email address']
+        required: "Email address is required",
+        validate: [validateEmail, "Please fill a valid email address"],
+        match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, "Please fill a valid email address"]
     },
     password: {
         type: String,
@@ -25,14 +25,14 @@ const AccountSchema = new mongoose.Schema({
     },
     permissions: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Permission'
+        ref: "Permission"
     }],
     dietaryRestrictions: [{
         type: String
     }],
     shirtSize: {
         type: String,
-        enum: ['XS','S','M','L','XL','XXL'],
+        enum: ["XS", "S", "M", "L", "XL", "XXL"],
         required: true
     }
 });
@@ -51,4 +51,4 @@ AccountSchema.methods.toStrippedJSON = function () {
     return as;
 }
 //export the model
-module.exports = mongoose.model('Account', HackerSchema);
+module.exports = mongoose.model("Account", HackerSchema);

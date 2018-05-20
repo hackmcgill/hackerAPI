@@ -1,0 +1,6 @@
+{
+    "jslint.version": "es6",
+    "jslint.options": {
+        "node":true
+    }
+}

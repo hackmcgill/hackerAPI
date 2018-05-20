@@ -1,5 +1,5 @@
 "use strict";
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 //describes the data type
 const BusSchema = new mongoose.Schema({
     origin: {
@@ -34,10 +34,10 @@ const BusSchema = new mongoose.Schema({
         type: [
             {
                 type: mongoose.Schema.Types.ObjectId,
-                ref: 'Hacker'
+                ref: "Hacker"
             }
-        ],
-        //TODO: find way to validate that this array size is smaller than the max capacity
+        ]
+        // TODO: find way to validate that this array size is smaller than the max capacity
     }
 });
 
@@ -49,4 +49,4 @@ BusSchema.methods.toJSON = function() {
     return bs;
 }
 //export the model
-module.exports = mongoose.model('Bus',BusSchema);
+module.exports = mongoose.model("Bus",BusSchema);

@@ -14,8 +14,6 @@ Go to this page: [deployment guide](./docs/deploy.md)
 
 Go to this page: [coding standards guide](./docs/standards.md)
 
-## Folder Structure
-
 ## Folder structure
 
 ```string

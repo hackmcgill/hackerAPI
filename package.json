@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www",
-    "debug": "DEBUG=hackboard:* nodemon ./bin/www"
+    "start": "node ./bin/www.js",
+    "debug": "DEBUG=hackboard:* nodemon ./bin/www.js"
   },
   "dependencies": {
     "@google-cloud/logging-winston": "^0.9.0",

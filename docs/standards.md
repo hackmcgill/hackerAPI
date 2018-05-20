@@ -1,1 +1,5 @@
 # Coding Standards
+
+## Github
+
+## Javascript

@@ -5,16 +5,16 @@ const VolunteerSchema = new mongoose.Schema({
     accountId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Account',
-        required:true
-    },
+        required: true
+    }
 });
 
-VolunteerSchema.methods.toJSON = function() {
+VolunteerSchema.methods.toJSON = function () {
     const vs = this.toObject();
     delete vs.__v;
     vs.id = vs._id;
     delete vs._id;
     return vs;
-}
+};
 //export the model
-module.exports = mongoose.model('Volunteer',VolunteerSchema);
+module.exports = mongoose.model('Volunteer', VolunteerSchema);

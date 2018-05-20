@@ -1,10 +1,10 @@
 "use strict";
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 //describes the data type
 const SponsorSchema = new mongoose.Schema({
     accountId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Account',
+        ref: "Account",
         required:true
     },
     //What tier of sponsor are they?
@@ -26,7 +26,7 @@ const SponsorSchema = new mongoose.Schema({
     nominees: [
         {
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'Hacker'
+            ref: "Hacker"
         }
     ]
 });
@@ -39,4 +39,4 @@ SponsorSchema.methods.toJSON = function () {
     return ss;
 }
 //export the model
-module.exports = mongoose.model('Sponsor', SponsorSchema);
+module.exports = mongoose.model("Sponsor", SponsorSchema);
