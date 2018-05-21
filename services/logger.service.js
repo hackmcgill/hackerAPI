@@ -10,7 +10,7 @@ const errorLogger = expressWinston.errorLogger({
         new winston.transports.Console({
             json: true,
             colorize: colorize,
-	        timestamp: true
+            timestamp: true
         })
     ]
 });
@@ -21,7 +21,7 @@ const requestLogger = expressWinston.logger({
         new winston.transports.Console({
             json: false,
             colorize: colorize,
-	        timestamp: true
+            timestamp: true
         })
     ],
     expressFormat: true,
