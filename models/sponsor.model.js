@@ -5,7 +5,7 @@ const SponsorSchema = new mongoose.Schema({
     accountId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Account",
-        required:true
+        required: true
     },
     //What tier of sponsor are they?
     tier: {
@@ -23,12 +23,10 @@ const SponsorSchema = new mongoose.Schema({
         required: true
     },
     //which hackers did the sponsor flag to see again?
-    nominees: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "Hacker"
-        }
-    ]
+    nominees: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Hacker"
+    }]
 });
 
 SponsorSchema.methods.toJSON = function () {
@@ -37,6 +35,6 @@ SponsorSchema.methods.toJSON = function () {
     ss.id = ss._id;
     delete ss._id;
     return ss;
-}
+};
 //export the model
 module.exports = mongoose.model("Sponsor", SponsorSchema);

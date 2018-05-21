@@ -1,30 +1,40 @@
 const express = require("express");
 const path = require("path");
 const cookieParser = require("cookie-parser");
-const log = require("./services/logger.service");
-const db = require("./services/database.service");
+const Services = {
+    log: require("./services/logger.service"),
+    db: require("./services/database.service"),
+    emailAndPassStrategy: require("./services/auth.service.js")
+};
+
+const passport = require("passport");
+passport.use("emailAndPass", Services.emailAndPassStrategy);
 
 const indexRouter = require("./routes/index");
 
 const app = express();
-db.connect(app);
+Services.db.connect(app);
 
 const result = require("dotenv").config({
     path: path.join(__dirname, "./.env")
 });
 
 if (result.error) {
-    log.error(result.error);
+    Services.log.error(result.error);
 }
 
 
-app.use(log.requestLogger);
-app.use(log.errorLogger);
+
+app.use(Services.log.requestLogger);
+app.use(Services.log.errorLogger);
 app.use(express.json());
 app.use(express.urlencoded({
     extended: false
 }));
 app.use(cookieParser());
+app.use(passport.initialize());
+app.use(passport.session()); //persistent login session
+
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", indexRouter);
