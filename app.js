@@ -10,7 +10,9 @@ const Services = {
 const passport = require("passport");
 passport.use("emailAndPass", Services.emailAndPassStrategy);
 
+/* Routes here */
 const indexRouter = require("./routes/index");
+const accountRouter = require("./routes/api/account");
 
 const app = express();
 Services.db.connect(app);
@@ -36,6 +38,12 @@ app.use(passport.initialize());
 app.use(passport.session()); //persistent login session
 
 app.use(express.static(path.join(__dirname, "public")));
+
+var apiRouter = express.Router();
+console.log("activating accountRouter");
+accountRouter.activate(apiRouter);
+app.use("/api", apiRouter);
+
 
 app.use("/", indexRouter);
 
