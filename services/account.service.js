@@ -22,7 +22,7 @@ async function findByEmail(email) {
     const query = {
         email: email
     };
-    return await findOne(query, singleUserCallback);
+    return await findOne(query);
 }
 
 async function findOne(query) {
