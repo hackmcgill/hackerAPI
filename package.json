@@ -12,12 +12,13 @@
     "debug": "~2.6.9",
     "dotenv": "^5.0.1",
     "express": "~4.16.0",
+    "express-validator": "^5.2.0",
     "express-winston": "^2.5.1",
     "mongoose": "^5.1.0",
     "morgan": "~1.9.0",
-    "q": "^1.5.1",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
+    "q": "^1.5.1",
     "winston": "^2.4.2"
   },
   "devDependencies": {
