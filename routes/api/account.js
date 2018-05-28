@@ -28,6 +28,10 @@ module.exports = {
         );
 
         // untested
+        accountRouter.route("/getOneUser").get(
+            Controllers.Account.getUserByEmail
+        );
+
         // untested
         accountRouter.route("/createOneUser").post(
             // validators
