@@ -16,6 +16,7 @@ module.exports = {
             firstName: req.body.firstName,
             lastName: req.body.lastName,
             email: req.body.email,
+            // hash here??
             password: req.body.password,
             // await - put outside and put await??
             permissions: Services.Permission.getDefaultPermission("Hacker"),
@@ -23,9 +24,14 @@ module.exports = {
             shirtSize: req.body.shirtSize
         };
 
-        // TODO
-        // delete all the things from body
-        // and add accoutnDetails to body
+        delete req.body.firstName;
+        delete req.body.lastName;
+        delete req.body.email;
+        delete req.body.password;
+        delete req.body.dietaryRestrictions;
+        delete req.body.shirtSize;
+
+        req.body.accountDetails = accountDetails;
 
         next();
     }

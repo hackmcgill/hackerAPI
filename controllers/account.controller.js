@@ -12,6 +12,7 @@ module.exports = {
             message: "Default message",
             data: "Default data"
         });
+    },
     // assumes all information in req.body
     // untested
     addUser: function (req, res) {
@@ -27,6 +28,7 @@ module.exports = {
                 data: "Account creation successful"
             });
         } else {
+
             return res.status(404).json({
                 message: "Issue with account creation",
                 data: "Issue with accoutn creation"
