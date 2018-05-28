@@ -13,6 +13,25 @@ module.exports = {
             data: "Default data"
         });
     },
+
+    // untested
+    getUserByEmail: function (req, res) {
+        const acc = Services.Account.findByEmail(req.user.email);
+
+        if (acc) {
+            return res.status(200).json({
+                message: "Account found by user email",
+                data: acc.toStrippedJSON()
+            });
+        } else {
+            // tentative error code
+            return res.status(400).json({
+                message: "User email not found",
+                data: {}
+            });
+        }
+    },
+
     // assumes all information in req.body
     // untested
     addUser: function (req, res) {
