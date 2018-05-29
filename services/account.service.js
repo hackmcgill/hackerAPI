@@ -22,7 +22,7 @@ async function findByEmail(email) {
     const query = {
         email: email
     };
-    return await findOne(query, singleUserCallback);
+    return await findOne(query);
 }
 
 async function findOne(query) {
@@ -38,8 +38,26 @@ async function findOne(query) {
     });
 }
 
+// untested
+async function addOneAccount(accountDetails) {
+    const TAG = `[Account Service # addOneAccount ]:`;
+
+    const account = new Account(accountDetail);
+
+    const success = await account.save(function (error) {
+        if (error) {
+            logger.error(`${TAG} Failed to add account`);
+        } else {
+            logger.error(`${TAG} added account to database`);
+        }
+    });
+
+    return !!(success);
+}
+
 module.exports = {
     findOne: findOne,
     findById: findById,
-    findByEmail: findByEmail
+    findByEmail: findByEmail,
+    addOneAccount: addOneAccount
 };
