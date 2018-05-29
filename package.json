@@ -3,11 +3,14 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www.js",
-    "debug": "DEBUG=hackboard:* nodemon ./bin/www.js"
+    "start": "NODE_ENV=deployment node ./bin/www.js",
+    "debug": "DEBUG=hackboard:* NODE_ENV=deployment nodemon ./bin/www.js",
+    "development": "DEBUG=hackboard:* NODE_ENV=development nodemon ./bin/www.js",
+    "test": "DEBUG=hackboard:* NODE_ENV=test node ./bin/www.js"
   },
   "dependencies": {
     "@google-cloud/logging-winston": "^0.9.0",
+    "bcrypt": "^2.0.1",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
     "dotenv": "^5.0.1",

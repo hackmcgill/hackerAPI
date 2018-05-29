@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 const Services = {
     Account: require("../services/account.service"),
     Logger: require("../services/logger.service")
-}
+};
 
 module.exports = {
     defaultReturn: function (req, res) {

@@ -12,28 +12,24 @@ const Controllers = {
 const Middleware = {
     Validator: {
         /* Insert the require statement to the validator file here */
-        Account: require("../../middlewares/validators/account.server.validator")
+        Account: require("../../middlewares/validators/account.validator")
     },
     /* Insert all of ther middleware require statements here */
-    parseBody: require("../../middlewares/parse-body.server.middleware"),
-    Account: require("../../middlewares/account.server.middleware")
+    parseBody: require("../../middlewares/parse-body.middleware"),
+    Account: require("../../middlewares/account.middleware")
 };
 
 module.exports = {
     activate: function (apiRouter) {
         const accountRouter = new express.Router();
 
-        accountRouter.route("/").get(
-            Controllers.Account.defaultReturn
-        );
-
         // untested
-        accountRouter.route("/getOneUser").get(
+        accountRouter.route("/self").get(
             Controllers.Account.getUserByEmail
         );
 
         // untested
-        accountRouter.route("/createOneUser").post(
+        accountRouter.route("/create").post(
             // validators
             Middleware.Validator.Account.postNewAccountValidator,
 

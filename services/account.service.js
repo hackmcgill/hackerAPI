@@ -1,6 +1,8 @@
 "use strict";
 const Account = require("../models/account.model");
 const logger = require("./logger.service");
+const bcrypt = require("bcrypt");
+
 
 async function findById(id) {
     const TAG = `[Account Service # findById]:`;
@@ -23,6 +25,26 @@ async function findByEmail(email) {
         email: email
     };
     return await findOne(query);
+}
+
+
+
+/**
+ *
+ * @param {String} email
+ * @param {String} password
+ * @return {Account | null} either account or null
+ */
+async function getAccountIfValid(email, password) {
+    const account = await findByEmail(email);
+    if (!!account && account.comparePassword(password)) {
+        return account;
+    }
+    return null;
+}
+
+function hashPassword(password) {
+    return bcrypt.hashSync(req.body.password, 10);
 }
 
 async function findOne(query) {
@@ -59,7 +81,9 @@ async function addOneAccount(accountDetails) {
 async function changeOneAccount(id, accountDetails) {
     const TAG = `[Account Service # changeOneAccount ]:`;
 
-    const query = { _id: id };
+    const query = {
+        _id: id
+    };
 
     const success = await Account.findOneAndUpdate(query, accountDetails, function (error, user) {
         if (error) {
@@ -79,5 +103,6 @@ module.exports = {
     findById: findById,
     findByEmail: findByEmail,
     addOneAccount: addOneAccount,
-    changeOneAccount: changeOneAccount
+    getAccountIfValid: getAccountIfValid,
+    hashPassword: hashPassword
 };
