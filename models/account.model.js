@@ -1,5 +1,6 @@
 "use strict";
 const mongoose = require("mongoose");
+const bcrypt = require("bcrypt");
 //describes the data type
 const AccountSchema = new mongoose.Schema({
     firstName: {
@@ -16,7 +17,6 @@ const AccountSchema = new mongoose.Schema({
         lowercase: true,
         unique: true,
         required: "Email address is required",
-        validate: [validateEmail, "Please fill a valid email address"],
         match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, "Please fill a valid email address"]
     },
     password: {
@@ -50,5 +50,14 @@ AccountSchema.methods.toStrippedJSON = function () {
     delete as.password;
     return as;
 }
+/**
+ * Pass in an un-encrypted password and see whether it matches the 
+ * encrypted password
+ * @param {String} password 
+ */
+AccountSchema.methods.comparePassword = function (password) {
+    return bcrypt.compareSync(password, this.password);
+}
+
 //export the model
-module.exports = mongoose.model("Account", HackerSchema);
+module.exports = mongoose.model("Account", AccountSchema);

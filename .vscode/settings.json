@@ -2,6 +2,7 @@
     "jslint.version": "es6",
     "jslint.options": {
         "node":true,
-        "this":false
+        "this":false,
+        "bad_property":false
     }
 }

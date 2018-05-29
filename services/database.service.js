@@ -38,14 +38,13 @@ module.exports = {
         mongoose.Promise = Q.promise;
         const user = getUserFromEnvironment();
         const pass = getPassFromEnvironment();
-        mongoose.connect(`mongodb://${user}:${pass}@${address}`, {
-            useMongoClient: true
-        }).then(function () {
-            logger.info(`${TAG} Connected to database on ${address}`);
+        const url = `mongodb://${user}:${pass}@${address}`;
+        mongoose.connect(url).then(function () {
+            logger.info(`${TAG} Connected to database on ${url}`);
             app.emit("event:connected to db");
-        }, function () {
-            logger.error(`${TAG} Failed to connect to database on ${address}`);
-            throw `Failed to connect to database on ${address}`;
+        }, function (error) {
+            logger.error(`${TAG} Failed to connect to database on ${url}. Error: ${error}`);
+            throw `Failed to connect to database on ${url}`;
         });
     },
     address: address,

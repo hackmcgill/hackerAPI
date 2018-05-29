@@ -1,23 +1,23 @@
-"use strict"
+"use strict";
 
-const TAG = `[ ADDRESS.SERVER.MIDDLEWARE.js ]`
+const TAG = `[ ADDRESS.SERVER.MIDDLEWARE.js ]`;
+const mongoose = require("mongoose");
 const Services = {
     Permission: require("../services/permission.service"),
-    Logger: require("../services/logger.service")
-}
+    Logger: require("../services/logger.service"),
+    Account: require("../services/account.service")
+};
 
 module.exports = {
     // untested
-    parseAccount: function(req, res, next) {
+    parseAccount: function (req, res, next) {
 
-        const accountDetails =
-        {
+        const accountDetails = {
             _id: new mongoose.ObjectID(),
             firstName: req.body.firstName,
             lastName: req.body.lastName,
             email: req.body.email,
-            // hash here??
-            password: req.body.password,
+            password: Services.Account.hashPassword(req.body.password),
             dietaryRestrictions: req.body.dietaryRestrictions,
             shirtSize: req.body.shirtSize
         };
@@ -33,11 +33,10 @@ module.exports = {
 
         next();
     },
-
     // untested
-    addDefaultPermission: function(req, res, next) {
-        req.body.accountDetails.permissions = await Services.Permission.getDefaultPermission;
+    addDefaultPermission: function (req, res, next) {
+        req.body.accountDetails.permissions = await Services.Permission.getDefaultPermission("Hacker");
         next();
     }
-}
 
+}

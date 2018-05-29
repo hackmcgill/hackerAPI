@@ -13,6 +13,7 @@ passport.use("emailAndPass", Services.emailAndPassStrategy);
 /* Routes here */
 const indexRouter = require("./routes/index");
 const accountRouter = require("./routes/api/account");
+const authRouter = require("./routes/api/auth");
 
 const app = express();
 Services.db.connect(app);
@@ -20,12 +21,12 @@ Services.db.connect(app);
 const result = require("dotenv").config({
     path: path.join(__dirname, "./.env")
 });
-
 if (result.error) {
     Services.log.error(result.error);
 }
 
-
+const passport = require("passport");
+passport.use("emailAndPass", Services.emailAndPassStrategy);
 
 app.use(Services.log.requestLogger);
 app.use(Services.log.errorLogger);
@@ -40,11 +41,15 @@ app.use(passport.session()); //persistent login session
 app.use(express.static(path.join(__dirname, "public")));
 
 var apiRouter = express.Router();
-console.log("activating accountRouter");
+
 accountRouter.activate(apiRouter);
-app.use("/api", apiRouter);
+Services.log.info("Account router activated");
+authRouter.activate(apiRouter);
+Services.log.info("Auth router activated");
 
 
 app.use("/", indexRouter);
+
+app.use("/api", apiRouter);
 
 module.exports = app;
