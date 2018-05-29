@@ -44,13 +44,33 @@ module.exports = {
         if (success) {
             return res.status(200).json({
                 message: "Account creation successful",
-                data: "Account creation successful"
+                data: {}
             });
         } else {
 
-            return res.status(404).json({
+            return res.status(400).json({
                 message: "Issue with account creation",
-                data: "Issue with accoutn creation"
+                data: {}
+            });
+        }
+    },
+
+    // untested
+    changeUserInfo: function (req, res) {
+        const accountDetail = req.body.accountDetail;
+        const id = req.user.id;
+
+        const success = Services.Account.changeOneAccount(id, accountDetail);
+
+        if (success) {
+            return res.status(200).json({
+                message: "Changed account",
+                data: "Changed information to: " + accountDetail
+            });
+        } else {
+            return res.status(400).json({
+                message: "Issue with changing account information",
+                data: {}
             });
         }
     }
