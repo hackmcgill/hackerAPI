@@ -48,7 +48,26 @@ async function addOneAccount(accountDetails) {
         if (error) {
             logger.error(`${TAG} Failed to add account`);
         } else {
-            logger.error(`${TAG} added account to database`);
+            logger.debug(`${TAG} added account to database`);
+        }
+    });
+
+    return !!(success);
+}
+
+// untested
+async function changeOneAccount(id, accountDetails) {
+    const TAG = `[Account Service # changeOneAccount ]:`;
+
+    const query = { _id: id };
+
+    const success = await Account.findOneAndUpdate(query, accountDetails, function (error, user) {
+        if (error) {
+            logger.error(`${TAG} failed to change account`);
+        } else if (!user) {
+            logger.error(`${TAG} failed to find account in database`);
+        } else {
+            logger.debug(`${TAG} changed account information`);
         }
     });
 
@@ -59,5 +78,6 @@ module.exports = {
     findOne: findOne,
     findById: findById,
     findByEmail: findByEmail,
-    addOneAccount: addOneAccount
+    addOneAccount: addOneAccount,
+    changeOneAccount: changeOneAccount
 };

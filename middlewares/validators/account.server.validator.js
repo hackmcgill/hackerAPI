@@ -16,5 +16,15 @@ module.exports = {
         VALIDATOR.alphaValidator("post", "dietaryRestrictions", false),
         VALIDATOR.shirtSizeValidator("post", "shirtSize", false),
         VALIDATOR.passwordValidator("post", "password", false),
-    ]
+    ],
+
+    // untested
+    postChangeAccountValidator = [
+        VALIDATOR.nameValidator("post", "firstName", true),
+        VALIDATOR.nameValidator("post", "lastName", true),
+        VALIDATOR.emailValidator("post", "email", true),
+        VALIDATOR.alphaValidator("post", "dietaryRestrictions", true),
+        VALIDATOR.shirtSizeValidator("post", "shirtSize", true),
+        VALIDATOR.passwordValidator("post", "password", true),
+    ] 
 }
