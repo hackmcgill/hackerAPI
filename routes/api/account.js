@@ -42,9 +42,24 @@ module.exports = {
             // middlewares to parse body/organize body
             // adds default hacker permissions here
             Middleware.Account.parseAccount,
+            Middleware.Account.addDefaultPermission,
 
             // should return status in this function
             Controllers.Account.addUser
+        );
+
+        // untested
+        // is not able to update permissions
+        accountRouter.rout("/updateOneUser").post(
+            // validators
+            Middleware.Validator.Account.changeNewAccountValidator,
+
+            Middleware.parseBody.middleware,
+
+            // middlewares
+            Middleware.Account.parseAccount,
+
+            Controllers.Account.changeUserInfo
         );
 
         apiRouter.use("/account", accountRouter);

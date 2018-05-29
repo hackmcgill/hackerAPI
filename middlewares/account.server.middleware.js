@@ -18,8 +18,6 @@ module.exports = {
             email: req.body.email,
             // hash here??
             password: req.body.password,
-            // await - put outside and put await??
-            permissions: Services.Permission.getDefaultPermission("Hacker"),
             dietaryRestrictions: req.body.dietaryRestrictions,
             shirtSize: req.body.shirtSize
         };
@@ -33,6 +31,12 @@ module.exports = {
 
         req.body.accountDetails = accountDetails;
 
+        next();
+    },
+
+    // untested
+    addDefaultPermission: function(req, res, next) {
+        req.body.accountDetails.permissions = await Services.Permission.getDefaultPermission;
         next();
     }
 }
