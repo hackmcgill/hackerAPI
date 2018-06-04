@@ -34,7 +34,7 @@ module.exports = {
         next();
     },
     // untested
-    addDefaultPermission: function (req, res, next) {
+    addDefaultPermission: async function (req, res, next) {
         req.body.accountDetails.permissions = await Services.Permission.getDefaultPermission("Hacker");
         next();
     }

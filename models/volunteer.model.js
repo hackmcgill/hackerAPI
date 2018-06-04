@@ -1,9 +1,9 @@
 "use strict";
-const mongoose = require("mongoose");
+import { Schema, model } from "mongoose";
 //describes the data type
-const VolunteerSchema = new mongoose.Schema({
+const VolunteerSchema = new Schema({
     accountId: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: "Account",
         required: true
     }
@@ -17,4 +17,4 @@ VolunteerSchema.methods.toJSON = function () {
     return vs;
 };
 //export the model
-module.exports = mongoose.model("Volunteer", VolunteerSchema);
+export default model("Volunteer", VolunteerSchema);

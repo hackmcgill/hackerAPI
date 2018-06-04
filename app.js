@@ -1,3 +1,4 @@
+"use strict";
 const express = require("express");
 const path = require("path");
 const cookieParser = require("cookie-parser");
@@ -24,9 +25,6 @@ const result = require("dotenv").config({
 if (result.error) {
     Services.log.error(result.error);
 }
-
-const passport = require("passport");
-passport.use("emailAndPass", Services.emailAndPassStrategy);
 
 app.use(Services.log.requestLogger);
 app.use(Services.log.errorLogger);

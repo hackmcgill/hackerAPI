@@ -1,10 +1,10 @@
 "use strict";
-/* express is required to create a new route node */
+
 const express = require("express");
 
 const Services = {
-    Logger: require("../../services/logger"),
-    Account: require("../../services/account")
+    Logger: require("../../services/logger.service.js"),
+    Account: require("../../services/account.service.js")
 };
 const Controllers = {
     Account: require("../../controllers/account.controller")
@@ -46,9 +46,9 @@ module.exports = {
 
         // untested
         // is not able to update permissions
-        accountRouter.rout("/updateOneUser").post(
+        accountRouter.route("/updateOneUser").post(
             // validators
-            Middleware.Validator.Account.changeNewAccountValidator,
+            Middleware.Validator.Account.postChangeAccountValidator,
 
             Middleware.parseBody.middleware,
 

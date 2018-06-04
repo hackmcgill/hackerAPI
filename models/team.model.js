@@ -1,8 +1,8 @@
 "use strict";
-const mongoose = require("mongoose");
+import { Schema, model } from "mongoose";
 const MAX_TEAM_SIZE = 4;
 //describes the data type
-const TeamSchema = new mongoose.Schema({
+const TeamSchema = new Schema({
     name: {
         type: String,
         unique: true,
@@ -10,7 +10,7 @@ const TeamSchema = new mongoose.Schema({
     },
     members: {
         type: [{
-            type: mongoose.Schema.Types.ObjectId,
+            type: Schema.Types.ObjectId,
             ref: "Hacker"
         }],
         validate: [validateTeamSize, "{PATH} exceeds the limit"]
@@ -35,4 +35,4 @@ TeamSchema.methods.toJSON = function () {
     return ts;
 };
 //export the model
-module.exports = mongoose.model("Team", TeamSchema);
+export default model("Team", TeamSchema);
