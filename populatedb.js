@@ -176,84 +176,84 @@ const volunteers = [
 
 function dropAll() {
     Account.collection.drop().then(
-        (value) => {
-            logger.info(`dropped table Account`)
+        () => {
+            logger.info(`dropped table Account`);
         },
         (err) => {
-            logger.error(`could not drop Account. Error: ${JSON.stringify(err)}`)
+            logger.error(`could not drop Account. Error: ${JSON.stringify(err)}`);
         }
     );
     Bus.collection.drop().then(
-        (value) => {
-            logger.info(`dropped table Bus`)
+        () => {
+            logger.info(`dropped table Bus`);
         },
         (err) => {
-            logger.error(`could not drop Bus. Error: ${JSON.stringify(err)}`)
+            logger.error(`could not drop Bus. Error: ${JSON.stringify(err)}`);
         }
     );
     DefaultPermission.collection.drop().then(
-        (value) => {
-            logger.info(`dropped table DefaultPermission`)
+        () => {
+            logger.info(`dropped table DefaultPermission`);
         },
         (err) => {
-            logger.error(`could not drop DefaultPermission. Error: ${JSON.stringify(err)}`)
+            logger.error(`could not drop DefaultPermission. Error: ${JSON.stringify(err)}`);
         }
 
     );
     Hacker.collection.drop().then(
-        (value) => {
-            logger.info(`dropped table Hacker`)
+        () => {
+            logger.info(`dropped table Hacker`);
         },
         (err) => {
-            logger.error(`could not drop Hacker. Error: ${JSON.stringify(err)}`)
+            logger.error(`could not drop Hacker. Error: ${JSON.stringify(err)}`);
         }
     );
     Permission.collection.drop().then(
-        (value) => {
-            logger.info(`dropped table Permission`)
+        () => {
+            logger.info(`dropped table Permission`);
         },
         (err) => {
-            logger.error(`could not drop Permission. Error: ${JSON.stringify(err)}`)
+            logger.error(`could not drop Permission. Error: ${JSON.stringify(err)}`);
         }
     );
     Skill.collection.drop().then(
-        (value) => {
-            logger.info(`dropped table Skill`)
+        () => {
+            logger.info(`dropped table Skill`);
         },
         (err) => {
-            logger.error(`could not drop Skill. Error: ${JSON.stringify(err)}`)
+            logger.error(`could not drop Skill. Error: ${JSON.stringify(err)}`);
         }
     )
     Sponsor.collection.drop().then(
-        (value) => {
-            logger.info(`dropped table Sponsor`)
+        () => {
+            logger.info(`dropped table Sponsor`);
         },
         (err) => {
-            logger.error(`could not drop Sponsor. Error: ${JSON.stringify(err)}`)
+            logger.error(`could not drop Sponsor. Error: ${JSON.stringify(err)}`);
         }
     );
     Staff.collection.drop().then(
-        (value) => {
-            logger.info(`dropped table Staff`)
+        () => {
+            logger.info(`dropped table Staff`);
         },
         (err) => {
-            logger.error(`could not drop Staff. Error: ${JSON.stringify(err)}`)
+            logger.error(`could not drop Staff. Error: ${JSON.stringify(err)}`);
         }
     );
     Team.collection.drop().then(
-        (value) => {
-            logger.info(`dropped table Team`)
+        () => {
+            logger.info(`dropped table Team`);
         },
         (err) => {
-            logger.error(`could not drop Team. Error: ${JSON.stringify(err)}`)
+            logger.error(`could not drop Team. Error: ${JSON.stringify(err)}`);
         }
     );
     Volunteer.collection.drop().then(
-        (value) => {
-            logger.info(`dropped table Volunteer`)
+        () => {
+            logger.info(`dropped table Volunteer`);
         },
         (err) => {
-            logger.error(`could not drop Volunteer. Error: ${JSON.stringify(err)}`)
+            logger.error(`could not drop Volunteer. Error: ${JSON.stringify(err)}`);
         }
     );
 }
