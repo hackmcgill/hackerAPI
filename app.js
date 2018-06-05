@@ -1,3 +1,4 @@
+"use strict";
 const express = require("express");
 const path = require("path");
 const cookieParser = require("cookie-parser");
@@ -15,9 +16,6 @@ const indexRouter = require("./routes/index");
 const accountRouter = require("./routes/api/account");
 const authRouter = require("./routes/api/auth");
 
-const app = express();
-Services.db.connect(app);
-
 const result = require("dotenv").config({
     path: path.join(__dirname, "./.env")
 });
@@ -25,8 +23,8 @@ if (result.error) {
     Services.log.error(result.error);
 }
 
-const passport = require("passport");
-passport.use("emailAndPass", Services.emailAndPassStrategy);
+const app = express();
+Services.db.connect(app);
 
 app.use(Services.log.requestLogger);
 app.use(Services.log.errorLogger);

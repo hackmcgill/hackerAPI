@@ -1,9 +1,10 @@
+"use strict";
 const {
     body,
     query,
 } = require("express-validator/check");
-const logger = require("../../services/logger.server.service");
-const TAG = `[ VALIDATOR.HELPER.js ]`
+const logger = require("../../services/logger.service");
+const TAG = `[ VALIDATOR.HELPER.js ]`;
 
 // untested
 function nameValidator (getOrPost, fieldname, optional = true) {
@@ -24,7 +25,7 @@ function nameValidator (getOrPost, fieldname, optional = true) {
 // untested
 function emailValidator (getOrPost, fieldname, optional = true) {
     var email;
-    if (getOrPost == "get") {
+    if (getOrPost === "get") {
         email = query(fieldname, "invalid email");
     } else {
         email = body(fieldname, "invalid email");
@@ -41,7 +42,7 @@ function emailValidator (getOrPost, fieldname, optional = true) {
 function alphaValidator (getOrPost, fieldname, optional = true) {
     var diet;
 
-    if (getOrPost == "get") {
+    if (getOrPost === "get") {
         diet = query(fieldname, "invalid dietary restriction");
     } else {
         diet = query(fieldname, "invalid dietary restriction");
@@ -58,7 +59,7 @@ function alphaValidator (getOrPost, fieldname, optional = true) {
 function shirtSizeValidator (getOrPost, fieldname, optional = true) {
     var size;
 
-    if (getOrPost == "get") {
+    if (getOrPost === "get") {
         size = query(fieldname, "invalid size");
     } else {
         size = query(fieldname, "invalid size");
@@ -75,7 +76,7 @@ function shirtSizeValidator (getOrPost, fieldname, optional = true) {
 function passwordValidator (getOrPost, fieldname, optional = true) {
     var password;
 
-    if (getOrPost == "get") {
+    if (getOrPost === "get") {
         password = query(fieldname, "invalid password");
     } else {
         password = query(fieldname, "invalid password");

@@ -1,15 +1,16 @@
+"use strict";
 const {
     body,
     query,
 } = require('express-validator/check');
-const logger = require("../../services/logger.server.service");
-const TAG = `[ EVENT.SERVER.VALIDATOR.js ]`
+const logger = require("../../services/logger.service");
+const TAG = `[ EVENT.SERVER.VALIDATOR.js ]`;
 const VALIDATOR = require("./validator.helper");
 
 module.exports = {
     // untested
     // does not include permissions, as those are added later
-    postNewAccountValidator = [
+    postNewAccountValidator: [
         VALIDATOR.nameValidator("post", "firstName", false),
         VALIDATOR.nameValidator("post", "lastName", false),
         VALIDATOR.emailValidator("post", "email", false),
@@ -17,9 +18,8 @@ module.exports = {
         VALIDATOR.shirtSizeValidator("post", "shirtSize", false),
         VALIDATOR.passwordValidator("post", "password", false),
     ],
-
     // untested
-    postChangeAccountValidator = [
+    postChangeAccountValidator: [
         VALIDATOR.nameValidator("post", "firstName", true),
         VALIDATOR.nameValidator("post", "lastName", true),
         VALIDATOR.emailValidator("post", "email", true),
