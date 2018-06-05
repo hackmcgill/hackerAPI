@@ -1,6 +1,4 @@
 "use strict";
-console.log("Populates some test values into mongoDB");
-
 const Account = require("./models/account.model");
 const Bus = require("./models/bus.model");
 const DefaultPermission = require("./models/defaultPermission.model");
@@ -17,11 +15,14 @@ const mongoose = require("mongoose");
 const result = require("dotenv").config({
     path: path.join(__dirname, "./.env")
 });
+const logger = require("./services/logger.service");
+
+logger.info("Populates some test values into mongoDB");
 
 if (result.error) {
-    console.error(result);
+    logger.error(result);
 }
-db.connect();
+db.connect(null, addAll);
 
 const permissions = [
     {"_id": mongoose.Types.ObjectId(), "name": "Permission1"},
@@ -176,30 +177,85 @@ const volunteers = [
 function dropAll() {
     Account.collection.drop().then(
         (value) => {
-            logger.info(`${TAG} dropped table Account`)
+            logger.info(`dropped table Account`)
         },
         (err) => {
-            logger.error(`${TAG} could not drop Account. Error: ${JSON.stringify(err)}`)
+            logger.error(`could not drop Account. Error: ${JSON.stringify(err)}`)
         }
     );
     Bus.collection.drop().then(
         (value) => {
-            logger.info(`${TAG} dropped table Account`)
+            logger.info(`dropped table Bus`)
         },
         (err) => {
-            logger.error(`${TAG} could not drop Account. Error: ${JSON.stringify(err)}`)
+            logger.error(`could not drop Bus. Error: ${JSON.stringify(err)}`)
         }
     );
+    DefaultPermission.collection.drop().then(
+        (value) => {
+            logger.info(`dropped table DefaultPermission`)
+        },
+        (err) => {
+            logger.error(`could not drop DefaultPermission. Error: ${JSON.stringify(err)}`)
+        }
 
-// const DefaultPermission = require("./models/defaultPermission.model");
-// const Hacker = require("./models/hacker.model");
-// const Permission = require("./models/permission.model");
-// const Skill = require("./models/skill.model");
-// const Sponsor = require("./models/sponsor.model");
-// const Staff = require("./models/staff.model");
-// const Team = require("./models/team.model");
-// const Volunteer = require("./models/volunteer.model");
-
+    );
+    Hacker.collection.drop().then(
+        (value) => {
+            logger.info(`dropped table Hacker`)
+        },
+        (err) => {
+            logger.error(`could not drop Hacker. Error: ${JSON.stringify(err)}`)
+        }
+    );
+    Permission.collection.drop().then(
+        (value) => {
+            logger.info(`dropped table Permission`)
+        },
+        (err) => {
+            logger.error(`could not drop Permission. Error: ${JSON.stringify(err)}`)
+        }
+    );
+    Skill.collection.drop().then(
+        (value) => {
+            logger.info(`dropped table Skill`)
+        },
+        (err) => {
+            logger.error(`could not drop Skill. Error: ${JSON.stringify(err)}`)
+        }
+    )
+    Sponsor.collection.drop().then(
+        (value) => {
+            logger.info(`dropped table Sponsor`)
+        },
+        (err) => {
+            logger.error(`could not drop Sponsor. Error: ${JSON.stringify(err)}`)
+        }
+    );
+    Staff.collection.drop().then(
+        (value) => {
+            logger.info(`dropped table Staff`)
+        },
+        (err) => {
+            logger.error(`could not drop Staff. Error: ${JSON.stringify(err)}`)
+        }
+    );
+    Team.collection.drop().then(
+        (value) => {
+            logger.info(`dropped table Team`)
+        },
+        (err) => {
+            logger.error(`could not drop Team. Error: ${JSON.stringify(err)}`)
+        }
+    );
+    Volunteer.collection.drop().then(
+        (value) => {
+            logger.info(`dropped table Volunteer`)
+        },
+        (err) => {
+            logger.error(`could not drop Volunteer. Error: ${JSON.stringify(err)}`)
+        }
+    );
 }
 
 
@@ -401,39 +457,40 @@ function volunteerCreate(accountId, _id = mongoose.Types.ObjectId()) {
             return err;
         }
 
-        console.log("New voluneer: " + volunteer);
+        console.log("New volunteer: " + volunteer);
         return;
     });
 }
 
-
-permissions.forEach(function (permission) {
-    permissionCreate(permission.name, permission._id);
-});
-accounts.forEach(function (account) {
-    accountCreate(account.firstName, account.lastName, account.email, account.password, account.permissions, account.dietaryRestrictions, account.shirtSize, account._id);
-});
-hackers.forEach(function (hacker) {
-    hackerCreate(hacker.accountID, hacker.status, hacker.school, hacker.gender, hacker.needsBus, hacker.application, hacker._id);
-});
-busses.forEach(function (bus) {
-    busCreate(bus.origin, bus.capacity, bus.hackers, bus._id);
-});
-defaultPermissions.forEach(function (defaultPermission) {
-    defaultPermissionCreate(defaultPermission.userType, defaultPermission.permissions, defaultPermission._id);
-});
-skills.forEach(function (skill) {
-    skillCreate(skill.name, skill.category, skill._id);
-});
-sponsors.forEach(function (sponsor) {
-    sponsorCreate(sponsor.accountId, sponsor.tier, sponsor.company, sponsor.contractURL, sponsor.nominees, sponsor._id);
-});
-staffs.forEach(function (staff) {
-    staffCreate(staff.accountId, staff.godMode, staff._id);
-});
-teams.forEach(function (team) {
-    teamCreate(team.name, team.members, team.hackSubmitted, team.devpostURL, team.projectName, team._id);
-});
-volunteers.forEach(function (volunteer) {
-    volunteerCreate(volunteer.accountId, volunteer._id);
-});
+function addAll() {
+    permissions.forEach(function (permission) {
+        permissionCreate(permission.name, permission._id);
+    });
+    accounts.forEach(function (account) {
+        accountCreate(account.firstName, account.lastName, account.email, account.password, account.permissions, account.dietaryRestrictions, account.shirtSize, account._id);
+    });
+    hackers.forEach(function (hacker) {
+        hackerCreate(hacker.accountID, hacker.status, hacker.school, hacker.gender, hacker.needsBus, hacker.application, hacker._id);
+    });
+    busses.forEach(function (bus) {
+        busCreate(bus.origin, bus.capacity, bus.hackers, bus._id);
+    });
+    defaultPermissions.forEach(function (defaultPermission) {
+        defaultPermissionCreate(defaultPermission.userType, defaultPermission.permissions, defaultPermission._id);
+    });
+    skills.forEach(function (skill) {
+        skillCreate(skill.name, skill.category, skill._id);
+    });
+    sponsors.forEach(function (sponsor) {
+        sponsorCreate(sponsor.accountId, sponsor.tier, sponsor.company, sponsor.contractURL, sponsor.nominees, sponsor._id);
+    });
+    staffs.forEach(function (staff) {
+        staffCreate(staff.accountId, staff.godMode, staff._id);
+    });
+    teams.forEach(function (team) {
+        teamCreate(team.name, team.members, team.hackSubmitted, team.devpostURL, team.projectName, team._id);
+    });
+    volunteers.forEach(function (volunteer) {
+        volunteerCreate(volunteer.accountId, volunteer._id);
+    });
+}

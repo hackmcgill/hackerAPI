@@ -35,7 +35,7 @@ function getPassFromEnvironment() {
 
 
 module.exports = {
-    connect: function (app) {
+    connect: function (app, callback) {
         logger.info(`${TAG} Connecting to db`);
         mongoose.Promise = Q.promise;
         const user = getUserFromEnvironment();
@@ -46,6 +46,9 @@ module.exports = {
             logger.info(`${TAG} Connected to database on ${url}`);
             if(app) {
                 app.emit("event:connected to db");
+            }
+            if(callback) {
+                callback();
             }
         }, function (error) {
             logger.error(`${TAG} Failed to connect to database on ${url}. Error: ${error}`);
