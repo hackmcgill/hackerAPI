@@ -9,11 +9,13 @@ const TAG = "[ DATABASE SERVICE ]";
 // it should be easily findable
 
 // DATABASE SERVICE
-const address = (process.env.NODE_ENV === "development")
+function getAddressFromEnvironment() {
+return (process.env.NODE_ENV === "development")
     ? process.env.DB_ADDRESS_DEV
     : (process.env.NODE_ENV === "deployment")
         ? process.env.DB_ADDRESS_DEPLOY
         : process.env.DB_ADDRESS_TEST;
+}
 
 function getUserFromEnvironment() {
     return (process.env.NODE_ENV === "development")
@@ -38,16 +40,19 @@ module.exports = {
         mongoose.Promise = Q.promise;
         const user = getUserFromEnvironment();
         const pass = getPassFromEnvironment();
+        const address = getAddressFromEnvironment();
         const url = `mongodb://${user}:${pass}@${address}`;
         mongoose.connect(url).then(function () {
             logger.info(`${TAG} Connected to database on ${url}`);
-            app.emit("event:connected to db");
+            if(app) {
+                app.emit("event:connected to db");
+            }
         }, function (error) {
             logger.error(`${TAG} Failed to connect to database on ${url}. Error: ${error}`);
             throw `Failed to connect to database on ${url}`;
         });
     },
-    address: address,
+    address: getAddressFromEnvironment(),
     readyState: function () {
         return mongoose.connection.readyState;
     }

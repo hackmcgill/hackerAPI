@@ -15,7 +15,7 @@ const HackerSchema = new mongoose.Schema({
         default: "None"
     },
     school: {
-        name: String,
+        type: String,
         required: true
     },
     //no enum for this

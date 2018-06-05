@@ -13,7 +13,7 @@ module.exports = {
     parseAccount: function (req, res, next) {
 
         const accountDetails = {
-            _id: new mongoose.ObjectID(),
+            _id: mongoose.Types.ObjectId(),
             firstName: req.body.firstName,
             lastName: req.body.lastName,
             email: req.body.email,

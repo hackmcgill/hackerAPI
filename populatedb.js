@@ -11,29 +11,33 @@ const Sponsor = require("./models/sponsor.model");
 const Staff = require("./models/staff.model");
 const Team = require("./models/team.model");
 const Volunteer = require("./models/volunteer.model");
-
+const path = require("path");
+const db = require("./services/database.service");
 const mongoose = require("mongoose");
-const mongoDB = "127.0.0.1:27017";
-// copy pasted lmao ???
-mongoose.connect(mongoDB);
-//mongoose.Promise = global.Promise;
-mongoose.connection.on("error", console.error.bind(console, "MongoDB connection error:"));
+const result = require("dotenv").config({
+    path: path.join(__dirname, "./.env")
+});
+
+if (result.error) {
+    console.error(result);
+}
+db.connect();
 
 const permissions = [
-    {"_id": new mongoose.ObjectID(), "name": "Permission1"},
-    {"_id": new mongoose.ObjectID(), "name": "Permission2"},
-    {"_id": new mongoose.ObjectID(), "name": "Permission3"},
-    {"_id": new mongoose.ObjectID(), "name": "Permission4"},
-    {"_id": new mongoose.ObjectID(), "name": "Permission5"},
-    {"_id": new mongoose.ObjectID(), "name": "Permission6"},
-    {"_id": new mongoose.ObjectID(), "name": "Permission7"},
-    {"_id": new mongoose.ObjectID(), "name": "Permission8"},
-    {"_id": new mongoose.ObjectID(), "name": "Permission9"},
-    {"_id": new mongoose.ObjectID(), "name": "Permission10"}
+    {"_id": mongoose.Types.ObjectId(), "name": "Permission1"},
+    {"_id": mongoose.Types.ObjectId(), "name": "Permission2"},
+    {"_id": mongoose.Types.ObjectId(), "name": "Permission3"},
+    {"_id": mongoose.Types.ObjectId(), "name": "Permission4"},
+    {"_id": mongoose.Types.ObjectId(), "name": "Permission5"},
+    {"_id": mongoose.Types.ObjectId(), "name": "Permission6"},
+    {"_id": mongoose.Types.ObjectId(), "name": "Permission7"},
+    {"_id": mongoose.Types.ObjectId(), "name": "Permission8"},
+    {"_id": mongoose.Types.ObjectId(), "name": "Permission9"},
+    {"_id": mongoose.Types.ObjectId(), "name": "Permission10"}
 ];
 const accounts = [
     {
-        "_id": new mongoose.ObjectID(),
+        "_id": mongoose.Types.ObjectId(),
         "firstName": "ABC",
         "lastName": "DEF",
         "email": "abc.def1@blahblah.com",
@@ -43,7 +47,7 @@ const accounts = [
         "shirtSize": "S"
     },
     {
-        "_id": new mongoose.ObjectID(),
+        "_id": mongoose.Types.ObjectId(),
         "firstName": "abc",
         "lastName": "def",
         "email": "abc.def2@blahblah.com",
@@ -53,7 +57,7 @@ const accounts = [
         "shirtSize": "M"
     },
     {
-        "_id": new mongoose.ObjectID(),
+        "_id": mongoose.Types.ObjectId(),
         "firstName": "XYZ",
         "lastName": "UST",
         "email": "abc.def3@blahblah.com",
@@ -63,7 +67,7 @@ const accounts = [
         "shirtSize": "L"
     },
     {
-        "_id": new mongoose.ObjectID(),
+        "_id": mongoose.Types.ObjectId(),
         "firstName": "xyz",
         "lastName": "ust",
         "email": "abc.def4@blahblah.com",
@@ -73,12 +77,12 @@ const accounts = [
         "shirtSize": "XL"
     },
     {
-        "_id": new mongoose.ObjectID(),
+        "_id": mongoose.Types.ObjectId(),
         "firstName": "LMAO",
         "lastName": "ROFL",
         "email": "abc.def5@blahblah.com",
         "password": "probsShouldBeHashed5",
-        "permissions": [permissions[5]._id, permissions[10]._id],
+        "permissions": [permissions[5]._id, permissions[0]._id],
         "dietaryRestrictions": ["something1", "something2"],
         "shirtSize": "XXL"
     }
@@ -91,7 +95,9 @@ const hackers = [
         "gender": "Male",
         "needsBus": true,
         // lol there"s so much to put in
-        "application": {}
+        "application": {
+
+        }
     },
     {
         "accountId": accounts[4]._id,
@@ -100,7 +106,9 @@ const hackers = [
         "gender": "Female",
         "needsBus": true,
         // lol there"s so much to put in
-        "application": {}
+        "application": {
+
+        }
     }
 ];
 const busses = [
@@ -130,10 +138,10 @@ const skills = [
     {"name": "Tech2", "category": "category2"},
     {"name": "Tech3", "category": "category3"},
     {"name": "Tech4", "category": "category1"},
-    {"name": "Tech1", "category": "category2"},
-    {"name": "Tech2", "category": "category3"},
-    {"name": "Tech3", "category": "category1"},
-    {"name": "Tech4", "category": "category2"}
+    {"name": "Tech5", "category": "category2"},
+    {"name": "Tech6", "category": "category3"},
+    {"name": "Tech7", "category": "category1"},
+    {"name": "Tech8", "category": "category2"}
 ];
 const sponsors = [
     {
@@ -165,7 +173,37 @@ const volunteers = [
     {"accountId": accounts[3]._id}
 ];
 
-function accountCreate(firstName, lastName, email, password, permissions, dietaryRestrictions, shirtSize, _id = new mongoose.ObjectID()) {
+function dropAll() {
+    Account.collection.drop().then(
+        (value) => {
+            logger.info(`${TAG} dropped table Account`)
+        },
+        (err) => {
+            logger.error(`${TAG} could not drop Account. Error: ${JSON.stringify(err)}`)
+        }
+    );
+    Bus.collection.drop().then(
+        (value) => {
+            logger.info(`${TAG} dropped table Account`)
+        },
+        (err) => {
+            logger.error(`${TAG} could not drop Account. Error: ${JSON.stringify(err)}`)
+        }
+    );
+
+// const DefaultPermission = require("./models/defaultPermission.model");
+// const Hacker = require("./models/hacker.model");
+// const Permission = require("./models/permission.model");
+// const Skill = require("./models/skill.model");
+// const Sponsor = require("./models/sponsor.model");
+// const Staff = require("./models/staff.model");
+// const Team = require("./models/team.model");
+// const Volunteer = require("./models/volunteer.model");
+
+}
+
+
+function accountCreate(firstName, lastName, email, password, permissions, dietaryRestrictions, shirtSize, _id = mongoose.Types.ObjectId()) {
     const accountDetail = {
         _id: _id,
         firstName: firstName,
@@ -192,7 +230,7 @@ function accountCreate(firstName, lastName, email, password, permissions, dietar
     });
 }
 
-function busCreate(origin, capacity, hackers, _id = new mongoose.ObjectID()) {
+function busCreate(origin, capacity, hackers, _id = mongoose.Types.ObjectId()) {
     const busDetail = {
         _id: _id,
         origin: origin,
@@ -212,7 +250,7 @@ function busCreate(origin, capacity, hackers, _id = new mongoose.ObjectID()) {
     });
 }
 
-function defaultPermissionCreate(userType, permissions, _id = new mongoose.ObjectID()) {
+function defaultPermissionCreate(userType, permissions, _id = mongoose.Types.ObjectId()) {
     const defaultPermissionDetail = {_id: _id, userType: userType, permissions: permissions};
 
     const defaultPermission = new DefaultPermission(defaultPermissionDetail);
@@ -227,7 +265,7 @@ function defaultPermissionCreate(userType, permissions, _id = new mongoose.Objec
     });
 }
 
-function hackerCreate(accountId, status, school, gender, needsBus, application, _id = new mongoose.ObjectID()) {
+function hackerCreate(accountId, status, school, gender, needsBus, application, _id = mongoose.Types.ObjectId()) {
     const hackerDetail = {
         _id: _id,
         accountId: accountId,
@@ -250,7 +288,7 @@ function hackerCreate(accountId, status, school, gender, needsBus, application, 
     });
 }
 
-function permissionCreate(name, _id = new mongoose.ObjectID()) {
+function permissionCreate(name, _id = mongoose.Types.ObjectId()) {
     const permissionDetail = {
         _id: _id,
         name: name
@@ -268,7 +306,7 @@ function permissionCreate(name, _id = new mongoose.ObjectID()) {
     });
 }
 
-function skillCreate(name, category, _id = new mongoose.ObjectID()) {
+function skillCreate(name, category, _id = mongoose.Types.ObjectId()) {
     const skillDetail = {
         _id: _id,
         name: name,
@@ -287,7 +325,7 @@ function skillCreate(name, category, _id = new mongoose.ObjectID()) {
     });
 }
 
-function sponsorCreate(accountId, tier, company, contractURL, nominees, _id = new mongoose.ObjectID()) {
+function sponsorCreate(accountId, tier, company, contractURL, nominees, _id = mongoose.Types.ObjectId()) {
     const sponsorDetail = {
         _id: _id,
         accountId: accountId,
@@ -309,7 +347,7 @@ function sponsorCreate(accountId, tier, company, contractURL, nominees, _id = ne
     });
 }
 
-function staffCreate(accountId, godMode, _id = new mongoose.ObjectID()) {
+function staffCreate(accountId, godMode, _id = mongoose.Types.ObjectId()) {
     const staffDetail = {
         _id: _id,
         accountId: accountId,
@@ -328,7 +366,7 @@ function staffCreate(accountId, godMode, _id = new mongoose.ObjectID()) {
     });
 }
 
-function teamCreate(name, members, hackSubmitted, devpostURL, projectName, _id = new mongoose.ObjectID()) {
+function teamCreate(name, members, hackSubmitted, devpostURL, projectName, _id = mongoose.Types.ObjectId()) {
     const teamDetail = {
         _id: _id,
         name: name,
@@ -350,7 +388,7 @@ function teamCreate(name, members, hackSubmitted, devpostURL, projectName, _id =
     });
 }
 
-function volunteerCreate(accountId, _id = new mongoose.ObjectID()) {
+function volunteerCreate(accountId, _id = mongoose.Types.ObjectId()) {
     const volunteerDetail = {
         _id: _id,
         accountId: accountId
