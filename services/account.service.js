@@ -104,5 +104,6 @@ module.exports = {
     findByEmail: findByEmail,
     addOneAccount: addOneAccount,
     getAccountIfValid: getAccountIfValid,
-    hashPassword: hashPassword
+    hashPassword: hashPassword,
+    changeOneAccount: changeOneAccount
 };

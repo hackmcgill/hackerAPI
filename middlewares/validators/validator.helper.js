@@ -7,9 +7,26 @@ const logger = require("../../services/logger.service");
 const TAG = `[ VALIDATOR.HELPER.js ]`;
 
 // untested
+function booleanValidator (getOrPost, fieldname, optional = true) {
+    var booleanField;
+
+    if (getOrPost === "get") {
+        booleanField = query(fieldname, "invalid boolean");
+    } else {
+        booleanField = query(fieldname, "invalid boolean");
+    }
+
+    if (optional) {
+        return booleanField.optional({ checkFalsy: true }).isBoolean().withMessage("must be boolean");
+    } else {
+        return booleanField.exists().isBoolean().withMessage("must be boolean");
+    }
+}
+
+// untested
 function nameValidator (getOrPost, fieldname, optional = true) {
     var name;
-    if (getOrPost == "get") {
+    if (getOrPost === "get") {
         name = query(fieldname, "invalid name");
     } else {
         name = body(fieldname, "invalid name");
@@ -45,7 +62,7 @@ function alphaValidator (getOrPost, fieldname, optional = true) {
     if (getOrPost === "get") {
         diet = query(fieldname, "invalid dietary restriction");
     } else {
-        diet = query(fieldname, "invalid dietary restriction");
+        diet = body(fieldname, "invalid dietary restriction");
     }
 
     if (optional) {
@@ -62,7 +79,7 @@ function shirtSizeValidator (getOrPost, fieldname, optional = true) {
     if (getOrPost === "get") {
         size = query(fieldname, "invalid size");
     } else {
-        size = query(fieldname, "invalid size");
+        size = body(fieldname, "invalid size");
     }
 
     if (optional) {
@@ -79,7 +96,7 @@ function passwordValidator (getOrPost, fieldname, optional = true) {
     if (getOrPost === "get") {
         password = query(fieldname, "invalid password");
     } else {
-        password = query(fieldname, "invalid password");
+        password = body(fieldname, "invalid password");
     }
 
     if (optional) {
@@ -89,10 +106,38 @@ function passwordValidator (getOrPost, fieldname, optional = true) {
     }
 }
 
+// untested
+function hackerStatusValidator (getOrPost, fieldname, optional = true) {
+    var status;
+    const statuses = ["None", "Applied", "Accepted", "Waitlisted", "Confirmed", "Cancelled", "Checked-in"];
+
+
+    if (getOrPost === "get") {
+        status = query(fieldname, "invalid status");
+    } else {
+        status = body(fieldname, "invalid status");
+    }
+
+    if (optional) {
+        return status.optional({ checkFalsy: true}).isIn(statuses).withMessage("Must be one of valid statuses");
+    } else {
+        return status.exists().withMessage("must be one of valid statuses");
+    }
+}
+
+// untested
+function applicationValidator (getOrPost, optional = true) {
+    return [
+        nameValidator(getOrPost, )
+    ]
+}
+
 module.exports = {
     nameValidator: nameValidator,
     emailValidator: emailValidator,
     alphaValidator: alphaValidator,
     shirtSizeValidator: shirtSizeValidator,
-    passwordValidator: passwordValidator
+    passwordValidator: passwordValidator,
+    hackerStatusValidator: hackerStatusValidator,
+    booleanValidator: booleanValidator
 }

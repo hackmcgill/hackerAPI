@@ -22,6 +22,9 @@ logger.info("Populates some test values into mongoDB");
 if (result.error) {
     logger.error(result);
 }
+// for deleting tables
+// db.connect(null, dropAll);
+// for adding tables
 db.connect(null, addAll);
 
 const permissions = [

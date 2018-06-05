@@ -3,8 +3,7 @@
 const express = require("express");
 
 const Services = {
-    Logger: require("../../services/logger.service.js"),
-    Account: require("../../services/account.service.js")
+    Logger: require("../../services/logger.service.js")
 };
 const Controllers = {
     Account: require("../../controllers/account.controller")
@@ -52,9 +51,8 @@ module.exports = {
 
             Middleware.parseBody.middleware,
 
-            // middlewares
-            Middleware.Account.parseAccount,
-
+            // no parse account because will use req.body as information
+            // because the number of fields will be variable
             Controllers.Account.changeUserInfo
         );
 

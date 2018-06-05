@@ -57,15 +57,14 @@ module.exports = {
 
     // untested
     changeUserInfo: function (req, res) {
-        const accountDetail = req.body.accountDetail;
         const id = req.user.id;
 
-        const success = Services.Account.changeOneAccount(id, accountDetail);
+        const success = Services.Account.changeOneAccount(id, req.body);
 
         if (success) {
             return res.status(200).json({
                 message: "Changed account",
-                data: "Changed information to: " + accountDetail
+                data: "Changed information to: " + req.body
             });
         } else {
             return res.status(400).json({
