@@ -4,6 +4,8 @@ const {
     query,
 } = require("express-validator/check");
 const logger = require("../../services/logger.service");
+const Skill = require("../../services/skill.service");
+const Team = require("../../services/team.service");
 const TAG = `[ VALIDATOR.HELPER.js ]`;
 
 // untested
@@ -127,9 +129,57 @@ function hackerStatusValidator (getOrPost, fieldname, optional = true) {
 
 // untested
 function applicationValidator (getOrPost, optional = true) {
-    return [
-        nameValidator(getOrPost, )
-    ]
+    var application;
+
+    if (getOrPost === "get") {
+        application = query("application", "invalid application");
+    } else {
+        application = body("application", "invalid application");
+    }
+
+    if (optional) {
+        return application.custom(app => {
+            let jobInterests = ["Internship", "Full-time", "None"];
+            return (
+                (!app.portfolioURL.resume || typeof(app.portfolioURL.resume === "string")) &&
+                (!app.portfolioURL.github || typeof(app.portfolioURL.github === "string")) &&
+                (!app.portfolioURL.dropler || typeof(app.portfolioURL.dropler === "string")) &&
+                (!app.portfolioURL.personal || typeof(app.portfolioURL.personal === "string")) &&
+                (!app.portfolioURL.linkedIn || typeof(app.portfolioURL.linkedIn === "string")) &&
+                (!app.portfolioURL.other || typeof(app.portfolioURL.other === "other")) &&
+                (!app.jobInterest || jobInterests.includes(app.jobInterests)) &&
+                (!app.skills || app.skills.forEach(skill => {
+                    if (!Skill.isSkillIdValid(skill)) {
+                        return false;
+                    }
+                })) &&
+                (!app.comments || typeof(app.comments === "string")) &&
+                (!app.essay || typeof(app.essay === "string")) &&
+                (!app.team || Team.isTeamIdValid(app.team))
+            );
+        });
+    } else {
+        return application.custom(app => {
+            let jobInterests = ["Internship", "Full-time", "None"];
+            return (
+                typeof(app.portfolioURL.resume === "string") &&
+                typeof(app.portfolioURL.github === "string") &&
+                typeof(app.portfolioURL.dropler === "string") &&
+                typeof(app.portfolioURL.personal === "string") &&
+                typeof(app.portfolioURL.linkedIn === "string") &&
+                typeof(app.portfolioURL.other === "other") &&
+                jobInterests.includes(app.jobInterests) &&
+                app.skills.forEach(skill => {
+                    if (!Skill.isSkillIdValid(skill)) {
+                        return false;
+                    }
+                }) &&
+                typeof(app.comments === "string") &&
+                typeof(app.essay === "string") &&
+                Team.isTeamIdValid(app.team)
+            );
+        });
+    }
 }
 
 module.exports = {
@@ -139,5 +189,6 @@ module.exports = {
     shirtSizeValidator: shirtSizeValidator,
     passwordValidator: passwordValidator,
     hackerStatusValidator: hackerStatusValidator,
-    booleanValidator: booleanValidator
-}
+    booleanValidator: booleanValidator,
+    applicationValidator: applicationValidator,
+};
