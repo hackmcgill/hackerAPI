@@ -148,11 +148,7 @@ function applicationValidator (getOrPost, optional = true) {
                 (!app.portfolioURL.linkedIn || typeof(app.portfolioURL.linkedIn === "string")) &&
                 (!app.portfolioURL.other || typeof(app.portfolioURL.other === "other")) &&
                 (!app.jobInterest || jobInterests.includes(app.jobInterests)) &&
-                (!app.skills || app.skills.forEach(skill => {
-                    if (!Skill.isSkillIdValid(skill)) {
-                        return false;
-                    }
-                })) &&
+                (!app.skills || skillsArrayValidator(app.skills)) &&
                 (!app.comments || typeof(app.comments === "string")) &&
                 (!app.essay || typeof(app.essay === "string")) &&
                 (!app.team || Team.isTeamIdValid(app.team))
@@ -169,17 +165,24 @@ function applicationValidator (getOrPost, optional = true) {
                 typeof(app.portfolioURL.linkedIn === "string") &&
                 typeof(app.portfolioURL.other === "other") &&
                 jobInterests.includes(app.jobInterests) &&
-                app.skills.forEach(skill => {
-                    if (!Skill.isSkillIdValid(skill)) {
-                        return false;
-                    }
-                }) &&
+                skillsArrayValidator(app.skills) &&
                 typeof(app.comments === "string") &&
                 typeof(app.essay === "string") &&
                 Team.isTeamIdValid(app.team)
             );
         });
     }
+}
+
+// untested
+function skillsArrayValidator (skills) {
+    let valid = true;
+    skills.forEach(skill => {
+        if (!Skill.isSkillIdValid(skill)) {
+            valid = false;
+        }
+    });
+    return valid;
 }
 
 module.exports = {
