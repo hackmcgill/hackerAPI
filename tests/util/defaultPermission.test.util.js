@@ -2,9 +2,9 @@
 const Util = {
     Permission: require("./permission.test.util")
 };
-const Bus = require("../../models/bus.model");
+const DefaultPermission = require("../../models/defaultPermission.model");
 const logger = require("../../services/logger.service");
-const TAG = "[ BUS.TEST.UTIL.JS ]";
+const TAG = "[ DEFAULTPERMISSION.TEST.UTIL.JS ]";
 
 module.exports = {
     DefaultPermission1: {
@@ -34,12 +34,12 @@ module.exports = {
 function storeAll(attributes, callback) {
     const acctDocs = [];
     for (var i = 0; i < attributes.length; i++) {
-        acctDocs.push(new Bus(attributes[i]));
+        acctDocs.push(new DefaultPermission(attributes[i]));
     }
     const permissionNames = attributes.map((val) => {
         return val.name + ",";
     });
-    Bus.collection.insertMany(acctDocs).then(
+    DefaultPermission.collection.insertMany(acctDocs).then(
         () => {
             logger.info(`${TAG} saved Buses: ${permissionNames.join(",")}`);
             callback();
@@ -52,13 +52,13 @@ function storeAll(attributes, callback) {
 }
 
 function dropAll(callback) {
-    Bus.collection.drop().then(
+    DefaultPermission.collection.drop().then(
         () => {
-            logger.info(`dropped table Bus`);
+            logger.info(`dropped table DefaultPermission`);
             callback();
         },
         (err) => {
-            logger.error(`could not drop Buses. Error: ${JSON.stringify(err)}`);
+            logger.error(`could not drop DefaultPermissions. Error: ${JSON.stringify(err)}`);
             callback(err);
         }
     );
