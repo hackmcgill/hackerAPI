@@ -30,6 +30,8 @@
     "@types/mongodb": "^3.0.18",
     "@types/mongoose": "^5.0.13",
     "jslint": "^0.12.0",
-    "nodemon": "^1.17.3"
+    "nodemon": "^1.17.3",
+    "mocha": "^5.2.0",
+    "chai": "^4.1.2"
   }
 }
