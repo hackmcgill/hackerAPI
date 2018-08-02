@@ -1,7 +1,16 @@
 "use strict";
 const server = require('../app.js');
-const util = {
-    //insert all files under util
+const Util = {
+    Account: require("./util/account.test.util"),
+    Bus: require("./util/bus.test.util"),
+    DefaultPermission: require("./util/defaultPermission.test.util"),
+    Hacker: require("./util/hacker.test.util"),
+    Permission: require("./util/permission.test.util"),
+    Skill: require("./util/skill.test.util"),
+    Sponsor: require("./util/sponsor.test.util"),
+    Staff: require("./util/staff.test.util"),
+    Team: require("./util/team.test.util"),
+    Volunteer: require("./util/volunteer.test.util"),
 }
 
 
