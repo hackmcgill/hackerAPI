@@ -24,20 +24,20 @@ module.exports = {
 };
 
 function storeAll(attributes, callback) {
-    const acctDocs = [];
+    const busDocs = [];
+    const busNames = [];
     for (var i = 0; i < attributes.length; i++) {
-        acctDocs.push(new Bus(attributes[i]));
+        busDocs.push(new Bus(attributes[i]));
+        busNames.push(attributes[i].name);
     }
-    const permissionNames = attributes.map((val) => {
-        return val.name + ",";
-    });
-    Bus.collection.insertMany(acctDocs).then(
+    
+    Bus.collection.insertMany(busDocs).then(
         () => {
-            logger.info(`${TAG} saved Buses: ${permissionNames.join(",")}`);
+            logger.info(`${TAG} saved Buses: ${busNames.join(",")}`);
             callback();
         },
         (reason) => {
-            logger.error(`${TAG} could not store Buses ${permissionNames.join(",")}. Error: ${JSON.stringify(reason)}`);
+            logger.error(`${TAG} could not store Buses ${busNames.join(",")}. Error: ${JSON.stringify(reason)}`);
             callback(reason);
         }
     );

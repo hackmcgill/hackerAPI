@@ -27,7 +27,9 @@ module.exports = {
             },
             jobInterest: "Full-time",
             skills: [
-                //NEEDS TO REFERENCE SKILL
+                Util.Skill.skills[0]._id,
+                Util.Skill.skills[4]._id,
+                Util.Skill.sKills[7]._id,
             ],    
         }
     },
@@ -49,7 +51,9 @@ module.exports = {
             },
             jobInterest: "Internship",
             skills: [
-                //NEEDS TO REFERENCE SKILL
+                Util.Skill.skills[1]._id,
+                Util.Skill.skills[3]._id,
+                Util.Skill.sKills[6]._id,
             ],    
         }
     },
@@ -58,20 +62,20 @@ module.exports = {
 };
 
 function storeAll(attributes, callback) {
-    const acctDocs = [];
+    const hackerDocs = [];
+    const hackerNames = [];
     for (var i = 0; i < attributes.length; i++) {
-        acctDocs.push(new Hacker(attributes[i]));
+        hackerDocs.push(new Hacker(attributes[i]));
+        hackerNames.push(attributes[i].name);
     }
-    const permissionNames = attributes.map((val) => {
-        return val.name + ",";
-    });
-    Hacker.collection.insertMany(acctDocs).then(
+
+    Hacker.collection.insertMany(hackerDocs).then(
         () => {
-            logger.info(`${TAG} saved Hacker: ${permissionNames.join(",")}`);
+            logger.info(`${TAG} saved Hackers: ${hackerNames.join(",")}`);
             callback();
         },
         (reason) => {
-            logger.error(`${TAG} could not store Hackers ${permissionNames.join(",")}. Error: ${JSON.stringify(reason)}`);
+            logger.error(`${TAG} could not store Hackers ${hackerNames.join(",")}. Error: ${JSON.stringify(reason)}`);
             callback(reason);
         }
     );
@@ -80,11 +84,11 @@ function storeAll(attributes, callback) {
 function dropAll(callback) {
     Hacker.collection.drop().then(
         () => {
-            logger.info(`dropped table Bus`);
+            logger.info(`Dropped table Hacker`);
             callback();
         },
         (err) => {
-            logger.error(`could not drop Buses. Error: ${JSON.stringify(err)}`);
+            logger.error(`Could not drop Hacker. Error: ${JSON.stringify(err)}`);
             callback(err);
         }
     );

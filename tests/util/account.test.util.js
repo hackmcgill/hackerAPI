@@ -1,11 +1,11 @@
 "use strict";
 const Util = {
     Permission: require("./permission.test.util")
-}
+};
 const Account = require("../../models/account.model");
 const mongoose = require("mongoose");
 const logger = require("../../services/logger.service");
-const TAG = "[ PERMISSION.TEST.UTIL.JS ]";
+const TAG = "[ ACCOUNT.TEST.UTIL.JS ]";
 
 module.exports = {
     Account1: {
@@ -64,19 +64,19 @@ module.exports = {
 
 function storeAll(attributes, callback) {
     const acctDocs = [];
+    const acctNames = [];
     for (var i = 0; i < attributes.length; i++) {
         acctDocs.push(new Account(attributes[i]));
+        acctNames.push(attributes[i].name);
     }
-    const permissionNames = attributes.map((val) => {
-        return val.name + ",";
-    });
+
     Account.collection.insertMany(acctDocs).then(
         () => {
-            logger.info(`${TAG} saved Account:${permissionNames.join(",")}`);
+            logger.info(`${TAG} saved Account:${acctNames.join(",")}`);
             callback();
         },
         (reason) => {
-            logger.error(`${TAG} could not store Account ${permissionNames.join(",")}. Error: ${JSON.stringify(reason)}`);
+            logger.error(`${TAG} could not store Account ${acctNames.join(",")}. Error: ${JSON.stringify(reason)}`);
             callback(reason);
         }
     );
@@ -84,11 +84,11 @@ function storeAll(attributes, callback) {
 function dropAll(callback) {
     Account.collection.drop().then(
         () => {
-            logger.info(`dropped table Account`);
+            logger.info(`Dropped table Account`);
             callback();
         },
         (err) => {
-            logger.error(`could not drop Account. Error: ${JSON.stringify(err)}`);
+            logger.error(`Could not drop Account. Error: ${JSON.stringify(err)}`);
             callback(err);
         }
     );

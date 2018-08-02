@@ -32,14 +32,14 @@ module.exports = {
 };
 
 function storeAll(attributes, callback) {
-    const acctDocs = [];
+    const permissionDocs = [];
+    const permissionNames = [];
     for (var i = 0; i < attributes.length; i++) {
-        acctDocs.push(new DefaultPermission(attributes[i]));
+        permissionDocs.push(new DefaultPermission(attributes[i]));
+        permissionNames.push(attributes[i].name);
     }
-    const permissionNames = attributes.map((val) => {
-        return val.name + ",";
-    });
-    DefaultPermission.collection.insertMany(acctDocs).then(
+
+    DefaultPermission.collection.insertMany(permissionDocs).then(
         () => {
             logger.info(`${TAG} saved Buses: ${permissionNames.join(",")}`);
             callback();

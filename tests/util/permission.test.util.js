@@ -50,19 +50,19 @@ module.exports = {
 
 function storeAll(attributes, callback) {
     const permDocs = [];
+    const permNames = [];
     for (var i = 0; i < attributes.length; i++) {
         permDocs.push(new Permission(attributes[i]));
+        permNames.push(attributes[i].name);
     }
-    const permissionNames = attributes.map((val) => {
-        return val.name + ",";
-    });
+
     Permission.collection.insertMany(permDocs).then(
         () => {
-            logger.info(`${TAG} saved permissions:${permissionNames.join(",")}`);
+            logger.info(`${TAG} saved permissions:${permNames.join(",")}`);
             callback();
         },
         (reason) => {
-            logger.error(`${TAG} could not store permissions ${permissionNames.join(",")}. Error: ${JSON.stringify(reason)}`)
+            logger.error(`${TAG} could not store permissions ${permNames.join(",")}. Error: ${JSON.stringify(reason)}`)
             callback(reason);
         }
     );
