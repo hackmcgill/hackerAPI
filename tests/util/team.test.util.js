@@ -7,17 +7,18 @@ const mongoose = require("mongoose");
 const logger = require("../../services/logger.service");
 const TAG = "[ TEAM.TEST.UTIL.JS ]";
 
-const teams = [
-    {
-        "_id": mongoose.Types.ObjectId(),
-        "name": "BronzeTeam",
-        "members": {
-            "type": [Util.Hacker.hackerA],
-        },
-        "hackSubmitted": false,
-        "devpostURL": "justanother.post",
-        "projectName": "YetAnotherProject"
-    }
+const Team1 = {
+    "_id": mongoose.Types.ObjectId(),
+    "name": "BronzeTeam",
+    "members": {
+        "type": [Util.Hacker.hackerA],
+    },
+    "hackSubmitted": false,
+    "devpostURL": "justanother.post",
+    "projectName": "YetAnotherProject"
+};
+const Teams = [
+    Team1,
 ];
 
 function storeAll(attributes, callback) {
@@ -54,7 +55,8 @@ function dropAll(callback) {
 }
 
 module.exports = {
-    teams: teams,
+    Team1: Team1,
+    Teams: Teams,
     storeAll: storeAll,
     dropAll: dropAll,
 };

@@ -8,55 +8,63 @@ const Hacker = require("../../models/hacker.model");
 const logger = require("../../services/logger.service");
 const TAG = "[ HACKER.TEST.UTIL.JS ]";
 
+const HackerA = {
+    accountId: Util.Account.Account1._id,
+    status: "Applied",
+    school: "University of Blah",
+    gender: "Male",
+    needsBus: true,
+    application: {
+        portfolioURL: {
+            //gcloud bucket link
+            resume: "www.gcloud.com/myResume100",
+            github: "www.github.com/Person1",
+            dropler: undefined,
+            personal: "www.person1.com",
+            linkedIn: "www.linkedin.com/in/Person1",
+            other: undefined
+        },
+        jobInterest: "Full-time",
+        skills: [
+            Util.Skill.skills[0]._id,
+            Util.Skill.skills[4]._id,
+            Util.Skill.sKills[7]._id,
+        ],    
+    }
+};
+const HackerB = {
+    accountId: Util.Account.Account4._id,
+    status: "Accepted",
+    school: "University of Blah1",
+    gender: "Female",
+    needsBus: false,
+    application: {
+        portfolioURL: {
+            //gcloud bucket link
+            resume: "www.gcloud.com/myResume1",
+            github: "www.github.com/Person4",
+            dropler: undefined,
+            personal: undefined,
+            linkedIn: undefined,
+            other: undefined
+        },
+        jobInterest: "Internship",
+        skills: [
+            Util.Skill.skills[1]._id,
+            Util.Skill.skills[3]._id,
+            Util.Skill.sKills[6]._id,
+        ],    
+    }
+};
+const Hackers = [
+    HackerA,
+    HackerB,
+];
+
 module.exports = {
-    hackerA: {
-        accountId: Util.Account.Account1._id,
-        status: "Applied",
-        school: "University of Blah",
-        gender: "Male",
-        needsBus: true,
-        application: {
-            portfolioURL: {
-                //gcloud bucket link
-                resume: "www.gcloud.com/myResume100",
-                github: "www.github.com/Person1",
-                dropler: undefined,
-                personal: "www.person1.com",
-                linkedIn: "www.linkedin.com/in/Person1",
-                other: undefined
-            },
-            jobInterest: "Full-time",
-            skills: [
-                Util.Skill.skills[0]._id,
-                Util.Skill.skills[4]._id,
-                Util.Skill.sKills[7]._id,
-            ],    
-        }
-    },
-    hackerB: {
-        accountId: Util.Account.Account4._id,
-        status: "Accepted",
-        school: "University of Blah1",
-        gender: "Female",
-        needsBus: false,
-        application: {
-            portfolioURL: {
-                //gcloud bucket link
-                resume: "www.gcloud.com/myResume1",
-                github: "www.github.com/Person4",
-                dropler: undefined,
-                personal: undefined,
-                linkedIn: undefined,
-                other: undefined
-            },
-            jobInterest: "Internship",
-            skills: [
-                Util.Skill.skills[1]._id,
-                Util.Skill.skills[3]._id,
-                Util.Skill.sKills[6]._id,
-            ],    
-        }
-    },
+    HackerA: HackerA,
+    HackerB: HackerB,
+    Hackers: Hackers,
     storeAll: storeAll,
     dropAll: dropAll
 };

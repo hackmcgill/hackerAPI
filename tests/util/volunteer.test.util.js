@@ -7,11 +7,12 @@ const Volunteer = require("../../models/volunteer.model");
 const logger = require("../../services/logger.service");
 const TAG = "[ TAG.TEST.UTIL.JS ]";
 
-const volunteers = [
-    {
-        "_id": mongoose.Types.ObjectId(),
-        "accountId": Util.Account.Account4._id
-    },
+const Volunteer1 = {
+    "_id": mongoose.Types.ObjectId(),
+    "accountId": Util.Account.Account4._id
+};
+const Volunteers = [
+    Volunteer1,
 ];
 
 function storeAll (attributes, callback) {
@@ -48,7 +49,8 @@ function dropAll (callback) {
 }
 
 module.exports = {
-    volunteers: volunteers,
+    Volunteer1: Volunteer1,
+    Volunteers: Volunteers,
     storeAll: storeAll,
     dropAll: dropAll,
 };
