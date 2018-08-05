@@ -30,7 +30,7 @@ module.exports = {
 
             // no parse account because will use req.body as information
             // because the number of fields will be variable
-            Controllers.Account.adminChangeHacker
+            Controllers.Hacker.adminChangeOneHacker
         );
 
         apiRouter.use("/account", hackerRouter);

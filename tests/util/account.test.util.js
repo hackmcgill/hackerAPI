@@ -6,8 +6,30 @@ const Account = require("../../models/account.model");
 const mongoose = require("mongoose");
 const logger = require("../../services/logger.service");
 const TAG = "[ ACCOUNT.TEST.UTIL.JS ]";
+const nonAccount1 = {
+    "_id": mongoose.Types.ObjectId(),
+    "firstName": "non",
+    "lastName": "Account",
+    "email": "notexist@blahblah.com",
+    "password": "12345",
+    "permissions": [Util.Permission.Permission1._id, Util.Permission.permission6._id],
+    "dietaryRestrictions": [],
+    "shirtSize": "S"
+};
+const newAccount1 = {
+    "_id": mongoose.Types.ObjectId(),
+    "firstName": "NEW",
+    "lastName": "Account",
+    "email": "newexist@blahblah.com",
+    "password": "12345",
+    "permissions": [Util.Permission.Permission1._id, Util.Permission.permission6._id],
+    "dietaryRestrictions": [],
+    "shirtSize": "S"
+};
 
 module.exports = {
+    nonAccount1: nonAccount1,
+    newAccount1: newAccount1,
     Account1: {
         "_id": mongoose.Types.ObjectId(),
         "firstName": "ABC",
