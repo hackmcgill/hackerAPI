@@ -8,15 +8,16 @@ const mongoose = require("mongoose");
 const logger = require("../../services/logger.service");
 const TAG = "[ SPONSOR.TEST.UTIL.JS ]";
 
-const sponsors = [
-    {
-        _id: mongoose.Types.ObjectId(),
-        "accountId": Util.Account.Account1._id,
-        "tier": 3,
-        "company": "Best company NA",
-        "contractURL": "https://linkto.contract",
-        "nominees": Util.Hacker.hackerA._id,
-    }
+const Sponsor1 = {
+    _id: mongoose.Types.ObjectId(),
+    "accountId": Util.Account.Account1._id,
+    "tier": 3,
+    "company": "Best company NA",
+    "contractURL": "https://linkto.contract",
+    "nominees": Util.Hacker.hackerA._id,
+};
+const Sponsors = [
+    Sponsor1,
 ];
 
 function storeAll(attributes, callback) {
@@ -53,7 +54,8 @@ function dropAll(callback) {
 }
 
 module.exports = {
-    sponsors: sponsors,
+    Sponsor1: Sponsor1,
+    Sponsors: Sponsors,
     storeAll: storeAll,
     dropAll: dropAll,
 };

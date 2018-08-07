@@ -7,12 +7,13 @@ const mongoose = require("mongoose");
 const logger = require("../../services/logger.service");
 const TAG = "[ STAFF.TEST.UTIL.JS ]";
 
-const staffs = [
-    {
-        "_id": mongoose.Types.ObjectId(),
-        "accountId": Util.Account.Account2._id,
-        "godMode": true
-    }
+const Staff1 = {
+    "_id": mongoose.Types.ObjectId(),
+    "accountId": Util.Account.Account2._id,
+    "godMode": true
+};
+const Staffs = [
+    Staff1,
 ];
 
 function storeAll(attributes, callback) {
@@ -49,7 +50,8 @@ function dropAll(callback) {
 }
 
 module.exports = {
-    staffs: staffs,
+    Staff1: Staff1,
+    Staffs: Staffs,
     storeAll: storeAll,
     dropAll: dropAll,
 };
