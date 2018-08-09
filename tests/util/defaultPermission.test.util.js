@@ -24,7 +24,7 @@ const DefaultPermission4 = {
 };
 const DefaultPermission5 = {
     "userType": "Sponsor",
-    "permissions": [Util.Permission.Permission9._id, Util.Permission10._id]
+    "permissions": [Util.Permission.Permission9._id, Util.Permission.Permission10._id]
 };
 const DefaultPermissions = {
     DefaultPermission1,

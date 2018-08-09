@@ -26,9 +26,9 @@ const HackerA = {
         },
         jobInterest: "Full-time",
         skills: [
-            Util.Skill.skills[0]._id,
-            Util.Skill.skills[4]._id,
-            Util.Skill.sKills[7]._id,
+            Util.Skill.Skill1._id,
+            Util.Skill.Skill5._id,
+            Util.Skill.Skill8._id,
         ],    
     }
 };
@@ -50,9 +50,9 @@ const HackerB = {
         },
         jobInterest: "Internship",
         skills: [
-            Util.Skill.skills[1]._id,
-            Util.Skill.skills[3]._id,
-            Util.Skill.sKills[6]._id,
+            Util.Skill.Skill1._id,
+            Util.Skill.Skill4._id,
+            Util.Skill.Skill7._id,
         ],    
     }
 };

@@ -13,7 +13,7 @@ const newAccount1 = {
     "lastName": "Account",
     "email": "newexist@blahblah.com",
     "password": "12345",
-    "permissions": [Util.Permission.Permission1._id, Util.Permission.permission6._id],
+    "permissions": [Util.Permission.Permission1._id, Util.Permission.Permission6._id],
     "dietaryRestrictions": [],
     "shirtSize": "S"
 };
@@ -31,7 +31,7 @@ const Account1 = {
     "firstName": "ABC",
     "email": "abc.def1@blahblah.com",
     "password": "probsShouldBeHashed1",
-    "permissions": [Util.Permission.Permission1._id, Util.Permission.permission6._id],
+    "permissions": [Util.Permission.Permission1._id, Util.Permission.Permission6._id],
     "dietaryRestrictions": [],
     "shirtSize": "S"
 };

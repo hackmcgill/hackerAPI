@@ -16,7 +16,7 @@ const Bus1 = {
         "addr2": "addr2-1"
     },
     "capacity": 10,
-    "hackers": [Util.Hacker.Hacker1._id]
+    "hackers": [Util.Hacker.HackerA._id]
 };
 const Busses = [
     Bus1,

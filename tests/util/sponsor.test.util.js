@@ -14,7 +14,7 @@ const Sponsor1 = {
     "tier": 3,
     "company": "Best company NA",
     "contractURL": "https://linkto.contract",
-    "nominees": Util.Hacker.hackerA._id,
+    "nominees": Util.Hacker.HackerA._id,
 };
 const Sponsors = [
     Sponsor1,

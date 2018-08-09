@@ -100,5 +100,5 @@ module.exports = {
     Skills: Skills,
     storeAll: storeAll,
     dropAll: dropAll,
-}
+};
 
