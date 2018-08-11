@@ -29,6 +29,7 @@ const nonAccount1 = {
 const Account1 = {
     "_id": mongoose.Types.ObjectId(),
     "firstName": "ABC",
+    "lastName": "DEF",
     "email": "abc.def1@blahblah.com",
     "password": "probsShouldBeHashed1",
     "permissions": [Util.Permission.Permission1._id, Util.Permission.Permission6._id],

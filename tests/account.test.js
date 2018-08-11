@@ -19,6 +19,7 @@ describe("GET user account", function () {
     it("should list the user's account on /api/account/self GET", function (done) {
         chai.request(server.app)
             .get("/api/account/self")
+            // does not have password because of to stripped json
             .end(function (err, res) {
                 res.should.have.status(200);
                 res.should.be.json;
@@ -31,7 +32,6 @@ describe("GET user account", function () {
                 res.body.data.should.have.property("email");
                 // ???
                 // res.body.data.should.equal(req.user.email);
-                res.body.data.should.have.property("password");
                 res.body.data.should.have.property("permissions");
                 res.body.data.should.have.property("dietaryRestrictions");
                 res.body.data.should.have.property("shirtSize");

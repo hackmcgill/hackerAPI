@@ -11,7 +11,7 @@ const Util = {
     Staff: require("./util/staff.test.util"),
     Team: require("./util/team.test.util"),
     Volunteer: require("./util/volunteer.test.util"),
-}
+};
 
 
 //make sure that we are connected to the database
@@ -26,7 +26,7 @@ before(function(done) {
 });
 beforeEach(function(done){
     this.timeout(0);
-    
+
     Util.Permission.storeAll(Util.Permission.Permissions, () => { 
         Util.DefaultPermission.storeAll(Util.DefaultPermission.DefaultPermissions, () => {
             Util.Account.storeAll(Util.Account.Accounts, () => {

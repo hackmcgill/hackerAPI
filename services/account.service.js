@@ -24,7 +24,8 @@ async function findByEmail(email) {
     const query = {
         email: email
     };
-    return await findOne(query);
+
+    return findOne(query);
 }
 
 
@@ -49,15 +50,15 @@ function hashPassword(password) {
 
 async function findOne(query) {
     const TAG = `[Account Service # findOne ]:`;
-    return await Account.findOne(query, function (error, user) {
-        if (error) {
-            logger.error(`${TAG} Failed to verify if accounts exist or not using ${JSON.stringify(query)}`, error);
-        } else if (user) {
-            logger.debug(`${TAG} accounts using ${JSON.stringify(query)} exist in the database`);
-        } else {
-            logger.debug(`${TAG} accounts using ${JSON.stringify(query)} do not exist in the database`);
-        }
-    });
+    return Account.findOne(query, function (error, user) {
+            if (error) {
+                logger.error(`${TAG} Failed to verify if accounts exist or not using ${JSON.stringify(query)}`, error);
+            } else if (user) {
+                logger.debug(`${TAG} accounts using ${JSON.stringify(query)} exist in the database`);
+            } else {
+                logger.debug(`${TAG} accounts using ${JSON.stringify(query)} do not exist in the database`);
+            }
+        });
 }
 
 // untested

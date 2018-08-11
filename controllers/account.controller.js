@@ -18,10 +18,13 @@ module.exports = {
     getUserByEmail: function (req, res) {
         const acc = Services.Account.findByEmail(req.user.email);
 
-        if (acc) {
+        acc.then(
+            (value) => {
+                console.log(value);
+                if (value) {
             return res.status(200).json({
                 message: "Account found by user email",
-                data: acc.toStrippedJSON()
+                        data: value.toStrippedJSON()
             });
         } else {
             // tentative error code
@@ -30,6 +33,8 @@ module.exports = {
                 data: {}
             });
         }
+            }
+        );
     },
 
     // assumes all information in req.body
