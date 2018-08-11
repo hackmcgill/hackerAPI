@@ -26,13 +26,13 @@ const DefaultPermission5 = {
     "userType": "Sponsor",
     "permissions": [Util.Permission.Permission9._id, Util.Permission.Permission10._id]
 };
-const DefaultPermissions = {
+const DefaultPermissions = [
     DefaultPermission1,
     DefaultPermission2,
     DefaultPermission3,
     DefaultPermission4,
     DefaultPermission5,
-};
+];
 
 module.exports = {
     DefaultPermission1: DefaultPermission1,
@@ -48,18 +48,19 @@ module.exports = {
 function storeAll(attributes, callback) {
     const permissionDocs = [];
     const permissionNames = [];
-    for (var i = 0; i < attributes.length; i++) {
-        permissionDocs.push(new DefaultPermission(attributes[i]));
-        permissionNames.push(attributes[i].name);
-    }
+
+    attributes.forEach((attribute) => {
+        permissionDocs.push(new DefaultPermission(attribute));
+        permissionNames.push(attribute.name);
+    });
 
     DefaultPermission.collection.insertMany(permissionDocs).then(
         () => {
-            logger.info(`${TAG} saved Buses: ${permissionNames.join(",")}`);
+            logger.info(`${TAG} saved DefaultPermission: ${permissionNames.join(",")}`);
             callback();
         },
         (reason) => {
-            logger.error(`${TAG} could not store Buses ${permissionNames.join(",")}. Error: ${JSON.stringify(reason)}`);
+            logger.error(`${TAG} could not store DefaultPermission ${permissionNames.join(",")}. Error: ${JSON.stringify(reason)}`);
             callback(reason);
         }
     );

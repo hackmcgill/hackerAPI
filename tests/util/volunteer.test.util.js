@@ -38,11 +38,11 @@ function storeAll (attributes, callback) {
 function dropAll (callback) {
     Volunteer.collection.drop().then(
         () => {
-            logger.info(`dropped table Team`);
+            logger.info(`dropped table Volunteer`);
             callback();
         },
         (err) => {
-            logger.infor(`Could not drop Team. Error: ${JSON.stringify(err)}`);
+            logger.infor(`Could not drop Volunteer. Error: ${JSON.stringify(err)}`);
             callback();
         }
     );

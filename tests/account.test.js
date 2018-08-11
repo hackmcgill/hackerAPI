@@ -2,13 +2,13 @@
 const chai = require("chai");
 const chaiHttp = require("chai-http");
 chai.use(chaiHttp);
-const server = require("../src/app");
+const server = require("../app");
 const agent = chai.request.agent(server.app);
 const should = chai.should();
-const logger = require("../src/services/logger.server.service");
+const logger = require("../services/logger.service");
 
 const util = {
-    account: require("../../tests/util/account.test.util"),
+    account: require("./util/account.test.util"),
 };
 
 const storedAccount1 = util.account.Account1;
@@ -40,7 +40,7 @@ describe("GET user account", function () {
     });
 
     // would this ever do anything?
-    it("should failt to lise the user's account on /api/account/self GET", function (done) {
+    it("should fail to list the user's account on /api/account/self GET", function (done) {
         chai.request(server.app)
             .get("/api/account/self")
             .end(function (err, res) {
@@ -73,7 +73,7 @@ describe("POST create account", function () {
 describe("POST update account", function () {
     it("should SUCCEED and update an account", function(done) {
         chai.request(server.app)
-        .pose(`api/account/updateOneUser`)
+        .post(`api/account/updateOneUser`)
         .type("application/json")
         .send(storedAccount1)
         .end(function (err, res) {

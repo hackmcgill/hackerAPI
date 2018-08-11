@@ -2,13 +2,13 @@
 const chai = require("chai");
 const chaiHttp = require("chai-http");
 chai.use(chaiHttp);
-const server = require("../src/app");
+const server = require("../app");
 const agent = chai.request.agent(server.app);
 const should = chai.should();
-const logger = require("../src/services/logger.server.service");
+const logger = require("../services/logger.service");
 
 const util = {
-    hacker: require("../../tests/util/hacker.test.util"),
+    hacker: require("./util/hacker.test.util"),
 };
 
 const storedHacker1 = util.hacker.hackerA;
@@ -16,7 +16,7 @@ const storedHacker1 = util.hacker.hackerA;
 describe("POST update one hacker", function () {
     it("should SUCCEED and update a hacker", function(done) {
         chai.request(server.app)
-        .pose(`api/account/updateOneUser`)
+        .post(`api/account/updateOneUser`)
         .type("application/json")
         .send(storedHacker1)
         .end(function (err, res) {

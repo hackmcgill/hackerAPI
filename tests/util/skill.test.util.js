@@ -69,7 +69,7 @@ function storeAll(attributes, callback) {
             callback();
         },
         (reason) => {
-            logger.error(`${TAG} could not store Account ${skillNames.join(",")}. Error: ${JSON.stringify(reason)}`);
+            logger.error(`${TAG} could not store Skills ${skillNames.join(",")}. Error: ${JSON.stringify(reason)}`);
             callback(reason);
         }
     );

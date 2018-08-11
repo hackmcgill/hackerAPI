@@ -17,15 +17,18 @@ const Util = {
 //make sure that we are connected to the database
 before(function(done) {
     this.timeout(0);
+    
     server.app.on("event:connected to db", () => {
-        //drop all information, and then add some users
-        dropAll(done);    
+        // drop all information, and then add some users
+        // dropAll(done);
+        done();
     });
 });
 beforeEach(function(done){
     this.timeout(0);
+    
     Util.Permission.storeAll(Util.Permission.Permissions, () => { 
-        Util.DefaultPermission.storeAll(Util.DefaultPermission.DefaultPermission, () => {
+        Util.DefaultPermission.storeAll(Util.DefaultPermission.DefaultPermissions, () => {
             Util.Account.storeAll(Util.Account.Accounts, () => {
                 Util.Skill.storeAll(Util.Skill.Skills, () => {
                     Util.Hacker.storeAll(Util.Hacker.Hackers, () => {
