@@ -1,6 +1,4 @@
 "use strict";
-const mongoose = require("mongoose");
-
 const Services = {
     Account: require("../services/account.service"),
     Logger: require("../services/logger.service")
@@ -56,7 +54,7 @@ module.exports = {
     },
 
     // untested
-    changeUserInfo: function (req, res) {
+    changeOwnInfo: function (req, res) {
         const id = req.user.id;
 
         const success = Services.Account.changeOneAccount(id, req.body);

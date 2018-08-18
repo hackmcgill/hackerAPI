@@ -1,11 +1,10 @@
 "use strict";
 const Hacker = require("../models/hacker.model");
 const logger = require("./logger.service");
-const bcrypt = require("bcrypt");
 
 // untested
-async function adminChangeOneHacker(id, hackerDetails) {
-    const TAG = `[Hacker Service # adminChangeOneHacker ]:`;
+async function update(id, hackerDetails) {
+    const TAG = `[Hacker Service # update ]:`;
 
     const query = {
         _id: id
@@ -25,5 +24,5 @@ async function adminChangeOneHacker(id, hackerDetails) {
 }
 
 module.exports = {
-    adminChangeOneHacker: adminChangeOneHacker
-}
+    update: update
+};

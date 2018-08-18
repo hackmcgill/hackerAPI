@@ -3,33 +3,58 @@ const express = require("express");
 const passport = require("passport");
 const Services = {
     Account: require("../../services/account.service"),
-    Auth: require("../../services/auth.service")
+    Auth: require("../../services/auth.service"),
+    ResetPasswordToken: require("../../services/resetPassword.service")
 };
+const Middleware = {
+    Validator: {
+        Auth: require("../../middlewares/validators/auth.validator")
+    },
+    parseBody: require("../../middlewares/parse-body.middleware"),
+    Auth: require("../../middlewares/auth.middleware")
+}
 const Controllers = {
     Auth: require("../../controllers/auth.controller")
 };
+
+const AuthRoutes = {
+    login: "/login",
+    logout: "/logout",
+    forgotPassword: "/password/forgot",
+    resetPassword: "/password/reset"
+}
 
 module.exports = {
     activate: function (apiRouter) {
         passport.serializeUser(Services.Auth.serializeUser);
         passport.deserializeUser(Services.Auth.deserializeUser);
         const authRouter = express.Router();
-
-        authRouter.route("/login").post(
+        authRouter.route(AuthRoutes.login).post(
             passport.authenticate("emailAndPass"),
             Controllers.Auth.onSuccessfulLogin
         );
-        authRouter.route("/logout").get(
-            Controllers.Auth.onSuccessfulLogout
+        authRouter.route(AuthRoutes.logout).get(
+            Controllers.Auth.logout
         );
-        //do this
-        authRouter.route("/password/forgot").post(
-            //post email address
+
+        //not tested
+        authRouter.route(AuthRoutes.forgotPassword).post(
+            Middleware.Validator.Auth.ForgotPasswordValidator,
+            Middleware.parseBody.middleware,
+            //create resetPassword jwt
+            //send user an email to reset the password
+            //create new entity in reset model
+            //create reset token with entity id
+            //send email to reset password route
+            Middleware.Auth.sendResetPasswordEmailMiddleware,
+            Controllers.Auth.sentResetEmail
         );
 
         //do this
-        authRouter.route("/password/reset/:token").post(
+        authRouter.route(AuthRoutes.resetPassword).post(
             //post new password, validate token also
+            Middleware.Validator.Auth.ResetPasswordTokenValidator,
+            Middleware.parseBody.middleware
         );
         apiRouter.use("/auth", authRouter);
     }

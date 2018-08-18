@@ -18,17 +18,26 @@ const Middleware = {
     Account: require("../../middlewares/account.middleware")
 };
 
+const AccountRoutes = {
+    getSelf: "/me",
+    register: "/register",
+    updateSelf: "/me/update"
+};
+
 module.exports = {
     activate: function (apiRouter) {
         const accountRouter = new express.Router();
 
         // untested
-        accountRouter.route("/self").get(
+        accountRouter.route(AccountRoutes.getSelf).get(
             Controllers.Account.getUserByEmail
         );
 
         // untested
-        accountRouter.route("/create").post(
+        /**
+         * Creates a new hacker account.
+         */
+        accountRouter.route(AccountRoutes.register).post(
             // validators
             Middleware.Validator.Account.postNewAccountValidator,
 
@@ -37,15 +46,15 @@ module.exports = {
             // middlewares to parse body/organize body
             // adds default hacker permissions here
             Middleware.Account.parseAccount,
-            Middleware.Account.addDefaultPermission,
+            Middleware.Account.addDefaultHackerPermissions,
 
             // should return status in this function
             Controllers.Account.addUser
         );
 
         // untested
-        // is not able to update permissions
-        accountRouter.route("/updateOneUser").post(
+        // is not able to update permissions or password (password must be reset via auth).
+        accountRouter.route(AccountRoutes.updateSelf).post(
             // validators
             Middleware.Validator.Account.postChangeAccountValidator,
 
@@ -53,7 +62,7 @@ module.exports = {
 
             // no parse account because will use req.body as information
             // because the number of fields will be variable
-            Controllers.Account.changeUserInfo
+            Controllers.Account.changeOwnInfo
         );
 
         apiRouter.use("/account", accountRouter);

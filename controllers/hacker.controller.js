@@ -8,7 +8,7 @@ const Services = {
 
 module.exports = {
     adminChangeOneHacker: function (req, res) {
-        const success = Services.Hacker.adminChangeOneHacker(req.params.id, req.body);
+        const success = Services.Hacker.update(req.params.id, req.body);
 
         if (success) {
             return res.status(200).json({
@@ -16,7 +16,7 @@ module.exports = {
                 data: "Changed information to: " + req.body
             });
         } else {
-            return res.status(400).json({
+            return res.status(500).json({
                 message: "Issue with changing hacker information",
                 data: {}
             });

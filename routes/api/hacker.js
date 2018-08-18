@@ -33,6 +33,6 @@ module.exports = {
             Controllers.Account.adminChangeHacker
         );
 
-        apiRouter.use("/account", hackerRouter);
+        apiRouter.use("/hacker", hackerRouter);
     }
 }

@@ -1,6 +1,6 @@
 "use strict";
 
-const TAG = `[ ADDRESS.SERVER.MIDDLEWARE.js ]`;
+const TAG = `[ ADDRESS.MIDDLEWARE.js ]`;
 const mongoose = require("mongoose");
 const Services = {
     Permission: require("../services/permission.service"),
@@ -34,9 +34,10 @@ module.exports = {
         next();
     },
     // untested
-    addDefaultPermission: async function (req, res, next) {
-        req.body.accountDetails.permissions = await Services.Permission.getDefaultPermission("Hacker");
-        next();
-    }
+    addDefaultHackerPermissions: addDefaultHackerPermissions
+};
 
+async function addDefaultHackerPermissions (req, res, next) {
+    req.body.accountDetails.permissions = await Services.Permission.getDefaultPermission("Hacker");
+    next();
 }
