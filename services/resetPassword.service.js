@@ -4,10 +4,9 @@ const PasswordReset = require("../models/passwordResetToken.model");
 const jwt = require("jsonwebtoken");
 
 function findByAccountId (accountId) {
-    const TAG = `[ PasswordReset Service # findById ]`;
+    const TAG = `[ PasswordReset Service # findByAccountId ]`;
     return PasswordReset.findOne({
-        accountId: accountId,
-        wasUsed: false
+        accountId: accountId
     }).exec(function (error, result) {
         if (error) {
             logger.error(`${TAG} Failed to find passwordReset by accountId`, error);
@@ -25,24 +24,6 @@ function findById (id) {
             return;
         }
     }).exec();
-}
-function useToken (passwordResetId) {
-    const TAG = `[ PasswordReset Service # update]:`;
-    return PasswordReset.findOneAndUpdate({
-        _id: passwordResetId
-    }, {
-        wasUsed: true
-    }, {
-        new: true
-    }).exec((err, doc) => {
-        if (err) {
-            logger.error(`${TAG} Failed to update passworReset`, err);
-        } else if (!doc) {
-            logger.error(`${TAG} Failed to update passworReset; could not find user with id: ${passwordResetId}`, err);
-        } else {
-            logger.info(`${TAG} updated passwordResetId with id: ${passwordResetId}`);
-        }
-    });
 }
 
 async function create (accountId) {
@@ -79,6 +60,17 @@ async function create (accountId) {
     return !!(success);
 }
 
+function deleteToken (id) {
+    const TAG = `[ PasswordReset Service # deleteToken]:`;
+    //Create new instance of password reset token
+    return PasswordReset.deleteOne({_id: id}, (err) => {
+        if(err) {
+            logger.erro(`${TAG} could not delete token id: ${id}`);
+        }
+    });
+}
+
+
 function generateToken (resetId, accountId) {
     const token = jwt.sign({
         resetId: resetId,
@@ -94,19 +86,18 @@ function generateTokenLink (httpOrHttps, address, token) {
     return link;
 }
 
-function generateResetPasswordEmail (req, resetId, accountId) {
-    const token = this.generateToken(resetId, accountId);
-    const httpOrHttps = (req.hostname === "localhost") ? "http" : "https";
-    const address = (req.hostname === "localhost") ? `localhost:${process.env.PORT}` : req.hostname;
-    const link = generateTokenLink(httpOrHttps, address, token);
-    if (token === undefined || link === undefined) {
+function generateResetPasswordEmail (hostname, receiverEmail, token) {
+    const httpOrHttps = (hostname === "localhost") ? "http" : "https";
+    const address = (hostname === "localhost") ? `localhost:${process.env.PORT}` : hostname;
+    const tokenLink = generateTokenLink(httpOrHttps, address, token);
+    if (token === undefined || tokenLink === undefined) {
         return undefined;
     }
     const mailData = {
         from: process.env.NO_REPLY_EMAIL,
-        to: req.body.email,
+        to: receiverEmail,
         subject: "Request to reset password",
-        html: generateMailBody(link, req.body.email)
+        html: generateMailBody(tokenLink, receiverEmail)
     };
     return mailData;
 }
@@ -121,9 +112,9 @@ function generateMailBody(link) {
 module.exports = {
     findByAccountId: findByAccountId,
     findById: findById,
-    useToken: useToken,
     create: create,
     generateToken: generateToken,
+    deleteToken: deleteToken,
     generateTokenLink: generateTokenLink,
     generateResetPasswordEmail: generateResetPasswordEmail,
     generateMailBody: generateMailBody

@@ -44,7 +44,7 @@ async function getAccountIfValid(email, password) {
 }
 
 function hashPassword(password) {
-    return bcrypt.hashSync(req.body.password, 10);
+    return bcrypt.hashSync(password, 10);
 }
 
 async function findOne(query) {
@@ -64,7 +64,7 @@ async function findOne(query) {
 async function addOneAccount(accountDetails) {
     const TAG = `[Account Service # addOneAccount ]:`;
 
-    const account = new Account(accountDetail);
+    const account = new Account(accountDetails);
 
     const success = await account.save(function (error) {
         if (error) {
@@ -73,7 +73,6 @@ async function addOneAccount(accountDetails) {
             logger.debug(`${TAG} added account to database`);
         }
     });
-
     return !!(success);
 }
 
@@ -98,6 +97,16 @@ async function changeOneAccount(id, accountDetails) {
     return !!(success);
 }
 
+/**
+ * Updates the password for an account. This function also hashes the password.
+ * @param {string} id String representing the ObjectId of the account
+ * @param {string} newPassword the new password for the account (in plain-text).
+ */
+function updatePassword(id, newPassword) {
+    const hashed = hashPassword(newPassword);
+    return changeOneAccount(id, {password: hashed});
+}
+
 module.exports = {
     findOne: findOne,
     findById: findById,
@@ -105,5 +114,6 @@ module.exports = {
     addOneAccount: addOneAccount,
     getAccountIfValid: getAccountIfValid,
     hashPassword: hashPassword,
-    changeOneAccount: changeOneAccount
+    changeOneAccount: changeOneAccount,
+    updatePassword: updatePassword
 };

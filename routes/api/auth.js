@@ -11,7 +11,8 @@ const Middleware = {
         Auth: require("../../middlewares/validators/auth.validator")
     },
     parseBody: require("../../middlewares/parse-body.middleware"),
-    Auth: require("../../middlewares/auth.middleware")
+    Auth: require("../../middlewares/auth.middleware"),
+    Account: require("../../middlewares/account.middleware")
 }
 const Controllers = {
     Auth: require("../../controllers/auth.controller")
@@ -50,11 +51,24 @@ module.exports = {
             Controllers.Auth.sentResetEmail
         );
 
-        //do this
+        //untested
         authRouter.route(AuthRoutes.resetPassword).post(
             //post new password, validate token also
-            Middleware.Validator.Auth.ResetPasswordTokenValidator,
-            Middleware.parseBody.middleware
+            Middleware.Validator.Auth.ResetPasswordValidator,
+            Middleware.parseBody.middleware,
+            Middleware.Auth.parseResetToken,
+            /**
+             * Check to make sure that the token:
+             *  1) exists in the db
+             *  2) not expired
+             */
+            Middleware.Auth.validateResetToken,
+            //update the password in the db
+            Middleware.Account.updatePassword,
+            //delete the token that was used
+            Middleware.Auth.deleteResetToken,
+            //send the response
+            Controllers.Auth.resetPassword
         );
         apiRouter.use("/auth", authRouter);
     }

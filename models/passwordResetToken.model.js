@@ -1,10 +1,6 @@
 "use strict";
 const mongoose = require("mongoose");
 const passwordResetSchema = new mongoose.Schema({
-    wasUsed: {
-        type:Boolean,
-        default: false,
-    },
     accountId: {
         type:mongoose.Schema.Types.ObjectId,
         required: true,

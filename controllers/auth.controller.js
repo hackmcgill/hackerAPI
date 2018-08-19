@@ -1,7 +1,4 @@
 "use strict";
-const Services = {
-    Auth: require("../services/account.service")
-};
 
 module.exports = {
     onSuccessfulLogin: function (req, res) {
@@ -12,15 +9,21 @@ module.exports = {
     },
     logout: function (req, res) {
         req.logout();
-        return res.send({
+        return res.status(200).json({
             message: "Successfully logged out",
             data: {}
         });
     },
     sentResetEmail: function(req, res) {
-        return res.send({
-            message: "Sent email",
+        return res.status(200).json({
+            message: "Sent reset email",
             data: {}
-        })
+        });
+    },
+    resetPassword: function(req, res) {
+        return res.status(200).json({
+            message: "Successfully reset password",
+            data: {}
+        });
     }
 };

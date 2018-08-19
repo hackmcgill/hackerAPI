@@ -20,7 +20,7 @@ const Middleware = {
 
 const AccountRoutes = {
     getSelf: "/me",
-    register: "/register",
+    registerHacker: "/register/hacker",
     updateSelf: "/me/update"
 };
 
@@ -37,7 +37,7 @@ module.exports = {
         /**
          * Creates a new hacker account.
          */
-        accountRouter.route(AccountRoutes.register).post(
+        accountRouter.route(AccountRoutes.registerHacker).post(
             // validators
             Middleware.Validator.Account.postNewAccountValidator,
 
