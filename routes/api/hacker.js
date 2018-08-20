@@ -24,10 +24,6 @@ module.exports = {
 
         // gets a hacker by their email and changes their status
         hackerRouter.route("/adminChangeHacker/:id").post(
-            (req, res, next) => {
-                console.log("hi");
-                next();
-            },
             Middleware.Validator.Hacker.changeOneStatusValidator,
 
             Middleware.parseBody.middleware,

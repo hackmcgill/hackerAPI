@@ -41,7 +41,6 @@ module.exports = {
             Controllers.Account.addUser
         );
 
-        // untested
         // is not able to update permissions
         accountRouter.route("/updateOneUser").post(
             // validators
