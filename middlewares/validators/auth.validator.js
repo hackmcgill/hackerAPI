@@ -7,7 +7,7 @@ const VALIDATOR = require("./validator.helper");
 
 module.exports = {
     ForgotPasswordValidator: [
-        VALIDATOR.emailValidator("query", "email", false)
+        VALIDATOR.emailValidator("body", "email", false)
     ],
     ResetPasswordValidator: [
         VALIDATOR.passwordValidator("body","password", false),

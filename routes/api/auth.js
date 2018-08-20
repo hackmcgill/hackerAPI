@@ -38,7 +38,22 @@ module.exports = {
             Controllers.Auth.logout
         );
 
-        //not tested
+        /**
+         * @api {post} /auth/password/forgot forgot password route
+         * @apiName forgotPassword
+         * @apiGroup Authentication
+         * @apiVersion 0.0.8
+         * 
+         * @apiParam {String} email the email address of the account
+         * 
+         * @apiParamExample {json} Request-Example:
+         *      { "email": "myemail@mchacks.ca" }
+         * 
+         * @apiSuccess {string} message Success message
+         * @apiSuccess {object} data empty
+         * @apiSuccessExample {json} Success-Response: 
+         *      {"message": "Sent reset email", "data": {}}
+         */
         authRouter.route(AuthRoutes.forgotPassword).post(
             Middleware.Validator.Auth.ForgotPasswordValidator,
             Middleware.parseBody.middleware,
@@ -52,6 +67,23 @@ module.exports = {
         );
 
         //untested
+        /**
+         * @api {post} /auth/password/reset reset password
+         * @apiName resetPassword
+         * @apiGroup Authentication
+         * @apiVersion 0.0.8
+         * 
+         * @apiParam {String} password the password of the account
+         * @apiHeader {String} Authentication the token that was provided in the reset password email
+         * 
+         * @apiParamExample {json} Request-Example:
+         *      { "password": "hunter2" }
+         * 
+         * @apiSuccess {string} message Success message
+         * @apiSuccess {object} data empty
+         * @apiSuccessExample {json} Success-Response: 
+         *      {"message": "Successfully reset password", "data": {}}
+         */
         authRouter.route(AuthRoutes.resetPassword).post(
             //post new password, validate token also
             Middleware.Validator.Auth.ResetPasswordValidator,
