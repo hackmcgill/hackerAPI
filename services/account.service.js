@@ -78,8 +78,6 @@ async function addOneAccount(accountDetails) {
         // }
     );
 
-    console.log(success);
-
     return !!(success);
 }
 
