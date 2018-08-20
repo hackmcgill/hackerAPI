@@ -1,5 +1,7 @@
 "use strict";
-const server = require('../app.js');
+const winston = require("winston");
+winston.remove(winston.transports.Console);
+const server = require("../app.js");
 const Util = {
     Account: require("./util/account.test.util"),
     Bus: require("./util/bus.test.util"),
@@ -16,8 +18,7 @@ const Util = {
 
 //make sure that we are connected to the database
 before(function(done) {
-    this.timeout(0);
-    
+    this.timeout(0);        
     server.app.on("event:connected to db", () => {
         // drop all information, and then add some users
         // dropAll(done);
