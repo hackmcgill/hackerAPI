@@ -73,7 +73,7 @@ describe("POST create account", function () {
 describe("POST update account", function () {
     it("should SUCCEED and update an account", function(done) {
         chai.request(server.app)
-        .post(`api/account/updateOneUser`)
+        .post(`/api/account/updateOneUser`)
         .type("application/json")
         .send(storedAccount1)
         .end(function (err, res) {

@@ -9,35 +9,39 @@ const TAG = "[ ACCOUNT.TEST.UTIL.JS ]";
 
 const newAccount1 = {
     "_id": mongoose.Types.ObjectId(),
+    "name": "newAcc1",
     "firstName": "NEW",
     "lastName": "Account",
     "email": "newexist@blahblah.com",
-    "password": "12345",
+    "password": "1234567890",
     "permissions": [Util.Permission.Permission1._id, Util.Permission.Permission6._id],
-    "dietaryRestrictions": [],
+    "dietaryRestrictions": ["none"],
     "shirtSize": "S"
 };
 const nonAccount1 = {
     "_id": mongoose.Types.ObjectId(),
+    "name": "nonAcc1",
     "firstName": "non",
     "lastName": "Account",
     "email": "notexist@blahblah.com",
-    "password": "12345",
-    "dietaryRestrictions": [],
+    "password": "12345789",
+    "dietaryRestrictions": ["none"],
     "shirtSize": "S",
 };
 const Account1 = {
     "_id": mongoose.Types.ObjectId(),
+    "name": "acc1",
     "firstName": "ABC",
     "lastName": "DEF",
     "email": "abc.def1@blahblah.com",
     "password": "probsShouldBeHashed1",
     "permissions": [Util.Permission.Permission1._id, Util.Permission.Permission6._id],
-    "dietaryRestrictions": [],
+    "dietaryRestrictions": ["none"],
     "shirtSize": "S"
 };
 const Account2 = {
     "_id": mongoose.Types.ObjectId(),
+    "name": "acc2",
     "firstName": "abc",
     "lastName": "def",
     "email": "abc.def2@blahblah.com",
@@ -48,6 +52,7 @@ const Account2 = {
 };
 const Account3 = {
     "_id": mongoose.Types.ObjectId(),
+    "name": "acc3",
     "firstName": "XYZ",
     "lastName": "UST",
     "email": "abc.def3@blahblah.com",
@@ -58,6 +63,7 @@ const Account3 = {
 };
 const Account4 = {
     "_id": mongoose.Types.ObjectId(),
+    "name": "acc4",
     "firstName": "xyz",
     "lastName": "ust",
     "email": "abc.def4@blahblah.com",
@@ -68,6 +74,7 @@ const Account4 = {
 };
 const Account5 = {
     "_id": mongoose.Types.ObjectId(),
+    "name": "acc5",
     "firstName": "LMAO",
     "lastName": "ROFL",
     "email": "abc.def5@blahblah.com",

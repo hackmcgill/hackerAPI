@@ -5,10 +5,11 @@ const Services = {
     Hacker: require("../services/hacker.service"),
     Logger: require("../services/logger.service")
 };
+const Util = require("../middlewares/util.middleware");
 
 module.exports = {
-    adminChangeOneHacker: function (req, res) {
-        const success = Services.Hacker.adminChangeOneHacker(req.params.id, req.body);
+    adminChangeOneHacker: Util.asyncMiddleware(async(req, res, next) => {
+        const success = await Services.Hacker.adminChangeOneHacker(req.params.id, req.body);
 
         if (success) {
             return res.status(200).json({
@@ -21,5 +22,5 @@ module.exports = {
                 data: {}
             });
         }
-    }
+    }),
 }

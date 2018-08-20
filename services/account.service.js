@@ -45,7 +45,7 @@ async function getAccountIfValid(email, password) {
 }
 
 function hashPassword(password) {
-    return bcrypt.hashSync(req.body.password, 10);
+    return bcrypt.hashSync(password, 10);
 }
 
 async function findOne(query) {
@@ -65,15 +65,20 @@ async function findOne(query) {
 async function addOneAccount(accountDetails) {
     const TAG = `[Account Service # addOneAccount ]:`;
 
-    const account = new Account(accountDetail);
+    const account = new Account(accountDetails);
 
-    const success = await account.save(function (error) {
-        if (error) {
-            logger.error(`${TAG} Failed to add account`);
-        } else {
-            logger.debug(`${TAG} added account to database`);
-        }
-    });
+    const success = await account.save(
+        // works without this callback
+        // function (error) {
+        //     if (error) {
+        //         logger.error(`${TAG} Failed to add account`);
+        //     } else {
+        //         logger.info(`${TAG} added account to database`, account.toJSON());
+        //     }
+        // }
+    );
+
+    console.log(success);
 
     return !!(success);
 }

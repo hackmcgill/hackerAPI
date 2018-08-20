@@ -5,6 +5,7 @@ const Services = {
     Account: require("../services/account.service"),
     Logger: require("../services/logger.service")
 };
+const Util = require("../middlewares/util.middleware");
 
 module.exports = {
     defaultReturn: function (req, res) {
@@ -15,16 +16,13 @@ module.exports = {
     },
 
     // untested
-    getUserByEmail: function (req, res) {
-        const acc = Services.Account.findByEmail(req.user.email);
+    getUserByEmail: Util.asyncMiddleware(async(req, res, next) => {
+        const acc = await Services.Account.findByEmail("abc.def1@blahblah.com");
 
-        acc.then(
-            (value) => {
-                console.log(value);
-                if (value) {
+        if (acc) {
             return res.status(200).json({
                 message: "Account found by user email",
-                        data: value.toStrippedJSON()
+                data: acc.toStrippedJSON()
             });
         } else {
             // tentative error code
@@ -33,18 +31,16 @@ module.exports = {
                 data: {}
             });
         }
-            }
-        );
-    },
+    }),
 
     // assumes all information in req.body
     // untested
-    addUser: function (req, res) {
-        const accountDetail = req.body.accountDetail;
+    addUser: Util.asyncMiddleware(async(req, res, next) => {
+        const accountDetails = req.body.accountDetails;
 
         // validations - should be done already right??
 
-        const success = Services.Account.addOneAccount(accountDetail);
+        const success = await Services.Account.addOneAccount(accountDetails);
 
         if (success) {
             return res.status(200).json({
@@ -52,19 +48,18 @@ module.exports = {
                 data: {}
             });
         } else {
-
             return res.status(400).json({
                 message: "Issue with account creation",
                 data: {}
             });
         }
-    },
+    }),
 
     // untested
-    changeUserInfo: function (req, res) {
+    changeUserInfo: Util.asyncMiddleware(async(req, res, next) => {
         const id = req.user.id;
 
-        const success = Services.Account.changeOneAccount(id, req.body);
+        const success = await Services.Account.changeOneAccount(id, req.body);
 
         if (success) {
             return res.status(200).json({
@@ -77,5 +72,5 @@ module.exports = {
                 data: {}
             });
         }
-    }
+    }),
 };

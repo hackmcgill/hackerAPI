@@ -11,12 +11,12 @@ const util = {
     hacker: require("./util/hacker.test.util"),
 };
 
-const storedHacker1 = util.hacker.hackerA;
+const storedHacker1 = util.hacker.HackerA;
 
 describe("POST update one hacker", function () {
     it("should SUCCEED and update a hacker", function(done) {
         chai.request(server.app)
-        .post(`api/account/updateOneUser`)
+        .post(`/api/hacker/adminChangeHacker/` + storedHacker1._id)
         .type("application/json")
         .send(storedHacker1)
         .end(function (err, res) {

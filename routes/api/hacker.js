@@ -23,7 +23,11 @@ module.exports = {
         const hackerRouter = new express.Router();
 
         // gets a hacker by their email and changes their status
-        hackerRouter.route("/adminChangeHacker").post(
+        hackerRouter.route("/adminChangeHacker/:id").post(
+            (req, res, next) => {
+                console.log("hi");
+                next();
+            },
             Middleware.Validator.Hacker.changeOneStatusValidator,
 
             Middleware.parseBody.middleware,
@@ -33,6 +37,6 @@ module.exports = {
             Controllers.Hacker.adminChangeOneHacker
         );
 
-        apiRouter.use("/account", hackerRouter);
+        apiRouter.use("/hacker", hackerRouter);
     }
 }

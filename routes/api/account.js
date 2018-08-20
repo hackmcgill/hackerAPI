@@ -22,12 +22,10 @@ module.exports = {
     activate: function (apiRouter) {
         const accountRouter = new express.Router();
 
-        // untested
         accountRouter.route("/self").get(
             Controllers.Account.getUserByEmail
         );
 
-        // untested
         accountRouter.route("/create").post(
             // validators
             Middleware.Validator.Account.postNewAccountValidator,
