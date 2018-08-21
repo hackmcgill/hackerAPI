@@ -4,6 +4,7 @@ const Util = {
 };
 const Account = require("../../models/account.model");
 const mongoose = require("mongoose");
+const bcrypt = require("bcrypt");
 const logger = require("../../services/logger.service");
 const TAG = "[ ACCOUNT.TEST.UTIL.JS ]";
 
@@ -104,11 +105,18 @@ module.exports = {
     dropAll: dropAll
 };
 
+function encryptPassword(user) {
+    let encryptedUser = JSON.parse(JSON.stringify(user));
+    encryptedUser.password = bcrypt.hashSync(user.password,10);
+    return encryptedUser;
+}
+
 function storeAll(attributes, callback) {
     const acctDocs = [];
     const acctNames = [];
     for (var i = 0; i < attributes.length; i++) {
-        acctDocs.push(new Account(attributes[i]));
+        const encryptedUser = encryptPassword(attributes[i]);
+        acctDocs.push(new Account(encryptedUser));
         acctNames.push(attributes[i].name);
     }
 

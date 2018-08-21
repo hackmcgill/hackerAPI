@@ -12,7 +12,6 @@ const util = {
 };
 
 const storedAccount1 = util.account.Account1;
-const nonAccount1 = util.account.nonAccount1;
 const newAccount1 = util.account.newAccount1;
 
 describe("GET user account", function () {
