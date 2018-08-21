@@ -48,6 +48,8 @@ module.exports = {
          * @apiError {object} data empty
          * @apiErrorExample {json} Error-Response: 
          *      {"message": "Invalid email or password", "data": {}}
+         * 
+         * @apiPermission: public
          */
         authRouter.route("/login").post(
             passport.authenticate("emailAndPass"),
@@ -64,6 +66,8 @@ module.exports = {
          * @apiSuccess {object} data empty
          * @apiSuccessExample {json} Success-Response: 
          *      {"message": "Successfully logged out", "data": {}}
+         * 
+         * @apiPermission: public
          */
         authRouter.route("/logout").get(
             Controllers.Auth.logout
@@ -84,6 +88,8 @@ module.exports = {
          * @apiSuccess {object} data empty
          * @apiSuccessExample {json} Success-Response: 
          *      {"message": "Sent reset email", "data": {}}
+         * 
+         * @apiPermission: public
          */
         authRouter.route(AuthRoutes.forgotPassword).post(
             Middleware.Validator.Auth.ForgotPasswordValidator,
@@ -106,6 +112,10 @@ module.exports = {
          * 
          * @apiParam {String} password the password of the account
          * @apiHeader {String} Authentication the token that was provided in the reset password email
+         * @apiHeaderExample {json} Header-Example:
+         *     {
+         *       "Authentication": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+         *     }
          * 
          * @apiParamExample {json} Request-Example:
          *      { "password": "hunter2" }
@@ -114,6 +124,8 @@ module.exports = {
          * @apiSuccess {object} data empty
          * @apiSuccessExample {json} Success-Response: 
          *      {"message": "Successfully reset password", "data": {}}
+         * 
+         * @apiPermission: must have authentication token
          */
         authRouter.route(AuthRoutes.resetPassword).post(
             //post new password, validate token also

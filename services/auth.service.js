@@ -59,4 +59,4 @@ async function ensureAuthenticated(req, permissionName) {
     } else {
         return true;
     }
-};
+}

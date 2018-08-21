@@ -1,3 +1,4 @@
+"use strict";
 const winston = require("winston");
 const expressWinston = require("express-winston");
 const StackDriverTransport = require("@google-cloud/logging-winston").LoggingWinston;

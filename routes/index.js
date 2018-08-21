@@ -9,7 +9,7 @@ const router = new express.Router();
  * @apiVersion 0.0.8 
  * @apiName index
  * @apiGroup Index
- * @apiPermission none needed
+ * @apiPermission public
  */
 router.get("/", function (req, res) {
     const VERSION = version_service.get();
