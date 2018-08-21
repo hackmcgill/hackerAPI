@@ -5,7 +5,7 @@ const cookieParser = require("cookie-parser");
 const Services = {
     log: require("./services/logger.service"),
     db: require("./services/database.service"),
-    emailAndPassStrategy: require("./services/auth.service.js")
+    emailAndPassStrategy: require("./services/auth.service")
 };
 
 const passport = require("passport");

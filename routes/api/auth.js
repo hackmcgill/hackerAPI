@@ -30,11 +30,42 @@ module.exports = {
         passport.serializeUser(Services.Auth.serializeUser);
         passport.deserializeUser(Services.Auth.deserializeUser);
         const authRouter = express.Router();
-        authRouter.route(AuthRoutes.login).post(
+        /**
+         * @api {post} /auth/login login to the service
+         * @apiName login
+         * @apiGroup Authentication
+         * @apiVersion 0.0.8
+         * 
+         * @apiParam {string} email Account email
+         * @apiParam {string} password Account password
+         * 
+         * @apiSuccess {string} message Success message
+         * @apiSuccess {object} data empty
+         * @apiSuccessExample {json} Success-Response: 
+         *      {"message": "Successfully logged in", "data": {}}
+
+         * @apiError {string} message Success message
+         * @apiError {object} data empty
+         * @apiErrorExample {json} Error-Response: 
+         *      {"message": "Invalid email or password", "data": {}}
+         */
+        authRouter.route("/login").post(
             passport.authenticate("emailAndPass"),
             Controllers.Auth.onSuccessfulLogin
         );
-        authRouter.route(AuthRoutes.logout).get(
+        
+        /**
+         * @api {get} /auth/logout logout of service
+         * @apiName logout
+         * @apiGroup Authentication
+         * @apiVersion 0.0.8
+         * 
+         * @apiSuccess {string} message Success message
+         * @apiSuccess {object} data empty
+         * @apiSuccessExample {json} Success-Response: 
+         *      {"message": "Successfully logged out", "data": {}}
+         */
+        authRouter.route("/logout").get(
             Controllers.Auth.logout
         );
 

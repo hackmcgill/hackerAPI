@@ -7,7 +7,8 @@
     "debug": "DEBUG=hackboard:* NODE_ENV=deployment nodemon ./bin/www.js",
     "development": "DEBUG=hackboard:* NODE_ENV=development nodemon ./bin/www.js",
     "test": "DEBUG=hackboard:* NODE_ENV=test node ./bin/www.js",
-    "seed": "node NODE_ENV=development ./populatedb.js"
+    "seed": "node NODE_ENV=development ./populatedb.js",
+    "generateDoc": "apidoc -i ./routes -o ./docs/api/"
   },
   "dependencies": {
     "@google-cloud/logging-winston": "^0.9.0",
@@ -32,6 +33,7 @@
   "devDependencies": {
     "@types/mongodb": "^3.0.18",
     "@types/mongoose": "^5.0.13",
+    "apidoc": "^0.17.6",
     "chai": "^4.1.2",
     "jslint": "^0.12.0",
     "mocha": "^5.2.0",
