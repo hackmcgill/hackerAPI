@@ -81,11 +81,24 @@ function generateToken (resetId, accountId) {
     return token;
 }
 
-function generateTokenLink (httpOrHttps, address, token) {
-    const link = `${httpOrHttps}://${address}/auth/password/reset?token=${token}`;
+/**
+ * Generates the link that the user will use to access the reset password page
+ * @param {'http'|'https'} httpOrHttps 
+ * @param {string} domain the domain of the current
+ * @param {string} token the reset token
+ * @returns {string} the string, of form: [http|https]://{domain}/password/reset?token={token}
+ */
+function generateTokenLink (httpOrHttps, domain, token) {
+    const link = `${httpOrHttps}://${domain}/password/reset?token=${token}`;
     return link;
 }
 
+/**
+ * Generates the mailData for the resetPassword Email.
+ * @param {string} hostname The hostname that this service is running on
+ * @param {string} receiverEmail The receiver of the email
+ * @param {string} token The resetPassword token
+ */
 function generateResetPasswordEmail (hostname, receiverEmail, token) {
     const httpOrHttps = (hostname === "localhost") ? "http" : "https";
     const address = (hostname === "localhost") ? `localhost:${process.env.PORT}` : hostname;

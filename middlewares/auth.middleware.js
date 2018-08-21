@@ -4,7 +4,8 @@ const jwt = require("jsonwebtoken");
 const Services = {
     Auth: require("../services/auth.service"),
     ResetPasswordToken: require("../services/resetPassword.service"),
-    Account: require("../services/account.service")
+    Account: require("../services/account.service"),
+    Email: require("../services/email.service")
 };
 
 const Middleware = {
@@ -52,7 +53,7 @@ async function sendResetPasswordEmailMiddleware(req, res, next) {
         const token = Services.ResetPasswordToken.generateToken(ResetPasswordTokenModel.id, user.id);
         const mailData = Services.ResetPasswordToken.generateResetPasswordEmail(req.hostname,req.body.email, token);
         if (mailData !== undefined) {
-            Services.Mailgun.sendMime(mailData, (err) => {
+            Services.Email.send(mailData, (err) => {
                 if (err) {
                     next(err);
                 } else {
