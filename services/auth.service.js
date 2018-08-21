@@ -13,7 +13,7 @@ module.exports = {
         if (!!account) {
             return done(null, account);
         } else {
-            return done("Invalid email or password.", false);
+            return done("Invalid email or password", false);
         }
     }),
     deserializeUser: function (id, done) {
