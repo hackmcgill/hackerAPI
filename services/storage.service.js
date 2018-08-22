@@ -1,8 +1,6 @@
 "use strict";
 // Imports the Google Cloud client library
-import Storage from "@google-cloud/storage";
-
-const Multer = require("multer");
+const GStorage = require("@google-cloud/storage");
 
 class StorageService {
     constructor() {
@@ -13,15 +11,16 @@ class StorageService {
             private_key: process.env.PRIVATE_KEY
             /* jshint ignore:end */
         };
-        this.storage = new Storage({
+        this.storage = new GStorage({
             projectId: process.env.GCLOUD_PROJECT,
-            credentials: credentials
+            keyFilename: __dirname + "/../gcp_creds.json"
         });
         this.bucket = this.storage.bucket(this.bucketName);
     }
     /**
      * Upload a file to storage. 
-     * @param {Multer.File} file Multer file object
+     * @param {{mimetype:string,buffer:Buffer}} file Multer file object
+     * @param {string} gcfilename the location in the bucket that you want the file stored.
      * @returns {Promise<string>} the address of the file that was uploaded
      */
     upload(file, gcfilename) {
@@ -32,21 +31,15 @@ class StorageService {
           },
           resumable: false
         });
+        const _this = this;
         return new Promise(function(resolve, reject) {
             blobStream.on("finish", () => {
-                resolve(this.getPublicUrl(gcfilename));
+                resolve(_this.getPublicUrl(gcfilename));
             });
             blobStream.on("error", reject);
             //write the file data into the stream, and end it.
             blobStream.end(file.buffer);
         });
-    }
-    /**
-     * Get the public URL of the file
-     * @param {string} filename the path of the file
-     */
-    getPublicUrl (filename) {
-        return `https://storage.googleapis.com/${this.bucket.name}/${filename}`;
     }
     /**
      * Download file from storage.
@@ -67,16 +60,22 @@ class StorageService {
             });    
         });
     }
+    /**
+     * Delete a file
+     * @param {*} filename the file that you want to delete
+     * @returns {Promise<[ApiResponse]>} 
+     */
+    delete(filename) {
+        const file = this.bucket.file(filename);
+        return file.delete();
+    }
+    /**
+     * Get the public URL of the file
+     * @param {string} filename the path of the file
+     */
+    getPublicUrl (filename) {
+        return `https://storage.googleapis.com/${this.bucket.name}/${filename}`;
+    }
 }
 
-const multer = Multer({
-  storage: Multer.MemoryStorage,
-  limits: {
-    fileSize: 5 * 1024 * 1024 // no larger than 5mb
-  }
-});
-
-module.exports = {
-    StorageService: new StorageService(),
-    Multer: multer
-};
+module.exports = new StorageService();

@@ -59,4 +59,4 @@ node_modules
 .env
 
 #creds
-gc_creds.json
+gcp_creds.json

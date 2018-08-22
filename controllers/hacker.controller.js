@@ -7,7 +7,7 @@ const Services = {
 };
 
 module.exports = {
-    adminChangeOneHacker: function (req, res) {
+    adminChangeHacker: function (req, res) {
         const success = Services.Hacker.adminChangeOneHacker(req.params.id, req.body);
 
         if (success) {
