@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "debug": "DEBUG=hackboard:* node ./bin/www"
+    "debug": "DEBUG=hackboard:* node ./bin/www",
+    "test": "DEBUG=hackboard:* NODE_ENV=test mocha --reporter spec tests/**.js"
   },
   "dependencies": {
     "@google-cloud/logging-winston": "^0.9.0",
@@ -14,5 +15,9 @@
     "express-winston": "^2.5.1",
     "morgan": "~1.9.0",
     "winston": "^2.4.2"
+  },
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "mocha": "^5.2.0"
   }
 }
