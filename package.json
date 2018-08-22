@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "debug": "DEBUG=hackboard:* node ./bin/www"
+    "debug": "DEBUG=hackboard:* node ./bin/www",
+    "test": "DEBUG=hackboard:* NODE_ENV=test mocha --reporter spec tests/**.js"
   },
   "dependencies": {
     "@google-cloud/logging-winston": "^0.9.0",
