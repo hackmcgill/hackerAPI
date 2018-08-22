@@ -1,7 +1,6 @@
 "use strict";
 
 const express = require("express");
-
 const Services = {
     Logger: require("../../services/logger.service.js")
 };
