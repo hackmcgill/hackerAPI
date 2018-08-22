@@ -7,7 +7,7 @@ module.exports = {
             path: path
         });
         createGCPFile();
-        return result.error;
+        return result;
     }
 };
 function createGCPFile() {
