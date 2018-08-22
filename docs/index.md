@@ -2,6 +2,10 @@
 
 API for registration, live-site
 
+## Master branch status
+
+[![Build Status](https://travis-ci.org/hackmcgill/hackerAPI.svg?branch=master)](https://travis-ci.org/hackmcgill/hackerAPI)
+
 ## Getting started
 
 * Run `npm install` to download all of the dependencies.
