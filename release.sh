@@ -2,14 +2,14 @@
 set -e
 # Variables
 GCR=gcr.io
-PROJECT=hackboard6
+PROJECT=mchacks-api
 IMAGE=hackboard
 MODE=$1
 
 BRANCH="$(git symbolic-ref HEAD 2>/dev/null)" || BRANCH="(unnamed branch)"     # detached HEAD
 BRANCH=${BRANCH##refs/heads/}
 
-echo "Welcome to Hackboard's HackerAPI Deployment Script!"
+echo "Welcome to HackMcGill's HackerAPI Deployment Script!"
 echo "==================================================="
 
 # Only allow release on master branch
