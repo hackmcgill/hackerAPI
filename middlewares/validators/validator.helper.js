@@ -2,6 +2,7 @@
 const {
     body,
     query,
+    param
 } = require("express-validator/check");
 const logger = require("../../services/logger.service");
 const Skill = require("../../services/skill.service");
@@ -39,6 +40,25 @@ function nameValidator (getOrPost, fieldname, optional = true) {
     } else {
         return name.exists().withMessage("name must exist").isAscii().withMessage("must contain only ascii characters");
     }
+}
+
+function idValidator (location, fieldname, optional = true) {
+    let id;
+    if (location === "param") {
+        id = param(fieldname, "invalid mongoID");
+    } else if (location === "query") {
+        id = query(fieldname, "invalid mongoID");
+    } else if (location === "body"){
+        id = body(fieldname, "invalid mongoID");
+    }
+
+    if (optional) {
+        return id.optional({ checkFalsy: true }).isMongoId().withMessage("must be valid MongoId");
+    } else {
+        return id.exists().withMessage("name must exist").isMongoId().withMessage("must be valid MongoId");
+    }
+
+
 }
 
 // untested
@@ -194,4 +214,5 @@ module.exports = {
     hackerStatusValidator: hackerStatusValidator,
     booleanValidator: booleanValidator,
     applicationValidator: applicationValidator,
+    idValidator: idValidator
 };

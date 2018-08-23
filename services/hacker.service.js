@@ -4,8 +4,8 @@ const logger = require("./logger.service");
 const bcrypt = require("bcrypt");
 
 // untested
-async function adminChangeOneHacker(id, hackerDetails) {
-    const TAG = `[Hacker Service # adminChangeOneHacker ]:`;
+async function update(id, hackerDetails) {
+    const TAG = `[Hacker Service # update ]:`;
 
     const query = {
         _id: id
@@ -24,6 +24,11 @@ async function adminChangeOneHacker(id, hackerDetails) {
     return !!(success);
 }
 
+function findById(id) {
+    return Hacker.findById(id).exec();
+}
+
 module.exports = {
-    adminChangeOneHacker: adminChangeOneHacker
+    update: update,
+    findById: findById
 }

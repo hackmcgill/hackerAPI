@@ -8,7 +8,7 @@ const Services = {
 
 module.exports = {
     adminChangeHacker: function (req, res) {
-        const success = Services.Hacker.adminChangeOneHacker(req.params.id, req.body);
+        const success = Services.Hacker.update(req.params.id, req.body);
 
         if (success) {
             return res.status(200).json({
@@ -21,5 +21,26 @@ module.exports = {
                 data: {}
             });
         }
-    }
+    },
+    uploadedResume: uploadedResume,
+    downloadedResume: downloadedResume
+};
+
+function uploadedResume (req, res) {
+    return res.status(200).json({
+        message: "Uploaded resume",
+        data: {
+            filename: req.body.gcfilename
+        }
+    });
+}
+
+function downloadedResume (req, res) {
+    return res.status(200).json({
+        message: "Downloaded resume",
+        data: {
+            id: req.body.id,
+            resume: req.body.resume
+        }
+    });
 }
