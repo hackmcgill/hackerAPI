@@ -69,6 +69,16 @@ class StorageService {
         const file = this.bucket.file(filename);
         return file.delete();
     }
+
+    /**
+     * 
+     * @param {*} filename the file that you want to check exists
+     * @returns {Promise<[Boolean]>} 
+     */
+    exists(filename) {
+        const file = this.bucket.file(filename);
+        return file.exists();
+    }
     /**
      * Get the public URL of the file
      * @param {string} filename the path of the file
