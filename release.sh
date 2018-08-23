@@ -54,9 +54,15 @@ docker run --rm -v "$PWD":/app treeder/bump ${MODE}
 version=`cat VERSION`
 echo "Version: ${version}"
 
+echo "================"
+echo "Build Docker img"
+echo "================"
 # Build Docker image
 ./build.sh
 
+echo "=============="
+echo "Tagging Github"
+echo "=============="
 # Tag Github
 git add -A
 git commit -m "version ${version}"
@@ -64,12 +70,20 @@ git tag -a "${version}" -m "version ${version}"
 git push origin master
 git push origin master --tags
 
+echo "==============="
+echo "Update img tags"
+echo "==============="
 # Update the image tags
 docker tag ${GCR}/${PROJECT}/${IMAGE}:latest ${GCR}/${PROJECT}/${IMAGE}:${version}
-
+echo "================"
+echo "Push DCR to GCR"
+echo "================"
 # Push to Docker Container Registry on Google Cloud
 docker push ${GCR}/${PROJECT}/${IMAGE}:latest
 docker push ${GCR}/${PROJECT}/${IMAGE}:${version}
 
+echo "==================="
+echo "Update kube cluter"
+echo "==================="
 # Update deployment image on Kubernetes cluster
 kubectl set image deployment/hackboard hackboard=${GCR}/${PROJECT}/${IMAGE}:${version}
