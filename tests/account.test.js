@@ -79,10 +79,10 @@ describe("POST update account", function () {
             res.should.have.status(200);
             res.should.be.json;
             res.body.should.have.property("message");
-            res.body.message.should.equal("Changed account");
+            res.body.message.should.equal("Changed account information");
             res.body.should.have.property("data");
             // Is this correct matching of data?
-            res.body.data.should.equal("Changed information to: " + storedAccount1);
+            res.body.data.should.equal(storedAccount1);
             done();
         });
     });

@@ -35,7 +35,7 @@ async function addUser(req, res, next) {
     if (success) {
         return res.status(200).json({
             message: "Account creation successful",
-            data: {}
+            data: accountDetails
         });
     } else {
         return res.status(400).json({
@@ -52,8 +52,8 @@ async function changeUserInfo(req, res, next) {
 
     if (success) {
         return res.status(200).json({
-            message: "Changed account",
-            data: "Changed information to: " + req.body
+            message: "Changed account information",
+            data: req.body
         });
     } else {
         return res.status(400).json({

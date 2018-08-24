@@ -22,7 +22,31 @@ module.exports = {
     activate: function (apiRouter) {
         const hackerRouter = new express.Router();
 
-        // gets a hacker by their email and changes their status
+        /**
+         * @api {post} /hacker/adminChangeHacker/:id update a hacker's information
+         * @apiName adminChangeHacker
+         * @apiGroup Account
+         * @apiVersion 0.0.8
+         * 
+         * @apiSuccess {string} message Success message
+         * @apiSuccess {object} data Hacker object
+         * @apiSuccessExample {json} Success-Response: 
+         *      {
+                    "message": "Changed hacker information", 
+                    "data": 
+                        { 
+                            "status": "X",
+                            "school": "Y",
+                            "application": "More JSON",
+                            "team": "team name",
+                        }
+                }
+
+         * @apiError {string} message Error message
+         * @apiError {object} data empty
+         * @apiErrorExample {json} Error-Response: 
+         *      {"message": "Issue with changing hacker information", "data": {}}
+         */
         hackerRouter.route("/adminChangeHacker/:id").post(
             Middleware.Validator.Hacker.changeOneStatusValidator,
 

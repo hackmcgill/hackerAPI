@@ -12,8 +12,8 @@ async function updateOne(req, res, next) {
 
     if (success) {
         return res.status(200).json({
-            message: "Changed hacker",
-            data: "Changed information to: " + req.body
+            message: "Changed hacker information",
+            data: req.body
         });
     } else {
         return res.status(400).json({

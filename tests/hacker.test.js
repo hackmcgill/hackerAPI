@@ -24,10 +24,10 @@ describe("POST update one hacker", function () {
             res.should.have.status(200);
             res.should.be.json;
             res.body.should.have.property("message");
-            res.body.message.should.equal("Changed hacker");
+            res.body.message.should.equal("Changed hacker information");
             res.body.should.have.property("data");
             // Is this correct matching of data?
-            res.body.data.should.equal("Changed information to: " + storedHacker1);
+            res.body.data.should.equal(storedHacker1);
             done();
         });
     });

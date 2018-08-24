@@ -22,10 +22,68 @@ module.exports = {
     activate: function (apiRouter) {
         const accountRouter = new express.Router();
 
+        /**
+         * @api {get} /account/self get information about own account
+         * @apiName self
+         * @apiGroup Account
+         * @apiVersion 0.0.8
+         * 
+         * @apiSuccess {string} message Success message
+         * @apiSuccess {object} data Account object
+         * @apiSuccessExample {json} Success-Response: 
+         *      {
+                    "message": "Account found by user email", 
+                    "data": 
+                        { 
+                            "permissions": [ 5b7f890bbeff3a13b8f5cedc, 5b7f890bbeff3a13b8f5cee1 ],
+                            "dietaryRestrictions": [ 'none' ],
+                            "firstName": 'ABC',
+                            "lastName": 'DEF',
+                            "email": 'abc.def1@blahblah.com',
+                            "shirtSize": 'S',
+                            "id": 5b7f890bbeff3a13b8f5cee8 
+                        }
+                }
+
+         * @apiError {string} message Error message
+         * @apiError {object} data empty
+         * @apiErrorExample {json} Error-Response: 
+         *      {"message": "User email not found", "data": {}}
+         */
         accountRouter.route("/self").get(
             Controllers.Account.getUserByEmail
         );
 
+        /**
+         * @api {post} /account/create create a new account
+         * @apiName create
+         * @apiGroup Account
+         * @apiVersion 0.0.8
+         * 
+         * @apiSuccess {string} message Success message
+         * @apiSuccess {object} data Account object
+         * @apiSuccessExample {json} Success-Response: 
+         *      {
+                    "message": "Account creation successful", 
+                    "data": 
+                        { 
+                            _id: 5b7f8a4be73e2614a380095e,
+                            firstName: 'NEW',
+                            lastName: 'Account',
+                            email: 'newexist@blahblah.com',
+                            password: 'some_hashed_password',
+                            dietaryRestrictions: [ 'none' ],
+                            shirtSize: 'S',
+                            permissions: { permissions: [ 5b7f8a48e73e2614a38008d6, 5b7f8a48e73e2614a38008d7 ],
+                                _id: 5b7f8a4ae73e2614a3800945 }
+                        }
+                }
+
+         * @apiError {string} message Error message
+         * @apiError {object} data empty
+         * @apiErrorExample {json} Error-Response: 
+         *      {"message": "Issue with account creation", "data": {}}
+         */
         accountRouter.route("/create").post(
             // validators
             Middleware.Validator.Account.postNewAccountValidator,
@@ -41,7 +99,31 @@ module.exports = {
             Controllers.Account.addUser
         );
 
-        // is not able to update permissions
+        /**
+         * @api {post} /account/updateOneUser update an account's information
+         * @apiName updateOneUser
+         * @apiGroup Account
+         * @apiVersion 0.0.8
+         * 
+         * @apiSuccess {string} message Success message
+         * @apiSuccess {object} data Account object
+         * @apiSuccessExample {json} Success-Response: 
+         *      {
+                    "message": "Changed account information", 
+                    "data": 
+                        { 
+                            "firstName": 'ABC',
+                            "lastName": 'DEF',
+                            "email": 'abc.def1@blahblah.com',
+                            "shirtSize": 'S',
+                        }
+                }
+
+         * @apiError {string} message Error message
+         * @apiError {object} data empty
+         * @apiErrorExample {json} Error-Response: 
+         *      {"message": "Issue with changing account information", "data": {}}
+         */
         accountRouter.route("/updateOneUser").post(
             // validators
             Middleware.Validator.Account.postChangeAccountValidator,

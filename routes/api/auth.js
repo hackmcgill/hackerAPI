@@ -28,7 +28,7 @@ module.exports = {
          * @apiSuccessExample {json} Success-Response: 
          *      {"message": "Successfully logged in", "data": {}}
 
-         * @apiError {string} message Success message
+         * @apiError {string} message Error message
          * @apiError {object} data empty
          * @apiErrorExample {json} Error-Response: 
          *      {"message": "Invalid email or password", "data": {}}
