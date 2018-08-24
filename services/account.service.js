@@ -25,7 +25,7 @@ async function findByEmail(email) {
         email: email
     };
 
-    return findOne(query);
+    return await findOne(query);
 }
 
 

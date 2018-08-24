@@ -7,20 +7,22 @@ const Services = {
 };
 const Util = require("../middlewares/util.middleware");
 
-module.exports = {
-    adminChangeOneHacker: Util.asyncMiddleware(async(req, res, next) => {
-        const success = await Services.Hacker.adminChangeOneHacker(req.params.id, req.body);
+async function updateOne(req, res, next) {
+    const success = await Services.Hacker.adminChangeOneHacker(req.params.id, req.body);
 
-        if (success) {
-            return res.status(200).json({
-                message: "Changed hacker",
-                data: "Changed information to: " + req.body
-            });
-        } else {
-            return res.status(400).json({
-                message: "Issue with changing hacker information",
-                data: {}
-            });
-        }
-    }),
+    if (success) {
+        return res.status(200).json({
+            message: "Changed hacker",
+            data: "Changed information to: " + req.body
+        });
+    } else {
+        return res.status(400).json({
+            message: "Issue with changing hacker information",
+            data: {}
+        });
+    }
 }
+
+module.exports = {
+    adminChangeOneHacker: Util.asyncMiddleware(updateOne),
+};
