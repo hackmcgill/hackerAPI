@@ -50,7 +50,7 @@ function hashPassword(password) {
 
 async function findOne(query) {
     const TAG = `[Account Service # findOne ]:`;
-    return Account.findOne(query, function (error, user) {
+    return await Account.findOne(query, function (error, user) {
             if (error) {
                 logger.error(`${TAG} Failed to verify if accounts exist or not using ${JSON.stringify(query)}`, error);
             } else if (user) {
