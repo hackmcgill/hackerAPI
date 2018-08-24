@@ -59,18 +59,18 @@ function emailValidator (getOrPost, fieldname, optional = true) {
 
 // untested
 function alphaValidator (getOrPost, fieldname, optional = true) {
-    var diet;
+    var name;
 
     if (getOrPost === "get") {
-        diet = query(fieldname, "invalid dietary restriction");
+        name = query(fieldname, "invalid dietary restriction");
     } else {
-        diet = body(fieldname, "invalid dietary restriction");
+        name = body(fieldname, "invalid dietary restriction");
     }
 
     if (optional) {
-        return diet.optional({ checkFalsy: true}).isAlpha().withMessage("must contain alphabet characters");
+        return name.optional({ checkFalsy: true}).isAlpha().withMessage("must contain alphabet characters");
     } else {
-        return diet.exists().withMessage("must exist").isAlpha().withMessage("must contain alphabet characters");
+        return name.exists().withMessage("must exist").isAlpha().withMessage("must contain alphabet characters");
     }
 }
 
