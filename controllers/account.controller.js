@@ -8,6 +8,7 @@ const Services = {
 const Util = require("../middlewares/util.middleware");
 
 async function getUserByEmail(req, res, next) {
+    // hard coded for now, as the email needs to be retrieved from the logged in user
     const acc = await Services.Account.findByEmail("abc.def1@blahblah.com");
 
     if (acc) {
@@ -45,7 +46,7 @@ async function addUser(req, res, next) {
 }
 
 async function changeUserInfo(req, res, next) {
-    const id = req.user.id;
+    const id = req.body._id;
 
     const success = await Services.Account.changeOneAccount(id, req.body);
 

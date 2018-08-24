@@ -8,7 +8,6 @@ const TAG = `[ EVENT.SERVER.VALIDATOR.js ]`;
 const VALIDATOR = require("./validator.helper");
 
 module.exports = {
-    // untested
     // does not include permissions, as those are added later
     postNewAccountValidator: [
         VALIDATOR.nameValidator("post", "firstName", false),
@@ -18,8 +17,8 @@ module.exports = {
         VALIDATOR.shirtSizeValidator("post", "shirtSize", false),
         VALIDATOR.passwordValidator("post", "password", false),
     ],
-    // untested
     postChangeAccountValidator: [
+        VALIDATOR.mongoIdValidator("post", "_id", true),
         VALIDATOR.nameValidator("post", "firstName", true),
         VALIDATOR.nameValidator("post", "lastName", true),
         VALIDATOR.emailValidator("post", "email", true),
@@ -27,4 +26,4 @@ module.exports = {
         VALIDATOR.shirtSizeValidator("post", "shirtSize", true),
         VALIDATOR.passwordValidator("post", "password", true),
     ] 
-}
+};

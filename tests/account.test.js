@@ -59,7 +59,6 @@ describe("POST create account", function () {
         .type("application/json")
         .send(newAccount1)
         .end(function (err, res) {
-            // auth???
             res.should.have.status(200);
             res.should.be.json;
             res.body.should.have.property("message");
