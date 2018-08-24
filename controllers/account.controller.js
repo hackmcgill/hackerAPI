@@ -7,7 +7,8 @@ const Services = {
 };
 const Util = require("../middlewares/util.middleware");
 
-async function getUserByEmail(req, res, next) {
+// retrieves an account information via email query
+async function getUserByEmail(req, res) {
     // hard coded for now, as the email needs to be retrieved from the logged in user
     const acc = await Services.Account.findByEmail("abc.def1@blahblah.com");
 
@@ -25,7 +26,8 @@ async function getUserByEmail(req, res, next) {
     }
 }
 
-async function addUser(req, res, next) {
+// adds a user from information in req.body
+async function addUser(req, res) {
     const accountDetails = req.body.accountDetails;
 
     // validations - should be done already right??
@@ -45,7 +47,9 @@ async function addUser(req, res, next) {
     }
 }
 
-async function changeUserInfo(req, res, next) {
+// Change a user's account information based on the account's mongoID.
+// The new account information is located in req.body
+async function changeUserInfo(req, res) {
     const id = req.body._id;
 
     const success = await Services.Account.changeOneAccount(id, req.body);

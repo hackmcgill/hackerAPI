@@ -3,7 +3,7 @@ const Account = require("../models/account.model");
 const logger = require("./logger.service");
 const bcrypt = require("bcrypt");
 
-
+// finds an account by it's mongoID
 async function findById(id) {
     const TAG = `[Account Service # findById]:`;
     const query = {
@@ -20,6 +20,7 @@ async function findById(id) {
     });
 }
 
+// finds an account by email
 async function findByEmail(email) {
     const query = {
         email: email
@@ -28,10 +29,7 @@ async function findByEmail(email) {
     return await findOne(query);
 }
 
-
-
 /**
- *
  * @param {String} email
  * @param {String} password
  * @return {Account | null} either account or null
