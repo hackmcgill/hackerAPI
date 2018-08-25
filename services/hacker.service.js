@@ -3,9 +3,16 @@ const Hacker = require("../models/hacker.model");
 const logger = require("./logger.service");
 const bcrypt = require("bcrypt");
 
-// untested
-async function adminChangeOneHacker(id, hackerDetails) {
-    const TAG = `[Hacker Service # adminChangeOneHacker ]:`;
+/**
+ * @async
+ * @function updateOne
+ * @param {string} id
+ * @param {JSON} hackerDetails
+ * @return {boolean} success or failure of update
+ * @description Update an account specified by its mongoId with information specified by hackerDetails.
+ */
+async function updateOne(id, hackerDetails) {
+    const TAG = `[Hacker Service # updateOne ]:`;
 
     const query = {
         _id: id
@@ -25,5 +32,5 @@ async function adminChangeOneHacker(id, hackerDetails) {
 }
 
 module.exports = {
-    adminChangeOneHacker: adminChangeOneHacker
-}
+    updateOne: updateOne
+};
