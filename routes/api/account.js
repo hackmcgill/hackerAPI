@@ -30,24 +30,15 @@ module.exports = {
          * 
          * @apiSuccess {string} message Success message
          * @apiSuccess {object} data Account object
-         * @apiSuccessExample {json} Success-Response: 
+         * @apiSuccessExample {object} Success-Response: 
          *      {
                     "message": "Account found by user email", 
-                    "data": 
-                        { 
-                            "permissions": [ 5b7f890bbeff3a13b8f5cedc, 5b7f890bbeff3a13b8f5cee1 ],
-                            "dietaryRestrictions": [ 'none' ],
-                            "firstName": 'ABC',
-                            "lastName": 'DEF',
-                            "email": 'abc.def1@blahblah.com',
-                            "shirtSize": 'S',
-                            "id": 5b7f890bbeff3a13b8f5cee8 
-                        }
+                    "data": {...}
                 }
 
          * @apiError {string} message Error message
          * @apiError {object} data empty
-         * @apiErrorExample {json} Error-Response: 
+         * @apiErrorExample {object} Error-Response: 
          *      {"message": "User email not found", "data": {}}
          */
         accountRouter.route("/self").get(
@@ -62,26 +53,15 @@ module.exports = {
          * 
          * @apiSuccess {string} message Success message
          * @apiSuccess {object} data Account object
-         * @apiSuccessExample {json} Success-Response: 
+         * @apiSuccessExample {object} Success-Response: 
          *      {
                     "message": "Account creation successful", 
-                    "data": 
-                        { 
-                            _id: 5b7f8a4be73e2614a380095e,
-                            firstName: 'NEW',
-                            lastName: 'Account',
-                            email: 'newexist@blahblah.com',
-                            password: 'some_hashed_password',
-                            dietaryRestrictions: [ 'none' ],
-                            shirtSize: 'S',
-                            permissions: { permissions: [ 5b7f8a48e73e2614a38008d6, 5b7f8a48e73e2614a38008d7 ],
-                                _id: 5b7f8a4ae73e2614a3800945 }
-                        }
+                    "data": {...}
                 }
 
          * @apiError {string} message Error message
          * @apiError {object} data empty
-         * @apiErrorExample {json} Error-Response: 
+         * @apiErrorExample {object} Error-Response: 
          *      {"message": "Issue with account creation", "data": {}}
          */
         accountRouter.route("/create").post(
@@ -107,21 +87,15 @@ module.exports = {
          * 
          * @apiSuccess {string} message Success message
          * @apiSuccess {object} data Account object
-         * @apiSuccessExample {json} Success-Response: 
+         * @apiSuccessExample {object} Success-Response: 
          *      {
                     "message": "Changed account information", 
-                    "data": 
-                        { 
-                            "firstName": 'ABC',
-                            "lastName": 'DEF',
-                            "email": 'abc.def1@blahblah.com',
-                            "shirtSize": 'S',
-                        }
+                    "data": {...}
                 }
 
          * @apiError {string} message Error message
          * @apiError {object} data empty
-         * @apiErrorExample {json} Error-Response: 
+         * @apiErrorExample {object} Error-Response: 
          *      {"message": "Issue with changing account information", "data": {}}
          */
         accountRouter.route("/updateOneUser").post(

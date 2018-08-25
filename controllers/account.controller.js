@@ -47,6 +47,7 @@ async function addUser(req, res) {
     const success = await Services.Account.addOneAccount(accountDetails);
 
     if (success) {
+        delete accountDetails.password;
         return res.status(200).json({
             message: "Account creation successful",
             data: accountDetails

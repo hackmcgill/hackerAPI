@@ -30,21 +30,15 @@ module.exports = {
          * 
          * @apiSuccess {string} message Success message
          * @apiSuccess {object} data Hacker object
-         * @apiSuccessExample {json} Success-Response: 
+         * @apiSuccessExample {object} Success-Response: 
          *      {
                     "message": "Changed hacker information", 
-                    "data": 
-                        { 
-                            "status": "X",
-                            "school": "Y",
-                            "application": "More JSON",
-                            "team": "team name",
-                        }
+                    "data": {...}
                 }
 
          * @apiError {string} message Error message
          * @apiError {object} data empty
-         * @apiErrorExample {json} Error-Response: 
+         * @apiErrorExample {object} Error-Response: 
          *      {"message": "Issue with changing hacker information", "data": {}}
          */
         hackerRouter.route("/adminChangeHacker/:id").post(
