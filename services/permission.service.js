@@ -23,4 +23,4 @@ async function getDefaultPermission(defaultUserType) {
 
 module.exports = {
     getDefaultPermission: getDefaultPermission
-}
+};

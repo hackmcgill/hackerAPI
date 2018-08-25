@@ -7,8 +7,18 @@ const Services = {
 };
 const Util = require("../middlewares/util.middleware");
 
-async function updateOne(req, res, next) {
-    const success = await Services.Hacker.adminChangeOneHacker(req.params.id, req.body);
+/**
+ * @async
+ * @function updateOne
+ * @param req
+ * @param res
+ * @return {JSON} Success or error status
+ * @description 
+ *      Change a hacker's information based on the hacker's mongoID specified in req.params.id.
+ *      The new information is located in req.body.
+ */
+async function updateOne(req, res) {
+    const success = await Services.Hacker.updateOne(req.params.id, req.body);
 
     if (success) {
         return res.status(200).json({
@@ -24,5 +34,5 @@ async function updateOne(req, res, next) {
 }
 
 module.exports = {
-    adminChangeOneHacker: Util.asyncMiddleware(updateOne),
+    updateOne: Util.asyncMiddleware(updateOne),
 };

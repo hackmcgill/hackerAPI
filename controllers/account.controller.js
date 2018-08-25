@@ -7,7 +7,14 @@ const Services = {
 };
 const Util = require("../middlewares/util.middleware");
 
-// retrieves an account information via email query
+/**
+ * @async
+ * @function getUserByEmail
+ * @param req
+ * @param res
+ * @return {JSON} Success or error status
+ * @description Retrieves an account;s information via email query.
+ */
 async function getUserByEmail(req, res) {
     // hard coded for now, as the email needs to be retrieved from the logged in user
     const acc = await Services.Account.findByEmail("abc.def1@blahblah.com");
@@ -26,11 +33,16 @@ async function getUserByEmail(req, res) {
     }
 }
 
-// adds a user from information in req.body
+/**
+ * @async
+ * @function addUser
+ * @param req
+ * @param res
+ * @return {JSON} Success or error status
+ * @description Adds a user from information in req.body.
+ */
 async function addUser(req, res) {
     const accountDetails = req.body.accountDetails;
-
-    // validations - should be done already right??
 
     const success = await Services.Account.addOneAccount(accountDetails);
 
@@ -47,8 +59,17 @@ async function addUser(req, res) {
     }
 }
 
-// Change a user's account information based on the account's mongoID.
-// The new account information is located in req.body
+
+/**
+ * @async
+ * @function changeUserInfo
+ * @param req
+ * @param res
+ * @return {JSON} Success or error status
+ * @description 
+ *      Change a user's account information based on the account's mongoID. 
+ *      The new account information is located in req.body
+ */
 async function changeUserInfo(req, res) {
     const id = req.body._id;
 

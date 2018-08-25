@@ -3,7 +3,13 @@ const Account = require("../models/account.model");
 const logger = require("./logger.service");
 const bcrypt = require("bcrypt");
 
-// finds an account by it's mongoID
+/**
+ * @async
+ * @function findById
+ * @param {String} id
+ * @return {Account | null} either account or null
+ * @description Finds an account by mongoID.
+ */
 async function findById(id) {
     const TAG = `[Account Service # findById]:`;
     const query = {
@@ -20,7 +26,13 @@ async function findById(id) {
     });
 }
 
-// finds an account by email
+/**
+ * @async
+ * @function findByEmail
+ * @param {String} email 
+ * @return {Account | null} either account or null
+ * @description Find an account by email.
+ */
 async function findByEmail(email) {
     const query = {
         email: email
@@ -42,10 +54,23 @@ async function getAccountIfValid(email, password) {
     return null;
 }
 
+/**
+ * @function hashPassword
+ * @param {String} password
+ * @return {string} hashed password
+ * @description Hashes password with bcrypt.
+ */
 function hashPassword(password) {
     return bcrypt.hashSync(password, 10);
 }
 
+/**
+ * @async
+ * @function findOne
+ * @param {JSON} query
+ * @return {Account | null} either account or null
+ * @description Finds an account by some query.
+ */
 async function findOne(query) {
     const TAG = `[Account Service # findOne ]:`;
     return await Account.findOne(query, function (error, user) {
@@ -59,7 +84,13 @@ async function findOne(query) {
         });
 }
 
-// untested
+/**
+ * @async
+ * @function addOneAccount
+ * @param {JSON} accountDetails
+ * @return {boolean} success or failure of attempt to add account
+ * @description Adds a new account to database.
+ */
 async function addOneAccount(accountDetails) {
     const TAG = `[Account Service # addOneAccount ]:`;
 
@@ -79,7 +110,14 @@ async function addOneAccount(accountDetails) {
     return !!(success);
 }
 
-// untested
+/**
+ * @async
+ * @function changeOneAccount
+ * @param {JSON} id
+ * @param {JSON} accountDetails 
+ * @return {boolean} success or failure of changing account information
+ * @description Changes account information to the specified information in accountDetails.
+ */
 async function changeOneAccount(id, accountDetails) {
     const TAG = `[Account Service # changeOneAccount ]:`;
 
