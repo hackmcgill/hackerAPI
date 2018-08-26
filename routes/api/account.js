@@ -46,7 +46,7 @@ module.exports = {
         );
 
         /**
-         * @api {post} /account/create create a new account
+         * @api {post} /account/ create a new account
          * @apiName create
          * @apiGroup Account
          * @apiVersion 0.0.8
@@ -64,9 +64,9 @@ module.exports = {
          * @apiErrorExample {object} Error-Response: 
          *      {"message": "Issue with account creation", "data": {}}
          */
-        accountRouter.route("/create").post(
+        accountRouter.route("/").post(
             // validators
-            Middleware.Validator.Account.postNewAccountValidator,
+            Middleware.Validator.Account.newAccountValidator,
 
             Middleware.parseBody.middleware,
 
@@ -80,7 +80,7 @@ module.exports = {
         );
 
         /**
-         * @api {post} /account/updateOneUser update an account's information
+         * @api {patch} /account/:id update an account's information
          * @apiName updateOneUser
          * @apiGroup Account
          * @apiVersion 0.0.8
@@ -98,15 +98,15 @@ module.exports = {
          * @apiErrorExample {object} Error-Response: 
          *      {"message": "Issue with changing account information", "data": {}}
          */
-        accountRouter.route("/updateOneUser").post(
+        accountRouter.route("/:id").patch(
             // validators
-            Middleware.Validator.Account.postChangeAccountValidator,
+            Middleware.Validator.Account.updateAccountValidator,
 
             Middleware.parseBody.middleware,
 
             // no parse account because will use req.body as information
             // because the number of fields will be variable
-            Controllers.Account.changeUserInfo
+            Controllers.Account.updateAccount
         );
 
         apiRouter.use("/account", accountRouter);

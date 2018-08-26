@@ -55,6 +55,25 @@ function nameValidator (getOrPost, fieldname, optional = true) {
     }
 }
 
+function urlValidator (getOrPost, fieldname, optional = true) {
+    var url;
+    if (getOrPost === "get") {
+        url = query(fieldname, "invalid url");
+    } else {
+        url = body(fieldname, "invalid url");
+    }
+
+    if (optional) {
+        return url.optional({ checkFalsy: true })
+            .matches(/^(http(s)?:(\/\/)?)?(www\.)?([-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6})\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$/)
+            .withMessage("must be valid url");
+    } else {
+        return url.exists().withMessage("url must exist")
+            .matches(/^(http(s)?:(\/\/)?)?(www\.)?([-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6})\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$/)
+            .withMessage("must be valid url");
+    }
+}
+
 function emailValidator (getOrPost, fieldname, optional = true) {
     var email;
     if (getOrPost === "get") {
@@ -202,4 +221,5 @@ module.exports = {
     hackerStatusValidator: hackerStatusValidator,
     booleanValidator: booleanValidator,
     applicationValidator: applicationValidator,
+    urlValidator: urlValidator,
 };
