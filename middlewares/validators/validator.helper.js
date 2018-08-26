@@ -9,14 +9,29 @@ const Skill = require("../../services/skill.service");
 const Team = require("../../services/team.service");
 const TAG = `[ VALIDATOR.HELPER.js ]`;
 
-// untested
+function mongoIdValidator (getOrPost, fieldname, optional = true) {
+    var mongoId;
+
+    if (getOrPost === "get") {
+        mongoId = query(fieldname, "invalid mongoID");
+    } else {
+        mongoId = body(fieldname, "invalid mongoID");
+    }
+
+    if (optional) {
+        return mongoId.optional({ checkFalsy: true }).isMongoId().withMessage("must be a valid mongoID");
+    } else {
+        return mongoId.exists().isMongoId().withMessage("must be a valid mongoID");
+    }
+}
+
 function booleanValidator (getOrPost, fieldname, optional = true) {
     var booleanField;
 
     if (getOrPost === "get") {
         booleanField = query(fieldname, "invalid boolean");
     } else {
-        booleanField = query(fieldname, "invalid boolean");
+        booleanField = body(fieldname, "invalid boolean");
     }
 
     if (optional) {
@@ -26,7 +41,6 @@ function booleanValidator (getOrPost, fieldname, optional = true) {
     }
 }
 
-// untested
 function nameValidator (getOrPost, fieldname, optional = true) {
     var name;
     if (getOrPost === "get") {
@@ -42,26 +56,6 @@ function nameValidator (getOrPost, fieldname, optional = true) {
     }
 }
 
-function idValidator (location, fieldname, optional = true) {
-    let id;
-    if (location === "param") {
-        id = param(fieldname, "invalid mongoID");
-    } else if (location === "query") {
-        id = query(fieldname, "invalid mongoID");
-    } else if (location === "body"){
-        id = body(fieldname, "invalid mongoID");
-    }
-
-    if (optional) {
-        return id.optional({ checkFalsy: true }).isMongoId().withMessage("must be valid MongoId");
-    } else {
-        return id.exists().withMessage("name must exist").isMongoId().withMessage("must be valid MongoId");
-    }
-
-
-}
-
-// untested
 function emailValidator (getOrPost, fieldname, optional = true) {
     var email;
     if (getOrPost === "get") {
@@ -77,7 +71,6 @@ function emailValidator (getOrPost, fieldname, optional = true) {
     }
 }
 
-// untested
 function alphaValidator (getOrPost, fieldname, optional = true) {
     var diet;
 
@@ -94,7 +87,6 @@ function alphaValidator (getOrPost, fieldname, optional = true) {
     }
 }
 
-// untested
 function shirtSizeValidator (getOrPost, fieldname, optional = true) {
     var size;
 
@@ -111,7 +103,6 @@ function shirtSizeValidator (getOrPost, fieldname, optional = true) {
     }
 }
 
-// untested
 function passwordValidator (getOrPost, fieldname, optional = true) {
     var password;
 
@@ -128,7 +119,6 @@ function passwordValidator (getOrPost, fieldname, optional = true) {
     }
 }
 
-// untested
 function hackerStatusValidator (getOrPost, fieldname, optional = true) {
     var status;
     const statuses = ["None", "Applied", "Accepted", "Waitlisted", "Confirmed", "Cancelled", "Checked-in"];
@@ -147,7 +137,6 @@ function hackerStatusValidator (getOrPost, fieldname, optional = true) {
     }
 }
 
-// untested
 function applicationValidator (getOrPost, optional = true) {
     var application;
 
@@ -194,7 +183,6 @@ function applicationValidator (getOrPost, optional = true) {
     }
 }
 
-// untested
 function skillsArrayValidator (skills) {
     let valid = true;
     skills.forEach(skill => {
@@ -206,6 +194,7 @@ function skillsArrayValidator (skills) {
 }
 
 module.exports = {
+    mongoIdValidator: mongoIdValidator,
     nameValidator: nameValidator,
     emailValidator: emailValidator,
     alphaValidator: alphaValidator,

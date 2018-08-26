@@ -18,12 +18,48 @@ module.exports = {
     activate: function (apiRouter) {
         const accountRouter = express.Router();
 
-        // untested
+        /**
+         * @api {get} /account/self get information about own account
+         * @apiName self
+         * @apiGroup Account
+         * @apiVersion 0.0.8
+         * 
+         * @apiSuccess {string} message Success message
+         * @apiSuccess {object} data Account object
+         * @apiSuccessExample {object} Success-Response: 
+         *      {
+                    "message": "Account found by user email", 
+                    "data": {...}
+                }
+
+         * @apiError {string} message Error message
+         * @apiError {object} data empty
+         * @apiErrorExample {object} Error-Response: 
+         *      {"message": "User email not found", "data": {}}
+         */
         accountRouter.route("/self").get(
             Controllers.Account.getUserByEmail
         );
 
-        // untested
+        /**
+         * @api {post} /account/create create a new account
+         * @apiName create
+         * @apiGroup Account
+         * @apiVersion 0.0.8
+         * 
+         * @apiSuccess {string} message Success message
+         * @apiSuccess {object} data Account object
+         * @apiSuccessExample {object} Success-Response: 
+         *      {
+                    "message": "Account creation successful", 
+                    "data": {...}
+                }
+
+         * @apiError {string} message Error message
+         * @apiError {object} data empty
+         * @apiErrorExample {object} Error-Response: 
+         *      {"message": "Issue with account creation", "data": {}}
+         */
         accountRouter.route("/create").post(
             // validators
             Middleware.Validator.Account.postNewAccountValidator,
@@ -39,8 +75,25 @@ module.exports = {
             Controllers.Account.addUser
         );
 
-        // untested
-        // is not able to update permissions
+        /**
+         * @api {post} /account/updateOneUser update an account's information
+         * @apiName updateOneUser
+         * @apiGroup Account
+         * @apiVersion 0.0.8
+         * 
+         * @apiSuccess {string} message Success message
+         * @apiSuccess {object} data Account object
+         * @apiSuccessExample {object} Success-Response: 
+         *      {
+                    "message": "Changed account information", 
+                    "data": {...}
+                }
+
+         * @apiError {string} message Error message
+         * @apiError {object} data empty
+         * @apiErrorExample {object} Error-Response: 
+         *      {"message": "Issue with changing account information", "data": {}}
+         */
         accountRouter.route("/updateOneUser").post(
             // validators
             Middleware.Validator.Account.postChangeAccountValidator,

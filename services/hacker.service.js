@@ -3,7 +3,14 @@ const Hacker = require("../models/hacker.model");
 const logger = require("./logger.service");
 const bcrypt = require("bcrypt");
 
-// untested
+/**
+ * @async
+ * @function updateOne
+ * @param {string} id
+ * @param {JSON} hackerDetails
+ * @return {boolean} success or failure of update
+ * @description Update an account specified by its mongoId with information specified by hackerDetails.
+ */
 async function update(id, hackerDetails) {
     const TAG = `[Hacker Service # update ]:`;
 

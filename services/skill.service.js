@@ -3,6 +3,13 @@ const Skill = require("../models/skill.model");
 const logger = require("./logger.service");
 const bcrypt = require("bcrypt");
 
+/**
+ * @async
+ * @function findById
+ * @param {string} id
+ * @return {Skill | null} either Skill or null
+ * @description Finds a skill by its mongoID.
+ */
 async function findById(id) {
     const TAG = `[Skill Service # findById]:`;
     const query = {
@@ -19,6 +26,13 @@ async function findById(id) {
     });
 }
 
+/**
+ * @async
+ * @function isSkillIdValid
+ * @param {string} id
+ * @return {boolean}
+ * @description Checks whether a Skill with the specified mongoID exists.
+ */
 async function isSkillIdValid(id) {
     const skill = await findById(id);
     return !!skill;
