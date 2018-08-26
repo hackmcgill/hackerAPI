@@ -41,12 +41,12 @@ module.exports = {
          * 
          * @apiSuccess {string} message Success message
          * @apiSuccess {object} data empty
-         * @apiSuccessExample {json} Success-Response: 
+         * @apiSuccessExample {object} Success-Response: 
          *      {"message": "Successfully logged in", "data": {}}
 
-         * @apiError {string} message Success message
+         * @apiError {string} message Error message
          * @apiError {object} data empty
-         * @apiErrorExample {json} Error-Response: 
+         * @apiErrorExample {object} Error-Response: 
          *      {"message": "Invalid email or password", "data": {}}
          * 
          * @apiPermission: public
@@ -64,7 +64,7 @@ module.exports = {
          * 
          * @apiSuccess {string} message Success message
          * @apiSuccess {object} data empty
-         * @apiSuccessExample {json} Success-Response: 
+         * @apiSuccessExample {object} Success-Response: 
          *      {"message": "Successfully logged out", "data": {}}
          * 
          * @apiPermission: public

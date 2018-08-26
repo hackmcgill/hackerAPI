@@ -16,7 +16,7 @@ const indexRouter = require("./routes/index");
 const accountRouter = require("./routes/api/account");
 const authRouter = require("./routes/api/auth");
 const hackerRouter = require("./routes/api/hacker");
-const teamRouter = require("./routes/api/team");
+// const teamRouter = require("./routes/api/team");
 
 const result = require("dotenv").config({
     path: path.join(__dirname, "./.env")
@@ -48,11 +48,13 @@ authRouter.activate(apiRouter);
 Services.log.info("Auth router activated");
 hackerRouter.activate(apiRouter);
 Services.log.info("Hacker router activated");
-teamRouter.activate(apiRouter);
-Services.log.info("Team router activated");
+// teamRouter.activate(apiRouter);
+// Services.log.info("Team router activated");
 
 app.use("/", indexRouter);
 
 app.use("/api", apiRouter);
 
-module.exports = app;
+module.exports = {
+    app: app,
+};

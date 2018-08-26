@@ -3,7 +3,13 @@ const Account = require("../models/account.model");
 const logger = require("./logger.service");
 const bcrypt = require("bcrypt");
 
-
+/**
+ * @async
+ * @function findById
+ * @param {String} id
+ * @return {Account | null} either account or null
+ * @description Finds an account by mongoID.
+ */
 async function findById(id) {
     const TAG = `[Account Service # findById]:`;
     const query = {
@@ -20,17 +26,22 @@ async function findById(id) {
     });
 }
 
+/**
+ * @async
+ * @function findByEmail
+ * @param {String} email 
+ * @return {Account | null} either account or null
+ * @description Find an account by email.
+ */
 async function findByEmail(email) {
     const query = {
         email: email
     };
+
     return await findOne(query);
 }
 
-
-
 /**
- *
  * @param {String} email
  * @param {String} password
  * @return {Account | null} either account or null
@@ -43,40 +54,70 @@ async function getAccountIfValid(email, password) {
     return null;
 }
 
+/**
+ * @function hashPassword
+ * @param {String} password
+ * @return {string} hashed password
+ * @description Hashes password with bcrypt.
+ */
 function hashPassword(password) {
     return bcrypt.hashSync(password, 10);
 }
 
+/**
+ * @async
+ * @function findOne
+ * @param {JSON} query
+ * @return {Account | null} either account or null
+ * @description Finds an account by some query.
+ */
 async function findOne(query) {
     const TAG = `[Account Service # findOne ]:`;
     return await Account.findOne(query, function (error, user) {
-        if (error) {
-            logger.error(`${TAG} Failed to verify if accounts exist or not using ${JSON.stringify(query)}`, error);
-        } else if (user) {
-            logger.debug(`${TAG} accounts using ${JSON.stringify(query)} exist in the database`);
-        } else {
-            logger.debug(`${TAG} accounts using ${JSON.stringify(query)} do not exist in the database`);
-        }
-    });
+            if (error) {
+                logger.error(`${TAG} Failed to verify if accounts exist or not using ${JSON.stringify(query)}`, error);
+            } else if (user) {
+                logger.debug(`${TAG} accounts using ${JSON.stringify(query)} exist in the database`);
+            } else {
+                logger.debug(`${TAG} accounts using ${JSON.stringify(query)} do not exist in the database`);
+            }
+        });
 }
 
-// untested
+/**
+ * @async
+ * @function addOneAccount
+ * @param {JSON} accountDetails
+ * @return {boolean} success or failure of attempt to add account
+ * @description Adds a new account to database.
+ */
 async function addOneAccount(accountDetails) {
     const TAG = `[Account Service # addOneAccount ]:`;
 
     const account = new Account(accountDetails);
 
-    const success = await account.save(function (error) {
-        if (error) {
-            logger.error(`${TAG} Failed to add account`);
-        } else {
-            logger.debug(`${TAG} added account to database`);
-        }
-    });
+    const success = await account.save(
+        // works without this callback
+        // function (error) {
+        //     if (error) {
+        //         logger.error(`${TAG} Failed to add account`);
+        //     } else {
+        //         logger.info(`${TAG} added account to database`, account.toJSON());
+        //     }
+        // }
+    );
+
     return !!(success);
 }
 
-// untested
+/**
+ * @async
+ * @function changeOneAccount
+ * @param {JSON} id
+ * @param {JSON} accountDetails 
+ * @return {boolean} success or failure of changing account information
+ * @description Changes account information to the specified information in accountDetails.
+ */
 async function changeOneAccount(id, accountDetails) {
     const TAG = `[Account Service # changeOneAccount ]:`;
 

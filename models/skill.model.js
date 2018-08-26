@@ -1,5 +1,5 @@
 "use strict";
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 //describes the data type
 const SkillSchema = new mongoose.Schema({
     name: {
@@ -21,4 +21,4 @@ SkillSchema.methods.toJSON = function () {
     return ss;
 }
 //export the model
-module.exports = mongoose.model('Skill', SkillSchema);
+module.exports = mongoose.model("Skill", SkillSchema);

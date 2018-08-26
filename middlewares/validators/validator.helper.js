@@ -215,7 +215,6 @@ function jwtValidator (fieldLocation, fieldname, jwtSecret, optional = true) {
     }
 }
 
-// untested
 function skillsArrayValidator (skills) {
     let valid = true;
     skills.forEach(skill => {
@@ -252,7 +251,18 @@ export const query: ValidationChainBuilder;
 
 }
 
+function mongoIdValidator (location, fieldname, optional = true) {
+    const mongoId = setProperValidationChainBuilder(location, fieldname, "invalid mongoID");
+    if (optional) {
+        return mongoId.optional({ checkFalsy: true }).isMongoId().withMessage("must be a valid mongoID");
+    } else {
+        return mongoId.exists().isMongoId().withMessage("must be a valid mongoID");
+    }
+}
+
+
 module.exports = {
+    mongoIdValidator: mongoIdValidator,
     nameValidator: nameValidator,
     emailValidator: emailValidator,
     alphaValidator: alphaValidator,

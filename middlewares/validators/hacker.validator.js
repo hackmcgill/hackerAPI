@@ -14,6 +14,5 @@ module.exports = {
         VALIDATOR.nameValidator("body", "school", true),
         VALIDATOR.nameValidator("body", "gender", true),
         VALIDATOR.booleanValidator("body", "needsBus", true),
-        
     ],
-}
+};
