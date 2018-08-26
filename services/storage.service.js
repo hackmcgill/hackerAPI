@@ -1,22 +1,18 @@
 "use strict";
 // Imports the Google Cloud client library
 const GStorage = require("@google-cloud/storage");
+const fs = require("fs");
 
 class StorageService {
     constructor() {
         this.bucketName = process.env.BUCKET_NAME;
-        const credentials = {
-            /* jshint ignore:start */
-            client_email: process.env.CLIENT_EMAIL,
-            private_key: process.env.PRIVATE_KEY
-            /* jshint ignore:end */
-        };
         this.storage = new GStorage({
             projectId: process.env.GCLOUD_PROJECT,
             keyFilename: __dirname + "/../gcp_creds.json"
         });
         this.bucket = this.storage.bucket(this.bucketName);
     }
+
     /**
      * Upload a file to storage. 
      * @param {{mimetype:string,buffer:Buffer}} file Multer file object

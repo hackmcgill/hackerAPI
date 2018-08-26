@@ -8,7 +8,7 @@
     "development": "DEBUG=hackboard:* NODE_ENV=development nodemon ./bin/www.js",
     "test": "DEBUG=hackboard:* NODE_ENV=test mocha --reporter spec tests/**.js",
     "seed": "node NODE_ENV=development ./populatedb.js",
-    "generateDoc": "apidoc -i ./routes -o ./docs/api/"
+    "docs": "apidoc -i ./routes -o ./docs/api/"
   },
   "dependencies": {
     "@google-cloud/logging-winston": "^0.9.0",
