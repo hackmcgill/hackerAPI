@@ -5,7 +5,7 @@ const bcrypt = require("bcrypt");
 
 /**
  * @async
- * @function updateOne
+ * @function update
  * @param {string} id
  * @param {JSON} hackerDetails
  * @return {boolean} success or failure of update

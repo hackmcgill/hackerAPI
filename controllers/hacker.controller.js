@@ -18,7 +18,7 @@ const Util = require("../middlewares/util.middleware");
  *      The new information is located in req.body.
  */
 async function updateOne(req, res) {
-    const success = await Services.Hacker.updateOne(req.params.id, req.body);
+    const success = await Services.Hacker.update(req.params.id, req.body);
 
     if (success) {
         return res.status(200).json({
