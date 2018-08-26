@@ -3,6 +3,13 @@ const Team = require("../models/team.model");
 const logger = require("./logger.service");
 const bcrypt = require("bcrypt");
 
+/**
+ * @async
+ * @function findById
+ * @param {string} id
+ * @return {Team | null} either Team or null
+ * @description Finds a team by its mongoID.
+ */
 async function findById(id) {
     const TAG = `[Team Service # findById]:`;
     const query = {
@@ -19,6 +26,13 @@ async function findById(id) {
     });
 }
 
+/**
+ * @async
+ * @function isTeamIdValid
+ * @param {string} id
+ * @return {boolean}
+ * @description Checks whether a Team with the specified mongoID exists.
+ */
 async function isTeamIdValid(id) {
     const team = await findById(id);
     return !!team;
