@@ -2,7 +2,7 @@
 
 # Some of this was taken from https://gist.github.com/phatblat/1713458
 
-NPM_VERSION=5.5.1
+NPM_VERSION=6.4.0
 NODE_VERSION=`cat .nvmrc`
 # Save script's current directory
 DIR="$( cd -P "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"

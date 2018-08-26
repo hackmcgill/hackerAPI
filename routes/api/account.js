@@ -106,7 +106,7 @@ module.exports = {
 
             // no parse account because will use req.body as information
             // because the number of fields will be variable
-            Controllers.Account.changeOwnInfo
+            Controllers.Account.changeUserInfo
         );
 
         apiRouter.use("/account", accountRouter);
