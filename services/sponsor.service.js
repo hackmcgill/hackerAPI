@@ -2,6 +2,13 @@
 const Sponsor = require("../models/sponsor.model");
 const logger = require("./logger.service");
 
+/**
+ * @async
+ * @function findById
+ * @param {String} id
+ * @return {Sponsor | null} either sponsor or null
+ * @description Find a sponsor by id
+ */
 async function findById(id) {
     const TAG = `[Sponsor Service # findById]:`;
     const query = {
@@ -19,6 +26,13 @@ async function findById(id) {
     });
 }
 
+/**
+ * @async
+ * @function createSponsor
+ * @param {JSON} sponsorDetails
+ * @return {boolean} success or failure of attempt to add sponsor
+ * @description Adds a new sponsor to database.
+ */
 async function createSponsor(sponsorDetails) {
     const sponsor = new Sponsor(sponsorDetails);
 

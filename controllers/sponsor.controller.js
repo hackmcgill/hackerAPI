@@ -5,6 +5,14 @@ const Services = {
 };
 const Util = require("../middlewares/util.middleware");
 
+/**
+ * @async
+ * @function findById
+ * @param req
+ * @param res
+ * @return {JSON} Success or error status
+ * @description Retrieves a sponsor's information via it's mongoId specified in req.params.id
+ */
 async function findById(req, res) {
     // finds sponsor by route parameter
     const sponsor = await Services.Sponsor.findById(req.params.id);
@@ -16,12 +24,20 @@ async function findById(req, res) {
         });
     } else {
         return res.status(400).json({
-            message: "Issue with changing hacker information",
+            message: "Issue with retrieving sponsor information",
             data: {}
         });
     }
 }
 
+/**
+ * @async
+ * @function createSponsor
+ * @param req
+ * @param res
+ * @return {JSON} Success or error status
+ * @description create a sponsor from information in req.body.sponsorDetails
+ */
 async function createSponsor(req, res) {
     const sponsorDetails = req.body.sponsorDetails;
 

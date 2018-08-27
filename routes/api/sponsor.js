@@ -21,6 +21,22 @@ module.exports = {
 
         /**
          * @api {get} /sponsor/:id get a sponsor's information
+         * @apiName getSponsor
+         * @apiGroup Sponsor
+         * @apiVersion 0.0.8
+         * 
+         * @apiSuccess {string} message Success message
+         * @apiSuccess {object} data Sponsor object
+         * @apiSuccessExample {object} Success-Response: 
+         *      {
+                    "message": "Successfully retrieved sponsor information", 
+                    "data": {...}
+                }
+
+         * @apiError {string} message Error message
+         * @apiError {object} data empty
+         * @apiErrorExample {object} Error-Response: 
+         *      {"message": "Issue with retrieving sponsor information", "data": {}}
          */
         sponsorRouter.route("/:id").get(
             Controllers.Sponsor.findById
@@ -28,10 +44,26 @@ module.exports = {
 
         /**
          * @api {post} /sponsor/ create a new sponsor
+         * @apiName createSponsor
+         * @apiGroup Sponsor
+         * @apiVersion 0.0.8
+         * 
+         * @apiSuccess {string} message Success message
+         * @apiSuccess {object} data Sponsor object
+         * @apiSuccessExample {object} Success-Response: 
+         *      {
+                    "message": "Sponsor creation successful", 
+                    "data": {...}
+                }
+
+         * @apiError {string} message Error message
+         * @apiError {object} data empty
+         * @apiErrorExample {object} Error-Response: 
+         *      {"message": "Issue with sponsor creation", "data": {}}
          */
         sponsorRouter.route("/").post(
             // validation
-            Middleware.Validator.Sponsor.postNewSponsorValidator,
+            Middleware.Validator.Sponsor.newSponsorValidator,
 
             // parsing
             Middleware.parseBody.middleware,

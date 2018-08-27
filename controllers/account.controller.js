@@ -13,7 +13,7 @@ const Util = require("../middlewares/util.middleware");
  * @param req
  * @param res
  * @return {JSON} Success or error status
- * @description Retrieves an account;s information via email query.
+ * @description Retrieves an account's information via email query.
  */
 async function getUserByEmail(req, res) {
     // hard coded for now, as the email needs to be retrieved from the logged in user
@@ -39,7 +39,7 @@ async function getUserByEmail(req, res) {
  * @param req
  * @param res
  * @return {JSON} Success or error status
- * @description Adds a user from information in req.body.
+ * @description Adds a user from information in req.body.accountDetails
  */
 async function addUser(req, res) {
     const accountDetails = req.body.accountDetails;

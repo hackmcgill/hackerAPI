@@ -36,30 +36,30 @@ function mongoIdArrayValidator (getOrPost, fieldname, optional = true) {
 
     if (optional) {
         return arr.optional({ checkFalsy: true })
-        .custom((value) => {
-            return Array.isArray(value);
-        }).withMessage("Value must be in array format")
-        .custom((value) =>{
-            value.forEach(element => {
-                if (!mongoose.Types.ObjectId.isValid(element)){
-                    return false;
-                }
-            });
-            return true;
-        }).withMessage("Each element must be a valid mongoId");
+            .custom((value) => {
+                return Array.isArray(value);
+            }).withMessage("Value must be in array format")
+            .custom((value) =>{
+                value.forEach(element => {
+                    if (!mongoose.Types.ObjectId.isValid(element)){
+                        return false;
+                    }
+                });
+                return true;
+            }).withMessage("Each element must be a valid mongoId");
     } else {
         return arr.exists()
-        .custom((value) => {
-            return Array.isArray(value);
-        }).withMessage("Value must be in array format")
-        .custom((value) =>{
-            value.forEach(element => {
-                if (!mongoose.Types.ObjectId.isValid(element)){
-                    return false;
-                }
-            });
-            return true;
-        }).withMessage("Each element must be a valid mongoId");
+            .custom((value) => {
+                return Array.isArray(value);
+            }).withMessage("Value must be in array format")
+            .custom((value) =>{
+                value.forEach(element => {
+                    if (!mongoose.Types.ObjectId.isValid(element)){
+                        return false;
+                    }
+                });
+                return true;
+            }).withMessage("Each element must be a valid mongoId");
     }
 }
 

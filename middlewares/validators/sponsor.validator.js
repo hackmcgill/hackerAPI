@@ -7,7 +7,7 @@ const VALIDATOR = require("./validator.helper");
 
 module.exports = {
     // mongo id will be added at parse middleware
-    postNewSponsorValidator: [
+    newSponsorValidator: [
         // the id of the base account
         VALIDATOR.mongoIdValidator("post", "accountId", false),
         // assuming that the tiers are between 0 and 5 (inclusive)

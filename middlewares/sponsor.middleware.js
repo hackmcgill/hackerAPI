@@ -11,7 +11,6 @@ function parseSponsor (req, res, next) {
         nominees: req.body.nominees,
     };
 
-    delete req.body.whereeverAccountIDCameFrome;
     delete req.body.tier;
     delete req.body.company;
     delete req.body.contractURL;
