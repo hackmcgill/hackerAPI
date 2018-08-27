@@ -2,7 +2,7 @@
 const Util = {
     Account: require("./account.test.util"),
     Hacker: require("./hacker.test.util"),
-}
+};
 const Sponsor = require("../../models/sponsor.model");
 const mongoose = require("mongoose");
 const logger = require("../../services/logger.service");
@@ -22,19 +22,19 @@ const Sponsors = [
 
 function storeAll(attributes, callback) {
     const sponsorDocs = [];
-    const sponsorNames = [];
+    const sponsorComps = [];
     attributes.forEach((attribute) => {
         sponsorDocs.push(new Sponsor(attribute));
-        sponsorNames.push(attribute.name);
+        sponsorComps.push(attribute.company);
     });
 
     Sponsor.collection.insertMany(sponsorDocs).then(
         () => {
-            logger.info(`${TAG} saved Sponsors: ${sponsorNames.join(",")}`);
+            logger.info(`${TAG} saved Sponsors: ${sponsorComps.join(",")}`);
             callback();
         },
         (reason) => {
-            logger.error(`${TAG} could not store Sponsors ${sponsorNames.join(",")}. Error: ${JSON.stringify(reason)}`);
+            logger.error(`${TAG} could not store Sponsors ${sponsorComps.join(",")}. Error: ${JSON.stringify(reason)}`);
             callback(reason);
         }
     );
