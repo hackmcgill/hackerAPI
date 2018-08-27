@@ -8,13 +8,21 @@ const mongoose = require("mongoose");
 const logger = require("../../services/logger.service");
 const TAG = "[ SPONSOR.TEST.UTIL.JS ]";
 
+const newSponsor1 = {
+    // no _id as that will be generated
+    "accountId": Util.Account.Account5._id,
+    "tier": 5,
+    "company": "Best company EU",
+    "contractURL": "https://linktocontract2.con",
+    "nominees": [Util.Hacker.HackerB._id]
+};
 const Sponsor1 = {
     _id: mongoose.Types.ObjectId(),
     "accountId": Util.Account.Account1._id,
     "tier": 3,
     "company": "Best company NA",
-    "contractURL": "https://linkto.contract",
-    "nominees": Util.Hacker.HackerA._id,
+    "contractURL": "https://linkto.con",
+    "nominees": [Util.Hacker.HackerA._id],
 };
 const Sponsors = [
     Sponsor1,
@@ -54,6 +62,7 @@ function dropAll(callback) {
 }
 
 module.exports = {
+    newSponsor1: newSponsor1,
     Sponsor1: Sponsor1,
     Sponsors: Sponsors,
     storeAll: storeAll,

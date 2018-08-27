@@ -24,7 +24,7 @@ async function createSponsor(sponsorDetails) {
 
     const success = await sponsor.save();
 
-    return !!success;
+    return !!(success);
 }
 
 module.exports = {

@@ -6,6 +6,7 @@ const {
 const logger = require("../../services/logger.service");
 const Skill = require("../../services/skill.service");
 const Team = require("../../services/team.service");
+const mongoose = require('mongoose');
 const TAG = `[ VALIDATOR.HELPER.js ]`;
 
 function mongoIdValidator (getOrPost, fieldname, optional = true) {
@@ -21,6 +22,44 @@ function mongoIdValidator (getOrPost, fieldname, optional = true) {
         return mongoId.optional({ checkFalsy: true }).isMongoId().withMessage("must be a valid mongoID");
     } else {
         return mongoId.exists().isMongoId().withMessage("must be a valid mongoID");
+    }
+}
+
+function mongoIdArrayValidator (getOrPost, fieldname, optional = true) {
+    var arr;
+
+    if (getOrPost === "get") {
+        arr = query(fieldname, "invalid mongoID");
+    } else {
+        arr = body(fieldname, "invalid mongoID");
+    }
+
+    if (optional) {
+        return arr.optional({ checkFalsy: true })
+        .custom((value) => {
+            return Array.isArray(value);
+        }).withMessage("Value must be in array format")
+        .custom((value) =>{
+            value.forEach(element => {
+                if (!mongoose.Types.ObjectId.isValid(element)){
+                    return false;
+                }
+            });
+            return true;
+        }).withMessage("Each element must be a valid mongoId");
+    } else {
+        return arr.exists()
+        .custom((value) => {
+            return Array.isArray(value);
+        }).withMessage("Value must be in array format")
+        .custom((value) =>{
+            value.forEach(element => {
+                if (!mongoose.Types.ObjectId.isValid(element)){
+                    return false;
+                }
+            });
+            return true;
+        }).withMessage("Each element must be a valid mongoId");
     }
 }
 
@@ -213,6 +252,7 @@ function skillsArrayValidator (skills) {
 
 module.exports = {
     mongoIdValidator: mongoIdValidator,
+    mongoIdArrayValidator: mongoIdArrayValidator,
     nameValidator: nameValidator,
     emailValidator: emailValidator,
     alphaValidator: alphaValidator,
