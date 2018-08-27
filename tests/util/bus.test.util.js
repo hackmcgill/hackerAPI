@@ -59,5 +59,8 @@ function dropAll(callback) {
             logger.error(`could not drop Buses. Error: ${JSON.stringify(err)}`);
             callback(err);
         }
-    );
+    ).catch((error) => {
+        logger.error(error);
+        callback();
+    });
 }

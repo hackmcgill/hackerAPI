@@ -1,6 +1,8 @@
 "use strict";
 const dotenv = require("dotenv");
 const fs = require("fs");
+const path = require("path");
+const Logger = require("./logger.service");
 module.exports = {
     load: function(path) {
         const result = dotenv.config({
@@ -25,10 +27,13 @@ function createGCPFile() {
     };
     for (var property in creds) {
         if (creds.hasOwnProperty(property)) {
-            if(typeof property === 'undefined') {
-                //error
+            if(typeof property === "undefined") {
+                Logger.error(`GCP credential ${property} was undefined.`);
             }
         }
     }
-    fs.writeFileSync("../gcp_creds.json", JSON.stringify(creds));
+    const stringified = JSON.stringify(creds);
+    //un-escape the backslash
+    const unEscaped = stringified.replace(/\\\\n/g, "\\n");
+    fs.writeFileSync(path.join(__dirname, "../gcp_creds.json"), unEscaped);
 }

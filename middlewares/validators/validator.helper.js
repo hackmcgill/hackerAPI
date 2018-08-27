@@ -9,13 +9,15 @@ const Skill = require("../../services/skill.service");
 const Team = require("../../services/team.service");
 const TAG = `[ VALIDATOR.HELPER.js ]`;
 
-function mongoIdValidator (getOrPost, fieldname, optional = true) {
+function mongoIdValidator (getOrPostOrParam, fieldname, optional = true) {
     var mongoId;
 
-    if (getOrPost === "get") {
+    if (getOrPostOrParam === "get") {
         mongoId = query(fieldname, "invalid mongoID");
-    } else {
+    } else if(getOrPostOrParam === "post") {
         mongoId = body(fieldname, "invalid mongoID");
+    } else {
+        mongoId = param(fieldname, "invalid mongoID");
     }
 
     if (optional) {
@@ -203,5 +205,4 @@ module.exports = {
     hackerStatusValidator: hackerStatusValidator,
     booleanValidator: booleanValidator,
     applicationValidator: applicationValidator,
-    idValidator: idValidator
 };

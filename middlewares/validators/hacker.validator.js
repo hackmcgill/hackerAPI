@@ -16,9 +16,9 @@ module.exports = {
         VALIDATOR.booleanValidator("post", "needsBus", true),  
     ],
     uploadResumeValidator: [
-        VALIDATOR.idValidator("param", "id", false)
+        VALIDATOR.mongoIdValidator("param", "id", false)
     ],
     downloadResumeValidator: [
-        VALIDATOR.idValidator("param", "id", false)
+        VALIDATOR.mongoIdValidator("param", "id", false)
     ]
 };

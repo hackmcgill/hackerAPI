@@ -38,4 +38,4 @@ function findById(id) {
 module.exports = {
     update: update,
     findById: findById
-}
+};

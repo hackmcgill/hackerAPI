@@ -1,15 +1,21 @@
 "use strict";
 // Imports the Google Cloud client library
 const GStorage = require("@google-cloud/storage");
-const fs = require("fs");
-
+const path = require("path");
+const Logger = require("./logger.service");
 class StorageService {
     constructor() {
         this.bucketName = process.env.BUCKET_NAME;
-        this.storage = new GStorage({
-            projectId: process.env.GCLOUD_PROJECT,
-            keyFilename: __dirname + "/../gcp_creds.json"
-        });
+        try{
+            this.storage = new GStorage({
+                projectId: process.env.GCLOUD_PROJECT,
+                keyFilename: path.join(__dirname, "../gcp_creds.json")
+            });
+    
+        } catch( error ) {
+            console.log(path.join(__dirname, "../gcp_creds.json"));
+            Logger.error(error);
+        }
         this.bucket = this.storage.bucket(this.bucketName);
     }
 
