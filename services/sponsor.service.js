@@ -34,9 +34,16 @@ async function findById(id) {
  * @description Adds a new sponsor to database.
  */
 async function createSponsor(sponsorDetails) {
+    const TAG = `[Sponsor Service # createSponsor]:`;
+
     const sponsor = new Sponsor(sponsorDetails);
 
-    const success = await sponsor.save();
+    const success = await sponsor.save()
+        .catch(
+            (err) => {
+                logger.error(`${TAG} failed create sponsor due to ${err}`);
+            }
+        );
 
     return !!(success);
 }

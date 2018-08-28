@@ -6,8 +6,32 @@ const {
 const logger = require("../../services/logger.service");
 const Skill = require("../../services/skill.service");
 const Team = require("../../services/team.service");
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const TAG = `[ VALIDATOR.HELPER.js ]`;
+
+function integerValidator (getOrPost, fieldname, optional = true, lowerBound = -Infinity, upperBound = Infinity) {
+    var value;
+
+    if (getOrPost === "get") {
+        value = query(fieldname, "invalid integer");
+    } else {
+        value = body(fieldname, "invalid integer");
+    }
+
+    if (optional) {
+        return value.optional({ checkFalsy: true })
+            .isInt().withMessage("tier must be an integer.")
+            .custom((value) => {
+                return value >= lowerBound && value <= upperBound;
+            }).withMessage("tier must be between 0 and 5");
+    } else {
+        return value.exists().withMessage("tier must exist")
+            .isInt().withMessage("tier must be an integer.")
+            .custom((value) => {
+                return value >= lowerBound && value <= upperBound;
+            }).withMessage("tier must be between 0 and 5");
+    }
+}
 
 function mongoIdValidator (getOrPost, fieldname, optional = true) {
     var mongoId;
@@ -29,9 +53,9 @@ function mongoIdArrayValidator (getOrPost, fieldname, optional = true) {
     var arr;
 
     if (getOrPost === "get") {
-        arr = query(fieldname, "invalid mongoID");
+        arr = query(fieldname, "invalid mongoID array");
     } else {
-        arr = body(fieldname, "invalid mongoID");
+        arr = body(fieldname, "invalid mongoID array");
     }
 
     if (optional) {
@@ -251,6 +275,7 @@ function skillsArrayValidator (skills) {
 }
 
 module.exports = {
+    integerValidator: integerValidator,
     mongoIdValidator: mongoIdValidator,
     mongoIdArrayValidator: mongoIdArrayValidator,
     nameValidator: nameValidator,

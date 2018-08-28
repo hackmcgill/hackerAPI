@@ -25,6 +25,8 @@ module.exports = {
          * @apiGroup Sponsor
          * @apiVersion 0.0.8
          * 
+         * @apiParam {string} id a sponsor's unique mongoID
+         * 
          * @apiSuccess {string} message Success message
          * @apiSuccess {object} data Sponsor object
          * @apiSuccessExample {object} Success-Response: 
