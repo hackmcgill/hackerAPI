@@ -17,6 +17,7 @@ const accountRouter = require("./routes/api/account");
 const authRouter = require("./routes/api/auth");
 const hackerRouter = require("./routes/api/hacker");
 // const teamRouter = require("./routes/api/team");
+const sponsorRouter = require("./routes/api/sponsor");
 
 const result = require("dotenv").config({
     path: path.join(__dirname, "./.env")
@@ -50,6 +51,8 @@ hackerRouter.activate(apiRouter);
 Services.log.info("Hacker router activated");
 // teamRouter.activate(apiRouter);
 // Services.log.info("Team router activated");
+sponsorRouter.activate(apiRouter);
+Services.log.info("Sponsor router activated");
 
 app.use("/", indexRouter);
 
