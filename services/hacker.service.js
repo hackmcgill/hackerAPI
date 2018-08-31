@@ -31,6 +31,35 @@ async function updateOne(id, hackerDetails) {
     return !!(success);
 }
 
+/**
+ * @async
+ * @function findOne
+ * @param {JSON} query
+ * @return {Hacker | null} either hacker or null
+ * @description Finds an hacker by some query.
+ */
+async function findIds(queries) {
+    const TAG = `[Hacker Service # findIds ]:`;
+    let ids = [];
+
+    queries.forEach((query) => {
+        let currId = await Hacker.findOne(query, "_id", function (error, hacker) {
+            if (error) {
+                logger.error(`${TAG} Failed to verify if hacker exist or not using ${JSON.stringify(query)}`, error);
+            } else if (user) {
+                logger.debug(`${TAG} hacker using ${JSON.stringify(query)} exist in the database`);
+            } else {
+                logger.debug(`${TAG} hacker using ${JSON.stringify(query)} do not exist in the database`);
+            }
+        });
+
+        ids.push(currId);
+    });
+
+    return ids;
+}
+
 module.exports = {
-    updateOne: updateOne
+    updateOne: updateOne,
+    findIds: findIds,
 };

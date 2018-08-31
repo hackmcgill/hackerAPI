@@ -7,6 +7,16 @@ const mongoose = require("mongoose");
 const logger = require("../../services/logger.service");
 const TAG = "[ TEAM.TEST.UTIL.JS ]";
 
+const newTeam1 = {
+    "name": "BronzeTeam",
+    "members": {
+        "type": "",
+    },
+    "hackSubmitted": false,
+    "devpostURL": "justanother.post",
+    "projectName": "YetAnotherProject"
+}
+
 const Team1 = {
     "_id": mongoose.Types.ObjectId(),
     "name": "BronzeTeam",
