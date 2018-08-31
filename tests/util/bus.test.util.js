@@ -31,19 +31,19 @@ module.exports = {
 
 function storeAll(attributes, callback) {
     const busDocs = [];
-    const busNames = [];
+    const busZips = [];
     for (var i = 0; i < attributes.length; i++) {
         busDocs.push(new Bus(attributes[i]));
-        busNames.push(attributes[i].name);
+        busZips.push(attributes[i].zip);
     }
     
     Bus.collection.insertMany(busDocs).then(
         () => {
-            logger.info(`${TAG} saved Buses: ${busNames.join(",")}`);
+            logger.info(`${TAG} saved Buses: ${busZips.join(",")}`);
             callback();
         },
         (reason) => {
-            logger.error(`${TAG} could not store Buses ${busNames.join(",")}. Error: ${JSON.stringify(reason)}`);
+            logger.error(`${TAG} could not store Buses ${busZips.join(",")}. Error: ${JSON.stringify(reason)}`);
             callback(reason);
         }
     );
