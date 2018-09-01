@@ -8,13 +8,10 @@ const VALIDATOR = require("./validator.helper");
 module.exports = {
     newTeamValidator: [
         VALIDATOR.nameValidator("post", "name", "false"),
-        // validate members via email, or ask specifically for ID already? 
-        // If ask for id need some pre-processing because otherwise don't see way for users to give IDs
-
+        // members by mongoID if the team creator is able to provide
+        VALIDATOR.mongoIdArrayValidator("post", "members", "true"),
         VALIDATOR.booleanValidator("post", "hackSubmitted", "true"),
-
-        // use url validator for dev post
-
+        VALIDATOR.urlValidator("post", "devpostURL", "true"),
         VALIDATOR.nameValidator("post", "projectName", "false")
     ],
 };

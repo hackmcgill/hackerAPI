@@ -97,7 +97,8 @@ function booleanValidator (getOrPost, fieldname, optional = true) {
     }
 
     if (optional) {
-        return booleanField.optional({ checkFalsy: true }).isBoolean().withMessage("must be boolean");
+        // do not use check falsy option as a 'false' boolean will be skipped
+        return booleanField.optional().isBoolean().withMessage("must be boolean");
     } else {
         return booleanField.exists().isBoolean().withMessage("must be boolean");
     }

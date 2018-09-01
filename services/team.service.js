@@ -3,6 +3,21 @@ const Team = require("../models/team.model");
 const logger = require("./logger.service");
 const bcrypt = require("bcrypt");
 
+async function createTeam(teamDetails) {
+    const TAG = `[Team Service # createTeam]:`;
+
+    const team = new Team(teamDetails);
+
+    const success = await team.save()
+        .catch(
+            (err) => {
+                logger.error(`${TAG} failed create team due to ${err}`);
+            }
+        );
+
+    return !!(success);
+}
+
 /**
  * @async
  * @function findById
@@ -40,4 +55,5 @@ async function isTeamIdValid(id) {
 
 module.exports = {
     isTeamIdValid: isTeamIdValid,
+    createTeam: createTeam,
 };

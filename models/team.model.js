@@ -24,7 +24,7 @@ const TeamSchema = new mongoose.Schema({
 });
 
 function validateTeamSize(membersArr) {
-    return membersArr.size <= MAX_TEAM_SIZE;
+    return membersArr.length <= MAX_TEAM_SIZE;
 }
 
 TeamSchema.methods.toJSON = function () {

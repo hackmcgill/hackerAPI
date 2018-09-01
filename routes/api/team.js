@@ -2,9 +2,6 @@
 
 const express = require("express");
 
-const Services = {
-    Logger: require("../../services/logger.service.js")
-};
 const Controllers = {
     Team: require("../../controllers/team.controller")
 };
@@ -28,7 +25,9 @@ module.exports = {
 
             Middleware.parseBody.middleware,
 
-            Middleware.Team.parseTeam
+            Middleware.Team.parseTeam,
+
+            Controllers.Team.createTeam
 
         );
 

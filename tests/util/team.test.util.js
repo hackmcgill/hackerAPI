@@ -9,13 +9,11 @@ const TAG = "[ TEAM.TEST.UTIL.JS ]";
 
 const newTeam1 = {
     "name": "BronzeTeam",
-    "members": {
-        "type": "",
-    },
+    "members": [ Util.Hacker.HackerA._id ],
     "hackSubmitted": false,
-    "devpostURL": "justanother.post",
+    "devpostURL": "justanotherpost.com",
     "projectName": "YetAnotherProject"
-}
+};
 
 const Team1 = {
     "_id": mongoose.Types.ObjectId(),
@@ -65,6 +63,7 @@ function dropAll(callback) {
 }
 
 module.exports = {
+    newTeam1: newTeam1,
     Team1: Team1,
     Teams: Teams,
     storeAll: storeAll,

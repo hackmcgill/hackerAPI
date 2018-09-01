@@ -7,6 +7,24 @@ const Services = {
 };
 const Util = require("../middlewares/util.middleware");
 
+async function createTeam(req, res) {
+    const teamDetails = req.body.teamDetails;
+
+    const success = await Services.Team.createTeam(teamDetails);
+
+    if (success) {
+        return res.status(200).json({
+            message: "Team creation successful",
+            data: teamDetails
+        });
+    } else {
+        return res.status(400).json({
+            message: "Issue with team creation",
+            data: {}
+        });
+    }
+}
+
 module.exports = {
     defaultReturn: function (req, res) {
         return res.status(200).json({
@@ -14,4 +32,6 @@ module.exports = {
             data: "Default data"
         });
     },
+
+    createTeam: Util.asyncMiddleware(createTeam)
 };
