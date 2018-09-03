@@ -22,6 +22,25 @@ module.exports = {
     activate: function (apiRouter) {
         const hackerRouter = new express.Router();
 
+        /**
+         * @api {post} /hacker/ create a new hacker
+         * @apiName createHacker
+         * @apiGroup Hacker
+         * @apiVersion 0.0.8
+         * 
+         * @apiSuccess {string} message Success message
+         * @apiSuccess {object} data Hacker object
+         * @apiSuccessExample {object} Success-Response: 
+         *      {
+                    "message": "Hacker creation successful", 
+                    "data": {...}
+                }
+
+         * @apiError {string} message Error message
+         * @apiError {object} data empty
+         * @apiErrorExample {object} Error-Response: 
+         *      {"message": "Issue with hacker creation", "data": {}}
+         */
         hackerRouter.route("/").post(
             Middleware.Validator.Hacker.newHackerValidator,
 

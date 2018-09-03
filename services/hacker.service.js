@@ -2,6 +2,13 @@
 const Hacker = require("../models/hacker.model");
 const logger = require("./logger.service");
 
+/**
+ * @async
+ * @function createHacker
+ * @param {JSON} hackerDetails
+ * @return {boolean} success or failure of attempt to add hacker
+ * @description Adds a new hacker to database.
+ */
 async function createHacker(hackerDetails) {
     const TAG = `[Hacker Service # createHacker]:`;
 

@@ -7,6 +7,14 @@ const Services = {
 };
 const Util = require("../middlewares/util.middleware");
 
+/**
+ * @async
+ * @function createHacker
+ * @param req
+ * @param res
+ * @return {JSON} Success or error status
+ * @description create a hacker from information in req.body.hackerDetails
+ */
 async function createHacker(req, res) {
     const hackerDetails = req.body.hackerDetails;
     
