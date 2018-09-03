@@ -3,6 +3,13 @@ const Team = require("../models/team.model");
 const logger = require("./logger.service");
 const bcrypt = require("bcrypt");
 
+/**
+ * @async
+ * @function createTeam
+ * @param {JSON} teamDetails
+ * @return {boolean} success or failure of attempt to add team
+ * @description Adds a new team to database.
+ */
 async function createTeam(teamDetails) {
     const TAG = `[Team Service # createTeam]:`;
 

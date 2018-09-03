@@ -19,6 +19,25 @@ module.exports = {
     activate: function (apiRouter) {
         const teamRouter = new express.Router();
 
+        /**
+         * @api {post} /team/ create a new team
+         * @apiName createTeam
+         * @apiGroup Team
+         * @apiVersion 0.0.8
+         * 
+         * @apiSuccess {string} message Success message
+         * @apiSuccess {object} data Team object
+         * @apiSuccessExample {object} Success-Response: 
+         *      {
+                    "message": "Team creation successful", 
+                    "data": {...}
+                }
+
+         * @apiError {string} message Error message
+         * @apiError {object} data empty
+         * @apiErrorExample {object} Error-Response: 
+         *      {"message": "Issue with team creation", "data": {}}
+         */
         teamRouter.route("/").post(
             // Validators
             Middleware.Validator.Team.newTeamValidator,
