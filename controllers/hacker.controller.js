@@ -9,8 +9,8 @@ const Util = require("../middlewares/util.middleware");
 
 async function createHacker(req, res) {
     const hackerDetails = req.body.hackerDetails;
-
-    const success = Services.Hacker.createHacker(hackerDetails);
+    
+    const success = await Services.Hacker.createHacker(hackerDetails);
 
     if (success) {
         return res.status(200).json({

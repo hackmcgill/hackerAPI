@@ -219,49 +219,53 @@ function hackerStatusValidator (getOrPost, fieldname, optional = true) {
     }
 }
 
-function applicationValidator (getOrPost, optional = true) {
+function applicationValidator (getOrPost, fieldname, optional = true) {
     var application;
 
     if (getOrPost === "get") {
-        application = query("application", "invalid application");
+        application = query(fieldname, "invalid application");
     } else {
-        application = body("application", "invalid application");
+        application = body(fieldname, "invalid application");
     }
 
     if (optional) {
-        return application.custom(app => {
-            let jobInterests = ["Internship", "Full-time", "None"];
-            return (
-                (!app.portfolioURL.resume || typeof(app.portfolioURL.resume === "string")) &&
-                (!app.portfolioURL.github || typeof(app.portfolioURL.github === "string")) &&
-                (!app.portfolioURL.dropler || typeof(app.portfolioURL.dropler === "string")) &&
-                (!app.portfolioURL.personal || typeof(app.portfolioURL.personal === "string")) &&
-                (!app.portfolioURL.linkedIn || typeof(app.portfolioURL.linkedIn === "string")) &&
-                (!app.portfolioURL.other || typeof(app.portfolioURL.other === "other")) &&
-                (!app.jobInterest || jobInterests.includes(app.jobInterests)) &&
-                (!app.skills || skillsArrayValidator(app.skills)) &&
-                (!app.comments || typeof(app.comments === "string")) &&
-                (!app.essay || typeof(app.essay === "string")) &&
-                (!app.team || Team.isTeamIdValid(app.team))
-            );
-        });
+        return application.optional({ checkFalsy: true })
+            .custom(app => {
+                let jobInterests = ["Internship", "Full-time", "None"];
+                return (
+                    (!app.portfolioURL.resume || typeof(app.portfolioURL.resume === "string")) &&
+                    (!app.portfolioURL.github || typeof(app.portfolioURL.github === "string")) &&
+                    (!app.portfolioURL.dropler || typeof(app.portfolioURL.dropler === "string")) &&
+                    (!app.portfolioURL.personal || typeof(app.portfolioURL.personal === "string")) &&
+                    (!app.portfolioURL.linkedIn || typeof(app.portfolioURL.linkedIn === "string")) &&
+                    (!app.portfolioURL.other || typeof(app.portfolioURL.other === "other")) &&
+                    (!app.jobInterest || jobInterests.includes(app.jobInterest)) &&
+                    (!app.skills || skillsArrayValidator(app.skills)) &&
+                    (!app.comments || typeof(app.comments === "string")) &&
+                    (!app.essay || typeof(app.essay === "string")) &&
+                    (!app.team || Team.isTeamIdValid(app.team))
+                );
+            });
     } else {
-        return application.custom(app => {
-            let jobInterests = ["Internship", "Full-time", "None"];
-            return (
-                typeof(app.portfolioURL.resume === "string") &&
-                typeof(app.portfolioURL.github === "string") &&
-                typeof(app.portfolioURL.dropler === "string") &&
-                typeof(app.portfolioURL.personal === "string") &&
-                typeof(app.portfolioURL.linkedIn === "string") &&
-                typeof(app.portfolioURL.other === "other") &&
-                jobInterests.includes(app.jobInterests) &&
-                skillsArrayValidator(app.skills) &&
-                typeof(app.comments === "string") &&
-                typeof(app.essay === "string") &&
-                Team.isTeamIdValid(app.team)
-            );
-        });
+        return application.exists().withMessage("application must exist")
+            .custom(app => {
+                let jobInterests = ["Internship", "Full-time", "None"];
+                return (
+                    // resume must be entered when first creating hacker
+                    typeof(app.portfolioURL.resume === "string") &&
+                    (!app.portfolioURL.github || typeof(app.portfolioURL.github === "string")) &&
+                    (!app.portfolioURL.dropler || typeof(app.portfolioURL.dropler === "string")) &&
+                    (!app.portfolioURL.personal || typeof(app.portfolioURL.personal === "string")) &&
+                    (!app.portfolioURL.linkedIn || typeof(app.portfolioURL.linkedIn === "string")) &&
+                    (!app.portfolioURL.other || typeof(app.portfolioURL.other === "other")) &&
+                    // job interest must be entered when first creating hacker
+                    jobInterests.includes(app.jobInterest) &&
+                    (!app.skills || skillsArrayValidator(app.skills)) &&
+                    (!app.comments || typeof(app.comments === "string")) &&
+                    (!app.essay || typeof(app.essay === "string")) &&
+                    (!app.team || Team.isTeamIdValid(app.team))
+                );
+            });
     }
 }
 

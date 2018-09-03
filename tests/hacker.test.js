@@ -24,7 +24,13 @@ describe("POST create hacker", function () {
             res.should.have.status(200);
             res.should.be.json;
             res.body.should.have.property("message");
-            res.body.message.should.equal("Account creation successful");
+            res.body.message.should.equal("Hacker creation successful");
+            res.body.should.have.property("data");
+
+            // delete _id and status because those fields were generated
+            delete res.body.data._id;
+            delete res.body.data.status;
+            chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify(newHacker1));
             done();
         });
     });
