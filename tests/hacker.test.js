@@ -12,6 +12,23 @@ const util = {
 };
 
 const storedHacker1 = util.hacker.HackerA;
+const newHacker1 = util.hacker.newHacker1;
+
+describe("POST create hacker", function () {
+    it("should SUCCEED and create a new hacker", function(done) {
+        chai.request(server.app)
+        .post(`/api/hacker/`)
+        .type("application/json")
+        .send(newHacker1)
+        .end(function (err, res) {
+            res.should.have.status(200);
+            res.should.be.json;
+            res.body.should.have.property("message");
+            res.body.message.should.equal("Account creation successful");
+            done();
+        });
+    });
+});
 
 describe("POST update one hacker", function () {
     it("should SUCCEED and update a hacker", function(done) {

@@ -15,15 +15,25 @@ const Middleware = {
     },
     /* Insert all of ther middleware require statements here */
     parseBody: require("../../middlewares/parse-body.middleware"),
-    Account: require("../../middlewares/account.middleware")
+    Hacker: require("../../middlewares/hacker.middleware")
 };
 
 module.exports = {
     activate: function (apiRouter) {
         const hackerRouter = new express.Router();
 
+        hackerRouter.route("/").post(
+            Middleware.Validator.Hacker.newHackerValidator,
+
+            Middleware.parseBody.middleware,
+
+            Middleware.Hacker.parseHacker,
+
+            Controllers.Hacker.createHacker
+        );
+
         /**
-         * @api {post} /hacker/adminChangeHacker/:id update a hacker's information
+         * @api {patch} /hacker/adminChangeHacker/:id update a hacker's information
          * @apiName adminChangeHacker
          * @apiGroup Account
          * @apiVersion 0.0.8
@@ -46,7 +56,7 @@ module.exports = {
 
             Middleware.parseBody.middleware,
 
-            // no parse account because will use req.body as information
+            // no parse hacker because will use req.body as information
             // because the number of fields will be variable
             Controllers.Hacker.updateHacker
         );

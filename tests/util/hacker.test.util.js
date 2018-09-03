@@ -9,6 +9,30 @@ const Hacker = require("../../models/hacker.model");
 const logger = require("../../services/logger.service");
 const TAG = "[ HACKER.TEST.UTIL.JS ]";
 
+const newHacker1 = {
+    "accountId": Util.Account.Account1._id,
+    "school": "University of ASDF",
+    "gender": "Female",
+    "needsBus": true,
+    "application": {
+        "portfolioURL": {
+            //gcloud bucket link
+            "resume": "www.gcloud.com/myResume100",
+            "github": "www.github.com/Person1",
+            "dropler": undefined,
+            "personal": "www.person1.com",
+            "linkedIn": "www.linkedin.com/in/Person1",
+            "other": undefined
+        },
+        "jobInterest": "Full-time",
+        "skills": [
+            Util.Skill.Skill1._id,
+            Util.Skill.Skill5._id,
+            Util.Skill.Skill8._id,
+        ],    
+    }
+};
+
 const HackerA = {
     "_id": mongoose.Types.ObjectId(),
     "accountId": Util.Account.Account1._id,
@@ -65,6 +89,7 @@ const Hackers = [
 ];
 
 module.exports = {
+    newHacker1: newHacker1,
     HackerA: HackerA,
     HackerB: HackerB,
     Hackers: Hackers,

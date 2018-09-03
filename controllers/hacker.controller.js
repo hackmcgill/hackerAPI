@@ -7,6 +7,24 @@ const Services = {
 };
 const Util = require("../middlewares/util.middleware");
 
+async function createHacker(req, res) {
+    const hackerDetails = req.body.hackerDetails;
+
+    const success = Services.Hacker.createHacker(hackerDetails);
+
+    if (success) {
+        return res.status(200).json({
+            message: "Hacker creation successful",
+            data: hackerDetails
+        });
+    } else {
+        return res.status(400).json({
+            message: "Issue with hacker creation",
+            data: {}
+        });
+    }
+}
+
 /**
  * @async
  * @function updateHacker
@@ -35,4 +53,5 @@ async function updateHacker(req, res) {
 
 module.exports = {
     updateHacker: Util.asyncMiddleware(updateHacker),
+    createHacker: Util.asyncMiddleware(createHacker),
 };

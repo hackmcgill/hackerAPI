@@ -1,7 +1,21 @@
 "use strict";
 const Hacker = require("../models/hacker.model");
 const logger = require("./logger.service");
-const bcrypt = require("bcrypt");
+
+async function createHacker(hackerDetails) {
+    const TAG = `[Hacker Service # createHacker]:`;
+
+    const hacker = new Hacker(hackerDetails);
+
+    const success = await hacker.save()
+        .catch(
+            (err) => {
+                logger.error(`${TAG} failed create hacker due to ${err}`);
+            }
+        );
+    
+    return !!(success);
+}
 
 /**
  * @async
@@ -61,6 +75,7 @@ async function findIds(queries) {
 }
 
 module.exports = {
+    createHacker: createHacker,
     updateOne: updateOne,
     findIds: findIds,
 };
