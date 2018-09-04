@@ -46,6 +46,9 @@ module.exports = {
 
             Middleware.Team.parseTeam,
 
+            // check that member is not already in a team
+            Middleware.Team.ensureUniqueHackerId,
+
             Controllers.Team.createTeam
 
         );

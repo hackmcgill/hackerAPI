@@ -3,6 +3,21 @@ const Team = require("../models/team.model");
 const logger = require("./logger.service");
 const bcrypt = require("bcrypt");
 
+// TODO: Make better name
+// id is the id of the hacker
+async function findTeamByHackerId(hackerId) {
+    const TAG = `[Team Service # findTeamByHackerId]:`;
+
+    return await Team.findOne({ members: hackerId }, function (error, team) {
+        if (error) {
+            logger.error(`${TAG} Failed to verify if team exist or not using the hacker id ${hackerId}`, error);
+        }
+        else {
+            logger.debug(`${TAG} Found team using with member ${hackerId} in the database`);
+        }
+    });
+}
+
 /**
  * @async
  * @function createTeam
@@ -63,4 +78,5 @@ async function isTeamIdValid(id) {
 module.exports = {
     isTeamIdValid: isTeamIdValid,
     createTeam: createTeam,
+    findTeamByHackerId: findTeamByHackerId,
 };
