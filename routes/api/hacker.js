@@ -20,8 +20,8 @@ module.exports = {
         const hackerRouter = express.Router();
 
         /**
-         * @api {post} /hacker/adminChangeHacker/:id update a hacker's information
-         * @apiName adminChangeHacker
+         * @api {patch} /hacker/:id update a hacker's information
+         * @apiName patchHacker
          * @apiGroup Account
          * @apiVersion 0.0.8
          * 
