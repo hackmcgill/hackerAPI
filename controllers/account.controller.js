@@ -11,7 +11,7 @@ const Util = require("../middlewares/util.middleware");
  * @param req
  * @param res
  * @return {JSON} Success or error status
- * @description Retrieves an account;s information via email query.
+ * @description Retrieves an account's information via email query.
  */
 async function getUserByEmail(req, res) {
     // hard coded for now, as the email needs to be retrieved from the logged in user
@@ -37,7 +37,7 @@ async function getUserByEmail(req, res) {
  * @param req
  * @param res
  * @return {JSON} Success or error status
- * @description Adds a user from information in req.body.
+ * @description Adds a user from information in req.body.accountDetails
  */
 async function addUser(req, res) {
     const accountDetails = req.body.accountDetails;
@@ -61,7 +61,7 @@ async function addUser(req, res) {
 
 /**
  * @async
- * @function changeUserInfo
+ * @function updateAccount
  * @param req
  * @param res
  * @return {JSON} Success or error status
@@ -69,7 +69,7 @@ async function addUser(req, res) {
  *      Change a user's account information based on the account's mongoID. 
  *      The new account information is located in req.body
  */
-async function changeUserInfo(req, res) {
+async function updateAccount(req, res) {
     const id = req.body._id;
 
     const success = await Services.Account.changeOneAccount(id, req.body);
@@ -100,5 +100,5 @@ module.exports = {
     // assumes all information in req.body
     addUser: Util.asyncMiddleware(addUser),
 
-    changeUserInfo: Util.asyncMiddleware(changeUserInfo),
+    updateAccount: Util.asyncMiddleware(updateAccount),
 };

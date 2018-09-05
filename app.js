@@ -5,8 +5,14 @@ const cookieParser = require("cookie-parser");
 const Services = {
     log: require("./services/logger.service"),
     db: require("./services/database.service"),
-    emailAndPassStrategy: require("./services/auth.service")
+    emailAndPassStrategy: require("./services/auth.service"),
+    env: require("./services/env.service")
 };
+
+const envLoadResult = Services.env.load(path.join(__dirname, "./.env"));
+if (envLoadResult.error) {
+    Services.log.error(envLoadResult.error);
+}
 
 const passport = require("passport");
 passport.use("emailAndPass", Services.emailAndPassStrategy);
@@ -16,14 +22,8 @@ const indexRouter = require("./routes/index");
 const accountRouter = require("./routes/api/account");
 const authRouter = require("./routes/api/auth");
 const hackerRouter = require("./routes/api/hacker");
-// const teamRouter = require("./routes/api/team");
-
-const result = require("dotenv").config({
-    path: path.join(__dirname, "./.env")
-});
-if (result.error) {
-    Services.log.error(result.error);
-}
+const teamRouter = require("./routes/api/team");
+const sponsorRouter = require("./routes/api/sponsor");
 
 const app = express();
 Services.db.connect(app);
@@ -48,8 +48,10 @@ authRouter.activate(apiRouter);
 Services.log.info("Auth router activated");
 hackerRouter.activate(apiRouter);
 Services.log.info("Hacker router activated");
-// teamRouter.activate(apiRouter);
-// Services.log.info("Team router activated");
+teamRouter.activate(apiRouter);
+Services.log.info("Team router activated");
+sponsorRouter.activate(apiRouter);
+Services.log.info("Sponsor router activated");
 
 app.use("/", indexRouter);
 

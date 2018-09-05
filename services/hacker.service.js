@@ -11,7 +11,7 @@ const logger = require("./logger.service");
  * @description Update an account specified by its mongoId with information specified by hackerDetails.
  */
 async function updateOne(id, hackerDetails) {
-    const TAG = `[Hacker Service # updateOne ]:`;
+    const TAG = `[Hacker Service # update ]:`;
 
     const query = {
         _id: id
@@ -30,6 +30,41 @@ async function updateOne(id, hackerDetails) {
     return !!(success);
 }
 
+function findById(id) {
+    return Hacker.findById(id).exec();
+}
+
+/**
+ * @async
+ * @function findOne
+ * @param {JSON} query
+ * @return {Hacker | null} either hacker or null
+ * @description Finds an hacker by some query.
+ */
+// untested
+async function findIds(queries) {
+    const TAG = `[Hacker Service # findIds ]:`;
+    let ids = [];
+
+    queries.forEach(async (query) => {
+        let currId = await Hacker.findOne(query, "_id", function (error, hacker) {
+            if (error) {
+                logger.error(`${TAG} Failed to verify if hacker exist or not using ${JSON.stringify(query)}`, error);
+            } else if (user) {
+                logger.debug(`${TAG} hacker using ${JSON.stringify(query)} exist in the database`);
+            } else {
+                logger.debug(`${TAG} hacker using ${JSON.stringify(query)} do not exist in the database`);
+            }
+        });
+
+        ids.push(currId);
+    });
+
+    return ids;
+}
+
 module.exports = {
-    updateOne: updateOne
+    findById: findById,
+    updateOne: updateOne,
+    findIds: findIds,
 };

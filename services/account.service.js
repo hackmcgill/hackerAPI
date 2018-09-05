@@ -96,16 +96,12 @@ async function addOneAccount(accountDetails) {
 
     const account = new Account(accountDetails);
 
-    const success = await account.save(
-        // works without this callback
-        // function (error) {
-        //     if (error) {
-        //         logger.error(`${TAG} Failed to add account`);
-        //     } else {
-        //         logger.info(`${TAG} added account to database`, account.toJSON());
-        //     }
-        // }
-    );
+    const success = await account.save()
+        .catch(
+            (err) => {
+                logger.error(`${TAG} failed create account due to ${err}`);
+            }
+        );
 
     return !!(success);
 }

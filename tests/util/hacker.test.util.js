@@ -74,19 +74,19 @@ module.exports = {
 
 function storeAll(attributes, callback) {
     const hackerDocs = [];
-    const hackerNames = [];
+    const hackerIds = [];
     for (var i = 0; i < attributes.length; i++) {
         hackerDocs.push(new Hacker(attributes[i]));
-        hackerNames.push(attributes[i].name);
+        hackerIds.push(attributes[i]._id);
     }
 
     Hacker.collection.insertMany(hackerDocs).then(
         () => {
-            logger.info(`${TAG} saved Hackers: ${hackerNames.join(",")}`);
+            logger.info(`${TAG} saved Hackers: ${hackerIds.join(",")}`);
             callback();
         },
         (reason) => {
-            logger.error(`${TAG} could not store Hackers ${hackerNames.join(",")}. Error: ${JSON.stringify(reason)}`);
+            logger.error(`${TAG} could not store Hackers ${hackerIds.join(",")}. Error: ${JSON.stringify(reason)}`);
             callback(reason);
         }
     );
@@ -102,5 +102,8 @@ function dropAll(callback) {
             logger.error(`Could not drop Hacker. Error: ${JSON.stringify(err)}`);
             callback(err);
         }
-    );
+    ).catch((error) => {
+        logger.error(error);
+        callback();
+    });
 }

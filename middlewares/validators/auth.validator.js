@@ -1,8 +1,4 @@
 "use strict";
-const {
-    body,
-    query,
-} = require('express-validator/check');
 const VALIDATOR = require("./validator.helper");
 
 module.exports = {

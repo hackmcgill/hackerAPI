@@ -1,18 +1,18 @@
 "use strict";
-const {
-    body,
-    query,
-} = require('express-validator/check');
-const logger = require("../../services/logger.service");
 const VALIDATOR = require("./validator.helper");
 
 module.exports = {
     // untested
-    changeOneStatusValidator: [
-        VALIDATOR.emailValidator("body", "email", true),
+    updateHackerValidator: [
         VALIDATOR.hackerStatusValidator("body", "status", true),
         VALIDATOR.nameValidator("body", "school", true),
         VALIDATOR.nameValidator("body", "gender", true),
-        VALIDATOR.booleanValidator("body", "needsBus", true),
+        VALIDATOR.booleanValidator("body", "needsBus", true),  
     ],
+    uploadResumeValidator: [
+        VALIDATOR.mongoIdValidator("param", "id", false)
+    ],
+    downloadResumeValidator: [
+        VALIDATOR.mongoIdValidator("param", "id", false)
+    ]
 };

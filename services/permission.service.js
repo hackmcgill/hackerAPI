@@ -33,7 +33,6 @@ async function getDefaultPermission(defaultUserName) {
     const query = {
         userType: defaultUserName
     };
-
     return await DefaultPermission.findOne(query, function (error, defaultPermission) {
         if (error) {
             logger.error(`${TAG} Failed to verify if default permission exists or not using ${JSON.stringify(query)}`, error);

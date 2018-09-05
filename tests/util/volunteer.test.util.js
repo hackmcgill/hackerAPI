@@ -17,19 +17,19 @@ const Volunteers = [
 
 function storeAll (attributes, callback) {
     const volunteerDocs = [];
-    const volunteerNames = [];
+    const volunteerIds = [];
     attributes.forEach((attribute) => {
         volunteerDocs.push(new Volunteer(attribute));
-        volunteerNames.push(attribute.name);
+        volunteerIds.push(attribute._id);
     });
 
     Volunteer.collection.insertMany(volunteerDocs).then(
         () => {
-            logger.info(`${TAG} saved Team: ${volunteerNames.join(",")}`);
+            logger.info(`${TAG} saved Team: ${volunteerIds.join(",")}`);
             callback();
         },
         (reason) => {
-            logger.error(`${TAG} could not store Team ${volunteerNames.join(",")}. Error: ${JSON.stringify(reason)}`);
+            logger.error(`${TAG} could not store Team ${volunteerIds.join(",")}. Error: ${JSON.stringify(reason)}`);
             callback(reason);
         }
     );
@@ -42,10 +42,13 @@ function dropAll (callback) {
             callback();
         },
         (err) => {
-            logger.infor(`Could not drop Volunteer. Error: ${JSON.stringify(err)}`);
+            logger.info(`Could not drop Volunteer. Error: ${JSON.stringify(err)}`);
             callback();
         }
-    );
+    ).catch((error) => {
+        logger.error(error);
+        callback();
+    });
 }
 
 module.exports = {
