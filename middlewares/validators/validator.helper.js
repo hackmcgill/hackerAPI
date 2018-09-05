@@ -9,6 +9,27 @@ const Team = require("../../services/team.service");
 const mongoose = require("mongoose");
 const TAG = `[ VALIDATOR.HELPER.js ]`;
 
+function devpostValidator (getOrPost, fieldname, optional = true) {
+    var devpostUrl;
+
+    if (getOrPost === "get") {
+        devpostUrl = query(fieldname, "invalid integer");
+    } else {
+        devpostUrl = body(fieldname, "invalid integer");
+    }
+
+    // match optional https://, http://, www., then optional pre-devpost part, then devpost.com with different routes and params
+    if (optional) {
+        return devpostUrl.optional({ checkFalsy: true })
+            .matches(/^(http(s)?:(\/\/)?)?(www\.)?(([-a-zA-Z0-9@:%._\+~#=]{2,256}\.)?devpost\.com)\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$/)
+            .withMessage("must be valid devpost url");
+    } else {
+        return devpostUrl.exists().withMessage("devpost url must exist")
+            .matches(/^(http(s)?:(\/\/)?)?(www\.)?(([-a-zA-Z0-9@:%._\+~#=]{2,256}\.)?devpost\.com)\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$/)
+            .withMessage("must be valid devpost url");
+    }
+}
+
 function integerValidator (getOrPost, fieldname, optional = true, lowerBound = -Infinity, upperBound = Infinity) {
     var value;
 
@@ -276,6 +297,7 @@ function skillsArrayValidator (skills) {
 }
 
 module.exports = {
+    devpostValidator: devpostValidator,
     integerValidator: integerValidator,
     mongoIdValidator: mongoIdValidator,
     mongoIdArrayValidator: mongoIdArrayValidator,

@@ -3,8 +3,13 @@ const Team = require("../models/team.model");
 const logger = require("./logger.service");
 const bcrypt = require("bcrypt");
 
-// TODO: Make better name
-// id is the id of the hacker
+/**
+ * @async
+ * @function findTeamByHackerId
+ * @param {string} hackerId objectID of the hacker
+ * @return {Team}
+ * @description Finds the team that the hacker belongs to, or undefined.
+ */
 async function findTeamByHackerId(hackerId) {
     const TAG = `[Team Service # findTeamByHackerId]:`;
 

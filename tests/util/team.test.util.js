@@ -10,8 +10,6 @@ const TAG = "[ TEAM.TEST.UTIL.JS ]";
 const newTeam1 = {
     "name": "BronzeTeam",
     "members": [ Util.Hacker.HackerB._id ],
-    "hackSubmitted": false,
-    "devpostURL": "justanotherpost.com",
     "projectName": "YetAnotherProject"
 };
 
@@ -19,8 +17,7 @@ const Team1 = {
     "_id": mongoose.Types.ObjectId(),
     "name": "BronzeTeam",
     "members": [Util.Hacker.HackerA._id],
-    "hackSubmitted": false,
-    "devpostURL": "justanother.post",
+    "devpostURL": "justanother.devpost.com",
     "projectName": "YetAnotherProject"
 };
 const Teams = [
