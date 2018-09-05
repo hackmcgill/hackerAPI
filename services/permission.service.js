@@ -10,7 +10,7 @@ async function getDefaultPermission(defaultUserType) {
         userType: defaultUserType
     };
 
-    return await DefaultPermission.findOne(query, function (error, permission) {
+    const permissions = await DefaultPermission.findOne(query, function (error, permission) {
         if (error) {
             logger.error(`${TAG} Failed to verify if default permission exists or not using ${JSON.stringify(query)}`, error);
         } else if (permission) {
@@ -19,6 +19,7 @@ async function getDefaultPermission(defaultUserType) {
             logger.debug(`${TAG} default permission using ${JSON.stringify(query)} do not exist in the database`);
         }
     }).select("permissions");
+    return permissions.permissions;
 }
 
 module.exports = {

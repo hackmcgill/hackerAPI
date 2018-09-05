@@ -85,7 +85,10 @@ function dropAll(callback) {
             logger.error(`Could not drop Skill. Error: ${JSON.stringify(err)}`);
             callback(err);
         }
-    );
+    ).catch((error) => {
+        logger.error(error);
+        callback();
+    });
 }
 
 module.exports = {

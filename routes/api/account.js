@@ -1,10 +1,6 @@
 "use strict";
 
 const express = require("express");
-
-const Services = {
-    Logger: require("../../services/logger.service.js")
-};
 const Controllers = {
     Account: require("../../controllers/account.controller")
 };
@@ -20,7 +16,7 @@ const Middleware = {
 
 module.exports = {
     activate: function (apiRouter) {
-        const accountRouter = new express.Router();
+        const accountRouter = express.Router();
 
         /**
          * @api {get} /account/self get information about own account

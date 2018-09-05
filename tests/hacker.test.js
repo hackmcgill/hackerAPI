@@ -18,7 +18,9 @@ describe("POST update one hacker", function () {
         chai.request(server.app)
         .post(`/api/hacker/adminChangeHacker/` + storedHacker1._id)
         .type("application/json")
-        .send(storedHacker1)
+        .send({
+            status: "Accepted"
+        })
         .end(function (err, res) {
             // auth?
             res.should.have.status(200);
@@ -26,8 +28,7 @@ describe("POST update one hacker", function () {
             res.body.should.have.property("message");
             res.body.message.should.equal("Changed hacker information");
             res.body.should.have.property("data");
-            // Is this correct matching of data?
-            res.body.data.should.equal(storedHacker1);
+            chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify({status: "Accepted"}));
             done();
         });
     });

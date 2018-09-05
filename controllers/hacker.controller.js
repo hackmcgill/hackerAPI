@@ -33,6 +33,27 @@ async function updateHacker(req, res) {
     }
 }
 
+function uploadedResume (req, res) {
+    return res.status(200).json({
+        message: "Uploaded resume",
+        data: {
+            filename: req.body.gcfilename
+        }
+    });
+}
+
+function downloadedResume (req, res) {
+    return res.status(200).json({
+        message: "Downloaded resume",
+        data: {
+            id: req.body.id,
+            resume: req.body.resume
+        }
+    });
+}
+
 module.exports = {
     updateHacker: Util.asyncMiddleware(updateHacker),
+    uploadedResume: uploadedResume,
+    downloadedResume: downloadedResume
 };

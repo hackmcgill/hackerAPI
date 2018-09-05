@@ -5,8 +5,14 @@ const cookieParser = require("cookie-parser");
 const Services = {
     log: require("./services/logger.service"),
     db: require("./services/database.service"),
-    emailAndPassStrategy: require("./services/auth.service")
+    emailAndPassStrategy: require("./services/auth.service"),
+    env: require("./services/env.service")
 };
+
+const envLoadResult = Services.env.load(path.join(__dirname, "./.env"));
+if (envLoadResult.error) {
+    Services.log.error(envLoadResult.error);
+}
 
 const passport = require("passport");
 passport.use("emailAndPass", Services.emailAndPassStrategy);
@@ -18,13 +24,6 @@ const authRouter = require("./routes/api/auth");
 const hackerRouter = require("./routes/api/hacker");
 const teamRouter = require("./routes/api/team");
 const sponsorRouter = require("./routes/api/sponsor");
-
-const result = require("dotenv").config({
-    path: path.join(__dirname, "./.env")
-});
-if (result.error) {
-    Services.log.error(result.error);
-}
 
 const app = express();
 Services.db.connect(app);

@@ -42,10 +42,13 @@ function dropAll (callback) {
             callback();
         },
         (err) => {
-            logger.infor(`Could not drop Volunteer. Error: ${JSON.stringify(err)}`);
+            logger.info(`Could not drop Volunteer. Error: ${JSON.stringify(err)}`);
             callback();
         }
-    );
+    ).catch((error) => {
+        logger.error(error);
+        callback();
+    });
 }
 
 module.exports = {
