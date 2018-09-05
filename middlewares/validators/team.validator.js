@@ -10,8 +10,7 @@ module.exports = {
         VALIDATOR.nameValidator("post", "name", "false"),
         // members by mongoID if the team creator is able to provide
         VALIDATOR.mongoIdArrayValidator("post", "members", "true"),
-        VALIDATOR.booleanValidator("post", "hackSubmitted", "true"),
-        VALIDATOR.urlValidator("post", "devpostURL", "true"),
+        VALIDATOR.devpostValidator("post", "devpostURL", "true"),
         VALIDATOR.nameValidator("post", "projectName", "false")
     ],
 };

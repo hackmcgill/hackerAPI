@@ -15,11 +15,10 @@ const TeamSchema = new mongoose.Schema({
         }],
         validate: [validateTeamSize, "{PATH} exceeds the limit"]
     },
-    hackSubmitted: {
-        type: Boolean,
-        default: false
+    devpostURL: {
+        type: String,
+        default: undefined,
     },
-    devpostURL: String,
     projectName: String
 });
 
