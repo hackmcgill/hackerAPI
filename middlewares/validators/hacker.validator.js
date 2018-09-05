@@ -9,7 +9,7 @@ const VALIDATOR = require("./validator.helper");
 
 module.exports = {
     // untested
-    changeOneStatusValidator: [
+    updateHackerValidator: [
         VALIDATOR.hackerStatusValidator("post", "status", true),
         VALIDATOR.nameValidator("post", "school", true),
         VALIDATOR.nameValidator("post", "gender", true),

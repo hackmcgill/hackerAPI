@@ -7,7 +7,53 @@ const {
 const logger = require("../../services/logger.service");
 const Skill = require("../../services/skill.service");
 const Team = require("../../services/team.service");
+const mongoose = require("mongoose");
 const TAG = `[ VALIDATOR.HELPER.js ]`;
+
+function devpostValidator (getOrPost, fieldname, optional = true) {
+    var devpostUrl;
+
+    if (getOrPost === "get") {
+        devpostUrl = query(fieldname, "invalid integer");
+    } else {
+        devpostUrl = body(fieldname, "invalid integer");
+    }
+
+    // match optional https://, http://, www., then optional pre-devpost part, then devpost.com with different routes and params
+    if (optional) {
+        return devpostUrl.optional({ checkFalsy: true })
+            .matches(/^(http(s)?:(\/\/)?)?(www\.)?(([-a-zA-Z0-9@:%._\+~#=]{2,256}\.)?devpost\.com)\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$/)
+            .withMessage("must be valid devpost url");
+    } else {
+        return devpostUrl.exists().withMessage("devpost url must exist")
+            .matches(/^(http(s)?:(\/\/)?)?(www\.)?(([-a-zA-Z0-9@:%._\+~#=]{2,256}\.)?devpost\.com)\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$/)
+            .withMessage("must be valid devpost url");
+    }
+}
+
+function integerValidator (getOrPost, fieldname, optional = true, lowerBound = -Infinity, upperBound = Infinity) {
+    var value;
+
+    if (getOrPost === "get") {
+        value = query(fieldname, "invalid integer");
+    } else {
+        value = body(fieldname, "invalid integer");
+    }
+
+    if (optional) {
+        return value.optional({ checkFalsy: true })
+            .isInt().withMessage("tier must be an integer.")
+            .custom((value) => {
+                return value >= lowerBound && value <= upperBound;
+            }).withMessage("tier must be between 0 and 5");
+    } else {
+        return value.exists().withMessage("tier must exist")
+            .isInt().withMessage("tier must be an integer.")
+            .custom((value) => {
+                return value >= lowerBound && value <= upperBound;
+            }).withMessage("tier must be between 0 and 5");
+    }
+}
 
 function mongoIdValidator (getOrPostOrParam, fieldname, optional = true) {
     var mongoId;
@@ -27,6 +73,44 @@ function mongoIdValidator (getOrPostOrParam, fieldname, optional = true) {
     }
 }
 
+function mongoIdArrayValidator (getOrPost, fieldname, optional = true) {
+    var arr;
+
+    if (getOrPost === "get") {
+        arr = query(fieldname, "invalid mongoID array");
+    } else {
+        arr = body(fieldname, "invalid mongoID array");
+    }
+
+    if (optional) {
+        return arr.optional({ checkFalsy: true })
+            .custom((value) => {
+                return Array.isArray(value);
+            }).withMessage("Value must be in array format")
+            .custom((value) =>{
+                value.forEach(element => {
+                    if (!mongoose.Types.ObjectId.isValid(element)){
+                        return false;
+                    }
+                });
+                return true;
+            }).withMessage("Each element must be a valid mongoId");
+    } else {
+        return arr.exists()
+            .custom((value) => {
+                return Array.isArray(value);
+            }).withMessage("Value must be in array format")
+            .custom((value) =>{
+                value.forEach(element => {
+                    if (!mongoose.Types.ObjectId.isValid(element)){
+                        return false;
+                    }
+                });
+                return true;
+            }).withMessage("Each element must be a valid mongoId");
+    }
+}
+
 function booleanValidator (getOrPost, fieldname, optional = true) {
     var booleanField;
 
@@ -37,7 +121,8 @@ function booleanValidator (getOrPost, fieldname, optional = true) {
     }
 
     if (optional) {
-        return booleanField.optional({ checkFalsy: true }).isBoolean().withMessage("must be boolean");
+        // do not use check falsy option as a 'false' boolean will be skipped
+        return booleanField.optional().isBoolean().withMessage("must be boolean");
     } else {
         return booleanField.exists().isBoolean().withMessage("must be boolean");
     }
@@ -58,6 +143,25 @@ function nameValidator (getOrPost, fieldname, optional = true) {
     }
 }
 
+function urlValidator (getOrPost, fieldname, optional = true) {
+    var url;
+    if (getOrPost === "get") {
+        url = query(fieldname, "invalid url");
+    } else {
+        url = body(fieldname, "invalid url");
+    }
+
+    if (optional) {
+        return url.optional({ checkFalsy: true })
+            .matches(/^(http(s)?:(\/\/)?)?(www\.)?([-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6})\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$/)
+            .withMessage("must be valid url");
+    } else {
+        return url.exists().withMessage("url must exist")
+            .matches(/^(http(s)?:(\/\/)?)?(www\.)?([-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6})\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$/)
+            .withMessage("must be valid url");
+    }
+}
+
 function emailValidator (getOrPost, fieldname, optional = true) {
     var email;
     if (getOrPost === "get") {
@@ -74,18 +178,18 @@ function emailValidator (getOrPost, fieldname, optional = true) {
 }
 
 function alphaValidator (getOrPost, fieldname, optional = true) {
-    var diet;
+    var name;
 
     if (getOrPost === "get") {
-        diet = query(fieldname, "invalid dietary restriction");
+        name = query(fieldname, "invalid dietary restriction");
     } else {
-        diet = body(fieldname, "invalid dietary restriction");
+        name = body(fieldname, "invalid dietary restriction");
     }
 
     if (optional) {
-        return diet.optional({ checkFalsy: true}).isAlpha().withMessage("must contain alphabet characters");
+        return name.optional({ checkFalsy: true}).isAlpha().withMessage("must contain alphabet characters");
     } else {
-        return diet.exists().withMessage("must exist").isAlpha().withMessage("must contain alphabet characters");
+        return name.exists().withMessage("must exist").isAlpha().withMessage("must contain alphabet characters");
     }
 }
 
@@ -196,7 +300,10 @@ function skillsArrayValidator (skills) {
 }
 
 module.exports = {
+    devpostValidator: devpostValidator,
+    integerValidator: integerValidator,
     mongoIdValidator: mongoIdValidator,
+    mongoIdArrayValidator: mongoIdArrayValidator,
     nameValidator: nameValidator,
     emailValidator: emailValidator,
     alphaValidator: alphaValidator,
@@ -205,4 +312,5 @@ module.exports = {
     hackerStatusValidator: hackerStatusValidator,
     booleanValidator: booleanValidator,
     applicationValidator: applicationValidator,
+    urlValidator: urlValidator,
 };

@@ -38,14 +38,14 @@ module.exports = {
          * @apiErrorExample {object} Error-Response: 
          *      {"message": "Issue with changing hacker information", "data": {}}
          */
-        hackerRouter.route("/adminChangeHacker/:id").post(
-            Middleware.Validator.Hacker.changeOneStatusValidator,
+        hackerRouter.route("/:id").patch(
+            Middleware.Validator.Hacker.updateHackerValidator,
 
             Middleware.parseBody.middleware,
 
             // no parse account because will use req.body as information
             // because the number of fields will be variable
-            Controllers.Hacker.updateOne
+            Controllers.Hacker.updateHacker
         );
 
         hackerRouter.route("/:id/resume")

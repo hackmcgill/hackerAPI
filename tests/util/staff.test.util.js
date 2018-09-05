@@ -18,19 +18,19 @@ const Staffs = [
 
 function storeAll(attributes, callback) {
     const staffDocs = [];
-    const staffNames = [];
+    const staffIds = [];
     attributes.forEach((attribute) => {
         staffDocs.push(new Staff(attribute));
-        staffNames.push(attribute.name);
+        staffIds.push(attribute._id);
     });
 
     Staff.collection.insertMany(staffDocs).then(
         () => {
-            logger.info(`${TAG} saved Staffs: ${staffNames.join(",")}`);
+            logger.info(`${TAG} saved Staffs: ${staffIds.join(",")}`);
             callback();
         },
         (reason) => {
-            logger.error(`${TAG} could not store Staffs ${staffNames.join(",")}. Error: ${JSON.stringify(reason)}`);
+            logger.error(`${TAG} could not store Staffs ${staffIds.join(",")}. Error: ${JSON.stringify(reason)}`);
             callback(reason);
         }
     );

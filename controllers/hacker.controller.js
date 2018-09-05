@@ -9,7 +9,7 @@ const Util = require("../middlewares/util.middleware");
 
 /**
  * @async
- * @function updateOne
+ * @function updateHacker
  * @param req
  * @param res
  * @return {JSON} Success or error status
@@ -17,8 +17,8 @@ const Util = require("../middlewares/util.middleware");
  *      Change a hacker's information based on the hacker's mongoID specified in req.params.id.
  *      The new information is located in req.body.
  */
-async function updateOne(req, res) {
-    const success = await Services.Hacker.update(req.params.id, req.body);
+async function updateHacker(req, res) {
+    const success = await Services.Hacker.updateOne(req.params.id, req.body);
 
     if (success) {
         return res.status(200).json({
@@ -53,7 +53,7 @@ function downloadedResume (req, res) {
 }
 
 module.exports = {
-    updateOne: Util.asyncMiddleware(updateOne),
+    updateHacker: Util.asyncMiddleware(updateHacker),
     uploadedResume: uploadedResume,
     downloadedResume: downloadedResume
 };

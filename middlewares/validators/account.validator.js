@@ -9,7 +9,7 @@ const VALIDATOR = require("./validator.helper");
 
 module.exports = {
     // does not include permissions, as those are added later
-    postNewAccountValidator: [
+    newAccountValidator: [
         VALIDATOR.nameValidator("post", "firstName", false),
         VALIDATOR.nameValidator("post", "lastName", false),
         VALIDATOR.emailValidator("post", "email", false),
@@ -17,8 +17,7 @@ module.exports = {
         VALIDATOR.shirtSizeValidator("post", "shirtSize", false),
         VALIDATOR.passwordValidator("post", "password", false),
     ],
-    postChangeAccountValidator: [
-        VALIDATOR.mongoIdValidator("post", "_id", true),
+    updateAccountValidator: [
         VALIDATOR.nameValidator("post", "firstName", true),
         VALIDATOR.nameValidator("post", "lastName", true),
         VALIDATOR.emailValidator("post", "email", true),
