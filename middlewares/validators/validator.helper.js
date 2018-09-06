@@ -8,6 +8,7 @@ const Skill = require("../../services/skill.service");
 const Team = require("../../services/team.service");
 const mongoose = require("mongoose");
 const TAG = `[ VALIDATOR.HELPER.js ]`;
+const Constants = require("../../constants");
 
 function devpostValidator (getOrPost, fieldname, optional = true) {
     var devpostUrl;
@@ -252,38 +253,38 @@ function applicationValidator (getOrPost, fieldname, optional = true) {
     if (optional) {
         return application.optional({ checkFalsy: true })
             .custom(app => {
-                let jobInterests = ["Internship", "Full-time", "None"];
+                let jobInterests = Constants.JOB_INTERESTS;
                 return (
-                    (!app.portfolioURL.resume || typeof(app.portfolioURL.resume === "string")) &&
-                    (!app.portfolioURL.github || typeof(app.portfolioURL.github === "string")) &&
-                    (!app.portfolioURL.dropler || typeof(app.portfolioURL.dropler === "string")) &&
-                    (!app.portfolioURL.personal || typeof(app.portfolioURL.personal === "string")) &&
-                    (!app.portfolioURL.linkedIn || typeof(app.portfolioURL.linkedIn === "string")) &&
-                    (!app.portfolioURL.other || typeof(app.portfolioURL.other === "other")) &&
+                    (!app.portfolioURL.resume || typeof(app.portfolioURL.resume) === "string") &&
+                    (!app.portfolioURL.github || typeof(app.portfolioURL.github) === "string") &&
+                    (!app.portfolioURL.dropler || typeof(app.portfolioURL.dropler) === "string") &&
+                    (!app.portfolioURL.personal || typeof(app.portfolioURL.personal) === "string") &&
+                    (!app.portfolioURL.linkedIn || typeof(app.portfolioURL.linkedIn) === "string") &&
+                    (!app.portfolioURL.other || typeof(app.portfolioURL.other) === "string") &&
                     (!app.jobInterest || jobInterests.includes(app.jobInterest)) &&
                     (!app.skills || skillsArrayValidator(app.skills)) &&
-                    (!app.comments || typeof(app.comments === "string")) &&
-                    (!app.essay || typeof(app.essay === "string")) &&
+                    (!app.comments || typeof(app.comments) === "string") &&
+                    (!app.essay || typeof(app.essay) === "string") &&
                     (!app.team || Team.isTeamIdValid(app.team))
                 );
             });
     } else {
         return application.exists().withMessage("application must exist")
             .custom(app => {
-                let jobInterests = ["Internship", "Full-time", "None"];
+                let jobInterests = Constants.JOB_INTERESTS;
                 return (
                     // resume must be entered when first creating hacker
                     typeof(app.portfolioURL.resume === "string") &&
-                    (!app.portfolioURL.github || typeof(app.portfolioURL.github === "string")) &&
-                    (!app.portfolioURL.dropler || typeof(app.portfolioURL.dropler === "string")) &&
-                    (!app.portfolioURL.personal || typeof(app.portfolioURL.personal === "string")) &&
-                    (!app.portfolioURL.linkedIn || typeof(app.portfolioURL.linkedIn === "string")) &&
-                    (!app.portfolioURL.other || typeof(app.portfolioURL.other === "other")) &&
+                    (!app.portfolioURL.github || typeof(app.portfolioURL.github) === "string") &&
+                    (!app.portfolioURL.dropler || typeof(app.portfolioURL.dropler) === "string") &&
+                    (!app.portfolioURL.personal || typeof(app.portfolioURL.personal) === "string") &&
+                    (!app.portfolioURL.linkedIn || typeof(app.portfolioURL.linkedIn) === "string") &&
+                    (!app.portfolioURL.other || typeof(app.portfolioURL.other) === "string") &&
                     // job interest must be entered when first creating hacker
                     jobInterests.includes(app.jobInterest) &&
                     (!app.skills || skillsArrayValidator(app.skills)) &&
-                    (!app.comments || typeof(app.comments === "string")) &&
-                    (!app.essay || typeof(app.essay === "string")) &&
+                    (!app.comments || typeof(app.comments) === "string") &&
+                    (!app.essay || typeof(app.essay) === "string") &&
                     (!app.team || Team.isTeamIdValid(app.team))
                 );
             });

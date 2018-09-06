@@ -28,6 +28,12 @@ module.exports = {
          * @apiGroup Hacker
          * @apiVersion 0.0.8
          * 
+         * @apiParam (body) {MongoID} accountId ObjectID of the respective account
+         * @apiParam (body) {String} school Name of the school the hacker goes to
+         * @apiParam (body) {String} gender Gender of the hacker
+         * @apiParam (body) {Boolean} needsBus Whether the hacker requires a bus for transportation
+         * @apiParam (body) {Object} application The hacker's application
+         * 
          * @apiSuccess {string} message Success message
          * @apiSuccess {object} data Hacker object
          * @apiSuccessExample {object} Success-Response: 
@@ -47,6 +53,7 @@ module.exports = {
             Middleware.parseBody.middleware,
 
             Middleware.Hacker.parseHacker,
+            Middleware.Hacker.addDefaultStatus,
 
             Controllers.Hacker.createHacker
         );
@@ -56,6 +63,13 @@ module.exports = {
          * @apiName adminChangeHacker
          * @apiGroup Account
          * @apiVersion 0.0.8
+         * 
+         * @apiParam (body) {MongoID} [accountId] ObjectID of the respective account
+         * @apiParam (body) {String} [status] Status of the hacker's application
+         * @apiParam (body) {String} [school] Name of the school the hacker goes to
+         * @apiParam (body) {String} [gender] Gender of the hacker
+         * @apiParam (body) {Boolean} [needsBus] Whether the hacker requires a bus for transportation
+         * @apiParam (body) {Object} [application] The hacker's application
          * 
          * @apiSuccess {string} message Success message
          * @apiSuccess {object} data Hacker object
