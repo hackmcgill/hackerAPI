@@ -1,19 +1,62 @@
-const express = require('express');
-const path = require('path');
-const cookieParser = require('cookie-parser');
-const log = require('./services/logger.service');
+"use strict";
+const express = require("express");
+const path = require("path");
+const cookieParser = require("cookie-parser");
+const Services = {
+    log: require("./services/logger.service"),
+    db: require("./services/database.service"),
+    emailAndPassStrategy: require("./services/auth.service"),
+    env: require("./services/env.service")
+};
 
-const indexRouter = require('./routes/index');
+const envLoadResult = Services.env.load(path.join(__dirname, "./.env"));
+if (envLoadResult.error) {
+    Services.log.error(envLoadResult.error);
+}
+
+const passport = require("passport");
+passport.use("emailAndPass", Services.emailAndPassStrategy);
+
+/* Routes here */
+const indexRouter = require("./routes/index");
+const accountRouter = require("./routes/api/account");
+const authRouter = require("./routes/api/auth");
+const hackerRouter = require("./routes/api/hacker");
+const teamRouter = require("./routes/api/team");
+const sponsorRouter = require("./routes/api/sponsor");
 
 const app = express();
+Services.db.connect(app);
 
-app.use(log.requestLogger);
-app.use(log.errorLogger);
+app.use(Services.log.requestLogger);
+app.use(Services.log.errorLogger);
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({
+    extended: false
+}));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(passport.initialize());
+app.use(passport.session()); //persistent login session
 
-app.use('/', indexRouter);
+app.use(express.static(path.join(__dirname, "public")));
 
-module.exports = app;
+var apiRouter = express.Router();
+
+accountRouter.activate(apiRouter);
+Services.log.info("Account router activated");
+authRouter.activate(apiRouter);
+Services.log.info("Auth router activated");
+hackerRouter.activate(apiRouter);
+Services.log.info("Hacker router activated");
+teamRouter.activate(apiRouter);
+Services.log.info("Team router activated");
+sponsorRouter.activate(apiRouter);
+Services.log.info("Sponsor router activated");
+
+app.use("/", indexRouter);
+
+app.use("/api", apiRouter);
+
+module.exports = {
+    app: app,
+};

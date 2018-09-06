@@ -1,8 +1,9 @@
-const winston = require('winston');
-const expressWinston = require('express-winston');
-const StackDriverTransport = require('@google-cloud/logging-winston').LoggingWinston;
+"use strict";
+const winston = require("winston");
+const expressWinston = require("express-winston");
+const StackDriverTransport = require("@google-cloud/logging-winston").LoggingWinston;
 
-const colorize = process.env.NODE_ENV !== 'production';
+const colorize = process.env.NODE_ENV !== "deployment";
 
 const errorLogger = expressWinston.errorLogger({
     transports: [
@@ -10,7 +11,7 @@ const errorLogger = expressWinston.errorLogger({
         new winston.transports.Console({
             json: true,
             colorize: colorize,
-	        timestamp: true
+            timestamp: true
         })
     ]
 });
@@ -21,7 +22,7 @@ const requestLogger = expressWinston.logger({
         new winston.transports.Console({
             json: false,
             colorize: colorize,
-	        timestamp: true
+            timestamp: true
         })
     ],
     expressFormat: true,

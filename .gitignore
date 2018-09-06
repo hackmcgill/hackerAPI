@@ -55,5 +55,8 @@ fabric.properties
 # Node JS
 node_modules
 
-#.env file
+#env file
 .env
+
+#creds
+gcp_creds.json
