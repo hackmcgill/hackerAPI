@@ -71,7 +71,7 @@ app.use((err, req, res, next) => {
     const status = (err.status) ? err.status : 500;
     const message = (err.message) ? err.message : "Internal Server Error";
     //Only show bad error when we're not in deployment
-    const errorContents = (err) ? err : (process.env.NODE_ENV !== "deployment") ? err : {};
+    const errorContents = (err.error) ? err.error : (process.env.NODE_ENV !== "deployment") ? err : {};
     res.status(status).json({
         message: message,
         data: errorContents

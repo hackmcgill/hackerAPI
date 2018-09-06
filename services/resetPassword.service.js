@@ -10,7 +10,6 @@ function findByAccountId (accountId) {
     }).exec(function (error, result) {
         if (error) {
             logger.error(`${TAG} Failed to find passwordReset by accountId`, error);
-            return;
         } else {
             logger.info(`${TAG} ${result}`)
         }

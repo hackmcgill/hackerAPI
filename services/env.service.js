@@ -33,17 +33,6 @@ function createGCPFile() {
         }
     }
     const stringified = JSON.stringify(creds);
-    let unEscaped;
-    if(stringified.includes("\\\\\\\\n")) {
-        //This will happen if process.env.PRIVATE_KEY is stored as an env variable originally, so all 
-        //of the \n will be converted to \\n, and then JSON.stringify converts that to \\\\n.
-        unEscaped = stringified.replace(/\\\\\\\\n/g, "\\n");
-    } else if(stringified.includes("\\\\n")) {
-        //This will happen if process.env.PRIVATE_KEY is stored originally in a .env file, so all of the
-        // \n will remain as \n, and then JSON.stringify converts that to \\n.
-        unEscaped = stringified.replace(/\\\\n/g, "\\n");
-    } else {
-        unEscaped = stringified;
-    }
+    const unEscaped = stringified.replace(/\\\\n/g, "\\n");
     fs.writeFileSync(path.join(__dirname, "../gcp_creds.json"), unEscaped);
 }
