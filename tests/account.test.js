@@ -12,6 +12,7 @@ const util = {
 
 const storedAccount1 = util.account.Account1;
 const newAccount1 = util.account.newAccount1;
+const agent = chai.request.agent(server.app);
 
 describe("GET user account", function () {
     // would this ever do anything?
@@ -27,16 +28,18 @@ describe("GET user account", function () {
             });
     });
     it("should list the user's account on /api/account/self GET", function (done) {
-        const agent = chai.request.agent(server.app);
         util.auth.login(agent, storedAccount1, (error) => {
             if(error) {
                 agent.close();
                 return done(error);
             }
-            agent
+            return agent
             .get("/api/account/self")
             // does not have password because of to stripped json
             .end(function (err, res) {
+                if(err) {
+                    return done(err);
+                }
                 res.should.have.status(200);
                 res.should.be.json;
                 res.body.should.have.property("message");
@@ -52,8 +55,8 @@ describe("GET user account", function () {
                 res.body.data.should.have.property("dietaryRestrictions");
                 res.body.data.should.have.property("shirtSize");
                 done();
+                agent.close();
             });
-            agent.close();
         });
     });
 });

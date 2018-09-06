@@ -10,10 +10,16 @@ module.exports = {
  */
 function login(agent, credentials, callback) {
     agent
-        .post("api/auth/login")
+        .post("/api/auth/login")
         .type("application/json")
         .send({
             email: credentials.email,
             password: credentials.password
-        }).then(callback, callback);
+        }).end((err, res) => {
+            if(err) {
+                callback(err);
+            } else {
+                callback();
+            }
+        });
 }
