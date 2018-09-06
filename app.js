@@ -57,6 +57,19 @@ app.use("/", indexRouter);
 
 app.use("/api", apiRouter);
 
+//Custom error handler
+app.use((err, req, res, next) => {
+    // log the error...
+    const status = (err.status) ? err.status : 500;
+    const message = (err.message) ? err.message : "Internal Server Error";
+    //Only show bad error when we're not in deployment
+    const errorContents = (err.error) ? err.error : (process.env.NODE_ENV !== "deployment") ? err : {};
+    res.status(status).json({
+        message: message,
+        data: errorContents
+    });
+});
+
 module.exports = {
     app: app,
 };

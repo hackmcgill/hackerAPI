@@ -11,6 +11,7 @@ module.exports = {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             next({
+                status: 422,
                 message: "Validation failed",
                 data: errors.mapped()
             });

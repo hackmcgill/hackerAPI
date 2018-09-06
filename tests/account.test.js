@@ -3,19 +3,37 @@ const chai = require("chai");
 const chaiHttp = require("chai-http");
 chai.use(chaiHttp);
 const server = require("../app");
-const agent = chai.request.agent(server.app);
 const logger = require("../services/logger.service");
 
 const util = {
     account: require("./util/account.test.util"),
+    auth: require("./util/auth.test.util")
 };
 
 const storedAccount1 = util.account.Account1;
 const newAccount1 = util.account.newAccount1;
 
 describe("GET user account", function () {
-    it("should list the user's account on /api/account/self GET", function (done) {
+    // would this ever do anything?
+    it("should fail to list the user's account on /api/account/self GET", function (done) {
         chai.request(server.app)
+            .get("/api/account/self")
+            .end(function (err, res) {
+                res.should.have.status(401);
+                res.should.be.json;
+                res.body.should.have.property("message");
+                res.body.message.should.equal("Not Authenticated");
+                done();
+            });
+    });
+    it("should list the user's account on /api/account/self GET", function (done) {
+        const agent = chai.request.agent(server.app);
+        util.auth.login(agent, storedAccount1, (error) => {
+            if(error) {
+                agent.close();
+                return done(error);
+            }
+            agent
             .get("/api/account/self")
             // does not have password because of to stripped json
             .end(function (err, res) {
@@ -35,19 +53,8 @@ describe("GET user account", function () {
                 res.body.data.should.have.property("shirtSize");
                 done();
             });
-    });
-
-    // would this ever do anything?
-    it("should fail to list the user's account on /api/account/self GET", function (done) {
-        chai.request(server.app)
-            .get("/api/account/self")
-            .end(function (err, res) {
-                res.should.have.status(400);
-                res.should.be.json;
-                res.body.should.have.property("message");
-                res.body.message.should.equal("User email not found");
-                done();
-            });
+            agent.close();
+        });
     });
 });
 

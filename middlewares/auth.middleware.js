@@ -14,24 +14,33 @@ const Middleware = {
 
 /**
  *
- * @param {string | undefined} routeName the name of the route that the user must be authenticated for, or undefined if 
+ * @param {String} routeName the name of the route that the user must be authenticated for, or undefined if 
  * the only requirement is to be logged in.
- * @returns {fn} the middleware that will check that the user is properly authenticated.
+ * @returns {Fn} the middleware that will check that the user is properly authenticated.
  * Calls next() if the user is properly authenticated.
  */
-function ensureAuthenticated(routeName) {
+function ensureAuthenticated(routeName = undefined) {
     return function(req, res, next) {
         Services.Auth.ensureAuthenticated(req, routeName).then(
             (isAuthenticated) => {
                 if(isAuthenticated) {
                     next();
-                } else {
+                } else if(!!routeName){
                     next({
+                        status: 401,
                         message: "Not Authenticated",
-                        data: {
+                        error: {
                             route: routeName
                         }
                     });        
+                } else {
+                    next({
+                        status: 401,
+                        message: "Not Authenticated",
+                        error: {
+                            route: req.path
+                        }
+                    });
                 }
             }
         ).catch((reason) => {
@@ -104,6 +113,7 @@ async function validateResetToken(req, res, next) {
     } else {
         //Either the token was already used, it's invalid, or user does not exist.
         next({
+            status: 422,
             message: "invalid token",
             data: {}
         });

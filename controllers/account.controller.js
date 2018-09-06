@@ -14,8 +14,7 @@ const Util = require("../middlewares/util.middleware");
  * @description Retrieves an account's information via email query.
  */
 async function getUserByEmail(req, res) {
-    // hard coded for now, as the email needs to be retrieved from the logged in user
-    const acc = await Services.Account.findByEmail("abc.def1@blahblah.com");
+    const acc = await Services.Account.findByEmail(req.user.email);
 
     if (acc) {
         return res.status(200).json({

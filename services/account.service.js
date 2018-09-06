@@ -7,7 +7,7 @@ const bcrypt = require("bcrypt");
  * @async
  * @function findById
  * @param {String} id
- * @return {Account | null} either account or null
+ * @return {DocumentQuery} either account or null
  * @description Finds an account by mongoID.
  */
 async function findById(id) {
@@ -15,7 +15,7 @@ async function findById(id) {
     const query = {
         _id: id
     };
-    return await Account.findById(query, function (error, user) {
+    const acct = await Account.findById(query, function (error, user) {
         if (error) {
             logger.error(`${TAG} Failed to verify if accounts exist or not using ${JSON.stringify(query)}`, error);
         } else if (user) {
@@ -24,6 +24,7 @@ async function findById(id) {
             logger.debug(`${TAG} accounts using ${JSON.stringify(query)} do not exist in the database`);
         }
     });
+    return acct;
 }
 
 /**
