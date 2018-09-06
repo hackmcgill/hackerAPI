@@ -4,7 +4,6 @@ const chaiHttp = require("chai-http");
 chai.use(chaiHttp);
 const server = require("../app");
 const agent = chai.request.agent(server.app);
-const should = chai.should();
 const logger = require("../services/logger.service");
 
 const util = {
@@ -53,9 +52,9 @@ describe("GET user account", function () {
 });
 
 describe("POST create account", function () {
-    it("should SUCCEED and create a new user", function(done) {
+    it("should SUCCEED and create a new account", function(done) {
         chai.request(server.app)
-        .post(`/api/account/create`)
+        .post(`/api/account/`)
         .type("application/json")
         .send(newAccount1)
         .end(function (err, res) {
@@ -69,11 +68,16 @@ describe("POST create account", function () {
 });
 
 describe("POST update account", function () {
+    const updatedInfo = {
+        "_id": storedAccount1._id,
+        "firstName": "new",
+        "lastName": "name"
+    };
     it("should SUCCEED and update an account", function(done) {
         chai.request(server.app)
-        .post(`/api/account/updateOneUser`)
+        .patch(`/api/account/${updatedInfo._id}`)
         .type("application/json")
-        .send(storedAccount1)
+        .send(updatedInfo)
         .end(function (err, res) {
             // auth?
             res.should.have.status(200);
@@ -82,7 +86,8 @@ describe("POST update account", function () {
             res.body.message.should.equal("Changed account information");
             res.body.should.have.property("data");
             // Is this correct matching of data?
-            res.body.data.should.equal(storedAccount1);
+            res.body.data.firstName.should.equal(updatedInfo.firstName);
+            res.body.data.lastName.should.equal(updatedInfo.lastName);
             done();
         });
     });

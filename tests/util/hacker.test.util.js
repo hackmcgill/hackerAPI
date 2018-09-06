@@ -127,5 +127,8 @@ function dropAll(callback) {
             logger.error(`Could not drop Hacker. Error: ${JSON.stringify(err)}`);
             callback(err);
         }
-    );
+    ).catch((error) => {
+        logger.error(error);
+        callback();
+    });
 }

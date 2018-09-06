@@ -2,6 +2,7 @@
 const {
     body,
     query,
+    param
 } = require("express-validator/check");
 const logger = require("../../services/logger.service");
 const Skill = require("../../services/skill.service");
@@ -55,13 +56,15 @@ function integerValidator (getOrPost, fieldname, optional = true, lowerBound = -
     }
 }
 
-function mongoIdValidator (getOrPost, fieldname, optional = true) {
+function mongoIdValidator (getOrPostOrParam, fieldname, optional = true) {
     var mongoId;
 
-    if (getOrPost === "get") {
+    if (getOrPostOrParam === "get") {
         mongoId = query(fieldname, "invalid mongoID");
-    } else {
+    } else if(getOrPostOrParam === "post") {
         mongoId = body(fieldname, "invalid mongoID");
+    } else {
+        mongoId = param(fieldname, "invalid mongoID");
     }
 
     if (optional) {

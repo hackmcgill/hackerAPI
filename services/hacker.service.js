@@ -33,7 +33,7 @@ async function createHacker(hackerDetails) {
  * @description Update an account specified by its mongoId with information specified by hackerDetails.
  */
 async function updateOne(id, hackerDetails) {
-    const TAG = `[Hacker Service # updateOne ]:`;
+    const TAG = `[Hacker Service # update ]:`;
 
     const query = {
         _id: id
@@ -50,6 +50,11 @@ async function updateOne(id, hackerDetails) {
     });
 
     return !!(success);
+}
+
+// Shouldn't this be Async?
+function findById(id) {
+    return Hacker.findById(id).exec();
 }
 
 /**
@@ -83,6 +88,7 @@ async function findIds(queries) {
 
 module.exports = {
     createHacker: createHacker,
+    findById: findById,
     updateOne: updateOne,
     findIds: findIds,
 };

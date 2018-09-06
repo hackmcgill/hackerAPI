@@ -58,7 +58,10 @@ function dropAll(callback) {
             logger.infor(`Could not drop Sponsor. Error: ${JSON.stringify(err)}`);
             callback();
         }
-    );
+    ).catch((error) => {
+        logger.error(error);
+        callback();
+    });
 }
 
 module.exports = {

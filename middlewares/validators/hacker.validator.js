@@ -23,7 +23,13 @@ module.exports = {
         VALIDATOR.hackerStatusValidator("post", "status", true),
         VALIDATOR.nameValidator("post", "school", true),
         VALIDATOR.nameValidator("post", "gender", true),
-        VALIDATOR.booleanValidator("post", "needsBus", true),
         VALIDATOR.applicationValidator("post", "application", true),
+        VALIDATOR.booleanValidator("post", "needsBus", true),  
     ],
+    uploadResumeValidator: [
+        VALIDATOR.mongoIdValidator("param", "id", false)
+    ],
+    downloadResumeValidator: [
+        VALIDATOR.mongoIdValidator("param", "id", false)
+    ]
 };

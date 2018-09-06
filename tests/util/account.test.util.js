@@ -10,18 +10,15 @@ const TAG = "[ ACCOUNT.TEST.UTIL.JS ]";
 
 const newAccount1 = {
     "_id": mongoose.Types.ObjectId(),
-    "name": "newAcc1",
     "firstName": "NEW",
     "lastName": "Account",
     "email": "newexist@blahblah.com",
     "password": "1234567890",
-    "permissions": [Util.Permission.Permission1._id, Util.Permission.Permission6._id],
     "dietaryRestrictions": ["none"],
     "shirtSize": "S"
 };
 const nonAccount1 = {
     "_id": mongoose.Types.ObjectId(),
-    "name": "nonAcc1",
     "firstName": "non",
     "lastName": "Account",
     "email": "notexist@blahblah.com",
@@ -31,7 +28,6 @@ const nonAccount1 = {
 };
 const Account1 = {
     "_id": mongoose.Types.ObjectId(),
-    "name": "acc1",
     "firstName": "ABC",
     "lastName": "DEF",
     "email": "abc.def1@blahblah.com",
@@ -42,7 +38,6 @@ const Account1 = {
 };
 const Account2 = {
     "_id": mongoose.Types.ObjectId(),
-    "name": "acc2",
     "firstName": "abc",
     "lastName": "def",
     "email": "abc.def2@blahblah.com",
@@ -53,7 +48,6 @@ const Account2 = {
 };
 const Account3 = {
     "_id": mongoose.Types.ObjectId(),
-    "name": "acc3",
     "firstName": "XYZ",
     "lastName": "UST",
     "email": "abc.def3@blahblah.com",
@@ -64,7 +58,6 @@ const Account3 = {
 };
 const Account4 = {
     "_id": mongoose.Types.ObjectId(),
-    "name": "acc4",
     "firstName": "xyz",
     "lastName": "ust",
     "email": "abc.def4@blahblah.com",
@@ -75,7 +68,6 @@ const Account4 = {
 };
 const Account5 = {
     "_id": mongoose.Types.ObjectId(),
-    "name": "acc5",
     "firstName": "LMAO",
     "lastName": "ROFL",
     "email": "abc.def5@blahblah.com",
@@ -102,7 +94,8 @@ module.exports = {
     Account5 :Account5,
     Accounts: Accounts,
     storeAll: storeAll,
-    dropAll: dropAll
+    dropAll: dropAll,
+    equals: equals
 };
 
 function encryptPassword(user) {
@@ -117,7 +110,7 @@ function storeAll(attributes, callback) {
     for (var i = 0; i < attributes.length; i++) {
         const encryptedUser = encryptPassword(attributes[i]);
         acctDocs.push(new Account(encryptedUser));
-        acctNames.push(attributes[i].name);
+        acctNames.push(attributes[i].firstName + "," + attributes[i].lastName);
     }
 
     Account.collection.insertMany(acctDocs).then(
@@ -141,5 +134,39 @@ function dropAll(callback) {
             logger.error(`Could not drop Account. Error: ${JSON.stringify(err)}`);
             callback(err);
         }
-    );
+    ).catch((error) => {
+        logger.error(error);
+        callback();
+    });
+}
+
+/**
+ * Compare two accounts
+ * @param {Account} acc1 
+ * @param {Account} acc2 
+ */
+function equals(acc1, acc2) {
+    const id1 = (typeof acc1._id === "string") ? acc1._id : acc1._id.valueOf();
+    const id2 = (typeof acc2._id === "string") ? acc1._id : acc1._id.valueOf();
+    const id = (id1 === id2);
+    const firstName = (acc1.firstName === acc2.firstName);
+    const lastName = (acc1.lastName === acc2.lastName);
+    const email = (acc1.email === acc2.email);
+    const permissions = comparePermissions(acc1.permissions, acc2.permissions);
+    const dietaryRestrictions = (acc1.dietaryRestrictions.join(",") === acc2.dietaryRestrictions.join(","));
+    const shirtSize = (acc1.shirtSize === acc2.shirtSize);
+    return [id,firstName,lastName,email,permissions,dietaryRestrictions,shirtSize];
+}
+
+function comparePermissions(p1, p2) {
+    if(p1 && p2) {
+        p1 = p1.sort().map((value) => convertMongoIdToString(value));
+        p2 = p2.sort().map((value) => convertMongoIdToString(value));;
+        return p1.join(",") === p2.join(",");
+    }
+    return false;
+}
+
+function convertMongoIdToString(id) {
+    return (typeof id === "string") ? id : id.valueOf();
 }

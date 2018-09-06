@@ -76,5 +76,8 @@ function dropAll(callback) {
             logger.error(`could not drop DefaultPermissions. Error: ${JSON.stringify(err)}`);
             callback(err);
         }
-    );
+    ).catch((error) => {
+        logger.error(error);
+        callback();
+    });
 }

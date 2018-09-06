@@ -18,16 +18,14 @@ const Util = {
 
 //make sure that we are connected to the database
 before(function(done) {
-    this.timeout(0);        
+    this.timeout(60000);        
     server.app.on("event:connected to db", () => {
         // drop all information, and then add some users
-        // dropAll(done);
-        done();
+        dropAll(done);
     });
 });
 beforeEach(function(done){
-    this.timeout(0);
-
+    this.timeout(60000);
     Util.Permission.storeAll(Util.Permission.Permissions, () => { 
         Util.DefaultPermission.storeAll(Util.DefaultPermission.DefaultPermissions, () => {
             Util.Account.storeAll(Util.Account.Accounts, () => {
@@ -49,7 +47,7 @@ beforeEach(function(done){
     });
 });
 afterEach(function(done){
-    this.timeout(0);
+    this.timeout(60000);
     dropAll(done);
 });
 

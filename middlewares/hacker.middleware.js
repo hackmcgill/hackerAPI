@@ -2,6 +2,13 @@
 
 const TAG = `[ HACKER.MIDDLEWARE.js ]`;
 const mongoose = require("mongoose");
+const Services = {
+    Hacker: require("../services/hacker.service"),
+    Storage: require("../services/storage.service")
+};
+const Middleware = {
+    Util: require("./util.middleware")
+};
 
 /**
  * @async
@@ -48,7 +55,64 @@ function addDefaultStatus(req, res, next) {
     req.body.hackerDetails.status = "Applied";
 }
 
+/**
+ * Verifies that the current signed in user is linked to the hacker passed in via req.body.id
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ */
+// must check that the account id is in the hacker schema.
+function ensureAccountLinkedToHacker(req, res, next) {
+    // Shouldn't this be async?
+    Services.Hacker.findById(req.body.id).then(
+        (hacker) => {
+            if(hacker && hacker.accountId === req.user.id) {
+                next();
+            } else {
+                next({
+                    message: "Unauthorized",
+                    body: {}
+                });
+            }
+        }
+    ).catch(next);
+}
+
+/**
+ * Uploads resume via the storage service. Assumes there is a file in req, and a hacker id in req.body. 
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ */
+async function uploadResume(req, res, next) {
+    const gcfilename = `resumes/${Date.now()}-${req.body.id}`;
+    await Services.Storage.upload(req.file, gcfilename);
+    req.body.gcfilename = gcfilename;
+    await Services.Hacker.updateOne(req.body.id, { $set: {"application.portfolioURL.resume": gcfilename}});
+    next();
+}
+
+/**
+ * Returns the application of a given hacker. Assumes req.body.id exists.
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ */
+async function downloadResume(req, res, next) {
+    const hacker = await Services.Hacker.findById(req.body.id);
+    if(hacker && hacker.application && hacker.application.portfolioURL && hacker.application.portfolioURL.resume) {
+        res.body.resume = await Services.Storage.download(hacker.application.portfolioURL.resume);
+    } else {
+        res.body.resume = null;
+    }
+    next();
+}
+
+
 module.exports = {
     parseHacker: parseHacker,
     addDefaultStatus: addDefaultStatus,
+    ensureAccountLinkedToHacker: ensureAccountLinkedToHacker,
+    uploadResume: Middleware.Util.asyncMiddleware(uploadResume),
+    downloadResume: Middleware.Util.asyncMiddleware(downloadResume)
 };
