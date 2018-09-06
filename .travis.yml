@@ -1,9 +1,13 @@
 language: node_js
 dist: trusty
 sudo: false
+services: 
+  - mongodb
 before_install:
   - npm i -g npm@6.4.0
-
+before_script:
+  - sleep 15
+  - mongo mydb_test --eval 'db.createUser({user:"travis-ci",pwd:"test",roles:["readWrite"]});'
 cache:
   directories:
     - "node_modules"
