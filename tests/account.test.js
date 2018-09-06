@@ -30,7 +30,6 @@ describe("GET user account", function () {
     it("should list the user's account on /api/account/self GET", function (done) {
         util.auth.login(agent, storedAccount1, (error) => {
             if(error) {
-                agent.close();
                 return done(error);
             }
             return agent
@@ -55,7 +54,6 @@ describe("GET user account", function () {
                 res.body.data.should.have.property("dietaryRestrictions");
                 res.body.data.should.have.property("shirtSize");
                 done();
-                agent.close();
             });
         });
     });
@@ -84,21 +82,26 @@ describe("POST update account", function () {
         "lastName": "name"
     };
     it("should SUCCEED and update an account", function(done) {
-        chai.request(server.app)
-        .patch(`/api/account/${updatedInfo._id}`)
-        .type("application/json")
-        .send(updatedInfo)
-        .end(function (err, res) {
-            // auth?
-            res.should.have.status(200);
-            res.should.be.json;
-            res.body.should.have.property("message");
-            res.body.message.should.equal("Changed account information");
-            res.body.should.have.property("data");
-            // Is this correct matching of data?
-            res.body.data.firstName.should.equal(updatedInfo.firstName);
-            res.body.data.lastName.should.equal(updatedInfo.lastName);
-            done();
+        util.auth.login(agent, storedAccount1, (error) => {
+            if(error) {
+                agent.close();
+                return done(error);
+            }
+            agent
+            .patch(`/api/account/${updatedInfo._id}`)
+            .type("application/json")
+            .send(updatedInfo)
+            .end(function (err, res) {
+                res.should.have.status(200);
+                res.should.be.json;
+                res.body.should.have.property("message");
+                res.body.message.should.equal("Changed account information");
+                res.body.should.have.property("data");
+                // Is this correct matching of data?
+                res.body.data.firstName.should.equal(updatedInfo.firstName);
+                res.body.data.lastName.should.equal(updatedInfo.lastName);
+                done();
+            });
         });
     });
 });
