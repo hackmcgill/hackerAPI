@@ -54,7 +54,7 @@ describe("GET user account", function () {
 describe("POST create account", function () {
     it("should SUCCEED and create a new account", function(done) {
         chai.request(server.app)
-        .post(`/api/account/create`)
+        .post(`/api/account/`)
         .type("application/json")
         .send(newAccount1)
         .end(function (err, res) {
@@ -75,7 +75,7 @@ describe("POST update account", function () {
     };
     it("should SUCCEED and update an account", function(done) {
         chai.request(server.app)
-        .post(`/api/account/updateOneUser`)
+        .patch(`/api/account/${updatedInfo._id}`)
         .type("application/json")
         .send(updatedInfo)
         .end(function (err, res) {

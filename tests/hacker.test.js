@@ -13,10 +13,10 @@ const util = {
 
 const storedHacker1 = util.hacker.HackerA;
 
-describe("POST update one hacker", function () {
+describe("PATCH update one hacker", function () {
     it("should SUCCEED and update a hacker", function(done) {
         chai.request(server.app)
-        .post(`/api/hacker/adminChangeHacker/` + storedHacker1._id)
+        .patch(`/api/hacker/${storedHacker1._id}`)
         .type("application/json")
         .send({
             status: "Accepted"
