@@ -28,7 +28,24 @@ module.exports = {
          * @apiParam (body) {String} school Name of the school the hacker goes to
          * @apiParam (body) {String} gender Gender of the hacker
          * @apiParam (body) {Boolean} needsBus Whether the hacker requires a bus for transportation
-         * @apiParam (body) {Object} application The hacker's application
+         * @apiParam (body) {Object} application The hacker's application. 
+         * An example application:
+         * "application": {
+                "portfolioURL": {
+                    "resume": "..."
+                    "github": "...",
+                    "dropler": "...",
+                    "personal": "...",
+                    "linkedIn": "...",
+                    "other": "..."
+                },
+                "jobInterest": "...",
+                "skills": [id1, id2],    
+                "comments": "...",
+                "essay": "...",
+                "team": [id1, id2],
+            }
+         * Resume and jobInterest is required.
          * 
          * @apiSuccess {string} message Success message
          * @apiSuccess {object} data Hacker object

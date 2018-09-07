@@ -11,6 +11,12 @@ const mongoose = require("mongoose");
 const TAG = `[ VALIDATOR.HELPER.js ]`;
 const Constants = require("../../constants");
 
+/**
+ * Validates that field is a valid devpost URL
+ * @param {"get" | "post"} getOrPost Whether the query is sent as a get or post request
+ * @param {string} fieldname Name of the field that needs to be validated.
+ * @param {boolean} optional Whether the field is optional or not.
+ */
 function devpostValidator (getOrPost, fieldname, optional = true) {
     var devpostUrl;
 
@@ -32,6 +38,14 @@ function devpostValidator (getOrPost, fieldname, optional = true) {
     }
 }
 
+/**
+ * Validates that field is a valid integer
+ * @param {"get" | "post"} getOrPost Whether the query is sent as a get or post request
+ * @param {string} fieldname Name of the field that needs to be validated.
+ * @param {boolean} optional Whether the field is optional or not.
+ * @param {number} lowerBound Lower bound for a valid integer.
+ * @param {number} upperBound Lpper bound for a valid integer.
+ */
 function integerValidator (getOrPost, fieldname, optional = true, lowerBound = -Infinity, upperBound = Infinity) {
     var value;
 
@@ -56,6 +70,12 @@ function integerValidator (getOrPost, fieldname, optional = true, lowerBound = -
     }
 }
 
+/**
+ * Validates that field is a valid mongoID
+ * @param {"get" | "post"} getOrPost Whether the query is sent as a get or post request
+ * @param {string} fieldname Name of the field that needs to be validated.
+ * @param {boolean} optional Whether the field is optional or not.
+ */
 function mongoIdValidator (getOrPostOrParam, fieldname, optional = true) {
     var mongoId;
 
@@ -74,6 +94,12 @@ function mongoIdValidator (getOrPostOrParam, fieldname, optional = true) {
     }
 }
 
+/**
+ * Validates that field is a valid mongoID array
+ * @param {"get" | "post"} getOrPost Whether the query is sent as a get or post request
+ * @param {string} fieldname Name of the field that needs to be validated.
+ * @param {boolean} optional Whether the field is optional or not.
+ */
 function mongoIdArrayValidator (getOrPost, fieldname, optional = true) {
     var arr;
 
@@ -86,32 +112,22 @@ function mongoIdArrayValidator (getOrPost, fieldname, optional = true) {
     if (optional) {
         return arr.optional({ checkFalsy: true })
             .custom((value) => {
-                return Array.isArray(value);
-            }).withMessage("Value must be in array format")
-            .custom((value) =>{
-                value.forEach(element => {
-                    if (!mongoose.Types.ObjectId.isValid(element)){
-                        return false;
-                    }
-                });
-                return true;
-            }).withMessage("Each element must be a valid mongoId");
+                return isMongoIdArray(value);
+            }).withMessage("Value must be an array of mongoIDs");
     } else {
-        return arr.exists()
+            return arr.exists()
             .custom((value) => {
-                return Array.isArray(value);
-            }).withMessage("Value must be in array format")
-            .custom((value) =>{
-                value.forEach(element => {
-                    if (!mongoose.Types.ObjectId.isValid(element)){
-                        return false;
-                    }
-                });
-                return true;
-            }).withMessage("Each element must be a valid mongoId");
+                return isMongoIdArray(value);
+            }).withMessage("Value must be an array of mongoIDs");
     }
 }
 
+/**
+ * Validates that field is a valid boolean
+ * @param {"get" | "post"} getOrPost Whether the query is sent as a get or post request
+ * @param {string} fieldname Name of the field that needs to be validated.
+ * @param {boolean} optional Whether the field is optional or not.
+ */
 function booleanValidator (getOrPost, fieldname, optional = true) {
     var booleanField;
 
@@ -129,6 +145,12 @@ function booleanValidator (getOrPost, fieldname, optional = true) {
     }
 }
 
+/**
+ * Validates that field is a valid name with only ascii characters
+ * @param {"get" | "post"} getOrPost Whether the query is sent as a get or post request
+ * @param {string} fieldname Name of the field that needs to be validated.
+ * @param {boolean} optional Whether the field is optional or not.
+ */
 function nameValidator (getOrPost, fieldname, optional = true) {
     var name;
     if (getOrPost === "get") {
@@ -144,6 +166,12 @@ function nameValidator (getOrPost, fieldname, optional = true) {
     }
 }
 
+/**
+ * Validates that field is a valid URL
+ * @param {"get" | "post"} getOrPost Whether the query is sent as a get or post request
+ * @param {string} fieldname Name of the field that needs to be validated.
+ * @param {boolean} optional Whether the field is optional or not.
+ */
 function urlValidator (getOrPost, fieldname, optional = true) {
     var url;
     if (getOrPost === "get") {
@@ -152,6 +180,8 @@ function urlValidator (getOrPost, fieldname, optional = true) {
         url = body(fieldname, "invalid url");
     }
 
+    // matches optional http://, https://, http:, https:, and optional www.
+    // matches the domain, and then optional route parameters
     if (optional) {
         return url.optional({ checkFalsy: true })
             .matches(/^(http(s)?:(\/\/)?)?(www\.)?([-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6})\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$/)
@@ -163,6 +193,12 @@ function urlValidator (getOrPost, fieldname, optional = true) {
     }
 }
 
+/**
+ * Validates that field is a valid email
+ * @param {"get" | "post"} getOrPost Whether the query is sent as a get or post request
+ * @param {string} fieldname Name of the field that needs to be validated.
+ * @param {boolean} optional Whether the field is optional or not.
+ */
 function emailValidator (getOrPost, fieldname, optional = true) {
     var email;
     if (getOrPost === "get") {
@@ -178,6 +214,12 @@ function emailValidator (getOrPost, fieldname, optional = true) {
     }
 }
 
+/**
+ * Validates that field only contains alphabetical characters
+ * @param {"get" | "post"} getOrPost Whether the query is sent as a get or post request
+ * @param {string} fieldname Name of the field that needs to be validated.
+ * @param {boolean} optional Whether the field is optional or not.
+ */
 function alphaValidator (getOrPost, fieldname, optional = true) {
     var name;
 
@@ -194,6 +236,12 @@ function alphaValidator (getOrPost, fieldname, optional = true) {
     }
 }
 
+/**
+ * Validates that field contains valid shirt sizes
+ * @param {"get" | "post"} getOrPost Whether the query is sent as a get or post request
+ * @param {string} fieldname Name of the field that needs to be validated.
+ * @param {boolean} optional Whether the field is optional or not.
+ */
 function shirtSizeValidator (getOrPost, fieldname, optional = true) {
     var size;
 
@@ -210,6 +258,12 @@ function shirtSizeValidator (getOrPost, fieldname, optional = true) {
     }
 }
 
+/**
+ * Validates that field is a valid password. Checks that the length is >= 6.
+ * @param {"get" | "post"} getOrPost Whether the query is sent as a get or post request
+ * @param {string} fieldname Name of the field that needs to be validated.
+ * @param {boolean} optional Whether the field is optional or not.
+ */
 function passwordValidator (getOrPost, fieldname, optional = true) {
     var password;
 
@@ -226,6 +280,12 @@ function passwordValidator (getOrPost, fieldname, optional = true) {
     }
 }
 
+/**
+ * Validates that field is a valid status for a hacker.
+ * @param {"get" | "post"} getOrPost Whether the query is sent as a get or post request
+ * @param {string} fieldname Name of the field that needs to be validated.
+ * @param {boolean} optional Whether the field is optional or not.
+ */
 function hackerStatusValidator (getOrPost, fieldname, optional = true) {
     var status;
     const statuses = ["None", "Applied", "Accepted", "Waitlisted", "Confirmed", "Cancelled", "Checked-in"];
@@ -244,6 +304,12 @@ function hackerStatusValidator (getOrPost, fieldname, optional = true) {
     }
 }
 
+/**
+ * Validates that field is a valid application.
+ * @param {"get" | "post"} getOrPost Whether the query is sent as a get or post request
+ * @param {string} fieldname Name of the field that needs to be validated.
+ * @param {boolean} optional Whether the field is optional or not.
+ */
 function applicationValidator (getOrPost, fieldname, optional = true) {
     var application;
 
@@ -265,7 +331,7 @@ function applicationValidator (getOrPost, fieldname, optional = true) {
                     (!app.portfolioURL.linkedIn || typeof(app.portfolioURL.linkedIn) === "string") &&
                     (!app.portfolioURL.other || typeof(app.portfolioURL.other) === "string") &&
                     (!app.jobInterest || jobInterests.includes(app.jobInterest)) &&
-                    (!app.skills || skillsArrayValidator(app.skills)) &&
+                    (!app.skills || isMongoIdArray(app.skills)) &&
                     (!app.comments || typeof(app.comments) === "string") &&
                     (!app.essay || typeof(app.essay) === "string") &&
                     (!app.team || Team.isTeamIdValid(app.team))
@@ -285,7 +351,7 @@ function applicationValidator (getOrPost, fieldname, optional = true) {
                     (!app.portfolioURL.other || typeof(app.portfolioURL.other) === "string") &&
                     // job interest must be entered when first creating hacker
                     jobInterests.includes(app.jobInterest) &&
-                    (!app.skills || skillsArrayValidator(app.skills)) &&
+                    (!app.skills || isMongoIdArray(app.skills)) &&
                     (!app.comments || typeof(app.comments) === "string") &&
                     (!app.essay || typeof(app.essay) === "string") &&
                     (!app.team || Team.isTeamIdValid(app.team))
@@ -294,14 +360,24 @@ function applicationValidator (getOrPost, fieldname, optional = true) {
     }
 }
 
-function skillsArrayValidator (skills) {
-    let valid = true;
-    skills.forEach(skill => {
-        if (!Skill.isSkillIdValid(skill)) {
-            valid = false;
+/**
+ * Validates that field is a valid skill.
+ * @param {"get" | "post"} getOrPost Whether the query is sent as a get or post request
+ * @param {string} fieldname Name of the field that needs to be validated.
+ * @param {boolean} optional Whether the field is optional or not.
+ */
+function isMongoIdArray (arr) {
+    if (!Array.isArray(arr)) {
+        return false;
+    }
+
+    arr.forEach(ele => {
+        if (!mongoose.Types.ObjectId.isValid(ele)) {
+            return false;
         }
     });
-    return valid;
+
+    return true;
 }
 
 module.exports = {

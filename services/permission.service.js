@@ -1,9 +1,16 @@
 "use strict";
 const DefaultPermission = require("../models/defaultPermission.model");
-const Permission = require("../models/permission.model");
 const logger = require("./logger.service");
 
-// untested
+/**
+ * @async
+ * @function getDefaultPermission
+ * @param {JSON} defaultUserType The type of user for which to get default permissions for.
+ * @return {Array} Array of ids of specific permissions
+ * @description 
+ * Gets the default permission of a type of user.
+ * Currently under WIP while new permission system is being created.
+ */
 async function getDefaultPermission(defaultUserType) {
     const TAG = `[Permission Service # getDefaultPermission]:`;
     const query = {

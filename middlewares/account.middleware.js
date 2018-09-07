@@ -9,7 +9,17 @@ const Services = {
 };
 
 module.exports = {
-    // untested
+    /**
+     * @function parseAccount
+     * @param {JSON} req
+     * @param {JSON} res
+     * @param {JSON} next
+     * @return {void}
+     * @description 
+     * Moves firstName, lastName, email, password, dietaryRestrictions, shirtSize from req.body to req.body.accountDetails.
+     * Hashes the password.
+     * Adds _id to accountDetails.
+     */
     parseAccount: function (req, res, next) {
 
         const accountDetails = {
@@ -33,7 +43,8 @@ module.exports = {
 
         next();
     },
-    // untested
+
+    // TODO: fix when new permission system is created
     addDefaultPermission: async function (req, res, next) {
         req.body.accountDetails.permissions = await Services.Permission.getDefaultPermission("Hacker");
         next();
