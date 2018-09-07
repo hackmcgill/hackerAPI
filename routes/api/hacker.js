@@ -10,7 +10,6 @@ const Middleware = {
     },
     /* Insert all of ther middleware require statements here */
     parseBody: require("../../middlewares/parse-body.middleware"),
-    Account: require("../../middlewares/account.middleware"),
     Util: require("../../middlewares/util.middleware"),
     Hacker: require("../../middlewares/hacker.middleware")
 };
@@ -20,10 +19,53 @@ module.exports = {
         const hackerRouter = express.Router();
 
         /**
+         * @api {post} /hacker/ create a new hacker
+         * @apiName createHacker
+         * @apiGroup Hacker
+         * @apiVersion 0.0.8
+         * 
+         * @apiParam (body) {MongoID} accountId ObjectID of the respective account
+         * @apiParam (body) {String} school Name of the school the hacker goes to
+         * @apiParam (body) {String} gender Gender of the hacker
+         * @apiParam (body) {Boolean} needsBus Whether the hacker requires a bus for transportation
+         * @apiParam (body) {Object} application The hacker's application
+         * 
+         * @apiSuccess {string} message Success message
+         * @apiSuccess {object} data Hacker object
+         * @apiSuccessExample {object} Success-Response: 
+         *      {
+                    "message": "Hacker creation successful", 
+                    "data": {...}
+                }
+
+         * @apiError {string} message Error message
+         * @apiError {object} data empty
+         * @apiErrorExample {object} Error-Response: 
+         *      {"message": "Issue with hacker creation", "data": {}}
+         */
+        hackerRouter.route("/").post(
+            Middleware.Validator.Hacker.newHackerValidator,
+
+            Middleware.parseBody.middleware,
+
+            Middleware.Hacker.parseHacker,
+            Middleware.Hacker.addDefaultStatus,
+
+            Controllers.Hacker.createHacker
+        );
+
+        /**
          * @api {patch} /hacker/:id update a hacker's information
          * @apiName patchHacker
          * @apiGroup Account
          * @apiVersion 0.0.8
+         * 
+         * @apiParam (body) {MongoID} [accountId] ObjectID of the respective account
+         * @apiParam (body) {String} [status] Status of the hacker's application
+         * @apiParam (body) {String} [school] Name of the school the hacker goes to
+         * @apiParam (body) {String} [gender] Gender of the hacker
+         * @apiParam (body) {Boolean} [needsBus] Whether the hacker requires a bus for transportation
+         * @apiParam (body) {Object} [application] The hacker's application
          * 
          * @apiSuccess {string} message Success message
          * @apiSuccess {object} data Hacker object
@@ -43,7 +85,7 @@ module.exports = {
 
             Middleware.parseBody.middleware,
 
-            // no parse account because will use req.body as information
+            // no parse hacker because will use req.body as information
             // because the number of fields will be variable
             Controllers.Hacker.updateHacker
         );

@@ -1,4 +1,6 @@
 "use strict";
+
+const Constants = require("../constants");
 const mongoose = require("mongoose");
 //describes the data type
 const HackerSchema = new mongoose.Schema({
@@ -48,7 +50,7 @@ const HackerSchema = new mongoose.Schema({
         },
         jobInterest: {
             type: String,
-            enum: ["Internship", "Full-time", "None"],
+            enum: Constants.JOB_INTERESTS,
             required: true,
             default: "None"
         },

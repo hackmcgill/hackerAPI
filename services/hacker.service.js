@@ -4,6 +4,28 @@ const logger = require("./logger.service");
 
 /**
  * @async
+ * @function createHacker
+ * @param {JSON} hackerDetails
+ * @return {boolean} success or failure of attempt to add hacker
+ * @description Adds a new hacker to database.
+ */
+async function createHacker(hackerDetails) {
+    const TAG = `[Hacker Service # createHacker]:`;
+
+    const hacker = new Hacker(hackerDetails);
+
+    const success = await hacker.save()
+        .catch(
+            (err) => {
+                logger.error(`${TAG} failed create hacker due to ${err}`);
+            }
+        );
+    
+    return !!(success);
+}
+
+/**
+ * @async
  * @function updateOne
  * @param {string} id
  * @param {JSON} hackerDetails
@@ -64,6 +86,7 @@ async function findIds(queries) {
 }
 
 module.exports = {
+    createHacker: createHacker,
     findById: findById,
     updateOne: updateOne,
     findIds: findIds,

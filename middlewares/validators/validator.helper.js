@@ -10,6 +10,8 @@ const Skill = require("../../services/skill.service");
 const mongoose = require("mongoose");
 const TAG = `[ VALIDATOR.HELPER.js ]`;
 const jwt = require("jsonwebtoken");
+const Constants = require("../../constants");
+const Team = require("../../services/team.service");
 
 function devpostValidator (fieldLocation, fieldname, optional = true) {
     const devpostUrl = setProperValidationChainBuilder(fieldLocation, fieldname, "invalid web address");
@@ -206,8 +208,6 @@ function hackerStatusValidator (fieldLocation, fieldname, optional = true) {
         return status.exists().withMessage(`must be one of valid statuses: ${statuses.join(",")}`);
     }
 }
-
-// untested
 /**
  * Validates that field must be a valid application.
  * @param {"query" | "body" | "header" | "param"} fieldLocation the location where the field should be found 
@@ -216,8 +216,6 @@ function hackerStatusValidator (fieldLocation, fieldname, optional = true) {
  */
 function applicationValidator (fieldLocation, fieldname, optional = true) {
     const application = setProperValidationChainBuilder(fieldLocation, fieldname, "invalid application");
-
-    const jobInterests = ["Internship", "Full-time", "None"];
 
     //helper object to iterate through the items in the application and track which items are not valid.
     const hasValid = {
@@ -236,6 +234,7 @@ function applicationValidator (fieldLocation, fieldname, optional = true) {
 
     if (optional) {
         return application.custom(app => {
+            const jobInterests = Constants.JOB_INTERESTS;
             hasValid.resume = (!app.portfolioURL.resume || typeof(app.portfolioURL.resume) === "string");
             hasValid.github = (!app.portfolioURL.github || typeof(app.portfolioURL.github) === "string");
             hasValid.dropler = (!app.portfolioURL.dropler || typeof(app.portfolioURL.dropler) === "string");
@@ -246,12 +245,13 @@ function applicationValidator (fieldLocation, fieldname, optional = true) {
             hasValid.skills = (!app.skills || skillsArrayValidator(app.skills));
             hasValid.comments = (!app.comments || typeof(app.comments) === "string");
             hasValid.essay = (!app.essay || typeof(app.essay) === "string");
-            hasValid.team = (!app.team || typeof(app.team) === "string");
+            hasValid.team = (!app.team || Team.isTeamIdValid(app.team));
             return  hasValid.comments && hasValid.github && hasValid.dropler && hasValid.personal && 
                     hasValid.linkedIn && hasValid.other && hasValid.jobInterest && hasValid.skills && hasValid.team;
         }).withMessage({message: "Not all items of the application are valid", isValid: hasValid});
     } else {
         return application.custom(app => {
+            const jobInterests = Constants.JOB_INTERESTS;
             hasValid.resume = (typeof(app.portfolioURL.resume) === "string");
             hasValid.github = (typeof(app.portfolioURL.github) === "string");
             hasValid.dropler = (typeof(app.portfolioURL.dropler) === "string");
@@ -262,7 +262,7 @@ function applicationValidator (fieldLocation, fieldname, optional = true) {
             hasValid.skills = (skillsArrayValidator(app.skills));
             hasValid.comments = (typeof(app.comments) === "string");
             hasValid.essay = (typeof(app.essay) === "string");
-            hasValid.team = (typeof(app.team) === "string");
+            hasValid.team = (Team.isTeamIdValid(app.team));
             return  hasValid.comments && hasValid.github && hasValid.dropler && hasValid.personal && 
                     hasValid.linkedIn && hasValid.other && hasValid.jobInterest && hasValid.skills && hasValid.team;
         }).withMessage({message: "Not all items of the application are valid", isValid: hasValid});
