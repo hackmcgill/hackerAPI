@@ -36,12 +36,12 @@ function getPassFromEnvironment() {
 
 module.exports = {
     connect: function (app, callback) {
-        logger.info(`${TAG} Connecting to db`);
         mongoose.Promise = Q.promise;
         const user = getUserFromEnvironment();
         const pass = getPassFromEnvironment();
         const address = getAddressFromEnvironment();
-        const url = `mongodb://${user}:${pass}@${address}`;
+        const url = (!!user && !!pass) ? `mongodb://${user}:${pass}@${address}` : `mongodb://${address}`;
+        logger.info(`${TAG} Connecting to db on ${url}`);
         mongoose.connect(url).then(function () {
             logger.info(`${TAG} Connected to database on ${url}`);
             if(app) {
@@ -51,8 +51,8 @@ module.exports = {
                 callback();
             }
         }, function (error) {
-            logger.error(`${TAG} Failed to connect to database on ${url}. Error: ${error}`);
-            throw `Failed to connect to database on ${url}`;
+            logger.error(`${TAG} Failed to connect to database at ${url}. Error: ${error}`);
+            throw `Failed to connect to database at ${url}`;
         });
     },
     address: getAddressFromEnvironment(),
