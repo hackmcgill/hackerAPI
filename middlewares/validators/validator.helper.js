@@ -29,11 +29,11 @@ function devpostValidator (getOrPost, fieldname, optional = true) {
     // match optional https://, http://, www., then optional pre-devpost part, then devpost.com with different routes and params
     if (optional) {
         return devpostUrl.optional({ checkFalsy: true })
-            .matches(/^(http(s)?:(\/\/)?)?(www\.)?(([-a-zA-Z0-9@:%._\+~#=]{2,256}\.)?devpost\.com)\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$/)
+            .matches(Constants.DEVPOST_REGEX)
             .withMessage("must be valid devpost url");
     } else {
         return devpostUrl.exists().withMessage("devpost url must exist")
-            .matches(/^(http(s)?:(\/\/)?)?(www\.)?(([-a-zA-Z0-9@:%._\+~#=]{2,256}\.)?devpost\.com)\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$/)
+            .matches(Constants.DEVPOST_REGEX)
             .withMessage("must be valid devpost url");
     }
 }
@@ -171,6 +171,9 @@ function nameValidator (getOrPost, fieldname, optional = true) {
  * @param {"get" | "post"} getOrPost Whether the query is sent as a get or post request
  * @param {string} fieldname Name of the field that needs to be validated.
  * @param {boolean} optional Whether the field is optional or not.
+ * @description 
+ * Matches against a regex that looks for optional http://, https://, http:, https:, and optional www.
+ * Regex then looks for the domain, and then optional route, path, query parameters
  */
 function urlValidator (getOrPost, fieldname, optional = true) {
     var url;
@@ -180,15 +183,13 @@ function urlValidator (getOrPost, fieldname, optional = true) {
         url = body(fieldname, "invalid url");
     }
 
-    // matches optional http://, https://, http:, https:, and optional www.
-    // matches the domain, and then optional route parameters
     if (optional) {
         return url.optional({ checkFalsy: true })
-            .matches(/^(http(s)?:(\/\/)?)?(www\.)?([-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6})\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$/)
+            .matches(Constants.URL_REGEX)
             .withMessage("must be valid url");
     } else {
         return url.exists().withMessage("url must exist")
-            .matches(/^(http(s)?:(\/\/)?)?(www\.)?([-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6})\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$/)
+            .matches(Constants.URL_REGEX)
             .withMessage("must be valid url");
     }
 }
@@ -208,9 +209,9 @@ function emailValidator (getOrPost, fieldname, optional = true) {
     }
 
     if (optional) {
-        return email.optional({ checkFalsy: true }).matches(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/).withMessage("must be valid email");
+        return email.optional({ checkFalsy: true }).matches(Constants.EMAIL_REGEX).withMessage("must be valid email");
     } else {
-        return email.exists().withMessage("email must exist").matches(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/).withMessage("must be valid email");
+        return email.exists().withMessage("email must exist").matches(Constants.EMAIL_REGEX).withMessage("must be valid email");
     }
 }
 
@@ -252,9 +253,9 @@ function shirtSizeValidator (getOrPost, fieldname, optional = true) {
     }
 
     if (optional) {
-        return size.optional({ checkFalsy: true}).isIn(["XS", "S", "M", "L", "XL", "XXL"]).withMessage("must be one of XS, S, M, L, XL, XXL");
+        return size.optional({ checkFalsy: true}).isIn(Constants.SHIRT_SIZES).withMessage(`Size must be in ${Constants.SHIRT_SIZES}`);
     } else {
-        return size.exists().withMessage("shirt size must exist").isIn(["XS", "S", "M", "L", "XL", "XXL"]).withMessage("must be one of XS, S, M, L, XL, XXL");
+        return size.exists().withMessage("shirt size must exist").isIn(Constants.SHIRT_SIZES).withMessage(`Size must be in ${Constants.SHIRT_SIZES}`);
     }
 }
 
@@ -288,8 +289,6 @@ function passwordValidator (getOrPost, fieldname, optional = true) {
  */
 function hackerStatusValidator (getOrPost, fieldname, optional = true) {
     var status;
-    const statuses = ["None", "Applied", "Accepted", "Waitlisted", "Confirmed", "Cancelled", "Checked-in"];
-
 
     if (getOrPost === "get") {
         status = query(fieldname, "invalid status");
@@ -298,9 +297,9 @@ function hackerStatusValidator (getOrPost, fieldname, optional = true) {
     }
 
     if (optional) {
-        return status.optional({ checkFalsy: true}).isIn(statuses).withMessage("Must be one of valid statuses");
+        return status.optional({ checkFalsy: true}).isIn(Constants.HACKER_STATUSES).withMessage(`Status must be in ${Constants.HACKER_STATUSES}`);
     } else {
-        return status.exists().withMessage("must be one of valid statuses");
+        return status.exists().withMessage(`Status must be in ${Constants.HACKER_STATUSES}`);
     }
 }
 
