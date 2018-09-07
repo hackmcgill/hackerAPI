@@ -4,11 +4,11 @@ const VALIDATOR = require("./validator.helper");
 module.exports = {
     newHackerValidator: [
         // status will be added automatically
-        VALIDATOR.mongoIdValidator("post", "accountId", false),
-        VALIDATOR.nameValidator("post", "school", false),
-        VALIDATOR.nameValidator("post", "gender", false),
-        VALIDATOR.booleanValidator("post", "needsBus", false),
-        VALIDATOR.applicationValidator("post", "application", false),
+        VALIDATOR.mongoIdValidator("body", "accountId", false),
+        VALIDATOR.nameValidator("body", "school", false),
+        VALIDATOR.nameValidator("body", "gender", false),
+        VALIDATOR.booleanValidator("body", "needsBus", false),
+        VALIDATOR.applicationValidator("body", "application", false),
     ],
 
     // untested

@@ -11,7 +11,6 @@ const mongoose = require("mongoose");
 const TAG = `[ VALIDATOR.HELPER.js ]`;
 const jwt = require("jsonwebtoken");
 const Constants = require("../../constants");
-const Team = require("../../services/team.service");
 
 function devpostValidator (fieldLocation, fieldname, optional = true) {
     const devpostUrl = setProperValidationChainBuilder(fieldLocation, fieldname, "invalid web address");
@@ -231,9 +230,8 @@ function applicationValidator (fieldLocation, fieldname, optional = true) {
         essay: false,
         team: false
     };
-
     if (optional) {
-        return application.custom(app => {
+        return application.optional({ checkFalsy: true}).custom(app => {
             const jobInterests = Constants.JOB_INTERESTS;
             hasValid.resume = (!app.portfolioURL.resume || typeof(app.portfolioURL.resume) === "string");
             hasValid.github = (!app.portfolioURL.github || typeof(app.portfolioURL.github) === "string");
@@ -241,11 +239,11 @@ function applicationValidator (fieldLocation, fieldname, optional = true) {
             hasValid.personal = (!app.portfolioURL.personal || typeof(app.portfolioURL.personal) === "string");
             hasValid.linkedIn = (!app.portfolioURL.linkedIn || typeof(app.portfolioURL.linkedIn) === "string");
             hasValid.other = (!app.portfolioURL.other || typeof(app.portfolioURL.other) === "string");
-            hasValid.jobInterest = (!app.jobInterest || jobInterests.includes(app.jobInterests));
+            hasValid.jobInterest = (!app.jobInterest || jobInterests.includes(app.jobInterest));
             hasValid.skills = (!app.skills || skillsArrayValidator(app.skills));
             hasValid.comments = (!app.comments || typeof(app.comments) === "string");
             hasValid.essay = (!app.essay || typeof(app.essay) === "string");
-            hasValid.team = (!app.team || Team.isTeamIdValid(app.team));
+            hasValid.team = (!app.team || mongoose.Types.ObjectId.isValid(app.team));
             return  hasValid.comments && hasValid.github && hasValid.dropler && hasValid.personal && 
                     hasValid.linkedIn && hasValid.other && hasValid.jobInterest && hasValid.skills && hasValid.team;
         }).withMessage({message: "Not all items of the application are valid", isValid: hasValid});
@@ -253,16 +251,16 @@ function applicationValidator (fieldLocation, fieldname, optional = true) {
         return application.custom(app => {
             const jobInterests = Constants.JOB_INTERESTS;
             hasValid.resume = (typeof(app.portfolioURL.resume) === "string");
-            hasValid.github = (typeof(app.portfolioURL.github) === "string");
-            hasValid.dropler = (typeof(app.portfolioURL.dropler) === "string");
-            hasValid.personal = (typeof(app.portfolioURL.personal) === "string");
-            hasValid.linkedIn = (typeof(app.portfolioURL.linkedIn) === "string");
-            hasValid.other = (typeof(app.portfolioURL.other) === "string");
-            hasValid.jobInterest = (jobInterests.includes(app.jobInterests));
-            hasValid.skills = (skillsArrayValidator(app.skills));
-            hasValid.comments = (typeof(app.comments) === "string");
-            hasValid.essay = (typeof(app.essay) === "string");
-            hasValid.team = (Team.isTeamIdValid(app.team));
+            hasValid.github = (!app.portfolioURL.github || typeof(app.portfolioURL.github) === "string");
+            hasValid.dropler = (!app.portfolioURL.dropler || typeof(app.portfolioURL.dropler) === "string");
+            hasValid.personal = (!app.portfolioURL.personal || typeof(app.portfolioURL.personal) === "string");
+            hasValid.linkedIn = (!app.portfolioURL.linkedIn || typeof(app.portfolioURL.linkedIn) === "string");
+            hasValid.other = (!app.portfolioURL.other || typeof(app.portfolioURL.other) === "string");
+            hasValid.jobInterest = (jobInterests.includes(app.jobInterest));
+            hasValid.skills = (!app.skills || skillsArrayValidator(app.skills));
+            hasValid.comments = (!app.comments || typeof(app.comments) === "string");
+            hasValid.essay = (!app.essay || typeof(app.essay) === "string");
+            hasValid.team = (!app.team || mongoose.Types.ObjectId.isValid(app.team));
             return  hasValid.comments && hasValid.github && hasValid.dropler && hasValid.personal && 
                     hasValid.linkedIn && hasValid.other && hasValid.jobInterest && hasValid.skills && hasValid.team;
         }).withMessage({message: "Not all items of the application are valid", isValid: hasValid});
