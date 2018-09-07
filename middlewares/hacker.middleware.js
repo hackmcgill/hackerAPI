@@ -1,18 +1,60 @@
-// must check that the account id is in the hacker schema.
 "use strict";
+
+const TAG = `[ HACKER.MIDDLEWARE.js ]`;
+const mongoose = require("mongoose");
 const Services = {
     Hacker: require("../services/hacker.service"),
     Storage: require("../services/storage.service")
 };
 const Middleware = {
     Util: require("./util.middleware")
+};
+
+/**
+ * @async
+ * @function parseHacker
+ * @param {JSON} req
+ * @param {JSON} res
+ * @param {JSON} next
+ * @return {void}
+ * @description 
+ * Moves accountId, school, gender, needsBus, application from req.body to req.body.teamDetails. 
+ * Adds _id to teamDetails.
+ */
+function parseHacker(req, res, next) {
+    const hackerDetails = {
+        _id: mongoose.Types.ObjectId(),
+        accountId: req.body.accountId,
+        school: req.body.school,
+        gender: req.body.gender,
+        needsBus: req.body.needsBus,
+        application: req.body.application,
+    };
+
+    delete req.body.accountId;
+    delete req.body.school;
+    delete req.body.gender;
+    delete req.body.needsBus;
+    delete req.body.application;
+
+    req.body.hackerDetails = hackerDetails;
+
+    next();
 }
 
-module.exports = {
-    ensureAccountLinkedToHacker: ensureAccountLinkedToHacker,
-    uploadResume: Middleware.Util.asyncMiddleware(uploadResume),
-    downloadResume: Middleware.Util.asyncMiddleware(downloadResume)
-};
+/**
+ * @async
+ * @function addDefaultStatus
+ * @param {JSON} req
+ * @param {JSON} res
+ * @param {JSON} next
+ * @return {void}
+ * @description Adds status to teamDetails.
+ */
+function addDefaultStatus(req, res, next) {
+    req.body.hackerDetails.status = "Applied";
+    next();
+}
 
 /**
  * Verifies that the current signed in user is linked to the hacker passed in via req.body.id
@@ -20,6 +62,7 @@ module.exports = {
  * @param {*} res 
  * @param {*} next 
  */
+// must check that the account id is in the hacker schema.
 function ensureAccountLinkedToHacker(req, res, next) {
     Services.Hacker.findById(req.body.id).then(
         (hacker) => {
@@ -45,7 +88,7 @@ async function uploadResume(req, res, next) {
     const gcfilename = `resumes/${Date.now()}-${req.body.id}`;
     await Services.Storage.upload(req.file, gcfilename);
     req.body.gcfilename = gcfilename;
-    await Services.Hacker.update(req.body.id, { $set: {"application.portfolioURL.resume": gcfilename}});
+    await Services.Hacker.updateOne(req.body.id, { $set: {"application.portfolioURL.resume": gcfilename}});
     next();
 }
 
@@ -64,3 +107,12 @@ async function downloadResume(req, res, next) {
     }
     next();
 }
+
+
+module.exports = {
+    parseHacker: parseHacker,
+    addDefaultStatus: addDefaultStatus,
+    ensureAccountLinkedToHacker: ensureAccountLinkedToHacker,
+    uploadResume: Middleware.Util.asyncMiddleware(uploadResume),
+    downloadResume: Middleware.Util.asyncMiddleware(downloadResume)
+};
