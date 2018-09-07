@@ -40,7 +40,7 @@ module.exports = {
         const user = getUserFromEnvironment();
         const pass = getPassFromEnvironment();
         const address = getAddressFromEnvironment();
-        const url = `mongodb://${user}:${pass}@${address}`;
+        const url = (!!user && !!pass) ? `mongodb://${user}:${pass}@${address}` : `mongodb://${address}`;
         logger.info(`${TAG} Connecting to db on ${url}`);
         mongoose.connect(url).then(function () {
             logger.info(`${TAG} Connected to database on ${url}`);
