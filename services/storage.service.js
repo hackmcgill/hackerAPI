@@ -13,7 +13,6 @@ class StorageService {
             });
     
         } catch( error ) {
-            console.log(path.join(__dirname, "../gcp_creds.json"));
             Logger.error(error);
         }
         this.bucket = this.storage.bucket(this.bucketName);

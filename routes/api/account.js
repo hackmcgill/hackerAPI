@@ -11,7 +11,8 @@ const Middleware = {
     },
     /* Insert all of ther middleware require statements here */
     parseBody: require("../../middlewares/parse-body.middleware"),
-    Account: require("../../middlewares/account.middleware")
+    Account: require("../../middlewares/account.middleware"),
+    Auth: require("../../middlewares/auth.middleware")
 };
 
 module.exports = {
@@ -38,6 +39,7 @@ module.exports = {
          *      {"message": "User email not found", "data": {}}
          */
         accountRouter.route("/self").get(
+            Middleware.Auth.ensureAuthenticated(),
             Controllers.Account.getUserByEmail
         );
 
@@ -76,7 +78,7 @@ module.exports = {
             // middlewares to parse body/organize body
             // adds default hacker permissions here
             Middleware.Account.parseAccount,
-            Middleware.Account.addDefaultPermission,
+            Middleware.Account.addDefaultHackerPermissions,
 
             // should return status in this function
             Controllers.Account.addUser
@@ -109,6 +111,7 @@ module.exports = {
          *      {"message": "Issue with changing account information", "data": {}}
          */
         accountRouter.route("/:id").patch(
+            Middleware.Auth.ensureAuthenticated(),
             // validators
             Middleware.Validator.Account.updateAccountValidator,
 

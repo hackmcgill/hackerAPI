@@ -7,7 +7,7 @@ const bcrypt = require("bcrypt");
  * @async
  * @function findById
  * @param {String} id
- * @return {Account | null} either account or null
+ * @return {DocumentQuery} either account or null
  * @description Finds an account by mongoID.
  */
 async function findById(id) {
@@ -15,7 +15,7 @@ async function findById(id) {
     const query = {
         _id: id
     };
-    return await Account.findById(query, function (error, user) {
+    const acct = await Account.findById(query, function (error, user) {
         if (error) {
             logger.error(`${TAG} Failed to verify if accounts exist or not using ${JSON.stringify(query)}`, error);
         } else if (user) {
@@ -24,6 +24,7 @@ async function findById(id) {
             logger.debug(`${TAG} accounts using ${JSON.stringify(query)} do not exist in the database`);
         }
     });
+    return acct;
 }
 
 /**
@@ -134,6 +135,16 @@ async function changeOneAccount(id, accountDetails) {
     return !!(success);
 }
 
+/**
+ * Updates the password for an account. This function also hashes the password.
+ * @param {string} id String representing the ObjectId of the account
+ * @param {string} newPassword the new password for the account (in plain-text).
+ */
+function updatePassword(id, newPassword) {
+    const hashed = hashPassword(newPassword);
+    return changeOneAccount(id, {password: hashed});
+}
+
 module.exports = {
     findOne: findOne,
     findById: findById,
@@ -141,5 +152,6 @@ module.exports = {
     addOneAccount: addOneAccount,
     getAccountIfValid: getAccountIfValid,
     hashPassword: hashPassword,
-    changeOneAccount: changeOneAccount
+    changeOneAccount: changeOneAccount,
+    updatePassword: updatePassword
 };

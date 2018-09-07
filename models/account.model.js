@@ -50,7 +50,7 @@ AccountSchema.methods.toStrippedJSON = function () {
     const as = this.toJSON();
     delete as.password;
     return as;
-}
+};
 /**
  * Pass in an un-encrypted password and see whether it matches the 
  * encrypted password
@@ -58,7 +58,7 @@ AccountSchema.methods.toStrippedJSON = function () {
  */
 AccountSchema.methods.comparePassword = function (password) {
     return bcrypt.compareSync(password, this.password);
-}
+};
 
 //export the model
 module.exports = mongoose.model("Account", AccountSchema);

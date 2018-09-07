@@ -10,8 +10,7 @@ const defPermission = new mongoose.Schema({
     },
     permissions: {
         type: [{
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "Permission"
+            type: String
         }]
     }
 });

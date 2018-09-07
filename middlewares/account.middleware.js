@@ -1,6 +1,6 @@
 "use strict";
 
-const TAG = `[ ADDRESS.SERVER.MIDDLEWARE.js ]`;
+const TAG = `[ ADDRESS.MIDDLEWARE.js ]`;
 const mongoose = require("mongoose");
 const Services = {
     Permission: require("../services/permission.service"),
@@ -8,46 +8,60 @@ const Services = {
     Account: require("../services/account.service")
 };
 
+const Middleware = {
+    Util: require("../middlewares/util.middleware")
+}
+
 module.exports = {
-    /**
-     * @function parseAccount
-     * @param {JSON} req
-     * @param {JSON} res
-     * @param {JSON} next
-     * @return {void}
-     * @description 
-     * Moves firstName, lastName, email, password, dietaryRestrictions, shirtSize from req.body to req.body.accountDetails.
-     * Hashes the password.
-     * Adds _id to accountDetails.
-     */
-    parseAccount: function (req, res, next) {
+    parseAccount: parseAccount,
+    // untested
+    addDefaultHackerPermissions: Middleware.Util.asyncMiddleware(addDefaultHackerPermissions),
+    // untested
+    updatePassword: Middleware.Util.asyncMiddleware(updatePassword)
+};
 
-        const accountDetails = {
-            _id: mongoose.Types.ObjectId(),
-            firstName: req.body.firstName,
-            lastName: req.body.lastName,
-            email: req.body.email,
-            password: Services.Account.hashPassword(req.body.password),
-            dietaryRestrictions: req.body.dietaryRestrictions,
-            shirtSize: req.body.shirtSize
-        };
+/**
+ * @function parseAccount
+ * @param {JSON} req
+ * @param {JSON} res
+ * @param {JSON} next
+ * @return {void}
+ * @description 
+ * Moves firstName, lastName, email, password, dietaryRestrictions, shirtSize from req.body to req.body.accountDetails.
+ * Hashes the password.
+ * Adds _id to accountDetails.
+ */
+function parseAccount(req, res, next) {
 
-        delete req.body.firstName;
-        delete req.body.lastName;
-        delete req.body.email;
-        delete req.body.password;
-        delete req.body.dietaryRestrictions;
-        delete req.body.shirtSize;
+    const accountDetails = {
+        _id: mongoose.Types.ObjectId(),
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
+        email: req.body.email,
+        password: Services.Account.hashPassword(req.body.password),
+        dietaryRestrictions: req.body.dietaryRestrictions,
+        shirtSize: req.body.shirtSize
+    };
 
-        req.body.accountDetails = accountDetails;
+    delete req.body.firstName;
+    delete req.body.lastName;
+    delete req.body.email;
+    delete req.body.password;
+    delete req.body.dietaryRestrictions;
+    delete req.body.shirtSize;
 
-        next();
-    },
+    req.body.accountDetails = accountDetails;
 
-    // TODO: fix when new permission system is created
-    addDefaultPermission: async function (req, res, next) {
-        req.body.accountDetails.permissions = await Services.Permission.getDefaultPermission("Hacker");
-        next();
-    }
+    next();
+}
 
+async function updatePassword(req, res, next) {
+    req.body.accountDetails.permissions = await Services.Account.updatePassword(req.body.password);
+    next();
+}
+
+// TODO: fix when new permission system is created
+async function addDefaultHackerPermissions (req, res, next) {
+    req.body.accountDetails.permissions = await Services.Permission.getDefaultPermission("Hacker");
+    next();
 }
