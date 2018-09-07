@@ -111,14 +111,10 @@ function mongoIdArrayValidator (getOrPost, fieldname, optional = true) {
 
     if (optional) {
         return arr.optional({ checkFalsy: true })
-            .custom((value) => {
-                return isMongoIdArray(value);
-            }).withMessage("Value must be an array of mongoIDs");
+            .custom(isMongoIdArray).withMessage("Value must be an array of mongoIDs");
     } else {
-            return arr.exists()
-            .custom((value) => {
-                return isMongoIdArray(value);
-            }).withMessage("Value must be an array of mongoIDs");
+        return arr.exists()
+            .custom(isMongoIdArray).withMessage("Value must be an array of mongoIDs");
     }
 }
 
@@ -370,11 +366,11 @@ function isMongoIdArray (arr) {
         return false;
     }
 
-    arr.forEach(ele => {
+    for (var ele of arr) {
         if (!mongoose.Types.ObjectId.isValid(ele)) {
             return false;
         }
-    });
+    }
 
     return true;
 }
