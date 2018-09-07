@@ -4,6 +4,7 @@ const Services = {
     Logger: require("../services/logger.service")
 };
 const Util = require("../middlewares/util.middleware");
+const mongoose = require("mongoose");
 
 /**
  * @async
@@ -15,7 +16,29 @@ const Util = require("../middlewares/util.middleware");
  */
 async function findById(req, res) {
     // finds sponsor by route parameter
-    const sponsor = await Services.Sponsor.findById(req.params.id);
+    const testId = mongoose.Types.ObjectId();
+    console.log(testId);
+    const sponsor = await Services.Sponsor.findById("testId")
+                        .exec((error, result) => {
+                            if (error) {
+                                console.log("In exec " + error);
+                            }
+                            if (result) {
+                                console.log(result);
+                            }
+                        });
+    const sponsor1 = Services.Sponsor.findById("testId").exec()
+                        .then(
+                            (resolve) => {
+                                console.log("In then " + resolve);
+                            },
+                            (error) => {
+                                console.log("In then " + error);
+                            }
+                        );
+    
+    console.log("sponsor " + sponsor);
+    console.log("sponsor1 " + sponsor1);
 
     if (sponsor) {
         return res.status(200).json({
