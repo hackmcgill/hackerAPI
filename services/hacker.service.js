@@ -52,7 +52,6 @@ async function updateOne(id, hackerDetails) {
     return !!(success);
 }
 
-// Shouldn't this be Async?
 function findById(id) {
     return Hacker.findById(id).exec();
 }

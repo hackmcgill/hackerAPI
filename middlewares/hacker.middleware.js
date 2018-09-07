@@ -53,6 +53,7 @@ function parseHacker(req, res, next) {
  */
 function addDefaultStatus(req, res, next) {
     req.body.hackerDetails.status = "Applied";
+    next();
 }
 
 /**
@@ -63,7 +64,6 @@ function addDefaultStatus(req, res, next) {
  */
 // must check that the account id is in the hacker schema.
 function ensureAccountLinkedToHacker(req, res, next) {
-    // Shouldn't this be async?
     Services.Hacker.findById(req.body.id).then(
         (hacker) => {
             if(hacker && hacker.accountId === req.user.id) {

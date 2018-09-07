@@ -9,6 +9,20 @@ const Hacker = require("../../models/hacker.model");
 const logger = require("../../services/logger.service");
 const TAG = "[ HACKER.TEST.UTIL.JS ]";
 
+const invalidHacker1 = {
+    // invalid mongoID
+    "accountId": "UtilAccountAccount1_id",
+    // invalid missing school attribute
+    "gender": "Female",
+    "needsBus": true,
+    "application": {
+        // invalid portflio with no resume
+        "portfolioURL": {},
+        // invalid jobInterest
+        "jobInterest": "ASDF",  
+    }
+}
+
 const newHacker1 = {
     "accountId": Util.Account.Account1._id,
     "school": "University of ASDF",
@@ -89,6 +103,7 @@ const Hackers = [
 ];
 
 module.exports = {
+    invalidHacker1: invalidHacker1,
     newHacker1: newHacker1,
     HackerA: HackerA,
     HackerB: HackerB,
