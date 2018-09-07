@@ -25,6 +25,7 @@ async function ensureUniqueHackerId(req, res, next) {
         // check to see if a member is entered twice in the application
         if (!!idSet[member]) {
             return next({
+                status: 422,
                 message: "Duplicate member in input",
                 data: member
             });
@@ -37,6 +38,7 @@ async function ensureUniqueHackerId(req, res, next) {
 
         if (!!team) {
             return next({
+                status: 422,
                 message: "A member is already part of another team",
                 data: member
             });

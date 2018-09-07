@@ -2,24 +2,18 @@
 const {
     body,
     query,
+    header,
     param
 } = require("express-validator/check");
 const logger = require("../../services/logger.service");
 const Skill = require("../../services/skill.service");
-const Team = require("../../services/team.service");
 const mongoose = require("mongoose");
 const TAG = `[ VALIDATOR.HELPER.js ]`;
+const jwt = require("jsonwebtoken");
 const Constants = require("../../constants");
 
-function devpostValidator (getOrPost, fieldname, optional = true) {
-    var devpostUrl;
-
-    if (getOrPost === "get") {
-        devpostUrl = query(fieldname, "invalid integer");
-    } else {
-        devpostUrl = body(fieldname, "invalid integer");
-    }
-
+function devpostValidator (fieldLocation, fieldname, optional = true) {
+    const devpostUrl = setProperValidationChainBuilder(fieldLocation, fieldname, "invalid web address");
     // match optional https://, http://, www., then optional pre-devpost part, then devpost.com with different routes and params
     if (optional) {
         return devpostUrl.optional({ checkFalsy: true })
@@ -32,14 +26,8 @@ function devpostValidator (getOrPost, fieldname, optional = true) {
     }
 }
 
-function integerValidator (getOrPost, fieldname, optional = true, lowerBound = -Infinity, upperBound = Infinity) {
-    var value;
-
-    if (getOrPost === "get") {
-        value = query(fieldname, "invalid integer");
-    } else {
-        value = body(fieldname, "invalid integer");
-    }
+function integerValidator (fieldLocation, fieldname, optional = true, lowerBound = -Infinity, upperBound = Infinity) {
+    const value = setProperValidationChainBuilder(fieldLocation, fieldname, "invalid integer");
 
     if (optional) {
         return value.optional({ checkFalsy: true })
@@ -56,32 +44,8 @@ function integerValidator (getOrPost, fieldname, optional = true, lowerBound = -
     }
 }
 
-function mongoIdValidator (getOrPostOrParam, fieldname, optional = true) {
-    var mongoId;
-
-    if (getOrPostOrParam === "get") {
-        mongoId = query(fieldname, "invalid mongoID");
-    } else if(getOrPostOrParam === "post") {
-        mongoId = body(fieldname, "invalid mongoID");
-    } else {
-        mongoId = param(fieldname, "invalid mongoID");
-    }
-
-    if (optional) {
-        return mongoId.optional({ checkFalsy: true }).isMongoId().withMessage("must be a valid mongoID");
-    } else {
-        return mongoId.exists().isMongoId().withMessage("must be a valid mongoID");
-    }
-}
-
-function mongoIdArrayValidator (getOrPost, fieldname, optional = true) {
-    var arr;
-
-    if (getOrPost === "get") {
-        arr = query(fieldname, "invalid mongoID array");
-    } else {
-        arr = body(fieldname, "invalid mongoID array");
-    }
+function mongoIdArrayValidator (fieldLocation, fieldname, optional = true) {
+    const arr = setProperValidationChainBuilder(fieldLocation, fieldname, "invalid mongoID array");
 
     if (optional) {
         return arr.optional({ checkFalsy: true })
@@ -111,15 +75,15 @@ function mongoIdArrayValidator (getOrPost, fieldname, optional = true) {
             }).withMessage("Each element must be a valid mongoId");
     }
 }
-
-function booleanValidator (getOrPost, fieldname, optional = true) {
-    var booleanField;
-
-    if (getOrPost === "get") {
-        booleanField = query(fieldname, "invalid boolean");
-    } else {
-        booleanField = body(fieldname, "invalid boolean");
-    }
+// untested
+/**
+ * Validates that field must be boolean.
+ * @param {"query" | "body" | "header" | "param"} fieldLocation the location where the field should be found 
+ * @param {string} fieldname name of the field that needs to be validated.
+ * @param {boolean} optional whether the field is optional or not.
+ */
+function booleanValidator (fieldLocation, fieldname, optional = true) {
+    const booleanField = setProperValidationChainBuilder(fieldLocation, fieldname, "invalid boolean");
 
     if (optional) {
         // do not use check falsy option as a 'false' boolean will be skipped
@@ -129,14 +93,15 @@ function booleanValidator (getOrPost, fieldname, optional = true) {
     }
 }
 
-function nameValidator (getOrPost, fieldname, optional = true) {
-    var name;
-    if (getOrPost === "get") {
-        name = query(fieldname, "invalid name");
-    } else {
-        name = body(fieldname, "invalid name");
-    }
-
+// untested
+/**
+ * Validates that field name is ascii only.
+ * @param {"query" | "body" | "header" | "param"} fieldLocation the location where the field should be found 
+ * @param {string} fieldname name of the field that needs to be validated.
+ * @param {boolean} optional whether the field is optional or not.
+ */
+function nameValidator (fieldLocation, fieldname, optional = true) {
+    const name = setProperValidationChainBuilder(fieldLocation, fieldname, "invalid name");
     if (optional) {
         return name.optional({ checkFalsy: true }).isAscii().withMessage("must contain only ascii characters");
     } else {
@@ -144,13 +109,8 @@ function nameValidator (getOrPost, fieldname, optional = true) {
     }
 }
 
-function urlValidator (getOrPost, fieldname, optional = true) {
-    var url;
-    if (getOrPost === "get") {
-        url = query(fieldname, "invalid url");
-    } else {
-        url = body(fieldname, "invalid url");
-    }
+function urlValidator (fieldLocation, fieldname, optional = true) {
+    const url = setProperValidationChainBuilder(fieldLocation, fieldname, "invalid name");
 
     if (optional) {
         return url.optional({ checkFalsy: true })
@@ -162,15 +122,15 @@ function urlValidator (getOrPost, fieldname, optional = true) {
             .withMessage("must be valid url");
     }
 }
-
-function emailValidator (getOrPost, fieldname, optional = true) {
-    var email;
-    if (getOrPost === "get") {
-        email = query(fieldname, "invalid email");
-    } else {
-        email = body(fieldname, "invalid email");
-    }
-
+// untested
+/**
+ * Validates that field must be email.
+ * @param {"query" | "body" | "header" | "param"} fieldLocation the location where the field should be found 
+ * @param {string} fieldname name of the field that needs to be validated.
+ * @param {boolean} optional whether the field is optional or not.
+ */
+function emailValidator(fieldLocation, fieldname, optional = true) {
+    const email = setProperValidationChainBuilder(fieldLocation, fieldname, "invalid email");
     if (optional) {
         return email.optional({ checkFalsy: true }).matches(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/).withMessage("must be valid email");
     } else {
@@ -178,15 +138,15 @@ function emailValidator (getOrPost, fieldname, optional = true) {
     }
 }
 
-function alphaValidator (getOrPost, fieldname, optional = true) {
-    var name;
-
-    if (getOrPost === "get") {
-        name = query(fieldname, "invalid dietary restriction");
-    } else {
-        name = body(fieldname, "invalid dietary restriction");
-    }
-
+// untested
+/**
+ * Validates that field must be alphabetical.
+ * @param {"query" | "body" | "header" | "param"} fieldLocation the location where the field should be found 
+ * @param {string} fieldname name of the field that needs to be validated.
+ * @param {boolean} optional whether the field is optional or not.
+ */
+function alphaValidator (fieldLocation, fieldname, optional = true) {
+    const name = setProperValidationChainBuilder(fieldLocation, fieldname, "invalid alpha string");
     if (optional) {
         return name.optional({ checkFalsy: true}).isAlpha().withMessage("must contain alphabet characters");
     } else {
@@ -194,31 +154,34 @@ function alphaValidator (getOrPost, fieldname, optional = true) {
     }
 }
 
-function shirtSizeValidator (getOrPost, fieldname, optional = true) {
-    var size;
-
-    if (getOrPost === "get") {
-        size = query(fieldname, "invalid size");
-    } else {
-        size = body(fieldname, "invalid size");
-    }
+// untested
+/**
+ * Validates that field must be one of the shirt size enums.
+ * @param {"query" | "body" | "header" | "param"} fieldLocation the location where the field should be found 
+ * @param {string} fieldname name of the field that needs to be validated.
+ * @param {boolean} optional whether the field is optional or not.
+ */
+function shirtSizeValidator (fieldLocation, fieldname, optional = true) {
+    const size = setProperValidationChainBuilder(fieldLocation, fieldname, "invalid shirt size");
+    const shirtSizes = ["XS", "S", "M", "L", "XL", "XXL"];
 
     if (optional) {
-        return size.optional({ checkFalsy: true}).isIn(["XS", "S", "M", "L", "XL", "XXL"]).withMessage("must be one of XS, S, M, L, XL, XXL");
+        return size.optional({ checkFalsy: true}).isIn(shirtSizes).withMessage(`Must be one of ${shirtSizes.join(",")}`);
     } else {
-        return size.exists().withMessage("shirt size must exist").isIn(["XS", "S", "M", "L", "XL", "XXL"]).withMessage("must be one of XS, S, M, L, XL, XXL");
+        return size.exists().withMessage("shirt size must exist").isIn(shirtSizes).withMessage(`must be one of ${shirtSizes.join(",")}`);
     }
 }
 
-function passwordValidator (getOrPost, fieldname, optional = true) {
-    var password;
-
-    if (getOrPost === "get") {
-        password = query(fieldname, "invalid password");
-    } else {
-        password = body(fieldname, "invalid password");
-    }
-
+// untested
+/**
+ * Validates that field must be at least 6 characters long. 
+ * TODO: impose better restrictions.
+ * @param {"query" | "body" | "header" | "param"} fieldLocation the location where the field should be found 
+ * @param {string} fieldname name of the field that needs to be validated.
+ * @param {boolean} optional whether the field is optional or not.
+ */
+function passwordValidator (fieldLocation, fieldname, optional = true) {
+    const password = setProperValidationChainBuilder(fieldLocation, fieldname, "invalid password");
     if (optional) {
         return password.optional({ checkFalsy: true}).isLength({ min: 6 }).withMessage("must be longer than 6 characters");
     } else {
@@ -226,83 +189,151 @@ function passwordValidator (getOrPost, fieldname, optional = true) {
     }
 }
 
-function hackerStatusValidator (getOrPost, fieldname, optional = true) {
-    var status;
+// untested
+/**
+ * Validates that field must be one of the status enums.
+ * @param {"query" | "body" | "header" | "param"} fieldLocation the location where the field should be found 
+ * @param {string} fieldname name of the field that needs to be validated.
+ * @param {boolean} optional whether the field is optional or not.
+ */
+function hackerStatusValidator (fieldLocation, fieldname, optional = true) {
+    const status = setProperValidationChainBuilder(fieldLocation, fieldname, "invalid status");
+
     const statuses = ["None", "Applied", "Accepted", "Waitlisted", "Confirmed", "Cancelled", "Checked-in"];
 
-
-    if (getOrPost === "get") {
-        status = query(fieldname, "invalid status");
-    } else {
-        status = body(fieldname, "invalid status");
-    }
-
     if (optional) {
-        return status.optional({ checkFalsy: true}).isIn(statuses).withMessage("Must be one of valid statuses");
+        return status.optional({ checkFalsy: true}).isIn(statuses).withMessage(`must be one of valid statuses: ${statuses.join(",")}`);
     } else {
-        return status.exists().withMessage("must be one of valid statuses");
+        return status.exists().withMessage(`must be one of valid statuses: ${statuses.join(",")}`);
     }
 }
+/**
+ * Validates that field must be a valid application.
+ * @param {"query" | "body" | "header" | "param"} fieldLocation the location where the field should be found 
+ * @param {string} fieldname name of the field that needs to be validated.
+ * @param {boolean} optional whether the field is optional or not.
+ */
+function applicationValidator (fieldLocation, fieldname, optional = true) {
+    const application = setProperValidationChainBuilder(fieldLocation, fieldname, "invalid application");
 
-function applicationValidator (getOrPost, fieldname, optional = true) {
-    var application;
-
-    if (getOrPost === "get") {
-        application = query(fieldname, "invalid application");
-    } else {
-        application = body(fieldname, "invalid application");
-    }
-
+    //helper object to iterate through the items in the application and track which items are not valid.
+    const hasValid = {
+        resume: false,
+        github: false,
+        dropler: false,
+        personal: false,
+        linkedIn: false,
+        other: false,
+        jobInterest: false,
+        skills: false,
+        comments: false,
+        essay: false,
+        team: false
+    };
     if (optional) {
-        return application.optional({ checkFalsy: true })
-            .custom(app => {
-                let jobInterests = Constants.JOB_INTERESTS;
-                return (
-                    (!app.portfolioURL.resume || typeof(app.portfolioURL.resume) === "string") &&
-                    (!app.portfolioURL.github || typeof(app.portfolioURL.github) === "string") &&
-                    (!app.portfolioURL.dropler || typeof(app.portfolioURL.dropler) === "string") &&
-                    (!app.portfolioURL.personal || typeof(app.portfolioURL.personal) === "string") &&
-                    (!app.portfolioURL.linkedIn || typeof(app.portfolioURL.linkedIn) === "string") &&
-                    (!app.portfolioURL.other || typeof(app.portfolioURL.other) === "string") &&
-                    (!app.jobInterest || jobInterests.includes(app.jobInterest)) &&
-                    (!app.skills || skillsArrayValidator(app.skills)) &&
-                    (!app.comments || typeof(app.comments) === "string") &&
-                    (!app.essay || typeof(app.essay) === "string") &&
-                    (!app.team || Team.isTeamIdValid(app.team))
-                );
-            });
+        return application.optional({ checkFalsy: true}).custom(app => {
+            const jobInterests = Constants.JOB_INTERESTS;
+            hasValid.resume = (!app.portfolioURL.resume || typeof(app.portfolioURL.resume) === "string");
+            hasValid.github = (!app.portfolioURL.github || typeof(app.portfolioURL.github) === "string");
+            hasValid.dropler = (!app.portfolioURL.dropler || typeof(app.portfolioURL.dropler) === "string");
+            hasValid.personal = (!app.portfolioURL.personal || typeof(app.portfolioURL.personal) === "string");
+            hasValid.linkedIn = (!app.portfolioURL.linkedIn || typeof(app.portfolioURL.linkedIn) === "string");
+            hasValid.other = (!app.portfolioURL.other || typeof(app.portfolioURL.other) === "string");
+            hasValid.jobInterest = (!app.jobInterest || jobInterests.includes(app.jobInterest));
+            hasValid.skills = (!app.skills || skillsArrayValidator(app.skills));
+            hasValid.comments = (!app.comments || typeof(app.comments) === "string");
+            hasValid.essay = (!app.essay || typeof(app.essay) === "string");
+            hasValid.team = (!app.team || mongoose.Types.ObjectId.isValid(app.team));
+            return  hasValid.comments && hasValid.github && hasValid.dropler && hasValid.personal && 
+                    hasValid.linkedIn && hasValid.other && hasValid.jobInterest && hasValid.skills && hasValid.team;
+        }).withMessage({message: "Not all items of the application are valid", isValid: hasValid});
     } else {
-        return application.exists().withMessage("application must exist")
-            .custom(app => {
-                let jobInterests = Constants.JOB_INTERESTS;
-                return (
-                    // resume must be entered when first creating hacker
-                    typeof(app.portfolioURL.resume === "string") &&
-                    (!app.portfolioURL.github || typeof(app.portfolioURL.github) === "string") &&
-                    (!app.portfolioURL.dropler || typeof(app.portfolioURL.dropler) === "string") &&
-                    (!app.portfolioURL.personal || typeof(app.portfolioURL.personal) === "string") &&
-                    (!app.portfolioURL.linkedIn || typeof(app.portfolioURL.linkedIn) === "string") &&
-                    (!app.portfolioURL.other || typeof(app.portfolioURL.other) === "string") &&
-                    // job interest must be entered when first creating hacker
-                    jobInterests.includes(app.jobInterest) &&
-                    (!app.skills || skillsArrayValidator(app.skills)) &&
-                    (!app.comments || typeof(app.comments) === "string") &&
-                    (!app.essay || typeof(app.essay) === "string") &&
-                    (!app.team || Team.isTeamIdValid(app.team))
-                );
-            });
+        return application.custom(app => {
+            const jobInterests = Constants.JOB_INTERESTS;
+            hasValid.resume = (typeof(app.portfolioURL.resume) === "string");
+            hasValid.github = (!app.portfolioURL.github || typeof(app.portfolioURL.github) === "string");
+            hasValid.dropler = (!app.portfolioURL.dropler || typeof(app.portfolioURL.dropler) === "string");
+            hasValid.personal = (!app.portfolioURL.personal || typeof(app.portfolioURL.personal) === "string");
+            hasValid.linkedIn = (!app.portfolioURL.linkedIn || typeof(app.portfolioURL.linkedIn) === "string");
+            hasValid.other = (!app.portfolioURL.other || typeof(app.portfolioURL.other) === "string");
+            hasValid.jobInterest = (jobInterests.includes(app.jobInterest));
+            hasValid.skills = (!app.skills || skillsArrayValidator(app.skills));
+            hasValid.comments = (!app.comments || typeof(app.comments) === "string");
+            hasValid.essay = (!app.essay || typeof(app.essay) === "string");
+            hasValid.team = (!app.team || mongoose.Types.ObjectId.isValid(app.team));
+            return  hasValid.comments && hasValid.github && hasValid.dropler && hasValid.personal && 
+                    hasValid.linkedIn && hasValid.other && hasValid.jobInterest && hasValid.skills && hasValid.team;
+        }).withMessage({message: "Not all items of the application are valid", isValid: hasValid});
+    }
+}
+function jwtValidator (fieldLocation, fieldname, jwtSecret, optional = true) {
+    const jwtValidationChain = setProperValidationChainBuilder(fieldLocation, fieldname, "Must be vali jwt");
+    if(optional) {
+        return jwtValidationChain.optional({ checkFalsy: true})
+        .custom(value => {
+            const token = jwt.verify(value, jwtSecret);
+            if(typeof token !== "undefined"){
+                return true;
+            }
+            return false;
+        }).withMessage(`must be valid jwt`);
+    } else {
+        return jwtValidationChain.exists().withMessage("Token must be provided")
+        .custom(value => {
+            const token = jwt.verify(value, jwtSecret);
+            if(typeof token !== "undefined"){
+                return true;
+            }
+            return false;
+        }).withMessage(`must be valid jwt`);
     }
 }
 
 function skillsArrayValidator (skills) {
     let valid = true;
     skills.forEach(skill => {
+        //ERROR: THIS IS DOING LOGIC ON A PROMISE @RICHARD
         if (!Skill.isSkillIdValid(skill)) {
             valid = false;
         }
     });
     return valid;
 }
+
+function setProperValidationChainBuilder(location, fieldName, errorString) {
+/**
+ * export const check: ValidationChainBuilder;
+export const body: ValidationChainBuilder;
+export const cookie: ValidationChainBuilder;
+export const header: ValidationChainBuilder;
+export const param: ValidationChainBuilder;
+export const query: ValidationChainBuilder;
+ */
+    switch (location) {
+        case "query":
+            return query(fieldName, errorString);
+        case "body":
+            return body(fieldName, errorString);
+        case "header":
+            return header(fieldName, errorString);
+        case "param":
+            return param(fieldName, errorString);
+        default:
+            logger.error(`${TAG} Invalid field location: ${location}`);
+    }
+
+
+}
+
+function mongoIdValidator (fieldLocation, fieldname, optional = true) {
+    const mongoId = setProperValidationChainBuilder(fieldLocation, fieldname, "invalid mongoID");
+    if (optional) {
+        return mongoId.optional({ checkFalsy: true }).isMongoId().withMessage("must be a valid mongoID");
+    } else {
+        return mongoId.exists().isMongoId().withMessage("must be a valid mongoID");
+    }
+}
+
 
 module.exports = {
     devpostValidator: devpostValidator,
@@ -317,5 +348,6 @@ module.exports = {
     hackerStatusValidator: hackerStatusValidator,
     booleanValidator: booleanValidator,
     applicationValidator: applicationValidator,
-    urlValidator: urlValidator,
+    jwtValidator: jwtValidator,
+    urlValidator: urlValidator
 };

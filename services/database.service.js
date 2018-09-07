@@ -10,27 +10,27 @@ const TAG = "[ DATABASE SERVICE ]";
 
 // DATABASE SERVICE
 function getAddressFromEnvironment() {
-return (process.env.NODE_ENV === "development")
-    ? process.env.DB_ADDRESS_DEV
-    : (process.env.NODE_ENV === "deployment")
-        ? process.env.DB_ADDRESS_DEPLOY
-        : process.env.DB_ADDRESS_TEST;
+return (process.env.NODE_ENV === "development") ? 
+    process.env.DB_ADDRESS_DEV: 
+    (process.env.NODE_ENV === "deployment") ? 
+        process.env.DB_ADDRESS_DEPLOY: 
+        process.env.DB_ADDRESS_TEST;
 }
 
 function getUserFromEnvironment() {
-    return (process.env.NODE_ENV === "development")
-        ? process.env.DB_USER_DEV
-        : (process.env.NODE_ENV === "deployment")
-            ? process.env.DB_USER_DEPLOY
-            : process.env.DB_USER_TEST;
+    return (process.env.NODE_ENV === "development") ? 
+        process.env.DB_USER_DEV:
+        (process.env.NODE_ENV === "deployment") ? 
+            process.env.DB_USER_DEPLOY:
+            process.env.DB_USER_TEST;
 }
 
 function getPassFromEnvironment() {
-    return (process.env.NODE_ENV === "development")
-        ? process.env.DB_PASS_DEV
-        : (process.env.NODE_ENV === "deployment")
-            ? process.env.DB_PASS_DEPLOY
-            : process.env.DB_PASS_TEST;
+    return (process.env.NODE_ENV === "development") ? 
+        process.env.DB_PASS_DEV:
+        (process.env.NODE_ENV === "deployment") ?
+        process.env.DB_PASS_DEPLOY:
+        process.env.DB_PASS_TEST;
 }
 
 

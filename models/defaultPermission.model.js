@@ -1,16 +1,15 @@
 "use strict";
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 //describes the data type
 const defPermission = new mongoose.Schema({
     userType: {
         type: String,
-        enum: ['Hacker', 'Volunteer', 'Staff', 'GodStaff', 'Sponsor'],
+        enum: ["Hacker", "Volunteer", "Staff", "GodStaff", "Sponsor"],
         required: true
     },
     permissions: {
         type: [{
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Permission'
+            type: String
         }]
     }
 });
@@ -23,4 +22,4 @@ defPermission.methods.toJSON = function () {
     return ps;
 }
 //export the model
-module.exports = mongoose.model('DefsPermission', defPermission);
+module.exports = mongoose.model("DefsPermission", defPermission);

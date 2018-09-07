@@ -2,10 +2,11 @@
 const express = require("express");
 const path = require("path");
 const cookieParser = require("cookie-parser");
+const cookieSession = require("cookie-session");
 const Services = {
     log: require("./services/logger.service"),
     db: require("./services/database.service"),
-    emailAndPassStrategy: require("./services/auth.service"),
+    auth: require("./services/auth.service"),
     env: require("./services/env.service")
 };
 
@@ -15,7 +16,7 @@ if (envLoadResult.error) {
 }
 
 const passport = require("passport");
-passport.use("emailAndPass", Services.emailAndPassStrategy);
+passport.use("emailAndPass", Services.auth.emailAndPassStrategy);
 
 /* Routes here */
 const indexRouter = require("./routes/index");
@@ -35,6 +36,13 @@ app.use(express.urlencoded({
     extended: false
 }));
 app.use(cookieParser());
+//Cookie-based session tracking
+app.use(cookieSession({
+  name: "session",
+  keys: [process.env.COOKIE_SECRET],
+  // Cookie Options
+  maxAge: 60 * 60 * 1000 //Logged in for 1 hour
+}));
 app.use(passport.initialize());
 app.use(passport.session()); //persistent login session
 
@@ -56,6 +64,19 @@ Services.log.info("Sponsor router activated");
 app.use("/", indexRouter);
 
 app.use("/api", apiRouter);
+
+//Custom error handler
+app.use((err, req, res, next) => {
+    // log the error...
+    const status = (err.status) ? err.status : 500;
+    const message = (err.message) ? err.message : "Internal Server Error";
+    //Only show bad error when we're not in deployment
+    const errorContents = (err.error) ? err.error : (process.env.NODE_ENV !== "deployment") ? err : {};
+    res.status(status).json({
+        message: message,
+        data: errorContents
+    });
+});
 
 module.exports = {
     app: app,
