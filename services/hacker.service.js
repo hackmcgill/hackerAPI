@@ -23,7 +23,7 @@ function createHacker(hackerDetails) {
  * @return {DocumentQuery} The document query will resolve to hacker or null.
  * @description Update an account specified by its mongoId with information specified by hackerDetails.
  */
-async function updateOne(id, hackerDetails) {
+function updateOne(id, hackerDetails) {
     const TAG = `[Hacker Service # update ]:`;
 
     const query = {
