@@ -5,7 +5,7 @@ const logger = require("./logger.service");
 /**
  * @function createHacker
  * @param {JSON} hackerDetails
- * @return {Promise<Hacker} The promise will resolve to a hacker object if save is successful.
+ * @return {Promise<Hacker>} The promise will resolve to a hacker object if save is successful.
  * @description Adds a new hacker to database.
  */
 function createHacker(hackerDetails) {
