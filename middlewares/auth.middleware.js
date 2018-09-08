@@ -13,7 +13,7 @@ const Middleware = {
 };
 
 /**
- *
+ * 
  * @param {String} routeName the name of the route that the user must be authenticated for, or undefined if 
  * the only requirement is to be logged in.
  * @returns {Fn} the middleware that will check that the user is properly authenticated.
@@ -49,6 +49,12 @@ function ensureAuthenticated(routeName = undefined) {
     };
 }
 
+/**
+ * Middleware that sends an email to reset the password for the inputted email address.
+ * @param {{body: {email:String}}} req the request object
+ * @param {*} res 
+ * @param {(err?)=>void} next 
+ */
 async function sendResetPasswordEmailMiddleware(req, res, next) {
     const user = await Services.Account.findByEmail({
         email: req.body.email
@@ -120,6 +126,12 @@ async function validateResetToken(req, res, next) {
     }
 }
 
+/**
+ * Middleware that deletes the reset token in the db
+ * @param {{body: {decodedToken:{resetId:String}}}} req the request object
+ * @param {*} res 
+ * @param {(err?)=>void} next 
+ */
 function deleteResetToken(req, res, next) {
     Services.ResetPasswordToken.deleteToken(req.body.decodedToken.resetId).then(
         () => {
