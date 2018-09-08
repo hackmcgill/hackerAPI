@@ -6,19 +6,14 @@ const logger = require("./logger.service");
  * Update the permissions for a given userType.
  * @param {string} defaultUserName name of the default user type
  * @param {ObjectId[]} newPermissions array of permission object ids.
+ * @return {DocumentQuery} DocumentQuery will resolve to updated permissions or null.
  */
-async function changeUserTypePermissions(defaultUserName, newPermissions) {
+function changeUserTypePermissions(defaultUserName, newPermissions) {
     const TAG = `[Permission Service # changeUserTypePermissions]:`;
     const query = {
         userType: defaultUserName
     };
-    return await DefaultPermission.findOneAndUpdate(query, {permissions: newPermissions}, (error, doc, result) => {
-        if(error) {
-            logger.error(`${TAG} Could not update user type`, error);
-        } else {
-            logger.info(`${TAG} Updated user type`, {doc: doc, result: result});
-        }
-    });
+    return DefaultPermission.findOneAndUpdate(query, {permissions: newPermissions}, logger.updateCallbackFactory(TAG, "DefaulPermission"));
 }
 
 

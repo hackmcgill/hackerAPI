@@ -5,7 +5,7 @@ const logger = require("./logger.service");
 /**
  * @function findTeamByHackerId
  * @param {string} hackerId objectID of the hacker
- * @return {Team}
+ * @return {DocumentQuery} The document query will resolve to a team or null.
  * @description Finds the team that the hacker belongs to, or undefined.
  */
 function findTeamByHackerId(hackerId) {
@@ -21,7 +21,7 @@ function findTeamByHackerId(hackerId) {
 /**
  * @function createTeam
  * @param {JSON} teamDetails
- * @return {boolean} success or failure of attempt to add team
+ * @return {Promise<Team>} The promise will resolve to a team object if save was successful.
  * @description Adds a new team to database.
  */
 function createTeam(teamDetails) {
@@ -33,10 +33,9 @@ function createTeam(teamDetails) {
 }
 
 /**
- * @async
  * @function findById
  * @param {string} id
- * @return {Team | null} either Team or null
+ * @return {DocumentQuery} The document query will either resolve to a team or null.
  * @description Finds a team by its mongoID.
  */
 function findById(id) {

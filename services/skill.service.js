@@ -6,7 +6,7 @@ const bcrypt = require("bcrypt");
 /**
  * @function findById
  * @param {string} id
- * @return {Skill | null} either Skill or null
+ * @return {DocumentQuery} The document query will either resolve to a skill or null.
  * @description Finds a skill by its mongoID.
  */
 function findById(id) {

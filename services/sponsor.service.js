@@ -5,7 +5,7 @@ const logger = require("./logger.service");
 /**
  * @function findById
  * @param {String} id
- * @return {Sponsor | null} either sponsor or null
+ * @return {DocumentQuery} The document query will resolve to a sponsor or null.
  * @description Find a sponsor by id
  */
 function findById(id) {
@@ -20,7 +20,7 @@ function findById(id) {
 /**
  * @function createSponsor
  * @param {JSON} sponsorDetails
- * @return {boolean} success or failure of attempt to add sponsor
+ * @return {Promise<Sponsor>} The promise will resolve to a sponsor object if save was successful.
  * @description Adds a new sponsor to database.
  */
 function createSponsor(sponsorDetails) {

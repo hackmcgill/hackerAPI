@@ -4,10 +4,9 @@ const logger = require("./logger.service");
 const bcrypt = require("bcrypt");
 
 /**
- * @async
  * @function findById
  * @param {String} id
- * @return {DocumentQuery} either account or null
+ * @return {DocumentQuery} The document query will resolve to either account or null.
  * @description Finds an account by mongoID.
  */
 function findById(id) {
@@ -20,10 +19,9 @@ function findById(id) {
 }
 
 /**
- * @async
  * @function findByEmail
  * @param {String} email 
- * @return {Account | null} either account or null
+ * @return {DocumentQuery} The document query will resolve to either account or null.
  * @description Find an account by email.
  */
 function findByEmail(email) {
@@ -59,10 +57,9 @@ function hashPassword(password) {
 }
 
 /**
- * @async
  * @function findOne
  * @param {JSON} query
- * @return {Account | null} either account or null
+ * @return {DocumentQuery} The document query will resolve to either account or null.
  * @description Finds an account by some query.
  */
 function findOne(query) {
@@ -74,7 +71,7 @@ function findOne(query) {
 /**
  * @function addOneAccount
  * @param {JSON} accountDetails
- * @return {boolean} success or failure of attempt to add account
+ * @return {Promise<Account>} The promise will resolve to the account object if save is successful.
  * @description Adds a new account to database.
  */
 function addOneAccount(accountDetails) {
@@ -86,11 +83,10 @@ function addOneAccount(accountDetails) {
 }
 
 /**
- * @async
  * @function changeOneAccount
  * @param {JSON} id
  * @param {JSON} accountDetails 
- * @return {boolean} success or failure of changing account information
+ * @return {DocumentQuery} The document query will resolve to either account or null.
  * @description Changes account information to the specified information in accountDetails.
  */
 function changeOneAccount(id, accountDetails) {

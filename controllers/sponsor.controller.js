@@ -4,7 +4,6 @@ const Services = {
     Logger: require("../services/logger.service")
 };
 const Util = require("../middlewares/util.middleware");
-const mongoose = require("mongoose");
 
 /**
  * @async

@@ -5,7 +5,7 @@ const logger = require("./logger.service");
 /**
  * @function createHacker
  * @param {JSON} hackerDetails
- * @return {boolean} success or failure of attempt to add hacker
+ * @return {Promise<Hacker} The promise will resolve to a hacker object if save is successful.
  * @description Adds a new hacker to database.
  */
 function createHacker(hackerDetails) {
@@ -20,7 +20,7 @@ function createHacker(hackerDetails) {
  * @function updateOne
  * @param {string} id
  * @param {JSON} hackerDetails
- * @return {boolean} success or failure of update
+ * @return {DocumentQuery} The document query will resolve to hacker or null.
  * @description Update an account specified by its mongoId with information specified by hackerDetails.
  */
 async function updateOne(id, hackerDetails) {
@@ -36,7 +36,7 @@ async function updateOne(id, hackerDetails) {
 /**
  * @function findById
  * @param {string} id
- * @return {Hacker | null} either hacker or null
+ * @return {DocumentQuery} The document query will resolve to hacker or null.
  * @description Finds an hacker by the id, which is the mongoId.
  */
 function findById(id) {
