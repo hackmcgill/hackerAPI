@@ -24,7 +24,7 @@ module.exports = {
  * @function parseAccount
  * @param {JSON} req
  * @param {JSON} res
- * @param {JSON} next
+ * @param {(err?)=>void} next
  * @return {void}
  * @description 
  * Moves firstName, lastName, email, password, dietaryRestrictions, shirtSize from req.body to req.body.accountDetails.
@@ -55,6 +55,12 @@ function parseAccount(req, res, next) {
     next();
 }
 
+/**
+ * Middleware that updates the password for the current user
+ * @param {*} req 
+ * @param {*} res 
+ * @param {(err?)=>void} next
+ */
 async function updatePassword(req, res, next) {
     req.body.accountDetails.permissions = await Services.Account.updatePassword(req.body.password);
     next();

@@ -54,7 +54,7 @@ module.exports = {
          * @apiParam (body) {Number} tier Tier of the sponsor, from 0 to 5. 0 is lowest tier, and 5 is the custom tier.
          * @apiParam (body) {String} company Name of the company.
          * @apiParam (body) {String} contractURL URL link to the contract with the company.
-         * @apiParam (body) {MongoID Array} nominees Array of accounts that the company wish to nominate as hackers.
+         * @apiParam (body) {MongoID[]} nominees Array of accounts that the company wish to nominate as hackers.
          * 
          * @apiSuccess {String} message Success message
          * @apiSuccess {Object} data Sponsor object
