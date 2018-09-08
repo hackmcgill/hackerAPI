@@ -6,26 +6,39 @@ const {
     param
 } = require("express-validator/check");
 const logger = require("../../services/logger.service");
-const Skill = require("../../services/skill.service");
 const mongoose = require("mongoose");
 const TAG = `[ VALIDATOR.HELPER.js ]`;
 const jwt = require("jsonwebtoken");
 const Constants = require("../../constants");
 
+/**
+ * Validates that field is a valid devpost URL
+ * @param {"query" | "body" | "header" | "param"} fieldLocation the location where the field should be found 
+ * @param {string} fieldname Name of the field that needs to be validated.
+ * @param {boolean} optional Whether the field is optional or not.
+ */
 function devpostValidator (fieldLocation, fieldname, optional = true) {
     const devpostUrl = setProperValidationChainBuilder(fieldLocation, fieldname, "invalid web address");
     // match optional https://, http://, www., then optional pre-devpost part, then devpost.com with different routes and params
     if (optional) {
         return devpostUrl.optional({ checkFalsy: true })
-            .matches(/^(http(s)?:(\/\/)?)?(www\.)?(([-a-zA-Z0-9@:%._\+~#=]{2,256}\.)?devpost\.com)\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$/)
+            .matches(Constants.DEVPOST_REGEX)
             .withMessage("must be valid devpost url");
     } else {
         return devpostUrl.exists().withMessage("devpost url must exist")
-            .matches(/^(http(s)?:(\/\/)?)?(www\.)?(([-a-zA-Z0-9@:%._\+~#=]{2,256}\.)?devpost\.com)\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$/)
+            .matches(Constants.DEVPOST_REGEX)
             .withMessage("must be valid devpost url");
     }
 }
 
+/**
+ * Validates that field is a valid integer
+ * @param {"query" | "body" | "header" | "param"} fieldLocation the location where the field should be found 
+ * @param {string} fieldname Name of the field that needs to be validated.
+ * @param {boolean} optional Whether the field is optional or not.
+ * @param {number} lowerBound Lower bound for a valid integer.
+ * @param {number} upperBound Lpper bound for a valid integer.
+ */
 function integerValidator (fieldLocation, fieldname, optional = true, lowerBound = -Infinity, upperBound = Infinity) {
     const value = setProperValidationChainBuilder(fieldLocation, fieldname, "invalid integer");
 
@@ -44,38 +57,40 @@ function integerValidator (fieldLocation, fieldname, optional = true, lowerBound
     }
 }
 
+/**
+ * Validates that field is a valid mongoID
+ * @param {"query" | "body" | "header" | "param"} fieldLocation the location where the field should be found 
+ * @param {string} fieldname Name of the field that needs to be validated.
+ * @param {boolean} optional Whether the field is optional or not.
+ */
+function mongoIdValidator (fieldLocation, fieldname, optional = true) {
+    const mongoId = setProperValidationChainBuilder(fieldLocation, fieldname, "invalid mongoID array");
+
+    if (optional) {
+        return mongoId.optional({ checkFalsy: true }).isMongoId().withMessage("must be a valid mongoID");
+    } else {
+        return mongoId.exists().isMongoId().withMessage("must be a valid mongoID");
+    }
+}
+
+/**
+ * Validates that field is a valid mongoID array
+ * @param {"get" | "post"} getOrPost Whether the query is sent as a get or post request
+ * @param {string} fieldname Name of the field that needs to be validated.
+ * @param {boolean} optional Whether the field is optional or not.
+ */
 function mongoIdArrayValidator (fieldLocation, fieldname, optional = true) {
     const arr = setProperValidationChainBuilder(fieldLocation, fieldname, "invalid mongoID array");
 
     if (optional) {
         return arr.optional({ checkFalsy: true })
-            .custom((value) => {
-                return Array.isArray(value);
-            }).withMessage("Value must be in array format")
-            .custom((value) =>{
-                value.forEach(element => {
-                    if (!mongoose.Types.ObjectId.isValid(element)){
-                        return false;
-                    }
-                });
-                return true;
-            }).withMessage("Each element must be a valid mongoId");
+            .custom(isMongoIdArray).withMessage("Value must be an array of mongoIDs");
     } else {
         return arr.exists()
-            .custom((value) => {
-                return Array.isArray(value);
-            }).withMessage("Value must be in array format")
-            .custom((value) =>{
-                value.forEach(element => {
-                    if (!mongoose.Types.ObjectId.isValid(element)){
-                        return false;
-                    }
-                });
-                return true;
-            }).withMessage("Each element must be a valid mongoId");
+            .custom(isMongoIdArray).withMessage("Value must be an array of mongoIDs");
     }
 }
-// untested
+
 /**
  * Validates that field must be boolean.
  * @param {"query" | "body" | "header" | "param"} fieldLocation the location where the field should be found 
@@ -109,20 +124,29 @@ function nameValidator (fieldLocation, fieldname, optional = true) {
     }
 }
 
+/**
+ * Validates that field is a valid URL
+ * @param {"query" | "body" | "header" | "param"} fieldLocation the location where the field should be found 
+ * @param {string} fieldname Name of the field that needs to be validated.
+ * @param {boolean} optional Whether the field is optional or not.
+ * @description 
+ * Matches against a regex that looks for optional http://, https://, http:, https:, and optional www.
+ * Regex then looks for the domain, and then optional route, path, query parameters
+ */
 function urlValidator (fieldLocation, fieldname, optional = true) {
     const url = setProperValidationChainBuilder(fieldLocation, fieldname, "invalid name");
 
     if (optional) {
         return url.optional({ checkFalsy: true })
-            .matches(/^(http(s)?:(\/\/)?)?(www\.)?([-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6})\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$/)
+            .matches(Constants.URL_REGEX)
             .withMessage("must be valid url");
     } else {
         return url.exists().withMessage("url must exist")
-            .matches(/^(http(s)?:(\/\/)?)?(www\.)?([-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6})\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$/)
+            .matches(Constants.URL_REGEX)
             .withMessage("must be valid url");
     }
 }
-// untested
+
 /**
  * Validates that field must be email.
  * @param {"query" | "body" | "header" | "param"} fieldLocation the location where the field should be found 
@@ -132,13 +156,12 @@ function urlValidator (fieldLocation, fieldname, optional = true) {
 function emailValidator(fieldLocation, fieldname, optional = true) {
     const email = setProperValidationChainBuilder(fieldLocation, fieldname, "invalid email");
     if (optional) {
-        return email.optional({ checkFalsy: true }).matches(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/).withMessage("must be valid email");
+        return email.optional({ checkFalsy: true }).matches(Constants.EMAIL_REGEX).withMessage("must be valid email");
     } else {
-        return email.exists().withMessage("email must exist").matches(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/).withMessage("must be valid email");
+        return email.exists().withMessage("email must exist").matches(Constants.EMAIL_REGEX).withMessage("must be valid email");
     }
 }
 
-// untested
 /**
  * Validates that field must be alphabetical.
  * @param {"query" | "body" | "header" | "param"} fieldLocation the location where the field should be found 
@@ -154,7 +177,6 @@ function alphaValidator (fieldLocation, fieldname, optional = true) {
     }
 }
 
-// untested
 /**
  * Validates that field must be one of the shirt size enums.
  * @param {"query" | "body" | "header" | "param"} fieldLocation the location where the field should be found 
@@ -172,7 +194,6 @@ function shirtSizeValidator (fieldLocation, fieldname, optional = true) {
     }
 }
 
-// untested
 /**
  * Validates that field must be at least 6 characters long. 
  * TODO: impose better restrictions.
@@ -189,7 +210,6 @@ function passwordValidator (fieldLocation, fieldname, optional = true) {
     }
 }
 
-// untested
 /**
  * Validates that field must be one of the status enums.
  * @param {"query" | "body" | "header" | "param"} fieldLocation the location where the field should be found 
@@ -199,14 +219,13 @@ function passwordValidator (fieldLocation, fieldname, optional = true) {
 function hackerStatusValidator (fieldLocation, fieldname, optional = true) {
     const status = setProperValidationChainBuilder(fieldLocation, fieldname, "invalid status");
 
-    const statuses = ["None", "Applied", "Accepted", "Waitlisted", "Confirmed", "Cancelled", "Checked-in"];
-
     if (optional) {
-        return status.optional({ checkFalsy: true}).isIn(statuses).withMessage(`must be one of valid statuses: ${statuses.join(",")}`);
+        return status.optional({ checkFalsy: true}).isIn(Constants.HACKER_STATUSES).withMessage(`Status must be in ${Constants.HACKER_STATUSES}`);
     } else {
-        return status.exists().withMessage(`must be one of valid statuses: ${statuses.join(",")}`);
+        return status.exists().withMessage(`Status must be in ${Constants.HACKER_STATUSES}`);
     }
 }
+
 /**
  * Validates that field must be a valid application.
  * @param {"query" | "body" | "header" | "param"} fieldLocation the location where the field should be found 
@@ -240,7 +259,7 @@ function applicationValidator (fieldLocation, fieldname, optional = true) {
             hasValid.linkedIn = (!app.portfolioURL.linkedIn || typeof(app.portfolioURL.linkedIn) === "string");
             hasValid.other = (!app.portfolioURL.other || typeof(app.portfolioURL.other) === "string");
             hasValid.jobInterest = (!app.jobInterest || jobInterests.includes(app.jobInterest));
-            hasValid.skills = (!app.skills || skillsArrayValidator(app.skills));
+            hasValid.skills = (!app.skills || isMongoIdArray(app.skills));
             hasValid.comments = (!app.comments || typeof(app.comments) === "string");
             hasValid.essay = (!app.essay || typeof(app.essay) === "string");
             hasValid.team = (!app.team || mongoose.Types.ObjectId.isValid(app.team));
@@ -257,7 +276,7 @@ function applicationValidator (fieldLocation, fieldname, optional = true) {
             hasValid.linkedIn = (!app.portfolioURL.linkedIn || typeof(app.portfolioURL.linkedIn) === "string");
             hasValid.other = (!app.portfolioURL.other || typeof(app.portfolioURL.other) === "string");
             hasValid.jobInterest = (jobInterests.includes(app.jobInterest));
-            hasValid.skills = (!app.skills || skillsArrayValidator(app.skills));
+            hasValid.skills = (!app.skills || isMongoIdArray(app.skills));
             hasValid.comments = (!app.comments || typeof(app.comments) === "string");
             hasValid.essay = (!app.essay || typeof(app.essay) === "string");
             hasValid.team = (!app.team || mongoose.Types.ObjectId.isValid(app.team));
@@ -266,6 +285,27 @@ function applicationValidator (fieldLocation, fieldname, optional = true) {
         }).withMessage({message: "Not all items of the application are valid", isValid: hasValid});
     }
 }
+
+/**
+ * Validates that field is a valid skill.
+ * @param {"get" | "post"} getOrPost Whether the query is sent as a get or post request
+ * @param {string} fieldname Name of the field that needs to be validated.
+ * @param {boolean} optional Whether the field is optional or not.
+ */
+function isMongoIdArray (arr) {
+    if (!Array.isArray(arr)) {
+        return false;
+    }
+
+    for (var ele of arr) {
+        if (!mongoose.Types.ObjectId.isValid(ele)) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
 function jwtValidator (fieldLocation, fieldname, jwtSecret, optional = true) {
     const jwtValidationChain = setProperValidationChainBuilder(fieldLocation, fieldname, "Must be vali jwt");
     if(optional) {
@@ -289,17 +329,6 @@ function jwtValidator (fieldLocation, fieldname, jwtSecret, optional = true) {
     }
 }
 
-function skillsArrayValidator (skills) {
-    let valid = true;
-    skills.forEach(skill => {
-        //ERROR: THIS IS DOING LOGIC ON A PROMISE @RICHARD
-        if (!Skill.isSkillIdValid(skill)) {
-            valid = false;
-        }
-    });
-    return valid;
-}
-
 function setProperValidationChainBuilder(location, fieldName, errorString) {
 /**
  * export const check: ValidationChainBuilder;
@@ -321,19 +350,7 @@ export const query: ValidationChainBuilder;
         default:
             logger.error(`${TAG} Invalid field location: ${location}`);
     }
-
-
 }
-
-function mongoIdValidator (fieldLocation, fieldname, optional = true) {
-    const mongoId = setProperValidationChainBuilder(fieldLocation, fieldname, "invalid mongoID");
-    if (optional) {
-        return mongoId.optional({ checkFalsy: true }).isMongoId().withMessage("must be a valid mongoID");
-    } else {
-        return mongoId.exists().isMongoId().withMessage("must be a valid mongoID");
-    }
-}
-
 
 module.exports = {
     devpostValidator: devpostValidator,

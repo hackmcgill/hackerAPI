@@ -1,6 +1,5 @@
 "use strict";
 const DefaultPermission = require("../models/defaultPermission.model");
-const Permission = require("../models/permission.model");
 const logger = require("./logger.service");
 
 /**
@@ -24,9 +23,13 @@ async function changeUserTypePermissions(defaultUserName, newPermissions) {
 
 
 /**
- * Helper method that facilitates the creation of default users by returning the permission ids of a given user type.
- * @param {string} defaultUserName one of ['Hacker', 'Volunteer', 'Staff', 'GodStaff', 'Sponsor']
- * @returns {ObjectId[]} the list of objectIds of permissions for a given default user type.
+ * @async
+ * @function getDefaultPermission
+ * @param {JSON} defaultUserType The type of user for which to get default permissions for.
+ * @return {Array} Array of ids of specific permissions
+ * @description 
+ * Gets the default permission of a type of user.
+ * Currently under WIP while new permission system is being created.
  */
 async function getDefaultPermission(defaultUserName) {
     const TAG = `[Permission Service # getDefaultPermission]:`;

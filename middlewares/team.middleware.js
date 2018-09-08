@@ -49,7 +49,6 @@ async function ensureUniqueHackerId(req, res, next) {
 }
 
 /**
- * @async
  * @function parseTeam
  * @param {JSON} req
  * @param {JSON} res

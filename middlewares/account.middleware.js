@@ -13,7 +13,6 @@ const Middleware = {
 }
 
 module.exports = {
-    // untested
     parseAccount: parseAccount,
     // untested
     addDefaultHackerPermissions: Middleware.Util.asyncMiddleware(addDefaultHackerPermissions),
@@ -22,11 +21,15 @@ module.exports = {
 };
 
 /**
- * Takes all of the different items from req.body and places them into an object called accountDetails.
- * This also hashes the account password.
- * @param {*} req 
- * @param {*} res 
- * @param {*} next 
+ * @function parseAccount
+ * @param {JSON} req
+ * @param {JSON} res
+ * @param {JSON} next
+ * @return {void}
+ * @description 
+ * Moves firstName, lastName, email, password, dietaryRestrictions, shirtSize from req.body to req.body.accountDetails.
+ * Hashes the password.
+ * Adds _id to accountDetails.
  */
 function parseAccount(req, res, next) {
 
@@ -57,6 +60,7 @@ async function updatePassword(req, res, next) {
     next();
 }
 
+// TODO: fix when new permission system is created
 async function addDefaultHackerPermissions (req, res, next) {
     req.body.accountDetails.permissions = await Services.Permission.getDefaultPermission("Hacker");
     next();

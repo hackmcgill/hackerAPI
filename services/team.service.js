@@ -1,7 +1,6 @@
 "use strict";
 const Team = require("../models/team.model");
 const logger = require("./logger.service");
-const bcrypt = require("bcrypt");
 
 /**
  * @async

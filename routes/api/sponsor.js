@@ -25,18 +25,18 @@ module.exports = {
          * @apiGroup Sponsor
          * @apiVersion 0.0.8
          * 
-         * @apiParam {string} id a sponsor's unique mongoID
+         * @apiParam (param) {ObjectId} id a sponsor's unique mongoID
          * 
-         * @apiSuccess {string} message Success message
-         * @apiSuccess {object} data Sponsor object
+         * @apiSuccess {String} message Success message
+         * @apiSuccess {Object} data Sponsor object
          * @apiSuccessExample {object} Success-Response: 
          *      {
                     "message": "Successfully retrieved sponsor information", 
                     "data": {...}
                 }
 
-         * @apiError {string} message Error message
-         * @apiError {object} data empty
+         * @apiError {String} message Error message
+         * @apiError {Object} data empty
          * @apiErrorExample {object} Error-Response: 
          *      {"message": "Issue with retrieving sponsor information", "data": {}}
          */
@@ -50,16 +50,22 @@ module.exports = {
          * @apiGroup Sponsor
          * @apiVersion 0.0.8
          * 
-         * @apiSuccess {string} message Success message
-         * @apiSuccess {object} data Sponsor object
+         * @apiParam (body) {MongoID} accountId ObjectID of the respective account.
+         * @apiParam (body) {Number} tier Tier of the sponsor, from 0 to 5. 0 is lowest tier, and 5 is the custom tier.
+         * @apiParam (body) {String} company Name of the company.
+         * @apiParam (body) {String} contractURL URL link to the contract with the company.
+         * @apiParam (body) {MongoID Array} nominees Array of accounts that the company wish to nominate as hackers.
+         * 
+         * @apiSuccess {String} message Success message
+         * @apiSuccess {Object} data Sponsor object
          * @apiSuccessExample {object} Success-Response: 
          *      {
                     "message": "Sponsor creation successful", 
                     "data": {...}
                 }
 
-         * @apiError {string} message Error message
-         * @apiError {object} data empty
+         * @apiError {String} message Error message
+         * @apiError {Object} data empty
          * @apiErrorExample {object} Error-Response: 
          *      {"message": "Issue with sponsor creation", "data": {}}
          */

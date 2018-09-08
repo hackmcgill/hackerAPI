@@ -1,6 +1,16 @@
 "use strict";
 const mongoose = require("mongoose");
 
+/**
+ * @function parseSponsor
+ * @param {JSON} req
+ * @param {JSON} res
+ * @param {JSON} next
+ * @return {void}
+ * @description 
+ * Moves accountId, tier, company, contractURL, nominees from req.body to req.body.sponsorDetails.
+ * Adds _id to sponsorDetails.
+ */
 function parseSponsor (req, res, next) {
     const sponsorDetails = {
         _id: mongoose.Types.ObjectId(),
