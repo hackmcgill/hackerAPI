@@ -177,6 +177,13 @@ module.exports = {
          *              resume: [Buffer] 
          *          } 
          *      }
+         * @apiError {String} message "Resume does not exist"
+         * @apiErrorExample {json} Error-Response:
+         *      HTTP/1.1 404 
+         *      { 
+         *          message: "Resume does not exist", 
+         *          data: {} 
+         *      }
          * @apiSampleRequest off
          * @apiPermission Must be logged in, and the account id must be linked to the hacker.
          */

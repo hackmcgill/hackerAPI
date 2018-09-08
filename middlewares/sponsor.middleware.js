@@ -3,9 +3,9 @@ const mongoose = require("mongoose");
 
 /**
  * @function parseSponsor
- * @param {JSON} req
+ * @param {{body:{accountId:String, tier:String, company: String, contractURL: String, nominees: String[]}}} req
  * @param {JSON} res
- * @param {JSON} next
+ * @param {(err?)=>void} next
  * @return {void}
  * @description 
  * Moves accountId, tier, company, contractURL, nominees from req.body to req.body.sponsorDetails.

@@ -287,10 +287,9 @@ function applicationValidator (fieldLocation, fieldname, optional = true) {
 }
 
 /**
- * Validates that field is a valid skill.
- * @param {"get" | "post"} getOrPost Whether the query is sent as a get or post request
- * @param {string} fieldname Name of the field that needs to be validated.
- * @param {boolean} optional Whether the field is optional or not.
+ * Function that checks whether the input array contains only mongoIds
+ * @param {String[]} arr array of strings
+ * @returns {boolean} whether the array contains only mongoIds
  */
 function isMongoIdArray (arr) {
     if (!Array.isArray(arr)) {
@@ -306,6 +305,13 @@ function isMongoIdArray (arr) {
     return true;
 }
 
+/**
+ * Validates that field must be a valid json web token.
+ * @param {"query" | "body" | "header" | "param"} fieldLocation the location where the field should be found 
+ * @param {string} fieldname name of the field that needs to be validated.
+ * @param {*} jwtSecret The secret that the json web token was encrypted with.
+ * @param {boolean} optional whether the field is optional or not.
+ */
 function jwtValidator (fieldLocation, fieldname, jwtSecret, optional = true) {
     const jwtValidationChain = setProperValidationChainBuilder(fieldLocation, fieldname, "Must be vali jwt");
     if(optional) {
@@ -329,16 +335,22 @@ function jwtValidator (fieldLocation, fieldname, jwtSecret, optional = true) {
     }
 }
 
-function setProperValidationChainBuilder(location, fieldName, errorString) {
 /**
- * export const check: ValidationChainBuilder;
-export const body: ValidationChainBuilder;
-export const cookie: ValidationChainBuilder;
-export const header: ValidationChainBuilder;
-export const param: ValidationChainBuilder;
-export const query: ValidationChainBuilder;
+ * 
+ * @param {"query" | "body" | "header" | "param"} fieldLocation the location where the field should be found 
+ * @param {string} fieldname name of the field that needs to be validated.
+ * @param {*} errorString the string that is sent back to the user if the field is invalid
  */
-    switch (location) {
+function setProperValidationChainBuilder(fieldLocation, fieldName, errorString) {
+/**
+ * check: ValidationChainBuilder;
+ * body: ValidationChainBuilder;
+ * cookie: ValidationChainBuilder;
+ * header: ValidationChainBuilder;
+ * param: ValidationChainBuilder;
+ * query: ValidationChainBuilder;
+ */
+    switch (fieldLocation) {
         case "query":
             return query(fieldName, errorString);
         case "body":
@@ -348,7 +360,7 @@ export const query: ValidationChainBuilder;
         case "param":
             return param(fieldName, errorString);
         default:
-            logger.error(`${TAG} Invalid field location: ${location}`);
+            logger.error(`${TAG} Invalid field location: ${fieldLocation}`);
     }
 }
 
