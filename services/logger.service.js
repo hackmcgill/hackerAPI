@@ -29,7 +29,34 @@ const requestLogger = expressWinston.logger({
     meta: false
 });
 
+function queryCallbackFactory(TAG, model, query) {
+    // err is error, res is result
+    return (err, res) => {
+        if (err) {
+            winston.error(`${TAG} Failed to verify if ${model} exist or not using ${JSON.stringify(query)}`, err);
+        } else if (res) {
+            winston.debug(`${TAG} ${model} using ${JSON.stringify(query)} exist in the database`);
+        } else {
+            winston.debug(`${TAG} ${model} using ${JSON.stringify(query)} do not exist in the database`);
+        }
+    };
+}
+
+function updateCallbackFactory(TAG, model) {
+    return (err, res) => {
+        if (err) {
+            winston.error(`${TAG} failed to change ${model}`);
+        } else if (!res) {
+            winston.error(`${TAG} failed to find ${model} in database`);
+        } else {
+            winston.debug(`${TAG} changed ${model} information`);
+        }
+    };
+}
+
 module.exports = {
+    updateCallbackFactory: updateCallbackFactory,
+    queryCallbackFactory: queryCallbackFactory,
     requestLogger: requestLogger,
     errorLogger: errorLogger,
     error: winston.error,

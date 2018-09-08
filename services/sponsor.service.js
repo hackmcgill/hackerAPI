@@ -14,38 +14,21 @@ function findById(id) {
         _id: id
     };
 
-    return Sponsor.findById(query);
-    // return await Sponsor.findById(query, function (error, sponsor) {
-    //     if (error) {
-    //         logger.error(`${TAG} Failed to verify if sponsor exist or not using ${JSON.stringify(query)}`, error);
-    //     } else if (sponsor) {
-    //         logger.debug(`${TAG} Sponsor with id ${JSON.stringify(query)} exist in the database`);
-    //     } else {
-    //         logger.debug(`${TAG} Sponsor with id ${JSON.stringify(query)} do not exist in the database`);
-    //     }
-    // });
+    return Sponsor.findById(query, logger.queryCallbackFactory(TAG, "sponsor", JSON.stringify(query)));
 }
 
 /**
- * @async
  * @function createSponsor
  * @param {JSON} sponsorDetails
  * @return {boolean} success or failure of attempt to add sponsor
  * @description Adds a new sponsor to database.
  */
-async function createSponsor(sponsorDetails) {
+function createSponsor(sponsorDetails) {
     const TAG = `[Sponsor Service # createSponsor]:`;
 
     const sponsor = new Sponsor(sponsorDetails);
 
-    const success = await sponsor.save()
-        .catch(
-            (err) => {
-                logger.error(`${TAG} failed create sponsor due to ${err}`);
-            }
-        );
-
-    return !!(success);
+    return sponsor.save();
 }
 
 module.exports = {
