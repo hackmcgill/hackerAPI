@@ -142,7 +142,6 @@ const Controllers = {
 module.exports = {
     activate: function (apiRouter) {
         const accountRouter = express.Router();
-
         /**
          * @api {post} /account/ create a new account
          * @apiName create
@@ -155,25 +154,24 @@ module.exports = {
          * @apiParam (body) {String} dietaryRestrictions Any dietary restrictions for the user. 'None' if there are no restrictions
          * @apiParam (body) {String} shirtSize Size of the shirt that the user will receive.
          * @apiParam (body) {String} passowrd The password of the account.
-         * 
+         *
          * @apiSuccess {string} message Success message
          * @apiSuccess {object} data Account object
-         * @apiSuccessExample {object} Success-Response: 
+         * @apiSuccessExample {object} Success-Response:
          *      {
          *          "message": "Account creation successful",
          *          "data": {...}
          *      }
-         * 
+         *
          * @apiError {string} message Error message
          * @apiError {object} data empty
-         * @apiErrorExample {object} Error-Response: 
+         * @apiErrorExample {object} Error-Response:
          *      {"message": "Issue with account creation", "data": {}}
          */
         accountRouter.route("/create").post(
             Middleware.Validator.Account.newAccountValidator,
             Middleware.parseBody.middleware,
             Middleware.Account.parseAccount,
-            Middleware.Account.addDefaultHackerPermissions,
             Controllers.Account.addUser
         );
         apiRouter.use("/account", accountRouter);
@@ -185,7 +183,13 @@ Things to take note of:
 * **Route comments**: All route comments follow <http://apidocjs.com/> format. Please look there on how to write them.
 * **Organization of import statements**: We organize our import statements according to their general function. If a file is a `Service` (such as `user.service.js`), then we place it inside of the `Service` object. This is to make code readability better.
 * **`activate` function**: Every route file contains one exported function, called `activate`. This takes as input an `ExpressRouter`, to which we will attach the sub router to. We will also define all of the sub-routes in this function.
-* **Chaining middlewares in a route**: We chain middlewares together by placing them one after another as arguments to the http request of the route. Note that the last middleware should always be a `Controller` (since we want to respond to the user of the api).
+* **Chaining middlewares in a route**: We chain middlewares together by placing them one after another as arguments to the http request of the route.
+* **Ordering of middleware**:
+  * The first middleware should always be the validator for the inputted data of a route. In this case, we have the validator for a new account.
+  * The next middleware should always be `Middleware.parseBody.middleware`. This middleware parses validated information, and places it inside of `req.body` if everything is properly validated. Else, it errors out.
+  * The following middlewares will depend on what type of route it is. In this case, we are creating a new item in our database, so we want to create a new `Account` object. This is what `Middleware.Account.parseAccount` does.
+  * Finally, we want to interact with the database. This is done either in the `Controller` function, or in another `middleware` function.
+  * the last middleware should always be a `Controller` (since we want to respond to the user of the api).
 * **Connecting inputted route with the newly created route**: We finally connect the newly created router with the inputted router at the end of the `activate` function by writing:
     ```javascript
             apiRouter.use("/account", accountRouter);
