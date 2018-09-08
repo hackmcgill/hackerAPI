@@ -2,9 +2,8 @@
 
 API for registration, live-site
 
-## Master branch status
-
-[![Build Status](https://travis-ci.org/hackmcgill/hackerAPI.svg?branch=master)](https://travis-ci.org/hackmcgill/hackerAPI)
+* Master: [![Build Status](https://travis-ci.org/hackmcgill/hackerAPI.svg?branch=master)](https://travis-ci.org/hackmcgill/hackerAPI)
+* Develop: [![Build Status](https://travis-ci.org/hackmcgill/hackerAPI.svg?branch=develop)](https://travis-ci.org/hackmcgill/hackerAPI)
 
 ## Getting started
 
@@ -12,11 +11,11 @@ API for registration, live-site
 
 ## How to deploy
 
-Go to this page: [deployment guide](./docs/deploy.md)
+Go to this page: [deployment guide](./deploy.md)
 
 ## Coding Standards
 
-Go to this page: [coding standards guide](./docs/standards.md)
+Go to this page: [coding standards guide](./standards.md)
 
 ## Folder structure
 
