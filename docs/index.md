@@ -11,11 +11,11 @@ API for registration, live-site
 
 ## How to deploy
 
-Go to this page: [deployment guide](./deploy.md)
+Go to this page: [deployment guide](./deploy)
 
 ## Coding Standards
 
-Go to this page: [coding standards guide](./standards.md)
+Go to this page: [coding standards guide](./standards)
 
 ## Folder structure
 
