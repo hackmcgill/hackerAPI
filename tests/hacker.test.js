@@ -43,7 +43,7 @@ describe("POST create hacker", function () {
         .send(invalidHacker1)
         .end(function (err, res) {
             // replace with actual test comparisons after error handler is implemented
-            res.should.have.status(500);
+            res.should.have.status(422);
             done();
         });
     });

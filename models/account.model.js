@@ -1,6 +1,7 @@
 "use strict";
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
+const Constants = require("../constants");
 //describes the data type
 const AccountSchema = new mongoose.Schema({
     firstName: {
@@ -17,7 +18,7 @@ const AccountSchema = new mongoose.Schema({
         lowercase: true,
         unique: true,
         required: "Email address is required",
-        match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, "Please fill a valid email address"]
+        match: [Constants.EMAIL_REGEX, "Please fill a valid email address"]
     },
     password: {
         type: String,
@@ -32,7 +33,7 @@ const AccountSchema = new mongoose.Schema({
     }],
     shirtSize: {
         type: String,
-        enum: ["XS", "S", "M", "L", "XL", "XXL"],
+        enum: Constants.SHIRT_SIZES,
         required: true
     }
 });
@@ -49,7 +50,7 @@ AccountSchema.methods.toStrippedJSON = function () {
     const as = this.toJSON();
     delete as.password;
     return as;
-}
+};
 /**
  * Pass in an un-encrypted password and see whether it matches the 
  * encrypted password
@@ -57,7 +58,7 @@ AccountSchema.methods.toStrippedJSON = function () {
  */
 AccountSchema.methods.comparePassword = function (password) {
     return bcrypt.compareSync(password, this.password);
-}
+};
 
 //export the model
 module.exports = mongoose.model("Account", AccountSchema);

@@ -10,7 +10,8 @@ module.exports = {
     middleware: function (req, res, next) {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
-            return next({
+            next({
+                status: 422,
                 message: "Validation failed",
                 data: errors.mapped()
             });

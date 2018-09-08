@@ -3,22 +3,42 @@ const chai = require("chai");
 const chaiHttp = require("chai-http");
 chai.use(chaiHttp);
 const server = require("../app");
-const agent = chai.request.agent(server.app);
 const logger = require("../services/logger.service");
 
 const util = {
     account: require("./util/account.test.util"),
+    auth: require("./util/auth.test.util")
 };
 
 const storedAccount1 = util.account.Account1;
 const newAccount1 = util.account.newAccount1;
+const agent = chai.request.agent(server.app);
 
 describe("GET user account", function () {
-    it("should list the user's account on /api/account/self GET", function (done) {
+    // would this ever do anything?
+    it("should fail to list the user's account on /api/account/self GET", function (done) {
         chai.request(server.app)
+            .get("/api/account/self")
+            .end(function (err, res) {
+                res.should.have.status(401);
+                res.should.be.json;
+                res.body.should.have.property("message");
+                res.body.message.should.equal("Not Authenticated");
+                done();
+            });
+    });
+    it("should list the user's account on /api/account/self GET", function (done) {
+        util.auth.login(agent, storedAccount1, (error) => {
+            if(error) {
+                return done(error);
+            }
+            return agent
             .get("/api/account/self")
             // does not have password because of to stripped json
             .end(function (err, res) {
+                if(err) {
+                    return done(err);
+                }
                 res.should.have.status(200);
                 res.should.be.json;
                 res.body.should.have.property("message");
@@ -35,19 +55,7 @@ describe("GET user account", function () {
                 res.body.data.should.have.property("shirtSize");
                 done();
             });
-    });
-
-    // would this ever do anything?
-    it("should fail to list the user's account on /api/account/self GET", function (done) {
-        chai.request(server.app)
-            .get("/api/account/self")
-            .end(function (err, res) {
-                res.should.have.status(400);
-                res.should.be.json;
-                res.body.should.have.property("message");
-                res.body.message.should.equal("User email not found");
-                done();
-            });
+        });
     });
 });
 
@@ -74,21 +82,26 @@ describe("POST update account", function () {
         "lastName": "name"
     };
     it("should SUCCEED and update an account", function(done) {
-        chai.request(server.app)
-        .patch(`/api/account/${updatedInfo._id}`)
-        .type("application/json")
-        .send(updatedInfo)
-        .end(function (err, res) {
-            // auth?
-            res.should.have.status(200);
-            res.should.be.json;
-            res.body.should.have.property("message");
-            res.body.message.should.equal("Changed account information");
-            res.body.should.have.property("data");
-            // Is this correct matching of data?
-            res.body.data.firstName.should.equal(updatedInfo.firstName);
-            res.body.data.lastName.should.equal(updatedInfo.lastName);
-            done();
+        util.auth.login(agent, storedAccount1, (error) => {
+            if(error) {
+                agent.close();
+                return done(error);
+            }
+            agent
+            .patch(`/api/account/${updatedInfo._id}`)
+            .type("application/json")
+            .send(updatedInfo)
+            .end(function (err, res) {
+                res.should.have.status(200);
+                res.should.be.json;
+                res.body.should.have.property("message");
+                res.body.message.should.equal("Changed account information");
+                res.body.should.have.property("data");
+                // Is this correct matching of data?
+                res.body.data.firstName.should.equal(updatedInfo.firstName);
+                res.body.data.lastName.should.equal(updatedInfo.lastName);
+                done();
+            });
         });
     });
 });

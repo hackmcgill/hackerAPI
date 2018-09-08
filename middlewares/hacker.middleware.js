@@ -70,8 +70,9 @@ function ensureAccountLinkedToHacker(req, res, next) {
                 next();
             } else {
                 next({
+                    status: 401,
                     message: "Unauthorized",
-                    body: {}
+                    error: {}
                 });
             }
         }

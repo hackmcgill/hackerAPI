@@ -11,7 +11,8 @@ const Middleware = {
     },
     /* Insert all of ther middleware require statements here */
     parseBody: require("../../middlewares/parse-body.middleware"),
-    Account: require("../../middlewares/account.middleware")
+    Account: require("../../middlewares/account.middleware"),
+    Auth: require("../../middlewares/auth.middleware")
 };
 
 module.exports = {
@@ -38,6 +39,7 @@ module.exports = {
          *      {"message": "User email not found", "data": {}}
          */
         accountRouter.route("/self").get(
+            Middleware.Auth.ensureAuthenticated(),
             Controllers.Account.getUserByEmail
         );
 
@@ -46,6 +48,13 @@ module.exports = {
          * @apiName create
          * @apiGroup Account
          * @apiVersion 0.0.8
+         * 
+         * @apiParam (body) {String} firstName First name of the account creator.
+         * @apiParam (body) {String} lastName Last name of the account creator.
+         * @apiParam (body) {String} email Email of the account.
+         * @apiParam (body) {String} dietaryRestrictions Any dietary restrictions for the user. 'None' if there are no restrictions
+         * @apiParam (body) {String} shirtSize Size of the shirt that the user will receive.
+         * @apiParam (body) {String} passowrd The password of the account.
          * 
          * @apiSuccess {string} message Success message
          * @apiSuccess {object} data Account object
@@ -69,7 +78,7 @@ module.exports = {
             // middlewares to parse body/organize body
             // adds default hacker permissions here
             Middleware.Account.parseAccount,
-            Middleware.Account.addDefaultPermission,
+            Middleware.Account.addDefaultHackerPermissions,
 
             // should return status in this function
             Controllers.Account.addUser
@@ -80,6 +89,13 @@ module.exports = {
          * @apiName updateOneUser
          * @apiGroup Account
          * @apiVersion 0.0.8
+         * 
+         * @apiParam (body) {String} [firstName] First name of the account creator.
+         * @apiParam (body) {String} [lastName] Last name of the account creator.
+         * @apiParam (body) {String} [email] Email of the account.
+         * @apiParam (body) {String} [dietaryRestrictions] Any dietary restrictions for the user. 'None' if there are no restrictions
+         * @apiParam (body) {String} [shirtSize] Size of the shirt that the user will receive.
+         * @apiParam (body) {String} [passowrd] The password of the account.
          * 
          * @apiSuccess {string} message Success message
          * @apiSuccess {object} data Account object
@@ -95,6 +111,7 @@ module.exports = {
          *      {"message": "Issue with changing account information", "data": {}}
          */
         accountRouter.route("/:id").patch(
+            Middleware.Auth.ensureAuthenticated(),
             // validators
             Middleware.Validator.Account.updateAccountValidator,
 

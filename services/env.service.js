@@ -33,7 +33,6 @@ function createGCPFile() {
         }
     }
     const stringified = JSON.stringify(creds);
-    //un-escape the backslash
     const unEscaped = stringified.replace(/\\\\n/g, "\\n");
     fs.writeFileSync(path.join(__dirname, "../gcp_creds.json"), unEscaped);
 }
