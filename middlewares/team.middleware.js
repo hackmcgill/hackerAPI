@@ -27,7 +27,7 @@ async function ensureUniqueHackerId(req, res, next) {
             return next({
                 status: 422,
                 message: "Duplicate member in input",
-                data: member
+                error: member
             });
         } else {
             idSet[member] = true;
@@ -40,7 +40,7 @@ async function ensureUniqueHackerId(req, res, next) {
             return next({
                 status: 422,
                 message: "A member is already part of another team",
-                data: member
+                error: member
             });
         }
     }

@@ -13,7 +13,7 @@ module.exports = {
             next({
                 status: 422,
                 message: "Validation failed",
-                data: errors.mapped()
+                error: errors.mapped()
             });
         }
         req.body = matchedData(req);

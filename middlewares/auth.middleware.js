@@ -115,7 +115,7 @@ async function validateResetToken(req, res, next) {
         next({
             status: 422,
             message: "invalid token",
-            data: {}
+            error: {}
         });
     }
 }
