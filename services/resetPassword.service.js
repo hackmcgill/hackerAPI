@@ -7,22 +7,12 @@ function findByAccountId (accountId) {
     const TAG = `[ PasswordReset Service # findByAccountId ]`;
     return PasswordReset.findOne({
         accountId: accountId
-    }).exec(function (error, result) {
-        if (error) {
-            logger.error(`${TAG} Failed to find passwordReset by accountId`, error);
-        } else {
-            logger.info(`${TAG} ${result}`)
-        }
-    });
+    }, logger.queryCallbackFactory(TAG, "passwordReset", "accountId"));
 }
+
 function findById (id) {
     const TAG = `[ PasswordReset Service # findById ]`;
-    return PasswordReset.findById(id, function (error, result) {
-        if (error) {
-            logger.error(`${TAG} Failed to find passwordReset by Id`, error);
-            return;
-        }
-    }).exec();
+    return PasswordReset.findById(id, logger.queryCallbackFactory(TAG, "passwordReset", "mongoId"));
 }
 
 async function create (accountId) {
@@ -33,30 +23,22 @@ async function create (accountId) {
     });
 
     //invalidate all of the previous reset tokens such that they do not work anymore
-    await PasswordReset.update({
-        accountId: accountId
-    }, {
-        $set: {
-            wasUsed: true
+    await PasswordReset.update(
+        { accountId: accountId }, 
+        { $set: 
+            { wasUsed: true }
+        },
+        { multi: true }, 
+        (error) => {
+            if (error) {
+                logger.error(`${TAG} could not invalidate all previous password reset tokens`, error);
+            } else {
+                logger.info(`${TAG} invalidated all previous password reset tokens ${accountId}`);
+            }
         }
-    }, {
-        multi: true
-    }, (error) => {
-        if (error) {
-            logger.error(`${TAG} could not invalidate all previous password reset tokens`, error);
-        } else {
-            logger.info(`${TAG} invalidated all previous password reset tokens ${accountId}`);
-        }
-    });
+    );
 
-    const success = await newResetToken.save(function (error) {
-        if (error) {
-            logger.error(`${TAG} new password reset token storage failed`, error);
-        } else {
-            logger.info(`${TAG} stored new password reset token for account ${accountId}`);
-        }
-    });
-    return !!(success);
+    return newResetToken.save();
 }
 
 function deleteToken (id) {
