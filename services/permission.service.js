@@ -1,32 +1,30 @@
 "use strict";
 const DefaultPermission = require("../models/defaultPermission.model");
-const Permission = require("../models/permission.model");
 const logger = require("./logger.service");
 
 /**
  * Update the permissions for a given userType.
  * @param {string} defaultUserName name of the default user type
  * @param {ObjectId[]} newPermissions array of permission object ids.
+ * @return {DocumentQuery} DocumentQuery will resolve to updated permissions or null.
  */
-async function changeUserTypePermissions(defaultUserName, newPermissions) {
+function changeUserTypePermissions(defaultUserName, newPermissions) {
     const TAG = `[Permission Service # changeUserTypePermissions]:`;
     const query = {
         userType: defaultUserName
     };
-    return await DefaultPermission.findOneAndUpdate(query, {permissions: newPermissions}, (error, doc, result) => {
-        if(error) {
-            logger.error(`${TAG} Could not update user type`, error);
-        } else {
-            logger.info(`${TAG} Updated user type`, {doc: doc, result: result});
-        }
-    });
+    return DefaultPermission.findOneAndUpdate(query, {permissions: newPermissions}, logger.updateCallbackFactory(TAG, "DefaulPermission"));
 }
 
 
 /**
- * Helper method that facilitates the creation of default users by returning the permission ids of a given user type.
- * @param {string} defaultUserName one of ['Hacker', 'Volunteer', 'Staff', 'GodStaff', 'Sponsor']
- * @returns {ObjectId[]} the list of objectIds of permissions for a given default user type.
+ * @async
+ * @function getDefaultPermission
+ * @param {JSON} defaultUserType The type of user for which to get default permissions for.
+ * @return {Array} Array of ids of specific permissions
+ * @description 
+ * Gets the default permission of a type of user.
+ * Currently under WIP while new permission system is being created.
  */
 async function getDefaultPermission(defaultUserName) {
     const TAG = `[Permission Service # getDefaultPermission]:`;

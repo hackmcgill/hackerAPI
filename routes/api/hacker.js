@@ -28,15 +28,31 @@ module.exports = {
          * @apiParam (body) {String} school Name of the school the hacker goes to
          * @apiParam (body) {String} gender Gender of the hacker
          * @apiParam (body) {Boolean} needsBus Whether the hacker requires a bus for transportation
-         * @apiParam (body) {Object} application The hacker's application
+         * @apiParam (body) {Json} application The hacker's application. Resume and jobInterest fields are required.
+         * @apiParamExample {Json} application: 
+         *      {
+         *          "portfolioURL": {
+         *              "resume": "..."
+         *              "github": "...",
+         *              "dropler": "...",
+         *              "personal": "...",
+         *              "linkedIn": "...",
+         *              "other": "..."
+         *          },
+         *          "jobInterest": "...",
+         *          "skills": [id1, id2],    
+         *          "comments": "...",
+         *          "essay": "...",
+         *          "team": [id1, id2],
+         *      }
          * 
          * @apiSuccess {string} message Success message
          * @apiSuccess {object} data Hacker object
          * @apiSuccessExample {object} Success-Response: 
          *      {
-                    "message": "Hacker creation successful", 
-                    "data": {...}
-                }
+         *          "message": "Hacker creation successful", 
+         *          "data": {...}
+         *      }
 
          * @apiError {string} message Error message
          * @apiError {object} data empty
@@ -65,15 +81,31 @@ module.exports = {
          * @apiParam (body) {String} [school] Name of the school the hacker goes to
          * @apiParam (body) {String} [gender] Gender of the hacker
          * @apiParam (body) {Boolean} [needsBus] Whether the hacker requires a bus for transportation
-         * @apiParam (body) {Object} [application] The hacker's application
+         * @apiParam (body) {Json} [application] The hacker's application
+         * @apiParamExample {Json} application: 
+         *      {
+         *          "portfolioURL": {
+         *              "resume": "..."
+         *              "github": "...",
+         *              "dropler": "...",
+         *              "personal": "...",
+         *              "linkedIn": "...",
+         *              "other": "..."
+         *          },
+         *          "jobInterest": "...",
+         *          "skills": [id1, id2],    
+         *          "comments": "...",
+         *          "essay": "...",
+         *          "team": [id1, id2],
+         *      }
          * 
          * @apiSuccess {string} message Success message
          * @apiSuccess {object} data Hacker object
          * @apiSuccessExample {object} Success-Response: 
          *      {
-                    "message": "Changed hacker information", 
-                    "data": {...}
-                }
+         *          "message": "Changed hacker information", 
+         *          "data": {...}
+         *      }
 
          * @apiError {string} message Error message
          * @apiError {object} data empty
@@ -145,6 +177,13 @@ module.exports = {
          *              resume: [Buffer] 
          *          } 
          *      }
+         * @apiError {String} message "Resume does not exist"
+         * @apiErrorExample {json} Error-Response:
+         *      HTTP/1.1 404 
+         *      { 
+         *          message: "Resume does not exist", 
+         *          data: {} 
+         *      }
          * @apiSampleRequest off
          * @apiPermission Must be logged in, and the account id must be linked to the hacker.
          */
@@ -158,4 +197,4 @@ module.exports = {
 
         apiRouter.use("/hacker", hackerRouter);
     }
-}
+};

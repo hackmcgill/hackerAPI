@@ -1,71 +1,49 @@
 "use strict";
 const Team = require("../models/team.model");
 const logger = require("./logger.service");
-const bcrypt = require("bcrypt");
 
 /**
- * @async
  * @function findTeamByHackerId
  * @param {string} hackerId objectID of the hacker
- * @return {Team}
+ * @return {DocumentQuery} The document query will resolve to a team or null.
  * @description Finds the team that the hacker belongs to, or undefined.
  */
-async function findTeamByHackerId(hackerId) {
+function findTeamByHackerId(hackerId) {
     const TAG = `[Team Service # findTeamByHackerId]:`;
 
-    return await Team.findOne({ members: hackerId }, function (error, team) {
-        if (error) {
-            logger.error(`${TAG} Failed to verify if team exist or not using the hacker id ${hackerId}`, error);
-        }
-        else {
-            logger.debug(`${TAG} Found team using with member ${hackerId} in the database`);
-        }
-    });
+    const query = {
+        members: hackerId,
+    };
+
+    return Team.findOne(query, logger.queryCallbackFactory(TAG, "team", query));
 }
 
 /**
- * @async
  * @function createTeam
  * @param {JSON} teamDetails
- * @return {boolean} success or failure of attempt to add team
+ * @return {Promise<Team>} The promise will resolve to a team object if save was successful.
  * @description Adds a new team to database.
  */
-async function createTeam(teamDetails) {
+function createTeam(teamDetails) {
     const TAG = `[Team Service # createTeam]:`;
 
     const team = new Team(teamDetails);
 
-    const success = await team.save()
-        .catch(
-            (err) => {
-                logger.error(`${TAG} failed create team due to ${err}`);
-            }
-        );
-
-    return !!(success);
+    return team.save();
 }
 
 /**
- * @async
  * @function findById
  * @param {string} id
- * @return {Team | null} either Team or null
+ * @return {DocumentQuery} The document query will either resolve to a team or null.
  * @description Finds a team by its mongoID.
  */
-async function findById(id) {
+function findById(id) {
     const TAG = `[Team Service # findById]:`;
     const query = {
         _id: id
     };
-    return await Team.findById(query, function (error, team) {
-        if (error) {
-            logger.error(`${TAG} Failed to verify if team exist or not using ${JSON.stringify(query)}`, error);
-        } else if (team) {
-            logger.debug(`${TAG} team using ${JSON.stringify(query)} exist in the database`);
-        } else {
-            logger.debug(`${TAG} team using ${JSON.stringify(query)} do not exist in the database`);
-        }
-    });
+    return Team.findById(query, logger.queryCallbackFactory(TAG, "team", query));
 }
 
 /**

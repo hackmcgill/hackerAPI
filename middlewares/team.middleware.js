@@ -12,9 +12,9 @@ const Util = require("./util.middleware");
 /**
  * @async
  * @function ensureUniqueHackerId
- * @param {JSON} req
+ * @param {{body:{teamDetails:{members:String[]}}}} req
  * @param {JSON} res
- * @param {JSON} next
+ * @param {(err?)=>void} next
  * @return {void}
  * @description Checks to see that the members in a team are not in another team, and that members are not duplicate
  */
@@ -27,7 +27,7 @@ async function ensureUniqueHackerId(req, res, next) {
             return next({
                 status: 422,
                 message: "Duplicate member in input",
-                data: member
+                error: member
             });
         } else {
             idSet[member] = true;
@@ -40,7 +40,7 @@ async function ensureUniqueHackerId(req, res, next) {
             return next({
                 status: 422,
                 message: "A member is already part of another team",
-                data: member
+                error: member
             });
         }
     }
@@ -49,11 +49,10 @@ async function ensureUniqueHackerId(req, res, next) {
 }
 
 /**
- * @async
  * @function parseTeam
- * @param {JSON} req
+ * @param {{body:{name:string, members:string[], devpostURL: string, projectName: string}}} req
  * @param {JSON} res
- * @param {JSON} next
+ * @param {(err?)=>void} next
  * @return {void}
  * @description 
  * Moves name, members, devpostURL, projectName from req.body to req.body.teamDetails. 
