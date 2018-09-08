@@ -72,7 +72,7 @@ Things to take note of:
 
 ### Models files
 
-Below is an example Model file:
+Model files define the schemas we have in our database. Below is an example Model file:
 
 ```javascript
 "use strict";
@@ -120,7 +120,7 @@ Things to take note of:
 
 ### Routes files
 
-Below is an example Model file:
+Route files define the different endpoints for our API. Below is an example Routes file:
 
 ```javascript
 "use strict";
