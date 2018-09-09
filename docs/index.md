@@ -7,15 +7,13 @@ API for registration, live-site
 
 ## Getting started
 
-* Run `npm install` to download all of the dependencies.
+Run `setupEnv.sh` to set up your environment, and install all packages. If something doesn't work, please let us know! Sadly, this script hasn't been fully tested.
+  
+## Helpful links
 
-## How to deploy
-
-Go to this page: [deployment guide](./deploy)
-
-## Coding Standards
-
-Go to this page: [coding standards guide](./standards)
+* [**How to deploy**](./deploy)
+* [**Coding standards**](./standards)
+* [**API documentation**](./api/)
 
 ## Folder structure
 

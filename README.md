@@ -2,6 +2,16 @@
 
 API for registration, live-site
 
+## Builds
+
+### Master
+
+[![Build Status](https://travis-ci.org/hackmcgill/hackerAPI.svg?branch=master)](https://travis-ci.org/hackmcgill/hackerAPI)
+
+### Develop
+
+[![Build Status](https://travis-ci.org/hackmcgill/hackerAPI.svg?branch=develop)](https://travis-ci.org/hackmcgill/hackerAPI)
+
 ## How to use and contribute
 
 See documentation here: <https://hackerapi.mchacks.ca>
