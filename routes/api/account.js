@@ -128,7 +128,7 @@ module.exports = {
          * @apiGroup Account
          * @apiVersion 0.0.8
          * 
-         * @apiParam (param) {ObjectId} MongoId of an account
+         * @apiParam (param) {ObjectId} id MongoId of an account
          * 
          * @apiSuccess {string} message Success message
          * @apiSuccess {object} data Account object
