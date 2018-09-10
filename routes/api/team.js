@@ -58,6 +58,10 @@ module.exports = {
 
         );
 
+        teamRouter.route("/:id").get(
+            Controllers.Team.findById
+        );
+
         apiRouter.use("/team", teamRouter);
     }
 };
