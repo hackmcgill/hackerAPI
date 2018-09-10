@@ -21,9 +21,8 @@ describe("GET team", function () {
             res.body.should.have.property("data");
 
             let team = new Team(util.team.Team1);
-            
-            chai.expect(JSON.stringify(res.body.data)).to.deep.equal(JSON.stringify(team.toJSON()));
-            chai.expect(res.body.data).to.deep.equal(team.toJSON());
+            chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify(team.toJSON()));
+            done();
         });
     });
 });

@@ -45,7 +45,6 @@ async function createTeam(req, res) {
     const success = await Services.Team.createTeam(teamDetails);
 
     if (success) {
-        console.log("IN success " + success);
         return res.status(200).json({
             message: "Team creation successful",
             data: teamDetails
