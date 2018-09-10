@@ -10,8 +10,8 @@ const Util = require("../middlewares/util.middleware");
 /**
  * @async
  * @function createTeam
- * @param req
- * @param res
+ * @param {*} req
+ * @param {*} res
  * @return {JSON} Success or error status
  * @description create a team from information in req.body.teamDetails
  */
