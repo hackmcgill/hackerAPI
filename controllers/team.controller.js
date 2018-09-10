@@ -24,7 +24,7 @@ async function findById(req, res) {
             data: team.toJSON()
         });
     } else {
-        return res.status(400).json({
+        return res.status(404).json({
             message: "Issue with retrieving team information",
             data: {}
         });
