@@ -49,7 +49,7 @@ async function getUserById(req, res) {
     } else {
         // tentative error code
         return res.status(400).json({
-            message: "User id not found",
+            message: "Account id not found",
             data: {}
         });
     }
