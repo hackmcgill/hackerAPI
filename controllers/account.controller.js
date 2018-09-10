@@ -32,6 +32,31 @@ async function getUserByEmail(req, res) {
 
 /**
  * @async
+ * @function getUserById
+ * @param req
+ * @param res
+ * @return {JSON} Success or error status
+ * @description Retrieves an account's information via the account's mongoId, specified in req.params.id from route parameters.
+ */
+async function getUserById(req, res) {
+    const acc = await Services.Account.findById(req.params.id);
+    
+    if (acc) {
+        return res.status(200).json({
+            message: "Account found by user id",
+            data: acc.toStrippedJSON()
+        });
+    } else {
+        // tentative error code
+        return res.status(400).json({
+            message: "User id not found",
+            data: {}
+        });
+    }
+}
+
+/**
+ * @async
  * @function addUser
  * @param req
  * @param res
@@ -95,6 +120,7 @@ module.exports = {
     },
 
     getUserByEmail: Util.asyncMiddleware(getUserByEmail),
+    getUserById: Util.asyncMiddleware(getUserById),
 
     // assumes all information in req.body
     addUser: Util.asyncMiddleware(addUser),
