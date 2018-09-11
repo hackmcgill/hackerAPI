@@ -40,6 +40,8 @@ function updateOne(id, hackerDetails) {
  * @description Finds an hacker by the id, which is the mongoId.
  */
 function findById(id) {
+    const TAG = `[Hacker Service # findById ]:`;
+
     return Hacker.findById(id, logger.queryCallbackFactory(TAG, "hacker", id));
 }
 
