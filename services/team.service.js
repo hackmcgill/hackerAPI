@@ -62,4 +62,5 @@ module.exports = {
     isTeamIdValid: isTeamIdValid,
     createTeam: createTeam,
     findTeamByHackerId: findTeamByHackerId,
+    findById: findById,
 };
