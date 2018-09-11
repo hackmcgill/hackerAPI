@@ -128,7 +128,7 @@ module.exports = {
          * @apiGroup Hacker
          * @apiVersion 0.0.8
          * 
-         * @apiParam (param) {String} id a sponsor's unique mongoID
+         * @apiParam (param) {String} id a hacker's unique mongoID
          * 
          * @apiSuccess {String} message Success message
          * @apiSuccess {Object} data Sponsor object
