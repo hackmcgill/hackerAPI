@@ -72,7 +72,7 @@ function downloadedResume (req, res) {
 }
 
 module.exports = {
-    updateHacker: updatedHacker,
+    updatedHacker: updatedHacker,
     createHacker: Util.asyncMiddleware(createHacker),
     uploadedResume: uploadedResume,
     downloadedResume: downloadedResume

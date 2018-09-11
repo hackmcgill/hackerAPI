@@ -5,13 +5,15 @@ const mongoose = require("mongoose");
 const Services = {
     Hacker: require("../services/hacker.service"),
     Storage: require("../services/storage.service"),
-    Email: require("../services/email.service")
+    Email: require("../services/email.service"),
+    Account: require("../services/account.service")
 };
 const Middleware = {
     Util: require("./util.middleware")
 };
 const Constants = require("../constants");
 const fs = require("fs");
+const path = require("path");
 
 /**
  * @async
@@ -117,7 +119,7 @@ async function downloadResume(req, res, next) {
 }
 /**
  * Sends a preset email to a user if a status change occured.
- * @param {{body: {status?: string, hacker: {email: string}}}} req 
+ * @param {{body: {status?: string}, email: string}} req 
  * @param {*} res 
  * @param {(err?:*)=>void} next 
  */
@@ -134,65 +136,72 @@ function sendStatusUpdateEmail(req, res, next) {
         case Constants.HACKER_STATUS_ACCEPTED:
             //send acceptance email
             mailData = {
-                to: req.body.hacker.email,
+                to: req.email,
                 from: process.env.NO_REPLY_EMAIL,
                 subject: `Great update from ${process.env.HACKATHON}`,
-                html: fs.readFileSync("../assets/email/accepted.html").toString()
+                html: fs.readFileSync(path.join(__dirname, "../assets/email/accepted.html")).toString()
             };
             break;
         case Constants.HACKER_STATUS_APPLIED:
             //send applied email
             mailData = {
-                to: req.body.hacker.email,
+                to: req.email,
                 from: process.env.NO_REPLY_EMAIL,
                 subject: `Thanks for Applying to ${process.env.HACKATHON}`,
-                html: fs.readFileSync("../assets/email/applied.html").toString()
+                html: fs.readFileSync(path.join(__dirname, "../assets/email/applied.html")).toString()
             };
             break;
 
         case Constants.HACKER_STATUS_CANCELLED:
             //send cancelled email
             mailData = {
-                to: req.body.hacker.email,
+                to: req.email,
                 from: process.env.NO_REPLY_EMAIL,
                 subject: "Sorry to see you go.",
-                html: fs.readFileSync("../assets/email/cancelled.html").toString()
+                html: fs.readFileSync(path.join(__dirname, "../assets/email/cancelled.html")).toString()
             };
             break;
 
         case Constants.HACKER_STATUS_CHECKED_IN:
             //send checked in email
             mailData = {
-                to: req.body.hacker.email,
+                to: req.email,
                 from: process.env.NO_REPLY_EMAIL,
                 subject: `Welcome to ${process.env.HACKATHON}!`,
-                html: fs.readFileSync("../assets/email/checkedIn.html").toString()
+                html: fs.readFileSync(path.join(__dirname, "../assets/email/checkedIn.html")).toString()
             };
             break;
 
         case Constants.HACKER_STATUS_CONFIRMED:
             //send confirmed email
             mailData = {
-                to: req.body.hacker.email,
+                to: req.email,
                 from: process.env.NO_REPLY_EMAIL,
                 subject: "Thanks for applying!",
-                html: fs.readFileSync("../assets/email/accepted.html").toString()
+                html: fs.readFileSync(path.join(__dirname, "../assets/email/confirmed.html")).toString()
             };
             break;
 
         case Constants.HACKER_STATUS_WAITLISTED:
             mailData = {
-                to: req.body.hacker.email,
+                to: req.email,
                 from: process.env.NO_REPLY_EMAIL,
                 subject: "Update from McHacks",
-                html: fs.readFileSync("../assets/email/waitlisted.html").toString()
+                html: fs.readFileSync(path.join(__dirname, "../assets/email/waitlisted.html")).toString()
             };
             break;
         default:
             Services.Logger.error(`Invalid status change: ${req.body.status}`);
     }
     if(mailData) {
-        Services.Email.send(mailData, next);
+        Services.Email.send(mailData).then(
+            (response) => {
+                if(response[0].statusCode !== 202) {
+                    next(response[0]);
+                } else {
+                    next();
+                }
+            }, next);
     } else {
         next({
             status: 422,
@@ -204,10 +213,28 @@ function sendStatusUpdateEmail(req, res, next) {
     }
 }
 
+/**
+ * Updates a hacker that is specified by req.params.id, and then sets req.hacker to equal the updated
+ * hacker value. 
+ * @param {{params:{id: string}, body: *}} req 
+ * @param {*} res 
+ * @param {*} next 
+ */
 async function updateHacker(req, res, next) {
-    const success = await Services.Hacker.updateOne(req.params.id, req.body);
-    if(success) {
-        req.body.hacker = success;
+    const hacker = await Services.Hacker.updateOne(req.params.id, req.body);
+    if(hacker) {
+        const acct = await Services.Account.findById(hacker.accountId);
+        if(!acct) {
+            return next({
+                status: 500,
+                message: "Error while searching for account by id when updating hacker",
+                data: {
+                    hackerId: hacker.id,
+                    accountId: hacker.accountId
+                }
+            });
+        }
+        req.email = acct.email;
         next();
     } else {
         next({
