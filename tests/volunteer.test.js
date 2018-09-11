@@ -14,7 +14,7 @@ describe("POST create volunteer", function () {
         chai.request(server.app)
         .post(`/api/volunteer/`)
         .type("application/json")
-        .send(util.volunteer.Volunteer1)
+        .send(util.volunteer.newVolunteer1)
         .end(function (err, res) {
             res.should.have.status(200);
             res.should.be.json;
@@ -24,7 +24,7 @@ describe("POST create volunteer", function () {
 
             // deleting _id because that was generated, and not part of original data
             delete res.body.data._id;
-            chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify(util.volunteer.Volunteer1));
+            chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify(util.volunteer.newVolunteer1));
             done();
         });
     });

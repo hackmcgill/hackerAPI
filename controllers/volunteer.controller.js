@@ -5,7 +5,15 @@ const Services = {
 };
 const Util = require("../middlewares/util.middleware");
 
-function createVolunteer(req, res) {
+/**
+ * @async
+ * @function createVolunteer
+ * @param {body: {volunteerDetails: {_id: MongoID, accountId: MongoID}}} req
+ * @param {*} res
+ * @return {JSON} Success or error status
+ * @description create a volunteer from information in req.body.volunteerDetails
+ */
+async function createVolunteer(req, res) {
     const volunteerDetails = req.body.volunteerDetails;
 
     const success = await Services.Volunteer.createVolunteer(volunteerDetails);

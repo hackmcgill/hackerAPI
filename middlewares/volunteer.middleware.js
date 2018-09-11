@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 
 /**
  * @function parseVolunteer
- * @param {body: {accountId: String} req
+ * @param {body: {accountId: String}} req
  * @param {*} res
  * @param {(err?)=>void} next
  * @return {void}
