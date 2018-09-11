@@ -10,8 +10,8 @@ const Util = require("../middlewares/util.middleware");
 /**
  * @async
  * @function createHacker
- * @param req
- * @param res
+ * @param {*} req
+ * @param {*} res
  * @return {JSON} Success or error status
  * @description create a hacker from information in req.body.hackerDetails
  */
@@ -36,8 +36,8 @@ async function createHacker(req, res) {
 /**
  * @async
  * @function updateHacker
- * @param req
- * @param res
+ * @param {*} req
+ * @param {*} res
  * @return {JSON} Success or error status
  * @description 
  *      Change a hacker's information based on the hacker's mongoID specified in req.params.id.

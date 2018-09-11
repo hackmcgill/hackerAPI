@@ -8,8 +8,8 @@ const Util = require("../middlewares/util.middleware");
 /**
  * @async
  * @function findById
- * @param req
- * @param res
+ * @param {*} req
+ * @param {*} res
  * @return {JSON} Success or error status
  * @description Retrieves a sponsor's information via it's mongoId specified in req.params.id
  */
@@ -33,8 +33,8 @@ async function findById(req, res) {
 /**
  * @async
  * @function createSponsor
- * @param req
- * @param res
+ * @param {*} req
+ * @param {*} res
  * @return {JSON} Success or error status
  * @description create a sponsor from information in req.body.sponsorDetails
  */

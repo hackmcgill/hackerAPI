@@ -4,6 +4,7 @@ const chaiHttp = require("chai-http");
 chai.use(chaiHttp);
 const server = require("../app");
 const logger = require("../services/logger.service");
+const Account = require("../models/account.model");
 
 const util = {
     account: require("./util/account.test.util"),
@@ -57,6 +58,22 @@ describe("GET user account", function () {
             });
         });
     });
+    it("should list an account specified by id on /api/account/:id/ GET", function (done) {
+        chai.request(server.app)
+        .get(`/api/account/` + storedAccount1._id)
+        .end(function (err, res) {
+            res.should.have.status(200);
+            res.should.be.json;
+            res.body.should.have.property("message");
+            res.body.message.should.equal("Account found by user id");
+            res.body.should.have.property("data");
+
+            // use acc.toStrippedJSON to deal with hidden passwords and convert _id to id
+            const acc = new Account(storedAccount1);
+            chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify(acc.toStrippedJSON()));
+            done();
+        });
+    })
 });
 
 describe("POST create account", function () {
