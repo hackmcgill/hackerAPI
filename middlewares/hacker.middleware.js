@@ -4,11 +4,14 @@ const TAG = `[ HACKER.MIDDLEWARE.js ]`;
 const mongoose = require("mongoose");
 const Services = {
     Hacker: require("../services/hacker.service"),
-    Storage: require("../services/storage.service")
+    Storage: require("../services/storage.service"),
+    Email: require("../services/email.service")
 };
 const Middleware = {
     Util: require("./util.middleware")
 };
+const Constants = require("../constants");
+const fs = require("fs");
 
 /**
  * @async
@@ -112,12 +115,117 @@ async function downloadResume(req, res, next) {
     }
     next();
 }
+/**
+ * Sends a preset email to a user if a status change occured.
+ * @param {{body: {status?: string, hacker: {email: string}}}} req 
+ * @param {*} res 
+ * @param {(err?:*)=>void} next 
+ */
+function sendStatusUpdateEmail(req, res, next) {
+    let mailData;
+    //skip if the status doesn't exist
+    if(!req.body.status) {
+        return next();
+    }
+    switch (req.body.status) {
+        case Constants.HACKER_STATUS_NONE:
+            //do nothing
+            break;
+        case Constants.HACKER_STATUS_ACCEPTED:
+            //send acceptance email
+            mailData = {
+                to: req.body.hacker.email,
+                from: process.env.NO_REPLY_EMAIL,
+                subject: `Great update from ${process.env.HACKATHON}`,
+                html: fs.readFileSync("../assets/email/accepted.html").toString()
+            };
+            break;
+        case Constants.HACKER_STATUS_APPLIED:
+            //send applied email
+            mailData = {
+                to: req.body.hacker.email,
+                from: process.env.NO_REPLY_EMAIL,
+                subject: `Thanks for Applying to ${process.env.HACKATHON}`,
+                html: fs.readFileSync("../assets/email/applied.html").toString()
+            };
+            break;
 
+        case Constants.HACKER_STATUS_CANCELLED:
+            //send cancelled email
+            mailData = {
+                to: req.body.hacker.email,
+                from: process.env.NO_REPLY_EMAIL,
+                subject: "Sorry to see you go.",
+                html: fs.readFileSync("../assets/email/cancelled.html").toString()
+            };
+            break;
+
+        case Constants.HACKER_STATUS_CHECKED_IN:
+            //send checked in email
+            mailData = {
+                to: req.body.hacker.email,
+                from: process.env.NO_REPLY_EMAIL,
+                subject: `Welcome to ${process.env.HACKATHON}!`,
+                html: fs.readFileSync("../assets/email/checkedIn.html").toString()
+            };
+            break;
+
+        case Constants.HACKER_STATUS_CONFIRMED:
+            //send confirmed email
+            mailData = {
+                to: req.body.hacker.email,
+                from: process.env.NO_REPLY_EMAIL,
+                subject: "Thanks for applying!",
+                html: fs.readFileSync("../assets/email/accepted.html").toString()
+            };
+            break;
+
+        case Constants.HACKER_STATUS_WAITLISTED:
+            mailData = {
+                to: req.body.hacker.email,
+                from: process.env.NO_REPLY_EMAIL,
+                subject: "Update from McHacks",
+                html: fs.readFileSync("../assets/email/waitlisted.html").toString()
+            };
+            break;
+        default:
+            Services.Logger.error(`Invalid status change: ${req.body.status}`);
+    }
+    if(mailData) {
+        Services.Email.send(mailData, next);
+    } else {
+        next({
+            status: 422,
+            message: "Invalid status change",
+            data: {
+                status: req.body.status
+            }
+        });
+    }
+}
+
+async function updateHacker(req, res, next) {
+    const success = await Services.Hacker.updateOne(req.params.id, req.body);
+    if(success) {
+        req.body.hacker = success;
+        next();
+    } else {
+        next({
+            status: 404,
+            message: "Hacker not found",
+            data: {
+                id: req.params.id
+            }
+        });
+    }
+}
 
 module.exports = {
     parseHacker: parseHacker,
     addDefaultStatus: addDefaultStatus,
     ensureAccountLinkedToHacker: ensureAccountLinkedToHacker,
     uploadResume: Middleware.Util.asyncMiddleware(uploadResume),
-    downloadResume: Middleware.Util.asyncMiddleware(downloadResume)
+    downloadResume: Middleware.Util.asyncMiddleware(downloadResume),
+    sendStatusUpdateEmail: sendStatusUpdateEmail,
+    updateHacker: Middleware.Util.asyncMiddleware(updateHacker),
 };

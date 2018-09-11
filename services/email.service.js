@@ -7,6 +7,7 @@ class EmailService {
     constructor(apiKey) {
         client.setApiKey(apiKey);
     }
+    
     /**
      * Send one email
      * @param {*} mailData 
