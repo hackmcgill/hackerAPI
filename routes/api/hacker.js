@@ -122,6 +122,31 @@ module.exports = {
             Controllers.Hacker.updateHacker
         );
 
+        /**
+         * @api {get} /hacker/:id get a hacker's information
+         * @apiName getHacker
+         * @apiGroup Hacker
+         * @apiVersion 0.0.8
+         * 
+         * @apiParam (param) {String} id a sponsor's unique mongoID
+         * 
+         * @apiSuccess {String} message Success message
+         * @apiSuccess {Object} data Sponsor object
+         * @apiSuccessExample {object} Success-Response: 
+         *      {
+                    "message": "Successfully retrieved hacker information", 
+                    "data": {...}
+                }
+
+         * @apiError {String} message Error message
+         * @apiError {Object} data empty
+         * @apiErrorExample {object} Error-Response: 
+         *      {"message": "Issue with retrieving hacker information", "data": {}}
+         */
+        hackerRouter.route("/:id").get(
+            Controllers.Hacker.findById
+        );
+
         hackerRouter.route("/:id/resume")
         /**
          * @api {post} /hacker/:id/resume upload or update resume for a hacker.

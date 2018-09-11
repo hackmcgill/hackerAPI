@@ -5,7 +5,7 @@ chai.use(chaiHttp);
 const server = require("../app");
 const agent = chai.request.agent(server.app);
 const should = chai.should();
-const logger = require("../services/logger.service");
+const Hacker = require("../models/hacker.model");
 
 const util = {
     hacker: require("./util/hacker.test.util"),
@@ -14,6 +14,25 @@ const util = {
 const storedHacker1 = util.hacker.HackerA;
 const newHacker1 = util.hacker.newHacker1;
 const invalidHacker1 = util.hacker.invalidHacker1;
+
+describe("GET hacker", function () {
+    it("should list a hacker's information from /api/hacker/:id GET", function(done) {
+        chai.request(server.app)
+        .get(`/api/hacker/` + storedHacker1._id)
+        .end(function (err, res) {
+            res.should.have.status(200);
+            res.should.be.json;
+            res.body.should.have.property("message");
+            res.body.message.should.equal("Successfully retrieved hacker information");
+            res.body.should.have.property("data");
+
+            let hacker = new Hacker(storedHacker1);
+            chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify(hacker.toJSON()));
+
+            done();
+        });
+    });
+});
 
 describe("POST create hacker", function () {
     it("should SUCCEED and create a new hacker", function(done) {
