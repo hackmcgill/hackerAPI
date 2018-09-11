@@ -1,13 +1,34 @@
 "use strict";
-const mongoose = require("mongoose");
-const Constants = require("../constants");
-const fs = require("fs");
 const Services = {
     Hacker: require("../services/hacker.service"),
     Logger: require("../services/logger.service"),
     Email: require("../services/email.service")
 };
 const Util = require("../middlewares/util.middleware");
+
+/**
+ * @async
+ * @function findById
+ * @param {params: {id: string}} req
+ * @param {*} res
+ * @return {JSON} Success or error status
+ * @description Retrieves a hacker's information via it's mongoId specified in req.params.id
+ */
+async function findById(req, res) {
+    const hacker = await Services.Hacker.findById(req.params.id);
+
+    if (hacker) {
+        return res.status(200).json({
+            message: "Successfully retrieved hacker information",
+            data: hacker.toJSON()
+        });
+    } else {
+        return res.status(404).json({
+            message: "Issue with retrieving hacker information",
+            data: {}
+        });
+    }
+}
 
 /**
  * @async
@@ -73,6 +94,7 @@ function downloadedResume (req, res) {
 
 module.exports = {
     updatedHacker: updatedHacker,
+    findById: Util.asyncMiddleware(findById),
     createHacker: Util.asyncMiddleware(createHacker),
     uploadedResume: uploadedResume,
     downloadedResume: downloadedResume
