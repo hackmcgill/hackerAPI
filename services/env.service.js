@@ -16,7 +16,6 @@ module.exports = {
     },
     isProduction: function() {
         return process.env.NODE_ENV === "deployment";
-
     },
     isTest: function() {
         return process.env.NODE_ENV === "test";
