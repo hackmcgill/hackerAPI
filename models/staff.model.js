@@ -1,10 +1,10 @@
 "use strict";
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 //describes the data type
 const StaffSchema = new mongoose.Schema({
     accountId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Account',
+        ref: "Account",
         required:true
     },
     godMode: {
@@ -19,6 +19,6 @@ StaffSchema.methods.toJSON = function() {
     ss.id = ss._id;
     delete ss._id;
     return ss;
-}
+};
 //export the model
-module.exports = mongoose.model('Staff',StaffSchema);
+module.exports = mongoose.model("Staff",StaffSchema);

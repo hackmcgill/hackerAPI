@@ -15,3 +15,6 @@ branches:
   only:
     - master
     - develop
+
+notifications:
+  slack: hackboard6:4baCeRXUOQmvy4ZBAHQclN6K

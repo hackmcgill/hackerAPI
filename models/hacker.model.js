@@ -12,7 +12,7 @@ const HackerSchema = new mongoose.Schema({
     },
     status: {
         type: String,
-        enum: ["None", "Applied", "Accepted", "Waitlisted", "Confirmed", "Cancelled", "Checked-in"],
+        enum: Constants.HACKER_STATUSES,
         required: true,
         default: "None"
     },

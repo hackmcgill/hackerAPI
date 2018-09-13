@@ -13,9 +13,9 @@ const Middleware = {
 /**
  * @async
  * @function parseHacker
- * @param {JSON} req
+ * @param {{body:{accountId:string, school:string, gender:string, needsBus: string, application:Object}}} req
  * @param {JSON} res
- * @param {JSON} next
+ * @param {(err?)=>void} next
  * @return {void}
  * @description 
  * Moves accountId, school, gender, needsBus, application from req.body to req.body.teamDetails. 
@@ -45,11 +45,11 @@ function parseHacker(req, res, next) {
 /**
  * @async
  * @function addDefaultStatus
- * @param {JSON} req
+ * @param {{body:{hackerDetails:{status:String}}}} req
  * @param {JSON} res
- * @param {JSON} next
+ * @param {(err?)=>void} next
  * @return {void}
- * @description Adds status to teamDetails.
+ * @description Adds status to hackerDetails.
  */
 function addDefaultStatus(req, res, next) {
     req.body.hackerDetails.status = "Applied";
@@ -58,9 +58,9 @@ function addDefaultStatus(req, res, next) {
 
 /**
  * Verifies that the current signed in user is linked to the hacker passed in via req.body.id
- * @param {*} req 
+ * @param {{body:{id:String}}} req 
  * @param {*} res 
- * @param {*} next 
+ * @param {(err?)=>void} next
  */
 // must check that the account id is in the hacker schema.
 function ensureAccountLinkedToHacker(req, res, next) {
@@ -81,9 +81,9 @@ function ensureAccountLinkedToHacker(req, res, next) {
 
 /**
  * Uploads resume via the storage service. Assumes there is a file in req, and a hacker id in req.body. 
- * @param {*} req 
+ * @param {{body:{id:String}, file:[Buffer]}} req 
  * @param {*} res 
- * @param {*} next 
+ * @param {(err?)=>void} next
  */
 async function uploadResume(req, res, next) {
     const gcfilename = `resumes/${Date.now()}-${req.body.id}`;
@@ -94,17 +94,21 @@ async function uploadResume(req, res, next) {
 }
 
 /**
- * Returns the application of a given hacker. Assumes req.body.id exists.
- * @param {*} req 
+ * Attaches the resume of a hacker to req.body.resume. Assumes req.body.id exists.
+ * @param {{body:{id:String}}} req 
  * @param {*} res 
- * @param {*} next 
+ * @param {(err?)=>void} next
  */
 async function downloadResume(req, res, next) {
     const hacker = await Services.Hacker.findById(req.body.id);
     if(hacker && hacker.application && hacker.application.portfolioURL && hacker.application.portfolioURL.resume) {
         res.body.resume = await Services.Storage.download(hacker.application.portfolioURL.resume);
     } else {
-        res.body.resume = null;
+        return next({
+            status: 404,
+            message: "Resume does not exist",
+            error:{}
+        });
     }
     next();
 }

@@ -103,3 +103,19 @@ else
   # The package is installed!
   echo "gcloud already installed."
 fi
+
+#
+# Create .env file
+#
+if [ ! -f ./.env ]; then
+    echo "Creating .env file. IMPORTANT: YOU MUST FILL THIS STUFF IN!"
+    cp ./.env.example ./.env
+else 
+  echo ".env file already created."
+fi
+
+#
+# NPM install
+#
+echo "installing npm modules."
+npm install

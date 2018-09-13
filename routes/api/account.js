@@ -49,6 +49,13 @@ module.exports = {
          * @apiGroup Account
          * @apiVersion 0.0.8
          * 
+         * @apiParam (body) {String} firstName First name of the account creator.
+         * @apiParam (body) {String} lastName Last name of the account creator.
+         * @apiParam (body) {String} email Email of the account.
+         * @apiParam (body) {String} dietaryRestrictions Any dietary restrictions for the user. 'None' if there are no restrictions
+         * @apiParam (body) {String} shirtSize Size of the shirt that the user will receive.
+         * @apiParam (body) {String} passowrd The password of the account.
+         * 
          * @apiSuccess {string} message Success message
          * @apiSuccess {object} data Account object
          * @apiSuccessExample {object} Success-Response: 
@@ -83,6 +90,13 @@ module.exports = {
          * @apiGroup Account
          * @apiVersion 0.0.8
          * 
+         * @apiParam (body) {String} [firstName] First name of the account creator.
+         * @apiParam (body) {String} [lastName] Last name of the account creator.
+         * @apiParam (body) {String} [email] Email of the account.
+         * @apiParam (body) {String} [dietaryRestrictions] Any dietary restrictions for the user. 'None' if there are no restrictions
+         * @apiParam (body) {String} [shirtSize] Size of the shirt that the user will receive.
+         * @apiParam (body) {String} [passowrd] The password of the account.
+         * 
          * @apiSuccess {string} message Success message
          * @apiSuccess {object} data Account object
          * @apiSuccessExample {object} Success-Response: 
@@ -106,6 +120,31 @@ module.exports = {
             // no parse account because will use req.body as information
             // because the number of fields will be variable
             Controllers.Account.updateAccount
+        );
+
+        /**
+         * @api {get} /account/:id gets information from an account with mongoid ':id'
+         * @apiName getAccount
+         * @apiGroup Account
+         * @apiVersion 0.0.8
+         * 
+         * @apiParam (param) {ObjectId} id MongoId of an account
+         * 
+         * @apiSuccess {string} message Success message
+         * @apiSuccess {object} data Account object
+         * @apiSuccessExample {object} Success-Response: 
+         *      {
+                    "message": "Account found by user id", 
+                    "data": {...}
+                }
+
+         * @apiError {string} message Error message
+         * @apiError {object} data empty
+         * @apiErrorExample {object} Error-Response: 
+         *      {"message": "User id not found", "data": {}}
+         */
+        accountRouter.route("/:id").get(
+            Controllers.Account.getUserById
         );
 
         apiRouter.use("/account", accountRouter);

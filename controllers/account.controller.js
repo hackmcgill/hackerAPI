@@ -8,8 +8,8 @@ const Util = require("../middlewares/util.middleware");
 /**
  * @async
  * @function getUserByEmail
- * @param req
- * @param res
+ * @param {*} req
+ * @param {*} res
  * @return {JSON} Success or error status
  * @description Retrieves an account's information via email query.
  */
@@ -23,7 +23,7 @@ async function getUserByEmail(req, res) {
         });
     } else {
         // tentative error code
-        return res.status(400).json({
+        return res.status(404).json({
             message: "User email not found",
             data: {}
         });
@@ -32,9 +32,33 @@ async function getUserByEmail(req, res) {
 
 /**
  * @async
+ * @function getUserById
+ * @param {*} req
+ * @param {*} res
+ * @return {JSON} Success or error status
+ * @description Retrieves an account's information via the account's mongoId, specified in req.params.id from route parameters.
+ */
+async function getUserById(req, res) {
+    const acc = await Services.Account.findById(req.params.id);
+    
+    if (acc) {
+        return res.status(200).json({
+            message: "Account found by user id",
+            data: acc.toStrippedJSON()
+        });
+    } else {
+        return res.status(404).json({
+            message: "Account id not found",
+            data: {}
+        });
+    }
+}
+
+/**
+ * @async
  * @function addUser
- * @param req
- * @param res
+ * @param {*} req
+ * @param {*} res
  * @return {JSON} Success or error status
  * @description Adds a user from information in req.body.accountDetails
  */
@@ -61,8 +85,8 @@ async function addUser(req, res) {
 /**
  * @async
  * @function updateAccount
- * @param req
- * @param res
+ * @param {*} req
+ * @param {*} res
  * @return {JSON} Success or error status
  * @description 
  *      Change a user's account information based on the account's mongoID. 
@@ -87,14 +111,8 @@ async function updateAccount(req, res) {
 }
 
 module.exports = {
-    defaultReturn: function (req, res) {
-        return res.status(200).json({
-            message: "Default message",
-            data: "Default data"
-        });
-    },
-
     getUserByEmail: Util.asyncMiddleware(getUserByEmail),
+    getUserById: Util.asyncMiddleware(getUserById),
 
     // assumes all information in req.body
     addUser: Util.asyncMiddleware(addUser),

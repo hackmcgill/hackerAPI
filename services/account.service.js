@@ -4,42 +4,32 @@ const logger = require("./logger.service");
 const bcrypt = require("bcrypt");
 
 /**
- * @async
  * @function findById
  * @param {String} id
- * @return {DocumentQuery} either account or null
+ * @return {DocumentQuery} The document query will resolve to either account or null.
  * @description Finds an account by mongoID.
  */
-async function findById(id) {
+function findById(id) {
     const TAG = `[Account Service # findById]:`;
     const query = {
         _id: id
     };
-    const acct = await Account.findById(query, function (error, user) {
-        if (error) {
-            logger.error(`${TAG} Failed to verify if accounts exist or not using ${JSON.stringify(query)}`, error);
-        } else if (user) {
-            logger.debug(`${TAG} accounts using ${JSON.stringify(query)} exist in the database`);
-        } else {
-            logger.debug(`${TAG} accounts using ${JSON.stringify(query)} do not exist in the database`);
-        }
-    });
-    return acct;
+
+    return Account.findById(query, logger.queryCallbackFactory(TAG, "account", query));
 }
 
 /**
- * @async
  * @function findByEmail
  * @param {String} email 
- * @return {Account | null} either account or null
+ * @return {DocumentQuery} The document query will resolve to either account or null.
  * @description Find an account by email.
  */
-async function findByEmail(email) {
+function findByEmail(email) {
     const query = {
         email: email
     };
 
-    return await findOne(query);
+    return findOne(query);
 }
 
 /**
@@ -49,6 +39,7 @@ async function findByEmail(email) {
  */
 async function getAccountIfValid(email, password) {
     const account = await findByEmail(email);
+
     if (!!account && account.comparePassword(password)) {
         return account;
     }
@@ -66,73 +57,46 @@ function hashPassword(password) {
 }
 
 /**
- * @async
  * @function findOne
  * @param {JSON} query
- * @return {Account | null} either account or null
+ * @return {DocumentQuery} The document query will resolve to either account or null.
  * @description Finds an account by some query.
  */
-async function findOne(query) {
+function findOne(query) {
     const TAG = `[Account Service # findOne ]:`;
-    return await Account.findOne(query, function (error, user) {
-            if (error) {
-                logger.error(`${TAG} Failed to verify if accounts exist or not using ${JSON.stringify(query)}`, error);
-            } else if (user) {
-                logger.debug(`${TAG} accounts using ${JSON.stringify(query)} exist in the database`);
-            } else {
-                logger.debug(`${TAG} accounts using ${JSON.stringify(query)} do not exist in the database`);
-            }
-        });
+
+    return Account.findOne(query, logger.queryCallbackFactory(TAG, "account", query));
 }
 
 /**
- * @async
  * @function addOneAccount
  * @param {JSON} accountDetails
- * @return {boolean} success or failure of attempt to add account
+ * @return {Promise<Account>} The promise will resolve to the account object if save is successful.
  * @description Adds a new account to database.
  */
-async function addOneAccount(accountDetails) {
+function addOneAccount(accountDetails) {
     const TAG = `[Account Service # addOneAccount ]:`;
 
     const account = new Account(accountDetails);
 
-    const success = await account.save()
-        .catch(
-            (err) => {
-                logger.error(`${TAG} failed create account due to ${err}`);
-            }
-        );
-
-    return !!(success);
+    return account.save();
 }
 
 /**
- * @async
  * @function changeOneAccount
  * @param {JSON} id
  * @param {JSON} accountDetails 
- * @return {boolean} success or failure of changing account information
+ * @return {DocumentQuery} The document query will resolve to either account or null.
  * @description Changes account information to the specified information in accountDetails.
  */
-async function changeOneAccount(id, accountDetails) {
+function changeOneAccount(id, accountDetails) {
     const TAG = `[Account Service # changeOneAccount ]:`;
 
     const query = {
         _id: id
     };
 
-    const success = await Account.findOneAndUpdate(query, accountDetails, function (error, user) {
-        if (error) {
-            logger.error(`${TAG} failed to change account`);
-        } else if (!user) {
-            logger.error(`${TAG} failed to find account in database`);
-        } else {
-            logger.debug(`${TAG} changed account information`);
-        }
-    });
-
-    return !!(success);
+    return Account.findOneAndUpdate(query, accountDetails, logger.updateCallbackFactory(TAG, "account"));
 }
 
 /**
