@@ -3,7 +3,7 @@ const Volunteer = require("../models/volunteer.model");
 
 /**
  * @function createVolunteer
- * @param {JSON} volunteerDetails
+ * @param {{_id: ObjectId, accountId: ObjectId}} volunteerDetails
  * @return {Promise<Volunteer>} The promise will resolve to a volunteer object if save was successful.
  * @description Adds a new volunteer to database.
  */

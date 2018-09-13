@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 
 /**
  * @function parseSponsor
- * @param {{body:{accountId:String, tier:String, company: String, contractURL: String, nominees: String[]}}} req
+ * @param {{body: {accountId: ObjectId, tier: String, company: String, contractURL: String, nominees: ObjectId[]}}} req
  * @param {JSON} res
  * @param {(err?)=>void} next
  * @return {void}

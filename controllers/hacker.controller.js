@@ -9,7 +9,7 @@ const Util = require("../middlewares/util.middleware");
 /**
  * @async
  * @function findById
- * @param {params: {id: string}} req
+ * @param {{params: {id: ObjectId}}} req
  * @param {*} res
  * @return {JSON} Success or error status
  * @description Retrieves a hacker's information via it's mongoId specified in req.params.id
@@ -33,7 +33,7 @@ async function findById(req, res) {
 /**
  * @async
  * @function createHacker
- * @param {*} req
+ * @param {{body: {hackerDetails: {_id: ObjectId, accountId: ObjectId, school: string, gender: string, needsBus: boolean, application: {Object}}}}} req
  * @param {*} res
  * @return {JSON} Success or error status
  * @description create a hacker from information in req.body.hackerDetails
@@ -59,7 +59,7 @@ async function createHacker(req, res) {
 /**
  * @async
  * @function updateHacker
- * @param {*} req
+ * @param {{params: {id: ObjectId}, body: {Object}}} req
  * @param {*} res
  * @return {JSON} Success or error status
  * @description 
