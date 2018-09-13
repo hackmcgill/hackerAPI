@@ -63,7 +63,7 @@ async function createHacker(req, res) {
  * @param {*} res
  * @return {JSON} Success or error status
  * @description 
- *      Change a hacker's information based on the hacker's mongoID specified in req.params.id.
+ *      Returns a 200 status for an updated hacker.
  *      The new information is located in req.body.
  */
 async function updatedHacker(req, res) {

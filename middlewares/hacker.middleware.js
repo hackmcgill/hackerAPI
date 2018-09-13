@@ -214,8 +214,8 @@ function sendStatusUpdateEmail(req, res, next) {
 }
 
 /**
- * Updates a hacker that is specified by req.params.id, and then sets req.hacker to equal the updated
- * hacker value. 
+ * Updates a hacker that is specified by req.params.id, and then sets req.email 
+ * to the email of the hacker, found in Account.
  * @param {{params:{id: string}, body: *}} req 
  * @param {*} res 
  * @param {*} next 
