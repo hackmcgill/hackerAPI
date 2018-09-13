@@ -32,12 +32,5 @@ async function createVolunteer(req, res) {
 }
 
 module.exports = {
-    defaultReturn: function (req, res) {
-        return res.status(200).json({
-            message: "Default message",
-            data: "Default data"
-        });
-    },
-
     createVolunteer: Util.asyncMiddleware(createVolunteer),
 };
