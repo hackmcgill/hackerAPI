@@ -33,7 +33,7 @@ async function getUserByEmail(req, res) {
 /**
  * @async
  * @function getUserById
- * @param {{params: {id: string}}} req
+ * @param {{body: {id: string}}} req
  * @param {*} res
  * @return {JSON} Success or error status
  * @description Retrieves an account's information via the account's mongoId, specified in req.params.id from route parameters. It is moved to req.body.id from req.params.id by validation.
@@ -85,7 +85,7 @@ async function addUser(req, res) {
 /**
  * @async
  * @function updateAccount
- * @param {{params: {id: string}, body: {Object}}} req
+ * @param {{body: {id: string}, body: {Object}}} req
  * @param {*} res
  * @return {JSON} Success or error status
  * @description 

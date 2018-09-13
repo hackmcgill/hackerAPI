@@ -8,7 +8,7 @@ const Util = require("../middlewares/util.middleware");
 /**
  * @async
  * @function findById
- * @param {{params: {id: ObjectId}}} req
+ * @param {{body: {id: ObjectId}}} req
  * @param {*} res
  * @return {JSON} Success or error status
  * @description Retrieves a sponsor's information via it's mongoId specified in req.params.id. The id is moved to req.body.id from req.params.id by validation.

@@ -10,7 +10,7 @@ const Util = require("../middlewares/util.middleware");
 /**
  * @async
  * @function findById
- * @param {{params: {id: ObjectId}}} req 
+ * @param {{body: {id: ObjectId}}} req 
  * @param {*} res 
  * @return {JSON} Success or error status
  * @description Finds a team by it's mongoId that's specified in req.param.id in route parameters. The id is moved to req.body.id from req.params.id by validation.
