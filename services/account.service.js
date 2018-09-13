@@ -5,7 +5,7 @@ const bcrypt = require("bcrypt");
 
 /**
  * @function findById
- * @param {String} id
+ * @param {ObjectId} id
  * @return {DocumentQuery} The document query will resolve to either account or null.
  * @description Finds an account by mongoID.
  */
@@ -58,7 +58,7 @@ function hashPassword(password) {
 
 /**
  * @function findOne
- * @param {JSON} query
+ * @param {*} query
  * @return {DocumentQuery} The document query will resolve to either account or null.
  * @description Finds an account by some query.
  */
@@ -70,7 +70,7 @@ function findOne(query) {
 
 /**
  * @function addOneAccount
- * @param {JSON} accountDetails
+ * @param {{_id: ObjectId, firstName: string, lastName: string, email: string, password: string, dietaryRestrictions: string, shirtSize: string}} accountDetails
  * @return {Promise<Account>} The promise will resolve to the account object if save is successful.
  * @description Adds a new account to database.
  */
@@ -84,8 +84,8 @@ function addOneAccount(accountDetails) {
 
 /**
  * @function changeOneAccount
- * @param {JSON} id
- * @param {JSON} accountDetails 
+ * @param {ObjectId} id
+ * @param {{_id?: ObjectId, firstName?: string, lastName?: string, email?: string, password?: string, dietaryRestrictions?: string, shirtSize?: string}} accountDetails 
  * @return {DocumentQuery} The document query will resolve to either account or null.
  * @description Changes account information to the specified information in accountDetails.
  */
@@ -101,7 +101,7 @@ function changeOneAccount(id, accountDetails) {
 
 /**
  * Updates the password for an account. This function also hashes the password.
- * @param {string} id String representing the ObjectId of the account
+ * @param {ObjectId} id String representing the ObjectId of the account
  * @param {string} newPassword the new password for the account (in plain-text).
  */
 function updatePassword(id, newPassword) {

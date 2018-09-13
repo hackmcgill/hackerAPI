@@ -8,7 +8,7 @@ const Util = require("../middlewares/util.middleware");
 /**
  * @async
  * @function createVolunteer
- * @param {body: {volunteerDetails: {_id: MongoID, accountId: MongoID}}} req
+ * @param {{body: {volunteerDetails: {_id: ObjectId, accountId: ObjectId}}}} req
  * @param {*} res
  * @return {JSON} Success or error status
  * @description create a volunteer from information in req.body.volunteerDetails

@@ -22,8 +22,8 @@ module.exports = {
 
 /**
  * @function parseAccount
- * @param {JSON} req
- * @param {JSON} res
+ * @param {{body: {firstName: string, lastName: string, email: string, password: string, dietaryRestrictions: string, shirtSize: string}}} req
+ * @param {*} res
  * @param {(err?)=>void} next
  * @return {void}
  * @description 
@@ -57,7 +57,7 @@ function parseAccount(req, res, next) {
 
 /**
  * Middleware that updates the password for the current user
- * @param {*} req 
+ * @param {{body: {password: string}}} req 
  * @param {*} res 
  * @param {(err?)=>void} next
  */
