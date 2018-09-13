@@ -11,11 +11,11 @@ const Util = require("../middlewares/util.middleware");
  * @param {{params: {id: ObjectId}}} req
  * @param {*} res
  * @return {JSON} Success or error status
- * @description Retrieves a sponsor's information via it's mongoId specified in req.params.id
+ * @description Retrieves a sponsor's information via it's mongoId specified in req.params.id. The id is moved to req.body.id from req.params.id by validation.
  */
 async function findById(req, res) {
     // finds sponsor by route parameter
-    const sponsor = await Services.Sponsor.findById(req.params.id);
+    const sponsor = await Services.Sponsor.findById(req.body.id);
 
     if (sponsor) {
         return res.status(200).json({

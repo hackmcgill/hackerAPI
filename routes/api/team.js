@@ -8,7 +8,8 @@ const Controllers = {
 const Middleware = {
     Validator: {
         /* Insert the require statement to the validator file here */
-        Team: require("../../middlewares/validators/team.validator")
+        Team: require("../../middlewares/validators/team.validator"),
+        RouteParam: require("../../middlewares/validators/routeParam.validator"),
     },
     /* Insert all of ther middleware require statements here */
     parseBody: require("../../middlewares/parse-body.middleware"),
@@ -80,6 +81,7 @@ module.exports = {
          *      {"message": "Issue with retrieving team information", "data": {}}
          */
         teamRouter.route("/:id").get(
+            Middleware.Validator.RouteParam.idValidator,
             Controllers.Team.findById
         );
 

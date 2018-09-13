@@ -12,10 +12,10 @@ const Util = require("../middlewares/util.middleware");
  * @param {{params: {id: ObjectId}}} req
  * @param {*} res
  * @return {JSON} Success or error status
- * @description Retrieves a hacker's information via it's mongoId specified in req.params.id
+ * @description Retrieves a hacker's information via it's mongoId specified in req.params.id. The id is moved to req.body.id from req.params.id by validation.
  */
 async function findById(req, res) {
-    const hacker = await Services.Hacker.findById(req.params.id);
+    const hacker = await Services.Hacker.findById(req.body.id);
 
     if (hacker) {
         return res.status(200).json({
@@ -64,10 +64,11 @@ async function createHacker(req, res) {
  * @return {JSON} Success or error status
  * @description 
  *      Change a hacker's information based on the hacker's mongoID specified in req.params.id.
+ *      The id is moved to req.body.id from req.params.id by validation.
  *      The new information is located in req.body.
  */
 async function updateHacker(req, res) {
-    const success = await Services.Hacker.updateOne(req.params.id, req.body);
+    const success = await Services.Hacker.updateOne(req.body.id, req.body);
 
     if (success) {
         return res.status(200).json({

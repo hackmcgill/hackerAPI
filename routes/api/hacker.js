@@ -6,7 +6,8 @@ const Controllers = {
 const Middleware = {
     Validator: {
         /* Insert the require statement to the validator file here */
-        Hacker: require("../../middlewares/validators/hacker.validator")
+        Hacker: require("../../middlewares/validators/hacker.validator"),
+        RouteParam: require("../../middlewares/validators/routeParam.validator"),
     },
     /* Insert all of ther middleware require statements here */
     parseBody: require("../../middlewares/parse-body.middleware"),
@@ -113,7 +114,9 @@ module.exports = {
          *      {"message": "Issue with changing hacker information", "data": {}}
          */
         hackerRouter.route("/:id").patch(
+            Middleware.Validator.RouteParam.idValidator,
             Middleware.Validator.Hacker.updateHackerValidator,
+
 
             Middleware.parseBody.middleware,
 
@@ -144,6 +147,7 @@ module.exports = {
          *      {"message": "Issue with retrieving hacker information", "data": {}}
          */
         hackerRouter.route("/:id").get(
+            Middleware.Validator.RouteParam.idValidator,
             Controllers.Hacker.findById
         );
 
