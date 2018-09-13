@@ -147,6 +147,8 @@ module.exports = {
          */
         accountRouter.route("/:id").get(
             Middleware.Validator.RouteParam.idValidator,
+            Middleware.parseBody.middleware,
+            
             Controllers.Account.getUserById
         );
 

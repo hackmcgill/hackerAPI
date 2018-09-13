@@ -82,6 +82,8 @@ module.exports = {
          */
         teamRouter.route("/:id").get(
             Middleware.Validator.RouteParam.idValidator,
+            Middleware.parseBody.middleware,
+            
             Controllers.Team.findById
         );
 

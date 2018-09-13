@@ -43,6 +43,8 @@ module.exports = {
          */
         sponsorRouter.route("/:id").get(
             Middleware.Validator.RouteParam.idValidator,
+            Middleware.parseBody.middleware,
+            
             Controllers.Sponsor.findById
         );
 

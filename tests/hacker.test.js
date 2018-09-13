@@ -83,6 +83,8 @@ describe("PATCH update one hacker", function () {
             res.body.should.have.property("message");
             res.body.message.should.equal("Changed hacker information");
             res.body.should.have.property("data");
+
+            delete res.body.data.id;
             chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify({status: "Accepted"}));
             done();
         });

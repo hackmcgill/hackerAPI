@@ -148,6 +148,8 @@ module.exports = {
          */
         hackerRouter.route("/:id").get(
             Middleware.Validator.RouteParam.idValidator,
+            Middleware.parseBody.middleware,
+            
             Controllers.Hacker.findById
         );
 
