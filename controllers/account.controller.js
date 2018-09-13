@@ -111,13 +111,6 @@ async function updateAccount(req, res) {
 }
 
 module.exports = {
-    defaultReturn: function (req, res) {
-        return res.status(200).json({
-            message: "Default message",
-            data: "Default data"
-        });
-    },
-
     getUserByEmail: Util.asyncMiddleware(getUserByEmail),
     getUserById: Util.asyncMiddleware(getUserById),
 

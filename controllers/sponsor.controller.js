@@ -57,13 +57,6 @@ async function createSponsor(req, res) {
 }
 
 module.exports = {
-    defaultReturn: function (req, res) {
-        return res.status(200).json({
-            message: "Default message",
-            data: "Default data"
-        });
-    },
-
     findById: Util.asyncMiddleware(findById),
     createSponsor: Util.asyncMiddleware(createSponsor),
 };
