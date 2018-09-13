@@ -27,6 +27,15 @@ const USER_TYPES = ["Hacker", "Volunteer", "Staff", "GodStaff", "Sponsor"];
 // matches the domain, and then optional route, path, query parameters
 const URL_REGEX = /^(http(s)?:(\/\/)?)?(www\.)?([-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6})\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$/;
 
+const EMAIL_SUBJECTS = {};
+EMAIL_SUBJECTS[HACKER_STATUS_NONE] = `Application for ${process.env.HACKATHON} incomplete`;
+EMAIL_SUBJECTS[HACKER_STATUS_APPLIED] = `Thanks for applying to ${process.env.HACKATHON}`;
+EMAIL_SUBJECTS[HACKER_STATUS_ACCEPTED] = `Great update from ${process.env.HACKATHON}`;
+EMAIL_SUBJECTS[HACKER_STATUS_WAITLISTED] = `Update from ${process.env.HACKATHON}`;
+EMAIL_SUBJECTS[HACKER_STATUS_CONFIRMED] = `Thanks for confirming your attendance to ${process.env.HACKATHON}`;
+EMAIL_SUBJECTS[HACKER_STATUS_CANCELLED] = "Sorry to see you go";
+EMAIL_SUBJECTS[HACKER_STATUS_CHECKED_IN] = `Welcome to ${process.env.HACKATHON}`;
+
 module.exports = {
     DEVPOST_REGEX: DEVPOST_REGEX,
     EMAIL_REGEX: EMAIL_REGEX,
@@ -41,6 +50,6 @@ module.exports = {
     JOB_INTERESTS: JOB_INTERESTS,
     SHIRT_SIZES: SHIRT_SIZES,
     USER_TYPES: USER_TYPES,
-    
-    URL_REGEX,
+    URL_REGEX: URL_REGEX,
+    EMAIL_SUBJECTS: EMAIL_SUBJECTS,
 };

@@ -124,76 +124,17 @@ async function downloadResume(req, res, next) {
  * @param {(err?:*)=>void} next 
  */
 function sendStatusUpdateEmail(req, res, next) {
-    let mailData;
     //skip if the status doesn't exist
     if(!req.body.status) {
         return next();
     }
-    switch (req.body.status) {
-        case Constants.HACKER_STATUS_NONE:
-            //do nothing
-            break;
-        case Constants.HACKER_STATUS_ACCEPTED:
-            //send acceptance email
-            mailData = {
-                to: req.email,
-                from: process.env.NO_REPLY_EMAIL,
-                subject: `Great update from ${process.env.HACKATHON}`,
-                html: fs.readFileSync(path.join(__dirname, "../assets/email/accepted.html")).toString()
-            };
-            break;
-        case Constants.HACKER_STATUS_APPLIED:
-            //send applied email
-            mailData = {
-                to: req.email,
-                from: process.env.NO_REPLY_EMAIL,
-                subject: `Thanks for Applying to ${process.env.HACKATHON}`,
-                html: fs.readFileSync(path.join(__dirname, "../assets/email/applied.html")).toString()
-            };
-            break;
-
-        case Constants.HACKER_STATUS_CANCELLED:
-            //send cancelled email
-            mailData = {
-                to: req.email,
-                from: process.env.NO_REPLY_EMAIL,
-                subject: "Sorry to see you go.",
-                html: fs.readFileSync(path.join(__dirname, "../assets/email/cancelled.html")).toString()
-            };
-            break;
-
-        case Constants.HACKER_STATUS_CHECKED_IN:
-            //send checked in email
-            mailData = {
-                to: req.email,
-                from: process.env.NO_REPLY_EMAIL,
-                subject: `Welcome to ${process.env.HACKATHON}!`,
-                html: fs.readFileSync(path.join(__dirname, "../assets/email/checkedIn.html")).toString()
-            };
-            break;
-
-        case Constants.HACKER_STATUS_CONFIRMED:
-            //send confirmed email
-            mailData = {
-                to: req.email,
-                from: process.env.NO_REPLY_EMAIL,
-                subject: "Thanks for applying!",
-                html: fs.readFileSync(path.join(__dirname, "../assets/email/confirmed.html")).toString()
-            };
-            break;
-
-        case Constants.HACKER_STATUS_WAITLISTED:
-            mailData = {
-                to: req.email,
-                from: process.env.NO_REPLY_EMAIL,
-                subject: "Update from McHacks",
-                html: fs.readFileSync(path.join(__dirname, "../assets/email/waitlisted.html")).toString()
-            };
-            break;
-        default:
-            Services.Logger.error(`Invalid status change: ${req.body.status}`);
-    }
-    if(mailData) {
+    else {
+        const mailData = {
+            to: req.email,
+            from: process.env.NO_REPLY_EMAIL,
+            subject: Constants.EMAIL_SUBJECTS[req.body.status],
+            html: fs.readFileSync(path.join(__dirname, `../assets/email/statusEmail/${req.body.status}.html`)).toString()
+        };
         Services.Email.send(mailData).then(
             (response) => {
                 if(response[0].statusCode !== 202) {
@@ -201,15 +142,7 @@ function sendStatusUpdateEmail(req, res, next) {
                 } else {
                     next();
                 }
-            }, next);
-    } else {
-        next({
-            status: 422,
-            message: "Invalid status change",
-            data: {
-                status: req.body.status
-            }
-        });
+            }, next);    
     }
 }
 
