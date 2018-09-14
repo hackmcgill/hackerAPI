@@ -8,7 +8,7 @@ const Util = require("../middlewares/util.middleware");
 /**
  * @async
  * @function findById
- * @param {*} req
+ * @param {{params: {id: ObjectId}}} req
  * @param {*} res
  * @return {JSON} Success or error status
  * @description Retrieves a sponsor's information via it's mongoId specified in req.params.id
@@ -33,7 +33,7 @@ async function findById(req, res) {
 /**
  * @async
  * @function createSponsor
- * @param {*} req
+ * @param {{body: {sponsorDetails: {_id: ObjectId, accountId: ObjectId, tier: number, company: string, contractURL: string, nominees: ObjectId[]}}}} req
  * @param {*} res
  * @return {JSON} Success or error status
  * @description create a sponsor from information in req.body.sponsorDetails
@@ -57,13 +57,6 @@ async function createSponsor(req, res) {
 }
 
 module.exports = {
-    defaultReturn: function (req, res) {
-        return res.status(200).json({
-            message: "Default message",
-            data: "Default data"
-        });
-    },
-
     findById: Util.asyncMiddleware(findById),
     createSponsor: Util.asyncMiddleware(createSponsor),
 };

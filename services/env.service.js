@@ -10,6 +10,15 @@ module.exports = {
         });
         createGCPFile();
         return result;
+    },
+    isDevelopment: function() {
+        return process.env.NODE_ENV === "development";
+    },
+    isProduction: function() {
+        return process.env.NODE_ENV === "deployment";
+    },
+    isTest: function() {
+        return process.env.NODE_ENV === "test";
     }
 };
 function createGCPFile() {

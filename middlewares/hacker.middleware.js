@@ -18,8 +18,8 @@ const path = require("path");
 /**
  * @async
  * @function parseHacker
- * @param {{body:{accountId:string, school:string, gender:string, needsBus: string, application:Object}}} req
- * @param {JSON} res
+ * @param {{body: {accountId: ObjectId, school: string, gender: string, needsBus: string, application: Object}}} req
+ * @param {*} res
  * @param {(err?)=>void} next
  * @return {void}
  * @description 
@@ -50,7 +50,7 @@ function parseHacker(req, res, next) {
 /**
  * @async
  * @function addDefaultStatus
- * @param {{body:{hackerDetails:{status:String}}}} req
+ * @param {{body: {hackerDetails: {status: String}}}} req
  * @param {JSON} res
  * @param {(err?)=>void} next
  * @return {void}
@@ -63,7 +63,7 @@ function addDefaultStatus(req, res, next) {
 
 /**
  * Verifies that the current signed in user is linked to the hacker passed in via req.body.id
- * @param {{body:{id:String}}} req 
+ * @param {{body: {id: ObjectId}}} req 
  * @param {*} res 
  * @param {(err?)=>void} next
  */
@@ -86,7 +86,7 @@ function ensureAccountLinkedToHacker(req, res, next) {
 
 /**
  * Uploads resume via the storage service. Assumes there is a file in req, and a hacker id in req.body. 
- * @param {{body:{id:String}, file:[Buffer]}} req 
+ * @param {{body: {id: ObjectId}, file: [Buffer]}} req 
  * @param {*} res 
  * @param {(err?)=>void} next
  */
@@ -100,7 +100,7 @@ async function uploadResume(req, res, next) {
 
 /**
  * Attaches the resume of a hacker to req.body.resume. Assumes req.body.id exists.
- * @param {{body:{id:String}}} req 
+ * @param {{body: {id: ObjectId}}} req 
  * @param {*} res 
  * @param {(err?)=>void} next
  */

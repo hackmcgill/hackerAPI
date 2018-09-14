@@ -8,7 +8,7 @@ const Util = require("../middlewares/util.middleware");
 /**
  * @async
  * @function getUserByEmail
- * @param {*} req
+ * @param {{user: {email: string}}} req
  * @param {*} res
  * @return {JSON} Success or error status
  * @description Retrieves an account's information via email query.
@@ -33,7 +33,7 @@ async function getUserByEmail(req, res) {
 /**
  * @async
  * @function getUserById
- * @param {*} req
+ * @param {{params: {id: string}}} req
  * @param {*} res
  * @return {JSON} Success or error status
  * @description Retrieves an account's information via the account's mongoId, specified in req.params.id from route parameters.
@@ -57,7 +57,7 @@ async function getUserById(req, res) {
 /**
  * @async
  * @function addUser
- * @param {*} req
+ * @param {{body: {accountDetails: {_id: ObjectId, firstName: string, lastName: string, email: string, password: string, dietaryRestrictions: string, shirtSize: string}}}} req
  * @param {*} res
  * @return {JSON} Success or error status
  * @description Adds a user from information in req.body.accountDetails
@@ -85,7 +85,7 @@ async function addUser(req, res) {
 /**
  * @async
  * @function updateAccount
- * @param {*} req
+ * @param {{params: {id: string}, body: {Object}}} req
  * @param {*} res
  * @return {JSON} Success or error status
  * @description 
@@ -93,7 +93,7 @@ async function addUser(req, res) {
  *      The new account information is located in req.body
  */
 async function updateAccount(req, res) {
-    const id = req.body._id;
+    const id = req.params.id;
 
     const success = await Services.Account.changeOneAccount(id, req.body);
 
@@ -111,13 +111,6 @@ async function updateAccount(req, res) {
 }
 
 module.exports = {
-    defaultReturn: function (req, res) {
-        return res.status(200).json({
-            message: "Default message",
-            data: "Default data"
-        });
-    },
-
     getUserByEmail: Util.asyncMiddleware(getUserByEmail),
     getUserById: Util.asyncMiddleware(getUserById),
 
