@@ -137,10 +137,10 @@ function sendStatusUpdateEmail(req, res, next) {
         };
         Services.Email.send(mailData).then(
             (response) => {
-                if(response[0].statusCode !== 202) {
-                    next(response[0]);
-                } else {
+                if(response[0].statusCode >= 200 && response[0].statusCode < 300) {
                     next();
+                } else {
+                    next(response[0]);
                 }
             }, next);    
     }
