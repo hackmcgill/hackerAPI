@@ -83,5 +83,15 @@ HackerSchema.methods.toJSON = function () {
     delete hs._id;
     return hs;
 };
+
+/**
+ * @param field the field which should be queried
+ * @returns {String} type of the field being queried
+ * @description return the type of the field(if it exists and is allowed to be searched on)
+ */
+HackerSchema.statics.searchableField = function(field) {
+    return HackerSchema.path(field).instance;
+};
+
 //export the model
 module.exports = mongoose.model("Hacker", HackerSchema);

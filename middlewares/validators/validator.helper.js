@@ -10,6 +10,9 @@ const mongoose = require("mongoose");
 const TAG = `[ VALIDATOR.HELPER.js ]`;
 const jwt = require("jsonwebtoken");
 const Constants = require("../../constants");
+const Models = {
+    Hacker: require("../../models/hacker.model")
+}
 
 /**
  * Validates that field is a valid devpost URL
@@ -336,8 +339,60 @@ function jwtValidator (fieldLocation, fieldname, jwtSecret, optional = true) {
 }
 
 /**
- * 
- * @param {"query" | "body" | "header" | "param"} fieldLocation the location where the field should be found 
+ * Validates that field must be a valid search query.
+ * @param {"query" | "body" | "header" | "param"} fieldLocation the location where the field should be found
+ * @param {string} fieldname name of the field that needs to be validated.
+ */
+function searchValidator (fieldLocation, fieldname) {
+    const search = setProperValidationChainBuilder(fieldLocation, fieldname, "Invalid search query");
+    return search.exists().withMessage("Search query must be provided")
+        .custom((value) => {
+            //value is a serialized JSON
+            value = JSON.parse(value);
+            let modelString = param("model", "Corresponding model not found");
+            let model;
+            //Supported models for searching
+            if(modelString.equals('hacker')){
+                model = Models.Hacker;
+            }
+            else{
+                return false;
+            }
+            //Validates each clause in the query
+            for(var q in value) {
+                //Checks that each clause has Param, Value, and Operation
+                var clause = value[q];
+                if(!(clause.hasOwnProperty("param") || clause.hasOwnProperty("value") || clause.hasOwnProperty("operation"))){
+                    return false;
+                }
+                var schemaPath = model.searchableField(clause.param);
+                if(!schemaPath) return false;
+                //Validates that operation corresponding to each clause is valid
+                switch (schemaPath) {
+                    case 'String':
+                        if (!['equals', 'ne', 'regex', 'in'].includes(clause.operation)){
+                            return false;
+                        }
+                        break;
+                    case 'Number':
+                        if (!['equals', 'ne', 'gte', 'lte', 'le', 'ge', 'in'].includes(clause.operation)){
+                            return false;
+                        }
+                        break;
+                    case 'Boolean':
+                        if (!['equals', 'ne'].includes(clause.operation)){
+                            return false;
+                        }
+                        break;
+                }
+            }
+            return true;
+    });
+}
+
+/**
+ *
+ * @param {"query" | "body" | "header" | "param"} fieldLocation the location where the field should be found
  * @param {string} fieldname name of the field that needs to be validated.
  * @param {*} errorString the string that is sent back to the user if the field is invalid
  */
@@ -378,5 +433,6 @@ module.exports = {
     booleanValidator: booleanValidator,
     applicationValidator: applicationValidator,
     jwtValidator: jwtValidator,
-    urlValidator: urlValidator
+    urlValidator: urlValidator,
+    searchValidator: searchValidator
 };
