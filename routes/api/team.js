@@ -58,6 +58,31 @@ module.exports = {
 
         );
 
+        /**
+         * @api {get} /team/:id get a team's information
+         * @apiName getTeam
+         * @apiGroup Team
+         * @apiVersion 0.0.8
+         * 
+         * @apiParam (param) {ObjectId} id a team's unique mongoId
+         * 
+         * @apiSuccess {String} message Success message
+         * @apiSuccess {Object} data Sponsor object
+         * @apiSuccessExample {object} Success-Response: 
+         *      {
+                    "message": "Successfully retrieved team information", 
+                    "data": {...}
+                }
+
+         * @apiError {String} message Error message
+         * @apiError {Object} data empty
+         * @apiErrorExample {object} Error-Response: 
+         *      {"message": "Issue with retrieving team information", "data": {}}
+         */
+        teamRouter.route("/:id").get(
+            Controllers.Team.findById
+        );
+
         apiRouter.use("/team", teamRouter);
     }
 };

@@ -116,10 +116,36 @@ module.exports = {
             Middleware.Validator.Hacker.updateHackerValidator,
 
             Middleware.parseBody.middleware,
-
+            Middleware.Hacker.updateHacker,
+            Middleware.Hacker.sendStatusUpdateEmail,
             // no parse hacker because will use req.body as information
             // because the number of fields will be variable
-            Controllers.Hacker.updateHacker
+            Controllers.Hacker.updatedHacker
+        );
+
+        /**
+         * @api {get} /hacker/:id get a hacker's information
+         * @apiName getHacker
+         * @apiGroup Hacker
+         * @apiVersion 0.0.8
+         * 
+         * @apiParam (param) {String} id a hacker's unique mongoID
+         * 
+         * @apiSuccess {String} message Success message
+         * @apiSuccess {Object} data Sponsor object
+         * @apiSuccessExample {object} Success-Response: 
+         *      {
+                    "message": "Successfully retrieved hacker information", 
+                    "data": {...}
+                }
+
+         * @apiError {String} message Error message
+         * @apiError {Object} data empty
+         * @apiErrorExample {object} Error-Response: 
+         *      {"message": "Issue with retrieving hacker information", "data": {}}
+         */
+        hackerRouter.route("/:id").get(
+            Controllers.Hacker.findById
         );
 
         hackerRouter.route("/:id/resume")
@@ -194,7 +220,6 @@ module.exports = {
             Middleware.Hacker.downloadResume,
             Controllers.Hacker.downloadedResume
         );
-
         apiRouter.use("/hacker", hackerRouter);
     }
 };

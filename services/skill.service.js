@@ -1,11 +1,10 @@
 "use strict";
 const Skill = require("../models/skill.model");
 const logger = require("./logger.service");
-const bcrypt = require("bcrypt");
 
 /**
  * @function findById
- * @param {string} id
+ * @param {ObjectId} id
  * @return {DocumentQuery} The document query will either resolve to a skill or null.
  * @description Finds a skill by its mongoID.
  */
@@ -20,7 +19,7 @@ function findById(id) {
 /**
  * @async
  * @function isSkillIdValid
- * @param {string} id
+ * @param {ObjectId} id
  * @return {boolean}
  * @description Checks whether a Skill with the specified mongoID exists.
  */

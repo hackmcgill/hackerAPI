@@ -25,5 +25,8 @@ module.exports = {
     ],
     downloadResumeValidator: [
         VALIDATOR.mongoIdValidator("param", "id", false)
+    ],
+    updateStatusValidator: [
+        VALIDATOR.mongoIdValidator("param", "id", false)
     ]
 };

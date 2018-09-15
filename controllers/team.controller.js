@@ -9,9 +9,33 @@ const Util = require("../middlewares/util.middleware");
 
 /**
  * @async
+ * @function findById
+ * @param {{params: {id: ObjectId}}} req 
+ * @param {*} res 
+ * @return {JSON} Success or error status
+ * @description Finds a team by it's mongoId that's specified in req.param.id in route parameters.
+ */
+async function findById(req, res) {
+    const team = await Services.Team.findById(req.params.id);
+
+    if (team) {
+        return res.status(200).json({
+            message: "Successfully retrieved team information",
+            data: team.toJSON()
+        });
+    } else {
+        return res.status(404).json({
+            message: "Issue with retrieving team information",
+            data: {}
+        });
+    }
+}
+
+/**
+ * @async
  * @function createTeam
- * @param req
- * @param res
+ * @param {{body: {teamDetails: {_id: ObjectId, name: string, members: ObjectId[], devpostURL: string, projectName: string}}}} req
+ * @param {*} res
  * @return {JSON} Success or error status
  * @description create a team from information in req.body.teamDetails
  */
@@ -34,12 +58,6 @@ async function createTeam(req, res) {
 }
 
 module.exports = {
-    defaultReturn: function (req, res) {
-        return res.status(200).json({
-            message: "Default message",
-            data: "Default data"
-        });
-    },
-
-    createTeam: Util.asyncMiddleware(createTeam)
+    createTeam: Util.asyncMiddleware(createTeam),
+    findById: Util.asyncMiddleware(findById),
 };
