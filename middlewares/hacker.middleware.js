@@ -4,11 +4,16 @@ const TAG = `[ HACKER.MIDDLEWARE.js ]`;
 const mongoose = require("mongoose");
 const Services = {
     Hacker: require("../services/hacker.service"),
-    Storage: require("../services/storage.service")
+    Storage: require("../services/storage.service"),
+    Email: require("../services/email.service"),
+    Account: require("../services/account.service")
 };
 const Middleware = {
     Util: require("./util.middleware")
 };
+const Constants = require("../constants");
+const fs = require("fs");
+const path = require("path");
 
 /**
  * @async
@@ -112,12 +117,75 @@ async function downloadResume(req, res, next) {
     }
     next();
 }
+/**
+ * Sends a preset email to a user if a status change occured.
+ * @param {{body: {status?: string}, email: string}} req 
+ * @param {*} res 
+ * @param {(err?:*)=>void} next 
+ */
+function sendStatusUpdateEmail(req, res, next) {
+    //skip if the status doesn't exist
+    if(!req.body.status) {
+        return next();
+    }
+    else {
+        const mailData = {
+            to: req.email,
+            from: process.env.NO_REPLY_EMAIL,
+            subject: Constants.EMAIL_SUBJECTS[req.body.status],
+            html: fs.readFileSync(path.join(__dirname, `../assets/email/statusEmail/${req.body.status}.html`)).toString()
+        };
+        Services.Email.send(mailData).then(
+            (response) => {
+                if(response[0].statusCode >= 200 && response[0].statusCode < 300) {
+                    next();
+                } else {
+                    next(response[0]);
+                }
+            }, next);    
+    }
+}
 
+/**
+ * Updates a hacker that is specified by req.params.id, and then sets req.email 
+ * to the email of the hacker, found in Account.
+ * @param {{params:{id: string}, body: *}} req 
+ * @param {*} res 
+ * @param {*} next 
+ */
+async function updateHacker(req, res, next) {
+    const hacker = await Services.Hacker.updateOne(req.params.id, req.body);
+    if(hacker) {
+        const acct = await Services.Account.findById(hacker.accountId);
+        if(!acct) {
+            return next({
+                status: 500,
+                message: "Error while searching for account by id when updating hacker",
+                data: {
+                    hackerId: hacker.id,
+                    accountId: hacker.accountId
+                }
+            });
+        }
+        req.email = acct.email;
+        next();
+    } else {
+        next({
+            status: 404,
+            message: "Hacker not found",
+            data: {
+                id: req.params.id
+            }
+        });
+    }
+}
 
 module.exports = {
     parseHacker: parseHacker,
     addDefaultStatus: addDefaultStatus,
     ensureAccountLinkedToHacker: ensureAccountLinkedToHacker,
     uploadResume: Middleware.Util.asyncMiddleware(uploadResume),
-    downloadResume: Middleware.Util.asyncMiddleware(downloadResume)
+    downloadResume: Middleware.Util.asyncMiddleware(downloadResume),
+    sendStatusUpdateEmail: sendStatusUpdateEmail,
+    updateHacker: Middleware.Util.asyncMiddleware(updateHacker),
 };
