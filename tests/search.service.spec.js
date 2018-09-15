@@ -35,8 +35,8 @@ const badQuery =[
 describe("Searching for hackers", function() {
     it("Should return all female hackers", function(done) {
         chai.request(server.app)
-            .get("/api/search/")
-            .query({q: JSON.stringify(queryToExecute), model: "hacker"})
+            .get("/api/search/hacker")
+            .query({q: JSON.stringify(queryToExecute)})
             .end(function (err, res) {
                 res.should.have.status(200);
                 res.body.should.have.property('data');
@@ -45,8 +45,8 @@ describe("Searching for hackers", function() {
     })
     it("Should return an error as hackers don't have password stored", function(done) {
         chai.request(server.app)
-            .get("/api/search/")
-            .query({q: JSON.stringify(badQuery), model: "hacker"})
+            .get("/api/search/hacker")
+            .query({q: JSON.stringify(badQuery)})
             .end(function (err, res) {
                 res.should.have.status(422);
                 done();
@@ -54,8 +54,8 @@ describe("Searching for hackers", function() {
     })
     it("Should return an error as staff aren't searchable", function(done) {
         chai.request(server.app)
-            .get("/api/search/")
-            .query({q: JSON.stringify(badQuery), model: "staff"})
+            .get("/api/search/staff")
+            .query({q: JSON.stringify(badQuery)})
             .end(function (err, res) {
                 res.should.have.status(422);
                 done();

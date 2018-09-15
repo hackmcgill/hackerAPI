@@ -349,7 +349,7 @@ function searchValidator (fieldLocation, fieldname) {
         .custom((value) => {
             //value is a serialized JSON
             value = JSON.parse(value);
-            let modelString = query("model", "Corresponding model not found");
+            let modelString = param("model", "Corresponding model not found");
             let model;
             //Supported models for searching
             if(modelString.equals('hacker')){

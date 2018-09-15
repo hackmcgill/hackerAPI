@@ -6,10 +6,11 @@ const Services = {
 const Util = require("../middlewares/util.middleware");
 
 async function searchResults(req, res) {
-    const results = await Services.Search.executeQuery(req.model, req.q);
+    let results = req.body.results;
     let message;
     if(results.length < 1){
         message = "No results found."
+        results = {}
     }
     else{
         message = "Successfully executed query, returning all results"

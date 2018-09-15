@@ -3,15 +3,13 @@ const Hacker = require("../models/hacker.model");
 const logger = require("./logger.service");
 
 /**
- * @async
  * @function executeQuery
  * @param {string} model the model which is being searched
  * @param {Array} queryArray array of clauses for the query
  * @returns {Promise<[Array]>}
  * @description Builds and executes a search query based on a subset of mongodb
  */
-async function executeQuery(model, queryArray){
-    const TAG = `[Search Service # executeQuery ]:`;
+function executeQuery(model, queryArray){
     var query;
     switch(model.toLowerCase()){
         case "hacker":
@@ -54,11 +52,7 @@ async function executeQuery(model, queryArray){
                 break;
         }
     }
-    return await query.lean()
-        .exec()
-        .catch(
-            err => {logger.error(`${TAG} failed to execute query`, err)}
-        );
+    return query.lean().exec()
 }
 
 module.exports = {
