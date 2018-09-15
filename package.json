@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "start": "NODE_ENV=deployment node ./bin/www.js",
-    "debug": "DEBUG=hackboard:* NODE_ENV=deployment nodemon ./bin/www.js",
-    "development": "DEBUG=hackboard:* NODE_ENV=development nodemon ./bin/www.js",
+    "debug": "DEBUG=hackboard:* NODE_ENV=deployment nodemon --ignore gcp_creds.json ./bin/www.js",
+    "development": "DEBUG=hackboard:* NODE_ENV=development nodemon --ignore gcp_creds.json ./bin/www.js",
     "test": "DEBUG=hackboard:* NODE_ENV=test mocha --reporter spec tests/**.js --exit",
     "seed": "node NODE_ENV=development ./populatedb.js",
     "docs": "apidoc -i ./routes -o ./docs/api/"
