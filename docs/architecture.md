@@ -24,7 +24,7 @@ More complex searches on models are available on our API. We provide a subset of
 
 ### Structure of your query
 
-The search query is strucutered as a series of param, operation, value objects (P.O.V.):
+The search query is strucutered as a series of param, operation, value objects (P.O.V.) passed into the `/search/:model` route:
 
 ```json
 [
