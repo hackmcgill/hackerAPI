@@ -19,18 +19,44 @@ function parseQuery(req, res, next){
 
     req.body.q = JSON.parse(query);
 
+    //Default page
+    if(!req.body.hasOwnProperty("page")){
+        req.body.page = 0;
+    }
+    else{
+        req.body.page = parseInt(req.body.page);
+    }
+    //Default limit
+    if(!req.body.hasOwnProperty("limit")){
+        req.body.limit = 25;
+    }
+    else{
+        req.body.limit = parseInt(req.body.limit);
+    }
+    //Default sorting
+    if(!req.body.hasOwnProperty("sort")){
+        req.body.sort = '';
+        req.body.sort_by = '';
+    }
+
     next();
 }
 
 /**
  * Middleware that executes the query passed
- * @param {{body: {model: string, q: Array}}} req
+ * @param {{body: {model: string, q: Array, page: Integer, limit: Integer}}} req
  * @param {*} res
  * @param {(err?)=>void} next
  * @returns {Promise.<void>}
  */
 async function executeQuery(req, res, next) {
-    req.body.results = await Services.Search.executeQuery(req.body.model,req.body.q);
+    req.body.results = await Services.Search.executeQuery(req.body.model,
+        req.body.q,
+        req.body.page,
+        req.body.limit,
+        req.body.sort,
+        req.body.sort_by
+    );
     next();
 }
 
