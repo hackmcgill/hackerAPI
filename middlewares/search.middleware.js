@@ -6,7 +6,6 @@ const Middleware = {
     Util: require("../middlewares/util.middleware")
 }
 
-
 /**
  * @function parseQuery
  * @param {JSON} req
@@ -35,8 +34,8 @@ function parseQuery(req, res, next){
     }
     //Default sorting
     if(!req.body.hasOwnProperty("sort")){
-        req.body.sort = '';
-        req.body.sort_by = '';
+        req.body.sort = "";
+        req.body.sort_by = "";
     }
 
     next();

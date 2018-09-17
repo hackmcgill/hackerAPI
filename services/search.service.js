@@ -53,10 +53,10 @@ function executeQuery(model, queryArray, page, limit, sort, sort_by){
         }
     }
 
-    if(sort == 'desc'){
-        query.sort('-'+sort_by);
+    if(sort == "desc"){
+        query.sort("-"+sort_by);
     }
-    else if(sort == 'asc'){
+    else if(sort == "asc"){
         query.sort(sort_by);
     }
     return query.lean()
