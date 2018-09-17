@@ -46,9 +46,9 @@ describe("Searching for hackers", function() {
             .get("/api/search/hacker")
             .query({q: JSON.stringify(queryToExecute)})
             .end(function (err, res) {
-                console.log(res.body);
                 res.should.have.status(200);
                 res.body.should.have.property('data');
+                res.body.data.should.have.length(1);
                 done();
             });
     })
