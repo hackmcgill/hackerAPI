@@ -92,7 +92,7 @@ describe("POST create account", function () {
     });
 });
 
-describe("POST update account", function () {
+describe("PATCH update account", function () {
     const updatedInfo = {
         "_id": storedAccount1._id,
         "firstName": "new",

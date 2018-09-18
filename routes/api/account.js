@@ -7,7 +7,8 @@ const Controllers = {
 const Middleware = {
     Validator: {
         /* Insert the require statement to the validator file here */
-        Account: require("../../middlewares/validators/account.validator")
+        Account: require("../../middlewares/validators/account.validator"),
+        RouteParam: require("../../middlewares/validators/routeParam.validator")
     },
     /* Insert all of ther middleware require statements here */
     parseBody: require("../../middlewares/parse-body.middleware"),
@@ -113,9 +114,11 @@ module.exports = {
         accountRouter.route("/:id").patch(
             Middleware.Auth.ensureAuthenticated(),
             // validators
+            Middleware.Validator.RouteParam.idValidator,
             Middleware.Validator.Account.updateAccountValidator,
 
             Middleware.parseBody.middleware,
+            Middleware.Account.parsePatch,
 
             // no parse account because will use req.body as information
             // because the number of fields will be variable
@@ -144,6 +147,9 @@ module.exports = {
          *      {"message": "User id not found", "data": {}}
          */
         accountRouter.route("/:id").get(
+            Middleware.Validator.RouteParam.idValidator,
+            Middleware.parseBody.middleware,
+            
             Controllers.Account.getUserById
         );
 
