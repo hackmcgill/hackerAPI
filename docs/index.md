@@ -14,6 +14,7 @@ Run `setupEnv.sh` to set up your environment, and install all packages. If somet
 * [**How to deploy**](./deploy)
 * [**Coding standards**](./standards)
 * [**API documentation**](./api/)
+* [**Architecture, Dependencies**](./architecture/)
 
 ## Folder structure
 

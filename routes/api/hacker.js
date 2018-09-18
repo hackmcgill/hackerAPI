@@ -121,9 +121,11 @@ module.exports = {
             Middleware.parseBody.middleware,
             Middleware.Hacker.parsePatch,
 
+            Middleware.Hacker.updateHacker,
+            Middleware.Hacker.sendStatusUpdateEmail,
             // no parse hacker because will use req.body as information
             // because the number of fields will be variable
-            Controllers.Hacker.updateHacker
+            Controllers.Hacker.updatedHacker
         );
 
         /**
@@ -226,7 +228,6 @@ module.exports = {
             Middleware.Hacker.downloadResume,
             Controllers.Hacker.downloadedResume
         );
-
         apiRouter.use("/hacker", hackerRouter);
     }
 };
