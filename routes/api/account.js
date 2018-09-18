@@ -118,6 +118,7 @@ module.exports = {
             Middleware.Validator.Account.updateAccountValidator,
 
             Middleware.parseBody.middleware,
+            Middleware.Account.parsePatch,
 
             // no parse account because will use req.body as information
             // because the number of fields will be variable

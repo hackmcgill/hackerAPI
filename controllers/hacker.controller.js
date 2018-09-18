@@ -59,7 +59,7 @@ async function createHacker(req, res) {
 /**
  * @async
  * @function updateHacker
- * @param {body: {id: ObjectId, Object}} req
+ * @param {{params: {id: ObjectId}, body: {Object}}} req
  * @param {*} res
  * @return {JSON} Success or error status
  * @description 
@@ -68,7 +68,7 @@ async function createHacker(req, res) {
  *      The new information is located in req.body.
  */
 async function updateHacker(req, res) {
-    const success = await Services.Hacker.updateOne(req.body.id, req.body);
+    const success = await Services.Hacker.updateOne(req.params.id, req.body);
 
     if (success) {
         return res.status(200).json({

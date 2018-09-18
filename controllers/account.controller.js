@@ -85,7 +85,7 @@ async function addUser(req, res) {
 /**
  * @async
  * @function updateAccount
- * @param {{body: {id: string}, body: {Object}}} req
+ * @param {{params: {id: string}, body: {Object}}} req
  * @param {*} res
  * @return {JSON} Success or error status
  * @description 
@@ -94,7 +94,7 @@ async function addUser(req, res) {
  *      The id is moved to req.body.id from req.params.id by validation.
  */
 async function updateAccount(req, res) {
-    const id = req.body.id;
+    const id = req.params.id;
 
     const success = await Services.Account.changeOneAccount(id, req.body);
 

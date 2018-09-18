@@ -11,7 +11,19 @@ const Middleware = {
 };
 
 /**
- * @async
+ * @function parsePatch
+ * @param {body: {id: ObjectId}} req 
+ * @param {*} res 
+ * @param {(err?) => void} next 
+ * @return {void}
+ * @description Delete the req.body.id that was added by the validation of route parameter.
+ */
+function parsePatch(req, res, next) {
+    delete req.body.id;
+    next();
+}
+
+/**
  * @function parseHacker
  * @param {{body: {accountId: ObjectId, school: string, gender: string, needsBus: string, application: Object}}} req
  * @param {*} res
@@ -43,7 +55,6 @@ function parseHacker(req, res, next) {
 }
 
 /**
- * @async
  * @function addDefaultStatus
  * @param {{body: {hackerDetails: {status: String}}}} req
  * @param {JSON} res
@@ -115,6 +126,7 @@ async function downloadResume(req, res, next) {
 
 
 module.exports = {
+    parsePatch: parsePatch,
     parseHacker: parseHacker,
     addDefaultStatus: addDefaultStatus,
     ensureAccountLinkedToHacker: ensureAccountLinkedToHacker,

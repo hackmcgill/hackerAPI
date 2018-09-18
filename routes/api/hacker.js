@@ -119,6 +119,7 @@ module.exports = {
 
 
             Middleware.parseBody.middleware,
+            Middleware.Hacker.parsePatch,
 
             // no parse hacker because will use req.body as information
             // because the number of fields will be variable
