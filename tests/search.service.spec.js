@@ -24,6 +24,14 @@ const queryToExecute = [
     }
 ]
 
+const query2 = [
+    {
+        param: "school",
+        operation: "ne",
+        value: "McGill"
+    }
+]
+
 const badQuery =[
     {
         param: "password",
@@ -40,6 +48,7 @@ describe("Searching for hackers", function() {
             .end(function (err, res) {
                 res.should.have.status(200);
                 res.body.should.have.property('data');
+                res.body.data.should.have.length(1);
                 done();
             });
     })
@@ -60,5 +69,44 @@ describe("Searching for hackers", function() {
                 res.should.have.status(422);
                 done();
             });
+    })
+    it("Should only return 1 hacker (page size)", function(done) {
+        chai.request(server.app)
+            .get("/api/search/hacker")
+            .query({q: JSON.stringify(query2), limit:1})
+            .end(function(err, res) {
+                res.should.have.status(200);
+                res.body.data.should.have.length(1);
+                done();
+            })
+    })
+    it("Should only return 1 hacker (pagination)", function(done) {
+        chai.request(server.app)
+            .get("/api/search/hacker")
+            //There are two test samples so by making limit 1, there will be something on the second page
+            .query({q: JSON.stringify(query2), limit:1, page: 1})
+            .end(function(err, res) {
+                res.should.have.status(200);
+                res.body.data.should.have.length(1);
+                done();
+            })
+    })
+    it("Should throw an error because out of bounds (page size)" , function(done) {
+        chai.request(server.app)
+            .get("/api/search/hacker")
+            .query({q: JSON.stringify(query2), limit:5000})
+            .end(function(err, res) {
+                res.should.have.status(422);
+                done();
+            })
+    })
+    it("Should throw an error because out of bounds (pagination)", function(done) {
+        chai.request(server.app)
+            .get("/api/search/hacker")
+            .query({q: JSON.stringify(query2), limit:1, page: -1})
+            .end(function(err, res) {
+                res.should.have.status(422);
+                done();
+            })
     })
 })

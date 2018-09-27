@@ -352,7 +352,7 @@ function searchValidator (fieldLocation, fieldname) {
             let modelString = param("model", "Corresponding model not found");
             let model;
             //Supported models for searching
-            if(modelString.equals('hacker')){
+            if(modelString.equals("hacker")){
                 model = Models.Hacker;
             }
             else{
@@ -369,18 +369,18 @@ function searchValidator (fieldLocation, fieldname) {
                 if(!schemaPath) return false;
                 //Validates that operation corresponding to each clause is valid
                 switch (schemaPath) {
-                    case 'String':
-                        if (!['equals', 'ne', 'regex', 'in'].includes(clause.operation)){
+                    case "String":
+                        if (!["equals", "ne", "regex", "in"].includes(clause.operation)){
                             return false;
                         }
                         break;
-                    case 'Number':
-                        if (!['equals', 'ne', 'gte', 'lte', 'le', 'ge', 'in'].includes(clause.operation)){
+                    case "Number":
+                        if (!["equals", "ne", "gte", "lte", "le", "ge", "in"].includes(clause.operation)){
                             return false;
                         }
                         break;
-                    case 'Boolean':
-                        if (!['equals', 'ne'].includes(clause.operation)){
+                    case "Boolean":
+                        if (!["equals", "ne"].includes(clause.operation)){
                             return false;
                         }
                         break;
@@ -388,6 +388,31 @@ function searchValidator (fieldLocation, fieldname) {
             }
             return true;
     });
+}
+
+function searchSortValidator (fieldLocation, fieldName){
+    const searchSort = setProperValidationChainBuilder(fieldLocation, fieldName, "Invalid sort criteria")
+    return searchSort.optional({checkFalsy: true})
+        .custom((value) => {
+            let modelString = param("model", "Corresponding model not found");
+            let model;
+            if(modelString.equals("hacker")){
+                model = Models.Hacker;
+            }
+            else{
+                return false;
+            }
+            if(!!model.searchableField(value)){
+                let sortOrder = param("sort", "Sorting order not found");
+                if(!sortOrder.equals("asc") || !sortOrder.equals("desc")){
+                    return false;
+                }
+            }
+            else{
+                return false;
+            }
+            return true;
+        })
 }
 
 /**
@@ -434,5 +459,6 @@ module.exports = {
     applicationValidator: applicationValidator,
     jwtValidator: jwtValidator,
     urlValidator: urlValidator,
-    searchValidator: searchValidator
+    searchValidator: searchValidator,
+    searchSortValidator: searchSortValidator
 };
