@@ -74,15 +74,37 @@ describe("PATCH update one hacker", function () {
         .patch(`/api/hacker/${storedHacker1._id}`)
         .type("application/json")
         .send({
-            status: "Accepted"
+            gender: "Other"
         })
         .end(function (err, res) {
-            // auth?
             res.should.have.status(200);
             res.should.be.json;
             res.body.should.have.property("message");
             res.body.message.should.equal("Changed hacker information");
             res.body.should.have.property("data");
+            chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify({gender: "Other"}));
+            done();
+        });
+    });
+});
+
+describe("PATCH update one hacker status", function () {
+    it("should SUCCEED and update the hacker status", function(done) {
+        //this takes a lot of time for some reason
+        chai.request(server.app)
+        .patch(`/api/hacker/${storedHacker1._id}`)
+        .type("application/json")
+        .send({
+            status: "Accepted"
+        })
+        .end(function (err, res) {
+            res.should.have.status(200);
+            res.should.be.json;
+            res.body.should.have.property("message");
+            res.body.message.should.equal("Changed hacker information");
+            res.body.should.have.property("data");
+
+            delete res.body.data.id;
             chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify({status: "Accepted"}));
             done();
         });

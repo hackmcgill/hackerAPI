@@ -10,13 +10,13 @@ const Util = require("../middlewares/util.middleware");
 /**
  * @async
  * @function findById
- * @param {*} req 
+ * @param {{body: {id: ObjectId}}} req 
  * @param {*} res 
  * @return {JSON} Success or error status
- * @description Finds a team by it's mongoId that's specified in req.param.id in route parameters.
+ * @description Finds a team by it's mongoId that's specified in req.param.id in route parameters. The id is moved to req.body.id from req.params.id by validation.
  */
 async function findById(req, res) {
-    const team = await Services.Team.findById(req.params.id);
+    const team = await Services.Team.findById(req.body.id);
 
     if (team) {
         return res.status(200).json({
@@ -34,7 +34,7 @@ async function findById(req, res) {
 /**
  * @async
  * @function createTeam
- * @param {*} req
+ * @param {{body: {teamDetails: {_id: ObjectId, name: string, members: ObjectId[], devpostURL: string, projectName: string}}}} req
  * @param {*} res
  * @return {JSON} Success or error status
  * @description create a team from information in req.body.teamDetails
