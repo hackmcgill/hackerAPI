@@ -5,15 +5,21 @@ const mongoose = require("mongoose");
  * For example, if a given route "/a/b/c" has a permission, then
  * the name of the permission will be "/a/b/c".
  */
-const PermissionSchema = new mongoose.Schema({
+const RoleSchema = new mongoose.Schema({
+    //The name should be something like "Hacker", or "Sponsor"
     name: {
         type: String,
         unique: true,
         required: true
-    }
+    },
+    //The array of routes that this Role should have access to. It might be some 
+    //regular expression, such as: /a/*/c/*, which represents anything under /a/.../c/...
+    routes: [{
+        type: String
+    }]
 });
 
-PermissionSchema.methods.toJSON = function () {
+RoleSchema.methods.toJSON = function () {
     const ps = this.toObject();
     delete ps.__v;
     ps.id = ps._id;
@@ -21,4 +27,4 @@ PermissionSchema.methods.toJSON = function () {
     return ps;
 };
 //export the model
-module.exports = mongoose.model("Permission", PermissionSchema);
+module.exports = mongoose.model("Role", RoleSchema);

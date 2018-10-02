@@ -1,7 +1,7 @@
 "use strict";
 const LocalStrategy = require("passport-local").Strategy;
 const Account = require("../services/account.service");
-const Permission = require("../services/permission.service");
+const RoleBinding = require("../services/roleBinding.service");
 const logger = require("./logger.service");
 
 module.exports = {
@@ -46,17 +46,49 @@ module.exports = {
 
 /**
  * 
- * @param {Object} req request object passed in by Express.js
+ * @param {{isUnauthenticated:()=>boolean, path: string, user: {id: string}}} req request object passed in by Express.js
  * @param {string} routePermissionId the route name.
  */
-async function ensureAuthenticated(req, permissionName) {
+async function ensureAuthenticated(req) {
     if (req.isUnauthenticated()) {
         return false;
     }
-    if(!!permissionName) {
-        const permissionId = await Permission.getPermissionId(permissionName);
-        return req.user.permissions.contains(permissionId);
+    const path = req.path;
+    //get the roleBinding for a given user
+    const roleBinding = await RoleBinding.getRoleBindingForAcct(req.user.id);
+    if(!roleBinding) {
+        //roleBinding doesn't exist
+        return false;
     } else {
-        return true;
+        const twoDRoutes = roleBinding.roles.map((role) => {
+            return role.routes;
+        });
+        const routes = [].concat(...twoDRoutes);
+        routes.forEach((route) => {
+            //check if the current path matches the regex of this route.
+            const parsedRoute = parseRoute(req, route);
+            //do regex on parsedRoute with path
+            //if valid, return true, else continue
+        });
     }
+    //for the roleBinding, iterate through the roles, and then through the routes.
+}
+
+/**
+ * @param {string} userId the account ID
+ * @param {string} route The route name that needs to be parsed
+ * @returns {string} the parsed route with all tokens replaced
+ */
+function parseRoute(userId, route) {
+    /**
+     * Wildcards:
+     * ":self:" replaced with the user's own id.
+     * ":any:" replaced with [^\/]+
+     * "/" replaced with \/ (for regular expression escaping)
+     */
+    let parsed = route;
+    parsed = parsed.replace(":self:", userId);
+    parsed = parsed.replace(":any:", "[^\/]+");
+    parsed = parsed.replace("/", "\/");
+    return parsed;
 }

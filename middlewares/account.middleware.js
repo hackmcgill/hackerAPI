@@ -3,7 +3,7 @@
 const TAG = `[ ADDRESS.MIDDLEWARE.js ]`;
 const mongoose = require("mongoose");
 const Services = {
-    Permission: require("../services/permission.service"),
+    RoleBinding: require("../services/roleBinding.service"),
     Logger: require("../services/logger.service"),
     Account: require("../services/account.service")
 };
@@ -67,14 +67,26 @@ function parseAccount(req, res, next) {
  * @param {(err?)=>void} next
  */
 async function updatePassword(req, res, next) {
-    req.body.accountDetails.permissions = await Services.Account.updatePassword(req.body.password);
+    await Services.Account.updatePassword(req.body.password);
     next();
 }
 
 // TODO: fix when new permission system is created
 async function addDefaultHackerPermissions (req, res, next) {
-    req.body.accountDetails.permissions = await Services.Permission.getDefaultPermission("Hacker");
+    await Services.RoleBinding.createRoleBinding(req.);
     next();
+}
+async function createAccount(req, res, next) {
+    const accountDetails = req.body.accountDetails;
+    const success = await Services.Account.addOneAccount(accountDetails);
+    if(!success) {
+        next({
+            message: "Issue with account creation",
+            data: {}
+        });
+    } else {
+        next();
+    }
 }
 
 module.exports = {

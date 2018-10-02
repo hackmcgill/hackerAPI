@@ -24,10 +24,6 @@ const AccountSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    permissions: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Permission"
-    }],
     dietaryRestrictions: [{
         type: String
     }],

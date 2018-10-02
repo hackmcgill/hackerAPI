@@ -79,10 +79,9 @@ module.exports = {
             // middlewares to parse body/organize body
             // adds default hacker permissions here
             Middleware.Account.parseAccount,
-            Middleware.Account.addDefaultHackerPermissions,
-
             // should return status in this function
-            Controllers.Account.addUser
+            Controllers.Account.addUser,
+            Middleware.Account.addDefaultHackerPermissions
         );
 
         /**
