@@ -7,7 +7,7 @@ module.exports = {
         VALIDATOR.nameValidator("body", "firstName", false),
         VALIDATOR.nameValidator("body", "lastName", false),
         VALIDATOR.emailValidator("body", "email", false),
-        VALIDATOR.alphaValidator("body", "dietaryRestrictions", false),
+        VALIDATOR.alphaArrayValidator("body", "dietaryRestrictions", false),
         VALIDATOR.shirtSizeValidator("body", "shirtSize", false),
         VALIDATOR.passwordValidator("body", "password", false),
     ],
