@@ -179,6 +179,40 @@ function alphaValidator (fieldLocation, fieldname, optional = true) {
         return name.exists().withMessage("must exist").isAlpha().withMessage("must contain alphabet characters");
     }
 }
+/**
+ * Validates that field must be an array with alphabetical characters.
+ * @param {"query" | "body" | "header" | "param"} fieldLocation the location where the field should be found 
+ * @param {string} fieldname name of the field that needs to be validated.
+ * @param {boolean} optional whether the field is optional or not.
+ */
+function alphaArrayValidator(fieldLocation, fieldname, optional = true) {
+    const name = setProperValidationChainBuilder(fieldLocation, fieldname, "invalid alpha array");
+    if (optional) {
+        return name.optional({checkFalsy: true}).custom((value) => {
+            if(!Array.isArray(value)) {
+                return false;
+            } 
+            for(const el of value) {
+                if(typeof el !== "string") {
+                    return false;
+                }
+            }
+            return true;
+        }).withMessage("must contain alphabet characters in each element of the array");
+    } else {
+        return name.exists().withMessage("must exist").custom((value) => {
+            if(!Array.isArray(value)) {
+                return false;
+            } 
+            for(const el of value) {
+                if(typeof el !== "string") {
+                    return false;
+                }
+            }
+            return true;
+        }).withMessage("must contain alphabet characters in each element of the array");
+    }
+}
 
 /**
  * Validates that field must be one of the shirt size enums.
@@ -427,6 +461,7 @@ module.exports = {
     nameValidator: nameValidator,
     emailValidator: emailValidator,
     alphaValidator: alphaValidator,
+    alphaArrayValidator: alphaArrayValidator,
     shirtSizeValidator: shirtSizeValidator,
     passwordValidator: passwordValidator,
     hackerStatusValidator: hackerStatusValidator,

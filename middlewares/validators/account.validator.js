@@ -16,7 +16,7 @@ module.exports = {
         VALIDATOR.nameValidator("body", "firstName", true),
         VALIDATOR.nameValidator("body", "lastName", true),
         VALIDATOR.emailValidator("body", "email", true),
-        VALIDATOR.alphaValidator("body", "dietaryRestrictions", true),
+        VALIDATOR.alphaArrayValidator("body", "dietaryRestrictions", true),
         VALIDATOR.shirtSizeValidator("body", "shirtSize", true),
     ] 
 };
