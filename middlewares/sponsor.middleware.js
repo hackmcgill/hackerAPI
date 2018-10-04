@@ -2,6 +2,19 @@
 const mongoose = require("mongoose");
 
 /**
+ * @function parsePatch
+ * @param {body: {id: ObjectId}} req 
+ * @param {*} res 
+ * @param {(err?) => void} next 
+ * @return {void}
+ * @description Delete the req.body.id that was added by the validation of route parameter.
+ */
+function parsePatch (req, res, next) {
+    delete req.body.id;
+    next();
+}
+
+/**
  * @function parseSponsor
  * @param {{body: {accountId: ObjectId, tier: String, company: String, contractURL: String, nominees: ObjectId[]}}} req
  * @param {JSON} res
@@ -33,5 +46,6 @@ function parseSponsor (req, res, next) {
 }
 
 module.exports = {
+    parsePatch: parsePatch,
     parseSponsor: parseSponsor,
 };

@@ -9,7 +9,7 @@ const logger = require("./logger.service");
  * @returns {Promise<[Array]>}
  * @description Builds and executes a search query based on a subset of mongodb
  */
-function executeQuery(model, queryArray){
+function executeQuery(model, queryArray, page, limit, sort, sort_by){
     var query;
     switch(model.toLowerCase()){
         case "hacker":
@@ -52,7 +52,17 @@ function executeQuery(model, queryArray){
                 break;
         }
     }
-    return query.lean().exec()
+
+    if(sort == "desc"){
+        query.sort("-"+sort_by);
+    }
+    else if(sort == "asc"){
+        query.sort(sort_by);
+    }
+    return query.lean()
+        .limit(limit)
+        .skip(limit * page)
+        .exec()
 }
 
 module.exports = {

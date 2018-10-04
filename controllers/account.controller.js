@@ -33,13 +33,13 @@ async function getUserByEmail(req, res) {
 /**
  * @async
  * @function getUserById
- * @param {{params: {id: string}}} req
+ * @param {{body: {id: string}}} req
  * @param {*} res
  * @return {JSON} Success or error status
- * @description Retrieves an account's information via the account's mongoId, specified in req.params.id from route parameters.
+ * @description Retrieves an account's information via the account's mongoId, specified in req.params.id from route parameters. It is moved to req.body.id from req.params.id by validation.
  */
 async function getUserById(req, res) {
-    const acc = await Services.Account.findById(req.params.id);
+    const acc = await Services.Account.findById(req.body.id);
     
     if (acc) {
         return res.status(200).json({
@@ -90,7 +90,8 @@ async function addUser(req, res) {
  * @return {JSON} Success or error status
  * @description 
  *      Change a user's account information based on the account's mongoID. 
- *      The new account information is located in req.body
+ *      The new account information is located in req.body.
+ *      The id is moved to req.body.id from req.params.id by validation.
  */
 async function updateAccount(req, res) {
     const id = req.params.id;

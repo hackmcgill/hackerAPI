@@ -9,13 +9,13 @@ const Util = require("../middlewares/util.middleware");
 /**
  * @async
  * @function findById
- * @param {{params: {id: ObjectId}}} req
+ * @param {{body: {id: ObjectId}}} req
  * @param {*} res
  * @return {JSON} Success or error status
- * @description Retrieves a hacker's information via it's mongoId specified in req.params.id
+ * @description Retrieves a hacker's information via it's mongoId specified in req.params.id. The id is moved to req.body.id from req.params.id by validation.
  */
 async function findById(req, res) {
-    const hacker = await Services.Hacker.findById(req.params.id);
+    const hacker = await Services.Hacker.findById(req.body.id);
 
     if (hacker) {
         return res.status(200).json({
@@ -63,6 +63,8 @@ async function createHacker(req, res) {
  * @param {*} res
  * @return {JSON} Success or error status
  * @description 
+ *      Change a hacker's information based on the hacker's mongoID specified in req.params.id.
+ *      The id is moved to req.body.id from req.params.id by validation.
  *      Returns a 200 status for an updated hacker.
  *      The new information is located in req.body.
  */
