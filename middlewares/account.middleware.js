@@ -10,20 +10,25 @@ const Services = {
 
 const Middleware = {
     Util: require("../middlewares/util.middleware")
-}
-
-module.exports = {
-    parseAccount: parseAccount,
-    // untested
-    addDefaultHackerPermissions: Middleware.Util.asyncMiddleware(addDefaultHackerPermissions),
-    // untested
-    updatePassword: Middleware.Util.asyncMiddleware(updatePassword)
 };
 
 /**
+ * @function parsePatch
+ * @param {body: {id: ObjectId}} req 
+ * @param {*} res 
+ * @param {(err?) => void} next 
+ * @return {void}
+ * @description Delete the req.body.id that was added by the validation of route parameter.
+ */
+function parsePatch(req, res, next) {
+    delete req.body.id;
+    next();
+}
+
+/**
  * @function parseAccount
- * @param {JSON} req
- * @param {JSON} res
+ * @param {{body: {firstName: string, lastName: string, email: string, password: string, dietaryRestrictions: string, shirtSize: string}}} req
+ * @param {*} res
  * @param {(err?)=>void} next
  * @return {void}
  * @description 
@@ -57,7 +62,7 @@ function parseAccount(req, res, next) {
 
 /**
  * Middleware that updates the password for the current user
- * @param {*} req 
+ * @param {{body: {password: string}}} req 
  * @param {*} res 
  * @param {(err?)=>void} next
  */
@@ -71,3 +76,12 @@ async function addDefaultHackerPermissions (req, res, next) {
     req.body.accountDetails.permissions = await Services.Permission.getDefaultPermission("Hacker");
     next();
 }
+
+module.exports = {
+    parsePatch: parsePatch,
+    parseAccount: parseAccount,
+    // untested
+    addDefaultHackerPermissions: Middleware.Util.asyncMiddleware(addDefaultHackerPermissions),
+    // untested
+    updatePassword: Middleware.Util.asyncMiddleware(updatePassword)
+};

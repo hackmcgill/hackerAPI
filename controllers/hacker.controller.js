@@ -1,17 +1,40 @@
 "use strict";
-const mongoose = require("mongoose");
-
 const Services = {
     Hacker: require("../services/hacker.service"),
-    Logger: require("../services/logger.service")
+    Logger: require("../services/logger.service"),
+    Email: require("../services/email.service")
 };
 const Util = require("../middlewares/util.middleware");
 
 /**
  * @async
+ * @function findById
+ * @param {{body: {id: ObjectId}}} req
+ * @param {*} res
+ * @return {JSON} Success or error status
+ * @description Retrieves a hacker's information via it's mongoId specified in req.params.id. The id is moved to req.body.id from req.params.id by validation.
+ */
+async function findById(req, res) {
+    const hacker = await Services.Hacker.findById(req.body.id);
+
+    if (hacker) {
+        return res.status(200).json({
+            message: "Successfully retrieved hacker information",
+            data: hacker.toJSON()
+        });
+    } else {
+        return res.status(404).json({
+            message: "Issue with retrieving hacker information",
+            data: {}
+        });
+    }
+}
+
+/**
+ * @async
  * @function createHacker
- * @param req
- * @param res
+ * @param {{body: {hackerDetails: {_id: ObjectId, accountId: ObjectId, school: string, gender: string, needsBus: boolean, application: {Object}}}}} req
+ * @param {*} res
  * @return {JSON} Success or error status
  * @description create a hacker from information in req.body.hackerDetails
  */
@@ -36,27 +59,20 @@ async function createHacker(req, res) {
 /**
  * @async
  * @function updateHacker
- * @param req
- * @param res
+ * @param {{params: {id: ObjectId}, body: {Object}}} req
+ * @param {*} res
  * @return {JSON} Success or error status
  * @description 
  *      Change a hacker's information based on the hacker's mongoID specified in req.params.id.
+ *      The id is moved to req.body.id from req.params.id by validation.
+ *      Returns a 200 status for an updated hacker.
  *      The new information is located in req.body.
  */
-async function updateHacker(req, res) {
-    const success = await Services.Hacker.updateOne(req.params.id, req.body);
-
-    if (success) {
-        return res.status(200).json({
-            message: "Changed hacker information",
-            data: req.body
-        });
-    } else {
-        return res.status(400).json({
-            message: "Issue with changing hacker information",
-            data: {}
-        });
-    }
+async function updatedHacker(req, res) {
+    return res.status(200).json({
+        message: "Changed hacker information",
+        data: req.body
+    });
 }
 
 function uploadedResume (req, res) {
@@ -79,7 +95,8 @@ function downloadedResume (req, res) {
 }
 
 module.exports = {
-    updateHacker: Util.asyncMiddleware(updateHacker),
+    updatedHacker: updatedHacker,
+    findById: Util.asyncMiddleware(findById),
     createHacker: Util.asyncMiddleware(createHacker),
     uploadedResume: uploadedResume,
     downloadedResume: downloadedResume

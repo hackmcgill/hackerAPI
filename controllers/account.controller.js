@@ -8,8 +8,8 @@ const Util = require("../middlewares/util.middleware");
 /**
  * @async
  * @function getUserByEmail
- * @param req
- * @param res
+ * @param {{user: {email: string}}} req
+ * @param {*} res
  * @return {JSON} Success or error status
  * @description Retrieves an account's information via email query.
  */
@@ -23,7 +23,7 @@ async function getUserByEmail(req, res) {
         });
     } else {
         // tentative error code
-        return res.status(400).json({
+        return res.status(404).json({
             message: "User email not found",
             data: {}
         });
@@ -32,9 +32,33 @@ async function getUserByEmail(req, res) {
 
 /**
  * @async
+ * @function getUserById
+ * @param {{body: {id: string}}} req
+ * @param {*} res
+ * @return {JSON} Success or error status
+ * @description Retrieves an account's information via the account's mongoId, specified in req.params.id from route parameters. It is moved to req.body.id from req.params.id by validation.
+ */
+async function getUserById(req, res) {
+    const acc = await Services.Account.findById(req.body.id);
+    
+    if (acc) {
+        return res.status(200).json({
+            message: "Account found by user id",
+            data: acc.toStrippedJSON()
+        });
+    } else {
+        return res.status(404).json({
+            message: "Account id not found",
+            data: {}
+        });
+    }
+}
+
+/**
+ * @async
  * @function addUser
- * @param req
- * @param res
+ * @param {{body: {accountDetails: {_id: ObjectId, firstName: string, lastName: string, email: string, password: string, dietaryRestrictions: string, shirtSize: string}}}} req
+ * @param {*} res
  * @return {JSON} Success or error status
  * @description Adds a user from information in req.body.accountDetails
  */
@@ -61,15 +85,16 @@ async function addUser(req, res) {
 /**
  * @async
  * @function updateAccount
- * @param req
- * @param res
+ * @param {{params: {id: string}, body: {Object}}} req
+ * @param {*} res
  * @return {JSON} Success or error status
  * @description 
  *      Change a user's account information based on the account's mongoID. 
- *      The new account information is located in req.body
+ *      The new account information is located in req.body.
+ *      The id is moved to req.body.id from req.params.id by validation.
  */
 async function updateAccount(req, res) {
-    const id = req.body._id;
+    const id = req.params.id;
 
     const success = await Services.Account.changeOneAccount(id, req.body);
 
@@ -87,14 +112,8 @@ async function updateAccount(req, res) {
 }
 
 module.exports = {
-    defaultReturn: function (req, res) {
-        return res.status(200).json({
-            message: "Default message",
-            data: "Default data"
-        });
-    },
-
     getUserByEmail: Util.asyncMiddleware(getUserByEmail),
+    getUserById: Util.asyncMiddleware(getUserById),
 
     // assumes all information in req.body
     addUser: Util.asyncMiddleware(addUser),

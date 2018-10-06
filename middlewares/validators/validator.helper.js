@@ -10,6 +10,9 @@ const mongoose = require("mongoose");
 const TAG = `[ VALIDATOR.HELPER.js ]`;
 const jwt = require("jsonwebtoken");
 const Constants = require("../../constants");
+const Models = {
+    Hacker: require("../../models/hacker.model")
+}
 
 /**
  * Validates that field is a valid devpost URL
@@ -176,6 +179,40 @@ function alphaValidator (fieldLocation, fieldname, optional = true) {
         return name.exists().withMessage("must exist").isAlpha().withMessage("must contain alphabet characters");
     }
 }
+/**
+ * Validates that field must be an array with alphabetical characters.
+ * @param {"query" | "body" | "header" | "param"} fieldLocation the location where the field should be found 
+ * @param {string} fieldname name of the field that needs to be validated.
+ * @param {boolean} optional whether the field is optional or not.
+ */
+function alphaArrayValidator(fieldLocation, fieldname, optional = true) {
+    const name = setProperValidationChainBuilder(fieldLocation, fieldname, "invalid alpha array");
+    if (optional) {
+        return name.optional({checkFalsy: true}).custom((value) => {
+            if(!Array.isArray(value)) {
+                return false;
+            } 
+            for(const el of value) {
+                if(typeof el !== "string") {
+                    return false;
+                }
+            }
+            return true;
+        }).withMessage("must contain alphabet characters in each element of the array");
+    } else {
+        return name.exists().withMessage("must exist").custom((value) => {
+            if(!Array.isArray(value)) {
+                return false;
+            } 
+            for(const el of value) {
+                if(typeof el !== "string") {
+                    return false;
+                }
+            }
+            return true;
+        }).withMessage("must contain alphabet characters in each element of the array");
+    }
+}
 
 /**
  * Validates that field must be one of the shirt size enums.
@@ -336,8 +373,85 @@ function jwtValidator (fieldLocation, fieldname, jwtSecret, optional = true) {
 }
 
 /**
- * 
- * @param {"query" | "body" | "header" | "param"} fieldLocation the location where the field should be found 
+ * Validates that field must be a valid search query.
+ * @param {"query" | "body" | "header" | "param"} fieldLocation the location where the field should be found
+ * @param {string} fieldname name of the field that needs to be validated.
+ */
+function searchValidator (fieldLocation, fieldname) {
+    const search = setProperValidationChainBuilder(fieldLocation, fieldname, "Invalid search query");
+    return search.exists().withMessage("Search query must be provided")
+        .custom((value) => {
+            //value is a serialized JSON
+            value = JSON.parse(value);
+            let modelString = param("model", "Corresponding model not found");
+            let model;
+            //Supported models for searching
+            if(modelString.equals("hacker")){
+                model = Models.Hacker;
+            }
+            else{
+                return false;
+            }
+            //Validates each clause in the query
+            for(var q in value) {
+                //Checks that each clause has Param, Value, and Operation
+                var clause = value[q];
+                if(!(clause.hasOwnProperty("param") || clause.hasOwnProperty("value") || clause.hasOwnProperty("operation"))){
+                    return false;
+                }
+                var schemaPath = model.searchableField(clause.param);
+                if(!schemaPath) return false;
+                //Validates that operation corresponding to each clause is valid
+                switch (schemaPath) {
+                    case "String":
+                        if (!["equals", "ne", "regex", "in"].includes(clause.operation)){
+                            return false;
+                        }
+                        break;
+                    case "Number":
+                        if (!["equals", "ne", "gte", "lte", "le", "ge", "in"].includes(clause.operation)){
+                            return false;
+                        }
+                        break;
+                    case "Boolean":
+                        if (!["equals", "ne"].includes(clause.operation)){
+                            return false;
+                        }
+                        break;
+                }
+            }
+            return true;
+    });
+}
+
+function searchSortValidator (fieldLocation, fieldName){
+    const searchSort = setProperValidationChainBuilder(fieldLocation, fieldName, "Invalid sort criteria")
+    return searchSort.optional({checkFalsy: true})
+        .custom((value) => {
+            let modelString = param("model", "Corresponding model not found");
+            let model;
+            if(modelString.equals("hacker")){
+                model = Models.Hacker;
+            }
+            else{
+                return false;
+            }
+            if(!!model.searchableField(value)){
+                let sortOrder = param("sort", "Sorting order not found");
+                if(!sortOrder.equals("asc") || !sortOrder.equals("desc")){
+                    return false;
+                }
+            }
+            else{
+                return false;
+            }
+            return true;
+        })
+}
+
+/**
+ *
+ * @param {"query" | "body" | "header" | "param"} fieldLocation the location where the field should be found
  * @param {string} fieldname name of the field that needs to be validated.
  * @param {*} errorString the string that is sent back to the user if the field is invalid
  */
@@ -372,11 +486,14 @@ module.exports = {
     nameValidator: nameValidator,
     emailValidator: emailValidator,
     alphaValidator: alphaValidator,
+    alphaArrayValidator: alphaArrayValidator,
     shirtSizeValidator: shirtSizeValidator,
     passwordValidator: passwordValidator,
     hackerStatusValidator: hackerStatusValidator,
     booleanValidator: booleanValidator,
     applicationValidator: applicationValidator,
     jwtValidator: jwtValidator,
-    urlValidator: urlValidator
+    urlValidator: urlValidator,
+    searchValidator: searchValidator,
+    searchSortValidator: searchSortValidator
 };

@@ -38,7 +38,7 @@ if [[ $? != 0 ]] ; then
     # Reset Homebrew formulae versions
     git reset HEAD `brew --repository` && git checkout -- `brew --repository`
 fi
-
+curDir=$PWD
 cd /tmp
 
 #
@@ -53,6 +53,8 @@ if [[ $? != 0 ]] ; then
     make install
 fi
 
+cd $curDir
+
 #
 # MongoDB
 #
@@ -63,7 +65,8 @@ if brew ls --versions mongo > /dev/null; then
 else
   # The package is not installed
   brew install mongodb
-  mkdir -p /data/db
+  echo 'Creating a folder for mongodb at /data/db. Please enter password.'
+  sudo mkdir -p /data/db
   echo 'Setting up proper permissions for /data/db. Please enter password.'
   sudo chown -R `id -un` /data/db
 fi

@@ -7,7 +7,8 @@ const Controllers = {
 const Middleware = {
     Validator: {
         /* Insert the require statement to the validator file here */
-        Account: require("../../middlewares/validators/account.validator")
+        Account: require("../../middlewares/validators/account.validator"),
+        RouteParam: require("../../middlewares/validators/routeParam.validator")
     },
     /* Insert all of ther middleware require statements here */
     parseBody: require("../../middlewares/parse-body.middleware"),
@@ -113,13 +114,43 @@ module.exports = {
         accountRouter.route("/:id").patch(
             Middleware.Auth.ensureAuthenticated(),
             // validators
+            Middleware.Validator.RouteParam.idValidator,
             Middleware.Validator.Account.updateAccountValidator,
 
             Middleware.parseBody.middleware,
+            Middleware.Account.parsePatch,
 
             // no parse account because will use req.body as information
             // because the number of fields will be variable
             Controllers.Account.updateAccount
+        );
+
+        /**
+         * @api {get} /account/:id gets information from an account with mongoid ':id'
+         * @apiName getAccount
+         * @apiGroup Account
+         * @apiVersion 0.0.8
+         * 
+         * @apiParam (param) {ObjectId} id MongoId of an account
+         * 
+         * @apiSuccess {string} message Success message
+         * @apiSuccess {object} data Account object
+         * @apiSuccessExample {object} Success-Response: 
+         *      {
+                    "message": "Account found by user id", 
+                    "data": {...}
+                }
+
+         * @apiError {string} message Error message
+         * @apiError {object} data empty
+         * @apiErrorExample {object} Error-Response: 
+         *      {"message": "User id not found", "data": {}}
+         */
+        accountRouter.route("/:id").get(
+            Middleware.Validator.RouteParam.idValidator,
+            Middleware.parseBody.middleware,
+            
+            Controllers.Account.getUserById
         );
 
         apiRouter.use("/account", accountRouter);

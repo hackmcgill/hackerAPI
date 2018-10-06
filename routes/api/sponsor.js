@@ -8,7 +8,8 @@ const Controllers = {
 const Middleware = {
     Validator: {
         /* Insert the require statement to the validator file here */
-        Sponsor: require("../../middlewares/validators/sponsor.validator")
+        Sponsor: require("../../middlewares/validators/sponsor.validator"),
+        RouteParam: require("../../middlewares/validators/routeParam.validator")
     },
     /* Insert all of ther middleware require statements here */
     parseBody: require("../../middlewares/parse-body.middleware"),
@@ -25,7 +26,7 @@ module.exports = {
          * @apiGroup Sponsor
          * @apiVersion 0.0.8
          * 
-         * @apiParam (param) {ObjectId} id a sponsor's unique mongoID
+         * @apiParam (param) {string} id a sponsor's unique mongoID
          * 
          * @apiSuccess {String} message Success message
          * @apiSuccess {Object} data Sponsor object
@@ -41,6 +42,9 @@ module.exports = {
          *      {"message": "Issue with retrieving sponsor information", "data": {}}
          */
         sponsorRouter.route("/:id").get(
+            Middleware.Validator.RouteParam.idValidator,
+            Middleware.parseBody.middleware,
+            
             Controllers.Sponsor.findById
         );
 

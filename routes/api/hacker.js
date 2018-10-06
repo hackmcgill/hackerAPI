@@ -6,7 +6,8 @@ const Controllers = {
 const Middleware = {
     Validator: {
         /* Insert the require statement to the validator file here */
-        Hacker: require("../../middlewares/validators/hacker.validator")
+        Hacker: require("../../middlewares/validators/hacker.validator"),
+        RouteParam: require("../../middlewares/validators/routeParam.validator"),
     },
     /* Insert all of ther middleware require statements here */
     parseBody: require("../../middlewares/parse-body.middleware"),
@@ -113,13 +114,46 @@ module.exports = {
          *      {"message": "Issue with changing hacker information", "data": {}}
          */
         hackerRouter.route("/:id").patch(
+            Middleware.Validator.RouteParam.idValidator,
             Middleware.Validator.Hacker.updateHackerValidator,
 
-            Middleware.parseBody.middleware,
 
+            Middleware.parseBody.middleware,
+            Middleware.Hacker.parsePatch,
+
+            Middleware.Hacker.updateHacker,
+            Middleware.Hacker.sendStatusUpdateEmail,
             // no parse hacker because will use req.body as information
             // because the number of fields will be variable
-            Controllers.Hacker.updateHacker
+            Controllers.Hacker.updatedHacker
+        );
+
+        /**
+         * @api {get} /hacker/:id get a hacker's information
+         * @apiName getHacker
+         * @apiGroup Hacker
+         * @apiVersion 0.0.8
+         * 
+         * @apiParam (param) {String} id a hacker's unique mongoID
+         * 
+         * @apiSuccess {String} message Success message
+         * @apiSuccess {Object} data Sponsor object
+         * @apiSuccessExample {object} Success-Response: 
+         *      {
+                    "message": "Successfully retrieved hacker information", 
+                    "data": {...}
+                }
+
+         * @apiError {String} message Error message
+         * @apiError {Object} data empty
+         * @apiErrorExample {object} Error-Response: 
+         *      {"message": "Issue with retrieving hacker information", "data": {}}
+         */
+        hackerRouter.route("/:id").get(
+            Middleware.Validator.RouteParam.idValidator,
+            Middleware.parseBody.middleware,
+            
+            Controllers.Hacker.findById
         );
 
         hackerRouter.route("/:id/resume")
@@ -194,7 +228,6 @@ module.exports = {
             Middleware.Hacker.downloadResume,
             Controllers.Hacker.downloadedResume
         );
-
         apiRouter.use("/hacker", hackerRouter);
     }
 };

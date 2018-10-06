@@ -7,6 +7,10 @@ const Volunteer = require("../../models/volunteer.model");
 const logger = require("../../services/logger.service");
 const TAG = "[ TAG.TEST.UTIL.JS ]";
 
+const newVolunteer1 = {
+    "accountId": Util.Account.Account4._id
+};
+
 const Volunteer1 = {
     "_id": mongoose.Types.ObjectId(),
     "accountId": Util.Account.Account4._id
@@ -52,6 +56,7 @@ function dropAll (callback) {
 }
 
 module.exports = {
+    newVolunteer1: newVolunteer1,
     Volunteer1: Volunteer1,
     Volunteers: Volunteers,
     storeAll: storeAll,

@@ -12,7 +12,7 @@ const Util = require("./util.middleware");
 /**
  * @async
  * @function ensureUniqueHackerId
- * @param {{body:{teamDetails:{members:String[]}}}} req
+ * @param {{body: {teamDetails: {members: ObjectId[]}}}} req
  * @param {JSON} res
  * @param {(err?)=>void} next
  * @return {void}
@@ -50,8 +50,8 @@ async function ensureUniqueHackerId(req, res, next) {
 
 /**
  * @function parseTeam
- * @param {{body:{name:string, members:string[], devpostURL: string, projectName: string}}} req
- * @param {JSON} res
+ * @param {{body: {name: string, members: Object[], devpostURL: string, projectName: string}}} req
+ * @param {*} res
  * @param {(err?)=>void} next
  * @return {void}
  * @description 

@@ -8,7 +8,8 @@ const Controllers = {
 const Middleware = {
     Validator: {
         /* Insert the require statement to the validator file here */
-        Team: require("../../middlewares/validators/team.validator")
+        Team: require("../../middlewares/validators/team.validator"),
+        RouteParam: require("../../middlewares/validators/routeParam.validator"),
     },
     /* Insert all of ther middleware require statements here */
     parseBody: require("../../middlewares/parse-body.middleware"),
@@ -56,6 +57,34 @@ module.exports = {
 
             Controllers.Team.createTeam
 
+        );
+
+        /**
+         * @api {get} /team/:id get a team's information
+         * @apiName getTeam
+         * @apiGroup Team
+         * @apiVersion 0.0.8
+         * 
+         * @apiParam (param) {ObjectId} id a team's unique mongoId
+         * 
+         * @apiSuccess {String} message Success message
+         * @apiSuccess {Object} data Sponsor object
+         * @apiSuccessExample {object} Success-Response: 
+         *      {
+                    "message": "Successfully retrieved team information", 
+                    "data": {...}
+                }
+
+         * @apiError {String} message Error message
+         * @apiError {Object} data empty
+         * @apiErrorExample {object} Error-Response: 
+         *      {"message": "Issue with retrieving team information", "data": {}}
+         */
+        teamRouter.route("/:id").get(
+            Middleware.Validator.RouteParam.idValidator,
+            Middleware.parseBody.middleware,
+            
+            Controllers.Team.findById
         );
 
         apiRouter.use("/team", teamRouter);

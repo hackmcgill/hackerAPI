@@ -3,6 +3,7 @@ const express = require("express");
 const path = require("path");
 const cookieParser = require("cookie-parser");
 const cookieSession = require("cookie-session");
+const cors = require("cors");
 const Services = {
     log: require("./services/logger.service"),
     db: require("./services/database.service"),
@@ -25,10 +26,12 @@ const authRouter = require("./routes/api/auth");
 const hackerRouter = require("./routes/api/hacker");
 const teamRouter = require("./routes/api/team");
 const sponsorRouter = require("./routes/api/sponsor");
+const searchRouter = require("./routes/api/search");
+const volunteerRouter = require("./routes/api/volunteer");
 
 const app = express();
 Services.db.connect(app);
-
+app.use(cors());
 app.use(Services.log.requestLogger);
 app.use(Services.log.errorLogger);
 app.use(express.json());
@@ -60,6 +63,10 @@ teamRouter.activate(apiRouter);
 Services.log.info("Team router activated");
 sponsorRouter.activate(apiRouter);
 Services.log.info("Sponsor router activated");
+volunteerRouter.activate(apiRouter);
+Services.log.info("Volunteer router activated");
+searchRouter.activate(apiRouter);
+Services.log.info("Search router activated");
 
 app.use("/", indexRouter);
 
