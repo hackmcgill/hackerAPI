@@ -31,7 +31,7 @@ module.exports = {
          * @apiSuccessExample {object} Success-Response: 
          *      {
                     "message": "Account found by user email", 
-                    "data": {...}
+                    "data": {AccountObject}
                 }
 
          * @apiError {string} message Error message
@@ -138,7 +138,7 @@ module.exports = {
          * @apiSuccessExample {object} Success-Response: 
          *      {
                     "message": "Account found by user id", 
-                    "data": {...}
+                    "data": {AccountObject}
                 }
 
          * @apiError {string} message Error message
@@ -149,7 +149,7 @@ module.exports = {
         accountRouter.route("/:id").get(
             Middleware.Validator.RouteParam.idValidator,
             Middleware.parseBody.middleware,
-            
+
             Controllers.Account.getUserById
         );
 
