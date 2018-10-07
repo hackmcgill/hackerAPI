@@ -63,7 +63,7 @@ async function getRoleBindingForAcct(accountId) {
 /**
  * @async
  * @function getById
- * @param {ObjectId} id The role id
+ * @param {ObjectId} id The rolebinding id
  * @description 
  * Returns the roleBinding specified by the id.
  */

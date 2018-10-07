@@ -49,46 +49,81 @@ module.exports = {
  * @param {{isUnauthenticated:()=>boolean, path: string, user: {id: string}}} req request object passed in by Express.js
  * @param {string} routePermissionId the route name.
  */
-async function ensureAuthenticated(req) {
+
+// assuming that routes are strings, not objects
+// assuming that the route subtypes are :self and :all
+// assuming that the route params (resource ids) are in 
+
+// to check for :all, just replace :all with the paramID (AKA resource ID)
+async function ensureAuthenticated(req, findByIdFns) {
+    // the requested route is given by req.baseUrl+req.path, to remove ? and other params
+    const path = req.baseUrl + req.path;
+    // splitPath[0] will be '', but assuming that routes will also start with '/', splitRoles will start with '' as well
+    const splitPath = path.split("/");
+
+    // if not logged in, return false
     if (req.isUnauthenticated()) {
         return false;
     }
-    const path = req.path;
-    //get the roleBinding for a given user
+    // if account doesn't have a role binding, then not authenticated
     const roleBinding = await RoleBinding.getRoleBindingForAcct(req.user.id);
-    if(!roleBinding) {
-        //roleBinding doesn't exist
+    if (!roleBinding) {
         return false;
-    } else {
-        const twoDRoutes = roleBinding.roles.map((role) => {
-            return role.routes;
-        });
-        const routes = [].concat(...twoDRoutes);
-        routes.forEach((route) => {
-            //check if the current path matches the regex of this route.
-            const parsedRoute = parseRoute(req, route);
-            //do regex on parsedRoute with path
-            //if valid, return true, else continue
-        });
     }
-    //for the roleBinding, iterate through the roles, and then through the routes.
-}
 
-/**
- * @param {string} userId the account ID
- * @param {string} route The route name that needs to be parsed
- * @returns {string} the parsed route with all tokens replaced
- */
-function parseRoute(userId, route) {
-    /**
-     * Wildcards:
-     * ":self:" replaced with the user's own id.
-     * ":any:" replaced with [^\/]+
-     * "/" replaced with \/ (for regular expression escaping)
-     */
-    let parsed = route;
-    parsed = parsed.replace(":self:", userId);
-    parsed = parsed.replace(":any:", "[^\/]+");
-    parsed = parsed.replace("/", "\/");
-    return parsed;
+    // get the routes
+    const twoDRoutes = roleBinding.roles.map((role) => {
+        return role.routes;
+    });
+    const routes = [].concat(...twoDRoutes);
+
+    // for each route, separate by '/', check each section to see if it's the same as requested route
+    // if the route at a section has ':all', mark it as valid
+    // if the route at a section has ':self', use the findByIdFns at particular index to check if accId matches
+    for (const route of routes) {
+        let splitRoute = route.split("/");
+        // if lengths are different, go to next
+        if (splitRoute.length !== splitPath.length) {
+            continue;
+        }
+
+        // keeps track of which function to use in findByIdFns
+        let findByParamCount = 0;
+        let validRoute = true;
+        for (let i = 0; i < splitPath.length; i++) {
+            // checks whether the current chunk in the route path is a parameter
+            const isParam = Object.values(req.params).indexOf(splitPath[i]) > -1;
+
+            if (splitRoute[i] === ":self" && isParam) {
+                if (findByIdFns.length <= findByParamCount) {
+                    validRoute = false;
+                }
+                else {
+                    const object = findByIdFns[findByParamCount](splitPath[i]);
+                    validRoute = (object.accountId !== req.user.id);
+
+                    findByParamCount += 1;
+                }
+            }
+            // rest of the fail case:
+            // the route portions cannot be the same and
+            // the route portion from role binding cannot be a valid :all case
+            else if (
+                splitRoute[i] !== splitPath[i] &&
+                !(splitRoute[i] === ":all" && isParam)
+            ) {
+                validRoute = false;
+            }
+
+            // if current route isn't valid, move on to next
+            if (!validRoute) {
+                break;
+            }
+        }
+
+        if (validRoute) {
+            return validRoute;
+        }
+    }
+    return false;
 }

@@ -73,7 +73,7 @@ async function updatePassword(req, res, next) {
 
 // TODO: fix when new permission system is created
 async function addDefaultHackerPermissions (req, res, next) {
-    await Services.RoleBinding.createRoleBinding(req.);
+    // await Services.RoleBinding.createRoleBinding(req.);
     next();
 }
 async function createAccount(req, res, next) {

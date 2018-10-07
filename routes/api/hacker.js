@@ -12,7 +12,8 @@ const Middleware = {
     /* Insert all of ther middleware require statements here */
     parseBody: require("../../middlewares/parse-body.middleware"),
     Util: require("../../middlewares/util.middleware"),
-    Hacker: require("../../middlewares/hacker.middleware")
+    Hacker: require("../../middlewares/hacker.middleware"),
+    Auth: require("../../middlewares/auth.middleware"),
 };
 
 module.exports = {
@@ -222,6 +223,7 @@ module.exports = {
          * @apiPermission Must be logged in, and the account id must be linked to the hacker.
          */
         .get(
+            Middleware.Auth.ensureAuthenticated("/h/:all:"),
             //TODO: authenticate middleware
             Middleware.Validator.Hacker.downloadResumeValidator,
             Middleware.parseBody.middleware,

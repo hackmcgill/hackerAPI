@@ -13,26 +13,15 @@ const Middleware = {
 };
 
 /**
- * 
- * @param {String} routeName the name of the route that the user must be authenticated for, or undefined if 
- * the only requirement is to be logged in.
  * @returns {Fn} the middleware that will check that the user is properly authenticated.
  * Calls next() if the user is properly authenticated.
  */
-function ensureAuthenticated(routeName = undefined) {
+function ensureAuthenticated(findByIdFns) {
     return function(req, res, next) {
-        Services.Auth.ensureAuthenticated(req, routeName).then(
+        Services.Auth.ensureAuthenticated(req, findByIdFns).then(
             (isAuthenticated) => {
                 if(isAuthenticated) {
-                    next();
-                } else if(!!routeName){
-                    next({
-                        status: 401,
-                        message: "Not Authenticated",
-                        error: {
-                            route: routeName
-                        }
-                    });        
+                    next();      
                 } else {
                     next({
                         status: 401,
