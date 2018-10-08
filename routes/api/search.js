@@ -19,20 +19,22 @@ module.exports = {
         const searchRouter = new express.Router();
 
         /**
-         * @api {get} /search/:model
+         * @api {get} /search/:model provide a specific query for any defined model
          * @apiName search
          * @apiGroup Search
          * @apiVersion 0.0.8
          *
-         * @apiParam (query) {String} model the model to be searched
-         * @apiParam (query) {Array} q the query to be executed
+         * @apiParam (param) {String} model the model to be searched
+         * @apiParam (query) {Array} q the query to be executed. For more information on how to format this, please see https://hackerapi.mchacks.ca/architecture/
          *
          * @apiSuccess {String} message Success message
          * @apiSuccess {Object} data Results
          * @apiSuccessExample {object} Success-Response:
          *      {
                     "message": "Successfully executed query, returning all results",
-                    "data": {...}
+                    "data": [
+                        {...}
+                    ]
                 }
          *
          * @apiSuccess {String} message Success message
