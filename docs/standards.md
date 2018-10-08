@@ -160,7 +160,7 @@ module.exports = {
          * @apiSuccessExample {object} Success-Response:
          *      {
          *          "message": "Account creation successful",
-         *          "data": {...}
+         *          "data": {AccountObject}
          *      }
          *
          * @apiError {string} message Error message
