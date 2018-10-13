@@ -1,6 +1,6 @@
 "use strict";
 const logger = require("./logger.service");
-const AccountConfirmation = require("../models/AccountConfirmationToken.model");
+const AccountConfirmation = require("../models/accountConfirmationToken.model");
 const Constants = require("../constants");
 const jwt = require("jsonwebtoken");
 
