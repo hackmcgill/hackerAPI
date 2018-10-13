@@ -8,6 +8,9 @@ module.exports = {
     ResetPasswordValidator: [
         VALIDATOR.passwordValidator("body","password", false),
         //The json web token is provided via the header with param "Authentication".
-        VALIDATOR.jwtValidator("header","Authentication", process.env.JWT_RESET_PWD_SECRET, false)       
+        VALIDATOR.jwtValidator("header","Authorization", process.env.JWT_RESET_PWD_SECRET, false)
+    ],
+    accountConfirmationValidator: [
+        VALIDATOR.jwtValidator("header","Authorization", process.env.JWT_CONFIRM_ACC_SECRET, true)
     ]
 };

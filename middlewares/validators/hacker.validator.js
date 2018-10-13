@@ -9,6 +9,7 @@ module.exports = {
         VALIDATOR.nameValidator("body", "gender", false),
         VALIDATOR.booleanValidator("body", "needsBus", false),
         VALIDATOR.applicationValidator("body", "application", false),
+        VALIDATOR.jwtValidator("header","Authorization", process.env.JWT_CONFIRM_ACC_SECRET, false)
     ],
 
     // untested

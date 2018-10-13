@@ -64,21 +64,11 @@ async function getUserById(req, res) {
  */
 async function addUser(req, res) {
     const accountDetails = req.body.accountDetails;
-
-    const success = await Services.Account.addOneAccount(accountDetails);
-
-    if (success) {
-        delete accountDetails.password;
-        return res.status(200).json({
-            message: "Account creation successful",
-            data: accountDetails
-        });
-    } else {
-        return res.status(400).json({
-            message: "Issue with account creation",
-            data: {}
-        });
-    }
+    delete accountDetails.password;
+    return res.status(200).json({
+        message: "Account creation successful",
+        data: accountDetails
+    });
 }
 
 

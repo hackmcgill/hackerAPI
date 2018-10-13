@@ -5,13 +5,15 @@ const Services = {
     Auth: require("../services/auth.service"),
     ResetPasswordToken: require("../services/resetPassword.service"),
     Account: require("../services/account.service"),
-    Email: require("../services/email.service")
+    Email: require("../services/email.service"),
+    AccountConfirmation: require("../services/accountConfirmation.service")
 };
 
 const Middleware = {
     Util: require("./util.middleware")
 };
 
+const Constants = require("../constants");
 /**
  * 
  * @param {String} routeName the name of the route that the user must be authenticated for, or undefined if 
@@ -32,7 +34,7 @@ function ensureAuthenticated(routeName = undefined) {
                         error: {
                             route: routeName
                         }
-                    });        
+                    });
                 } else {
                     next({
                         status: 401,
@@ -44,7 +46,7 @@ function ensureAuthenticated(routeName = undefined) {
                 }
             }
         ).catch((reason) => {
-            next(reason);        
+            next(reason);
         });
     };
 }
@@ -87,6 +89,33 @@ async function sendResetPasswordEmailMiddleware(req, res, next) {
 }
 
 /**
+ * Middleware that sends an email to confirm the account for the inputted email address.
+ * @param {{body: {email:String}}} req the request object
+ * @param {*} res
+ * @param {(err?)=>void} next
+ */
+async function sendConfirmAccountEmailMiddleware(req, res, next) {
+    const account = req.body.account;
+    await Services.AccountConfirmation.create(Constants.HACKER, account.email, account.id);
+    const accountConfirmationToken = await Services.AccountConfirmation.findByAccountId(account.id);
+    const token = Services.AccountConfirmation.generateToken(accountConfirmationToken.id, account.id);
+    const mailData = Services.AccountConfirmation.generateAccountConfirmationEmail(req.hostname, account.email, Constants.HACKER, token);
+    if (mailData !== undefined) {
+        Services.Email.send(mailData, (err) => {
+            if (err) {
+                next(err);
+            } else {
+                next();
+            }
+        });
+    } else {
+        return next({
+            message: "Error while generating email"
+        });
+    }
+}
+
+/**
  * Attempts to parse the jwt token that is found in req.body.token using process.env.JWT_RESET_PWD_SECRET as the key.
  * Places the parsed object into req.body.decodedToken.
  * @param {{body:{token:string}}} req 
@@ -94,7 +123,18 @@ async function sendResetPasswordEmailMiddleware(req, res, next) {
  * @param {(err?)=>void} next 
  */
 function parseResetToken(req, res, next) {
-    jwt.verify(req.body.token, process.env.JWT_RESET_PWD_SECRET, function (err, decoded) {
+    jwt.verify(req.body.authorization, process.env.JWT_RESET_PWD_SECRET, function (err, decoded) {
+        if (err) {
+            next(err);
+        } else {
+            req.body.decodedToken = decoded;
+            next();
+        }
+    });
+}
+
+function parseAccountConfirmationToken(req, res, next){
+    jwt.verify(req.body.token, process.env.JWT_CONFIRM_ACC_SECRET, function (err, decoded) {
         if (err) {
             next(err);
         } else {
@@ -114,6 +154,30 @@ async function validateResetToken(req, res, next) {
     const resetObj = await Services.ResetPasswordToken.findById(req.body.decodedToken.resetId);
     const userObj = await Services.Account.findById(req.body.decodedToken.accountId);
     if (resetObj && userObj) {
+        req.body.user = userObj;
+        next();
+    } else {
+        //Either the token was already used, it's invalid, or user does not exist.
+        next({
+            status: 422,
+            message: "invalid token",
+            error: {}
+        });
+    }
+}
+
+/**
+ * Verifies that the confirm account exists, and that the accountId exists.
+ * @param {{body:{decodedToken:{accountConfirmationId:string, accountId:string}}}} req 
+ * @param {any} res 
+ * @param {(err?)=>void} next 
+ */
+async function validateConfirmationToken(req, res, next) {
+    const confirmationObj = await Services.AccountConfirmation.findById(req.body.decodedToken.accountConfirmationId);
+    const userObj = await Services.Account.findById(confirmationObj.accountId);
+    if (confirmationObj && userObj) {
+        userObj.confirmed = true;
+        await Services.Account.changeOneAccount(confirmationObj.accountId, userObj);
         req.body.user = userObj;
         next();
     } else {
@@ -149,5 +213,8 @@ module.exports = {
     sendResetPasswordEmailMiddleware: Middleware.Util.asyncMiddleware(sendResetPasswordEmailMiddleware),
     parseResetToken: parseResetToken,
     validateResetToken: Middleware.Util.asyncMiddleware(validateResetToken),
-    deleteResetToken: deleteResetToken
+    deleteResetToken: deleteResetToken,
+    sendConfirmAccountEmailMiddleware: Middleware.Util.asyncMiddleware(sendConfirmAccountEmailMiddleware),
+    parseAccountConfirmationToken: parseAccountConfirmationToken,
+    validateConfirmationToken: Middleware.Util.asyncMiddleware(validateConfirmationToken)
 };
