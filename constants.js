@@ -21,6 +21,8 @@ const HACKER_STATUSES = [
     HACKER_STATUS_CHECKED_IN
 ];
 const JOB_INTERESTS = ["Internship", "Full-time", "None"];
+// enum of type of requests
+const REQUEST_TYPES = ["GET", "POST", "PATCH", "DELETE"];
 const SHIRT_SIZES = ["XS", "S", "M", "L", "XL", "XXL"];
 const USER_TYPES = ["Hacker", "Volunteer", "Staff", "GodStaff", "Sponsor"];
 // matches optional http://, https://, http:, https:, and optional www.
@@ -47,6 +49,7 @@ module.exports = {
     HACKER_STATUS_CANCELLED: HACKER_STATUS_CANCELLED,
     HACKER_STATUS_CHECKED_IN: HACKER_STATUS_CHECKED_IN,
     HACKER_STATUSES: HACKER_STATUSES,
+    REQUEST_TYPES: REQUEST_TYPES,
     JOB_INTERESTS: JOB_INTERESTS,
     SHIRT_SIZES: SHIRT_SIZES,
     USER_TYPES: USER_TYPES,

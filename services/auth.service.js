@@ -72,16 +72,25 @@ async function ensureAuthenticated(req, findByIdFns) {
     }
 
     // get the routes
+    // each route is an object made of the uri and the request type
     const twoDRoutes = roleBinding.roles.map((role) => {
         return role.routes;
     });
     const routes = [].concat(...twoDRoutes);
 
-    // for each route, separate by '/', check each section to see if it's the same as requested route
-    // if the route at a section has ':all', mark it as valid
-    // if the route at a section has ':self', use the findByIdFns at particular index to check if accId matches
+    // each route is an object with an uri and a request type
+    // for each uri, separate by '/', check each section to see if it's the same as requested uri
+    // if the uri at a section has ':all', mark it as valid
+    // if the uri at a section has ':self', use the findByIdFns at particular index to check if accId matches
+    // the request type of the incoming request and the matching request type of the route must be the same
     for (const route of routes) {
-        let splitRoute = route.split("/");
+        // if the request types are different, go to next
+        // the incoming request type is in req.method according to node v10.12.0 api
+        if (route.requestTypes.indexOf(req.method) < 0)  {
+            continue;
+        }
+
+        let splitRoute = route.uri.split("/");
         // if lengths are different, go to next
         if (splitRoute.length !== splitPath.length) {
             continue;

@@ -1,5 +1,6 @@
 "use strict";
 const mongoose = require("mongoose");
+const Constants = require("../constants");
 /**
  * The permission name is going to be the full route. 
  * For example, if a given route "/a/b/c" has a permission, then
@@ -15,7 +16,13 @@ const RoleSchema = new mongoose.Schema({
     //The array of routes that this Role should have access to. It might be some 
     //regular expression, such as: /a/*/c/*, which represents anything under /a/.../c/...
     routes: [{
-        type: String
+        uri: {
+            type: String
+        },
+        requestTypes: [{
+            type: String,
+            enum: Constants.REQUEST_TYPES
+        }]
     }]
 });
 
