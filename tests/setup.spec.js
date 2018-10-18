@@ -5,9 +5,7 @@ const server = require("../app.js");
 const Util = {
     Account: require("./util/account.test.util"),
     Bus: require("./util/bus.test.util"),
-    DefaultPermission: require("./util/defaultPermission.test.util"),
     Hacker: require("./util/hacker.test.util"),
-    Permission: require("./util/permission.test.util"),
     Skill: require("./util/skill.test.util"),
     Sponsor: require("./util/sponsor.test.util"),
     Staff: require("./util/staff.test.util"),
@@ -28,19 +26,15 @@ before(function(done) {
 
 beforeEach(function(done){
     this.timeout(60000);
-    Util.Permission.storeAll(Util.Permission.Permissions, () => { 
-        Util.DefaultPermission.storeAll(Util.DefaultPermission.DefaultPermissions, () => {
-            Util.Account.storeAll(Util.Account.Accounts, () => {
-                Util.Skill.storeAll(Util.Skill.Skills, () => {
-                    Util.Hacker.storeAll(Util.Hacker.Hackers, () => {
-                        Util.Sponsor.storeAll(Util.Sponsor.Sponsors, () => {
-                            Util.Team.storeAll(Util.Team.Teams, () => {
-                                Util.Staff.storeAll(Util.Staff.Staffs, () => {
-                                    Util.AccountConfirmation.storeAll(Util.AccountConfirmation.AccountConfirmationTokens, () => {
-                                        Util.Bus.storeAll(Util.Bus.Busses, () => {
-                                            Util.Volunteer.storeAll(Util.Volunteer.Volunteers, done)
-                                        });
-                                    });
+    Util.Account.storeAll(Util.Account.Accounts, () => {
+        Util.Skill.storeAll(Util.Skill.Skills, () => {
+            Util.Hacker.storeAll(Util.Hacker.Hackers, () => {
+                Util.Sponsor.storeAll(Util.Sponsor.Sponsors, () => {
+                    Util.Team.storeAll(Util.Team.Teams, () => {
+                        Util.Staff.storeAll(Util.Staff.Staffs, () => {
+                            Util.AccountConfirmation.storeAll(Util.AccountConfirmation.AccountConfirmationTokens, () => {
+                                Util.Bus.storeAll(Util.Bus.Busses, () => {
+                                    Util.Volunteer.storeAll(Util.Volunteer.Volunteers, done)
                                 });
                             });
                         });
@@ -65,11 +59,7 @@ function dropAll(done){
                         Util.Bus.dropAll(() => {
                             Util.Hacker.dropAll(() => {
                                 Util.Skill.dropAll(() => {
-                                    Util.Account.dropAll(() => {
-                                        Util.DefaultPermission.dropAll(() => {
-                                            Util.Permission.dropAll(done)
-                                        });
-                                    });
+                                    Util.Account.dropAll(done);
                                 });
                             });
                         });

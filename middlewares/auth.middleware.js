@@ -227,7 +227,7 @@ function deleteResetToken(req, res, next) {
 }
 
 module.exports = {
-    //for each route, set up an authentication middleware for that route, with the permission id.
+    //for each route, set up an authentication middleware for that route
     ensureAuthenticated: ensureAuthenticated,
     sendResetPasswordEmailMiddleware: Middleware.Util.asyncMiddleware(sendResetPasswordEmailMiddleware),
     parseResetToken: parseResetToken,

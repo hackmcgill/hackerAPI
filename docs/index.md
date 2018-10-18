@@ -50,10 +50,10 @@ HackerAPI
 ├── models                          All of the schema and model information reside here
 │   ├── account.model.js            Schema for generic user account
 │   ├── bus.model.js                Schema for a bus route.
-│   ├── defaultPermission.model.js  Schema that maps account types with permission ids
 │   ├── hacker.model.js             Schema for a hacker account.
 │   ├── passwordResetToken.model.js 
-│   ├── permission.model.js         Schema for a permission.
+│   ├── role.model.js
+│   ├── roleBinding.model.js
 │   ├── skill.model.js              Schema for a skill that a Hacker has
 │   ├── sponsor.model.js            Schema for sponsor account.
 │   ├── staff.model.js              Schema for staff members (not volunteers)
@@ -72,24 +72,29 @@ HackerAPI
 │   └── index.js                    Root route
 ├── services                        Stores all services, such as logging, and versioning, and db access
 │   ├── account.service.js
+|   ├── accountConfirmation.service.js
 │   ├── auth.service.js
 │   ├── database.service.js
 │   ├── email.service.js
+│   ├── env.service.js
 │   ├── hacker.service.js
 │   ├── logger.service.js
-│   ├── permission.service.js
 │   ├── resetPassword.service.js
+│   ├── role.service.js
+│   ├── roleBinding.service.js
+│   ├── search.js
 │   ├── skill.service.js
+│   ├── sponsor.service.js
+│   ├── storage.service.js
 │   ├── team.service.js
-│   └── version.service.js
+│   ├── version.service.js
+│   └── volunteer.service.js
 └── tests
     ├── setup.spec.js
     └── util
         ├── account.test.util.js
         ├── bus.test.util.js
-        ├── defaultPermission.test.util.js
         ├── hacker.test.util.js
-        ├── permission.test.util.js
         ├── skill.test.util.js
         ├── sponsor.test.util.js
         ├── staff.test.util.js

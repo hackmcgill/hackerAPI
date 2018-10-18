@@ -51,7 +51,6 @@ describe("GET user account", function () {
                 res.body.data.should.have.property("email");
                 // ???
                 // res.body.data.should.equal(req.user.email);
-                res.body.data.should.have.property("permissions");
                 res.body.data.should.have.property("dietaryRestrictions");
                 res.body.data.should.have.property("shirtSize");
                 done();

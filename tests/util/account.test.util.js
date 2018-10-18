@@ -1,7 +1,4 @@
 "use strict";
-const Util = {
-    Permission: require("./permission.test.util")
-};
 const Account = require("../../models/account.model");
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
@@ -32,7 +29,6 @@ const Account1 = {
     "lastName": "DEF",
     "email": "abc.def1@blahblah.com",
     "password": "probsShouldBeHashed1",
-    "permissions": [Util.Permission.Permission1._id, Util.Permission.Permission6._id],
     "dietaryRestrictions": ["none"],
     "shirtSize": "S"
 };
@@ -42,7 +38,6 @@ const Account2 = {
     "lastName": "def",
     "email": "abc.def2@blahblah.com",
     "password": "probsShouldBeHashed2",
-    "permissions": [Util.Permission.Permission2._id, Util.Permission.Permission7._id],
     "dietaryRestrictions": ["vegetarian"],
     "shirtSize": "M"
 };
@@ -52,7 +47,6 @@ const Account3 = {
     "lastName": "UST",
     "email": "abc.def3@blahblah.com",
     "password": "probsShouldBeHashed3",
-    "permissions": [Util.Permission.Permission3._id, Util.Permission.Permission8._id],
     "dietaryRestrictions": ["vegan"],
     "shirtSize": "L"
 };
@@ -62,7 +56,6 @@ const Account4 = {
     "lastName": "ust",
     "email": "abc.def4@blahblah.com",
     "password": "probsShouldBeHashed4",
-    "permissions": [Util.Permission.Permission4._id, Util.Permission.Permission9._id],
     "dietaryRestrictions": ["vegetarian", "lactose intolerant"],
     "shirtSize": "XL"
 };
@@ -72,7 +65,6 @@ const Account5 = {
     "lastName": "ROFL",
     "email": "abc.def5@blahblah.com",
     "password": "probsShouldBeHashed5",
-    "permissions": [Util.Permission.Permission5._id, Util.Permission.Permission10._id],
     "dietaryRestrictions": ["something1", "something2"],
     "shirtSize": "XXL"
 };
@@ -152,19 +144,9 @@ function equals(acc1, acc2) {
     const firstName = (acc1.firstName === acc2.firstName);
     const lastName = (acc1.lastName === acc2.lastName);
     const email = (acc1.email === acc2.email);
-    const permissions = comparePermissions(acc1.permissions, acc2.permissions);
     const dietaryRestrictions = (acc1.dietaryRestrictions.join(",") === acc2.dietaryRestrictions.join(","));
     const shirtSize = (acc1.shirtSize === acc2.shirtSize);
-    return [id,firstName,lastName,email,permissions,dietaryRestrictions,shirtSize];
-}
-
-function comparePermissions(p1, p2) {
-    if(p1 && p2) {
-        p1 = p1.sort().map((value) => convertMongoIdToString(value));
-        p2 = p2.sort().map((value) => convertMongoIdToString(value));;
-        return p1.join(",") === p2.join(",");
-    }
-    return false;
+    return [id,firstName,lastName,email,dietaryRestrictions,shirtSize];
 }
 
 function convertMongoIdToString(id) {
