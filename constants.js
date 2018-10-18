@@ -12,19 +12,26 @@ const HACKER_STATUS_CONFIRMED = "Confirmed";
 const HACKER_STATUS_CANCELLED = "Cancelled";
 const HACKER_STATUS_CHECKED_IN = "Checked-in";
 const HACKER_STATUSES = [
-    HACKER_STATUS_NONE, 
+    HACKER_STATUS_NONE,
     HACKER_STATUS_APPLIED,
     HACKER_STATUS_ACCEPTED,
     HACKER_STATUS_WAITLISTED,
-    HACKER_STATUS_CONFIRMED, 
-    HACKER_STATUS_CANCELLED, 
+    HACKER_STATUS_CONFIRMED,
+    HACKER_STATUS_CANCELLED,
     HACKER_STATUS_CHECKED_IN
 ];
+
+const HACKER = "Hacker";
+const VOLUNTEER = "Volunteer";
+const STAFF = "Staff";
+const GODSTAFF = "GodStaff";
+const SPONSOR = "Sponsor";
+
 const JOB_INTERESTS = ["Internship", "Full-time", "None"];
 // enum of type of requests
 const REQUEST_TYPES = ["GET", "POST", "PATCH", "DELETE"];
 const SHIRT_SIZES = ["XS", "S", "M", "L", "XL", "XXL"];
-const USER_TYPES = ["Hacker", "Volunteer", "Staff", "GodStaff", "Sponsor"];
+const USER_TYPES = [HACKER, VOLUNTEER, STAFF, GODSTAFF, SPONSOR];
 // matches optional http://, https://, http:, https:, and optional www.
 // matches the domain, and then optional route, path, query parameters
 const URL_REGEX = /^(http(s)?:(\/\/)?)?(www\.)?([-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6})\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$/;
@@ -37,6 +44,12 @@ EMAIL_SUBJECTS[HACKER_STATUS_WAITLISTED] = `Update from ${process.env.HACKATHON}
 EMAIL_SUBJECTS[HACKER_STATUS_CONFIRMED] = `Thanks for confirming your attendance to ${process.env.HACKATHON}`;
 EMAIL_SUBJECTS[HACKER_STATUS_CANCELLED] = "Sorry to see you go";
 EMAIL_SUBJECTS[HACKER_STATUS_CHECKED_IN] = `Welcome to ${process.env.HACKATHON}`;
+
+const CONFIRM_ACC_EMAIL_SUBJECTS = {};
+CONFIRM_ACC_EMAIL_SUBJECTS[HACKER] = `Please complete your hacker application for ${process.env.HACKATHON}`;
+CONFIRM_ACC_EMAIL_SUBJECTS[SPONSOR] = `You've been invited to create a sponsor account for ${process.env.HACKATHON}`;
+CONFIRM_ACC_EMAIL_SUBJECTS[VOLUNTEER] = `You've been invited to create a volunteer account for ${process.env.HACKATHON}`;
+CONFIRM_ACC_EMAIL_SUBJECTS[STAFF] = `You've been invited to create a staff account for ${process.env.HACKATHON}`;
 
 module.exports = {
     DEVPOST_REGEX: DEVPOST_REGEX,
@@ -55,4 +68,10 @@ module.exports = {
     USER_TYPES: USER_TYPES,
     URL_REGEX: URL_REGEX,
     EMAIL_SUBJECTS: EMAIL_SUBJECTS,
+    CONFIRM_ACC_EMAIL_SUBJECTS: CONFIRM_ACC_EMAIL_SUBJECTS,
+    HACKER: HACKER,
+    SPONSOR: SPONSOR,
+    VOLUNTEER: VOLUNTEER,
+    STAFF: STAFF,
+    GODSTAFF: GODSTAFF
 };

@@ -8,7 +8,8 @@ const Middleware = {
     Validator: {
         /* Insert the require statement to the validator file here */
         Account: require("../../middlewares/validators/account.validator"),
-        RouteParam: require("../../middlewares/validators/routeParam.validator")
+        RouteParam: require("../../middlewares/validators/routeParam.validator"),
+        Auth: require("../../middlewares/validators/auth.validator")
     },
     /* Insert all of ther middleware require statements here */
     parseBody: require("../../middlewares/parse-body.middleware"),
@@ -31,7 +32,7 @@ module.exports = {
          * @apiSuccessExample {object} Success-Response: 
          *      {
                     "message": "Account found by user email", 
-                    "data": {...}
+                    "data": {AccountObject}
                 }
 
          * @apiError {string} message Error message
@@ -73,15 +74,21 @@ module.exports = {
         accountRouter.route("/").post(
             // validators
             Middleware.Validator.Account.newAccountValidator,
+            Middleware.Validator.Auth.accountConfirmationValidator,
 
             Middleware.parseBody.middleware,
 
             // middlewares to parse body/organize body
             // adds default hacker permissions here
             Middleware.Account.parseAccount,
+
+            // middleware to create hacker object in database
+            Middleware.Account.addAccount,
+            // middleware to create a hacker token 
+            // and send a confirmation message
+            Middleware.Auth.sendConfirmAccountEmailMiddleware,
             // should return status in this function
-            Controllers.Account.addUser,
-            Middleware.Account.addDefaultHackerPermissions
+            Controllers.Account.addUser
         );
 
         /**
@@ -137,7 +144,7 @@ module.exports = {
          * @apiSuccessExample {object} Success-Response: 
          *      {
                     "message": "Account found by user id", 
-                    "data": {...}
+                    "data": {AccountObject}
                 }
 
          * @apiError {string} message Error message
@@ -148,7 +155,7 @@ module.exports = {
         accountRouter.route("/:id").get(
             Middleware.Validator.RouteParam.idValidator,
             Middleware.parseBody.middleware,
-            
+
             Controllers.Account.getUserById
         );
 

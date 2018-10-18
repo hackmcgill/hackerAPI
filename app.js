@@ -3,6 +3,7 @@ const express = require("express");
 const path = require("path");
 const cookieParser = require("cookie-parser");
 const cookieSession = require("cookie-session");
+const cors = require("cors");
 const Services = {
     log: require("./services/logger.service"),
     db: require("./services/database.service"),
@@ -30,7 +31,7 @@ const volunteerRouter = require("./routes/api/volunteer");
 
 const app = express();
 Services.db.connect(app);
-
+app.use(cors());
 app.use(Services.log.requestLogger);
 app.use(Services.log.errorLogger);
 app.use(express.json());

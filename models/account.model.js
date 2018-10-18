@@ -31,6 +31,10 @@ const AccountSchema = new mongoose.Schema({
         type: String,
         enum: Constants.SHIRT_SIZES,
         required: true
+    },
+    confirmed: {
+        type: Boolean,
+        default: false
     }
 });
 
