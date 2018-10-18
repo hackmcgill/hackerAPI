@@ -30,7 +30,7 @@ function parsePatch(req, res, next) {
 
 /**
  * @function parseHacker
- * @param {{body: {accountId: ObjectId, school: string, gender: string, needsBus: string, application: Object}}} req
+ * @param {{body: {accountId: ObjectId, school: string, gender: string, needsBus: string, application: Object, authorization: string}}} req
  * @param {*} res
  * @param {(err?)=>void} next
  * @return {void}
@@ -47,13 +47,15 @@ function parseHacker(req, res, next) {
         needsBus: req.body.needsBus,
         application: req.body.application,
     };
+    req.body.token = req.body.authorization;
 
     delete req.body.accountId;
     delete req.body.school;
     delete req.body.gender;
     delete req.body.needsBus;
     delete req.body.application;
-
+    delete req.body.authorization;
+    
     req.body.hackerDetails = hackerDetails;
 
     next();

@@ -12,7 +12,8 @@ const Middleware = {
     /* Insert all of ther middleware require statements here */
     parseBody: require("../../middlewares/parse-body.middleware"),
     Util: require("../../middlewares/util.middleware"),
-    Hacker: require("../../middlewares/hacker.middleware")
+    Hacker: require("../../middlewares/hacker.middleware"),
+    Auth: require("../../middlewares/auth.middleware")
 };
 
 module.exports = {
@@ -30,6 +31,7 @@ module.exports = {
          * @apiParam (body) {String} gender Gender of the hacker
          * @apiParam (body) {Boolean} needsBus Whether the hacker requires a bus for transportation
          * @apiParam (body) {Json} application The hacker's application. Resume and jobInterest fields are required.
+         * @apiParam (header) {String} Authorization Token for validating account to create
          * @apiParamExample {Json} application: 
          *      {
          *          "portfolioURL": {
@@ -67,6 +69,9 @@ module.exports = {
 
             Middleware.Hacker.parseHacker,
             Middleware.Hacker.addDefaultStatus,
+
+            Middleware.Auth.parseAccountConfirmationToken,
+            Middleware.Auth.validateConfirmationToken,
 
             Controllers.Hacker.createHacker
         );

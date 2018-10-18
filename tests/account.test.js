@@ -90,6 +90,17 @@ describe("POST create account", function () {
             done();
         });
     });
+
+    it("should FAIL to create an account because the email is already in use", function(done) {
+        chai.request(server.app)
+            .post(`/api/account/`)
+            .type("application/json")
+            .send(storedAccount1)
+            .end(function (err, res) {
+                res.should.have.status(409);
+                done();
+            });
+    });
 });
 
 describe("PATCH update account", function () {
