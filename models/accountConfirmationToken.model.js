@@ -2,7 +2,6 @@
 const mongoose = require("mongoose");
 const Constants = require("../constants");
 
-
 const AccountConfirmationSchema = new mongoose.Schema({
     accountId: {
         type: mongoose.Schema.Types.ObjectId,
@@ -12,7 +11,6 @@ const AccountConfirmationSchema = new mongoose.Schema({
     accountType: {
         type:String,
         enum: Constants.USER_TYPES,
-        required: true,
         default: Constants.HACKER
     },
     email: {

@@ -90,6 +90,8 @@ async function sendResetPasswordEmailMiddleware(req, res, next) {
 
 /**
  * Middleware that sends an email to confirm the account for the inputted email address.
+ * This is only sent on account creation for HACKERS as other users are sent an invite email
+ * which confirms their account
  * @param {{body: {email:String}}} req the request object
  * @param {*} res
  * @param {(err?)=>void} next
@@ -133,6 +135,13 @@ function parseResetToken(req, res, next) {
     });
 }
 
+/**
+ * Attempts to parse the jwt token that is found in req.body.token using process.env.JWT_CONFIRM_ACC_SECRET as the key.
+ * Places the parsed object into req.body.decodedToken
+ * @param {{body:{token:string}}} req 
+ * @param {any} res 
+ * @param {(err?)=>void} next 
+ */
 function parseAccountConfirmationToken(req, res, next){
     jwt.verify(req.body.token, process.env.JWT_CONFIRM_ACC_SECRET, function (err, decoded) {
         if (err) {
@@ -142,6 +151,27 @@ function parseAccountConfirmationToken(req, res, next){
             next();
         }
     });
+}
+
+/**
+ * Returns the type of account based on the confirmation token
+ * @param {{body:{decodedToken:{accountConfirmationId:string, accountId:string}}}} req 
+ * @param {any} res 
+ * @param {(err?)=>void} next 
+ */
+async function getAccountTypeFromConfirmationToken(req, res, next){
+    const confirmationObj = await Services.AccountConfirmation.findById(req.body.decodedToken.accountConfirmationId);
+    if (confirmationObj) {
+        req.body.accountType = confirmationObj.accountType;
+        next();
+    } else {
+        //Either the token was already used, it's invalid, or user does not exist.
+        next({
+            status: 422,
+            message: "Invalid token for confirming account",
+            error: {}
+        })
+    }
 }
 
 /**
@@ -174,8 +204,8 @@ async function validateResetToken(req, res, next) {
  */
 async function validateConfirmationToken(req, res, next) {
     const confirmationObj = await Services.AccountConfirmation.findById(req.body.decodedToken.accountConfirmationId);
-    const userObj = await Services.Account.findById(confirmationObj.accountId);
-    if (confirmationObj && userObj) {
+    const userObj = await Services.Account.findById(req.body.decodedToken.accountId);
+    if (confirmationObj && userObj && (confirmationObj.accountId == userObj.id)) {
         userObj.confirmed = true;
         await Services.Account.changeOneAccount(confirmationObj.accountId, userObj);
         req.body.user = userObj;
@@ -216,5 +246,6 @@ module.exports = {
     deleteResetToken: deleteResetToken,
     sendConfirmAccountEmailMiddleware: Middleware.Util.asyncMiddleware(sendConfirmAccountEmailMiddleware),
     parseAccountConfirmationToken: parseAccountConfirmationToken,
-    validateConfirmationToken: Middleware.Util.asyncMiddleware(validateConfirmationToken)
+    validateConfirmationToken: Middleware.Util.asyncMiddleware(validateConfirmationToken), 
+    getAccountTypeFromConfirmationToken: Middleware.Util.asyncMiddleware(getAccountTypeFromConfirmationToken)
 };

@@ -38,8 +38,7 @@ const AccountSchema = new mongoose.Schema({
     },
     confirmed: {
         type: Boolean,
-        default: false,
-        required: true
+        default: false
     }
 });
 

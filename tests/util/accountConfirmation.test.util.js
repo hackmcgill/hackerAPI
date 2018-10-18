@@ -22,7 +22,7 @@ const HackerConfirmation = {
     "email": Util.Account.Account1.email
 }
 
-const ConfirmationToken = Services.AccountConfirmation.generateToken(HackerConfirmation._id, HackerConfirmation._id);
+const ConfirmationToken = Services.AccountConfirmation.generateToken(HackerConfirmation._id, Util.Account.Account1._id);
 
 const AccountConfirmationTokens = [
     HackerConfirmation

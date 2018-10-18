@@ -69,7 +69,7 @@ function generateToken (accountConfirmationId, accountId) {
  * @param {string} domain the domain of the current
  * @param {string} type the model that the 
  * @param {string} token the reset token
- * @returns {string} the string, of form: [http|https]://{domain}/{model}/reset?token={token}
+ * @returns {string} the string, of form: [http|https]://{domain}/{model}/create?token={token}
  */
 function generateTokenLink (httpOrHttps, domain, type, token) {
     const link = `${httpOrHttps}://${domain}/${type}/create?token=${token}`;

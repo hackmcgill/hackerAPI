@@ -64,6 +64,9 @@ describe("POST create hacker", function () {
             .type("application/json")
             .send(newHacker1)
             .end(function (err, res) {
+                res.should.be.json;
+                res.body.should.have.property("message");
+                res.body.message.should.equal("Validation failed");
                 res.should.have.status(422);
                 done();
             });
@@ -73,6 +76,7 @@ describe("POST create hacker", function () {
         chai.request(server.app)
         .post(`/api/hacker/`)
         .type("application/json")
+        .set('Authorization', confirmationToken)
         .send(invalidHacker1)
         .end(function (err, res) {
             // replace with actual test comparisons after error handler is implemented
