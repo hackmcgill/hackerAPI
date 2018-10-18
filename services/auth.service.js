@@ -41,7 +41,7 @@ module.exports = {
     serializeUser: function (user, done) {
         done(null, user.id);
     },
-    ensureAuthenticated: ensureAuthenticated 
+    ensureAuthorized: ensureAuthorized
 };
 
 /**
@@ -55,7 +55,7 @@ module.exports = {
 // assuming that the route params (resource ids) are in 
 
 // to check for :all, just replace :all with the paramID (AKA resource ID)
-async function ensureAuthenticated(req, findByIdFns) {
+async function ensureAuthorized(req, findByIdFns) {
     // the requested route is given by req.baseUrl+req.path, to remove ? and other params
     const path = req.baseUrl + req.path;
     // splitPath[0] will be '', but assuming that routes will also start with '/', splitRoles will start with '' as well

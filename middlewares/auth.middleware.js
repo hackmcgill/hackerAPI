@@ -18,25 +18,19 @@ const Constants = require("../constants");
  * @returns {Fn} the middleware that will check that the user is properly authenticated.
  * Calls next() if the user is properly authenticated.
  */
-function ensureAuthenticated(findByIdFns) {
+function ensureAuthenticated() {
     return function(req, res, next) {
-        Services.Auth.ensureAuthenticated(req, findByIdFns).then(
-            (isAuthenticated) => {
-                if(isAuthenticated) {
-                    next();      
-                } else {
-                    next({
-                        status: 401,
-                        message: "Not Authenticated",
-                        error: {
-                            route: req.path
-                        }
-                    });
+        if (req.isUnauthenticated()) {
+            next({
+                status: 401,
+                message: "Not Authenticated",
+                error: {
+                    route: req.path
                 }
-            }
-        ).catch((reason) => {
-            next(reason);
-        });
+            });
+        } else {
+            next();
+        }
     };
 }
 

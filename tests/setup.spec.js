@@ -34,7 +34,7 @@ beforeEach(function(done){
                         Util.Staff.storeAll(Util.Staff.Staffs, () => {
                             Util.AccountConfirmation.storeAll(Util.AccountConfirmation.AccountConfirmationTokens, () => {
                                 Util.Bus.storeAll(Util.Bus.Busses, () => {
-                                    Util.Volunteer.storeAll(Util.Volunteer.Volunteers, done)
+                                    Util.Volunteer.storeAll(Util.Volunteer.Volunteers, done);
                                 });
                             });
                         });
