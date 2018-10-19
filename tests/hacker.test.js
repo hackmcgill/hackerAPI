@@ -147,7 +147,7 @@ describe("POST add a hacker resume", function () {
                 return done(error);
             }
             return agent
-                .post(`/api/hacker/${storedHacker1._id}/resume`)
+                .post(`/api/hacker/resume/${storedHacker1._id}`)
                 .type("multipart/form-data")
                 .attach("resume", fs.createReadStream(path.join(__dirname, "testResume.pdf")), {
                     contentType: "application/pdf"
