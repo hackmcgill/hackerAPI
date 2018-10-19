@@ -47,7 +47,7 @@ module.exports = {
 /**
  * 
  * @param {{isUnauthenticated:()=>boolean, path: string, user: {id: string}}} req request object passed in by Express.js
- * @param {string} routePermissionId the route name.
+ * @param {string} findByIdFns Functions that will return accounts given ids from route parameters.
  */
 
 // assuming that routes are strings, not objects

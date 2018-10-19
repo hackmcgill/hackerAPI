@@ -29,7 +29,7 @@ const SPONSOR = "Sponsor";
 
 const JOB_INTERESTS = ["Internship", "Full-time", "None"];
 // enum of type of requests
-const REQUEST_TYPES = ["GET", "POST", "PATCH", "DELETE"];
+const REQUEST_TYPES = ["GET", "POST", "PATCH", "DELETE", "PUT"];
 const SHIRT_SIZES = ["XS", "S", "M", "L", "XL", "XXL"];
 const USER_TYPES = [HACKER, VOLUNTEER, STAFF, GODSTAFF, SPONSOR];
 // matches optional http://, https://, http:, https:, and optional www.
