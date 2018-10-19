@@ -12,9 +12,10 @@ const path = require("path");
 const util = {
     hacker: require("./util/hacker.test.util"),
     account: require("./util/account.test.util"),
-    auth: require("./util/auth.test.util")
+    auth: require("./util/auth.test.util"),
     accountConfirmation: require("./util/accountConfirmation.test.util")
 };
+const StorageService = require("../services/storage.service");
 
 const storedHacker1 = util.hacker.HackerA;
 const newHacker1 = util.hacker.newHacker1;
@@ -44,16 +45,16 @@ describe("GET hacker", function () {
 describe("POST create hacker", function () {
     it("should SUCCEED and create a new hacker", function (done) {
         chai.request(server.app)
-        .post(`/api/hacker/`)
-        .type("application/json")
-        .set('Authorization', confirmationToken)
-        .send(newHacker1)
-        .end(function (err, res) {
-            res.should.have.status(200);
-            res.should.be.json;
-            res.body.should.have.property("message");
-            res.body.message.should.equal("Hacker creation successful");
-            res.body.should.have.property("data");
+            .post(`/api/hacker/`)
+            .type("application/json")
+            .set('Authorization', confirmationToken)
+            .send(newHacker1)
+            .end(function (err, res) {
+                res.should.have.status(200);
+                res.should.be.json;
+                res.body.should.have.property("message");
+                res.body.message.should.equal("Hacker creation successful");
+                res.body.should.have.property("data");
 
                 // delete _id and status because those fields were generated
                 delete res.body.data._id;
@@ -63,7 +64,7 @@ describe("POST create hacker", function () {
             });
     });
 
-    it("should FAIL to create a new hacker without the proper token", function(done) {
+    it("should FAIL to create a new hacker without the proper token", function (done) {
         chai.request(server.app)
             .post(`/api/hacker/`)
             .type("application/json")
@@ -77,17 +78,17 @@ describe("POST create hacker", function () {
             });
     });
 
-    it("should FAIL to create new hacker due to invalid input", function(done) {
+    it("should FAIL to create new hacker due to invalid input", function (done) {
         chai.request(server.app)
-        .post(`/api/hacker/`)
-        .type("application/json")
-        .set('Authorization', confirmationToken)
-        .send(invalidHacker1)
-        .end(function (err, res) {
-            // replace with actual test comparisons after error handler is implemented
-            res.should.have.status(422);
-            done();
-        });
+            .post(`/api/hacker/`)
+            .type("application/json")
+            .set('Authorization', confirmationToken)
+            .send(invalidHacker1)
+            .end(function (err, res) {
+                // replace with actual test comparisons after error handler is implemented
+                res.should.have.status(422);
+                done();
+            });
     });
 });
 
@@ -152,9 +153,19 @@ describe("POST add a hacker resume", function () {
                     contentType: "application/pdf"
                 })
                 .end(function (err, res) {
-                    console.log(res.body);
                     res.should.have.status(200);
-                    done();
+                    res.should.have.property("body");
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal("Uploaded resume");
+                    res.body.should.have.property("data");
+                    res.body.data.should.have.property("filename");
+                    StorageService.download(res.body.data.filename).then((value) => {
+                        const actualFile = fs.readFileSync(path.join(__dirname, "testResume.pdf"))
+                        chai.assert.equal(value[0].length, actualFile.length);
+                        StorageService.delete(res.body.data.filename).then(() => {
+                            done();
+                        }).catch(done);
+                    });
                 });
         });
     });
