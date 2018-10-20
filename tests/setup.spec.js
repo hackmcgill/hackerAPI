@@ -6,6 +6,7 @@ const Util = {
     Account: require("./util/account.test.util"),
     Bus: require("./util/bus.test.util"),
     Hacker: require("./util/hacker.test.util"),
+    Role: require("./util/role.test.util"),
     Skill: require("./util/skill.test.util"),
     Sponsor: require("./util/sponsor.test.util"),
     Staff: require("./util/staff.test.util"),
@@ -21,6 +22,8 @@ before(function(done) {
     server.app.on("event:connected to db", () => {
         // drop all information, and then add some users
         dropAll(done);
+        // check if createAllSingularRole works
+        Util.Role.createAllSingularRole();
     });
 });
 
