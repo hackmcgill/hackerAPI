@@ -39,7 +39,7 @@ const hackerRoutes = {
     },
     "getAnyById": {
         requestTypes: Constants.REQUEST_TYPES.GET,
-        uri: "/api/hacker/" + Constants.ROLE_CATEGORIES.any,
+        uri: "/api/hacker/" + Constants.ROLE_CATEGORIES.all,
     },
     "getSelfResumeById": {
         requestTypes: Constants.REQUEST_TYPES.GET,
@@ -78,7 +78,7 @@ const sponsorRoutes = {
     },
     "getAnyById": {
         requestTypes: Constants.REQUEST_TYPES.GET,
-        uri: "/api/sponsor/" + Constants.ROLE_CATEGORIES.any,
+        uri: "/api/sponsor/" + Constants.ROLE_CATEGORIES.all,
     },
     "post": {
         requestTypes: Constants.REQUEST_TYPES.POST,
@@ -93,7 +93,7 @@ const teamRoutes = {
     },
     "getAnyById": {
         requestTypes: Constants.REQUEST_TYPES.GET,
-        uri: "/api/team/" + Constants.ROLE_CATEGORIES.any,
+        uri: "/api/team/" + Constants.ROLE_CATEGORIES.all,
     },
     "post": {
         requestTypes: Constants.REQUEST_TYPES.POST,
@@ -108,7 +108,7 @@ const volunteerRoutes = {
     },
 };
 
-const allRoutes = [accountRoutes, hackerRoutes, sponsorRoutes, teamRoutes, volunteerRoutes];
+const allRoutes = [["Account", accountRoutes], ["Hacker", hackerRoutes], ["Sponsor", sponsorRoutes], ["Team", teamRoutes], ["Volunteer", volunteerRoutes]];
 
 const adminRole = {
     "_id": mongoose.Types.ObjectId(),
@@ -183,6 +183,7 @@ const sponsorT5Role = {
     ]
 };
 
+const singularRoles = createAllSingularRoles();
 
 function getAllRoutes() {
     let routes = [];
@@ -197,15 +198,72 @@ function getAllRoutes() {
 
 // creates the roles that are just one uri + request type
 function createAllSingularRoles() {
-    console.log("HIHI");
-    let roles = [];
-    // for (let typeRoute of allRoutes) {
-    //     for (let route of Object.entries(typeRoute)) {
-    //         console.log(route);
-    //     }
-    // }
+    let roles = {};
+    for (let typeRoute of allRoutes) {
+        let routes = typeRoute[1];
+        let routeName = typeRoute[0];
+        for (let route of Object.entries(routes)) {
+            let role = {
+                _id: mongoose.Types.ObjectId(),
+                name: route[0] + routeName,
+                routes: [route[1]],
+            };
+            let roleName = route[0] + routeName;
+            roles[roleName] = role;
+        }
+    }
+
+    return roles;
+}
+
+function storeAll(attributes, callback) {
+    const roleDocs = [];
+    const roleNames = [];
+    attributes.forEach((attribute) => {
+        roleDocs.push(new Role(attribute));
+        roleNames.push(attribute.name);
+    });
+
+    Role.collection.insertMany(roleDocs).then(
+        () => {
+            logger.info(`${TAG} saved Roles: ${roleNames.join(",")}`);
+            callback();
+        },
+        (reason) => {
+            logger.error(`${TAG} could not store Roles ${roleNames.join(",")}. Error: ${JSON.stringify(reason)}`);
+            callback(reason);
+        }
+    );
+}
+
+function dropAll(callback) {
+    Role.collection.drop().then(
+        () => {
+            logger.info(`Dropped table Role`);
+            callback();
+        },
+        (err) => {
+            logger.error(`Could not drop Role. Error: ${JSON.stringify(err)}`);
+            callback(err);
+        }
+    ).catch((error) => {
+        logger.error(error);
+        callback();
+    });
 }
 
 module.exports = {
+    adminRole: adminRole,
+    hackerRole: hackerRole,
+    volunteerRole: volunteerRole,
+    sponsorT1Role: sponsorT1Role,
+    sponsorT2Role: sponsorT2Role,
+    sponsorT3Role: sponsorT3Role,
+    sponsorT4Role: sponsorT4Role,
+    sponsorT5Role: sponsorT5Role,
+    singularRoles: singularRoles,
+
     createAllSingularRoles: createAllSingularRoles,
+    storeAll: storeAll,
+    dropAll: dropAll,
 };

@@ -7,6 +7,7 @@ const Util = {
     Bus: require("./util/bus.test.util"),
     Hacker: require("./util/hacker.test.util"),
     Role: require("./util/role.test.util"),
+    RoleBinding: require("./util/roleBinding.test.util"),
     Skill: require("./util/skill.test.util"),
     Sponsor: require("./util/sponsor.test.util"),
     Staff: require("./util/staff.test.util"),
@@ -22,8 +23,6 @@ before(function(done) {
     server.app.on("event:connected to db", () => {
         // drop all information, and then add some users
         dropAll(done);
-        // check if createAllSingularRole works
-        Util.Role.createAllSingularRole();
     });
 });
 
@@ -37,7 +36,9 @@ beforeEach(function(done){
                         Util.Staff.storeAll(Util.Staff.Staffs, () => {
                             Util.AccountConfirmation.storeAll(Util.AccountConfirmation.AccountConfirmationTokens, () => {
                                 Util.Bus.storeAll(Util.Bus.Busses, () => {
-                                    Util.Volunteer.storeAll(Util.Volunteer.Volunteers, done);
+                                    Util.Volunteer.storeAll(Util.Volunteer.Volunteers, () => {
+                                        Util.Role.storeAll(Util.RoleBinding.RoleBindings, (done));
+                                    });
                                 });
                             });
                         });
@@ -54,15 +55,19 @@ afterEach(function(done){
 });
 
 function dropAll(done){
-    Util.AccountConfirmation.dropAll(() => {
-        Util.Volunteer.dropAll(() => {
-            Util.Staff.dropAll(() => {
-                Util.Team.dropAll(() => {
-                    Util.Sponsor.dropAll(() => {
-                        Util.Bus.dropAll(() => {
-                            Util.Hacker.dropAll(() => {
-                                Util.Skill.dropAll(() => {
-                                    Util.Account.dropAll(done);
+    Util.RoleBinding.dropAll(() => {
+        Util.Role.dropAll(() => {
+            Util.AccountConfirmation.dropAll(() => {
+                Util.Volunteer.dropAll(() => {
+                    Util.Staff.dropAll(() => {
+                        Util.Team.dropAll(() => {
+                            Util.Sponsor.dropAll(() => {
+                                Util.Bus.dropAll(() => {
+                                    Util.Hacker.dropAll(() => {
+                                        Util.Skill.dropAll(() => {
+                                            Util.Account.dropAll(done);
+                                        });
+                                    });
                                 });
                             });
                         });
@@ -71,4 +76,4 @@ function dropAll(done){
             });
         });
     });
-};
+}
