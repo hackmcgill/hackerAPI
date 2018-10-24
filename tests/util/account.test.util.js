@@ -1,4 +1,5 @@
 "use strict";
+const Constants = require("../../constants");
 const Account = require("../../models/account.model");
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
@@ -68,103 +69,18 @@ const Account5 = {
     "dietaryRestrictions": ["something1", "something2"],
     "shirtSize": "XXL"
 };
-const Account6 = {
-    "_id": mongoose.Types.ObjectId(),
-    "firstName": "first6",
-    "lastName": "last6",
-    "email": "test6@blahblah.com",
-    "password": "probsShouldBeHashed6",
-    "dietaryRestrictions": [],
-    "shirtSize": "M"
-};
-const Account7 = {
-    "_id": mongoose.Types.ObjectId(),
-    "firstName": "first7",
-    "lastName": "last7",
-    "email": "test7@blahblah.com",
-    "password": "probsShouldBeHashed7",
-    "dietaryRestrictions": [],
-    "shirtSize": "M"
-};
-const Account8 = {
-    "_id": mongoose.Types.ObjectId(),
-    "firstName": "first8",
-    "lastName": "last8",
-    "email": "test8@blahblah.com",
-    "password": "probsShouldBeHashed8",
-    "dietaryRestrictions": [],
-    "shirtSize": "M"
-};
-const Account9 = {
-    "_id": mongoose.Types.ObjectId(),
-    "firstName": "first9",
-    "lastName": "last9",
-    "email": "test9@blahblah.com",
-    "password": "probsShouldBeHashed9",
-    "dietaryRestrictions": [],
-    "shirtSize": "M"
-};
-const Account10 = {
-    "_id": mongoose.Types.ObjectId(),
-    "firstName": "first10",
-    "lastName": "last10",
-    "email": "test10@blahblah.com",
-    "password": "probsShouldBeHashed10",
-    "dietaryRestrictions": [],
-    "shirtSize": "M"
-};
-const Account11 = {
-    "_id": mongoose.Types.ObjectId(),
-    "firstName": "first11",
-    "lastName": "last11",
-    "email": "test11@blahblah.com",
-    "password": "probsShouldBeHashed11",
-    "dietaryRestrictions": [],
-    "shirtSize": "M"
-};
-const Account12 = {
-    "_id": mongoose.Types.ObjectId(),
-    "firstName": "first12",
-    "lastName": "last12",
-    "email": "test12@blahblah.com",
-    "password": "probsShouldBeHashed12",
-    "dietaryRestrictions": [],
-    "shirtSize": "M"
-};
-const Account13 = {
-    "_id": mongoose.Types.ObjectId(),
-    "firstName": "first13",
-    "lastName": "last13",
-    "email": "test13@blahblah.com",
-    "password": "probsShouldBeHashed13",
-    "dietaryRestrictions": [],
-    "shirtSize": "M"
-};
-const Account14 = {
-    "_id": mongoose.Types.ObjectId(),
-    "firstName": "first14",
-    "lastName": "last14",
-    "email": "test14@blahblah.com",
-    "password": "probsShouldBeHashed14",
-    "dietaryRestrictions": [],
-    "shirtSize": "M"
-};
-const Accounts = [
+
+const customAccounts = [
     Account1,
     Account2,
     Account3,
     Account4,
     Account5,
-    Account6,
-    Account7,
-    Account8,
-    Account9,
-    Account10,
-    Account11,
-    Account12,
-    Account13,
-    Account14,
 ];
+
+const generatedAccounts = generateAccounts(100);
+
+const allAccounts = customAccounts.concat(generatedAccounts);
 
 module.exports = {
     nonAccount1: nonAccount1,
@@ -174,20 +90,33 @@ module.exports = {
     Account3: Account3,
     Account4: Account4,
     Account5: Account5,
-    Account6: Account6,
-    Account7: Account7,
-    Account8: Account8,
-    Account9: Account9,
-    Account10: Account10,
-    Account11: Account11,
-    Account12: Account12,
-    Account13: Account13,
-    Account14: Account14,
-    Accounts: Accounts,
+    customAccounts: customAccounts,
+    generateAccounts: generateAccounts,
+    allAccounts: allAccounts,
     storeAll: storeAll,
     dropAll: dropAll,
     equals: equals
 };
+
+function generateRandomShirtSize() {
+    return Constants.SHIRT_SIZES[Math.floor(Math.random()*Constants.SHIRT_SIZES.length)];
+}
+
+function generateAccounts(n) {
+    let accounts = [];
+    for (let i=0; i < n; i++) {
+        accounts.push({
+            "_id": mongoose.Types.ObjectId(),
+            "firstName": "first" + String(i),
+            "lastName": "last" + String(i),
+            "email": "test" + String(i) + "@blahblah.com",
+            "password": "probsShouldBeHashed" + String(i),
+            "dietaryRestrictions": [],
+            "shirtSize": generateRandomShirtSize(),
+        });
+    }
+    return accounts;
+}
 
 function encryptPassword(user) {
     let encryptedUser = JSON.parse(JSON.stringify(user));

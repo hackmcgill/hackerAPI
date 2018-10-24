@@ -28,7 +28,7 @@ before(function(done) {
 
 beforeEach(function(done){
     this.timeout(60000);
-    Util.Account.storeAll(Util.Account.Accounts, () => {
+    Util.Account.storeAll(Util.Account.allAccounts, () => {
         Util.Skill.storeAll(Util.Skill.Skills, () => {
             Util.Hacker.storeAll(Util.Hacker.Hackers, () => {
                 Util.Sponsor.storeAll(Util.Sponsor.Sponsors, () => {

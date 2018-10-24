@@ -10,31 +10,31 @@ const TAG = "[ ROLEBINDING.TEST.UTIL.JS ]";
 const logger = require("../../services/logger.service");
 
 const RoleBinding1 = {
-    accountId: Util.Account.Account6,
+    accountId: Util.Account.allAccounts[6],
     roles: [Util.Role.adminRole],
 };
 const RoleBinding2 = {
-    accountId: Util.Account.Account7,
+    accountId: Util.Account.allAccounts[7],
     roles: [Util.Role.hackerRole],
 };
 const RoleBinding3 = {
-    accountId: Util.Account.Account8,
+    accountId: Util.Account.allAccounts[8],
     roles: [Util.Role.volunteerRole],
 };
 const RoleBinding4 = {
-    accountId: Util.Account.Account9,
+    accountId: Util.Account.allAccounts[9],
     roles: [Util.Role.sponsorT1Role],
 };
 const RoleBinding5 = {
-    accountId: Util.Account.Account10,
+    accountId: Util.Account.allAccounts[10],
     roles: [Util.Role.sponsorT2Role],
 };
 const RoleBinding6 = {
-    accountId: Util.Account.Account11,
+    accountId: Util.Account.allAccounts[11],
     roles: [Util.Role.singularRoles.getSelfAccount],
 };
 const RoleBinding7 = {
-    accountId: Util.Account.Account12,
+    accountId: Util.Account.allAccounts[12],
     roles: [Util.Role.getAnyByIdHacker, Util.Role.patchSelfByIdHacker],
 };
 
