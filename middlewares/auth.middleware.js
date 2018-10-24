@@ -34,6 +34,30 @@ function ensureAuthenticated() {
     };
 }
 
+function ensureAuthorized(findByIdFns) {
+    return function(req, res, next) {
+        Services.Auth.ensureAuthorized(req, findByIdFns).then(
+            (auth) => {
+                console.log(auth);
+                if (!auth) {
+                    next({
+                        status: 401,
+                        message: "Not Authorized for this route",
+                        eror: {
+                            route: req.path
+                        }
+                    });
+                } else {
+                    next();
+                }
+            },
+            (err) => {
+                next(err);
+            }
+        );
+    }
+}
+
 /**
  * Middleware that sends an email to reset the password for the inputted email address.
  * @param {{body: {email:String}}} req the request object
@@ -223,6 +247,7 @@ function deleteResetToken(req, res, next) {
 module.exports = {
     //for each route, set up an authentication middleware for that route
     ensureAuthenticated: ensureAuthenticated,
+    ensureAuthorized: ensureAuthorized,
     sendResetPasswordEmailMiddleware: Middleware.Util.asyncMiddleware(sendResetPasswordEmailMiddleware),
     parseResetToken: parseResetToken,
     validateResetToken: Middleware.Util.asyncMiddleware(validateResetToken),

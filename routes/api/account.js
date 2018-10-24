@@ -16,6 +16,9 @@ const Middleware = {
     Account: require("../../middlewares/account.middleware"),
     Auth: require("../../middlewares/auth.middleware")
 };
+const Services = {
+    Account: require("../../services/account.service"),
+};
 
 module.exports = {
     activate: function (apiRouter) {
@@ -42,6 +45,7 @@ module.exports = {
          */
         accountRouter.route("/self").get(
             Middleware.Auth.ensureAuthenticated(),
+            Middleware.Auth.ensureAuthorized(),
             Controllers.Account.getUserByEmail
         );
 
@@ -153,6 +157,8 @@ module.exports = {
          *      {"message": "User id not found", "data": {}}
          */
         accountRouter.route("/:id").get(
+            Middleware.Auth.ensureAuthenticated(),
+            Middleware.Auth.ensureAuthorized([Services.Account.findById]),
             Middleware.Validator.RouteParam.idValidator,
             Middleware.parseBody.middleware,
             

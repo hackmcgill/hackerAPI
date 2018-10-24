@@ -24,6 +24,15 @@ const nonAccount1 = {
     "dietaryRestrictions": ["none"],
     "shirtSize": "S",
 };
+const Admin1 = {
+    "_id": mongoose.Types.ObjectId(),
+    "firstName": "Admin1",
+    "lastName": "Admin1",
+    "email": "Admin1@blahblah.com",
+    "password": "Admin1",
+    "dietaryRestrictions": ["none"],
+    "shirtSize": "S"
+};
 const Account1 = {
     "_id": mongoose.Types.ObjectId(),
     "firstName": "ABC",
@@ -71,6 +80,7 @@ const Account5 = {
 };
 
 const customAccounts = [
+    Admin1,
     Account1,
     Account2,
     Account3,
@@ -78,13 +88,14 @@ const customAccounts = [
     Account5,
 ];
 
-const generatedAccounts = generateAccounts(100);
+const generatedAccounts = generateAccounts(20);
 
 const allAccounts = customAccounts.concat(generatedAccounts);
 
 module.exports = {
     nonAccount1: nonAccount1,
     newAccount1: newAccount1,
+    Admin1: Admin1,
     Account1: Account1,
     Account2: Account2,
     Account3: Account3,

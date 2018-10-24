@@ -55,6 +55,7 @@ async function getRoleBindingForAcct(accountId) {
     const query = {accountId: accountId};
     //get the roleBinding for account
     //Populate roles for roleBinding
+
     return await RoleBinding.findOne(query, logger.queryCallbackFactory(TAG, "roleBinding", query)).populate({
             path: "roles",
     });

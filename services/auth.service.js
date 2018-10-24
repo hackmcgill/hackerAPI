@@ -61,22 +61,26 @@ async function ensureAuthorized(req, findByIdFns) {
     // splitPath[0] will be '', but assuming that routes will also start with '/', splitRoles will start with '' as well
     const splitPath = path.split("/");
 
-    // if not logged in, return false
-    if (req.isUnauthenticated()) {
-        return false;
-    }
+    console.log(path);
+    console.log(splitPath);
+
     // if account doesn't have a role binding, then not authenticated
     const roleBinding = await RoleBinding.getRoleBindingForAcct(req.user.id);
     if (!roleBinding) {
         return false;
     }
 
-    // get the routes
-    // each route is an object made of the uri and the request type
+    // get the route ids
     const twoDRoutes = roleBinding.roles.map((role) => {
+        console.log(role);
         return role.routes;
     });
     const routes = [].concat(...twoDRoutes);
+
+    console.log(routes);
+    console.log("HMMM");
+
+    //console.log(routes);
 
     // each route is an object with an uri and a request type
     // for each uri, separate by '/', check each section to see if it's the same as requested uri
@@ -102,8 +106,12 @@ async function ensureAuthorized(req, findByIdFns) {
         for (let i = 0; i < splitPath.length; i++) {
             // checks whether the current chunk in the route path is a parameter
             const isParam = Object.values(req.params).indexOf(splitPath[i]) > -1;
-
-            if (splitRoute[i] === ":self" && isParam) {
+            // if the chunk is a parameter and there are no findByIdFns, continue
+            if (isParam && !findByIdFns) {
+                validRoute = false;
+            }
+            // checks if there is a valid findByIdFn, and that it returns the right accoutn id
+            else if (splitRoute[i] === ":self" && isParam) {
                 if (findByIdFns.length <= findByParamCount) {
                     validRoute = false;
                 }

@@ -5,110 +5,121 @@ const mongoose = require("mongoose");
 const TAG = "[ ROLE.TEST.UTIL.JS ]";
 const logger = require("../../services/logger.service");
 
+const authRoutes = {
+    "login": {
+        requestType: Constants.REQUEST_TYPES.POST,
+        uri: "/api/auth/login"
+    },
+    "logout": {
+        requestType: Constants.REQUEST_TYPES.POST,
+        uri: "/api/auth/logout"
+    }
+};
+
 const accountRoutes = {
     "getSelf": {
-        requestTypes: Constants.REQUEST_TYPES.GET, 
+        requestType: Constants.REQUEST_TYPES.GET, 
         uri: "/api/account/self"
     },
     "getSelfById": {
-        requestTypes: Constants.REQUEST_TYPES.GET,
+        requestType: Constants.REQUEST_TYPES.GET,
         uri: "/api/account/" + Constants.ROLE_CATEGORIES.self,
     },
     "getAnyById": {
-        requestTypes: Constants.REQUEST_TYPES.GET,
+        requestType: Constants.REQUEST_TYPES.GET,
         uri: "/api/account/" + Constants.ROLE_CATEGORIES.all,
     },
     "post": {
-        requestTypes: Constants.REQUEST_TYPES.POST,
+        requestType: Constants.REQUEST_TYPES.POST,
         uri: "/api/account/"
     },
     "patchSelfById": {
-        requestTypes: Constants.REQUEST_TYPES.PATCH,
+        requestType: Constants.REQUEST_TYPES.PATCH,
         uri: "/api/account/" + Constants.ROLE_CATEGORIES.self,
     },
     "patchAnyById": {
-        requestTypes: Constants.REQUEST_TYPES.PATCH,
+        requestType: Constants.REQUEST_TYPES.PATCH,
         uri: "/api/account/" + Constants.ROLE_CATEGORIES.all,
     }
 };
 
 const hackerRoutes = {
     "getSelfById": {
-        requestTypes: Constants.REQUEST_TYPES.GET,
+        requestType: Constants.REQUEST_TYPES.GET,
         uri: "/api/hacker/" + Constants.ROLE_CATEGORIES.self,
     },
     "getAnyById": {
-        requestTypes: Constants.REQUEST_TYPES.GET,
+        requestType: Constants.REQUEST_TYPES.GET,
         uri: "/api/hacker/" + Constants.ROLE_CATEGORIES.all,
     },
     "getSelfResumeById": {
-        requestTypes: Constants.REQUEST_TYPES.GET,
+        requestType: Constants.REQUEST_TYPES.GET,
         uri: "/api/hacker/" + Constants.ROLE_CATEGORIES.self + "/resume",
     },
     "getAnyResumeById": {
-        requestTypes: Constants.REQUEST_TYPES.GET,
+        requestType: Constants.REQUEST_TYPES.GET,
         uri: "/api/hacker/" + Constants.ROLE_CATEGORIES.all + "/resume",
     },
     "post": {
-        requestTypes: Constants.REQUEST_TYPES.POST,
+        requestType: Constants.REQUEST_TYPES.POST,
         uri: "/api/hacker/",
     },
     "postSelfResumeById": {
-        requestTypes: Constants.REQUEST_TYPES.POST,
+        requestType: Constants.REQUEST_TYPES.POST,
         uri: "/api/hacker/" + Constants.ROLE_CATEGORIES.self + "/resume",
     },
     "postAnyResumeById": {
-        requestTypes: Constants.REQUEST_TYPES.POST,
+        requestType: Constants.REQUEST_TYPES.POST,
         uri: "/api/hacker/" + Constants.ROLE_CATEGORIES.all + "/resume",
     },
     "patchSelfById": {
-        requestTypes: Constants.REQUEST_TYPES.PATCH,
+        requestType: Constants.REQUEST_TYPES.PATCH,
         uri: "/api/hacker/" + Constants.ROLE_CATEGORIES.self,
     },
     "patchAnyById": {
-        requestTypes: Constants.REQUEST_TYPES.PATCH,
+        requestType: Constants.REQUEST_TYPES.PATCH,
         uri: "/api/hacker/" + Constants.ROLE_CATEGORIES.all,
     },
 };
 
 const sponsorRoutes = {
     "getSelfById": {
-        requestTypes: Constants.REQUEST_TYPES.GET,
+        requestType: Constants.REQUEST_TYPES.GET,
         uri: "/api/sponsor/" + Constants.ROLE_CATEGORIES.self,
     },
     "getAnyById": {
-        requestTypes: Constants.REQUEST_TYPES.GET,
+        requestType: Constants.REQUEST_TYPES.GET,
         uri: "/api/sponsor/" + Constants.ROLE_CATEGORIES.all,
     },
     "post": {
-        requestTypes: Constants.REQUEST_TYPES.POST,
+        requestType: Constants.REQUEST_TYPES.POST,
         uri: "/api/sponsor/",
     },
 };
 
 const teamRoutes = {
     "getSelfById": {
-        requestTypes: Constants.REQUEST_TYPES.GET,
+        requestType: Constants.REQUEST_TYPES.GET,
         uri: "/api/team/" + Constants.ROLE_CATEGORIES.self,
     },
     "getAnyById": {
-        requestTypes: Constants.REQUEST_TYPES.GET,
+        requestType: Constants.REQUEST_TYPES.GET,
         uri: "/api/team/" + Constants.ROLE_CATEGORIES.all,
     },
     "post": {
-        requestTypes: Constants.REQUEST_TYPES.POST,
+        requestType: Constants.REQUEST_TYPES.POST,
         uri: "/api/team/",
     },
 };
 
 const volunteerRoutes = {
     "post": {
-        requestTypes: Constants.REQUEST_TYPES.POST,
+        requestType: Constants.REQUEST_TYPES.POST,
         uri: "/api/volunteer/",
     },
 };
 
-const allRoutes = [["Account", accountRoutes], ["Hacker", hackerRoutes], ["Sponsor", sponsorRoutes], ["Team", teamRoutes], ["Volunteer", volunteerRoutes]];
+const allRoutes = [["Auth", authRoutes], ["Account", accountRoutes], ["Hacker", hackerRoutes], ["Sponsor", sponsorRoutes], ["Team", teamRoutes], ["Volunteer", volunteerRoutes]];
 
 const adminRole = {
     "_id": mongoose.Types.ObjectId(),
@@ -120,6 +131,9 @@ const hackerRole = {
     "_id": mongoose.Types.ObjectId(),
     "name": "hacker",
     "routes": [
+        authRoutes.login,
+        authRoutes.logout,
+
         accountRoutes.getSelf,
         accountRoutes.getSelfById,
         accountRoutes.patchSelfById,
@@ -134,6 +148,9 @@ const volunteerRole = {
     "_id": mongoose.Types.ObjectId(),
     "name": "volunteer",
     "routes": [
+        authRoutes.login,
+        authRoutes.logout,
+
         volunteerRoutes.post,
     ]
 };
@@ -142,6 +159,9 @@ const sponsorT1Role = {
     "_id": mongoose.Types.ObjectId(),
     "name": "sponsorT1",
     "routes": [
+        authRoutes.login,
+        authRoutes.logout,
+
         sponsorRoutes.post,
         sponsorRoutes.getSelfById,
     ]
@@ -151,6 +171,9 @@ const sponsorT2Role = {
     "_id": mongoose.Types.ObjectId(),
     "name": "sponsorT2",
     "routes": [
+        authRoutes.login,
+        authRoutes.logout,
+
         sponsorRoutes.post,
         sponsorRoutes.getSelfById,
     ]
@@ -160,6 +183,9 @@ const sponsorT3Role = {
     "_id": mongoose.Types.ObjectId(),
     "name": "sponsorT3",
     "routes": [
+        authRoutes.login,
+        authRoutes.logout,
+
         sponsorRoutes.post,
         sponsorRoutes.getSelfById,
     ]
@@ -169,6 +195,9 @@ const sponsorT4Role = {
     "_id": mongoose.Types.ObjectId(),
     "name": "sponsorT4",
     "routes": [
+        authRoutes.login,
+        authRoutes.logout,
+
         sponsorRoutes.post,
         sponsorRoutes.getSelfById,
     ]
@@ -178,6 +207,9 @@ const sponsorT5Role = {
     "_id": mongoose.Types.ObjectId(),
     "name": "sponsorT5",
     "routes": [
+        authRoutes.login,
+        authRoutes.logout,
+
         sponsorRoutes.post,
         sponsorRoutes.getSelfById,
     ]
@@ -185,11 +217,14 @@ const sponsorT5Role = {
 
 const singularRoles = createAllSingularRoles();
 
+const allRoles = [adminRole, hackerRole, volunteerRole, sponsorT1Role, sponsorT2Role, sponsorT3Role, sponsorT4Role, sponsorT5Role].concat(singularRoles);
+
 function getAllRoutes() {
     let routes = [];
     for (let typeRoute of allRoutes) {
-        for (let route of Object.entries(typeRoute)) {
-            routes.push(route);
+        for (let route of Object.entries(typeRoute[1])) {
+            // the for loop over entires includes the entry name, which we do not need
+            routes.push(route[1]);
         }
     }
 
@@ -262,6 +297,8 @@ module.exports = {
     sponsorT4Role: sponsorT4Role,
     sponsorT5Role: sponsorT5Role,
     singularRoles: singularRoles,
+
+    allRoles: allRoles,
 
     createAllSingularRoles: createAllSingularRoles,
     storeAll: storeAll,

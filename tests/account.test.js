@@ -10,14 +10,16 @@ const util = {
     account: require("./util/account.test.util"),
     auth: require("./util/auth.test.util")
 };
-
+// hacker role binding
 const storedAccount1 = util.account.Account1;
+// admin role binding
+const Admin1 = util.account.Admin1;
 const newAccount1 = util.account.newAccount1;
 const agent = chai.request.agent(server.app);
 
 describe("GET user account", function () {
-    // would this ever do anything?
-    it("should fail to list the user's account on /api/account/self GET", function (done) {
+    // fail on authentication
+    it("should fail to list the user's account on /api/account/self GET due to authentication", function (done) {
         chai.request(server.app)
             .get("/api/account/self")
             .end(function (err, res) {
@@ -28,8 +30,9 @@ describe("GET user account", function () {
                 done();
             });
     });
+    // success case
     it("should list the user's account on /api/account/self GET", function (done) {
-        util.auth.login(agent, storedAccount1, (error) => {
+        util.auth.login(agent, Admin1, (error) => {
             if(error) {
                 return done(error);
             }
@@ -57,22 +60,97 @@ describe("GET user account", function () {
             });
         });
     });
+    // success case - admin case
     it("should list an account specified by id on /api/account/:id/ GET", function (done) {
-        chai.request(server.app)
-        .get(`/api/account/` + storedAccount1._id)
-        .end(function (err, res) {
-            res.should.have.status(200);
-            res.should.be.json;
-            res.body.should.have.property("message");
-            res.body.message.should.equal("Account found by user id");
-            res.body.should.have.property("data");
+        util.auth.login(agent, Admin1, (error) => {
+            if(error) {
+                return done(error);
+            }
+            return agent
+            .get(`/api/account/` + storedAccount1._id)
+            // does not have password because of to stripped json
+            .end(function (err, res) {
+                if(err) {
+                    return done(err);
+                }
+                res.should.have.status(200);
+                res.should.be.json;
+                res.body.should.have.property("message");
+                res.body.message.should.equal("Account found by user id");
+                res.body.should.have.property("data");
 
-            // use acc.toStrippedJSON to deal with hidden passwords and convert _id to id
-            const acc = new Account(storedAccount1);
-            chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify(acc.toStrippedJSON()));
-            done();
+                // use acc.toStrippedJSON to deal with hidden passwords and convert _id to id
+                const acc = new Account(storedAccount1);
+                chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify(acc.toStrippedJSON()));
+                done();
+            });
         });
-    })
+    });
+    // success case - user case
+    it("should list an account specified by id on /api/account/:id/ GET", function (done) {
+        util.auth.login(agent, storedAccount1, (error) => {
+            if(error) {
+                return done(error);
+            }
+            return agent
+            .get(`/api/account/` + storedAccount1._id)
+            // does not have password because of to stripped json
+            .end(function (err, res) {
+                if(err) {
+                    return done(err);
+                }
+                res.should.have.status(200);
+                res.should.be.json;
+                res.body.should.have.property("message");
+                res.body.message.should.equal("Account found by user id");
+                res.body.should.have.property("data");
+
+                // use acc.toStrippedJSON to deal with hidden passwords and convert _id to id
+                const acc = new Account(storedAccount1);
+                chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify(acc.toStrippedJSON()));
+                done();
+            });
+        });
+    });
+    // fail case on authentication
+    it("should fail to list an account on /api/account/:id GET due to authentication", function (done) {
+        chai.request(server.app)
+            .get(`/api/account/` + storedAccount1._id)
+            .end(function (err, res) {
+                res.should.have.status(401);
+                res.should.be.json;
+                res.body.should.have.property("message");
+                res.body.message.should.equal("Not Authenticated");
+                done();
+            });
+    });
+    // fail case on authorization
+    it("should fail to list an account specified by id on /api/account/:id/ GET due to lack of authorization", function (done) {
+        util.auth.login(agent, storedAccount1, (error) => {
+            if(error) {
+                return done(error);
+            }
+            return agent
+            .get(`/api/account/` + Admin1._id)
+            // does not have password because of to stripped json
+            .end(function (err, res) {
+                if(err) {
+                    return done(err);
+                }
+                res.should.have.status(200);
+                res.should.be.json;
+                res.body.should.have.property("message");
+                res.body.message.should.equal("Account found by user id");
+                res.body.should.have.property("data");
+
+                // use acc.toStrippedJSON to deal with hidden passwords and convert _id to id
+                const acc = new Account(storedAccount1);
+                chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify(acc.toStrippedJSON()));
+                done();
+            });
+        });
+    });
+    
 });
 
 describe("POST create account", function () {
