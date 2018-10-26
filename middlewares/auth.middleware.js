@@ -43,7 +43,7 @@ function ensureAuthorized(findByIdFns) {
                     next({
                         status: 401,
                         message: "Not Authorized for this route",
-                        eror: {
+                        error: {
                             route: req.path
                         }
                     });

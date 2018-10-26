@@ -61,9 +61,6 @@ async function ensureAuthorized(req, findByIdFns) {
     // splitPath[0] will be '', but assuming that routes will also start with '/', splitRoles will start with '' as well
     const splitPath = path.split("/");
 
-    console.log(path);
-    console.log(splitPath);
-
     // if account doesn't have a role binding, then not authenticated
     const roleBinding = await RoleBinding.getRoleBindingForAcct(req.user.id);
     if (!roleBinding) {
@@ -72,15 +69,9 @@ async function ensureAuthorized(req, findByIdFns) {
 
     // get the route ids
     const twoDRoutes = roleBinding.roles.map((role) => {
-        console.log(role);
         return role.routes;
     });
     const routes = [].concat(...twoDRoutes);
-
-    console.log(routes);
-    console.log("HMMM");
-
-    //console.log(routes);
 
     // each route is an object with an uri and a request type
     // for each uri, separate by '/', check each section to see if it's the same as requested uri
@@ -90,7 +81,7 @@ async function ensureAuthorized(req, findByIdFns) {
     for (const route of routes) {
         // if the request types are different, go to next
         // the incoming request type is in req.method according to node v10.12.0 api
-        if (route.requestTypes.indexOf(req.method) < 0)  {
+        if (route.requestType !== req.method)  {
             continue;
         }
 
@@ -116,8 +107,12 @@ async function ensureAuthorized(req, findByIdFns) {
                     validRoute = false;
                 }
                 else {
-                    const object = findByIdFns[findByParamCount](splitPath[i]);
-                    validRoute = (object.accountId !== req.user.id);
+                    const object = await findByIdFns[findByParamCount](splitPath[i]);
+                    // if the accountId isn't the same as users, and if the object isn't an account that's the user's
+
+                    if (object.accountId !== req.user.id && object._id.toString() !== req.user.id) {
+                        validRoute = false;
+                    }
 
                     findByParamCount += 1;
                 }

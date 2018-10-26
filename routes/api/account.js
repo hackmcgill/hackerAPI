@@ -46,6 +46,7 @@ module.exports = {
         accountRouter.route("/self").get(
             Middleware.Auth.ensureAuthenticated(),
             Middleware.Auth.ensureAuthorized(),
+            
             Controllers.Account.getUserByEmail
         );
 
@@ -123,6 +124,7 @@ module.exports = {
          */
         accountRouter.route("/:id").patch(
             Middleware.Auth.ensureAuthenticated(),
+            Middleware.Auth.ensureAuthorized([Services.Account.findById]),
             // validators
             Middleware.Validator.RouteParam.idValidator,
             Middleware.Validator.Account.updateAccountValidator,
@@ -159,6 +161,7 @@ module.exports = {
         accountRouter.route("/:id").get(
             Middleware.Auth.ensureAuthenticated(),
             Middleware.Auth.ensureAuthorized([Services.Account.findById]),
+
             Middleware.Validator.RouteParam.idValidator,
             Middleware.parseBody.middleware,
             

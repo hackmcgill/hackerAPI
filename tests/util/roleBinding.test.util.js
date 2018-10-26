@@ -4,8 +4,6 @@ const Util = {
     Account: require("./account.test.util"),
     Role: require("./role.test.util"),
 };
-const Constants = require("../../constants");
-const mongoose = require("mongoose");
 const TAG = "[ ROLEBINDING.TEST.UTIL.JS ]";
 const logger = require("../../services/logger.service");
 
@@ -38,7 +36,7 @@ const RoleBinding7 = {
     roles: [Util.Role.getAnyByIdHacker, Util.Role.patchSelfByIdHacker],
 };
 const RoleBinding8 = {
-    accoutnId: Util.Account.Account1._id,
+    accountId: Util.Account.Account1._id,
     roles: [Util.Role.hackerRole],
 };
 
@@ -53,7 +51,6 @@ const RoleBindings = [
     RoleBinding2,
     RoleBinding3,
     RoleBinding4,
-    RoleBinding5,
     RoleBinding5,
     RoleBinding6,
     RoleBinding7,
