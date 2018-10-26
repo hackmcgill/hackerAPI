@@ -35,12 +35,11 @@ describe("GET user account", function () {
 
     // success case
     it("should list the user's account on /api/account/self GET", function (done) {
-        const a2 = chai.request.agent(server.app);
-        util.auth.login(a2, Admin1, (error) => {
+        util.auth.login(agent, Admin1, (error) => {
             if(error) {
                 return done(error);
             }
-            return a2
+            return agent
             .get("/api/account/self")
             // does not have password because of to stripped json
             .end(function (err, res) {
@@ -67,12 +66,11 @@ describe("GET user account", function () {
 
     // success case - admin case
     it("should list another account specified by id using admin priviledge on /api/account/:id/ GET", function (done) {
-        const a2 = chai.request.agent(server.app);
-        util.auth.login(a2, Admin1, (error) => {
+        util.auth.login(agent, Admin1, (error) => {
             if(error) {
                 return done(error);
             }
-            return a2
+            return agent
             .get(`/api/account/` + storedAccount1._id)
             // does not have password because of to stripped json
             .end(function (err, res) {
@@ -233,7 +231,7 @@ describe("PATCH update account", function () {
             .type("application/json")
             .send(updatedInfo)
             .end(function (err, res) {
-                res.should.have.status(401);
+                res.should.have.status(200);
                 res.should.be.json;
                 res.body.should.have.property("message");
                 res.body.message.should.equal("Changed account information");
