@@ -53,6 +53,7 @@ module.exports = {
 // assuming that routes are strings, not objects
 // assuming that the route subtypes are :self and :all
 // assuming that the route params (resource ids) are in 
+// size of findByIdFns needs to match the number of route parameters
 
 // to check for :all, just replace :all with the paramID (AKA resource ID)
 async function ensureAuthorized(req, findByIdFns) {
@@ -87,64 +88,78 @@ async function ensureAuthorized(req, findByIdFns) {
 
         let splitRoute = route.uri.split("/");
 
-        // if lengths are different, go to next
-        if (splitRoute.length !== splitPath.length) {
-            continue;
-        }
-
         // keeps track of which function to use in findByIdFns
         let findByParamCount = 0;
-        let validRoute = true;
+        let currentlyValid = true;
         for (let i = 0; i < splitPath.length; i++) {
+            // if number of params doesn't match number of findById functions, go to next route
+            if (!verifyParamsFunctions(req.params, findByIdFns)) {
+                break;
+            }
+
             // checks whether the current chunk in the route path is a parameter
             const isParam = Object.values(req.params).indexOf(splitPath[i]) > -1;
-            // if the chunk is a parameter and there are no findByIdFns, continue
-            if (isParam && !findByIdFns) {
-                validRoute = false;
-            }
-            // checks if there is a valid findByIdFn, and that it returns the right accoutn id
-            else if (splitRoute[i] === ":self" && isParam) {
-                if (findByIdFns.length <= findByParamCount) {
-                    validRoute = false;
-                }
-                else {
-                    const object = await findByIdFns[findByParamCount](splitPath[i]);
 
-                    // if the object doesn't exist
-                    if (!object) {
-                        validRoute = false;
-                    }
-                    // if the accountId exists (in case of account) and isn't the same as users
-                    else if (object.accountId && object.accountId.toString() !== req.user.id) {
-                        validRoute = false;
-                    }
-                    // if the object isn't an account that's the user's
-                    else if (object._id.toString() !== req.user.id) {
-                        validRoute = false;
-                    }
-
-                    findByParamCount += 1;
-                }
+            // if current chunk isn't a parameter, then check whether auth route and request path are the same
+            if (!isParam) {
+                currentlyValid = splitRoute[i] === splitPath[i];
             }
-            // rest of the fail case:
-            // the route portions cannot be the same and
-            // the route portion from role binding cannot be a valid :all case
-            else if (
-                splitRoute[i] !== splitPath[i] &&
-                !(splitRoute[i] === ":all" && isParam)
-            ) {
-                validRoute = false;
+            else {
+                switch (splitRoute[i]) {
+                    case ":all":
+                        currentlyValid = true;
+                        break;
+                    case ":self":
+                        currentlyValid = await verifySelfCase(findByIdFns[findByParamCount], splitPath[i], req.user.id);
+                        findByParamCount += 1;
+                        break;
+                    default:
+                        currentlyValid = false;
+                        break;
+                }
             }
 
             // if current route isn't valid, move on to next
-            if (!validRoute) {
+            if (!currentlyValid) {
                 break;
             }
         }
 
-        if (validRoute) {
-            return validRoute;
+        if (currentlyValid) {
+            return currentlyValid;
         }
     }
     return false;
+}
+
+function verifyParamsFunctions (params, idFns) {
+    let numParams = Object.values(params).length;
+    let validRoute = true;
+
+    switch (numParams) {
+        case 0:
+            validRoute = !idFns;
+            break;
+        default:
+            validRoute = numParams === idFns.length;
+            break;
+    }
+
+    return validRoute;
+}
+
+async function verifySelfCase (idFunction, param, userId) {
+    const object = await idFunction(param);
+    if (!object) {
+        return false;
+    }
+    
+    // if the accountId exists (all cases except when object is an account)
+    if (object.accountId) {
+        return object.accountId.toString() === userId;
+    } 
+    // no accountId so object is an account
+    else {
+        return object._id.toString() === userId;
+    }
 }

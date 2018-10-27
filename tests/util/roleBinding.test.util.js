@@ -43,7 +43,12 @@ const RoleBindingHacker1 = {
 const RoleBindingHacker2 = {
     accountId: Util.Account.Account2._id,
     roles: [Util.Role.hackerRole],
-}
+};
+
+const RoleBindingSponsor1 = {
+    accountId: Util.Account.Account3._id,
+    roles: [Util.Role.sponsorT1Role],
+};
 
 const RoleBindingAdmin1 = {
     accountId: Util.Account.Admin1._id,
@@ -61,6 +66,7 @@ const RoleBindings = [
     RoleBinding7,
     RoleBindingHacker1,
     RoleBindingHacker2,
+    RoleBindingSponsor1,
     RoleBindingAdmin1,
 ];
 

@@ -17,8 +17,8 @@ const newSponsor1 = {
     "nominees": [Util.Hacker.HackerB._id]
 };
 const Sponsor1 = {
-    _id: mongoose.Types.ObjectId(),
-    "accountId": Util.Account.Account1._id,
+    "_id": mongoose.Types.ObjectId(),
+    "accountId": Util.Account.Account3._id,
     "tier": 3,
     "company": "Best company NA",
     "contractURL": "https://linkto.con",

@@ -33,6 +33,7 @@ const Admin1 = {
     "dietaryRestrictions": ["none"],
     "shirtSize": "S"
 };
+// hacker
 const Account1 = {
     "_id": mongoose.Types.ObjectId(),
     "firstName": "ABC",
@@ -42,6 +43,7 @@ const Account1 = {
     "dietaryRestrictions": ["none"],
     "shirtSize": "S"
 };
+// hacker
 const Account2 = {
     "_id": mongoose.Types.ObjectId(),
     "firstName": "abc",
@@ -51,6 +53,7 @@ const Account2 = {
     "dietaryRestrictions": ["vegetarian"],
     "shirtSize": "M"
 };
+// sponsor
 const Account3 = {
     "_id": mongoose.Types.ObjectId(),
     "firstName": "XYZ",
