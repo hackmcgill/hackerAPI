@@ -114,8 +114,12 @@ async function ensureAuthorized(req, findByIdFns) {
                     if (!object) {
                         validRoute = false;
                     }
-                    // if the accountId isn't the same as users, and if the object isn't an account that's the user's
-                    else if (object.accountId.toString() !== req.user.id && object._id.toString() !== req.user.id) {
+                    // if the accountId exists (in case of account) and isn't the same as users
+                    else if (object.accountId && object.accountId.toString() !== req.user.id) {
+                        validRoute = false;
+                    }
+                    // if the object isn't an account that's the user's
+                    else if (object._id.toString() !== req.user.id) {
                         validRoute = false;
                     }
 
