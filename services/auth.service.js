@@ -86,6 +86,7 @@ async function ensureAuthorized(req, findByIdFns) {
         }
 
         let splitRoute = route.uri.split("/");
+
         // if lengths are different, go to next
         if (splitRoute.length !== splitPath.length) {
             continue;
@@ -108,9 +109,13 @@ async function ensureAuthorized(req, findByIdFns) {
                 }
                 else {
                     const object = await findByIdFns[findByParamCount](splitPath[i]);
-                    // if the accountId isn't the same as users, and if the object isn't an account that's the user's
 
-                    if (object.accountId !== req.user.id && object._id.toString() !== req.user.id) {
+                    // if the object doesn't exist
+                    if (!object) {
+                        validRoute = false;
+                    }
+                    // if the accountId isn't the same as users, and if the object isn't an account that's the user's
+                    else if (object.accountId.toString() !== req.user.id && object._id.toString() !== req.user.id) {
                         validRoute = false;
                     }
 

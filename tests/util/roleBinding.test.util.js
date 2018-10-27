@@ -35,10 +35,15 @@ const RoleBinding7 = {
     accountId: Util.Account.allAccounts[12]._id,
     roles: [Util.Role.getAnyByIdHacker, Util.Role.patchSelfByIdHacker],
 };
-const RoleBinding8 = {
+
+const RoleBindingHacker1 = {
     accountId: Util.Account.Account1._id,
     roles: [Util.Role.hackerRole],
 };
+const RoleBindingHacker2 = {
+    accountId: Util.Account.Account2._id,
+    roles: [Util.Role.hackerRole],
+}
 
 const RoleBindingAdmin1 = {
     accountId: Util.Account.Admin1._id,
@@ -54,7 +59,8 @@ const RoleBindings = [
     RoleBinding5,
     RoleBinding6,
     RoleBinding7,
-    RoleBinding8,
+    RoleBindingHacker1,
+    RoleBindingHacker2,
     RoleBindingAdmin1,
 ];
 

@@ -10,6 +10,7 @@ const logger = require("../../services/logger.service");
 const TAG = "[ HACKER.TEST.UTIL.JS ]";
 
 const invalidHacker1 = {
+    "_id": mongoose.Types.ObjectId(),
     // invalid mongoID
     "accountId": "UtilAccountAccount1_id",
     // invalid missing school attribute
@@ -74,7 +75,7 @@ const HackerA = {
 };
 const HackerB = {
     "_id": mongoose.Types.ObjectId(),
-    "accountId": Util.Account.Account4._id,
+    "accountId": Util.Account.Account2._id,
     "status": "Accepted",
     "school": "University of Blah1",
     "gender": "Female",
