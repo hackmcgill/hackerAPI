@@ -12,6 +12,10 @@ const Middleware = {
     /* Insert all of ther middleware require statements here */
     parseBody: require("../../middlewares/parse-body.middleware"),
     Volunteer: require("../../middlewares/volunteer.middleware"),
+    Auth: require("../../middlewares/auth.middleware"),
+};
+const Services = {
+    Volunteer: require("../../services/volunteer.service")
 };
 
 module.exports = {
@@ -40,6 +44,9 @@ module.exports = {
          *      {"message": "Issue with volunteer creation", "data": {}}
          */
         volunteerRouter.route("/").post(
+            Middleware.Auth.ensureAuthenticated(),
+            Middleware.Auth.ensureAuthorized(),
+
             Middleware.Validator.Volunteer.newVolunteerValidator,
 
             Middleware.parseBody.middleware,

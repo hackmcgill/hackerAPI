@@ -94,6 +94,8 @@ async function ensureAuthorized(req, findByIdFns) {
         for (let i = 0; i < splitPath.length; i++) {
             // if number of params doesn't match number of findById functions, go to next route
             if (!verifyParamsFunctions(req.params, findByIdFns)) {
+                // important to set currentlyValid to false, or else it may keep its true value
+                currentlyValid = false;
                 break;
             }
 
@@ -128,7 +130,7 @@ async function ensureAuthorized(req, findByIdFns) {
         if (currentlyValid) {
             return currentlyValid;
         }
-    }
+    } 
     return false;
 }
 

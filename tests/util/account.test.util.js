@@ -63,6 +63,7 @@ const Account3 = {
     "dietaryRestrictions": ["vegan"],
     "shirtSize": "L"
 };
+// volunteer
 const Account4 = {
     "_id": mongoose.Types.ObjectId(),
     "firstName": "xyz",
@@ -72,6 +73,7 @@ const Account4 = {
     "dietaryRestrictions": ["vegetarian", "lactose intolerant"],
     "shirtSize": "XL"
 };
+// sponsor
 const Account5 = {
     "_id": mongoose.Types.ObjectId(),
     "firstName": "LMAO",
@@ -92,6 +94,11 @@ const customAccounts = [
 ];
 
 const generatedAccounts = generateAccounts(20);
+// 1-5 Are for admins
+// 6-10 Are for hackers
+// 11-15 Are for sponsors
+// 16-20 Are for volunteers
+
 
 const allAccounts = customAccounts.concat(generatedAccounts);
 
