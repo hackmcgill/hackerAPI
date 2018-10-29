@@ -25,5 +25,11 @@ module.exports = {
             message: "Successfully reset password",
             data: {}
         });
+    },
+    confirmAccount: function(req, res) {
+        return res.status(200).json({
+            message: "Successfully confirmed account",
+            data: {}
+        })
     }
 };

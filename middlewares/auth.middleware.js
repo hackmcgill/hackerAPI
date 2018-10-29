@@ -207,6 +207,7 @@ async function validateConfirmationToken(req, res, next) {
     const userObj = await Services.Account.findById(req.body.decodedToken.accountId);
     if (confirmationObj && userObj && (confirmationObj.accountId == userObj.id)) {
         userObj.confirmed = true;
+        userObj.accountType = req.body.decodedToken.accountType;
         await Services.Account.changeOneAccount(confirmationObj.accountId, userObj);
         req.body.user = userObj;
         next();

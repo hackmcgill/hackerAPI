@@ -22,7 +22,8 @@ const AuthRoutes = {
     login: "/login",
     logout: "/logout",
     forgotPassword: "/password/forgot",
-    resetPassword: "/password/reset"
+    resetPassword: "/password/reset",
+    confirmAccount: "/confirm/:token"
 }
 
 module.exports = {
@@ -145,6 +146,29 @@ module.exports = {
             //send the response
             Controllers.Auth.resetPassword
         );
+
+        /**
+         * @api {post} /auth/confirm/:token confirm account using the JWT in :token
+         * @apiName confirmAccount
+         * @apiGroup Authentication
+         * @apiVersion 0.0.8
+         *
+         * @apiParam {String} JWT for confirming the account
+         *
+         * @apiSuccess {string} message Success message
+         * @apiSuccess {object} data empty
+         * @apiSuccessExample {json} Success-Response:
+         *      {"message": "Successfully confirmed account", "data": {}}
+         *
+         */
+        authRouter.route(AuthRoutes.confirmAccount).post(
+            Middleware.Validator.Auth.accountConfirmationValidator,
+            Middleware.parseBody.middleware,
+            Middleware.Auth.parseAccountConfirmationToken,
+            Middleware.Auth.validateConfirmationToken,
+            Controllers.Auth.confirmAccount
+        )
+
         apiRouter.use("/auth", authRouter);
     }
 };

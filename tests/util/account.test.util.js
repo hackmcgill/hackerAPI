@@ -3,6 +3,7 @@ const Util = {
     Permission: require("./permission.test.util")
 };
 const Account = require("../../models/account.model");
+const Constants = require("../../constants");
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const logger = require("../../services/logger.service");
@@ -34,7 +35,9 @@ const Account1 = {
     "password": "probsShouldBeHashed1",
     "permissions": [Util.Permission.Permission1._id, Util.Permission.Permission6._id],
     "dietaryRestrictions": ["none"],
-    "shirtSize": "S"
+    "shirtSize": "S",
+    "confirmed" : true,
+    "accountType" : Constants.HACKER
 };
 const Account2 = {
     "_id": mongoose.Types.ObjectId(),

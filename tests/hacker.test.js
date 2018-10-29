@@ -8,14 +8,13 @@ const should = chai.should();
 const Hacker = require("../models/hacker.model");
 
 const util = {
-    hacker: require("./util/hacker.test.util"),
-    accountConfirmation: require("./util/accountConfirmation.test.util")
+    hacker: require("./util/hacker.test.util")
 };
 
 const storedHacker1 = util.hacker.HackerA;
 const newHacker1 = util.hacker.newHacker1;
+const newHacker2 = util.hacker.newHacker2;
 const invalidHacker1 = util.hacker.invalidHacker1;
-const confirmationToken = util.accountConfirmation.ConfirmationToken;
 
 describe("GET hacker", function () {
     it("should list a hacker's information from /api/hacker/:id GET", function(done) {
@@ -37,11 +36,10 @@ describe("GET hacker", function () {
 });
 
 describe("POST create hacker", function () {
-    it("should SUCCEED and create a new hacker", function(done) {
+    it("should SUCCEED and create a new hacker (with an account that has been confirmed)", function(done) {
         chai.request(server.app)
         .post(`/api/hacker/`)
         .type("application/json")
-        .set('Authorization', confirmationToken)
         .send(newHacker1)
         .end(function (err, res) {
             res.should.have.status(200);
@@ -58,16 +56,16 @@ describe("POST create hacker", function () {
         });
     });
 
-    it("should FAIL to create a new hacker without the proper token", function(done) {
+    it("should FAIL to create a new hacker if the account hasn't been confirmed", function(done) {
         chai.request(server.app)
             .post(`/api/hacker/`)
             .type("application/json")
-            .send(newHacker1)
+            .send(newHacker2)
             .end(function (err, res) {
                 res.should.be.json;
                 res.body.should.have.property("message");
-                res.body.message.should.equal("Validation failed");
-                res.should.have.status(422);
+                res.body.message.should.equal("Unauthorized");
+                res.should.have.status(401);
                 done();
             });
     });
@@ -76,7 +74,6 @@ describe("POST create hacker", function () {
         chai.request(server.app)
         .post(`/api/hacker/`)
         .type("application/json")
-        .set('Authorization', confirmationToken)
         .send(invalidHacker1)
         .end(function (err, res) {
             // replace with actual test comparisons after error handler is implemented
