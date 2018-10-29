@@ -125,7 +125,7 @@ async function sendConfirmAccountEmailMiddleware(req, res, next) {
  * @param {(err?)=>void} next 
  */
 function parseResetToken(req, res, next) {
-    jwt.verify(req.body.authorization, process.env.JWT_RESET_PWD_SECRET, function (err, decoded) {
+    jwt.verify(req.body['x-reset-token'], process.env.JWT_RESET_PWD_SECRET, function (err, decoded) {
         if (err) {
             next(err);
         } else {

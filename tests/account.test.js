@@ -8,12 +8,14 @@ const Account = require("../models/account.model");
 
 const util = {
     account: require("./util/account.test.util"),
-    auth: require("./util/auth.test.util")
+    auth: require("./util/auth.test.util"),
+    reset: require("./util/resetPassword.test.util")
 };
 
 const storedAccount1 = util.account.Account1;
 const newAccount1 = util.account.newAccount1;
 const agent = chai.request.agent(server.app);
+const resetToken = util.reset.ResetToken;
 
 describe("GET user account", function () {
     // would this ever do anything?
@@ -133,3 +135,22 @@ describe("PATCH update account", function () {
         });
     });
 });
+
+describe("POST reset password", function() {
+    const password = {
+        "password": "NewPassword"
+    };
+    it("should SUCCEED and change the password", function(done) {
+        chai.request(server.app)
+            .post('/api/auth/password/reset')
+            .type("application/json")
+            .set('X-Reset-Token', resetToken)
+            .send(password)
+            .end(function (err, res) {
+                res.should.have.status(200);
+                res.body.should.have.property("message");
+                res.body.message.should.equal("Successfully reset password");
+                done();
+            })
+    })
+})
