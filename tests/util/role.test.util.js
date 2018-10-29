@@ -217,7 +217,22 @@ const sponsorT5Role = {
 
 const singularRoles = createAllSingularRoles();
 
-const allRoles = [adminRole, hackerRole, volunteerRole, sponsorT1Role, sponsorT2Role, sponsorT3Role, sponsorT4Role, sponsorT5Role].concat(singularRoles);
+let allRolesObject = {
+    adminRole: adminRole,
+    hackerRole: hackerRole,
+    volunteerRole: volunteerRole,
+    sponsorT1Role: sponsorT1Role,
+    sponsorT2Role: sponsorT2Role,
+    sponsorT3Role: sponsorT3Role,
+    sponsorT4Role: sponsorT4Role,
+    sponsorT5Role: sponsorT5Role,
+};
+
+for (let role in singularRoles) {
+    allRolesObject[role] = singularRoles[role];
+}
+
+let allRolesArray = Object.values(allRolesObject);
 
 function getAllRoutes() {
     let routes = [];
@@ -233,7 +248,7 @@ function getAllRoutes() {
 
 // creates the roles that are just one uri + request type
 function createAllSingularRoles() {
-    let roles = {};
+    let roles = [];
     for (let typeRoute of allRoutes) {
         let routes = typeRoute[1];
         let routeName = typeRoute[0];
@@ -298,7 +313,8 @@ module.exports = {
     sponsorT5Role: sponsorT5Role,
     singularRoles: singularRoles,
 
-    allRoles: allRoles,
+    allRolesObject: allRolesObject,
+    allRolesArray: allRolesArray,
 
     createAllSingularRoles: createAllSingularRoles,
     storeAll: storeAll,

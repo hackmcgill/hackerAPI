@@ -9,55 +9,56 @@ const logger = require("../../services/logger.service");
 
 const RoleBinding1 = {
     accountId: Util.Account.allAccounts[6]._id,
-    roles: [Util.Role.adminRole],
+    roles: [Util.Role.adminRole._id],
 };
 const RoleBinding2 = {
     accountId: Util.Account.allAccounts[7]._id,
-    roles: [Util.Role.hackerRole],
+    roles: [Util.Role.hackerRole._id],
 };
 const RoleBinding3 = {
     accountId: Util.Account.allAccounts[8]._id,
-    roles: [Util.Role.volunteerRole],
+    roles: [Util.Role.volunteerRole._id],
 };
 const RoleBinding4 = {
     accountId: Util.Account.allAccounts[9]._id,
-    roles: [Util.Role.sponsorT1Role],
+    roles: [Util.Role.sponsorT1Role._id],
 };
 const RoleBinding5 = {
     accountId: Util.Account.allAccounts[10]._id,
-    roles: [Util.Role.sponsorT2Role],
+    roles: [Util.Role.sponsorT2Role._id],
 };
 const RoleBinding6 = {
     accountId: Util.Account.allAccounts[11]._id,
-    roles: [Util.Role.singularRoles.getSelfAccount],
+    roles: [Util.Role.singularRoles.getSelfAccount._id],
 };
+
 const RoleBinding7 = {
     accountId: Util.Account.allAccounts[12]._id,
-    roles: [Util.Role.getAnyByIdHacker, Util.Role.patchSelfByIdHacker],
+    roles: [Util.Role.allRolesObject.getAnyByIdHacker._id, Util.Role.allRolesObject.patchSelfByIdHacker._id],
 };
 
 const RoleBindingHacker1 = {
     accountId: Util.Account.Account1._id,
-    roles: [Util.Role.hackerRole],
+    roles: [Util.Role.hackerRole._id],
 };
 const RoleBindingHacker2 = {
     accountId: Util.Account.Account2._id,
-    roles: [Util.Role.hackerRole],
+    roles: [Util.Role.hackerRole._id],
 };
 
 const RoleBindingSponsor1 = {
     accountId: Util.Account.Account3._id,
-    roles: [Util.Role.sponsorT1Role],
+    roles: [Util.Role.sponsorT1Role._id],
 };
 
 const RoleBindingVolunteer1 = {
     accountId: Util.Account.Account4._id,
-    roles: [Util.Role.volunteerRole],
-}
+    roles: [Util.Role.volunteerRole._id],
+};
 
 const RoleBindingAdmin1 = {
     accountId: Util.Account.Admin1._id,
-    roles: [Util.Role.adminRole],
+    roles: [Util.Role.adminRole._id],
 };
 
 

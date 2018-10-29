@@ -74,6 +74,8 @@ async function ensureAuthorized(req, findByIdFns) {
     });
     const routes = [].concat(...twoDRoutes);
 
+    console.log(routes);
+
     // each route is an object with an uri and a request type
     // for each uri, separate by '/', check each section to see if it's the same as requested uri
     // if the uri at a section has ':all', mark it as valid

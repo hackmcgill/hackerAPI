@@ -37,7 +37,7 @@ beforeEach(function(done){
                             Util.AccountConfirmation.storeAll(Util.AccountConfirmation.AccountConfirmationTokens, () => {
                                 Util.Bus.storeAll(Util.Bus.Busses, () => {
                                     Util.Volunteer.storeAll(Util.Volunteer.Volunteers, () => {
-                                        Util.Role.storeAll(Util.Role.allRoles, () => {
+                                        Util.Role.storeAll(Util.Role.allRolesArray, () => {
                                             Util.RoleBinding.storeAll(Util.RoleBinding.RoleBindings, () => {
                                                 done();
                                             });

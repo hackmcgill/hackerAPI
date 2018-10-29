@@ -2,7 +2,7 @@
 const mongoose = require("mongoose");
 //describes the data type
 const roleBinding = new mongoose.Schema({
-    accountId:{
+    accountId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Account",
         required: true,
