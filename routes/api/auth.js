@@ -159,7 +159,12 @@ module.exports = {
          * @apiSuccess {object} data empty
          * @apiSuccessExample {json} Success-Response:
          *      {"message": "Successfully confirmed account", "data": {}}
-         *
+         * 
+         * @apiError {string} message Error message
+         * @apiError {object} data empty
+         * @apiErrorExample {object} Error-Response: 
+         *      {"message": "Invalid token for confirming account, "data": {}}
+         * 
          */
         authRouter.route(AuthRoutes.confirmAccount).post(
             Middleware.Validator.Auth.accountConfirmationValidator,

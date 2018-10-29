@@ -16,6 +16,7 @@ const storedAccount1 = util.account.Account1;
 const newAccount1 = util.account.newAccount1;
 const agent = chai.request.agent(server.app);
 const confirmationToken = util.accountConfirmation.ConfirmationToken;
+const fakeToken = util.accountConfirmation.FakeToken;
 
 describe("GET user account", function () {
     // would this ever do anything?
@@ -112,8 +113,21 @@ describe("POST confirm account", function () {
         .type("application/json")
         .end(function (err, res){
             res.should.have.status(200);
+            res.body.should.have.property("message");
+            res.body.message.should.equal("Successfully confirmed account");
             done();
         })
+    })
+    it("should FAIL confirming the account", function(done) {
+        chai.request(server.app)
+            .post('/api/auth/confirm/' + fakeToken)
+            .type("application/json")
+            .end(function (err, res) {
+                res.should.have.status(422);
+                res.body.should.have.property("message");
+                res.body.message.should.equal("Invalid token for confirming account");
+                done();
+            })
     })
 })
 
