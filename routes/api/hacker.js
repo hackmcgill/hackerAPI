@@ -161,9 +161,9 @@ module.exports = {
             Controllers.Hacker.findById
         );
 
-        hackerRouter.route("/:id/resume")
+        hackerRouter.route("/resume/:id")
             /**
-             * @api {post} /hacker/:id/resume upload or update resume for a hacker.
+             * @api {post} /hacker/resume/:id upload or update resume for a hacker.
              * @apiName postHackerResume
              * @apiGroup Hacker
              * @apiVersion 0.0.8
