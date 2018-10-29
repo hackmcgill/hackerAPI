@@ -66,7 +66,7 @@ function parseAccount(req, res, next) {
  * @param {(err?)=>void} next
  */
 async function updatePassword(req, res, next) {
-    req.body.accountDetails.permissions = await Services.Account.updatePassword(req.body.password);
+    req.body.account = await Services.Account.updatePassword(req.body.decodedToken.accountId, req.body.password);
     next();
 }
 

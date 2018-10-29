@@ -13,7 +13,8 @@ const Util = {
     Staff: require("./util/staff.test.util"),
     Team: require("./util/team.test.util"),
     Volunteer: require("./util/volunteer.test.util"),
-    AccountConfirmation: require("./util/accountConfirmation.test.util")
+    AccountConfirmation: require("./util/accountConfirmation.test.util"),
+    ResetPassword: require("./util/resetPassword.test.util.js")
 };
 
 
@@ -37,8 +38,10 @@ beforeEach(function(done){
                             Util.Team.storeAll(Util.Team.Teams, () => {
                                 Util.Staff.storeAll(Util.Staff.Staffs, () => {
                                     Util.AccountConfirmation.storeAll(Util.AccountConfirmation.AccountConfirmationTokens, () => {
-                                        Util.Bus.storeAll(Util.Bus.Busses, () => {
-                                            Util.Volunteer.storeAll(Util.Volunteer.Volunteers, done)
+                                        Util.ResetPassword.storeAll(Util.ResetPassword.ResetPasswords, () => {
+                                            Util.Bus.storeAll(Util.Bus.Busses, () => {
+                                                Util.Volunteer.storeAll(Util.Volunteer.Volunteers, done)
+                                            });
                                         });
                                     });
                                 });
@@ -57,17 +60,19 @@ afterEach(function(done){
 });
 
 function dropAll(done){
-    Util.AccountConfirmation.dropAll(() => {
-        Util.Volunteer.dropAll(() => {
-            Util.Staff.dropAll(() => {
-                Util.Team.dropAll(() => {
-                    Util.Sponsor.dropAll(() => {
-                        Util.Bus.dropAll(() => {
-                            Util.Hacker.dropAll(() => {
-                                Util.Skill.dropAll(() => {
-                                    Util.Account.dropAll(() => {
-                                        Util.DefaultPermission.dropAll(() => {
-                                            Util.Permission.dropAll(done)
+    Util.ResetPassword.dropAll(() => {
+        Util.AccountConfirmation.dropAll(() => {
+            Util.Volunteer.dropAll(() => {
+                Util.Staff.dropAll(() => {
+                    Util.Team.dropAll(() => {
+                        Util.Sponsor.dropAll(() => {
+                            Util.Bus.dropAll(() => {
+                                Util.Hacker.dropAll(() => {
+                                    Util.Skill.dropAll(() => {
+                                        Util.Account.dropAll(() => {
+                                            Util.DefaultPermission.dropAll(() => {
+                                                Util.Permission.dropAll(done)
+                                            });
                                         });
                                     });
                                 });
