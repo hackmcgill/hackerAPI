@@ -31,7 +31,6 @@ module.exports = {
          * @apiParam (body) {String} gender Gender of the hacker
          * @apiParam (body) {Boolean} needsBus Whether the hacker requires a bus for transportation
          * @apiParam (body) {Json} application The hacker's application. Resume and jobInterest fields are required.
-         * @apiParam (header) {String} Authorization Token for validating account to create
          * @apiParamExample {Json} application: 
          *      {
          *          "portfolioURL": {
@@ -66,13 +65,10 @@ module.exports = {
             Middleware.Validator.Hacker.newHackerValidator,
 
             Middleware.parseBody.middleware,
-
+            Middleware.Hacker.validateConfirmedStatus,
             Middleware.Hacker.parseHacker,
+            
             Middleware.Hacker.addDefaultStatus,
-
-            Middleware.Auth.parseAccountConfirmationToken,
-            Middleware.Auth.validateConfirmationToken,
-
             Controllers.Hacker.createHacker
         );
 
@@ -157,7 +153,7 @@ module.exports = {
         hackerRouter.route("/:id").get(
             Middleware.Validator.RouteParam.idValidator,
             Middleware.parseBody.middleware,
-
+            
             Controllers.Hacker.findById
         );
 

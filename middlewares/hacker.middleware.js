@@ -75,6 +75,24 @@ function addDefaultStatus(req, res, next) {
 }
 
 /**
+ * Verifies that account is confirmed and of proper type from the account ID passed in req.body.accountId
+ * @param {{body: {accountId: ObjectId}}} req 
+ * @param {*} res 
+ * @param {(err?) => void} next 
+ */
+async function validateConfirmedStatus(req, res, next) {
+    const account = await Services.Account.findById(req.body.accountId);
+    if(account && account.confirmed && account.accountType === Constants.HACKER){
+        next();
+    } else {
+        next({
+            status: 401,
+            message: "Unauthorized",
+            error: {}
+        });
+    }
+}
+/**
  * Verifies that the current signed in user is linked to the hacker passed in via req.body.id
  * @param {{body: {id: ObjectId}}} req 
  * @param {*} res 
@@ -206,4 +224,5 @@ module.exports = {
     downloadResume: Middleware.Util.asyncMiddleware(downloadResume),
     sendStatusUpdateEmail: sendStatusUpdateEmail,
     updateHacker: Middleware.Util.asyncMiddleware(updateHacker),
+    validateConfirmedStatus: Middleware.Util.asyncMiddleware(validateConfirmedStatus)
 };

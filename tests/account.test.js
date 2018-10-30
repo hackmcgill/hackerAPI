@@ -9,12 +9,15 @@ const Account = require("../models/account.model");
 const util = {
     account: require("./util/account.test.util"),
     auth: require("./util/auth.test.util"),
+    accountConfirmation: require("./util/accountConfirmation.test.util"),
     reset: require("./util/resetPassword.test.util")
 };
 
 const storedAccount1 = util.account.Account1;
 const newAccount1 = util.account.newAccount1;
 const agent = chai.request.agent(server.app);
+const confirmationToken = util.accountConfirmation.ConfirmationToken;
+const fakeToken = util.accountConfirmation.FakeToken;
 const resetToken = util.reset.ResetToken;
 
 describe("GET user account", function () {
@@ -104,6 +107,31 @@ describe("POST create account", function () {
             });
     });
 });
+
+describe("POST confirm account", function () {
+    it("should SUCCEED and confirm the account", function(done) {
+        chai.request(server.app)
+        .post('/api/auth/confirm/' + confirmationToken)
+        .type("application/json")
+        .end(function (err, res){
+            res.should.have.status(200);
+            res.body.should.have.property("message");
+            res.body.message.should.equal("Successfully confirmed account");
+            done();
+        })
+    })
+    it("should FAIL confirming the account", function(done) {
+        chai.request(server.app)
+            .post('/api/auth/confirm/' + fakeToken)
+            .type("application/json")
+            .end(function (err, res) {
+                res.should.have.status(422);
+                res.body.should.have.property("message");
+                res.body.message.should.equal("Invalid token for confirming account");
+                done();
+            })
+    })
+})
 
 describe("PATCH update account", function () {
     const updatedInfo = {

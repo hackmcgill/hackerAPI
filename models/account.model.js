@@ -39,6 +39,11 @@ const AccountSchema = new mongoose.Schema({
     confirmed: {
         type: Boolean,
         default: false
+    },
+    accountType: {
+        type: String,
+        enum: Constants.USER_TYPES,
+        default: Constants.HACKER
     }
 });
 

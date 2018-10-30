@@ -207,6 +207,7 @@ async function validateConfirmationToken(req, res, next) {
     const userObj = await Services.Account.findById(req.body.decodedToken.accountId);
     if (confirmationObj && userObj && (confirmationObj.accountId == userObj.id)) {
         userObj.confirmed = true;
+        userObj.accountType = confirmationObj.accountType;
         await Services.Account.changeOneAccount(confirmationObj.accountId, userObj);
         req.body.user = userObj;
         next();
@@ -214,7 +215,7 @@ async function validateConfirmationToken(req, res, next) {
         //Either the token was already used, it's invalid, or user does not exist.
         next({
             status: 422,
-            message: "invalid token",
+            message: "Invalid token for confirming account",
             error: {}
         });
     }

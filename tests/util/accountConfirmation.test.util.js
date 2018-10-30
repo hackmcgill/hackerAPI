@@ -17,12 +17,20 @@ const logger = require("../../services/logger.service");
 
 const HackerConfirmation = {
     "_id": mongoose.Types.ObjectId(),
-    "accountId": Util.Account.Account1._id,
+    "accountId": Util.Account.Account2._id,
     "accountType": Constants.HACKER,
-    "email": Util.Account.Account1.email
+    "email": Util.Account.Account2.email
 }
 
-const ConfirmationToken = Services.AccountConfirmation.generateToken(HackerConfirmation._id, Util.Account.Account1._id);
+// Using a real ID which is stored but corresponds to another account
+const FakeHackerToken = {
+    "_id": HackerConfirmation._id,
+    "accountId": Util.Account.Account3._id,
+    "accountType": Constants.HACKER
+}
+
+const ConfirmationToken = Services.AccountConfirmation.generateToken(HackerConfirmation._id, HackerConfirmation.accountId);
+const FakeToken = Services.AccountConfirmation.generateToken(FakeHackerToken._id, FakeHackerToken.accountId);
 
 const AccountConfirmationTokens = [
     HackerConfirmation
@@ -68,6 +76,7 @@ function dropAll(callback) {
 module.exports = {
     HackerConfirmation: HackerConfirmation,
     ConfirmationToken: ConfirmationToken,
+    FakeToken: FakeToken,
     AccountConfirmationTokens: AccountConfirmationTokens,
     storeAll: storeAll,
     dropAll: dropAll

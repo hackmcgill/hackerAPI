@@ -11,6 +11,6 @@ module.exports = {
         VALIDATOR.jwtValidator("header","X-Reset-Token", process.env.JWT_RESET_PWD_SECRET, false)
     ],
     accountConfirmationValidator: [
-        VALIDATOR.jwtValidator("header","Authorization", process.env.JWT_CONFIRM_ACC_SECRET, true)
+        VALIDATOR.jwtValidator("param","token", process.env.JWT_CONFIRM_ACC_SECRET, false)
     ]
 };

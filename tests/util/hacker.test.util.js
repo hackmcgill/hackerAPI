@@ -47,6 +47,30 @@ const newHacker1 = {
     }
 };
 
+const newHacker2 = {
+    "accountId": Util.Account.Account2._id,
+    "school": "University of YIKES",
+    "gender": "Female",
+    "needsBus": true,
+    "application": {
+        "portfolioURL": {
+            //gcloud bucket link
+            "resume": "www.gcloud.com/myResume100",
+            "github": "www.github.com/Person1",
+            "dropler": undefined,
+            "personal": "www.person1.com",
+            "linkedIn": "www.linkedin.com/in/Person1",
+            "other": undefined
+        },
+        "jobInterest": "Full-time",
+        "skills": [
+            Util.Skill.Skill1._id,
+            Util.Skill.Skill5._id,
+            Util.Skill.Skill8._id,
+        ],    
+    }
+};
+
 const HackerA = {
     "_id": mongoose.Types.ObjectId(),
     "accountId": Util.Account.Account1._id,
@@ -105,6 +129,7 @@ const Hackers = [
 module.exports = {
     invalidHacker1: invalidHacker1,
     newHacker1: newHacker1,
+    newHacker2: newHacker2,
     HackerA: HackerA,
     HackerB: HackerB,
     Hackers: Hackers,
