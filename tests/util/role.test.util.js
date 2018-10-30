@@ -119,14 +119,14 @@ const volunteerRoutes = {
     },
 };
 
-const allRoutes = [
-    ["Auth", authRoutes],
-    ["Account", accountRoutes],
-    ["Hacker", hackerRoutes],
-    ["Sponsor", sponsorRoutes],
-    ["Team", teamRoutes],
-    ["Volunteer", volunteerRoutes]
-];
+const allRoutes = {
+    "Auth": authRoutes,
+    "Account": accountRoutes,
+    "Hacker": hackerRoutes,
+    "Sponsor": sponsorRoutes,
+    "Team": teamRoutes,
+    "Volunteer": volunteerRoutes,
+};
 
 const adminRole = {
     "_id": mongoose.Types.ObjectId(),
@@ -239,14 +239,24 @@ for (let role in singularRoles) {
     allRolesObject[role] = singularRoles[role];
 }
 
-let allRolesArray = Object.values(allRolesObject);
+const allRolesArray = Object.values(allRolesObject);
 
 function getAllRoutes() {
     let routes = [];
-    for (let typeRoute of allRoutes) {
-        for (let route of Object.entries(typeRoute[1])) {
+    for (let routeGroupKey in allRoutes) {
+        if (!allRoutes.hasOwnProperty(routeGroupKey)) {
+            continue;
+        }
+
+        const routeGroup = allRoutes[routeGroupKey];
+        for (let routeKey in routeGroup) {
+            if (!routeGroup.hasOwnProperty(routeKey)) {
+                continue;
+            }
+
+            const route = routeGroup[routeKey];
             // the for loop over entires includes the entry name, which we do not need
-            routes.push(route[1]);
+            routes.push(route);
         }
     }
 
@@ -256,16 +266,23 @@ function getAllRoutes() {
 // creates the roles that are just one uri + request type
 function createAllSingularRoles() {
     let roles = [];
-    for (let typeRoute of allRoutes) {
-        let routes = typeRoute[1];
-        let routeName = typeRoute[0];
-        for (let route of Object.entries(routes)) {
+    for (let routeGroupKey in allRoutes) {
+        if (!allRoutes.hasOwnProperty(routeGroupKey)) {
+            continue;
+        }
+
+        const routeGroup = allRoutes[routeGroupKey];
+        for (let routeKey in routeGroup) {
+            if (!routeGroup.hasOwnProperty(routeKey)) {
+                continue;
+            }
+
             let role = {
                 _id: mongoose.Types.ObjectId(),
-                name: route[0] + routeName,
-                routes: [route[1]],
+                name: routeKey + routeGroupKey,
+                routes: routeGroup[routeKey],
             };
-            let roleName = route[0] + routeName;
+            let roleName = role.name;
             roles[roleName] = role;
         }
     }
