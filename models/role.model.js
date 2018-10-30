@@ -2,19 +2,19 @@
 const mongoose = require("mongoose");
 const Constants = require("../constants");
 /**
- * The permission name is going to be the full route. 
- * For example, if a given route "/a/b/c" has a permission, then
- * the name of the permission will be "/a/b/c".
+ * The name is descriptive of the role
+ * Each role may have different routes, where route parameters in the uri are replaced with :self or :all
  */
 const RoleSchema = new mongoose.Schema({
-    //The name should be something like "Hacker", or "Sponsor"
+    // The name should be something like "hacker", or "sponsor".
+    // For roles with singular routes, the name of the role will be the name of the route plus the api route
+    // For example, "getSelfAccount"
     name: {
         type: String,
         unique: true,
         required: true
     },
-    //The array of routes that this Role should have access to. It might be some 
-    //regular expression, such as: /a/*/c/*, which represents anything under /a/.../c/...
+    //The array of routes that this Role should have access to.
     routes: [{
         uri: {
             type: String

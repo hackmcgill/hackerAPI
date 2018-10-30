@@ -12,7 +12,7 @@ module.exports = {
         email = email.toLowerCase();
         Account.getAccountIfValid(email, password).then(
             (account) => {
-                if(!!account) {
+                if (!!account) {
                     done(null, account);
                 } else {
                     done("Invalid email or password.", false);
@@ -46,7 +46,7 @@ module.exports = {
 
 /**
  * 
- * @param {{isUnauthenticated:()=>boolean, path: string, user: {id: string}}} req request object passed in by Express.js
+ * @param {{ensureAuthorized:()=>boolean, path: string, user: {id: string}}} req request object passed in by Express.js
  * @param {string} findByIdFns Functions that will return accounts given ids from route parameters.
  */
 
@@ -74,8 +74,6 @@ async function ensureAuthorized(req, findByIdFns) {
     });
     const routes = [].concat(...twoDRoutes);
 
-    console.log(routes);
-
     // each route is an object with an uri and a request type
     // for each uri, separate by '/', check each section to see if it's the same as requested uri
     // if the uri at a section has ':all', mark it as valid
@@ -84,7 +82,7 @@ async function ensureAuthorized(req, findByIdFns) {
     for (const route of routes) {
         // if the request types are different, go to next
         // the incoming request type is in req.method according to node v10.12.0 api
-        if (route.requestType !== req.method)  {
+        if (route.requestType !== req.method) {
             continue;
         }
 
@@ -107,8 +105,7 @@ async function ensureAuthorized(req, findByIdFns) {
             // if current chunk isn't a parameter, then check whether auth route and request path are the same
             if (!isParam) {
                 currentlyValid = splitRoute[i] === splitPath[i];
-            }
-            else {
+            } else {
                 switch (splitRoute[i]) {
                     case ":all":
                         currentlyValid = true;
@@ -132,11 +129,11 @@ async function ensureAuthorized(req, findByIdFns) {
         if (currentlyValid) {
             return currentlyValid;
         }
-    } 
+    }
     return false;
 }
 
-function verifyParamsFunctions (params, idFns) {
+function verifyParamsFunctions(params, idFns) {
     let numParams = Object.values(params).length;
     let validRoute = true;
 
@@ -152,16 +149,16 @@ function verifyParamsFunctions (params, idFns) {
     return validRoute;
 }
 
-async function verifySelfCase (idFunction, param, userId) {
+async function verifySelfCase(idFunction, param, userId) {
     const object = await idFunction(param);
     if (!object) {
         return false;
     }
-    
+
     // if the accountId exists (all cases except when object is an account)
     if (object.accountId) {
         return object.accountId.toString() === userId;
-    } 
+    }
     // no accountId so object is an account
     else {
         return object._id.toString() === userId;

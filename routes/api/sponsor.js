@@ -51,7 +51,7 @@ module.exports = {
 
             Middleware.Validator.RouteParam.idValidator,
             Middleware.parseBody.middleware,
-            
+
             Controllers.Sponsor.findById
         );
 
@@ -81,6 +81,9 @@ module.exports = {
          *      {"message": "Issue with sponsor creation", "data": {}}
          */
         sponsorRouter.route("/").post(
+            Middleware.Auth.ensureAuthenticated(),
+            Middleware.Auth.ensureAuthorized(),
+
             // validation
             Middleware.Validator.Sponsor.newSponsorValidator,
 

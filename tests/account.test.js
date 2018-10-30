@@ -36,128 +36,128 @@ describe("GET user account", function () {
     // success case
     it("should list the user's account on /api/account/self GET", function (done) {
         util.auth.login(agent, Admin1, (error) => {
-            if(error) {
+            if (error) {
                 return done(error);
             }
             return agent
-            .get("/api/account/self")
-            // does not have password because of to stripped json
-            .end(function (err, res) {
-                if(err) {
-                    return done(err);
-                }
-                res.should.have.status(200);
-                res.should.be.json;
-                res.body.should.have.property("message");
-                res.body.message.should.equal("Account found by user email");
-                res.body.should.have.property("data");                
-                res.body.data.should.be.a("object");
-                res.body.data.should.have.property("firstName");
-                res.body.data.should.have.property("lastName");
-                res.body.data.should.have.property("email");
-                // ???
-                // res.body.data.should.equal(req.user.email);
-                res.body.data.should.have.property("dietaryRestrictions");
-                res.body.data.should.have.property("shirtSize");
-                done();
-            });
+                .get("/api/account/self")
+                // does not have password because of to stripped json
+                .end(function (err, res) {
+                    if (err) {
+                        return done(err);
+                    }
+                    res.should.have.status(200);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal("Account found by user email");
+                    res.body.should.have.property("data");
+                    res.body.data.should.be.a("object");
+                    res.body.data.should.have.property("firstName");
+                    res.body.data.should.have.property("lastName");
+                    res.body.data.should.have.property("email");
+                    // ???
+                    // res.body.data.should.equal(req.user.email);
+                    res.body.data.should.have.property("dietaryRestrictions");
+                    res.body.data.should.have.property("shirtSize");
+                    done();
+                });
         });
     });
 
     // success case - admin case
     it("should list another account specified by id using admin priviledge on /api/account/:id/ GET", function (done) {
         util.auth.login(agent, Admin1, (error) => {
-            if(error) {
+            if (error) {
                 return done(error);
             }
             return agent
-            .get(`/api/account/` + storedAccount1._id)
-            // does not have password because of to stripped json
-            .end(function (err, res) {
-                if(err) {
-                    return done(err);
-                }
-                res.should.have.status(200);
-                res.should.be.json;
-                res.body.should.have.property("message");
-                res.body.message.should.equal("Account found by user id");
-                res.body.should.have.property("data");
+                .get(`/api/account/` + storedAccount1._id)
+                // does not have password because of to stripped json
+                .end(function (err, res) {
+                    if (err) {
+                        return done(err);
+                    }
+                    res.should.have.status(200);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal("Account found by user id");
+                    res.body.should.have.property("data");
 
-                // use acc.toStrippedJSON to deal with hidden passwords and convert _id to id
-                const acc = new Account(storedAccount1);
-                chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify(acc.toStrippedJSON()));
-                done();
-            });
+                    // use acc.toStrippedJSON to deal with hidden passwords and convert _id to id
+                    const acc = new Account(storedAccount1);
+                    chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify(acc.toStrippedJSON()));
+                    done();
+                });
         });
     });
     // success case - user case
     it("should list an account specified by id on /api/account/:id/ GET", function (done) {
         util.auth.login(agent, storedAccount1, (error) => {
-            if(error) {
+            if (error) {
                 return done(error);
             }
             return agent
-            .get(`/api/account/` + storedAccount1._id)
-            // does not have password because of to stripped json
-            .end(function (err, res) {
-                if(err) {
-                    return done(err);
-                }
-                res.should.have.status(200);
-                res.should.be.json;
-                res.body.should.have.property("message");
-                res.body.message.should.equal("Account found by user id");
-                res.body.should.have.property("data");
+                .get(`/api/account/` + storedAccount1._id)
+                // does not have password because of to stripped json
+                .end(function (err, res) {
+                    if (err) {
+                        return done(err);
+                    }
+                    res.should.have.status(200);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal("Account found by user id");
+                    res.body.should.have.property("data");
 
-                // use acc.toStrippedJSON to deal with hidden passwords and convert _id to id
-                const acc = new Account(storedAccount1);
-                chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify(acc.toStrippedJSON()));
-                done();
-            });
+                    // use acc.toStrippedJSON to deal with hidden passwords and convert _id to id
+                    const acc = new Account(storedAccount1);
+                    chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify(acc.toStrippedJSON()));
+                    done();
+                });
         });
     });
 
     // // fail case on authorization
     it("should fail to list an account specified by id on /api/account/:id/ GET due to lack of authorization", function (done) {
         util.auth.login(agent, storedAccount1, (error) => {
-            if(error) {
+            if (error) {
                 return done(error);
             }
             return agent
-            .get(`/api/account/` + Admin1._id)
-            // does not have password because of to stripped json
-            .end(function (err, res) {
-                if(err) {
-                    return done(err);
-                }
-                res.should.have.status(401);
-                res.should.be.json;
-                res.body.should.have.property("message");
-                res.body.message.should.equal("Not Authorized for this route");
-                res.body.should.have.property("data");
+                .get(`/api/account/` + Admin1._id)
+                // does not have password because of to stripped json
+                .end(function (err, res) {
+                    if (err) {
+                        return done(err);
+                    }
+                    res.should.have.status(401);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal("Not Authorized for this route");
+                    res.body.should.have.property("data");
 
-                done();
-            });
+                    done();
+                });
         });
-    }); 
+    });
 });
 
 describe("POST create account", function () {
-    it("should SUCCEED and create a new account", function(done) {
+    it("should SUCCEED and create a new account", function (done) {
         chai.request(server.app)
-        .post(`/api/account/`)
-        .type("application/json")
-        .send(newAccount1)
-        .end(function (err, res) {
-            res.should.have.status(200);
-            res.should.be.json;
-            res.body.should.have.property("message");
-            res.body.message.should.equal("Account creation successful");
-            done();
-        });
+            .post(`/api/account/`)
+            .type("application/json")
+            .send(newAccount1)
+            .end(function (err, res) {
+                res.should.have.status(200);
+                res.should.be.json;
+                res.body.should.have.property("message");
+                res.body.message.should.equal("Account creation successful");
+                done();
+            });
     });
 
-    it("should FAIL to create an account because the email is already in use", function(done) {
+    it("should FAIL to create an account because the email is already in use", function (done) {
         chai.request(server.app)
             .post(`/api/account/`)
             .type("application/json")
@@ -180,7 +180,7 @@ describe("PATCH update account", function () {
         "firstName": "fail",
         "lastName": "fail"
     };
-    
+
     // fail on authentication
     it("should fail to update an account due to authentication", function (done) {
         chai.request(server.app)
@@ -192,79 +192,79 @@ describe("PATCH update account", function () {
                 res.body.message.should.equal("Not Authenticated");
                 done();
             });
-    }); 
+    });
 
     // succeed on :all case
-    it("should SUCCEED and use admin to update another account", function(done) {
+    it("should SUCCEED and use admin to update another account", function (done) {
         util.auth.login(agent, Admin1, (error) => {
-            if(error) {
+            if (error) {
                 agent.close();
                 return done(error);
             }
             agent
-            .patch(`/api/account/${updatedInfo._id}`)
-            .type("application/json")
-            .send(updatedInfo)
-            .end(function (err, res) {
-                res.should.have.status(200);
-                res.should.be.json;
-                res.body.should.have.property("message");
-                res.body.message.should.equal("Changed account information");
-                res.body.should.have.property("data");
-                // Is this correct matching of data?
-                res.body.data.firstName.should.equal(updatedInfo.firstName);
-                res.body.data.lastName.should.equal(updatedInfo.lastName);
-                done();
-            });
+                .patch(`/api/account/${updatedInfo._id}`)
+                .type("application/json")
+                .send(updatedInfo)
+                .end(function (err, res) {
+                    res.should.have.status(200);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal("Changed account information");
+                    res.body.should.have.property("data");
+                    // Is this correct matching of data?
+                    res.body.data.firstName.should.equal(updatedInfo.firstName);
+                    res.body.data.lastName.should.equal(updatedInfo.lastName);
+                    done();
+                });
         });
     });
 
     // succeed on :self case
-    it("should SUCCEED and update the user's own account", function(done) {
+    it("should SUCCEED and update the user's own account", function (done) {
         util.auth.login(agent, storedAccount1, (error) => {
-            if(error) {
+            if (error) {
                 agent.close();
                 return done(error);
             }
             agent
-            .patch(`/api/account/${updatedInfo._id}`)
-            .type("application/json")
-            .send(updatedInfo)
-            .end(function (err, res) {
-                res.should.have.status(200);
-                res.should.be.json;
-                res.body.should.have.property("message");
-                res.body.message.should.equal("Changed account information");
-                res.body.should.have.property("data");
-                // Is this correct matching of data?
-                res.body.data.firstName.should.equal(updatedInfo.firstName);
-                res.body.data.lastName.should.equal(updatedInfo.lastName);
+                .patch(`/api/account/${updatedInfo._id}`)
+                .type("application/json")
+                .send(updatedInfo)
+                .end(function (err, res) {
+                    res.should.have.status(200);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal("Changed account information");
+                    res.body.should.have.property("data");
+                    // Is this correct matching of data?
+                    res.body.data.firstName.should.equal(updatedInfo.firstName);
+                    res.body.data.lastName.should.equal(updatedInfo.lastName);
 
-                done();
-            });
+                    done();
+                });
         });
     });
 
     // fail due to lack of authorization
-    it("should Fail to update an account due to lack of authorization", function(done) {
+    it("should Fail to update an account due to lack of authorization", function (done) {
         util.auth.login(agent, storedAccount1, (error) => {
-            if(error) {
+            if (error) {
                 agent.close();
                 return done(error);
             }
             agent
-            .patch(`/api/account/${failUpdatedInfo._id}`)
-            .type("application/json")
-            .send(updatedInfo)
-            .end(function (err, res) {
-                res.should.have.status(401);
-                res.should.be.json;
-                res.body.should.have.property("message");
-                res.body.message.should.equal("Not Authorized for this route");
-                res.body.should.have.property("data");
+                .patch(`/api/account/${failUpdatedInfo._id}`)
+                .type("application/json")
+                .send(updatedInfo)
+                .end(function (err, res) {
+                    res.should.have.status(401);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal("Not Authorized for this route");
+                    res.body.should.have.property("data");
 
-                done();
-            });
+                    done();
+                });
         });
     });
 });

@@ -29,8 +29,8 @@ const SPONSOR = "Sponsor";
 
 const JOB_INTERESTS = ["Internship", "Full-time", "None"];
 const ROLE_CATEGORIES = {
-    self: ":self",
-    all: ":all"
+    SELF: ":self",
+    ALL: ":all"
 };
 // enum of type of requests
 const REQUEST_TYPES = {
