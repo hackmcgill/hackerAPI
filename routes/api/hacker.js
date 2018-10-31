@@ -34,7 +34,6 @@ module.exports = {
          * @apiParam (body) {String} gender Gender of the hacker
          * @apiParam (body) {Boolean} needsBus Whether the hacker requires a bus for transportation
          * @apiParam (body) {Json} application The hacker's application. Resume and jobInterest fields are required.
-         * @apiParam (header) {String} Authorization Token for validating account to create
          * @apiParamExample {Json} application: 
          *      {
          *          "portfolioURL": {
@@ -69,13 +68,10 @@ module.exports = {
             Middleware.Validator.Hacker.newHackerValidator,
 
             Middleware.parseBody.middleware,
-
+            Middleware.Hacker.validateConfirmedStatus,
             Middleware.Hacker.parseHacker,
+
             Middleware.Hacker.addDefaultStatus,
-
-            Middleware.Auth.parseAccountConfirmationToken,
-            Middleware.Auth.validateConfirmationToken,
-
             Controllers.Hacker.createHacker
         );
 
@@ -169,9 +165,9 @@ module.exports = {
             Controllers.Hacker.findById
         );
 
-        hackerRouter.route("/:id/resume")
+        hackerRouter.route("/resume/:id")
             /**
-             * @api {post} /hacker/:id/resume upload or update resume for a hacker.
+             * @api {post} /hacker/resume/:id upload or update resume for a hacker.
              * @apiName postHackerResume
              * @apiGroup Hacker
              * @apiVersion 0.0.8

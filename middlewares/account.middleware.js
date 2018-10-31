@@ -66,19 +66,19 @@ function parseAccount(req, res, next) {
  * @param {(err?)=>void} next
  */
 async function updatePassword(req, res, next) {
-    await Services.Account.updatePassword(req.body.password);
+    req.body.account = await Services.Account.updatePassword(req.body.decodedToken.accountId, req.body.password);
     next();
 }
 
 // TODO: fix when new permission system is created
-async function addDefaultHackerPermissions (req, res, next) {
+async function addDefaultHackerPermissions(req, res, next) {
     // await Services.RoleBinding.createRoleBinding(req.);
     next();
 }
 async function createAccount(req, res, next) {
     const accountDetails = req.body.accountDetails;
     const success = await Services.Account.addOneAccount(accountDetails);
-    if(!success) {
+    if (!success) {
         next({
             message: "Issue with account creation",
             data: {}
@@ -97,11 +97,11 @@ async function createAccount(req, res, next) {
  * @description
  * Creates account document after checking if it exists first
  */
-async function addAccount(req, res, next){
+async function addAccount(req, res, next) {
     const accountDetails = req.body.accountDetails;
     //Check duplicate
     const exists = await Services.Account.findByEmail(accountDetails.email);
-    if(exists){
+    if (exists) {
         var err = new Error("Account already exists");
         err.status = 409;
         next(err);

@@ -79,7 +79,6 @@ module.exports = {
         accountRouter.route("/").post(
             // validators
             Middleware.Validator.Account.newAccountValidator,
-            Middleware.Validator.Auth.accountConfirmationValidator,
 
             Middleware.parseBody.middleware,
 

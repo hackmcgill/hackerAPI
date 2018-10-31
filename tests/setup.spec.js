@@ -13,20 +13,21 @@ const Util = {
     Staff: require("./util/staff.test.util"),
     Team: require("./util/team.test.util"),
     Volunteer: require("./util/volunteer.test.util"),
-    AccountConfirmation: require("./util/accountConfirmation.test.util")
+    AccountConfirmation: require("./util/accountConfirmation.test.util"),
+    ResetPassword: require("./util/resetPassword.test.util.js")
 };
 
 
 //make sure that we are connected to the database
-before(function(done) {
-    this.timeout(60000);        
+before(function (done) {
+    this.timeout(60000);
     server.app.on("event:connected to db", () => {
         // drop all information, and then add some users
         dropAll(done);
     });
 });
 
-beforeEach(function(done){
+beforeEach(function (done) {
     this.timeout(60000);
     Util.Account.storeAll(Util.Account.allAccounts, () => {
         Util.Skill.storeAll(Util.Skill.Skills, () => {
@@ -35,11 +36,13 @@ beforeEach(function(done){
                     Util.Team.storeAll(Util.Team.Teams, () => {
                         Util.Staff.storeAll(Util.Staff.Staffs, () => {
                             Util.AccountConfirmation.storeAll(Util.AccountConfirmation.AccountConfirmationTokens, () => {
-                                Util.Bus.storeAll(Util.Bus.Busses, () => {
-                                    Util.Volunteer.storeAll(Util.Volunteer.Volunteers, () => {
-                                        Util.Role.storeAll(Util.Role.allRolesArray, () => {
-                                            Util.RoleBinding.storeAll(Util.RoleBinding.RoleBindings, () => {
-                                                done();
+                                Util.ResetPassword.storeAll(Util.ResetPassword.ResetPasswords, () => {
+                                    Util.Bus.storeAll(Util.Bus.Busses, () => {
+                                        Util.Volunteer.storeAll(Util.Volunteer.Volunteers, () => {
+                                            Util.Role.storeAll(Util.Role.allRolesArray, () => {
+                                                Util.RoleBinding.storeAll(Util.RoleBinding.RoleBindings, () => {
+                                                    done();
+                                                });
                                             });
                                         });
                                     });
@@ -53,23 +56,25 @@ beforeEach(function(done){
     });
 });
 
-afterEach(function(done){
+afterEach(function (done) {
     this.timeout(60000);
     dropAll(done);
 });
 
-function dropAll(done){
+function dropAll(done) {
     Util.RoleBinding.dropAll(() => {
         Util.Role.dropAll(() => {
-            Util.AccountConfirmation.dropAll(() => {
-                Util.Volunteer.dropAll(() => {
-                    Util.Staff.dropAll(() => {
-                        Util.Team.dropAll(() => {
-                            Util.Sponsor.dropAll(() => {
-                                Util.Bus.dropAll(() => {
-                                    Util.Hacker.dropAll(() => {
-                                        Util.Skill.dropAll(() => {
-                                            Util.Account.dropAll(done);
+            Util.ResetPassword.dropAll(() => {
+                Util.AccountConfirmation.dropAll(() => {
+                    Util.Volunteer.dropAll(() => {
+                        Util.Staff.dropAll(() => {
+                            Util.Team.dropAll(() => {
+                                Util.Sponsor.dropAll(() => {
+                                    Util.Bus.dropAll(() => {
+                                        Util.Hacker.dropAll(() => {
+                                            Util.Skill.dropAll(() => {
+                                                Util.Account.dropAll(done);
+                                            });
                                         });
                                     });
                                 });

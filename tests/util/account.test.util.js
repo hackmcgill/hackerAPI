@@ -41,7 +41,9 @@ const Account1 = {
     "email": "abc.def1@blahblah.com",
     "password": "probsShouldBeHashed1",
     "dietaryRestrictions": ["none"],
-    "shirtSize": "S"
+    "shirtSize": "S",
+    "confirmed": true,
+    "accountType": Constants.HACKER
 };
 // hacker
 const Account2 = {
@@ -120,12 +122,12 @@ module.exports = {
 };
 
 function generateRandomShirtSize() {
-    return Constants.SHIRT_SIZES[Math.floor(Math.random()*Constants.SHIRT_SIZES.length)];
+    return Constants.SHIRT_SIZES[Math.floor(Math.random() * Constants.SHIRT_SIZES.length)];
 }
 
 function generateAccounts(n) {
     let accounts = [];
-    for (let i=0; i < n; i++) {
+    for (let i = 0; i < n; i++) {
         accounts.push({
             "_id": mongoose.Types.ObjectId(),
             "firstName": "first" + String(i),
@@ -141,7 +143,7 @@ function generateAccounts(n) {
 
 function encryptPassword(user) {
     let encryptedUser = JSON.parse(JSON.stringify(user));
-    encryptedUser.password = bcrypt.hashSync(user.password,10);
+    encryptedUser.password = bcrypt.hashSync(user.password, 10);
     return encryptedUser;
 }
 
@@ -165,6 +167,7 @@ function storeAll(attributes, callback) {
         }
     );
 }
+
 function dropAll(callback) {
     Account.collection.drop().then(
         () => {
@@ -195,7 +198,7 @@ function equals(acc1, acc2) {
     const email = (acc1.email === acc2.email);
     const dietaryRestrictions = (acc1.dietaryRestrictions.join(",") === acc2.dietaryRestrictions.join(","));
     const shirtSize = (acc1.shirtSize === acc2.shirtSize);
-    return [id,firstName,lastName,email,dietaryRestrictions,shirtSize];
+    return [id, firstName, lastName, email, dietaryRestrictions, shirtSize];
 }
 
 function convertMongoIdToString(id) {
