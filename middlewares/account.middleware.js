@@ -3,7 +3,7 @@
 const TAG = `[ ADDRESS.MIDDLEWARE.js ]`;
 const mongoose = require("mongoose");
 const Services = {
-    Permission: require("../services/permission.service"),
+    RoleBinding: require("../services/roleBinding.service"),
     Logger: require("../services/logger.service"),
     Account: require("../services/account.service")
 };
@@ -71,9 +71,21 @@ async function updatePassword(req, res, next) {
 }
 
 // TODO: fix when new permission system is created
-async function addDefaultHackerPermissions (req, res, next) {
-    req.body.accountDetails.permissions = await Services.Permission.getDefaultPermission("Hacker");
+async function addDefaultHackerPermissions(req, res, next) {
+    // await Services.RoleBinding.createRoleBinding(req.);
     next();
+}
+async function createAccount(req, res, next) {
+    const accountDetails = req.body.accountDetails;
+    const success = await Services.Account.addOneAccount(accountDetails);
+    if (!success) {
+        next({
+            message: "Issue with account creation",
+            data: {}
+        });
+    } else {
+        next();
+    }
 }
 
 /**
@@ -85,11 +97,11 @@ async function addDefaultHackerPermissions (req, res, next) {
  * @description
  * Creates account document after checking if it exists first
  */
-async function addAccount(req, res, next){
+async function addAccount(req, res, next) {
     const accountDetails = req.body.accountDetails;
     //Check duplicate
     const exists = await Services.Account.findByEmail(accountDetails.email);
-    if(exists){
+    if (exists) {
         var err = new Error("Account already exists");
         err.status = 409;
         next(err);

@@ -2,7 +2,6 @@
 const VALIDATOR = require("./validator.helper");
 
 module.exports = {
-    // does not include permissions, as those are added later
     newAccountValidator: [
         VALIDATOR.nameValidator("body", "firstName", false),
         VALIDATOR.nameValidator("body", "lastName", false),

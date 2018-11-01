@@ -10,6 +10,7 @@ const logger = require("../../services/logger.service");
 const TAG = "[ HACKER.TEST.UTIL.JS ]";
 
 const invalidHacker1 = {
+    "_id": mongoose.Types.ObjectId(),
     // invalid mongoID
     "accountId": "UtilAccountAccount1_id",
     // invalid missing school attribute
@@ -19,12 +20,12 @@ const invalidHacker1 = {
         // invalid portflio with no resume
         "portfolioURL": {},
         // invalid jobInterest
-        "jobInterest": "ASDF",  
+        "jobInterest": "ASDF",
     }
-}
+};
 
 const newHacker1 = {
-    "accountId": Util.Account.Account1._id,
+    "accountId": Util.Account.generatedAccounts[6]._id,
     "school": "University of ASDF",
     "gender": "Female",
     "needsBus": true,
@@ -43,12 +44,12 @@ const newHacker1 = {
             Util.Skill.Skill1._id,
             Util.Skill.Skill5._id,
             Util.Skill.Skill8._id,
-        ],    
+        ],
     }
 };
 
 const newHacker2 = {
-    "accountId": Util.Account.Account2._id,
+    "accountId": Util.Account.NonConfirmedAccount1._id,
     "school": "University of YIKES",
     "gender": "Female",
     "needsBus": true,
@@ -67,7 +68,7 @@ const newHacker2 = {
             Util.Skill.Skill1._id,
             Util.Skill.Skill5._id,
             Util.Skill.Skill8._id,
-        ],    
+        ],
     }
 };
 
@@ -93,12 +94,12 @@ const HackerA = {
             Util.Skill.Skill1._id,
             Util.Skill.Skill5._id,
             Util.Skill.Skill8._id,
-        ],    
+        ],
     }
 };
 const HackerB = {
     "_id": mongoose.Types.ObjectId(),
-    "accountId": Util.Account.Account4._id,
+    "accountId": Util.Account.Account2._id,
     "status": "Accepted",
     "school": "University of Blah1",
     "gender": "Female",
@@ -118,7 +119,7 @@ const HackerB = {
             Util.Skill.Skill1._id,
             Util.Skill.Skill4._id,
             Util.Skill.Skill7._id,
-        ],    
+        ],
     }
 };
 const Hackers = [

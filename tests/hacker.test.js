@@ -10,6 +10,7 @@ const fs = require("fs");
 const path = require("path");
 
 const util = {
+    auth: require("./util/auth.test.util"),
     hacker: require("./util/hacker.test.util"),
     account: require("./util/account.test.util"),
     auth: require("./util/auth.test.util"),
@@ -17,82 +18,261 @@ const util = {
 };
 const StorageService = require("../services/storage.service");
 
+const Admin1 = util.account.Admin1;
+
+// storedAccount1 and storedHacker1 are linked together, and have hacker priviledges
+const storedAccount1 = util.account.Account1;
 const storedHacker1 = util.hacker.HackerA;
+
+// storedAccount2 and storedHacker2 are linked together, and have hacker priviledges
+const storedAccount2 = util.account.Account2;
+const storedHacker2 = util.hacker.HackerB;
+
 const newHacker1 = util.hacker.newHacker1;
+const newHackerAccount1 = util.account.allAccounts[13];
+
 const newHacker2 = util.hacker.newHacker2;
 const invalidHacker1 = util.hacker.invalidHacker1;
 const confirmationToken = util.accountConfirmation.ConfirmationToken;
 const hacker1Account = util.account.Account1;
 
 describe("GET hacker", function () {
-    it("should list a hacker's information from /api/hacker/:id GET", function (done) {
+    // fail on authentication
+    it("should fail to list a hacker's information on /api/hacker/:id GET due to authentication", function (done) {
         chai.request(server.app)
             .get(`/api/hacker/` + storedHacker1._id)
             .end(function (err, res) {
-                res.should.have.status(200);
+                res.should.have.status(401);
                 res.should.be.json;
                 res.body.should.have.property("message");
-                res.body.message.should.equal("Successfully retrieved hacker information");
-                res.body.should.have.property("data");
-
-                let hacker = new Hacker(storedHacker1);
-                chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify(hacker.toJSON()));
-
+                res.body.message.should.equal("Not Authenticated");
                 done();
             });
+    });
+
+    // succeed on admin case
+    it("should list a hacker's information using admin power on /api/hacker/:id GET", function (done) {
+        util.auth.login(agent, Admin1, (error) => {
+            if (error) {
+                agent.close();
+                return done(error);
+            }
+            return agent
+                .get(`/api/hacker/${storedHacker1._id}`)
+                // does not have password because of to stripped json
+                .end(function (err, res) {
+                    if (err) {
+                        return done(err);
+                    }
+                    res.should.have.status(200);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal("Successfully retrieved hacker information");
+                    res.body.should.have.property("data");
+
+                    let hacker = new Hacker(storedHacker1);
+                    chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify(hacker.toJSON()));
+
+                    done();
+                });
+        });
+    });
+
+    // succeed on :self case
+    it("should list the user's hacker information on /api/hacker/:id GET", function (done) {
+        util.auth.login(agent, storedAccount1, (error) => {
+            if (error) {
+                agent.close();
+                return done(error);
+            }
+            return agent
+                .get(`/api/hacker/${storedHacker1._id}`)
+                // does not have password because of to stripped json
+                .end(function (err, res) {
+                    if (err) {
+                        return done(err);
+                    }
+                    res.should.have.status(200);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal("Successfully retrieved hacker information");
+                    res.body.should.have.property("data");
+
+                    let hacker = new Hacker(storedHacker1);
+
+                    chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify(hacker.toJSON()));
+
+                    done();
+                });
+        });
+    });
+
+    // fail due to lack of authorization
+    it("should fail to list a hacker information due to lack of authorization on /api/hacker/:id GET", function (done) {
+        util.auth.login(agent, storedAccount2, (error) => {
+            if (error) {
+                agent.close();
+                return done(error);
+            }
+            return agent
+                .get(`/api/hacker/${storedHacker1._id}`)
+                // does not have password because of to stripped json
+                .end(function (err, res) {
+                    if (err) {
+                        return done(err);
+                    }
+                    res.should.have.status(401);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal("Not Authorized for this route");
+                    res.body.should.have.property("data");
+
+                    done();
+                });
+        });
+    });
+
+    // fail due to lack of hacker
+    it("should fail to list an invalid hacker /api/hacker/:id GET", function (done) {
+        util.auth.login(agent, Admin1, (error) => {
+            if (error) {
+                agent.close();
+                return done(error);
+            }
+            return agent
+                .get(`/api/hacker/${invalidHacker1._id}`)
+                .end(function (err, res) {
+                    if (err) {
+                        return done(err);
+                    }
+                    res.should.have.status(404);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal("Issue with retrieving hacker information");
+                    res.body.should.have.property("data");
+
+                    done();
+                });
+        });
     });
 });
 
 describe("POST create hacker", function () {
-    it("should SUCCEED and create a new hacker (with an account that has been confirmed)", function(done) {
-        chai.request(server.app)
-        .post(`/api/hacker/`)
-        .type("application/json")
-        .send(newHacker1)
-        .end(function (err, res) {
-            res.should.have.status(200);
-            res.should.be.json;
-            res.body.should.have.property("message");
-            res.body.message.should.equal("Hacker creation successful");
-            res.body.should.have.property("data");
+    // fail on authentication
+    it("should fail to create a new hacker due to lack of authentication",
+        function (done) {
+            chai.request(server.app)
+                .post(`/api/hacker/`)
+                .type("application/json")
+                .send(newHacker1)
+                .end(function (err, res) {
+                    res.should.have.status(401);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal("Not Authenticated");
 
-                // delete _id and status because those fields were generated
-                delete res.body.data._id;
-                delete res.body.data.status;
-                chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify(newHacker1));
-                done();
-            });
+                    done();
+                });
+        });
+
+    // succeed on admin case
+    it("should SUCCEED and create a new hacker (with an account that has been confirmed) using admin credentials", function (done) {
+        util.auth.login(agent, Admin1, (error) => {
+            if (error) {
+                agent.close();
+                return done(error);
+            }
+            return agent
+                .post(`/api/hacker/`)
+                .type("application/json")
+                .send(newHacker1)
+                .end(function (err, res) {
+                    res.should.have.status(200);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal("Hacker creation successful");
+                    res.body.should.have.property("data");
+
+                    // delete _id and status because those fields were generated
+                    delete res.body.data._id;
+                    delete res.body.data.status;
+                    chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify(newHacker1));
+                    done();
+                });
+        });
     });
 
-    it("should FAIL to create a new hacker if the account hasn't been confirmed", function(done) {
-        chai.request(server.app)
-            .post(`/api/hacker/`)
-            .type("application/json")
-            .send(newHacker2)
-            .end(function (err, res) {
-                res.should.be.json;
-                res.body.should.have.property("message");
-                res.body.message.should.equal("Unauthorized");
-                res.should.have.status(401);
-                done();
-            });
+    // succeed on user case
+    it("should SUCCEED and create a new hacker for user (with an account that has been confirmed)", function (done) {
+        util.auth.login(agent, newHackerAccount1, (error) => {
+            if (error) {
+                agent.close();
+                return done(error);
+            }
+            return agent
+                .post(`/api/hacker/`)
+                .type("application/json")
+                .send(newHacker1)
+                .end(function (err, res) {
+                    res.should.have.status(200);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal("Hacker creation successful");
+                    res.body.should.have.property("data");
+
+                    // delete _id and status because those fields were generated
+                    delete res.body.data._id;
+                    delete res.body.data.status;
+                    chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify(newHacker1));
+                    done();
+                });
+        });
     });
 
+    // fail on unconfirmed account, using admin
+    it("should FAIL to create a new hacker if the account hasn't been confirmed", function (done) {
+        util.auth.login(agent, Admin1, (error) => {
+            if (error) {
+                agent.close();
+                return done(error);
+            }
+            return agent
+                .post(`/api/hacker/`)
+                .type("application/json")
+                .send(newHacker2)
+                .end(function (err, res) {
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal("Unauthorized");
+                    res.should.have.status(401);
+                    done();
+                });
+        });
+    });
+
+    // fail on invalid input
     it("should FAIL to create new hacker due to invalid input", function (done) {
-        chai.request(server.app)
-        .post(`/api/hacker/`)
-        .type("application/json")
-        .send(invalidHacker1)
-        .end(function (err, res) {
-            // replace with actual test comparisons after error handler is implemented
-            res.should.have.status(422);
-            done();
+        util.auth.login(agent, Admin1, (error) => {
+            if (error) {
+                agent.close();
+                return done(error);
+            }
+            return agent
+                .post(`/api/hacker/`)
+                .type("application/json")
+                .send(invalidHacker1)
+                .end(function (err, res) {
+                    // replace with actual test comparisons after error handler is implemented
+                    res.should.have.status(422);
+                    done();
+                });
         });
     });
 });
 
 describe("PATCH update one hacker", function () {
-    it("should SUCCEED and update a hacker", function (done) {
+    // fail on authentication
+    it("should fail to update a hacker on /api/hacker/:id GET due to authentication", function (done) {
         chai.request(server.app)
             .patch(`/api/hacker/${storedHacker1._id}`)
             .type("application/json")
@@ -100,71 +280,113 @@ describe("PATCH update one hacker", function () {
                 gender: "Other"
             })
             .end(function (err, res) {
-                res.should.have.status(200);
+                res.should.have.status(401);
                 res.should.be.json;
                 res.body.should.have.property("message");
-                res.body.message.should.equal("Changed hacker information");
-                res.body.should.have.property("data");
-                chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify({
-                    gender: "Other"
-                }));
+                res.body.message.should.equal("Not Authenticated");
                 done();
             });
     });
-});
 
-describe("PATCH update one hacker status", function () {
-    it("should SUCCEED and update the hacker status", function (done) {
-        //this takes a lot of time for some reason
-        chai.request(server.app)
-            .patch(`/api/hacker/${storedHacker1._id}`)
-            .type("application/json")
-            .send({
-                status: "Accepted"
-            })
-            .end(function (err, res) {
-                res.should.have.status(200);
-                res.should.be.json;
-                res.body.should.have.property("message");
-                res.body.message.should.equal("Changed hacker information");
-                res.body.should.have.property("data");
-
-                delete res.body.data.id;
-                chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify({
-                    status: "Accepted"
-                }));
-                done();
-            });
-    });
-});
-
-describe("POST add a hacker resume", function () {
-    it("It should SUCCEED and upload a resume for a hacker", function (done) {
-        //this takes a lot of time for some reason
-        util.auth.login(agent, hacker1Account, (error) => {
+    // should succeed on admin case
+    it("should SUCCEED and update a hacker using admin power", function (done) {
+        util.auth.login(agent, Admin1, (error) => {
             if (error) {
+                agent.close();
                 return done(error);
             }
             return agent
-                .post(`/api/hacker/resume/${storedHacker1._id}`)
-                .type("multipart/form-data")
-                .attach("resume", fs.createReadStream(path.join(__dirname, "testResume.pdf")), {
-                    contentType: "application/pdf"
+                .patch(`/api/hacker/${storedHacker1._id}`)
+                .type("application/json")
+                .send({
+                    gender: "Other"
                 })
                 .end(function (err, res) {
                     res.should.have.status(200);
-                    res.should.have.property("body");
+                    res.should.be.json;
                     res.body.should.have.property("message");
-                    res.body.message.should.equal("Uploaded resume");
+                    res.body.message.should.equal("Changed hacker information");
                     res.body.should.have.property("data");
-                    res.body.data.should.have.property("filename");
-                    StorageService.download(res.body.data.filename).then((value) => {
-                        const actualFile = fs.readFileSync(path.join(__dirname, "testResume.pdf"))
-                        chai.assert.equal(value[0].length, actualFile.length);
-                        StorageService.delete(res.body.data.filename).then(() => {
-                            done();
-                        }).catch(done);
-                    });
+                    chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify({
+                        gender: "Other"
+                    }));
+                    done();
+                });
+        });
+    });
+
+    // should succeed on hacker case
+    it("should SUCCEED and update the user's hacker info", function (done) {
+        util.auth.login(agent, storedAccount2, (error) => {
+            if (error) {
+                agent.close();
+                return done(error);
+            }
+            return agent
+                .patch(`/api/hacker/${storedHacker2._id}`)
+                .type("application/json")
+                .send({
+                    gender: "Other"
+                })
+                .end(function (err, res) {
+                    res.should.have.status(200);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal("Changed hacker information");
+                    res.body.should.have.property("data");
+                    chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify({
+                        gender: "Other"
+                    }));
+                    done();
+                });
+        });
+    });
+
+    // should fail due to authorization
+    it("should Fail to update hacker info due to lack of authorization", function (done) {
+        util.auth.login(agent, storedAccount2, (error) => {
+            if (error) {
+                agent.close();
+                return done(error);
+            }
+            return agent
+                .patch(`/api/hacker/${storedHacker1._id}`)
+                .type("application/json")
+                .send({
+                    gender: "Other"
+                })
+                .end(function (err, res) {
+                    res.should.have.status(401);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal("Not Authorized for this route");
+                    res.body.should.have.property("data");
+
+                    done();
+                });
+        });
+    });
+
+    // fail due to lack of hacker
+    it("should fail to change an invalid hacker's info", function (done) {
+        util.auth.login(agent, Admin1, (error) => {
+            if (error) {
+                agent.close();
+                return done(error);
+            }
+            return agent
+                .get(`/api/hacker/${invalidHacker1._id}`)
+                .end(function (err, res) {
+                    if (err) {
+                        return done(err);
+                    }
+                    res.should.have.status(404);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal("Issue with retrieving hacker information");
+                    res.body.should.have.property("data");
+
+                    done();
                 });
         });
     });

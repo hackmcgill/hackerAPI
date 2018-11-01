@@ -15,6 +15,9 @@ const Middleware = {
     Hacker: require("../../middlewares/hacker.middleware"),
     Auth: require("../../middlewares/auth.middleware")
 };
+const Services = {
+    Hacker: require("../../services/hacker.service"),
+}
 
 module.exports = {
     activate: function (apiRouter) {
@@ -62,12 +65,15 @@ module.exports = {
          *      {"message": "Issue with hacker creation", "data": {}}
          */
         hackerRouter.route("/").post(
+            Middleware.Auth.ensureAuthenticated(),
+            Middleware.Auth.ensureAuthorized(),
+
             Middleware.Validator.Hacker.newHackerValidator,
 
             Middleware.parseBody.middleware,
             Middleware.Hacker.validateConfirmedStatus,
             Middleware.Hacker.parseHacker,
-            
+
             Middleware.Hacker.addDefaultStatus,
             Controllers.Hacker.createHacker
         );
@@ -115,9 +121,11 @@ module.exports = {
          *      {"message": "Issue with changing hacker information", "data": {}}
          */
         hackerRouter.route("/:id").patch(
+            Middleware.Auth.ensureAuthenticated(),
+            Middleware.Auth.ensureAuthorized([Services.Hacker.findById]),
+
             Middleware.Validator.RouteParam.idValidator,
             Middleware.Validator.Hacker.updateHackerValidator,
-
 
             Middleware.parseBody.middleware,
             Middleware.Hacker.parsePatch,
@@ -151,9 +159,12 @@ module.exports = {
          *      {"message": "Issue with retrieving hacker information", "data": {}}
          */
         hackerRouter.route("/:id").get(
+            Middleware.Auth.ensureAuthenticated(),
+            Middleware.Auth.ensureAuthorized([Services.Hacker.findById]),
+
             Middleware.Validator.RouteParam.idValidator,
             Middleware.parseBody.middleware,
-            
+
             Controllers.Hacker.findById
         );
 

@@ -15,40 +15,51 @@ const Middleware = {
 
 const Constants = require("../constants");
 /**
- * 
- * @param {String} routeName the name of the route that the user must be authenticated for, or undefined if 
- * the only requirement is to be logged in.
  * @returns {Fn} the middleware that will check that the user is properly authenticated.
  * Calls next() if the user is properly authenticated.
  */
-function ensureAuthenticated(routeName = undefined) {
-    return function(req, res, next) {
-        Services.Auth.ensureAuthenticated(req, routeName).then(
-            (isAuthenticated) => {
-                if(isAuthenticated) {
-                    next();
-                } else if(!!routeName){
+function ensureAuthenticated() {
+    return function (req, res, next) {
+        if (req.isUnauthenticated()) {
+            next({
+                status: 401,
+                message: "Not Authenticated",
+                error: {
+                    route: req.path
+                }
+            });
+        } else {
+            next();
+        }
+    };
+}
+
+/**
+ * @param {((paramId) => {Account})[]} findByIdFns the request object
+ * @returns {Fn} the middleware that will check that the user is properly authorized.
+ * Calls next() if the user is properly authorized.
+ */
+function ensureAuthorized(findByIdFns) {
+    return function (req, res, next) {
+        Services.Auth.ensureAuthorized(req, findByIdFns).then(
+            (auth) => {
+                if (!auth) {
                     next({
                         status: 401,
-                        message: "Not Authenticated",
-                        error: {
-                            route: routeName
-                        }
-                    });
-                } else {
-                    next({
-                        status: 401,
-                        message: "Not Authenticated",
+                        message: "Not Authorized for this route",
                         error: {
                             route: req.path
                         }
                     });
+                } else {
+                    next();
                 }
+            },
+            (err) => {
+                next(err);
             }
-        ).catch((reason) => {
-            next(reason);
-        });
-    };
+        );
+    }
 }
 
 /**
@@ -68,7 +79,7 @@ async function sendResetPasswordEmailMiddleware(req, res, next) {
         const ResetPasswordTokenModel = await Services.ResetPasswordToken.findByAccountId(user.id);
         //generate email
         const token = Services.ResetPasswordToken.generateToken(ResetPasswordTokenModel.id, user.id);
-        const mailData = Services.ResetPasswordToken.generateResetPasswordEmail(req.hostname,req.body.email, token);
+        const mailData = Services.ResetPasswordToken.generateResetPasswordEmail(req.hostname, req.body.email, token);
         if (mailData !== undefined) {
             Services.Email.send(mailData, (err) => {
                 if (err) {
@@ -142,7 +153,7 @@ function parseResetToken(req, res, next) {
  * @param {any} res 
  * @param {(err?)=>void} next 
  */
-function parseAccountConfirmationToken(req, res, next){
+function parseAccountConfirmationToken(req, res, next) {
     jwt.verify(req.body.token, process.env.JWT_CONFIRM_ACC_SECRET, function (err, decoded) {
         if (err) {
             next(err);
@@ -159,7 +170,7 @@ function parseAccountConfirmationToken(req, res, next){
  * @param {any} res 
  * @param {(err?)=>void} next 
  */
-async function getAccountTypeFromConfirmationToken(req, res, next){
+async function getAccountTypeFromConfirmationToken(req, res, next) {
     const confirmationObj = await Services.AccountConfirmation.findById(req.body.decodedToken.accountConfirmationId);
     if (confirmationObj) {
         req.body.accountType = confirmationObj.accountType;
@@ -231,7 +242,7 @@ function deleteResetToken(req, res, next) {
     Services.ResetPasswordToken.deleteToken(req.body.decodedToken.resetId).then(
         () => {
             next();
-        }, 
+        },
         (err) => {
             next(err);
         }
@@ -239,14 +250,15 @@ function deleteResetToken(req, res, next) {
 }
 
 module.exports = {
-    //for each route, set up an authentication middleware for that route, with the permission id.
+    //for each route, set up an authentication middleware for that route
     ensureAuthenticated: ensureAuthenticated,
+    ensureAuthorized: ensureAuthorized,
     sendResetPasswordEmailMiddleware: Middleware.Util.asyncMiddleware(sendResetPasswordEmailMiddleware),
     parseResetToken: parseResetToken,
     validateResetToken: Middleware.Util.asyncMiddleware(validateResetToken),
     deleteResetToken: deleteResetToken,
     sendConfirmAccountEmailMiddleware: Middleware.Util.asyncMiddleware(sendConfirmAccountEmailMiddleware),
     parseAccountConfirmationToken: parseAccountConfirmationToken,
-    validateConfirmationToken: Middleware.Util.asyncMiddleware(validateConfirmationToken), 
+    validateConfirmationToken: Middleware.Util.asyncMiddleware(validateConfirmationToken),
     getAccountTypeFromConfirmationToken: Middleware.Util.asyncMiddleware(getAccountTypeFromConfirmationToken)
 };

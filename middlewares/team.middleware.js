@@ -3,7 +3,6 @@
 const TAG = `[ TEAM.MIDDLEWARE.js ]`;
 const mongoose = require("mongoose");
 const Services = {
-    Permission: require("../services/permission.service"),
     Logger: require("../services/logger.service"),
     Team: require("../services/team.service")
 };

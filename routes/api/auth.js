@@ -13,18 +13,10 @@ const Middleware = {
     parseBody: require("../../middlewares/parse-body.middleware"),
     Auth: require("../../middlewares/auth.middleware"),
     Account: require("../../middlewares/account.middleware")
-}
+};
 const Controllers = {
     Auth: require("../../controllers/auth.controller")
 };
-
-const AuthRoutes = {
-    login: "/login",
-    logout: "/logout",
-    forgotPassword: "/password/forgot",
-    resetPassword: "/password/reset",
-    confirmAccount: "/confirm/:token"
-}
 
 module.exports = {
     activate: function (apiRouter) {
@@ -56,7 +48,7 @@ module.exports = {
             passport.authenticate("emailAndPass"),
             Controllers.Auth.onSuccessfulLogin
         );
-        
+
         /**
          * @api {get} /auth/logout logout of service
          * @apiName logout
@@ -92,7 +84,7 @@ module.exports = {
          * 
          * @apiPermission: public
          */
-        authRouter.route(AuthRoutes.forgotPassword).post(
+        authRouter.route("/password/forgot").post(
             Middleware.Validator.Auth.ForgotPasswordValidator,
             Middleware.parseBody.middleware,
             //create resetPassword jwt
@@ -128,7 +120,7 @@ module.exports = {
          * 
          * @apiPermission: must have authentication token
          */
-        authRouter.route(AuthRoutes.resetPassword).post(
+        authRouter.route("/password/reset").post(
             //post new password, validate token also
             Middleware.Validator.Auth.ResetPasswordValidator,
             Middleware.parseBody.middleware,
@@ -166,7 +158,7 @@ module.exports = {
          *      {"message": "Invalid token for confirming account, "data": {}}
          * 
          */
-        authRouter.route(AuthRoutes.confirmAccount).post(
+        authRouter.route("/confirm/:token").post(
             Middleware.Validator.Auth.accountConfirmationValidator,
             Middleware.parseBody.middleware,
             Middleware.Auth.parseAccountConfirmationToken,

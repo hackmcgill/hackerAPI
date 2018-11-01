@@ -28,6 +28,18 @@ const GODSTAFF = "GodStaff";
 const SPONSOR = "Sponsor";
 
 const JOB_INTERESTS = ["Internship", "Full-time", "None"];
+const ROLE_CATEGORIES = {
+    SELF: ":self",
+    ALL: ":all"
+};
+// enum of type of requests
+const REQUEST_TYPES = {
+    GET: "GET", 
+    POST: "POST", 
+    PATCH: "PATCH", 
+    DELETE: "DELETE", 
+    PUT: "PUT"
+};
 const SHIRT_SIZES = ["XS", "S", "M", "L", "XL", "XXL"];
 const USER_TYPES = [HACKER, VOLUNTEER, STAFF, GODSTAFF, SPONSOR];
 // matches optional http://, https://, http:, https:, and optional www.
@@ -60,6 +72,7 @@ module.exports = {
     HACKER_STATUS_CANCELLED: HACKER_STATUS_CANCELLED,
     HACKER_STATUS_CHECKED_IN: HACKER_STATUS_CHECKED_IN,
     HACKER_STATUSES: HACKER_STATUSES,
+    REQUEST_TYPES: REQUEST_TYPES,
     JOB_INTERESTS: JOB_INTERESTS,
     SHIRT_SIZES: SHIRT_SIZES,
     USER_TYPES: USER_TYPES,
@@ -70,5 +83,6 @@ module.exports = {
     SPONSOR: SPONSOR,
     VOLUNTEER: VOLUNTEER,
     STAFF: STAFF,
-    GODSTAFF: GODSTAFF
+    GODSTAFF: GODSTAFF,
+    ROLE_CATEGORIES: ROLE_CATEGORIES,
 };

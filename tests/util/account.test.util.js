@@ -1,9 +1,6 @@
 "use strict";
-const Util = {
-    Permission: require("./permission.test.util")
-};
-const Account = require("../../models/account.model");
 const Constants = require("../../constants");
+const Account = require("../../models/account.model");
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const logger = require("../../services/logger.service");
@@ -16,7 +13,9 @@ const newAccount1 = {
     "email": "newexist@blahblah.com",
     "password": "1234567890",
     "dietaryRestrictions": ["none"],
-    "shirtSize": "S"
+    "shirtSize": "S",
+    "confirmed": true,
+    "accountType": Constants.Hacker,
 };
 const nonAccount1 = {
     "_id": mongoose.Types.ObjectId(),
@@ -27,83 +26,164 @@ const nonAccount1 = {
     "dietaryRestrictions": ["none"],
     "shirtSize": "S",
 };
+const Admin1 = {
+    "_id": mongoose.Types.ObjectId(),
+    "firstName": "Admin1",
+    "lastName": "Admin1",
+    "email": "Admin1@blahblah.com",
+    "password": "Admin1",
+    "dietaryRestrictions": ["none"],
+    "shirtSize": "S",
+    "confirmed": true,
+    "accountType": Constants.GODSTAFF,
+};
+// hacker
 const Account1 = {
     "_id": mongoose.Types.ObjectId(),
     "firstName": "ABC",
     "lastName": "DEF",
     "email": "abc.def1@blahblah.com",
     "password": "probsShouldBeHashed1",
-    "permissions": [Util.Permission.Permission1._id, Util.Permission.Permission6._id],
     "dietaryRestrictions": ["none"],
     "shirtSize": "S",
-    "confirmed" : true,
-    "accountType" : Constants.HACKER
+    "confirmed": true,
+    "accountType": Constants.HACKER
 };
+// hacker
 const Account2 = {
     "_id": mongoose.Types.ObjectId(),
     "firstName": "abc",
     "lastName": "def",
     "email": "abc.def2@blahblah.com",
     "password": "probsShouldBeHashed2",
-    "permissions": [Util.Permission.Permission2._id, Util.Permission.Permission7._id],
     "dietaryRestrictions": ["vegetarian"],
-    "shirtSize": "M"
+    "shirtSize": "M",
+    "confirmed": true,
+    "accountType": Constants.Hacker,
 };
+// sponsor
 const Account3 = {
     "_id": mongoose.Types.ObjectId(),
     "firstName": "XYZ",
     "lastName": "UST",
     "email": "abc.def3@blahblah.com",
     "password": "probsShouldBeHashed3",
-    "permissions": [Util.Permission.Permission3._id, Util.Permission.Permission8._id],
     "dietaryRestrictions": ["vegan"],
-    "shirtSize": "L"
+    "shirtSize": "L",
+    "confirmed": true,
+    "accountType": Constants.SPONSOR,
 };
+// volunteer
 const Account4 = {
     "_id": mongoose.Types.ObjectId(),
     "firstName": "xyz",
     "lastName": "ust",
     "email": "abc.def4@blahblah.com",
     "password": "probsShouldBeHashed4",
-    "permissions": [Util.Permission.Permission4._id, Util.Permission.Permission9._id],
     "dietaryRestrictions": ["vegetarian", "lactose intolerant"],
-    "shirtSize": "XL"
+    "shirtSize": "XL",
+    "confirmed": true,
+    "accountType": Constants.VOLUNTEER,
 };
+// sponsor
 const Account5 = {
     "_id": mongoose.Types.ObjectId(),
     "firstName": "LMAO",
     "lastName": "ROFL",
-    "email": "abc.def5@blahblah.com",
+    "email": "abc.def0@blahblah.com",
     "password": "probsShouldBeHashed5",
-    "permissions": [Util.Permission.Permission5._id, Util.Permission.Permission10._id],
     "dietaryRestrictions": ["something1", "something2"],
-    "shirtSize": "XXL"
+    "shirtSize": "XXL",
+    "confirmed": true,
+    "accountType": Constants.SPONSOR,
 };
-const Accounts = [
+
+// non confirmed account for hacker
+const NonConfirmedAccount1 = {
+    "_id": mongoose.Types.ObjectId(),
+    "firstName": "LMAO",
+    "lastName": "ROFL",
+    "email": "abc.def6@blahblah.com",
+    "password": "probsShouldBeHashed5",
+    "dietaryRestrictions": ["something1", "something2"],
+    "shirtSize": "XXL",
+    "confirmed": false,
+    "accountType": Constants.SPONSOR,
+};
+
+const customAccounts = [
+    Admin1,
     Account1,
     Account2,
     Account3,
     Account4,
     Account5,
+    NonConfirmedAccount1,
 ];
+
+const generatedAccounts = generateAccounts(20);
+// 1-5 Are for admins
+// 6-10 Are for hackers (6 and 7 are new)
+// 11-15 Are for sponsors
+// 16-20 Are for volunteers
+
+
+const allAccounts = customAccounts.concat(generatedAccounts);
 
 module.exports = {
     nonAccount1: nonAccount1,
     newAccount1: newAccount1,
+    NonConfirmedAccount1,
+    Admin1: Admin1,
     Account1: Account1,
     Account2: Account2,
     Account3: Account3,
     Account4: Account4,
-    Account5 :Account5,
-    Accounts: Accounts,
+    Account5: Account5,
+    customAccounts: customAccounts,
+    generatedAccounts: generatedAccounts,
+    allAccounts: allAccounts,
     storeAll: storeAll,
     dropAll: dropAll,
     equals: equals
 };
 
+function generateRandomShirtSize() {
+    return Constants.SHIRT_SIZES[Math.floor(Math.random() * Constants.SHIRT_SIZES.length)];
+}
+
+function generateAccounts(n) {
+    let accounts = [];
+    for (let i = 0; i < n; i++) {
+        let acc = {
+            "_id": mongoose.Types.ObjectId(),
+            "firstName": "first" + String(i),
+            "lastName": "last" + String(i),
+            "email": "test" + String(i) + "@blahblah.com",
+            "password": "probsShouldBeHashed" + String(i),
+            "dietaryRestrictions": [],
+            "shirtSize": generateRandomShirtSize(),
+            "confirmed": true
+        };
+
+        if (i < n / 4) {
+            acc.accountType = Constants.GODSTAFF;
+        } else if (i >= n / 4 && i < (n / 4) * 2) {
+            acc.accountType = Constants.HACKER;
+        } else if (i >= (n / 4) * 2 && i < (n / 4) * 3) {
+            acc.accountType = Constants.SPONSOR;
+        } else {
+            acc.accountType = Constants.VOLUNTEER;
+        }
+
+        accounts.push(acc);
+    }
+    return accounts;
+}
+
 function encryptPassword(user) {
     let encryptedUser = JSON.parse(JSON.stringify(user));
-    encryptedUser.password = bcrypt.hashSync(user.password,10);
+    encryptedUser.password = bcrypt.hashSync(user.password, 10);
     return encryptedUser;
 }
 
@@ -127,6 +207,7 @@ function storeAll(attributes, callback) {
         }
     );
 }
+
 function dropAll(callback) {
     Account.collection.drop().then(
         () => {
@@ -155,19 +236,9 @@ function equals(acc1, acc2) {
     const firstName = (acc1.firstName === acc2.firstName);
     const lastName = (acc1.lastName === acc2.lastName);
     const email = (acc1.email === acc2.email);
-    const permissions = comparePermissions(acc1.permissions, acc2.permissions);
     const dietaryRestrictions = (acc1.dietaryRestrictions.join(",") === acc2.dietaryRestrictions.join(","));
     const shirtSize = (acc1.shirtSize === acc2.shirtSize);
-    return [id,firstName,lastName,email,permissions,dietaryRestrictions,shirtSize];
-}
-
-function comparePermissions(p1, p2) {
-    if(p1 && p2) {
-        p1 = p1.sort().map((value) => convertMongoIdToString(value));
-        p2 = p2.sort().map((value) => convertMongoIdToString(value));;
-        return p1.join(",") === p2.join(",");
-    }
-    return false;
+    return [id, firstName, lastName, email, dietaryRestrictions, shirtSize];
 }
 
 function convertMongoIdToString(id) {
