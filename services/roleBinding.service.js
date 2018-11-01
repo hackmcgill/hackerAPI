@@ -9,13 +9,15 @@ const logger = require("./logger.service");
  */
 async function createRoleBinding(accountId, roleId = undefined) {
     const TAG = "[RoleBinding Service # createRoleBinding]:";
-    const query = {accountId: accountId};
+    const query = {
+        accountId: accountId
+    };
     const roleBindingModel = await getRoleBindingForAcct(accountId);
-    if(!roleBindingModel) {
+    if (!roleBindingModel) {
         const roleArray = (!!roleId) ? [roleId] : [];
         const newRb = new RoleBinding({
             name: accountId + "_rolebinding",
-            accountId:accountId,
+            accountId: accountId,
             roles: roleArray
         });
         return newRb.save();
@@ -52,12 +54,14 @@ async function removeRoleBinding(accountId, roleId) {
  */
 async function getRoleBindingForAcct(accountId) {
     const TAG = "[RoleBinding Service # getRoleBindings]:";
-    const query = {accountId: accountId};
+    const query = {
+        accountId: accountId
+    };
     //get the roleBinding for account
     //Populate roles for roleBinding
 
-    return await RoleBinding.findOne(query, logger.queryCallbackFactory(TAG, "roleBinding", query)).populate({
-            path: "roles",
+    return RoleBinding.findOne(query, logger.queryCallbackFactory(TAG, "roleBinding", query)).populate({
+        path: "roles",
     });
 }
 
@@ -70,7 +74,9 @@ async function getRoleBindingForAcct(accountId) {
  */
 async function getById(id) {
     const TAG = "[RoleBinding Service # getById]:";
-    const query = {_id: id};
+    const query = {
+        _id: id
+    };
     //get the roleBinding for account
     //Populate roles for roleBinding
     return await RoleBinding.findById(query, logger.queryCallbackFactory(TAG, "roleBinding", query));

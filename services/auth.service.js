@@ -57,6 +57,11 @@ module.exports = {
 
 // to check for :all, just replace :all with the paramID (AKA resource ID)
 async function ensureAuthorized(req, findByIdFns) {
+    // if number of params doesn't match number of findById functions, fail
+    if (!verifyParamsFunctions(req.params, findByIdFns)) {
+        return false;
+    }
+
     // the requested route is given by req.baseUrl+req.path, to remove ? and other params
     let path = req.baseUrl + req.path;
     if (path.slice(-1) !== "/") {
@@ -93,19 +98,12 @@ async function ensureAuthorized(req, findByIdFns) {
         if (routeUri.slice(-1) !== "/") {
             routeUri += "/";
         }
-        let splitRoute = routeUri.split("/");
+        const splitRoute = routeUri.split("/");
 
         // keeps track of which function to use in findByIdFns
         let findByParamCount = 0;
         let currentlyValid = true;
         for (let i = 0; i < splitPath.length; i++) {
-            // if number of params doesn't match number of findById functions, go to next route
-            if (!verifyParamsFunctions(req.params, findByIdFns)) {
-                // important to set currentlyValid to false, or else it may keep its true value
-                currentlyValid = false;
-                break;
-            }
-
             // checks whether the current chunk in the route path is a parameter
             const isParam = Object.values(req.params).indexOf(splitPath[i]) > -1;
 
@@ -144,13 +142,10 @@ function verifyParamsFunctions(params, idFns) {
     let numParams = Object.values(params).length;
     let validRoute = true;
 
-    switch (numParams) {
-        case 0:
-            validRoute = !idFns;
-            break;
-        default:
-            validRoute = numParams === idFns.length;
-            break;
+    if (numParams === 0) {
+        validRoute = !idFns;
+    } else {
+        validRoute = numParams === idFns.length;
     }
 
     return validRoute;
