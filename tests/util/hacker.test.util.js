@@ -20,12 +20,12 @@ const invalidHacker1 = {
         // invalid portflio with no resume
         "portfolioURL": {},
         // invalid jobInterest
-        "jobInterest": "ASDF",  
+        "jobInterest": "ASDF",
     }
-}
+};
 
 const newHacker1 = {
-    "accountId": Util.Account.Account1._id,
+    "accountId": Util.Account.generatedAccounts[6]._id,
     "school": "University of ASDF",
     "gender": "Female",
     "needsBus": true,
@@ -44,12 +44,12 @@ const newHacker1 = {
             Util.Skill.Skill1._id,
             Util.Skill.Skill5._id,
             Util.Skill.Skill8._id,
-        ],    
+        ],
     }
 };
 
 const newHacker2 = {
-    "accountId": Util.Account.Account2._id,
+    "accountId": Util.Account.NonConfirmedAccount1._id,
     "school": "University of YIKES",
     "gender": "Female",
     "needsBus": true,
@@ -68,7 +68,7 @@ const newHacker2 = {
             Util.Skill.Skill1._id,
             Util.Skill.Skill5._id,
             Util.Skill.Skill8._id,
-        ],    
+        ],
     }
 };
 
@@ -94,7 +94,7 @@ const HackerA = {
             Util.Skill.Skill1._id,
             Util.Skill.Skill5._id,
             Util.Skill.Skill8._id,
-        ],    
+        ],
     }
 };
 const HackerB = {
@@ -119,7 +119,7 @@ const HackerB = {
             Util.Skill.Skill1._id,
             Util.Skill.Skill4._id,
             Util.Skill.Skill7._id,
-        ],    
+        ],
     }
 };
 const Hackers = [

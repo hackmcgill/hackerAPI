@@ -145,6 +145,7 @@ const hackerRole = {
         accountRoutes.getSelfById,
         accountRoutes.patchSelfById,
 
+        hackerRoutes.post,
         hackerRoutes.getSelfById,
         hackerRoutes.getSelfResumeById,
         hackerRoutes.patchSelfById,

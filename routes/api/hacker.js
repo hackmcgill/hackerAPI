@@ -65,6 +65,9 @@ module.exports = {
          *      {"message": "Issue with hacker creation", "data": {}}
          */
         hackerRouter.route("/").post(
+            Middleware.Auth.ensureAuthenticated(),
+            Middleware.Auth.ensureAuthorized(),
+
             Middleware.Validator.Hacker.newHackerValidator,
 
             Middleware.parseBody.middleware,

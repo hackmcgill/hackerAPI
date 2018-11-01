@@ -19,7 +19,7 @@ const Constants = require("../constants");
  * Calls next() if the user is properly authenticated.
  */
 function ensureAuthenticated() {
-    return function(req, res, next) {
+    return function (req, res, next) {
         if (req.isUnauthenticated()) {
             next({
                 status: 401,
@@ -35,10 +35,9 @@ function ensureAuthenticated() {
 }
 
 function ensureAuthorized(findByIdFns) {
-    return function(req, res, next) {
+    return function (req, res, next) {
         Services.Auth.ensureAuthorized(req, findByIdFns).then(
             (auth) => {
-                console.log(auth);
                 if (!auth) {
                     next({
                         status: 401,
@@ -75,7 +74,7 @@ async function sendResetPasswordEmailMiddleware(req, res, next) {
         const ResetPasswordTokenModel = await Services.ResetPasswordToken.findByAccountId(user.id);
         //generate email
         const token = Services.ResetPasswordToken.generateToken(ResetPasswordTokenModel.id, user.id);
-        const mailData = Services.ResetPasswordToken.generateResetPasswordEmail(req.hostname,req.body.email, token);
+        const mailData = Services.ResetPasswordToken.generateResetPasswordEmail(req.hostname, req.body.email, token);
         if (mailData !== undefined) {
             Services.Email.send(mailData, (err) => {
                 if (err) {
@@ -149,7 +148,7 @@ function parseResetToken(req, res, next) {
  * @param {any} res 
  * @param {(err?)=>void} next 
  */
-function parseAccountConfirmationToken(req, res, next){
+function parseAccountConfirmationToken(req, res, next) {
     jwt.verify(req.body.token, process.env.JWT_CONFIRM_ACC_SECRET, function (err, decoded) {
         if (err) {
             next(err);
@@ -166,7 +165,7 @@ function parseAccountConfirmationToken(req, res, next){
  * @param {any} res 
  * @param {(err?)=>void} next 
  */
-async function getAccountTypeFromConfirmationToken(req, res, next){
+async function getAccountTypeFromConfirmationToken(req, res, next) {
     const confirmationObj = await Services.AccountConfirmation.findById(req.body.decodedToken.accountConfirmationId);
     if (confirmationObj) {
         req.body.accountType = confirmationObj.accountType;
@@ -238,7 +237,7 @@ function deleteResetToken(req, res, next) {
     Services.ResetPasswordToken.deleteToken(req.body.decodedToken.resetId).then(
         () => {
             next();
-        }, 
+        },
         (err) => {
             next(err);
         }
@@ -255,6 +254,6 @@ module.exports = {
     deleteResetToken: deleteResetToken,
     sendConfirmAccountEmailMiddleware: Middleware.Util.asyncMiddleware(sendConfirmAccountEmailMiddleware),
     parseAccountConfirmationToken: parseAccountConfirmationToken,
-    validateConfirmationToken: Middleware.Util.asyncMiddleware(validateConfirmationToken), 
+    validateConfirmationToken: Middleware.Util.asyncMiddleware(validateConfirmationToken),
     getAccountTypeFromConfirmationToken: Middleware.Util.asyncMiddleware(getAccountTypeFromConfirmationToken)
 };

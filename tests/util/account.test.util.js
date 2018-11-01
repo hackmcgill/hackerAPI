@@ -13,7 +13,9 @@ const newAccount1 = {
     "email": "newexist@blahblah.com",
     "password": "1234567890",
     "dietaryRestrictions": ["none"],
-    "shirtSize": "S"
+    "shirtSize": "S",
+    "confirmed": true,
+    "accountType": Constants.Hacker,
 };
 const nonAccount1 = {
     "_id": mongoose.Types.ObjectId(),
@@ -31,7 +33,9 @@ const Admin1 = {
     "email": "Admin1@blahblah.com",
     "password": "Admin1",
     "dietaryRestrictions": ["none"],
-    "shirtSize": "S"
+    "shirtSize": "S",
+    "confirmed": true,
+    "accountType": Constants.GODSTAFF,
 };
 // hacker
 const Account1 = {
@@ -53,7 +57,9 @@ const Account2 = {
     "email": "abc.def2@blahblah.com",
     "password": "probsShouldBeHashed2",
     "dietaryRestrictions": ["vegetarian"],
-    "shirtSize": "M"
+    "shirtSize": "M",
+    "confirmed": true,
+    "accountType": Constants.Hacker,
 };
 // sponsor
 const Account3 = {
@@ -63,7 +69,9 @@ const Account3 = {
     "email": "abc.def3@blahblah.com",
     "password": "probsShouldBeHashed3",
     "dietaryRestrictions": ["vegan"],
-    "shirtSize": "L"
+    "shirtSize": "L",
+    "confirmed": true,
+    "accountType": Constants.SPONSOR,
 };
 // volunteer
 const Account4 = {
@@ -73,7 +81,9 @@ const Account4 = {
     "email": "abc.def4@blahblah.com",
     "password": "probsShouldBeHashed4",
     "dietaryRestrictions": ["vegetarian", "lactose intolerant"],
-    "shirtSize": "XL"
+    "shirtSize": "XL",
+    "confirmed": true,
+    "accountType": Constants.VOLUNTEER,
 };
 // sponsor
 const Account5 = {
@@ -83,7 +93,22 @@ const Account5 = {
     "email": "abc.def5@blahblah.com",
     "password": "probsShouldBeHashed5",
     "dietaryRestrictions": ["something1", "something2"],
-    "shirtSize": "XXL"
+    "shirtSize": "XXL",
+    "confirmed": true,
+    "accountType": Constants.SPONSOR,
+};
+
+// non confirmed account for hacker
+const NonConfirmedAccount1 = {
+    "_id": mongoose.Types.ObjectId(),
+    "firstName": "LMAO",
+    "lastName": "ROFL",
+    "email": "abc.def5@blahblah.com",
+    "password": "probsShouldBeHashed5",
+    "dietaryRestrictions": ["something1", "something2"],
+    "shirtSize": "XXL",
+    "confirmed": false,
+    "accountType": Constants.SPONSOR,
 };
 
 const customAccounts = [
@@ -93,11 +118,12 @@ const customAccounts = [
     Account3,
     Account4,
     Account5,
+    NonConfirmedAccount1,
 ];
 
 const generatedAccounts = generateAccounts(20);
 // 1-5 Are for admins
-// 6-10 Are for hackers
+// 6-10 Are for hackers (6 and 7 are new)
 // 11-15 Are for sponsors
 // 16-20 Are for volunteers
 
@@ -107,6 +133,7 @@ const allAccounts = customAccounts.concat(generatedAccounts);
 module.exports = {
     nonAccount1: nonAccount1,
     newAccount1: newAccount1,
+    NonConfirmedAccount1,
     Admin1: Admin1,
     Account1: Account1,
     Account2: Account2,
@@ -114,7 +141,7 @@ module.exports = {
     Account4: Account4,
     Account5: Account5,
     customAccounts: customAccounts,
-    generateAccounts: generateAccounts,
+    generatedAccounts: generatedAccounts,
     allAccounts: allAccounts,
     storeAll: storeAll,
     dropAll: dropAll,
@@ -128,7 +155,7 @@ function generateRandomShirtSize() {
 function generateAccounts(n) {
     let accounts = [];
     for (let i = 0; i < n; i++) {
-        accounts.push({
+        let acc = {
             "_id": mongoose.Types.ObjectId(),
             "firstName": "first" + String(i),
             "lastName": "last" + String(i),
@@ -136,7 +163,20 @@ function generateAccounts(n) {
             "password": "probsShouldBeHashed" + String(i),
             "dietaryRestrictions": [],
             "shirtSize": generateRandomShirtSize(),
-        });
+            "confirmed": true
+        };
+
+        if (i < n / 4) {
+            acc.accountType = Constants.GODSTAFF;
+        } else if (i >= n / 4 && i < (n / 4) * 2) {
+            acc.accountType = Constants.HACKER;
+        } else if (i >= (n / 4) * 2 && i < (n / 4) * 3) {
+            acc.accountType = Constants.SPONSOR;
+        } else {
+            acc.accountType = Constants.VOLUNTEER;
+        }
+
+        accounts.push(acc);
     }
     return accounts;
 }
