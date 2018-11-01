@@ -45,9 +45,9 @@ module.exports = {
 };
 
 /**
- * 
- * @param {{ensureAuthorized:()=>boolean, path: string, user: {id: string}}} req request object passed in by Express.js
+ * @param {{params: string[], baseUrl: string, path: string, user: {id: string}}} req request object passed in by Express.js
  * @param {string} findByIdFns Functions that will return accounts given ids from route parameters.
+ * @return {boolean} Whether the user has permission to access the route
  */
 
 // assuming that routes are strings, not objects
@@ -64,6 +64,7 @@ async function ensureAuthorized(req, findByIdFns) {
 
     // the requested route is given by req.baseUrl+req.path, to remove ? and other params
     let path = req.baseUrl + req.path;
+    // Make sure all paths end in '/'. This is important as we split the path by "/" and check the array length.
     if (path.slice(-1) !== "/") {
         path += "/";
     }
@@ -95,6 +96,7 @@ async function ensureAuthorized(req, findByIdFns) {
         }
 
         let routeUri = route.uri;
+        // Make sure all paths end in '/'. This is important as we split the path by "/" and check the array length.
         if (routeUri.slice(-1) !== "/") {
             routeUri += "/";
         }
@@ -138,12 +140,18 @@ async function ensureAuthorized(req, findByIdFns) {
     return false;
 }
 
+/**
+ * Makes sure that the number of params matches the number of id functions. If there are no route params, idFns should be null or an empty array.
+ * @param {((param: string) => object)[]} idFns An array of functions that take as input a parameter, and return an object
+ * @param {string[]} params List of route parameters
+ * @return {boolean} Whether the number of route parameters matches with the number of idFns
+ */
 function verifyParamsFunctions(params, idFns) {
     let numParams = Object.values(params).length;
     let validRoute = true;
 
     if (numParams === 0) {
-        validRoute = !idFns;
+        validRoute = !idFns || (idFns.length === 0);
     } else {
         validRoute = numParams === idFns.length;
     }
@@ -151,6 +159,13 @@ function verifyParamsFunctions(params, idFns) {
     return validRoute;
 }
 
+/**
+ * Uses param with idFunction to check whether the returned object is the user account, or is linked to the user's account
+ * @param {(string) => object} idFunction A function that will take a string and return an object
+ * @param {string} param The route parameter
+ * @param {ObjectId} userId The id of the user
+ * @return {boolean} Whether the object found by the idFunction is the user's account or linked to the user's account
+ */
 async function verifySelfCase(idFunction, param, userId) {
     const object = await idFunction(param);
     if (!object) {
