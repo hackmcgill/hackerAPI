@@ -42,6 +42,7 @@ describe("GET user account", function () {
     it("should list the user's account on /api/account/self GET", function (done) {
         util.auth.login(agent, Admin1, (error) => {
             if (error) {
+                agent.close();
                 return done(error);
             }
             return agent
@@ -73,6 +74,7 @@ describe("GET user account", function () {
     it("should list another account specified by id using admin priviledge on /api/account/:id/ GET", function (done) {
         util.auth.login(agent, Admin1, (error) => {
             if (error) {
+                agent.close();
                 return done(error);
             }
             return agent
@@ -99,6 +101,7 @@ describe("GET user account", function () {
     it("should list an account specified by id on /api/account/:id/ GET", function (done) {
         util.auth.login(agent, storedAccount1, (error) => {
             if (error) {
+                agent.close();
                 return done(error);
             }
             return agent
@@ -126,6 +129,7 @@ describe("GET user account", function () {
     it("should fail to list an account specified by id on /api/account/:id/ GET due to lack of authorization", function (done) {
         util.auth.login(agent, storedAccount1, (error) => {
             if (error) {
+                agent.close();
                 return done(error);
             }
             return agent
@@ -175,18 +179,18 @@ describe("POST create account", function () {
 });
 
 describe("POST confirm account", function () {
-    it("should SUCCEED and confirm the account", function(done) {
+    it("should SUCCEED and confirm the account", function (done) {
         chai.request(server.app)
-        .post('/api/auth/confirm/' + confirmationToken)
-        .type("application/json")
-        .end(function (err, res){
-            res.should.have.status(200);
-            res.body.should.have.property("message");
-            res.body.message.should.equal("Successfully confirmed account");
-            done();
-        })
+            .post('/api/auth/confirm/' + confirmationToken)
+            .type("application/json")
+            .end(function (err, res) {
+                res.should.have.status(200);
+                res.body.should.have.property("message");
+                res.body.message.should.equal("Successfully confirmed account");
+                done();
+            })
     })
-    it("should FAIL confirming the account", function(done) {
+    it("should FAIL confirming the account", function (done) {
         chai.request(server.app)
             .post('/api/auth/confirm/' + fakeToken)
             .type("application/json")
@@ -299,11 +303,11 @@ describe("PATCH update account", function () {
     });
 });
 
-describe("POST reset password", function() {
+describe("POST reset password", function () {
     const password = {
         "password": "NewPassword"
     };
-    it("should SUCCEED and change the password", function(done) {
+    it("should SUCCEED and change the password", function (done) {
         chai.request(server.app)
             .post('/api/auth/password/reset')
             .type("application/json")

@@ -47,6 +47,7 @@ describe("GET user sponsor", function () {
     it("should succeed to list a sponsor's info using admin power on /api/sponsor/:id GET", function (done) {
         util.auth.login(agent, Admin1, (error) => {
             if (error) {
+                agent.close();
                 return done(error);
             }
             return agent
@@ -72,6 +73,7 @@ describe("GET user sponsor", function () {
     it("should succeed to list a user's sponsor info on /api/sponsor/:id GET", function (done) {
         util.auth.login(agent, storedAccount, (error) => {
             if (error) {
+                agent.close();
                 return done(error);
             }
             return agent
@@ -97,6 +99,7 @@ describe("GET user sponsor", function () {
     it("should fail to list a user's sponsor info due to lack of authorization /api/sponsor/:id GET", function (done) {
         util.auth.login(agent, authorizationFailAccount, (error) => {
             if (error) {
+                agent.close();
                 return done(error);
             }
             return agent
@@ -120,6 +123,7 @@ describe("GET user sponsor", function () {
     it("should fail to list non existant info on /api/sponsor/:id GET", function (done) {
         util.auth.login(agent, Admin1, (error) => {
             if (error) {
+                agent.close();
                 return done(error);
             }
             return agent
@@ -160,6 +164,7 @@ describe("POST create sponsor", function () {
     it("should SUCCEED and create a new sponsor", function (done) {
         util.auth.login(agent, Admin1, (error) => {
             if (error) {
+                agent.close();
                 return done(error);
             }
             return agent
@@ -185,6 +190,7 @@ describe("POST create sponsor", function () {
     it("should FAIL to create a new sponsor", function (done) {
         util.auth.login(agent, hackerAccount1, (error) => {
             if (error) {
+                agent.close();
                 return done(error);
             }
             return agent

@@ -54,6 +54,7 @@ describe("GET hacker", function () {
     it("should list a hacker's information using admin power on /api/hacker/:id GET", function (done) {
         util.auth.login(agent, Admin1, (error) => {
             if (error) {
+                agent.close();
                 return done(error);
             }
             return agent
@@ -81,6 +82,7 @@ describe("GET hacker", function () {
     it("should list the user's hacker information on /api/hacker/:id GET", function (done) {
         util.auth.login(agent, storedAccount1, (error) => {
             if (error) {
+                agent.close();
                 return done(error);
             }
             return agent
@@ -109,6 +111,7 @@ describe("GET hacker", function () {
     it("should fail to list a hacker information due to lack of authorization on /api/hacker/:id GET", function (done) {
         util.auth.login(agent, storedAccount2, (error) => {
             if (error) {
+                agent.close();
                 return done(error);
             }
             return agent
@@ -133,6 +136,7 @@ describe("GET hacker", function () {
     it("should fail to list an invalid hacker /api/hacker/:id GET", function (done) {
         util.auth.login(agent, Admin1, (error) => {
             if (error) {
+                agent.close();
                 return done(error);
             }
             return agent
@@ -175,6 +179,7 @@ describe("POST create hacker", function () {
     it("should SUCCEED and create a new hacker (with an account that has been confirmed) using admin credentials", function (done) {
         util.auth.login(agent, Admin1, (error) => {
             if (error) {
+                agent.close();
                 return done(error);
             }
             return agent
@@ -201,6 +206,7 @@ describe("POST create hacker", function () {
     it("should SUCCEED and create a new hacker for user (with an account that has been confirmed)", function (done) {
         util.auth.login(agent, newHackerAccount1, (error) => {
             if (error) {
+                agent.close();
                 return done(error);
             }
             return agent
@@ -227,6 +233,7 @@ describe("POST create hacker", function () {
     it("should FAIL to create a new hacker if the account hasn't been confirmed", function (done) {
         util.auth.login(agent, Admin1, (error) => {
             if (error) {
+                agent.close();
                 return done(error);
             }
             return agent
@@ -247,6 +254,7 @@ describe("POST create hacker", function () {
     it("should FAIL to create new hacker due to invalid input", function (done) {
         util.auth.login(agent, Admin1, (error) => {
             if (error) {
+                agent.close();
                 return done(error);
             }
             return agent
@@ -284,6 +292,7 @@ describe("PATCH update one hacker", function () {
     it("should SUCCEED and update a hacker using admin power", function (done) {
         util.auth.login(agent, Admin1, (error) => {
             if (error) {
+                agent.close();
                 return done(error);
             }
             return agent
@@ -310,6 +319,7 @@ describe("PATCH update one hacker", function () {
     it("should SUCCEED and update the user's hacker info", function (done) {
         util.auth.login(agent, storedAccount2, (error) => {
             if (error) {
+                agent.close();
                 return done(error);
             }
             return agent
@@ -336,6 +346,7 @@ describe("PATCH update one hacker", function () {
     it("should Fail to update hacker info due to lack of authorization", function (done) {
         util.auth.login(agent, storedAccount2, (error) => {
             if (error) {
+                agent.close();
                 return done(error);
             }
             return agent
@@ -360,6 +371,7 @@ describe("PATCH update one hacker", function () {
     it("should fail to change an invalid hacker's info", function (done) {
         util.auth.login(agent, Admin1, (error) => {
             if (error) {
+                agent.close();
                 return done(error);
             }
             return agent
