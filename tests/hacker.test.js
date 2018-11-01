@@ -21,8 +21,10 @@ const StorageService = require("../services/storage.service");
 const Admin1 = util.account.Admin1;
 
 // storedAccount1 and storedHacker1 are linked together, and have hacker priviledges
+// newHackerDuplicateAccountLink1 is also linked with Account1
 const storedAccount1 = util.account.Account1;
 const storedHacker1 = util.hacker.HackerA;
+const newHackerDuplicateAccountLink1 = util.hacker.duplicateAccountLinkHacker1;
 
 // storedAccount2 and storedHacker2 are linked together, and have hacker priviledges
 const storedAccount2 = util.account.Account2;
@@ -245,6 +247,28 @@ describe("POST create hacker", function () {
                     res.body.should.have.property("message");
                     res.body.message.should.equal("Unauthorized");
                     res.should.have.status(401);
+                    done();
+                });
+        });
+    });
+
+    // fail due to duplicate accountId
+    it("should FAIL to create new hacker due to duplicate account link", function (done) {
+        util.auth.login(agent, Admin1, (error) => {
+            if (error) {
+                agent.close();
+                return done(error);
+            }
+            return agent
+                .post(`/api/hacker/`)
+                .type("application/json")
+                .send(newHackerDuplicateAccountLink1)
+                .end(function (err, res) {
+                    // replace with actual test comparisons after error handler is implemented
+                    res.should.have.status(404);
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal("Hacker with same accountId link found");
+                    res.body.should.have.property("data");
                     done();
                 });
         });

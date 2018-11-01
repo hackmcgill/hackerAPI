@@ -59,7 +59,7 @@ function ensureAuthorized(findByIdFns) {
                 next(err);
             }
         );
-    }
+    };
 }
 
 /**
