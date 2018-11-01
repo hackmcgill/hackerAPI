@@ -34,6 +34,11 @@ function ensureAuthenticated() {
     };
 }
 
+/**
+ * @param {((paramId) => {Account})[]} findByIdFns the request object
+ * @returns {Fn} the middleware that will check that the user is properly authorized.
+ * Calls next() if the user is properly authorized.
+ */
 function ensureAuthorized(findByIdFns) {
     return function (req, res, next) {
         Services.Auth.ensureAuthorized(req, findByIdFns).then(
