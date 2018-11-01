@@ -58,7 +58,10 @@ module.exports = {
 // to check for :all, just replace :all with the paramID (AKA resource ID)
 async function ensureAuthorized(req, findByIdFns) {
     // the requested route is given by req.baseUrl+req.path, to remove ? and other params
-    const path = req.baseUrl + req.path;
+    let path = req.baseUrl + req.path;
+    if (path.slice(-1) !== "/") {
+        path += "/";
+    }
     // splitPath[0] will be '', but assuming that routes will also start with '/', splitRoles will start with '' as well
     const splitPath = path.split("/");
 
@@ -86,7 +89,11 @@ async function ensureAuthorized(req, findByIdFns) {
             continue;
         }
 
-        let splitRoute = route.uri.split("/");
+        let routeUri = route.uri;
+        if (routeUri.slice(-1) !== "/") {
+            routeUri += "/";
+        }
+        let splitRoute = routeUri.split("/");
 
         // keeps track of which function to use in findByIdFns
         let findByParamCount = 0;

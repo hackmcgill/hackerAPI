@@ -46,7 +46,7 @@ module.exports = {
         accountRouter.route("/self").get(
             Middleware.Auth.ensureAuthenticated(),
             Middleware.Auth.ensureAuthorized(),
-            
+
             Controllers.Account.getUserByEmail
         );
 
@@ -163,7 +163,7 @@ module.exports = {
 
             Middleware.Validator.RouteParam.idValidator,
             Middleware.parseBody.middleware,
-            
+
             Controllers.Account.getUserById
         );
 
