@@ -46,7 +46,7 @@ module.exports = {
 
 /**
  * @param {{params: string[], baseUrl: string, path: string, user: {id: string}}} req request object passed in by Express.js
- * @param {string} findByIdFns Functions that will return accounts given ids from route parameters.
+ * @param {((param: string) => object)[]} findByIdFns Functions that will return accounts given ids from route parameters.
  * @return {boolean} Whether the user has permission to access the route
  */
 
