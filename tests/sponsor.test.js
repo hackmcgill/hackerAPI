@@ -21,6 +21,7 @@ let storedAccount = util.account.Account3;
 let storedSponsor = JSON.parse(JSON.stringify(util.sponsor.Sponsor1));
 storedSponsor.id = storedSponsor._id;
 delete storedSponsor._id;
+let duplicateSponsor = util.sponsor.duplicateAccountLinkSponsor1;
 
 let authorizationFailAccount = util.account.Account1;
 
@@ -181,6 +182,27 @@ describe("POST create sponsor", function () {
                     // deleting _id because that was generated, and not part of original data
                     delete res.body.data._id;
                     chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify(newSponsor));
+                    done();
+                });
+        });
+    });
+
+    // fail case - duplicate accountId
+    it("should fail to create a sponsor due to duplicate accountId", function (done) {
+        util.auth.login(agent, Admin1, (error) => {
+            if (error) {
+                agent.close();
+                return done(error);
+            }
+            return agent
+                .post(`/api/sponsor/`)
+                .type("application/json")
+                .send(duplicateSponsor)
+                .end(function (err, res) {
+                    res.should.have.status(404);
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal("Hacker with same accountId link found");
+                    res.body.should.have.property("data");
                     done();
                 });
         });
