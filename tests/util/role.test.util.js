@@ -237,7 +237,7 @@ let allRolesObject = {
     sponsorT2Role: sponsorT2Role,
     sponsorT3Role: sponsorT3Role,
     sponsorT4Role: sponsorT4Role,
-    sponsorT5Role: sponsorT5Role,
+    sponsorT5Role: sponsorT5Role
 };
 
 for (let role in singularRoles) {

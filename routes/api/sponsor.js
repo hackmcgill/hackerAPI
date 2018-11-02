@@ -91,6 +91,8 @@ module.exports = {
             Middleware.parseBody.middleware,
             Middleware.Sponsor.parseSponsor,
 
+            Middleware.Auth.addSponsorRoleBindings,
+
             Controllers.Sponsor.createSponsor
         );
 

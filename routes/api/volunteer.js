@@ -18,6 +18,8 @@ const Services = {
     Volunteer: require("../../services/volunteer.service")
 };
 
+const CONSTANTS = require("../../constants");
+
 module.exports = {
     activate: function (apiRouter) {
         const volunteerRouter = express.Router();
@@ -52,6 +54,8 @@ module.exports = {
             Middleware.parseBody.middleware,
 
             Middleware.Volunteer.parseVolunteer,
+
+            Middleware.Auth.addRoleBindings(CONSTANTS.VOLUNTEER),
 
             Controllers.Volunteer.createVolunteer
         );

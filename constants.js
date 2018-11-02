@@ -47,6 +47,13 @@ const REQUEST_TYPES = {
     PUT: "PUT"
 };
 
+//Define names of the roles specifically associated with permission to create an account
+const POST_ROLES = {};
+POST_ROLES[HACKER] = "postHacker";
+POST_ROLES[SPONSOR] = "postSponsor";
+POST_ROLES[VOLUNTEER] = "postVolunteer";
+POST_ROLES[STAFF] = "postStaff";
+
 const SHIRT_SIZES = ["XS", "S", "M", "L", "XL", "XXL"];
 const USER_TYPES = [HACKER, VOLUNTEER, STAFF, GODSTAFF, SPONSOR];
 const SPONSOR_TIERS = [SPONSOR_T1, SPONSOR_T2, SPONSOR_T3, SPONSOR_T4, SPONSOR_T5];
@@ -102,4 +109,5 @@ module.exports = {
     SPONSOR_T4: SPONSOR_T4,
     SPONSOR_T5: SPONSOR_T5,
     ROLE_CATEGORIES: ROLE_CATEGORIES,
+    POST_ROLES: POST_ROLES
 };

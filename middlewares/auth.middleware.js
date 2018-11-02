@@ -272,21 +272,55 @@ function deleteResetToken(req, res, next) {
     );
 }
 
+
+
 /**
- * Middleware that creates default rolebinding
+ * Attempts to find a rolebinding given the role name and adds it to the account
+ * @param {ObjectId} accountId the id of the account that you want to add a rolebinding to
+ * @param {String} roleName the name of the role that you want to add
+ */
+async function createRoleBindingByRoleName(accountId, roleName){
+    const role = await Services.Role.getRole(roleName);
+    if (!!role) {
+        await Services.RoleBinding.createRoleBinding(accountId, role.id);
+    }
+}
+
+/**
+ * Middleware that creates rolebinding to access POST route for respective account
  * @param {{body: {account:{accountType:String, id: ObjectId}}}} req the request object
  * @param {*} res 
  * @param {(err?)=>void} next 
  */
-async function addRoleBindings(req, res, next){
+async function addCreationRoleBindings(req, res, next){
     // Get the default role for the account type given
-    const role = await Services.Role.getRole(req.body.account.accountType);
-    if(!!role){
-        await Services.RoleBinding.createRoleBinding(req.body.account.id, role.id);
-    }
+    const roleName = Constants.POST_ROLES[req.body.account.accountType];
+    await createRoleBindingByRoleName(req.body.account.id, roleName);
     next();
 }
 
+/**
+ * Adds proper account rolebindings on account creation
+ * @param {string} roleName name of the role to be added to account
+ */
+function addRoleBindings(roleName){
+    return async (req, res, next) => {
+        await createRoleBindingByRoleName(req.body.account.id, roleName);
+        next();
+    }
+}
+
+/**
+ * Middleware which creates rolebinding for appropriate sponsor
+ * @param {{body: {sponsorDetails: {accountId: ObjectId}}}} req request object
+ * @param {*} res 
+ * @param {(err?) => void } next 
+ */
+async function addSponsorRoleBindings(req, res, next){
+    const account = Services.Account.findById(req.body.sponsorDetails.accountId);
+    await createRoleBindingByRoleName(account.id, account.accountType);
+    next();
+}
 
 module.exports = {
     //for each route, set up an authentication middleware for that route
@@ -301,5 +335,7 @@ module.exports = {
     validateConfirmationToken: Middleware.Util.asyncMiddleware(validateConfirmationToken),
     getAccountTypeFromConfirmationToken: Middleware.Util.asyncMiddleware(getAccountTypeFromConfirmationToken),
     validateConfirmationTokenWithoutAccount: Middleware.Util.asyncMiddleware(validateConfirmationTokenWithoutAccount),
-    addRoleBindings: Middleware.Util.asyncMiddleware(addRoleBindings)
+    addRoleBindings: addRoleBindings,
+    addCreationRoleBindings: Middleware.Util.asyncMiddleware(addCreationRoleBindings),
+    addSponsorRoleBindings: Middleware.Util.asyncMiddleware(addSponsorRoleBindings)
 };

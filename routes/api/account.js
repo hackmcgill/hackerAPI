@@ -91,7 +91,7 @@ module.exports = {
             // middleware to create hacker object in database
 
             Middleware.Account.addAccount,
-            Middleware.Auth.addRoleBindings,
+            Middleware.Auth.addCreationRoleBindings,
 
             // middleware to create a hacker token 
             // and send a confirmation message
