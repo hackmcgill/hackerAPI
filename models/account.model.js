@@ -24,10 +24,6 @@ const AccountSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    permissions: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Permission"
-    }],
     dietaryRestrictions: [{
         type: String
     }],
@@ -35,6 +31,15 @@ const AccountSchema = new mongoose.Schema({
         type: String,
         enum: Constants.SHIRT_SIZES,
         required: true
+    },
+    confirmed: {
+        type: Boolean,
+        default: false
+    },
+    accountType: {
+        type: String,
+        enum: Constants.USER_TYPES,
+        default: Constants.HACKER
     }
 });
 

@@ -8,12 +8,16 @@ const Middleware = {
     Validator: {
         /* Insert the require statement to the validator file here */
         Account: require("../../middlewares/validators/account.validator"),
-        RouteParam: require("../../middlewares/validators/routeParam.validator")
+        RouteParam: require("../../middlewares/validators/routeParam.validator"),
+        Auth: require("../../middlewares/validators/auth.validator")
     },
     /* Insert all of ther middleware require statements here */
     parseBody: require("../../middlewares/parse-body.middleware"),
     Account: require("../../middlewares/account.middleware"),
     Auth: require("../../middlewares/auth.middleware")
+};
+const Services = {
+    Account: require("../../services/account.service"),
 };
 
 module.exports = {
@@ -41,6 +45,8 @@ module.exports = {
          */
         accountRouter.route("/self").get(
             Middleware.Auth.ensureAuthenticated(),
+            Middleware.Auth.ensureAuthorized(),
+
             Controllers.Account.getUserByEmail
         );
 
@@ -79,8 +85,12 @@ module.exports = {
             // middlewares to parse body/organize body
             // adds default hacker permissions here
             Middleware.Account.parseAccount,
-            Middleware.Account.addDefaultHackerPermissions,
 
+            // middleware to create hacker object in database
+            Middleware.Account.addAccount,
+            // middleware to create a hacker token 
+            // and send a confirmation message
+            Middleware.Auth.sendConfirmAccountEmailMiddleware,
             // should return status in this function
             Controllers.Account.addUser
         );
@@ -113,6 +123,7 @@ module.exports = {
          */
         accountRouter.route("/:id").patch(
             Middleware.Auth.ensureAuthenticated(),
+            Middleware.Auth.ensureAuthorized([Services.Account.findById]),
             // validators
             Middleware.Validator.RouteParam.idValidator,
             Middleware.Validator.Account.updateAccountValidator,
@@ -147,6 +158,9 @@ module.exports = {
          *      {"message": "User id not found", "data": {}}
          */
         accountRouter.route("/:id").get(
+            Middleware.Auth.ensureAuthenticated(),
+            Middleware.Auth.ensureAuthorized([Services.Account.findById]),
+
             Middleware.Validator.RouteParam.idValidator,
             Middleware.parseBody.middleware,
 

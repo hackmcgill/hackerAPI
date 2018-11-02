@@ -8,7 +8,7 @@ module.exports = {
         VALIDATOR.nameValidator("body", "school", false),
         VALIDATOR.nameValidator("body", "gender", false),
         VALIDATOR.booleanValidator("body", "needsBus", false),
-        VALIDATOR.applicationValidator("body", "application", false),
+        VALIDATOR.applicationValidator("body", "application", false)
     ],
 
     // untested
@@ -18,7 +18,7 @@ module.exports = {
         VALIDATOR.nameValidator("body", "school", true),
         VALIDATOR.nameValidator("body", "gender", true),
         VALIDATOR.applicationValidator("body", "application", true),
-        VALIDATOR.booleanValidator("body", "needsBus", true),  
+        VALIDATOR.booleanValidator("body", "needsBus", true)
     ],
     uploadResumeValidator: [
         VALIDATOR.mongoIdValidator("param", "id", false)

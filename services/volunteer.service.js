@@ -1,5 +1,6 @@
 "use strict";
 const Volunteer = require("../models/volunteer.model");
+const logger = require("./logger.service");
 
 /**
  * @function createVolunteer
@@ -15,6 +16,19 @@ function createVolunteer(volunteerDetails) {
     return volunteer.save();
 }
 
+/**
+ * @function findById
+ * @param {ObjectId} id
+ * @return {DocumentQuery} The document query will resolve to volunteer or null.
+ * @description Finds an volunteer by the id, which is the mongoId.
+ */
+function findById(id) {
+    const TAG = `[Volunteer Service # findById ]:`;
+
+    return Volunteer.findById(id, logger.queryCallbackFactory(TAG, "volunteer", id));
+}
+
 module.exports = {
     createVolunteer: createVolunteer,
+    findById: findById,
 };

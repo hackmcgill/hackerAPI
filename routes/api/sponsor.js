@@ -13,7 +13,11 @@ const Middleware = {
     },
     /* Insert all of ther middleware require statements here */
     parseBody: require("../../middlewares/parse-body.middleware"),
-    Sponsor: require("../../middlewares/sponsor.middleware")
+    Sponsor: require("../../middlewares/sponsor.middleware"),
+    Auth: require("../../middlewares/auth.middleware"),
+};
+const Services = {
+    Sponsor: require("../../services/sponsor.service"),
 };
 
 module.exports = {
@@ -42,9 +46,12 @@ module.exports = {
          *      {"message": "Issue with retrieving sponsor information", "data": {}}
          */
         sponsorRouter.route("/:id").get(
+            Middleware.Auth.ensureAuthenticated(),
+            Middleware.Auth.ensureAuthorized([Services.Sponsor.findById]),
+
             Middleware.Validator.RouteParam.idValidator,
             Middleware.parseBody.middleware,
-            
+
             Controllers.Sponsor.findById
         );
 
@@ -74,6 +81,9 @@ module.exports = {
          *      {"message": "Issue with sponsor creation", "data": {}}
          */
         sponsorRouter.route("/").post(
+            Middleware.Auth.ensureAuthenticated(),
+            Middleware.Auth.ensureAuthorized(),
+
             // validation
             Middleware.Validator.Sponsor.newSponsorValidator,
 

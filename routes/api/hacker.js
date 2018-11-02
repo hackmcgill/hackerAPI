@@ -12,8 +12,12 @@ const Middleware = {
     /* Insert all of ther middleware require statements here */
     parseBody: require("../../middlewares/parse-body.middleware"),
     Util: require("../../middlewares/util.middleware"),
-    Hacker: require("../../middlewares/hacker.middleware")
+    Hacker: require("../../middlewares/hacker.middleware"),
+    Auth: require("../../middlewares/auth.middleware")
 };
+const Services = {
+    Hacker: require("../../services/hacker.service"),
+}
 
 module.exports = {
     activate: function (apiRouter) {
@@ -61,13 +65,16 @@ module.exports = {
          *      {"message": "Issue with hacker creation", "data": {}}
          */
         hackerRouter.route("/").post(
+            Middleware.Auth.ensureAuthenticated(),
+            Middleware.Auth.ensureAuthorized(),
+
             Middleware.Validator.Hacker.newHackerValidator,
 
             Middleware.parseBody.middleware,
-
+            Middleware.Hacker.validateConfirmedStatus,
             Middleware.Hacker.parseHacker,
-            Middleware.Hacker.addDefaultStatus,
 
+            Middleware.Hacker.addDefaultStatus,
             Controllers.Hacker.createHacker
         );
 
@@ -114,9 +121,11 @@ module.exports = {
          *      {"message": "Issue with changing hacker information", "data": {}}
          */
         hackerRouter.route("/:id").patch(
+            Middleware.Auth.ensureAuthenticated(),
+            Middleware.Auth.ensureAuthorized([Services.Hacker.findById]),
+
             Middleware.Validator.RouteParam.idValidator,
             Middleware.Validator.Hacker.updateHackerValidator,
-
 
             Middleware.parseBody.middleware,
             Middleware.Hacker.parsePatch,
@@ -150,15 +159,18 @@ module.exports = {
          *      {"message": "Issue with retrieving hacker information", "data": {}}
          */
         hackerRouter.route("/:id").get(
+            Middleware.Auth.ensureAuthenticated(),
+            Middleware.Auth.ensureAuthorized([Services.Hacker.findById]),
+
             Middleware.Validator.RouteParam.idValidator,
             Middleware.parseBody.middleware,
 
             Controllers.Hacker.findById
         );
 
-        hackerRouter.route("/:id/resume")
+        hackerRouter.route("/resume/:id")
             /**
-             * @api {post} /hacker/:id/resume upload or update resume for a hacker.
+             * @api {post} /hacker/resume/:id upload or update resume for a hacker.
              * @apiName postHackerResume
              * @apiGroup Hacker
              * @apiVersion 0.0.8

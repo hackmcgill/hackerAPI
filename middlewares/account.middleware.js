@@ -3,7 +3,7 @@
 const TAG = `[ ADDRESS.MIDDLEWARE.js ]`;
 const mongoose = require("mongoose");
 const Services = {
-    Permission: require("../services/permission.service"),
+    RoleBinding: require("../services/roleBinding.service"),
     Logger: require("../services/logger.service"),
     Account: require("../services/account.service")
 };
@@ -37,7 +37,6 @@ function parsePatch(req, res, next) {
  * Adds _id to accountDetails.
  */
 function parseAccount(req, res, next) {
-
     const accountDetails = {
         _id: mongoose.Types.ObjectId(),
         firstName: req.body.firstName,
@@ -67,13 +66,48 @@ function parseAccount(req, res, next) {
  * @param {(err?)=>void} next
  */
 async function updatePassword(req, res, next) {
-    req.body.accountDetails.permissions = await Services.Account.updatePassword(req.body.password);
+    req.body.account = await Services.Account.updatePassword(req.body.decodedToken.accountId, req.body.password);
     next();
 }
 
 // TODO: fix when new permission system is created
-async function addDefaultHackerPermissions (req, res, next) {
-    req.body.accountDetails.permissions = await Services.Permission.getDefaultPermission("Hacker");
+async function addDefaultHackerPermissions(req, res, next) {
+    // await Services.RoleBinding.createRoleBinding(req.);
+    next();
+}
+async function createAccount(req, res, next) {
+    const accountDetails = req.body.accountDetails;
+    const success = await Services.Account.addOneAccount(accountDetails);
+    if (!success) {
+        next({
+            message: "Issue with account creation",
+            data: {}
+        });
+    } else {
+        next();
+    }
+}
+
+/**
+ * @function addAccount
+ * @param {{body: {accountDetails: object}}} req 
+ * @param {*} res 
+ * @param {(err?)=>void} next 
+ * @return {void}
+ * @description
+ * Creates account document after checking if it exists first
+ */
+async function addAccount(req, res, next) {
+    const accountDetails = req.body.accountDetails;
+    //Check duplicate
+    const exists = await Services.Account.findByEmail(accountDetails.email);
+    if (exists) {
+        var err = new Error("Account already exists");
+        err.status = 409;
+        next(err);
+    }
+    const account = await Services.Account.addOneAccount(accountDetails);
+    req.body.account = account;
     next();
 }
 
@@ -83,5 +117,6 @@ module.exports = {
     // untested
     addDefaultHackerPermissions: Middleware.Util.asyncMiddleware(addDefaultHackerPermissions),
     // untested
-    updatePassword: Middleware.Util.asyncMiddleware(updatePassword)
+    updatePassword: Middleware.Util.asyncMiddleware(updatePassword),
+    addAccount: Middleware.Util.asyncMiddleware(addAccount)
 };

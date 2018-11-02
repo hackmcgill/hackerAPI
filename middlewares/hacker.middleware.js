@@ -30,7 +30,7 @@ function parsePatch(req, res, next) {
 
 /**
  * @function parseHacker
- * @param {{body: {accountId: ObjectId, school: string, gender: string, needsBus: string, application: Object}}} req
+ * @param {{body: {accountId: ObjectId, school: string, gender: string, needsBus: string, application: Object, authorization: string}}} req
  * @param {*} res
  * @param {(err?)=>void} next
  * @return {void}
@@ -47,13 +47,15 @@ function parseHacker(req, res, next) {
         needsBus: req.body.needsBus,
         application: req.body.application,
     };
+    req.body.token = req.body.authorization;
 
     delete req.body.accountId;
     delete req.body.school;
     delete req.body.gender;
     delete req.body.needsBus;
     delete req.body.application;
-
+    delete req.body.authorization;
+    
     req.body.hackerDetails = hackerDetails;
 
     next();
@@ -73,6 +75,24 @@ function addDefaultStatus(req, res, next) {
 }
 
 /**
+ * Verifies that account is confirmed and of proper type from the account ID passed in req.body.accountId
+ * @param {{body: {accountId: ObjectId}}} req 
+ * @param {*} res 
+ * @param {(err?) => void} next 
+ */
+async function validateConfirmedStatus(req, res, next) {
+    const account = await Services.Account.findById(req.body.accountId);
+    if(account && account.confirmed && account.accountType === Constants.HACKER){
+        next();
+    } else {
+        next({
+            status: 401,
+            message: "Unauthorized",
+            error: {}
+        });
+    }
+}
+/**
  * Verifies that the current signed in user is linked to the hacker passed in via req.body.id
  * @param {{body: {id: ObjectId}}} req 
  * @param {*} res 
@@ -82,7 +102,8 @@ function addDefaultStatus(req, res, next) {
 function ensureAccountLinkedToHacker(req, res, next) {
     Services.Hacker.findById(req.body.id).then(
         (hacker) => {
-            if(hacker && hacker.accountId === req.user.id) {
+            req.hacker = hacker;
+            if (hacker && req.user && String.toString(hacker.accountId) === String.toString(req.user.id)) {
                 next();
             } else {
                 next({
@@ -96,16 +117,20 @@ function ensureAccountLinkedToHacker(req, res, next) {
 }
 
 /**
- * Uploads resume via the storage service. Assumes there is a file in req, and a hacker id in req.body. 
- * @param {{body: {id: ObjectId}, file: [Buffer]}} req 
+ * Uploads resume via the storage service. Assumes there is a resume in req, and a hacker id in req.body. 
+ * @param {{body: {id: ObjectId}, resume: [Buffer]}} req 
  * @param {*} res 
  * @param {(err?)=>void} next
  */
 async function uploadResume(req, res, next) {
-    const gcfilename = `resumes/${Date.now()}-${req.body.id}`;
+    const gcfilename = `resumes/${Date.now()}-${req.hacker.id}`;
     await Services.Storage.upload(req.file, gcfilename);
     req.body.gcfilename = gcfilename;
-    await Services.Hacker.updateOne(req.body.id, { $set: {"application.portfolioURL.resume": gcfilename}});
+    await Services.Hacker.updateOne(req.hacker.id, {
+        $set: {
+            "application.portfolioURL.resume": gcfilename
+        }
+    });
     next();
 }
 
@@ -117,13 +142,13 @@ async function uploadResume(req, res, next) {
  */
 async function downloadResume(req, res, next) {
     const hacker = await Services.Hacker.findById(req.body.id);
-    if(hacker && hacker.application && hacker.application.portfolioURL && hacker.application.portfolioURL.resume) {
+    if (hacker && hacker.application && hacker.application.portfolioURL && hacker.application.portfolioURL.resume) {
         res.body.resume = await Services.Storage.download(hacker.application.portfolioURL.resume);
     } else {
         return next({
             status: 404,
             message: "Resume does not exist",
-            error:{}
+            error: {}
         });
     }
     next();
@@ -136,10 +161,9 @@ async function downloadResume(req, res, next) {
  */
 function sendStatusUpdateEmail(req, res, next) {
     //skip if the status doesn't exist
-    if(!req.body.status) {
+    if (!req.body.status) {
         return next();
-    }
-    else {
+    } else {
         const mailData = {
             to: req.email,
             from: process.env.NO_REPLY_EMAIL,
@@ -148,12 +172,12 @@ function sendStatusUpdateEmail(req, res, next) {
         };
         Services.Email.send(mailData).then(
             (response) => {
-                if(response[0].statusCode >= 200 && response[0].statusCode < 300) {
+                if (response[0].statusCode >= 200 && response[0].statusCode < 300) {
                     next();
                 } else {
                     next(response[0]);
                 }
-            }, next);    
+            }, next);
     }
 }
 
@@ -166,9 +190,9 @@ function sendStatusUpdateEmail(req, res, next) {
  */
 async function updateHacker(req, res, next) {
     const hacker = await Services.Hacker.updateOne(req.params.id, req.body);
-    if(hacker) {
+    if (hacker) {
         const acct = await Services.Account.findById(hacker.accountId);
-        if(!acct) {
+        if (!acct) {
             return next({
                 status: 500,
                 message: "Error while searching for account by id when updating hacker",
@@ -200,4 +224,5 @@ module.exports = {
     downloadResume: Middleware.Util.asyncMiddleware(downloadResume),
     sendStatusUpdateEmail: sendStatusUpdateEmail,
     updateHacker: Middleware.Util.asyncMiddleware(updateHacker),
+    validateConfirmedStatus: Middleware.Util.asyncMiddleware(validateConfirmedStatus)
 };

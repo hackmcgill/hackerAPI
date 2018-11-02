@@ -13,17 +13,10 @@ const Middleware = {
     parseBody: require("../../middlewares/parse-body.middleware"),
     Auth: require("../../middlewares/auth.middleware"),
     Account: require("../../middlewares/account.middleware")
-}
+};
 const Controllers = {
     Auth: require("../../controllers/auth.controller")
 };
-
-const AuthRoutes = {
-    login: "/login",
-    logout: "/logout",
-    forgotPassword: "/password/forgot",
-    resetPassword: "/password/reset"
-}
 
 module.exports = {
     activate: function (apiRouter) {
@@ -55,7 +48,7 @@ module.exports = {
             passport.authenticate("emailAndPass"),
             Controllers.Auth.onSuccessfulLogin
         );
-        
+
         /**
          * @api {get} /auth/logout logout of service
          * @apiName logout
@@ -91,7 +84,7 @@ module.exports = {
          * 
          * @apiPermission: public
          */
-        authRouter.route(AuthRoutes.forgotPassword).post(
+        authRouter.route("/password/forgot").post(
             Middleware.Validator.Auth.ForgotPasswordValidator,
             Middleware.parseBody.middleware,
             //create resetPassword jwt
@@ -114,7 +107,7 @@ module.exports = {
          * @apiHeader {String} Authentication the token that was provided in the reset password email
          * @apiHeaderExample {json} Header-Example:
          *     {
-         *       "Authentication": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+         *       "X-Reset-Token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
          *     }
          * 
          * @apiParamExample {json} Request-Example:
@@ -127,7 +120,7 @@ module.exports = {
          * 
          * @apiPermission: must have authentication token
          */
-        authRouter.route(AuthRoutes.resetPassword).post(
+        authRouter.route("/password/reset").post(
             //post new password, validate token also
             Middleware.Validator.Auth.ResetPasswordValidator,
             Middleware.parseBody.middleware,
@@ -145,6 +138,34 @@ module.exports = {
             //send the response
             Controllers.Auth.resetPassword
         );
+
+        /**
+         * @api {post} /auth/confirm/:token confirm account using the JWT in :token
+         * @apiName confirmAccount
+         * @apiGroup Authentication
+         * @apiVersion 0.0.8
+         *
+         * @apiParam {String} JWT for confirming the account
+         *
+         * @apiSuccess {string} message Success message
+         * @apiSuccess {object} data empty
+         * @apiSuccessExample {json} Success-Response:
+         *      {"message": "Successfully confirmed account", "data": {}}
+         * 
+         * @apiError {string} message Error message
+         * @apiError {object} data empty
+         * @apiErrorExample {object} Error-Response: 
+         *      {"message": "Invalid token for confirming account, "data": {}}
+         * 
+         */
+        authRouter.route("/confirm/:token").post(
+            Middleware.Validator.Auth.accountConfirmationValidator,
+            Middleware.parseBody.middleware,
+            Middleware.Auth.parseAccountConfirmationToken,
+            Middleware.Auth.validateConfirmationToken,
+            Controllers.Auth.confirmAccount
+        )
+
         apiRouter.use("/auth", authRouter);
     }
 };
