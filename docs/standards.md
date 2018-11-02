@@ -2,7 +2,7 @@
 
 ## Github
 
-Build off of develop. If you are working on a feature, make the branch name `feature/<feature name>`. If you are working on a bug fix, make the branch name `bugfix/<what you're working on>`.
+Build off of develop. If you are working on a feature, make the branch name `feature/<issue #>-<feature name>`. If you are working on a bug fix, make the branch name `bugfix/<issue #>-<what you're working on>`.
 
 We use github issues to track tasks, and projects to organize them. If you are working on a new issue that is not being tracked, please create one and file it into the proper project.
 
