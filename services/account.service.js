@@ -2,6 +2,7 @@
 const Account = require("../models/account.model");
 const logger = require("./logger.service");
 const bcrypt = require("bcrypt");
+const Constants = require('../constants');
 
 /**
  * @function findById
@@ -107,6 +108,14 @@ function changeOneAccount(id, accountDetails) {
 function updatePassword(id, newPassword) {
     const hashed = hashPassword(newPassword);
     return changeOneAccount(id, {password: hashed});
+}
+
+/**
+ * Returns if the accountType corresponds to a sponsor
+ * @param {string} accountType 
+ */
+function isSponsor(accountType){
+    return Constants.SPONSOR_TIERS.includes(accountType) || accountType == Constants.SPONSOR;
 }
 
 module.exports = {

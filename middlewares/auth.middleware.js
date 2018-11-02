@@ -6,7 +6,9 @@ const Services = {
     ResetPasswordToken: require("../services/resetPassword.service"),
     Account: require("../services/account.service"),
     Email: require("../services/email.service"),
-    AccountConfirmation: require("../services/accountConfirmation.service")
+    AccountConfirmation: require("../services/accountConfirmation.service"),
+    Role: require("../services/role.service"),
+    RoleBinding: require("../services/roleBinding.service")
 };
 
 const Middleware = {
@@ -149,19 +151,22 @@ function parseResetToken(req, res, next) {
 /**
  * Attempts to parse the jwt token that is found in req.body.token using process.env.JWT_CONFIRM_ACC_SECRET as the key.
  * Places the parsed object into req.body.decodedToken
+ * If the token does not exist it just continues flow
  * @param {{body:{token:string}}} req 
  * @param {any} res 
  * @param {(err?)=>void} next 
  */
 function parseAccountConfirmationToken(req, res, next) {
-    jwt.verify(req.body.token, process.env.JWT_CONFIRM_ACC_SECRET, function (err, decoded) {
-        if (err) {
-            next(err);
-        } else {
-            req.body.decodedToken = decoded;
-            next();
-        }
-    });
+    if(!!req.body.token){
+        jwt.verify(req.body.token, process.env.JWT_CONFIRM_ACC_SECRET, function (err, decoded) {
+            if (err) {
+                next(err);
+            } else {
+                req.body.decodedToken = decoded;
+            }
+        });
+    }
+    next();
 }
 
 /**
@@ -209,7 +214,7 @@ async function validateResetToken(req, res, next) {
 
 /**
  * Verifies that the confirm account exists, and that the accountId exists.
- * @param {{body:{decodedToken:{accountConfirmationId:string, accountId:string}}}} req 
+ * @param {{body:{decodedToken:{accountConfirmationId: String, accountId: String}}}} req 
  * @param {any} res 
  * @param {(err?)=>void} next 
  */
@@ -233,6 +238,24 @@ async function validateConfirmationToken(req, res, next) {
 }
 
 /**
+ * 
+ * @param {body: {decodedToken:{accountConfirmationId: String}}} req 
+ * @param {*} res 
+ * @param {*} next 
+ */
+async function validateConfirmationTokenWithoutAccount(req, res, next){
+    if(!!req.body.decodedToken){
+        const confirmationObj = await Services.AccountConfirmation.findById(req.body.decodedToken.accountConfirmationId);
+        if(!confirmationObj.accountId){
+            req.body.accountDetails.confirmed = true;
+            req.body.accountDetails.accountType = confirmationObj.accountType;
+        }
+    }
+    next();
+}
+
+
+/**
  * Middleware that deletes the reset token in the db
  * @param {{body: {decodedToken:{resetId:String}}}} req the request object
  * @param {*} res 
@@ -249,6 +272,22 @@ function deleteResetToken(req, res, next) {
     );
 }
 
+/**
+ * Middleware that creates default rolebinding
+ * @param {{body: {account:{accountType:String, id: ObjectId}}}} req the request object
+ * @param {*} res 
+ * @param {(err?)=>void} next 
+ */
+async function addRoleBindings(req, res, next){
+    // Get the default role for the account type given
+    const role = await Services.Role.getRole(req.body.account.accountType);
+    if(!!role){
+        await Services.RoleBinding.createRoleBinding(req.body.account.id, role.id);
+    }
+    next();
+}
+
+
 module.exports = {
     //for each route, set up an authentication middleware for that route
     ensureAuthenticated: ensureAuthenticated,
@@ -260,5 +299,7 @@ module.exports = {
     sendConfirmAccountEmailMiddleware: Middleware.Util.asyncMiddleware(sendConfirmAccountEmailMiddleware),
     parseAccountConfirmationToken: parseAccountConfirmationToken,
     validateConfirmationToken: Middleware.Util.asyncMiddleware(validateConfirmationToken),
-    getAccountTypeFromConfirmationToken: Middleware.Util.asyncMiddleware(getAccountTypeFromConfirmationToken)
+    getAccountTypeFromConfirmationToken: Middleware.Util.asyncMiddleware(getAccountTypeFromConfirmationToken),
+    validateConfirmationTokenWithoutAccount: Middleware.Util.asyncMiddleware(validateConfirmationTokenWithoutAccount),
+    addRoleBindings: Middleware.Util.asyncMiddleware(addRoleBindings)
 };

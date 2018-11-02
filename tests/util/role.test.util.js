@@ -13,6 +13,10 @@ const authRoutes = {
     "logout": {
         requestType: Constants.REQUEST_TYPES.POST,
         uri: "/api/auth/logout"
+    },
+    "invite": {
+        requestType: Constants.REQUEST_TYPES.POST,
+        uri: "/api/auth/invite"
     }
 };
 
@@ -130,13 +134,13 @@ const allRoutes = {
 
 const adminRole = {
     "_id": mongoose.Types.ObjectId(),
-    "name": "admin",
+    "name": Constants.GODSTAFF,
     "routes": getAllRoutes(),
 };
 
 const hackerRole = {
     "_id": mongoose.Types.ObjectId(),
-    "name": "hacker",
+    "name": Constants.HACKER,
     "routes": [
         authRoutes.login,
         authRoutes.logout,
@@ -154,7 +158,7 @@ const hackerRole = {
 
 const volunteerRole = {
     "_id": mongoose.Types.ObjectId(),
-    "name": "volunteer",
+    "name": Constants.VOLUNTEER,
     "routes": [
         authRoutes.login,
         authRoutes.logout,
@@ -165,7 +169,7 @@ const volunteerRole = {
 
 const sponsorT1Role = {
     "_id": mongoose.Types.ObjectId(),
-    "name": "sponsorT1",
+    "name": Constants.SPONSOR_T1,
     "routes": [
         authRoutes.login,
         authRoutes.logout,
@@ -177,7 +181,7 @@ const sponsorT1Role = {
 
 const sponsorT2Role = {
     "_id": mongoose.Types.ObjectId(),
-    "name": "sponsorT2",
+    "name": Constants.SPONSOR_T2,
     "routes": [
         authRoutes.login,
         authRoutes.logout,
@@ -189,7 +193,7 @@ const sponsorT2Role = {
 
 const sponsorT3Role = {
     "_id": mongoose.Types.ObjectId(),
-    "name": "sponsorT3",
+    "name": Constants.SPONSOR_T3,
     "routes": [
         authRoutes.login,
         authRoutes.logout,
@@ -201,7 +205,7 @@ const sponsorT3Role = {
 
 const sponsorT4Role = {
     "_id": mongoose.Types.ObjectId(),
-    "name": "sponsorT4",
+    "name": Constants.SPONSOR_T4,
     "routes": [
         authRoutes.login,
         authRoutes.logout,
@@ -213,7 +217,7 @@ const sponsorT4Role = {
 
 const sponsorT5Role = {
     "_id": mongoose.Types.ObjectId(),
-    "name": "sponsorT5",
+    "name": Constants.SPONSOR_T5,
     "routes": [
         authRoutes.login,
         authRoutes.logout,
