@@ -28,12 +28,12 @@ We use a custom implementation for authorization, which relies heavily on the de
 
 #### `Route`
 
-A `Route` is defined by its uri path, its query parameters in the uri path, and the HTTP verb used to access it:
+A `Route`, which is a component of a `Role`, is defined by its uri path, its query parameters in the uri path, and the HTTP verb used to access it:
 
 ```json
 {
-    "requestType": "POST",
     "uri": "/api/sponsor/",
+    "requestType": "POST",
 }
 ```
 
@@ -43,16 +43,28 @@ A `Role` is a collection of `Routes`, and a unique name (such as `hacker`, or `s
 
 ```json
 {
+    "Name": "sponsor",
+    "routes": [{
+        "uri": "/api/sponsor/",
+        "requestType": "POST"
+    }]
+}
+```
+
+_Note here that the parameter `routes` is a list of `Route` objects described in the previous section._
+
+#### `RoleBinding`
+
+A `RoleBinding` is a mapping between an `account` and a `Role`. In this way, we can say that an account has a certain set of allowed actions, defined by the `Role`. An `account` can have a `RoleBinding` to multiple `Roles`.
+
+```json
+{
     "accountId": "507f191e810c19729de860ea",
     "roles": ["54759eb3c090d83494e2d804", "51325eb3c090d83494e2d702"],
 }
 ```
 
 _note here that `roles` is a list of `ObjectIds`, since the role is also a document in the database._
-
-#### `RoleBinding`
-
-A `RoleBinding` is a mapping between an `account` and a `Role`. In this way, we can say that an account has a certain set of allowed actions, defined by the `Role`. An `account` can have a `RoleBinding` to multiple `Roles`.
 
 ### How to write a `Route` document
 
@@ -68,7 +80,7 @@ The `all` placeholder provides the account that hits this `Route` access to any 
 
 #### Chaining :self and :all
 
-It is possible to chain `:self` and `:all` together if need-be.
+It is possible to chain `:self` and `:all` together if need-be. An example of chaining is either: `/:self/:all`, or `/:all/:all`, etc.
 
 ### Adding Authentication and Authorization to your middleware
 
@@ -85,7 +97,7 @@ hackerRouter.route("/").post(
 );
 ```
 
-To add `Authorization`, you will need to import the `Auth` module file, and then insert into the route definition, just like `Authentication`. However, if there are route parameters, you will need to also provide as arguments the functions required to access the given parameters. An example is below:
+To add `Authorization`, you will need to import the `Auth` module file, and then insert into the route definition, just like `Authentication`. However, if there are route parameters, you will need to also provide as arguments an array which contains the functions required to access the given parameters. There must be a one-to-one mapping between route parameters and function inputs. An example is below:
 
 ```javascript
 const Middleware = {
@@ -104,6 +116,8 @@ hackerRouter.route("/:id1/friend/:id2/").get(
 ```
 
 Here, we note that we pass in one function for `id1`, and one function for `id2`.
+
+The method signature for the inputted functions must be: `(parameter) => {accountId:string} | {_id:string}`.
 
 ### Limitations
 
