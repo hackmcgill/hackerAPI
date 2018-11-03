@@ -273,18 +273,6 @@ function deleteResetToken(req, res, next) {
 }
 
 /**
- * Attempts to find a rolebinding given the role name and adds it to the account
- * @param {ObjectId} accountId the id of the account that you want to add a rolebinding to
- * @param {String} roleName the name of the role that you want to add
- */
-async function createRoleBindingByRoleName(accountId, roleName){
-    const role = await Services.Role.getRole(roleName);
-    if (!!role) {
-        await Services.RoleBinding.createRoleBinding(accountId, role.id);
-    }
-}
-
-/**
  * Middleware that creates rolebinding to access POST route for respective account
  * @param {{body: {account:{accountType:String, id: ObjectId}}}} req the request object
  * @param {*} res 
@@ -293,7 +281,7 @@ async function createRoleBindingByRoleName(accountId, roleName){
 async function addCreationRoleBindings(req, res, next){
     // Get the default role for the account type given
     const roleName = Constants.POST_ROLES[req.body.account.accountType];
-    await createRoleBindingByRoleName(req.body.account.id, roleName);
+    await Services.RoleBinding.createRoleBindingByRoleName(req.body.account.id, roleName);
     next();
 }
 
@@ -301,20 +289,21 @@ async function addCreationRoleBindings(req, res, next){
  * Adds proper account rolebindings on account creation
  * @param {string} roleName name of the role to be added to account
  */
-function addRoleBindings(roleName){
+function addRoleBindings(roleName = undefined){
     return async (req, res, next) => {
-        if(!!req.body.hackerDetails){
-            await createRoleBindingByRoleName(req.body.hackerDetails.accountId, roleName);
+        if(roleName == Constants.HACKER){
+            await Services.RoleBinding.createRoleBindingByRoleName(req.body.hackerDetails.accountId, roleName);
         }
-        else if(!!req.body.volunteerDetails){
-            await createRoleBindingByRoleName(req.body.volunteerDetails.accountId, roleName);
+        else if(roleName == Constants.VOLUNTEER){
+            await Services.RoleBinding.createRoleBindingByRoleName(req.body.volunteerDetails.accountId, roleName);
+        }
+        else if(roleName == Constants.SPONSOR){
+            const account = Services.Account.findById(req.body.sponsorDetails.accountId);
+            await Services.RoleBinding.createRoleBindingByRoleName(account.id, account.accountType);
         }
         else{
-            return next({
-                status: 422,
-                message: "Missing accountId",
-                error: {}
-            });
+            const roleName = Constants.POST_ROLES[req.body.account.accountType];
+            await Services.RoleBinding.createRoleBindingByRoleName(req.body.account.id, roleName);
         }
         next();
     }
@@ -328,7 +317,7 @@ function addRoleBindings(roleName){
  */
 async function addSponsorRoleBindings(req, res, next){
     const account = Services.Account.findById(req.body.sponsorDetails.accountId);
-    await createRoleBindingByRoleName(account.id, account.accountType);
+    await Services.RoleBinding.createRoleBindingByRoleName(account.id, account.accountType);
     next();
 }
 

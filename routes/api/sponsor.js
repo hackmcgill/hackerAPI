@@ -19,6 +19,7 @@ const Middleware = {
 const Services = {
     Sponsor: require("../../services/sponsor.service"),
 };
+const CONSTANTS = require("../../constants");
 
 module.exports = {
     activate: function (apiRouter) {
@@ -91,7 +92,7 @@ module.exports = {
             Middleware.parseBody.middleware,
             Middleware.Sponsor.parseSponsor,
 
-            Middleware.Auth.addSponsorRoleBindings,
+            Middleware.Auth.addRoleBindings(CONSTANTS.SPONSOR),
 
             Controllers.Sponsor.createSponsor
         );

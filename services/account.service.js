@@ -110,13 +110,6 @@ function updatePassword(id, newPassword) {
     return changeOneAccount(id, {password: hashed});
 }
 
-/**
- * Returns if the accountType corresponds to a sponsor
- * @param {string} accountType 
- */
-function isSponsor(accountType){
-    return Constants.SPONSOR_TIERS.includes(accountType) || accountType == Constants.SPONSOR;
-}
 
 module.exports = {
     findOne: findOne,
