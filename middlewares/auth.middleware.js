@@ -272,8 +272,6 @@ function deleteResetToken(req, res, next) {
     );
 }
 
-
-
 /**
  * Attempts to find a rolebinding given the role name and adds it to the account
  * @param {ObjectId} accountId the id of the account that you want to add a rolebinding to
@@ -305,7 +303,19 @@ async function addCreationRoleBindings(req, res, next){
  */
 function addRoleBindings(roleName){
     return async (req, res, next) => {
-        await createRoleBindingByRoleName(req.body.account.id, roleName);
+        if(!!req.body.hackerDetails){
+            await createRoleBindingByRoleName(req.body.hackerDetails.accountId, roleName);
+        }
+        else if(!!req.body.sponsorDetails){
+            await createRoleBindingByRoleName(req.body.sponsorDetails.accountId, roleName);
+        }
+        else{
+            return next({
+                status: 422,
+                message: "Missing accountId",
+                error: {}
+            });
+        }
         next();
     }
 }
