@@ -306,8 +306,8 @@ function addRoleBindings(roleName){
         if(!!req.body.hackerDetails){
             await createRoleBindingByRoleName(req.body.hackerDetails.accountId, roleName);
         }
-        else if(!!req.body.sponsorDetails){
-            await createRoleBindingByRoleName(req.body.sponsorDetails.accountId, roleName);
+        else if(!!req.body.volunteerDetails){
+            await createRoleBindingByRoleName(req.body.volunteerDetails.accountId, roleName);
         }
         else{
             return next({

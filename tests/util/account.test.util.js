@@ -71,7 +71,7 @@ const Account3 = {
     "dietaryRestrictions": ["vegan"],
     "shirtSize": "L",
     "confirmed": true,
-    "accountType": Constants.SPONSOR,
+    "accountType": Constants.SPONSOR_T1,
 };
 // volunteer
 const Account4 = {
@@ -95,7 +95,7 @@ const Account5 = {
     "dietaryRestrictions": ["something1", "something2"],
     "shirtSize": "XXL",
     "confirmed": true,
-    "accountType": Constants.SPONSOR,
+    "accountType": Constants.SPONSOR_T2,
 };
 
 // non confirmed account for hacker
@@ -108,7 +108,7 @@ const NonConfirmedAccount1 = {
     "dietaryRestrictions": ["something1", "something2"],
     "shirtSize": "XXL",
     "confirmed": false,
-    "accountType": Constants.SPONSOR,
+    "accountType": Constants.HACKER,
 };
 
 const customAccounts = [
