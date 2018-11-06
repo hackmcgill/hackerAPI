@@ -31,7 +31,23 @@ function createSponsor(sponsorDetails) {
     return sponsor.save();
 }
 
+/**
+ * @function findByAccountId
+ * @param {ObjectId} accountId
+ * @return {DocumentQuery[]} A list of sponsor document queries found with the accountId
+ */
+function findByAccountId(accountId) {
+    const TAG = `[ Sponsor Service # findByAccountId ]:`;
+
+    const query = {
+        accountId: accountId
+    };
+
+    return Sponsor.findOne(query, logger.updateCallbackFactory(TAG, "sponsor"));
+}
+
 module.exports = {
+    findByAccountId: findByAccountId,
     findById: findById,
     createSponsor: createSponsor,
 };

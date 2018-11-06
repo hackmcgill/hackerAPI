@@ -71,7 +71,11 @@ module.exports = {
             Middleware.Validator.Hacker.newHackerValidator,
 
             Middleware.parseBody.middleware,
+            // validate type
             Middleware.Hacker.validateConfirmedStatus,
+            // validate that the accountId is not being used for any other thing
+            Middleware.Hacker.checkDuplicateAccountLinks,
+
             Middleware.Hacker.parseHacker,
 
             Middleware.Hacker.addDefaultStatus,

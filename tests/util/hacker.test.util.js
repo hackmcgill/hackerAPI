@@ -24,6 +24,32 @@ const invalidHacker1 = {
     }
 };
 
+const duplicateAccountLinkHacker1 = {
+    "_id": mongoose.Types.ObjectId(),
+    "accountId": Util.Account.Account1._id,
+    "status": "Applied",
+    "school": "University of Blah",
+    "gender": "Male",
+    "needsBus": true,
+    "application": {
+        "portfolioURL": {
+            //gcloud bucket link
+            "resume": "www.gcloud.com/myResume100",
+            "github": "www.github.com/Person1",
+            "dropler": undefined,
+            "personal": "www.person1.com",
+            "linkedIn": "www.linkedin.com/in/Person1",
+            "other": undefined
+        },
+        "jobInterest": "Full-time",
+        "skills": [
+            Util.Skill.Skill1._id,
+            Util.Skill.Skill5._id,
+            Util.Skill.Skill8._id,
+        ],
+    }
+};
+
 const newHacker1 = {
     "accountId": Util.Account.generatedAccounts[6]._id,
     "school": "University of ASDF",
@@ -128,6 +154,7 @@ const Hackers = [
 ];
 
 module.exports = {
+    duplicateAccountLinkHacker1: duplicateAccountLinkHacker1,
     invalidHacker1: invalidHacker1,
     newHacker1: newHacker1,
     newHacker2: newHacker2,

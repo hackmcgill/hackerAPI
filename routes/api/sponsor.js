@@ -89,6 +89,11 @@ module.exports = {
 
             // parsing
             Middleware.parseBody.middleware,
+            // middleware to ensure account is a sponsor type
+            Middleware.Sponsor.validateConfirmedStatus,
+            // middleware to ensure that there is not a duplicate sponsor with the same accountId
+            Middleware.Sponsor.checkDuplicateAccountLinks,
+
             Middleware.Sponsor.parseSponsor,
 
             Controllers.Sponsor.createSponsor
