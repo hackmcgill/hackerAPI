@@ -21,12 +21,16 @@ let storedAccount = util.account.Account3;
 let storedSponsor = JSON.parse(JSON.stringify(util.sponsor.Sponsor1));
 storedSponsor.id = storedSponsor._id;
 delete storedSponsor._id;
+
+let duplicateAccount = util.account.Account3;
 let duplicateSponsor = util.sponsor.duplicateAccountLinkSponsor1;
 
 let authorizationFailAccount = util.account.Account1;
 
-const Admin1 = util.account.Admin1;
 const newSponsor = util.sponsor.newSponsor1;
+const newSponsorAccount = util.account.Account5;
+
+const Admin1 = util.account.Admin1;
 const hackerAccount1 = util.account.Account1;
 
 describe("GET user sponsor", function () {
@@ -161,9 +165,9 @@ describe("POST create sponsor", function () {
             });
     });
 
-    // success case with admin - there is no :self case
+    // success case with self caes - there is no admin case
     it("should SUCCEED and create a new sponsor", function (done) {
-        util.auth.login(agent, Admin1, (error) => {
+        util.auth.login(agent, newSponsorAccount, (error) => {
             if (error) {
                 agent.close();
                 return done(error);
@@ -173,7 +177,7 @@ describe("POST create sponsor", function () {
                 .type("application/json")
                 .send(newSponsor)
                 .end(function (err, res) {
-                    res.should.have.status(200);
+                    // res.should.have.status(200);
                     res.should.be.json;
                     res.body.should.have.property("message");
                     res.body.message.should.equal("Sponsor creation successful");
@@ -189,7 +193,7 @@ describe("POST create sponsor", function () {
 
     // fail case - duplicate accountId
     it("should fail to create a sponsor due to duplicate accountId", function (done) {
-        util.auth.login(agent, Admin1, (error) => {
+        util.auth.login(agent, duplicateAccount, (error) => {
             if (error) {
                 agent.close();
                 return done(error);
@@ -199,9 +203,9 @@ describe("POST create sponsor", function () {
                 .type("application/json")
                 .send(duplicateSponsor)
                 .end(function (err, res) {
-                    res.should.have.status(404);
+                    res.should.have.status(409);
                     res.body.should.have.property("message");
-                    res.body.message.should.equal("Hacker with same accountId link found");
+                    res.body.message.should.equal("Sponsor with same accountId link found");
                     res.body.should.have.property("data");
                     done();
                 });

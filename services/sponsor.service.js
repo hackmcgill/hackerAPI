@@ -43,7 +43,7 @@ function findByAccountId(accountId) {
         accountId: accountId
     };
 
-    return Sponsor.find(query, logger.updateCallbackFactory(TAG, "sponsor"));
+    return Sponsor.findOne(query, logger.updateCallbackFactory(TAG, "sponsor"));
 }
 
 module.exports = {

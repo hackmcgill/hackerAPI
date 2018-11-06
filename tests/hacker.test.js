@@ -245,8 +245,8 @@ describe("POST create hacker", function () {
                 .end(function (err, res) {
                     res.should.be.json;
                     res.body.should.have.property("message");
-                    res.body.message.should.equal("Unauthorized");
-                    res.should.have.status(401);
+                    res.body.message.should.equal("Account not verified");
+                    res.should.have.status(403);
                     done();
                 });
         });
@@ -264,8 +264,7 @@ describe("POST create hacker", function () {
                 .type("application/json")
                 .send(newHackerDuplicateAccountLink1)
                 .end(function (err, res) {
-                    // replace with actual test comparisons after error handler is implemented
-                    res.should.have.status(404);
+                    res.should.have.status(409);
                     res.body.should.have.property("message");
                     res.body.message.should.equal("Hacker with same accountId link found");
                     res.body.should.have.property("data");

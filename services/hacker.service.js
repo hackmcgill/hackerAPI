@@ -76,7 +76,7 @@ function findByAccountId(accountId) {
         accountId: accountId
     };
 
-    return Hacker.find(query, logger.updateCallbackFactory(TAG, "hacker"));
+    return Hacker.findOne(query, logger.updateCallbackFactory(TAG, "hacker"));
 }
 
 module.exports = {

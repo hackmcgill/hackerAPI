@@ -82,14 +82,25 @@ function addDefaultStatus(req, res, next) {
  */
 async function validateConfirmedStatus(req, res, next) {
     const account = await Services.Account.findById(req.body.accountId);
-    if (account && account.confirmed && account.accountType === Constants.HACKER) {
-        next();
-    } else {
+    if (!account) {
         next({
             status: 401,
-            message: "Unauthorized",
+            message: "No account found",
             error: {}
         });
+    } else if (!account.confirmed) {
+        next({
+            status: 403,
+            message: "Account not verified",
+            error: {}
+        });
+    } else if (account.accountType !== Constants.HACKER) {
+        next({
+            status: 409,
+            message: "Wrong account type"
+        });
+    } else {
+        next();
     }
 }
 
@@ -228,7 +239,7 @@ async function checkDuplicateAccountLinks(req, res, next) {
         next();
     } else {
         next({
-            status: 404,
+            status: 409,
             message: "Hacker with same accountId link found",
             data: {
                 id: req.body.accountId

@@ -62,14 +62,25 @@ function parseSponsor(req, res, next) {
 async function validateConfirmedStatus(req, res, next) {
     const account = await Services.Account.findById(req.body.accountId);
 
-    if (account && account.confirmed && account.accountType === Constants.SPONSOR) {
-        next();
-    } else {
+    if (!account) {
         next({
             status: 401,
-            message: "Unauthorized",
+            message: "No account found",
             error: {}
         });
+    } else if (!account.confirmed) {
+        next({
+            status: 403,
+            message: "Account not verified",
+            error: {}
+        });
+    } else if (account.accountType !== Constants.SPONSOR) {
+        next({
+            status: 409,
+            message: "Wrong account type"
+        });
+    } else {
+        next();
     }
 }
 
@@ -80,13 +91,13 @@ async function validateConfirmedStatus(req, res, next) {
  * @param {*} next
  */
 async function checkDuplicateAccountLinks(req, res, next) {
-    const sponsors = await Services.Sponsor.findByAccountId(req.body.accountId);
-    if (!sponsors || sponsors.length === 0) {
+    const sponsor = await Services.Sponsor.findByAccountId(req.body.accountId);
+    if (!sponsor || sponsor.length === 0) {
         next();
     } else {
         next({
-            status: 404,
-            message: "Hacker with same accountId link found",
+            status: 409,
+            message: "Sponsor with same accountId link found",
             data: {
                 id: req.body.accountId
             }
