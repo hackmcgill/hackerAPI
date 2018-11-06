@@ -84,7 +84,7 @@ async function validateConfirmedStatus(req, res, next) {
     const account = await Services.Account.findById(req.body.accountId);
     if (!account) {
         next({
-            status: 401,
+            status: 404,
             message: "No account found",
             error: {}
         });
