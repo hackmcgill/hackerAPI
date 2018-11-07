@@ -31,7 +31,7 @@ function findById(id) {
 /**
  * @function findByAccountId
  * @param {ObjectId} accountId
- * @return {DocumentQuery[]} A volunteer document queried by accountId
+ * @return {DocumentQuery} A volunteer document queried by accountId
  */
 function findByAccountId(accountId) {
     const TAG = `[ Volunteer Service # findByAccountId ]:`;

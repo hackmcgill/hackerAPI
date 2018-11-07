@@ -39,9 +39,7 @@ function parseVolunteer(req, res, next) {
  * @param {*} next
  */
 async function checkDuplicateAccountLinks(req, res, next) {
-    console.log("HIHI");
     const volunteer = await Services.Volunteer.findByAccountId(req.body.accountId);
-    console.log(volunteer);
     if (!volunteer) {
         next();
     } else {
@@ -62,9 +60,7 @@ async function checkDuplicateAccountLinks(req, res, next) {
  * @param {(err?) => void} next 
  */
 async function validateConfirmedStatus(req, res, next) {
-    console.log("HERE");
     const account = await Services.Account.findById(req.body.accountId);
-    console.log(account.accountType);
     if (!account) {
         next({
             status: 404,
