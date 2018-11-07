@@ -34,7 +34,7 @@ function createSponsor(sponsorDetails) {
 /**
  * @function findByAccountId
  * @param {ObjectId} accountId
- * @return {DocumentQuery[]} A list of sponsor document queries found with the accountId
+ * @return {DocumentQuery} A sponsor document queried by accountId
  */
 function findByAccountId(accountId) {
     const TAG = `[ Sponsor Service # findByAccountId ]:`;
