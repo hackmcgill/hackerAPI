@@ -235,7 +235,7 @@ async function updateHacker(req, res, next) {
  */
 async function checkDuplicateAccountLinks(req, res, next) {
     const hackers = await Services.Hacker.findByAccountId(req.body.accountId);
-    if (!hackers || hackers.length === 0) {
+    if (!hackers) {
         next();
     } else {
         next({

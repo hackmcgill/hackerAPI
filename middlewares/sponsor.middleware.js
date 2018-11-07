@@ -92,7 +92,7 @@ async function validateConfirmedStatus(req, res, next) {
  */
 async function checkDuplicateAccountLinks(req, res, next) {
     const sponsor = await Services.Sponsor.findByAccountId(req.body.accountId);
-    if (!sponsor || sponsor.length === 0) {
+    if (!sponsor) {
         next();
     } else {
         next({

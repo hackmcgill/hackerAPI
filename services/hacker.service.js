@@ -67,7 +67,7 @@ async function findIds(queries) {
 /**
  * @function findByAccountId
  * @param {ObjectId} accountId
- * @return {DocumentQuery[]} A list of hacker document queries found with the accountId
+ * @return {DocumentQuery[]} A hacker document queried by accountId
  */
 function findByAccountId(accountId) {
     const TAG = `[ Hacker Service # findByAccountId ]:`;

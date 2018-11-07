@@ -8,7 +8,15 @@ const logger = require("../../services/logger.service");
 const TAG = "[ TAG.TEST.UTIL.JS ]";
 
 const newVolunteer1 = {
+    "accountId": Util.Account.generatedAccounts[15]._id
+};
+
+const duplicateVolunteer1 = {
     "accountId": Util.Account.Account4._id
+};
+
+const adminVolunteer1 = {
+    "accountId": Util.Account.Admin1._id
 };
 
 const Volunteer1 = {
@@ -19,7 +27,7 @@ const Volunteers = [
     Volunteer1,
 ];
 
-function storeAll (attributes, callback) {
+function storeAll(attributes, callback) {
     const volunteerDocs = [];
     const volunteerIds = [];
     attributes.forEach((attribute) => {
@@ -39,7 +47,7 @@ function storeAll (attributes, callback) {
     );
 }
 
-function dropAll (callback) {
+function dropAll(callback) {
     Volunteer.collection.drop().then(
         () => {
             logger.info(`dropped table Volunteer`);
@@ -56,6 +64,8 @@ function dropAll (callback) {
 }
 
 module.exports = {
+    duplicateVolunteer1: duplicateVolunteer1,
+    adminVolunteer1: adminVolunteer1,
     newVolunteer1: newVolunteer1,
     Volunteer1: Volunteer1,
     Volunteers: Volunteers,
