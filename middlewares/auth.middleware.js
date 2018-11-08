@@ -289,22 +289,9 @@ async function addCreationRoleBindings(req, res, next){
  * Adds proper account rolebindings on account creation
  * @param {string} roleName name of the role to be added to account
  */
-function addRoleBindings(roleName = undefined){
+function createRoleBindings(roleName = undefined){
     return async (req, res, next) => {
-        if(roleName == Constants.HACKER){
-            await Services.RoleBinding.createRoleBindingByRoleName(req.body.hackerDetails.accountId, roleName);
-        }
-        else if(roleName == Constants.VOLUNTEER){
-            await Services.RoleBinding.createRoleBindingByRoleName(req.body.volunteerDetails.accountId, roleName);
-        }
-        else if(roleName == Constants.SPONSOR){
-            const account = Services.Account.findById(req.body.sponsorDetails.accountId);
-            await Services.RoleBinding.createRoleBindingByRoleName(account.id, account.accountType);
-        }
-        else{
-            const roleName = Constants.POST_ROLES[req.body.account.accountType];
-            await Services.RoleBinding.createRoleBindingByRoleName(req.body.account.id, roleName);
-        }
+        await Services.RoleBinding.createRoleBindingByRoleName(req.user.id, roleName);
         next();
     }
 }
@@ -334,7 +321,7 @@ module.exports = {
     validateConfirmationToken: Middleware.Util.asyncMiddleware(validateConfirmationToken),
     getAccountTypeFromConfirmationToken: Middleware.Util.asyncMiddleware(getAccountTypeFromConfirmationToken),
     validateConfirmationTokenWithoutAccount: Middleware.Util.asyncMiddleware(validateConfirmationTokenWithoutAccount),
-    addRoleBindings: addRoleBindings,
+    createRoleBindings: createRoleBindings,
     addCreationRoleBindings: Middleware.Util.asyncMiddleware(addCreationRoleBindings),
     addSponsorRoleBindings: Middleware.Util.asyncMiddleware(addSponsorRoleBindings)
 };
