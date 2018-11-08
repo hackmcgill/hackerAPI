@@ -166,6 +166,24 @@ module.exports = {
             Controllers.Auth.confirmAccount
         )
 
+        /**
+         * @api {post} /auth/confirm/resend resend confirmation token
+         * @apiName resendConfirmAccount
+         * @apiGroup Authentication
+         * @apiVersion 0.0.8
+         *
+         * @apiSuccess {string} message Success message
+         * @apiSuccess {object} data empty
+         * @apiSuccessExample {json} Success-Response:
+         *      {"message": "Successfully resent confirmation email", "data": {}}
+         * 
+         */
+        authRouter.route("/confirm/resend").get(
+            Middleware.Auth.ensureAuthenticated(),
+            Middleware.Auth.resendConfirmAccountEmail,
+            Controllers.Auth.sentConfirmationEmail
+        )
+
         apiRouter.use("/auth", authRouter);
     }
 };

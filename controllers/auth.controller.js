@@ -31,5 +31,11 @@ module.exports = {
             message: "Successfully confirmed account",
             data: {}
         })
+    },
+    sentConfirmationEmail: function(req, res){
+        return res.status(200).json({
+            message: "Successfully resent account email",
+            data: {}
+        })
     }
 };
