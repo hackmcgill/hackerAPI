@@ -92,7 +92,7 @@ module.exports = {
             Middleware.parseBody.middleware,
             Middleware.Sponsor.parseSponsor,
 
-            Middleware.Auth.addRoleBindings(CONSTANTS.SPONSOR),
+            Middleware.Auth.createRoleBindings(CONSTANTS.SPONSOR),
 
             Controllers.Sponsor.createSponsor
         );

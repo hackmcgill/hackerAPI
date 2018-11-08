@@ -55,7 +55,7 @@ module.exports = {
 
             Middleware.Volunteer.parseVolunteer,
 
-            Middleware.Auth.addRoleBindings(CONSTANTS.VOLUNTEER),
+            Middleware.Auth.createRoleBindings(CONSTANTS.VOLUNTEER),
 
             Controllers.Volunteer.createVolunteer
         );
