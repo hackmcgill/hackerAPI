@@ -76,7 +76,7 @@ module.exports = {
             Middleware.Hacker.parseHacker,
 
             Middleware.Hacker.addDefaultStatus,
-            Middleware.Auth.addRoleBindings(CONSTANTS.HACKER),
+            Middleware.Auth.createRoleBindings(CONSTANTS.HACKER),
             Controllers.Hacker.createHacker
         );
 
