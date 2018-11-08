@@ -53,6 +53,11 @@ module.exports = {
 
             Middleware.parseBody.middleware,
 
+            // validate type
+            Middleware.Volunteer.validateConfirmedStatus,
+            // validate that the accountId is not being used for any other thing
+            Middleware.Volunteer.checkDuplicateAccountLinks,
+
             Middleware.Volunteer.parseVolunteer,
 
             Middleware.Auth.createRoleBindings(CONSTANTS.VOLUNTEER),

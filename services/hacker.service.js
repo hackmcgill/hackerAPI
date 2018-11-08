@@ -64,9 +64,25 @@ async function findIds(queries) {
     return ids;
 }
 
+/**
+ * @function findByAccountId
+ * @param {ObjectId} accountId
+ * @return {DocumentQuery} A hacker document queried by accountId
+ */
+function findByAccountId(accountId) {
+    const TAG = `[ Hacker Service # findByAccountId ]:`;
+
+    const query = {
+        accountId: accountId
+    };
+
+    return Hacker.findOne(query, logger.updateCallbackFactory(TAG, "hacker"));
+}
+
 module.exports = {
     createHacker: createHacker,
     findById: findById,
     updateOne: updateOne,
     findIds: findIds,
+    findByAccountId: findByAccountId,
 };

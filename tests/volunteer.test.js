@@ -14,7 +14,12 @@ const util = {
 };
 
 const Admin1 = util.account.Admin1;
-const newVolunteerAccount = util.account.Account4;
+const adminVolunteer = util.volunteer.adminVolunteer1;
+
+const newVolunteerAccount = util.account.generatedAccounts[15];
+const newVolunteer = util.volunteer.newVolunteer1;
+const duplicateVolunteer = util.volunteer.duplicateVolunteer1;
+
 const hackerAccount = util.account.Account1;
 
 describe("POST create volunteer", function () {
@@ -33,8 +38,8 @@ describe("POST create volunteer", function () {
             });
     });
 
-    // succeed on admin case
-    it("should create a volunteer with admin power on /api/volunteer POST", function (done) {
+    // fail on admin case
+    it("fail to create a volunteer when the logged in account is not a volunteer /api/volunteer POST", function (done) {
         util.auth.login(agent, Admin1, (error) => {
             if (error) {
                 agent.close();
@@ -43,17 +48,14 @@ describe("POST create volunteer", function () {
             return agent
                 .post(`/api/volunteer`)
                 .type("application/json")
-                .send(util.volunteer.newVolunteer1)
+                .send(adminVolunteer)
                 .end(function (err, res) {
-                    res.should.have.status(200);
+                    res.should.have.status(409);
                     res.should.be.json;
                     res.body.should.have.property("message");
-                    res.body.message.should.equal("Volunteer creation successful");
+                    res.body.message.should.equal("Wrong account type");
                     res.body.should.have.property("data");
 
-                    // deleting _id because that was generated, and not part of original data
-                    delete res.body.data._id;
-                    chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify(util.volunteer.newVolunteer1));
                     done();
                 });
         });
@@ -69,7 +71,7 @@ describe("POST create volunteer", function () {
             return agent
                 .post(`/api/volunteer`)
                 .type("application/json")
-                .send(util.volunteer.newVolunteer1)
+                .send(newVolunteer)
                 .end(function (err, res) {
                     res.should.have.status(200);
                     res.should.be.json;
@@ -80,6 +82,29 @@ describe("POST create volunteer", function () {
                     // deleting _id because that was generated, and not part of original data
                     delete res.body.data._id;
                     chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify(util.volunteer.newVolunteer1));
+                    done();
+                });
+        });
+    });
+
+    // fail due to duplicate accountId
+    it("should create a volunteer for the user /api/volunteer POST", function (done) {
+        util.auth.login(agent, newVolunteerAccount, (error) => {
+            if (error) {
+                agent.close();
+                return done(error);
+            }
+            return agent
+                .post(`/api/volunteer`)
+                .type("application/json")
+                .send(duplicateVolunteer)
+                .end(function (err, res) {
+                    res.should.have.status(409);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal("Volunteer with same accountId link found");
+                    res.body.should.have.property("data");
+
                     done();
                 });
         });

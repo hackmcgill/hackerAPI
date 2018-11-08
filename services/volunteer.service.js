@@ -28,7 +28,23 @@ function findById(id) {
     return Volunteer.findById(id, logger.queryCallbackFactory(TAG, "volunteer", id));
 }
 
+/**
+ * @function findByAccountId
+ * @param {ObjectId} accountId
+ * @return {DocumentQuery} A volunteer document queried by accountId
+ */
+function findByAccountId(accountId) {
+    const TAG = `[ Volunteer Service # findByAccountId ]:`;
+
+    const query = {
+        accountId: accountId
+    };
+
+    return Volunteer.findOne(query, logger.updateCallbackFactory(TAG, "hacker"));
+}
+
 module.exports = {
     createVolunteer: createVolunteer,
     findById: findById,
+    findByAccountId: findByAccountId,
 };

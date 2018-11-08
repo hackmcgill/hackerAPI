@@ -7,7 +7,7 @@ dotenv.config({
 const EmailService = require("../services/email.service");
 const assert = require("chai").assert;
 
-describe("Email Service", function() {
+describe("Email Service", function () {
     it("It should send an email", (done) => {
         EmailService.send({
             to: process.env.NO_REPLY_EMAIL,
@@ -37,7 +37,7 @@ describe("Email Service", function() {
             }
         }).then((responses) => {
             responses.forEach((resp) => {
-                if(resp) {
+                if (resp) {
                     assert.equal(resp.statusCode, 200, "response should be accepted");
                 }
             });

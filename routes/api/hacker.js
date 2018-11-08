@@ -72,7 +72,11 @@ module.exports = {
             Middleware.Validator.Hacker.newHackerValidator,
 
             Middleware.parseBody.middleware,
+            // validate type
             Middleware.Hacker.validateConfirmedStatus,
+            // validate that the accountId is not being used for any other thing
+            Middleware.Hacker.checkDuplicateAccountLinks,
+
             Middleware.Hacker.parseHacker,
 
             Middleware.Hacker.addDefaultStatus,
@@ -208,7 +212,7 @@ module.exports = {
                 Controllers.Hacker.uploadedResume
             )
             /**
-             * @api {get} /hacker/:id/resume get the resume for a hacker.
+             * @api {get} /hacker/resume:id get the resume for a hacker.
              * @apiName getHackerResume
              * @apiGroup Hacker
              * @apiVersion 0.0.8

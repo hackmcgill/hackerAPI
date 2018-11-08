@@ -55,7 +55,7 @@ function parseHacker(req, res, next) {
     delete req.body.needsBus;
     delete req.body.application;
     delete req.body.authorization;
-    
+
     req.body.hackerDetails = hackerDetails;
 
     next();
@@ -82,16 +82,28 @@ function addDefaultStatus(req, res, next) {
  */
 async function validateConfirmedStatus(req, res, next) {
     const account = await Services.Account.findById(req.body.accountId);
-    if(account && account.confirmed && account.accountType === Constants.HACKER){
-        next();
-    } else {
+    if (!account) {
         next({
-            status: 401,
-            message: "Unauthorized",
+            status: 404,
+            message: "No account found",
             error: {}
         });
+    } else if (!account.confirmed) {
+        next({
+            status: 403,
+            message: "Account not verified",
+            error: {}
+        });
+    } else if (account.accountType !== Constants.HACKER) {
+        next({
+            status: 409,
+            message: "Wrong account type"
+        });
+    } else {
+        next();
     }
 }
+
 /**
  * Verifies that the current signed in user is linked to the hacker passed in via req.body.id
  * @param {{body: {id: ObjectId}}} req 
@@ -215,6 +227,27 @@ async function updateHacker(req, res, next) {
     }
 }
 
+/**
+ * Checks that there are no other hackers with the same account id as the one passed into req.body.accountId
+ * @param {{body:{accountId: ObjectId}}} req 
+ * @param {*} res 
+ * @param {*} next
+ */
+async function checkDuplicateAccountLinks(req, res, next) {
+    const hacker = await Services.Hacker.findByAccountId(req.body.accountId);
+    if (!hacker) {
+        next();
+    } else {
+        next({
+            status: 409,
+            message: "Hacker with same accountId link found",
+            data: {
+                id: req.body.accountId
+            }
+        });
+    }
+}
+
 module.exports = {
     parsePatch: parsePatch,
     parseHacker: parseHacker,
@@ -224,5 +257,6 @@ module.exports = {
     downloadResume: Middleware.Util.asyncMiddleware(downloadResume),
     sendStatusUpdateEmail: sendStatusUpdateEmail,
     updateHacker: Middleware.Util.asyncMiddleware(updateHacker),
-    validateConfirmedStatus: Middleware.Util.asyncMiddleware(validateConfirmedStatus)
+    validateConfirmedStatus: Middleware.Util.asyncMiddleware(validateConfirmedStatus),
+    checkDuplicateAccountLinks: Middleware.Util.asyncMiddleware(checkDuplicateAccountLinks),
 };
