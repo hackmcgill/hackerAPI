@@ -45,7 +45,7 @@ function parseAccount(req, res, next) {
         password: Services.Account.hashPassword(req.body.password),
         dietaryRestrictions: req.body.dietaryRestrictions,
         shirtSize: req.body.shirtSize,
-        birthdate: req.body.birthdate,
+        birthDate: req.body.birthDate,
         phoneNumber: req.body.phoneNumber,
     };
 
@@ -55,7 +55,7 @@ function parseAccount(req, res, next) {
     delete req.body.password;
     delete req.body.dietaryRestrictions;
     delete req.body.shirtSize;
-    delete req.body.birthdate;
+    delete req.body.birthDate;
     delete req.body.phoneNumber;
 
     req.body.accountDetails = accountDetails;

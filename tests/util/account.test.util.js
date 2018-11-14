@@ -16,7 +16,7 @@ const newAccount1 = {
     "shirtSize": "S",
     "confirmed": true,
     "accountType": Constants.Hacker,
-    "birthdate": "1997-12-30",
+    "birthDate": "1997-12-30",
     "phoneNumber": 1234567890,
 };
 const nonAccount1 = {
@@ -27,7 +27,7 @@ const nonAccount1 = {
     "password": "12345789",
     "dietaryRestrictions": ["none"],
     "shirtSize": "S",
-    "birthdate": "1990-01-01",
+    "birthDate": "1990-01-01",
     "phoneNumber": 1000000001,
 };
 const Admin1 = {
@@ -40,7 +40,7 @@ const Admin1 = {
     "shirtSize": "S",
     "confirmed": true,
     "accountType": Constants.GODSTAFF,
-    "birthdate": "1990-01-02",
+    "birthDate": "1990-01-02",
     "phoneNumber": 1000000002,
 };
 // hacker
@@ -54,7 +54,7 @@ const Account1 = {
     "shirtSize": "S",
     "confirmed": true,
     "accountType": Constants.HACKER,
-    "birthdate": "1990-01-03",
+    "birthDate": "1990-01-03",
     "phoneNumber": 1000000003,
 };
 // hacker
@@ -68,7 +68,7 @@ const Account2 = {
     "shirtSize": "M",
     "confirmed": true,
     "accountType": Constants.Hacker,
-    "birthdate": "1990-01-04",
+    "birthDate": "1990-01-04",
     "phoneNumber": 1000000004,
 };
 // sponsor
@@ -82,7 +82,7 @@ const Account3 = {
     "shirtSize": "L",
     "confirmed": true,
     "accountType": Constants.SPONSOR,
-    "birthdate": "1990-01-05",
+    "birthDate": "1990-01-05",
     "phoneNumber": 1000000005,
 };
 // volunteer
@@ -96,7 +96,7 @@ const Account4 = {
     "shirtSize": "XL",
     "confirmed": true,
     "accountType": Constants.VOLUNTEER,
-    "birthdate": "1980-01-30",
+    "birthDate": "1980-01-30",
     "phoneNumber": 1000000006,
 };
 // sponsor
@@ -110,7 +110,7 @@ const Account5 = {
     "shirtSize": "XXL",
     "confirmed": true,
     "accountType": Constants.SPONSOR,
-    "birthdate": "1980-06-30",
+    "birthDate": "1980-06-30",
     "phoneNumber": 1000000236,
 };
 
@@ -125,7 +125,7 @@ const NonConfirmedAccount1 = {
     "shirtSize": "XXL",
     "confirmed": false,
     "accountType": Constants.SPONSOR,
-    "birthdate": "1980-07-30",
+    "birthDate": "1980-07-30",
     "phoneNumber": 1001230236,
 };
 
@@ -186,7 +186,7 @@ function generateAccounts(n) {
             "dietaryRestrictions": [],
             "shirtSize": generateRandomShirtSize(),
             "confirmed": true,
-            "birthdate": `1980-${birthMonth}-${birthDay}`,
+            "birthDate": `1980-${birthMonth}-${birthDay}`,
             "phoneNumber": phoneNumber,
         };
 

@@ -41,7 +41,7 @@ const AccountSchema = new mongoose.Schema({
         enum: Constants.USER_TYPES,
         default: Constants.HACKER
     },
-    birthdate: {
+    birthDate: {
         type: Date,
         required: true
     },

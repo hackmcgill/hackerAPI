@@ -515,6 +515,8 @@ function dateValidator(fieldLocation, fieldname, optional = true) {
 
 /**
  * Validates that field must be a valid phone number, having numbers and having a minimum length of 8
+ * Regex was not chosen because the number is not restricted to a particular country or location
+ * The smallest number length without country code is 5 digits. With the country code, it makes 8.
  * @param {"query" | "body" | "header" | "param"} fieldLocation the location where the field should be found 
  * @param {string} fieldname name of the field that needs to be validated.
  * @param {boolean} optional whether the field is optional or not.
