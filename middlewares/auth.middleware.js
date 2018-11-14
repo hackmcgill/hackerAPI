@@ -27,7 +27,7 @@ function ensureAuthenticated() {
         if (req.isUnauthenticated()) {
             next({
                 status: 401,
-                message: Constants.Error.AUTH_ERROR401_MESSAGE,
+                message: Constants.Error.AUTH_401_MESSAGE,
                 error: {
                     route: req.path
                 }
@@ -50,7 +50,7 @@ function ensureAuthorized(findByIdFns) {
                 if (!auth) {
                     next({
                         status: 403,
-                        message: Constants.Error.AUTH_ERROR403_MESSAGE,
+                        message: Constants.Error.AUTH_403_MESSAGE,
                         error: {
                             route: req.path
                         }
@@ -94,7 +94,7 @@ async function sendResetPasswordEmailMiddleware(req, res, next) {
             });
         } else {
             return next({
-                message: "error while generating email"
+                message: Constants.Error.EMAIL_500_MESSAGE,
             });
         }
     } else {
@@ -116,7 +116,7 @@ async function sendConfirmAccountEmailMiddleware(req, res, next) {
     await Services.AccountConfirmation.create(Constants.General.HACKER, account.email, account.id);
     const accountConfirmationToken = await Services.AccountConfirmation.findByAccountId(account.id);
     const token = Services.AccountConfirmation.generateToken(accountConfirmationToken.id, account.id);
-    const mailData = Services.AccountConfirmation.generateAccountConfirmationEmail(req.hostname, account.email, Constants.HACKER, token);
+    const mailData = Services.AccountConfirmation.generateAccountConfirmationEmail(req.hostname, account.email, Constants.General.HACKER, token);
     if (mailData !== undefined) {
         Services.Email.send(mailData, (err) => {
             if (err) {
@@ -127,7 +127,7 @@ async function sendConfirmAccountEmailMiddleware(req, res, next) {
         });
     } else {
         return next({
-            message: "Error while generating email"
+            message: Constants.Error.EMAIL_500_MESSAGE,
         });
     }
 }
@@ -183,7 +183,7 @@ async function getAccountTypeFromConfirmationToken(req, res, next) {
         //Either the token was already used, it's invalid, or user does not exist.
         next({
             status: 401,
-            message: Constants.Error.ACCOUNT_TOKEN_ERROR401_MESSAGE,
+            message: Constants.Error.ACCOUNT_TOKEN_401_MESSAGE,
             error: {}
         });
     }
@@ -205,7 +205,7 @@ async function validateResetToken(req, res, next) {
         //Either the token was already used, it's invalid, or user does not exist.
         next({
             status: 401,
-            message: Constants.Error.ACCOUNT_TOKEN_ERROR401_MESSAGE,
+            message: Constants.Error.ACCOUNT_TOKEN_401_MESSAGE,
             error: {}
         });
     }
@@ -230,7 +230,7 @@ async function validateConfirmationToken(req, res, next) {
         //Either the token was already used, it's invalid, or user does not exist.
         next({
             status: 401,
-            message: Constants.Error.ACCOUNT_TOKEN_ERROR401_MESSAGE,
+            message: Constants.Error.ACCOUNT_TOKEN_401_MESSAGE,
             error: {}
         });
     }

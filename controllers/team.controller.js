@@ -28,7 +28,7 @@ async function findById(req, res) {
         });
     } else {
         return res.status(404).json({
-            message: Constants.Error.TEAM_ERROR404_MESSAGE,
+            message: Constants.Error.TEAM_404_MESSAGE,
             data: {}
         });
     }
@@ -54,7 +54,7 @@ async function createTeam(req, res) {
         });
     } else {
         return res.status(500).json({
-            message: Constants.Error.TEAM_CREATE_ERROR500_MESSAGE,
+            message: Constants.Error.TEAM_CREATE_500_MESSAGE,
             data: {}
         });
     }

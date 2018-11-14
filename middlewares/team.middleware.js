@@ -28,7 +28,7 @@ async function ensureUniqueHackerId(req, res, next) {
         if (!!idSet[member]) {
             return next({
                 status: 422,
-                message: Constants.Error.TEAM_MEMBER_ERROR422_MESSAGE,
+                message: Constants.Error.TEAM_MEMBER_422_MESSAGE,
                 error: member
             });
         } else {
@@ -41,7 +41,7 @@ async function ensureUniqueHackerId(req, res, next) {
         if (!!team) {
             return next({
                 status: 409,
-                message: Constants.Error.TEAM_MEMBER_ERROR409_MESSAGE,
+                message: Constants.Error.TEAM_MEMBER_409_MESSAGE,
                 error: member
             });
         }

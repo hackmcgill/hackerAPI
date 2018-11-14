@@ -68,19 +68,19 @@ async function validateConfirmedStatus(req, res, next) {
     if (!account) {
         next({
             status: 404,
-            message: Constants.Error.ACCOUNT_ERROR404_MESSAGE,
+            message: Constants.Error.ACCOUNT_404_MESSAGE,
             error: {}
         });
     } else if (!account.confirmed) {
         next({
             status: 403,
-            message: Constants.Error.ACCOUNT_ERROR403_MESSAGE,
+            message: Constants.Error.ACCOUNT_403_MESSAGE,
             error: {}
         });
     } else if (account.accountType !== Constants.General.SPONSOR) {
         next({
             status: 409,
-            message: Constants.Error.ACCOUNT_TYPE_ERROR409_MESSAGE,
+            message: Constants.Error.ACCOUNT_TYPE_409_MESSAGE,
         });
     } else {
         next();
@@ -100,7 +100,7 @@ async function checkDuplicateAccountLinks(req, res, next) {
     } else {
         next({
             status: 409,
-            message: Constants.Error.SPONSOR_ID_ERROR409_MESSAGE,
+            message: Constants.Error.SPONSOR_ID_409_MESSAGE,
             data: {
                 id: req.body.accountId
             }

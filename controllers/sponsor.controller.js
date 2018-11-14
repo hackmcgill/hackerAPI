@@ -26,8 +26,8 @@ async function findById(req, res) {
             data: sponsor.toJSON()
         });
     } else {
-        return res.status(500).json({
-            message: Constants.Error.SPONSOR_GET_ERROR500_MESSAGE,
+        return res.status(404).json({
+            message: Constants.Error.SPONSOR_404_MESSAGE,
             data: {}
         });
     }
@@ -53,7 +53,7 @@ async function createSponsor(req, res) {
         });
     } else {
         return res.status(500).json({
-            message: Constants.Error.SPONSOR_CREATE_ERROR500_MESSAGE,
+            message: Constants.Error.SPONSOR_CREATE_500_MESSAGE,
             data: {}
         });
     }

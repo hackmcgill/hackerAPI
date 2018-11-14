@@ -13,7 +13,7 @@ const ResetPassword = require("../../models/passwordResetToken.model");
 
 //const ResetPasswordToken = mongoose.model("ResetPasswordToken");
 
-const Constants = require('../../constants');
+const Constants = require('../../constants/general.constant');
 const logger = require("../../services/logger.service");
 
 const ResetPasswordToken1 = {

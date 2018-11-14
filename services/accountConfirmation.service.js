@@ -1,7 +1,7 @@
 "use strict";
 const logger = require("./logger.service");
 const AccountConfirmation = require("../models/accountConfirmationToken.model");
-const Constants = require("../constants");
+const Constants = require("../constants/general.constant");
 const jwt = require("jsonwebtoken");
 
 /**
@@ -10,7 +10,7 @@ const jwt = require("jsonwebtoken");
  * @return {DocumentQuery} The document query will resolve to either account confirmation or null.
  * @description Finds an account confirmation document by accountId.
  */
-function findByAccountId (accountId) {
+function findByAccountId(accountId) {
     const TAG = `[ AccountConfirmation Reset Service # findByAccountId ]`;
     return AccountConfirmation.findOne({
         accountId: accountId
@@ -23,7 +23,7 @@ function findByAccountId (accountId) {
  * @return {DocumentQuery} The document query will resolve to either account confirmation or null.
  * @description Finds an account by mongoID.
  */
-function findById (id) {
+function findById(id) {
     const TAG = `[ AccountConfirmation Service # findById ]`;
     return AccountConfirmation.findById(id, logger.queryCallbackFactory(TAG, "AccountConfirmation", "mongoId"));
 }
@@ -35,13 +35,13 @@ function findById (id) {
  * @param {ObjectId} accountId optional accountId parameter to link to account, optional when token is being made for not a hacker
  * @returns {Promise.<*>}
  */
-async function create (type, email, accountId) {
+async function create(type, email, accountId) {
     //Create new instance of account confirmation
     const newAccountToken = AccountConfirmation({
         accountType: type,
         email: email
     });
-    if(accountId !== undefined){
+    if (accountId !== undefined) {
         newAccountToken.accountId = accountId;
     }
     return newAccountToken.save();
@@ -53,7 +53,7 @@ async function create (type, email, accountId) {
  * @param {ObjectId} accountId
  * @returns {string} JWT Token containing accountId and accountConfirmationId
  */
-function generateToken (accountConfirmationId, accountId) {
+function generateToken(accountConfirmationId, accountId) {
     const token = jwt.sign({
         accountConfirmationId: accountConfirmationId,
         accountId: accountId
@@ -71,7 +71,7 @@ function generateToken (accountConfirmationId, accountId) {
  * @param {string} token the reset token
  * @returns {string} the string, of form: [http|https]://{domain}/{model}/create?token={token}
  */
-function generateTokenLink (httpOrHttps, domain, type, token) {
+function generateTokenLink(httpOrHttps, domain, type, token) {
     const link = `${httpOrHttps}://${domain}/${type}/create?token=${token}`;
     return link;
 }
@@ -82,7 +82,7 @@ function generateTokenLink (httpOrHttps, domain, type, token) {
  * @param {string} receiverEmail The receiver of the email
  * @param {string} token The account confirmation token
  */
-function generateAccountConfirmationEmail (hostname, receiverEmail, type, token) {
+function generateAccountConfirmationEmail(hostname, receiverEmail, type, token) {
     const httpOrHttps = (hostname === "localhost") ? "http" : "https";
     const address = (hostname === "localhost") ? `localhost:${process.env.PORT}` : hostname;
     const tokenLink = generateTokenLink(httpOrHttps, address, type, token);
@@ -90,7 +90,7 @@ function generateAccountConfirmationEmail (hostname, receiverEmail, type, token)
     if (token === undefined || tokenLink === undefined) {
         return undefined;
     }
-    if(type === Constants.HACKER){
+    if (type === Constants.HACKER) {
         emailSubject = Constants.CONFIRM_ACC_EMAIL_SUBJECTS[Constants.HACKER];
     }
     const mailData = {

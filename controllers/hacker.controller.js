@@ -27,7 +27,7 @@ async function findById(req, res) {
         });
     } else {
         return res.status(404).json({
-            message: Constants.Error.HACKER_ERROR404_MESSAGE,
+            message: Constants.Error.HACKER_404_MESSAGE,
             data: {}
         });
     }
@@ -53,7 +53,7 @@ async function createHacker(req, res) {
         });
     } else {
         return res.status(400).json({
-            message: Constants.Error.HACKER_CREATE_ERROR500_MESSAGE,
+            message: Constants.Error.HACKER_CREATE_500_MESSAGE,
             data: {}
         });
     }

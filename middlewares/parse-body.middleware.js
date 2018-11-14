@@ -24,7 +24,7 @@ function middleware(req, res, next) {
     if (!errors.isEmpty()) {
         next({
             status: 422,
-            message: Constants.Error.VALIDATION_ERROR422_MESSAGE,
+            message: Constants.Error.VALIDATION_422_MESSAGE,
             data: errors.mapped()
         });
     }

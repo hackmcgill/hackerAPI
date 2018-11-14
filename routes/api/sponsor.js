@@ -43,7 +43,7 @@ module.exports = {
          * @apiError {String} message Error message
          * @apiError {Object} data empty
          * @apiErrorExample {object} Error-Response: 
-         *      {"message": "Issue with retrieving sponsor information", "data": {}}
+         *      {"message": "Sponsor not found", "data": {}}
          */
         sponsorRouter.route("/:id").get(
             Middleware.Auth.ensureAuthenticated(),
@@ -78,7 +78,7 @@ module.exports = {
          * @apiError {String} message Error message
          * @apiError {Object} data empty
          * @apiErrorExample {object} Error-Response: 
-         *      {"message": "Issue with sponsor creation", "data": {}}
+         *      {"message": "Error while creating sponsor", "data": {}}
          */
         sponsorRouter.route("/").post(
             Middleware.Auth.ensureAuthenticated(),

@@ -41,7 +41,7 @@ module.exports = {
          * @apiError {string} message Error message
          * @apiError {object} data empty
          * @apiErrorExample {object} Error-Response: 
-         *      {"message": "User email not found", "data": {}}
+         *      {"message": "Account not found", "data": {}}
          */
         accountRouter.route("/self").get(
             Middleware.Auth.ensureAuthenticated(),
@@ -74,7 +74,7 @@ module.exports = {
          * @apiError {string} message Error message
          * @apiError {object} data empty
          * @apiErrorExample {object} Error-Response: 
-         *      {"message": "Issue with account creation", "data": {}}
+         *      {"message": "Account already exists", "data": {}}
          */
         accountRouter.route("/").post(
             // validators
@@ -119,7 +119,7 @@ module.exports = {
          * @apiError {string} message Error message
          * @apiError {object} data empty
          * @apiErrorExample {object} Error-Response: 
-         *      {"message": "Issue with changing account information", "data": {}}
+         *      {"message": "Error while updating account", "data": {}}
          */
         accountRouter.route("/:id").patch(
             Middleware.Auth.ensureAuthenticated(),
@@ -155,7 +155,7 @@ module.exports = {
          * @apiError {string} message Error message
          * @apiError {object} data empty
          * @apiErrorExample {object} Error-Response: 
-         *      {"message": "User id not found", "data": {}}
+         *      {"message": "Account not found", "data": {}}
          */
         accountRouter.route("/:id").get(
             Middleware.Auth.ensureAuthenticated(),

@@ -41,7 +41,7 @@ module.exports = {
          * @apiError {string} message Error message
          * @apiError {object} data empty
          * @apiErrorExample {object} Error-Response: 
-         *      {"message": "Issue with volunteer creation", "data": {}}
+         *      {"message": "Error while creating volunteer", "data": {}}
          */
         volunteerRouter.route("/").post(
             Middleware.Auth.ensureAuthenticated(),

@@ -1,5 +1,5 @@
 "use strict";
-const Constants = require("../../constants");
+const Constants = require("../../constants/general.constant");
 const Account = require("../../models/account.model");
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");

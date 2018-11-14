@@ -28,7 +28,7 @@ async function getUserByEmail(req, res) {
     } else {
         // tentative error code
         return res.status(404).json({
-            message: Constants.Error.ACCOUNT_ERROR404_MESSAGE,
+            message: Constants.Error.ACCOUNT_404_MESSAGE,
             data: {}
         });
     }
@@ -52,7 +52,7 @@ async function getUserById(req, res) {
         });
     } else {
         return res.status(404).json({
-            message: Constants.Error.ACCOUNT_ERROR404_MESSAGE,
+            message: Constants.Error.ACCOUNT_404_MESSAGE,
             data: {}
         });
     }
@@ -99,7 +99,7 @@ async function updateAccount(req, res) {
         });
     } else {
         return res.status(500).json({
-            message: Constants.Error.ACCOUNT_UPDATE_ERROR500_MESSAGE,
+            message: Constants.Error.ACCOUNT_UPDATE_500_MESSAGE,
             data: {}
         });
     }

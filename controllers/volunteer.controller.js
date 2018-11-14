@@ -28,7 +28,7 @@ async function createVolunteer(req, res) {
         });
     } else {
         return res.status(400).json({
-            message: Constants.Error.VOLUNTEER_CREATE_ERROR500_MESSAGE,
+            message: Constants.Error.VOLUNTEER_CREATE_500_MESSAGE,
             data: {}
         });
     }
