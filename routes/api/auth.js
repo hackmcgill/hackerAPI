@@ -8,7 +8,8 @@ const Services = {
 };
 const Middleware = {
     Validator: {
-        Auth: require("../../middlewares/validators/auth.validator")
+        Auth: require("../../middlewares/validators/auth.validator"),
+        RouteParam: require("../../middlewares/validators/routeParam.validator")
     },
     parseBody: require("../../middlewares/parse-body.middleware"),
     Auth: require("../../middlewares/auth.middleware"),
@@ -164,7 +165,38 @@ module.exports = {
             Middleware.Auth.parseAccountConfirmationToken,
             Middleware.Auth.validateConfirmationToken,
             Controllers.Auth.confirmAccount
-        )
+        );
+
+        /**
+         * @api {get} /auth/rolebindings/:id retrieve rolebindings for a user given by their user id :id
+         * @apiName getRoleBindings
+         * @apiGroup Auth
+         * @apiVersion 0.0.8
+         * 
+         * @apiParam (param) {ObjectId} id MongoId of an account
+         * 
+         * @apiSuccess {string} message Success message
+         * @apiSuccess {object} data Rolebindings object
+         * @apiSuccessExample {object} Success-Response: 
+         *      {
+                    "message": "Successfully retrieved role bindings", 
+                    "data": {RoleBindingsObject}
+                }
+                
+         * @apiError {string} message Error message
+         * @apiError {object} data empty
+         * @apiErrorExample {object} Error-Response: 
+         *      {"message": "Role Bindings not found", "data": {}}
+         * 
+         */
+        authRouter.route("/rolebindings/:id").get(
+            Middleware.Auth.ensureAuthenticated(),
+            Middleware.Auth.ensureAuthorized([Services.Account.findById]),
+            Middleware.Validator.RouteParam.idValidator,
+            Middleware.parseBody.middleware,
+            Middleware.Auth.retrieveRoleBindings,
+            Controllers.Auth.retrieveRoleBindings
+        );
 
         apiRouter.use("/auth", authRouter);
     }
