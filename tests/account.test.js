@@ -16,7 +16,7 @@ const util = {
 };
 // hacker role binding
 const storedAccount1 = util.account.Account1;
-//This account has a confirmatoion token in the db
+//This account has a confirmation token in the db
 const storedAccount2 = util.account.NonConfirmedAccount1;
 //This account does not have a confirmation token in the DB
 const storedAccount3 = util.account.NonConfirmedAccount2;
