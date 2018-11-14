@@ -65,12 +65,12 @@ function ensureAuthorized(findByIdFns) {
 
 /**
  * Middleware which retrieves the rolebindings for an account
- * @param {{body: {user:string}}} req 
+ * @param {{body: {param: {id:string}}}} req 
  * @param {*} res 
  * @param {(err?)=>void} next 
  */
 async function retrieveRoleBindings(req, res, next){
-    const roleBindings = await Services.RoleBinding.getRoleBindingForAcct(req.user.id);
+    const roleBindings = await Services.RoleBinding.getRoleBindingForAcct(req.params.id);
     if(!roleBindings){
         return next({
             status: 404,
