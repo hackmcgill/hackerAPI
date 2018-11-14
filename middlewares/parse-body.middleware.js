@@ -5,6 +5,9 @@ const {
 const {
     matchedData
 } = require("express-validator/filter");
+const Constants = {
+    Error: require("../constants/error.constant"),
+};
 
 module.exports = {
     middleware: middleware
@@ -16,12 +19,12 @@ module.exports = {
  * @param {*} res 
  * @param {(err?)=>void} next
  */
-function middleware (req, res, next) {
+function middleware(req, res, next) {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         next({
             status: 422,
-            message: "Validation failed",
+            message: Constants.Error.VALIDATION_ERROR422_MESSAGE,
             data: errors.mapped()
         });
     }

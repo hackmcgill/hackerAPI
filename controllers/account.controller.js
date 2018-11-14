@@ -4,6 +4,10 @@ const Services = {
     Logger: require("../services/logger.service")
 };
 const Util = require("../middlewares/util.middleware");
+const Constants = {
+    Error: require("../constants/error.constant"),
+};
+
 
 /**
  * @async
@@ -24,7 +28,7 @@ async function getUserByEmail(req, res) {
     } else {
         // tentative error code
         return res.status(404).json({
-            message: "User email not found",
+            message: Constants.Error.ACCOUNT_ERROR404_MESSAGE,
             data: {}
         });
     }
@@ -40,7 +44,7 @@ async function getUserByEmail(req, res) {
  */
 async function getUserById(req, res) {
     const acc = await Services.Account.findById(req.body.id);
-    
+
     if (acc) {
         return res.status(200).json({
             message: "Account found by user id",
@@ -48,7 +52,7 @@ async function getUserById(req, res) {
         });
     } else {
         return res.status(404).json({
-            message: "Account id not found",
+            message: Constants.Error.ACCOUNT_ERROR404_MESSAGE,
             data: {}
         });
     }
@@ -94,8 +98,8 @@ async function updateAccount(req, res) {
             data: req.body
         });
     } else {
-        return res.status(400).json({
-            message: "Issue with changing account information",
+        return res.status(500).json({
+            message: Constants.Error.ACCOUNT_UPDATE_ERROR500_MESSAGE,
             data: {}
         });
     }

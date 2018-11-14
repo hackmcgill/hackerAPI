@@ -13,7 +13,11 @@ const Middleware = {
     Util: require("./util.middleware")
 };
 
-const Constants = require("../constants");
+const Constants = {
+    General: require("../constants/general.constant"),
+    Error: require("../constants/error.constant"),
+};
+
 /**
  * @returns {Fn} the middleware that will check that the user is properly authenticated.
  * Calls next() if the user is properly authenticated.
@@ -23,7 +27,7 @@ function ensureAuthenticated() {
         if (req.isUnauthenticated()) {
             next({
                 status: 401,
-                message: "Not Authenticated",
+                message: Constants.Error.AUTH_ERROR401_MESSAGE,
                 error: {
                     route: req.path
                 }
@@ -45,8 +49,8 @@ function ensureAuthorized(findByIdFns) {
             (auth) => {
                 if (!auth) {
                     next({
-                        status: 401,
-                        message: "Not Authorized for this route",
+                        status: 403,
+                        message: Constants.Error.AUTH_ERROR403_MESSAGE,
                         error: {
                             route: req.path
                         }
@@ -109,7 +113,7 @@ async function sendResetPasswordEmailMiddleware(req, res, next) {
  */
 async function sendConfirmAccountEmailMiddleware(req, res, next) {
     const account = req.body.account;
-    await Services.AccountConfirmation.create(Constants.HACKER, account.email, account.id);
+    await Services.AccountConfirmation.create(Constants.General.HACKER, account.email, account.id);
     const accountConfirmationToken = await Services.AccountConfirmation.findByAccountId(account.id);
     const token = Services.AccountConfirmation.generateToken(accountConfirmationToken.id, account.id);
     const mailData = Services.AccountConfirmation.generateAccountConfirmationEmail(req.hostname, account.email, Constants.HACKER, token);
@@ -178,10 +182,10 @@ async function getAccountTypeFromConfirmationToken(req, res, next) {
     } else {
         //Either the token was already used, it's invalid, or user does not exist.
         next({
-            status: 422,
-            message: "Invalid token for confirming account",
+            status: 401,
+            message: Constants.Error.ACCOUNT_TOKEN_ERROR401_MESSAGE,
             error: {}
-        })
+        });
     }
 }
 
@@ -200,8 +204,8 @@ async function validateResetToken(req, res, next) {
     } else {
         //Either the token was already used, it's invalid, or user does not exist.
         next({
-            status: 422,
-            message: "invalid token",
+            status: 401,
+            message: Constants.Error.ACCOUNT_TOKEN_ERROR401_MESSAGE,
             error: {}
         });
     }
@@ -225,8 +229,8 @@ async function validateConfirmationToken(req, res, next) {
     } else {
         //Either the token was already used, it's invalid, or user does not exist.
         next({
-            status: 422,
-            message: "Invalid token for confirming account",
+            status: 401,
+            message: Constants.Error.ACCOUNT_TOKEN_ERROR401_MESSAGE,
             error: {}
         });
     }

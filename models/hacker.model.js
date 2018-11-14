@@ -1,6 +1,6 @@
 "use strict";
 
-const Constants = require("../constants");
+const Constants = require("../constants/general.constant");
 const mongoose = require("mongoose");
 //describes the data type
 const HackerSchema = new mongoose.Schema({
@@ -89,7 +89,7 @@ HackerSchema.methods.toJSON = function () {
  * @returns {String} type of the field being queried
  * @description return the type of the field(if it exists and is allowed to be searched on)
  */
-HackerSchema.statics.searchableField = function(field) {
+HackerSchema.statics.searchableField = function (field) {
     return HackerSchema.path(field).instance;
 };
 

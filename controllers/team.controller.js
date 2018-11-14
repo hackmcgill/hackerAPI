@@ -6,6 +6,9 @@ const Services = {
     Logger: require("../services/logger.service")
 };
 const Util = require("../middlewares/util.middleware");
+const Constants = {
+    Error: require("../constants/error.constant"),
+};
 
 /**
  * @async
@@ -25,7 +28,7 @@ async function findById(req, res) {
         });
     } else {
         return res.status(404).json({
-            message: "Issue with retrieving team information",
+            message: Constants.Error.TEAM_ERROR404_MESSAGE,
             data: {}
         });
     }
@@ -50,8 +53,8 @@ async function createTeam(req, res) {
             data: teamDetails
         });
     } else {
-        return res.status(400).json({
-            message: "Issue with team creation",
+        return res.status(500).json({
+            message: Constants.Error.TEAM_CREATE_ERROR500_MESSAGE,
             data: {}
         });
     }
