@@ -1,7 +1,6 @@
 "use strict";
 const Util = {
     Account: require("./account.test.util"),
-    Skill: require("./skill.test.util")
 };
 
 const Services = {
