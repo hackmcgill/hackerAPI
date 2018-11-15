@@ -218,6 +218,36 @@ module.exports = {
             Controllers.Auth.retrieveRoleBindings
         );
 
+        /**
+         * @api {get} /auth/confirm/resend resend confirmation token
+         * @apiName resendConfirmAccount
+         * @apiGroup Authentication
+         * @apiVersion 0.0.8
+         *
+         * @apiSuccess {string} message Success message
+         * @apiSuccess {object} data empty
+         * @apiSuccessExample {json} Success-Response:
+         *      {"message": "Successfully resent confirmation email", "data": {}}
+         * 
+         * @apiError {string} message Error message
+         * @apiError {object} data empty
+         * @apiErrorExample {json} Error-Response:
+         *       HTTP/1.1 422
+         *      {"message": "Account already confirmed, "data": {}}
+         * 
+         * @apiError {string} message Error message
+         * @apiError {object} data empty
+         * @apiErrorExample {json} Error-Response:
+         *       HTTP/1.1 428
+         *      {"message": "Account already confirmed, "data": {}}
+         * 
+         */
+        authRouter.route("/confirm/resend").get(
+            Middleware.Auth.ensureAuthenticated(),
+            Middleware.Auth.resendConfirmAccountEmail,
+            Controllers.Auth.sentConfirmationEmail
+        )
+
         apiRouter.use("/auth", authRouter);
     }
 };

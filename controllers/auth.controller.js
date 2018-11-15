@@ -37,5 +37,11 @@ module.exports = {
             message: "Successfully retrieved role bindings",
             data: req.roleBindings.toJSON()
         })
+    },
+    sentConfirmationEmail: function(req, res){
+        return res.status(200).json({
+            message: "Successfully resent account email",
+            data: {}
+        })
     }
 };

@@ -16,6 +16,10 @@ const util = {
 };
 // hacker role binding
 const storedAccount1 = util.account.Account1;
+//This account has a confirmation token in the db
+const storedAccount2 = util.account.NonConfirmedAccount1;
+//This account does not have a confirmation token in the DB
+const storedAccount3 = util.account.NonConfirmedAccount2;
 // admin role binding
 const Admin1 = util.account.Admin1;
 const newAccount1 = util.account.newAccount1;
@@ -356,4 +360,61 @@ describe("GET retrieve permissions", function() {
                 done();
             });
     });
+});
+
+describe("GET resend confirmation email", function () {
+    it("should SUCCEED and resend the confirmation email", function(done) {
+        util.auth.login(agent, storedAccount3, (error) => {
+            if (error) {
+                agent.close();
+                return done(error);
+            }
+            agent
+                .get(`/api/auth/confirm/resend`)
+                .type("application/json")
+                .end(function (err, res) {
+                    res.should.have.status(200);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal("Successfully resent account email");
+                    done();
+                })
+        })
+    });
+    it("should FAIL as the account is already confirmed", function(done) {
+        util.auth.login(agent, storedAccount1, (error) => {
+            if (error) {
+                agent.close();
+                return done(error);
+            }
+            agent
+                .get(`/api/auth/confirm/resend`)
+                .type("application/json")
+                .end(function (err, res) {
+                    res.should.have.status(422);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal("Account already confirmed");
+                    done();
+                })
+        })
+    });
+    it("should FAIL as account confirmation token does not exist", function(done) {
+        util.auth.login(agent, storedAccount2, (error) => {
+            if (error) {
+                agent.close();
+                return done(error);
+            }
+            agent
+                .get(`/api/auth/confirm/resend`)
+                .type("application/json")
+                .end(function (err, res) {
+                    res.should.have.status(428);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal("Account confirmation token does not exist");
+                    done();
+                })
+        })
+    })
 });

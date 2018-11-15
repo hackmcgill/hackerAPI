@@ -148,6 +148,44 @@ async function sendConfirmAccountEmailMiddleware(req, res, next) {
 }
 
 /**
+ * Middleware that resends an email to confirm the account for the inputted email address.
+ * @param {{user {id : String}}} req the request object
+ * @param {*} res
+ * @param {(err?)=>void} next
+ */
+async function resendConfirmAccountEmail(req, res, next){
+    const account = await Services.Account.findById(req.user.id);
+    if(account.confirmed){
+        return next({
+            status: 422,
+            message: "Account already confirmed"
+        })
+    }
+    const accountConfirmationToken = await Services.AccountConfirmation.findByAccountId(account.id);
+    if(!accountConfirmationToken){
+        return next({
+            status: 428,
+            message: "Account confirmation token does not exist"
+        })
+    }
+    const token = Services.AccountConfirmation.generateToken(accountConfirmationToken.id, account.id);
+    const mailData = Services.AccountConfirmation.generateAccountConfirmationEmail(req.hostname, account.email, accountConfirmationToken.accountType, token);
+    if (mailData !== undefined) {
+        Services.Email.send(mailData, (err) => {
+            if (err) {
+                next(err);
+            } else {
+                next();
+            }
+        });
+    } else {
+        return next({
+            message: "Error while generating email"
+        });
+    }
+}
+
+/**
  * Attempts to parse the jwt token that is found in req.body.token using process.env.JWT_RESET_PWD_SECRET as the key.
  * Places the parsed object into req.body.decodedToken.
  * @param {{body:{token:string}}} req 
@@ -279,6 +317,8 @@ module.exports = {
     sendConfirmAccountEmailMiddleware: Middleware.Util.asyncMiddleware(sendConfirmAccountEmailMiddleware),
     parseAccountConfirmationToken: parseAccountConfirmationToken,
     validateConfirmationToken: Middleware.Util.asyncMiddleware(validateConfirmationToken),
+    getAccountTypeFromConfirmationToken: Middleware.Util.asyncMiddleware(getAccountTypeFromConfirmationToken),
+    resendConfirmAccountEmail: Middleware.Util.asyncMiddleware(resendConfirmAccountEmail),
     getAccountTypeFromConfirmationToken: Middleware.Util.asyncMiddleware(getAccountTypeFromConfirmationToken),
     retrieveRoleBindings: Middleware.Util.asyncMiddleware(retrieveRoleBindings)
 };
