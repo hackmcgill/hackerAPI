@@ -8,7 +8,11 @@ module.exports = {
         VALIDATOR.nameValidator("body", "school", false),
         VALIDATOR.nameValidator("body", "gender", false),
         VALIDATOR.booleanValidator("body", "needsBus", false),
-        VALIDATOR.applicationValidator("body", "application", false)
+        VALIDATOR.applicationValidator("body", "application", false),
+        VALIDATOR.nameValidator("body", "ethnicity", false),
+        VALIDATOR.nameValidator("body", "major", false),
+        VALIDATOR.integerValidator("body", "graduationYear", false, 2019, 2030),
+        VALIDATOR.booleanValidator("body", "codeOfConduct", false),
     ],
 
     // untested

@@ -65,6 +65,24 @@ function ensureAuthorized(findByIdFns) {
 }
 
 /**
+ * Middleware which retrieves the rolebindings for an account
+ * @param {{body: {param: {id:string}}}} req 
+ * @param {*} res 
+ * @param {(err?)=>void} next 
+ */
+async function retrieveRoleBindings(req, res, next){
+    const roleBindings = await Services.RoleBinding.getRoleBindingForAcct(req.params.id);
+    if(!roleBindings){
+        return next({
+            status: 404,
+            message: "Role Bindings not found"
+        })
+    }
+    req.roleBindings = roleBindings;
+    next();
+}
+
+/**
  * Middleware that sends an email to reset the password for the inputted email address.
  * @param {{body: {email:String}}} req the request object
  * @param {*} res 
@@ -115,6 +133,44 @@ async function sendConfirmAccountEmailMiddleware(req, res, next) {
     const accountConfirmationToken = await Services.AccountConfirmation.findByAccountId(account.id);
     const token = Services.AccountConfirmation.generateToken(accountConfirmationToken.id, account.id);
     const mailData = Services.AccountConfirmation.generateAccountConfirmationEmail(req.hostname, account.email, Constants.HACKER, token);
+    if (mailData !== undefined) {
+        Services.Email.send(mailData, (err) => {
+            if (err) {
+                next(err);
+            } else {
+                next();
+            }
+        });
+    } else {
+        return next({
+            message: "Error while generating email"
+        });
+    }
+}
+
+/**
+ * Middleware that resends an email to confirm the account for the inputted email address.
+ * @param {{user {id : String}}} req the request object
+ * @param {*} res
+ * @param {(err?)=>void} next
+ */
+async function resendConfirmAccountEmail(req, res, next){
+    const account = await Services.Account.findById(req.user.id);
+    if(account.confirmed){
+        return next({
+            status: 422,
+            message: "Account already confirmed"
+        })
+    }
+    const accountConfirmationToken = await Services.AccountConfirmation.findByAccountId(account.id);
+    if(!accountConfirmationToken){
+        return next({
+            status: 428,
+            message: "Account confirmation token does not exist"
+        })
+    }
+    const token = Services.AccountConfirmation.generateToken(accountConfirmationToken.id, account.id);
+    const mailData = Services.AccountConfirmation.generateAccountConfirmationEmail(req.hostname, account.email, accountConfirmationToken.accountType, token);
     if (mailData !== undefined) {
         Services.Email.send(mailData, (err) => {
             if (err) {
@@ -324,4 +380,6 @@ module.exports = {
     createRoleBindings: createRoleBindings,
     addCreationRoleBindings: Middleware.Util.asyncMiddleware(addCreationRoleBindings),
     addSponsorRoleBindings: Middleware.Util.asyncMiddleware(addSponsorRoleBindings)
+    resendConfirmAccountEmail: Middleware.Util.asyncMiddleware(resendConfirmAccountEmail),
+    retrieveRoleBindings: Middleware.Util.asyncMiddleware(retrieveRoleBindings)
 };

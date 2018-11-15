@@ -17,6 +17,14 @@ const authRoutes = {
     "invite": {
         requestType: Constants.REQUEST_TYPES.POST,
         uri: "/api/auth/invite"
+    },
+    "getSelfRoleBindindings" : {
+        requestType: Constants.REQUEST_TYPES.GET,
+        uri: "/api/auth/rolebindings/" + Constants.ROLE_CATEGORIES.SELF
+    },
+    "getAnyRoleBindings" : {
+        requestType: Constants.REQUEST_TYPES.GET,
+        uri: "/api/auth/rolebindings/" + Constants.ROLE_CATEGORIES.ALL
     }
 };
 
@@ -144,6 +152,7 @@ const hackerRole = {
     "routes": [
         authRoutes.login,
         authRoutes.logout,
+        authRoutes.getSelfRoleBindindings,
 
         accountRoutes.getSelf,
         accountRoutes.getSelfById,
@@ -162,6 +171,7 @@ const volunteerRole = {
     "routes": [
         authRoutes.login,
         authRoutes.logout,
+        authRoutes.getSelfRoleBindindings,
 
         volunteerRoutes.post,
     ]
@@ -173,6 +183,7 @@ const sponsorT1Role = {
     "routes": [
         authRoutes.login,
         authRoutes.logout,
+        authRoutes.getSelfRoleBindindings,
 
         sponsorRoutes.post,
         sponsorRoutes.getSelfById,
@@ -185,6 +196,7 @@ const sponsorT2Role = {
     "routes": [
         authRoutes.login,
         authRoutes.logout,
+        authRoutes.getSelfRoleBindindings,
 
         sponsorRoutes.post,
         sponsorRoutes.getSelfById,
@@ -197,6 +209,7 @@ const sponsorT3Role = {
     "routes": [
         authRoutes.login,
         authRoutes.logout,
+        authRoutes.getSelfRoleBindindings,
 
         sponsorRoutes.post,
         sponsorRoutes.getSelfById,
@@ -209,6 +222,7 @@ const sponsorT4Role = {
     "routes": [
         authRoutes.login,
         authRoutes.logout,
+        authRoutes.getSelfRoleBindindings,
 
         sponsorRoutes.post,
         sponsorRoutes.getSelfById,
@@ -221,6 +235,7 @@ const sponsorT5Role = {
     "routes": [
         authRoutes.login,
         authRoutes.logout,
+        authRoutes.getSelfRoleBindindings,
 
         sponsorRoutes.post,
         sponsorRoutes.getSelfById,
