@@ -6,7 +6,8 @@ const Services = {
     ResetPasswordToken: require("../services/resetPassword.service"),
     Account: require("../services/account.service"),
     Email: require("../services/email.service"),
-    AccountConfirmation: require("../services/accountConfirmation.service")
+    AccountConfirmation: require("../services/accountConfirmation.service"),
+    RoleBinding: require("../services/roleBinding.service")
 };
 
 const Middleware = {
@@ -60,6 +61,24 @@ function ensureAuthorized(findByIdFns) {
             }
         );
     };
+}
+
+/**
+ * Middleware which retrieves the rolebindings for an account
+ * @param {{body: {param: {id:string}}}} req 
+ * @param {*} res 
+ * @param {(err?)=>void} next 
+ */
+async function retrieveRoleBindings(req, res, next){
+    const roleBindings = await Services.RoleBinding.getRoleBindingForAcct(req.params.id);
+    if(!roleBindings){
+        return next({
+            status: 404,
+            message: "Role Bindings not found"
+        })
+    }
+    req.roleBindings = roleBindings;
+    next();
 }
 
 /**
@@ -260,5 +279,6 @@ module.exports = {
     sendConfirmAccountEmailMiddleware: Middleware.Util.asyncMiddleware(sendConfirmAccountEmailMiddleware),
     parseAccountConfirmationToken: parseAccountConfirmationToken,
     validateConfirmationToken: Middleware.Util.asyncMiddleware(validateConfirmationToken),
-    getAccountTypeFromConfirmationToken: Middleware.Util.asyncMiddleware(getAccountTypeFromConfirmationToken)
+    getAccountTypeFromConfirmationToken: Middleware.Util.asyncMiddleware(getAccountTypeFromConfirmationToken),
+    retrieveRoleBindings: Middleware.Util.asyncMiddleware(retrieveRoleBindings)
 };
