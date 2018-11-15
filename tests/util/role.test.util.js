@@ -54,11 +54,11 @@ const hackerRoutes = {
     },
     "getSelfResumeById": {
         requestType: Constants.REQUEST_TYPES.GET,
-        uri: "/api/hacker/" + Constants.ROLE_CATEGORIES.SELF + "/resume",
+        uri: "/api/hacker/resume/" + Constants.ROLE_CATEGORIES.SELF,
     },
     "getAnyResumeById": {
         requestType: Constants.REQUEST_TYPES.GET,
-        uri: "/api/hacker/" + Constants.ROLE_CATEGORIES.ALL + "/resume",
+        uri: "/api/hacker/resume/" + Constants.ROLE_CATEGORIES.ALL,
     },
     "post": {
         requestType: Constants.REQUEST_TYPES.POST,
@@ -66,11 +66,11 @@ const hackerRoutes = {
     },
     "postSelfResumeById": {
         requestType: Constants.REQUEST_TYPES.POST,
-        uri: "/api/hacker/" + Constants.ROLE_CATEGORIES.SELF + "/resume",
+        uri: "/api/hacker/resume/" + Constants.ROLE_CATEGORIES.SELF,
     },
     "postAnyResumeById": {
         requestType: Constants.REQUEST_TYPES.POST,
-        uri: "/api/hacker/" + Constants.ROLE_CATEGORIES.ALL + "/resume",
+        uri: "/api/hacker/resume/" + Constants.ROLE_CATEGORIES.ALL,
     },
     "patchSelfById": {
         requestType: Constants.REQUEST_TYPES.PATCH,
