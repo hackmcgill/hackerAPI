@@ -44,7 +44,9 @@ function parseAccount(req, res, next) {
         email: req.body.email,
         password: Services.Account.hashPassword(req.body.password),
         dietaryRestrictions: req.body.dietaryRestrictions,
-        shirtSize: req.body.shirtSize
+        shirtSize: req.body.shirtSize,
+        birthDate: req.body.birthDate,
+        phoneNumber: req.body.phoneNumber,
     };
 
     delete req.body.firstName;
@@ -53,6 +55,8 @@ function parseAccount(req, res, next) {
     delete req.body.password;
     delete req.body.dietaryRestrictions;
     delete req.body.shirtSize;
+    delete req.body.birthDate;
+    delete req.body.phoneNumber;
 
     req.body.accountDetails = accountDetails;
 
@@ -74,18 +78,6 @@ async function updatePassword(req, res, next) {
 async function addDefaultHackerPermissions(req, res, next) {
     // await Services.RoleBinding.createRoleBinding(req.);
     next();
-}
-async function createAccount(req, res, next) {
-    const accountDetails = req.body.accountDetails;
-    const success = await Services.Account.addOneAccount(accountDetails);
-    if (!success) {
-        next({
-            message: "Issue with account creation",
-            data: {}
-        });
-    } else {
-        next();
-    }
 }
 
 /**

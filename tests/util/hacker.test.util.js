@@ -21,7 +21,11 @@ const invalidHacker1 = {
         "portfolioURL": {},
         // invalid jobInterest
         "jobInterest": "ASDF",
-    }
+    },
+    "ethnicity": "Asian",
+    "major": "CS",
+    "graduationYear": 2020,
+    "codeOfConduct": true,
 };
 
 const duplicateAccountLinkHacker1 = {
@@ -47,7 +51,11 @@ const duplicateAccountLinkHacker1 = {
             Util.Skill.Skill5._id,
             Util.Skill.Skill8._id,
         ],
-    }
+    },
+    "ethnicity": "Caucasian",
+    "major": "CS",
+    "graduationYear": 2019,
+    "codeOfConduct": true,
 };
 
 const newHacker1 = {
@@ -71,7 +79,11 @@ const newHacker1 = {
             Util.Skill.Skill5._id,
             Util.Skill.Skill8._id,
         ],
-    }
+    },
+    "ethnicity": "Caucasian",
+    "major": "EE",
+    "graduationYear": 2019,
+    "codeOfConduct": true,
 };
 
 const newHacker2 = {
@@ -95,7 +107,11 @@ const newHacker2 = {
             Util.Skill.Skill5._id,
             Util.Skill.Skill8._id,
         ],
-    }
+    },
+    "ethnicity": "African American",
+    "major": "EE",
+    "graduationYear": 2019,
+    "codeOfConduct": true,
 };
 
 const HackerA = {
@@ -121,7 +137,11 @@ const HackerA = {
             Util.Skill.Skill5._id,
             Util.Skill.Skill8._id,
         ],
-    }
+    },
+    "ethnicity": "Native American",
+    "major": "EE",
+    "graduationYear": 2019,
+    "codeOfConduct": true,
 };
 const HackerB = {
     "_id": mongoose.Types.ObjectId(),
@@ -146,7 +166,11 @@ const HackerB = {
             Util.Skill.Skill4._id,
             Util.Skill.Skill7._id,
         ],
-    }
+    },
+    "ethnicity": "European",
+    "major": "EE",
+    "graduationYear": 2019,
+    "codeOfConduct": true,
 };
 const Hackers = [
     HackerA,

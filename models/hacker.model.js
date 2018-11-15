@@ -72,8 +72,23 @@ const HackerSchema = new mongoose.Schema({
             type: mongoose.Schema.Types.ObjectId,
             ref: "Team"
         }
+    },
+    ethnicity: {
+        type: String,
+        required: true
+    },
+    major: {
+        type: String,
+        required: true
+    },
+    graduationYear: {
+        type: Number,
+        required: true
+    },
+    codeOfConduct: {
+        type: Boolean,
+        required: true
     }
-
 });
 
 HackerSchema.methods.toJSON = function () {
@@ -89,7 +104,7 @@ HackerSchema.methods.toJSON = function () {
  * @returns {String} type of the field being queried
  * @description return the type of the field(if it exists and is allowed to be searched on)
  */
-HackerSchema.statics.searchableField = function(field) {
+HackerSchema.statics.searchableField = function (field) {
     return HackerSchema.path(field).instance;
 };
 
