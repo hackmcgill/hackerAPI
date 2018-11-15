@@ -176,29 +176,69 @@ async function downloadResume(req, res, next) {
 }
 /**
  * Sends a preset email to a user if a status change occured.
- * @param {{body: {status?: string}, email: string}} req 
+ * @param {{body: {status?: string}, params: {id: string}}} req 
  * @param {*} res 
  * @param {(err?:*)=>void} next 
  */
-function sendStatusUpdateEmail(req, res, next) {
+async function sendStatusUpdateEmail(req, res, next) {
     //skip if the status doesn't exist
     if (!req.body.status) {
         return next();
     } else {
-        const mailData = {
-            to: req.email,
-            from: process.env.NO_REPLY_EMAIL,
-            subject: Constants.EMAIL_SUBJECTS[req.body.status],
-            html: fs.readFileSync(path.join(__dirname, `../assets/email/statusEmail/${req.body.status}.html`)).toString()
-        };
-        Services.Email.send(mailData).then(
-            (response) => {
-                if (response[0].statusCode >= 200 && response[0].statusCode < 300) {
-                    next();
-                } else {
-                    next(response[0]);
-                }
-            }, next);
+        // send it to the hacker that is being updated.
+        const hacker = await Services.Hacker.findById(req.params.id);
+        const account = await Services.Account.findById(hacker.accountId);
+        if (!hacker) {
+            return next({
+                status: 404,
+                message: "Hacker does not exist",
+                error: {}
+            });
+        } else if (!account) {
+            return next({
+                status: 500,
+                message: "Error while searching for account by id",
+                error: {}
+            });
+        }
+        Services.Email.sendStatusUpdate(account.email, req.body.status, next);
+    }
+}
+/**
+ * If the current hacker's status is Constants.HACKER_STATUS_NONE, and the hacker's application is completed,
+ * then it will change the status of the hacker to Constants.HACKER_STATUS_APPLIED, and then email the hacker to 
+ * confirm that they applied.
+ * @param {{body: {status?: string}, params: {id: string}}} req 
+ * @param {*} res 
+ * @param {(err?:*)=>void} next 
+ */
+async function checkIfApplicationCompleted(req, res, next) {
+    const hacker = await Services.Hacker.findById(req.params.id);
+    if (hacker) {
+        if (hacker.status === Constants.HACKER_STATUS_NONE && hacker.isApplicationComplete()) {
+            await Services.Hacker.updateOne(req.params.id, {
+                status: Constants.HACKER_STATUS_APPLIED
+            });
+            const account = await Services.Account.findById(hacker.accountId);
+            if (!account) {
+                return next({
+                    status: 500,
+                    message: "Error while searching for account by id when updating hacker",
+                    error: {}
+                });
+            }
+            Services.Email.sendStatusUpdateEmail(account.email, Constants.HACKER_STATUS_APPLIED, next);
+        } else {
+            next();
+        }
+    } else {
+        next({
+            status: 404,
+            message: "Hacker not found",
+            data: {
+                id: req.params.id
+            }
+        });
     }
 }
 
@@ -264,8 +304,9 @@ module.exports = {
     ensureAccountLinkedToHacker: ensureAccountLinkedToHacker,
     uploadResume: Middleware.Util.asyncMiddleware(uploadResume),
     downloadResume: Middleware.Util.asyncMiddleware(downloadResume),
-    sendStatusUpdateEmail: sendStatusUpdateEmail,
+    sendStatusUpdateEmail: Middleware.Util.asyncMiddleware(sendStatusUpdateEmail),
     updateHacker: Middleware.Util.asyncMiddleware(updateHacker),
     validateConfirmedStatus: Middleware.Util.asyncMiddleware(validateConfirmedStatus),
     checkDuplicateAccountLinks: Middleware.Util.asyncMiddleware(checkDuplicateAccountLinks),
+    checkIfApplicationCompleted: Middleware.Util.asyncMiddleware(checkIfApplicationCompleted)
 };

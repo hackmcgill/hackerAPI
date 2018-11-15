@@ -162,6 +162,7 @@ module.exports = {
             Middleware.Hacker.parsePatch,
 
             Middleware.Hacker.updateHacker,
+            Middleware.Hacker.checkIfApplicationCompleted,
             Controllers.Hacker.updatedHacker
         );
 
