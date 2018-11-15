@@ -240,7 +240,6 @@ describe("PATCH update account", function () {
                 .type("application/json")
                 .send(updatedInfo)
                 .end(function (err, res) {
-                    console.log(res.body.message);
                     res.should.have.status(200);
                     res.should.be.json;
                     res.body.should.have.property("message");
@@ -249,7 +248,6 @@ describe("PATCH update account", function () {
                     // Is this correct matching of data?
                     res.body.data.firstName.should.equal(updatedInfo.firstName);
                     res.body.data.lastName.should.equal(updatedInfo.lastName);
-                    res.body.data.pronoun.should.equal(updatedInfo.pronoun);
                     done();
                 });
         });
@@ -275,8 +273,6 @@ describe("PATCH update account", function () {
                     // Is this correct matching of data?
                     res.body.data.firstName.should.equal(updatedInfo.firstName);
                     res.body.data.lastName.should.equal(updatedInfo.lastName);
-                    res.body.data.pronoun.should.equal(updatedInfo.pronoun);
-
                     done();
                 });
         });
