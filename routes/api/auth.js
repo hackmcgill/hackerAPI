@@ -8,7 +8,8 @@ const Services = {
 };
 const Middleware = {
     Validator: {
-        Auth: require("../../middlewares/validators/auth.validator")
+        Auth: require("../../middlewares/validators/auth.validator"),
+        RouteParam: require("../../middlewares/validators/routeParam.validator")
     },
     parseBody: require("../../middlewares/parse-body.middleware"),
     Auth: require("../../middlewares/auth.middleware"),
@@ -164,7 +165,58 @@ module.exports = {
             Middleware.Auth.parseAccountConfirmationToken,
             Middleware.Auth.validateConfirmationToken,
             Controllers.Auth.confirmAccount
-        )
+        );
+
+        /**
+         * @api {get} /auth/rolebindings/:id retrieve rolebindings for a user given by their user id :id
+         * @apiName getRoleBindings
+         * @apiGroup Auth
+         * @apiVersion 0.0.8
+         * 
+         * @apiParam (param) {ObjectId} id MongoId of an account
+         * 
+         * @apiSuccess {string} message Success message
+         * @apiSuccess {object} data Rolebindings object
+         * @apiSuccessExample {object} Success-Response: 
+         *      {
+                    "message": "Successfully retrieved role bindings",
+                    "data": {
+                        accountId:"5beca4ab2e069a34f91697b2"
+                        id:"5beca4ae2e069a34f91698b1"
+                        roles: [
+                            {
+                                _id:"5beca4ab2e069a34f91697d9",
+                                name:"hacker",
+                                routes: [
+                                    0:Object {_id: "5beca4ae2e069a34f9169852", requestType: "POST", uri: "/api/auth/login"},
+                                    1:Object {_id: "5beca4ae2e069a34f9169851", requestType: "POST", uri: "/api/auth/logout"},
+                                    2:Object {_id: "5beca4ae2e069a34f9169850", requestType: "GET", uri: "/api/auth/rolebindings/:self"},
+                                    3:Object {_id: "5beca4ae2e069a34f916984f", requestType: "GET", uri: "/api/account/self"},
+                                    4:Object {_id: "5beca4ae2e069a34f916984e", requestType: "GET", uri: "/api/account/:self"},
+                                    5:Object {_id: "5beca4ae2e069a34f916984d", requestType: "PATCH", uri: "/api/account/:self"},
+                                    6:Object {_id: "5beca4ae2e069a34f916984c", requestType: "POST", uri: "/api/hacker/"},
+                                    7:Object {_id: "5beca4ae2e069a34f916984b", requestType: "GET", uri: "/api/hacker/:self"},
+                                    8:Object {_id: "5beca4ae2e069a34f916984a", requestType: "GET", uri: "/api/hacker/:self/resume"},
+                                    9:Object {_id: "5beca4ae2e069a34f9169849", requestType: "PATCH", uri: "/api/hacker/:self"}
+                                ]
+                            }
+                        ]
+                    }
+                }
+         * @apiError {string} message Error message
+         * @apiError {object} data empty
+         * @apiErrorExample {object} Error-Response: 
+         *      {"message": "Role Bindings not found", "data": {}}
+         * 
+         */
+        authRouter.route("/rolebindings/:id").get(
+            Middleware.Auth.ensureAuthenticated(),
+            Middleware.Auth.ensureAuthorized([Services.Account.findById]),
+            Middleware.Validator.RouteParam.idValidator,
+            Middleware.parseBody.middleware,
+            Middleware.Auth.retrieveRoleBindings,
+            Controllers.Auth.retrieveRoleBindings
+        );
 
         /**
          * @api {get} /auth/confirm/resend resend confirmation token

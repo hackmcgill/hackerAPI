@@ -46,6 +46,11 @@ function parseHacker(req, res, next) {
         gender: req.body.gender,
         needsBus: req.body.needsBus,
         application: req.body.application,
+
+        ethnicity: req.body.ethnicity,
+        major: req.body.major,
+        graduationYear: req.body.graduationYear,
+        codeOfConduct: req.body.codeOfConduct,
     };
     req.body.token = req.body.authorization;
 
@@ -55,6 +60,10 @@ function parseHacker(req, res, next) {
     delete req.body.needsBus;
     delete req.body.application;
     delete req.body.authorization;
+    delete req.body.ethnicity;
+    delete req.body.major;
+    delete req.body.graduationYear;
+    delete req.body.codeOfConduct;
 
     req.body.hackerDetails = hackerDetails;
 

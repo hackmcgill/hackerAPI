@@ -324,6 +324,42 @@ describe("POST reset password", function () {
                 done();
             })
     })
+})
+
+describe("GET retrieve permissions", function() {
+    it("should SUCCEED and retrieve the rolebindings for the user", function (done) {
+        util.auth.login(agent, storedAccount1, (error) => {
+            if (error) {
+                agent.close();
+                return done(error);
+            }
+            agent
+                .get("/api/auth/rolebindings/" + storedAccount1._id)
+                .type("application/json")
+                .end(function (err, res) {
+                    res.should.have.status(200);
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal("Successfully retrieved role bindings");
+                    res.body.should.have.property("data")
+                    res.body.data.should.be.a("object");
+                    res.body.data.should.have.property("roles");
+                    res.body.data.should.have.property("accountId");
+                    res.body.data.accountId.should.equal(storedAccount1._id.toHexString());
+                    done();
+                });
+        });
+    });
+    it("should FAIL to retrieve the rolebindings as the account is not authenticated", function(done) {
+        chai.request(server.app)
+            .get("/api/auth/rolebindings/" + storedAccount1._id)
+            .type("application/json")
+            .end(function (err, res) {
+                res.should.have.status(401);
+                res.body.should.have.property("message");
+                res.body.message.should.equal("Not Authenticated");
+                done();
+            });
+    });
 });
 
 describe("GET resend confirmation email", function () {
