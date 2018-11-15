@@ -379,7 +379,7 @@ module.exports = {
     validateConfirmationTokenWithoutAccount: Middleware.Util.asyncMiddleware(validateConfirmationTokenWithoutAccount),
     createRoleBindings: createRoleBindings,
     addCreationRoleBindings: Middleware.Util.asyncMiddleware(addCreationRoleBindings),
-    addSponsorRoleBindings: Middleware.Util.asyncMiddleware(addSponsorRoleBindings)
+    addSponsorRoleBindings: Middleware.Util.asyncMiddleware(addSponsorRoleBindings),
     resendConfirmAccountEmail: Middleware.Util.asyncMiddleware(resendConfirmAccountEmail),
     retrieveRoleBindings: Middleware.Util.asyncMiddleware(retrieveRoleBindings)
 };
