@@ -41,6 +41,7 @@ function parseAccount(req, res, next) {
         _id: mongoose.Types.ObjectId(),
         firstName: req.body.firstName,
         lastName: req.body.lastName,
+        pronoun: req.body.pronoun,
         email: req.body.email,
         password: Services.Account.hashPassword(req.body.password),
         dietaryRestrictions: req.body.dietaryRestrictions,
@@ -51,6 +52,7 @@ function parseAccount(req, res, next) {
 
     delete req.body.firstName;
     delete req.body.lastName;
+    delete req.body.pronoun;
     delete req.body.email;
     delete req.body.password;
     delete req.body.dietaryRestrictions;

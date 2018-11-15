@@ -5,17 +5,19 @@ module.exports = {
     newAccountValidator: [
         VALIDATOR.nameValidator("body", "firstName", false),
         VALIDATOR.nameValidator("body", "lastName", false),
+        VALIDATOR.pronounValidator("body", "pronoun", false),
         VALIDATOR.emailValidator("body", "email", false),
         VALIDATOR.alphaArrayValidator("body", "dietaryRestrictions", false),
         VALIDATOR.shirtSizeValidator("body", "shirtSize", false),
         VALIDATOR.passwordValidator("body", "password", false),
         VALIDATOR.dateValidator("body", "birthDate", false),
-        VALIDATOR.phoneNumberValidator("body", "phoneNumber", false),
+        VALIDATOR.phoneNumberValidator("body", "phoneNumber", false)
     ],
     updateAccountValidator: [
         VALIDATOR.mongoIdValidator("body", "_id", true),
         VALIDATOR.nameValidator("body", "firstName", true),
         VALIDATOR.nameValidator("body", "lastName", true),
+        VALIDATOR.pronounValidator("body", "pronoun", true),
         VALIDATOR.emailValidator("body", "email", true),
         VALIDATOR.alphaArrayValidator("body", "dietaryRestrictions", true),
         VALIDATOR.shirtSizeValidator("body", "shirtSize", true),
