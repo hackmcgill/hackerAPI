@@ -24,7 +24,6 @@ const HACKER_STATUSES = [
 const HACKER = "Hacker";
 const VOLUNTEER = "Volunteer";
 const STAFF = "Staff";
-const GODSTAFF = "GodStaff";
 const SPONSOR = "Sponsor";
 
 const JOB_INTERESTS = ["Internship", "Full-time", "None"];
@@ -34,14 +33,14 @@ const ROLE_CATEGORIES = {
 };
 // enum of type of requests
 const REQUEST_TYPES = {
-    GET: "GET", 
-    POST: "POST", 
-    PATCH: "PATCH", 
-    DELETE: "DELETE", 
+    GET: "GET",
+    POST: "POST",
+    PATCH: "PATCH",
+    DELETE: "DELETE",
     PUT: "PUT"
 };
 const SHIRT_SIZES = ["XS", "S", "M", "L", "XL", "XXL"];
-const USER_TYPES = [HACKER, VOLUNTEER, STAFF, GODSTAFF, SPONSOR];
+const USER_TYPES = [HACKER, VOLUNTEER, STAFF, SPONSOR];
 // matches optional http://, https://, http:, https:, and optional www.
 // matches the domain, and then optional route, path, query parameters
 const URL_REGEX = /^(http(s)?:(\/\/)?)?(www\.)?([-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6})\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$/;
@@ -83,6 +82,5 @@ module.exports = {
     SPONSOR: SPONSOR,
     VOLUNTEER: VOLUNTEER,
     STAFF: STAFF,
-    GODSTAFF: GODSTAFF,
     ROLE_CATEGORIES: ROLE_CATEGORIES,
 };
