@@ -85,9 +85,14 @@ module.exports = {
             // middlewares to parse body/organize body
             // adds default hacker permissions here
             Middleware.Account.parseAccount,
-
+            // Parses account token if it exists
+            Middleware.Auth.parseAccountConfirmationToken,
+            Middleware.Auth.validateConfirmationTokenWithoutAccount,
             // middleware to create hacker object in database
+
             Middleware.Account.addAccount,
+            Middleware.Auth.addCreationRoleBindings,
+
             // middleware to create a hacker token 
             // and send a confirmation message
             Middleware.Auth.sendConfirmAccountEmailMiddleware,

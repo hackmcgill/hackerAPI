@@ -18,6 +18,7 @@ const Middleware = {
 const Services = {
     Hacker: require("../../services/hacker.service"),
 }
+const CONSTANTS= require("../../constants");
 
 module.exports = {
     activate: function (apiRouter) {
@@ -79,6 +80,7 @@ module.exports = {
             Middleware.Hacker.parseHacker,
 
             Middleware.Hacker.addDefaultStatus,
+            Middleware.Auth.createRoleBindings(CONSTANTS.HACKER),
             Controllers.Hacker.createHacker
         );
 

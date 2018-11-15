@@ -74,10 +74,10 @@ async function validateConfirmedStatus(req, res, next) {
             message: "Account not verified",
             error: {}
         });
-    } else if (account.accountType !== Constants.SPONSOR) {
+    } else if (!account.isSponsor()) {
         next({
             status: 409,
-            message: "Wrong account type"
+            message: "Wrong account type, expected sponsor"
         });
     } else {
         next();

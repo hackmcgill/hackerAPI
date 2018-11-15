@@ -19,6 +19,7 @@ const Middleware = {
 const Services = {
     Sponsor: require("../../services/sponsor.service"),
 };
+const CONSTANTS = require("../../constants");
 
 module.exports = {
     activate: function (apiRouter) {
@@ -95,6 +96,8 @@ module.exports = {
             Middleware.Sponsor.checkDuplicateAccountLinks,
 
             Middleware.Sponsor.parseSponsor,
+
+            Middleware.Auth.createRoleBindings(CONSTANTS.SPONSOR),
 
             Controllers.Sponsor.createSponsor
         );
