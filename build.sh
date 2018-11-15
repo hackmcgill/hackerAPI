@@ -2,7 +2,7 @@
 
 set -ex
 GCR=gcr.io
-PROJECT=hackboard6
+PROJECT=mchacks-api
 IMAGE=hackboard
 
 docker build -t ${GCR}/${PROJECT}/${IMAGE}:latest .

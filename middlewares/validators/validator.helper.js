@@ -487,6 +487,58 @@ function searchSortValidator(fieldLocation, fieldName) {
 }
 
 /**
+ * Validates that field must be a valid date according to javascript Date.parse
+ * @param {"query" | "body" | "header" | "param"} fieldLocation the location where the field should be found 
+ * @param {string} fieldname name of the field that needs to be validated.
+ * @param {boolean} optional whether the field is optional or not.
+ */
+function dateValidator(fieldLocation, fieldname, optional = true) {
+    const date = setProperValidationChainBuilder(fieldLocation, fieldname, "invalid date");
+    if (optional) {
+        return date.optional({
+            checkFalsy: true
+        }).custom(value => {
+            return !isNaN(Date.parse(value));
+        }).withMessage({
+            message: "Date is not valid.",
+            isValid: date
+        });
+    } else {
+        return date.exists().withMessage("Date field must be specified").custom(value => {
+            return !isNaN(Date.parse(value));
+        }).withMessage({
+            message: "Date is not valid.",
+            isValid: date
+        });
+    }
+}
+
+/**
+ * Validates that field must be a valid phone number, having numbers and having a minimum length of 8
+ * Regex was not chosen because the number is not restricted to a particular country or location
+ * The smallest number length without country code is 5 digits. With the country code, it makes 8.
+ * @param {"query" | "body" | "header" | "param"} fieldLocation the location where the field should be found 
+ * @param {string} fieldname name of the field that needs to be validated.
+ * @param {boolean} optional whether the field is optional or not.
+ */
+function phoneNumberValidator(fieldLocation, fieldname, optional = true) {
+    const number = setProperValidationChainBuilder(fieldLocation, fieldname, "invalid phone number");
+    if (optional) {
+        return number.optional({
+            checkFalsy: true
+        }).isLength({
+            min: 8
+        }).isInt().withMessage("Phone number must consist of numbers.");
+    } else {
+        return number.exists().withMessage(
+            "Phone number must be specified."
+        ).isLength({
+            min: 8
+        }).isInt().withMessage("Phone number must consist of numbers.");
+    }
+}
+
+/**
  *
  * @param {"query" | "body" | "header" | "param"} fieldLocation the location where the field should be found
  * @param {string} fieldname name of the field that needs to be validated.
@@ -532,5 +584,7 @@ module.exports = {
     jwtValidator: jwtValidator,
     urlValidator: urlValidator,
     searchValidator: searchValidator,
-    searchSortValidator: searchSortValidator
+    searchSortValidator: searchSortValidator,
+    phoneNumberValidator: phoneNumberValidator,
+    dateValidator: dateValidator
 };

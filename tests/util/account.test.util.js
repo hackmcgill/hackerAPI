@@ -16,6 +16,8 @@ const newAccount1 = {
     "shirtSize": "S",
     "confirmed": true,
     "accountType": Constants.Hacker,
+    "birthDate": "1997-12-30",
+    "phoneNumber": 1234567890,
 };
 const nonAccount1 = {
     "_id": mongoose.Types.ObjectId(),
@@ -25,6 +27,8 @@ const nonAccount1 = {
     "password": "12345789",
     "dietaryRestrictions": ["none"],
     "shirtSize": "S",
+    "birthDate": "1990-01-01",
+    "phoneNumber": 1000000001,
 };
 const Admin1 = {
     "_id": mongoose.Types.ObjectId(),
@@ -36,6 +40,8 @@ const Admin1 = {
     "shirtSize": "S",
     "confirmed": true,
     "accountType": Constants.GODSTAFF,
+    "birthDate": "1990-01-02",
+    "phoneNumber": 1000000002,
 };
 // hacker
 const Account1 = {
@@ -47,7 +53,9 @@ const Account1 = {
     "dietaryRestrictions": ["none"],
     "shirtSize": "S",
     "confirmed": true,
-    "accountType": Constants.HACKER
+    "accountType": Constants.HACKER,
+    "birthDate": "1990-01-03",
+    "phoneNumber": 1000000003,
 };
 // hacker
 const Account2 = {
@@ -60,6 +68,8 @@ const Account2 = {
     "shirtSize": "M",
     "confirmed": true,
     "accountType": Constants.Hacker,
+    "birthDate": "1990-01-04",
+    "phoneNumber": 1000000004,
 };
 // sponsor
 const Account3 = {
@@ -72,6 +82,8 @@ const Account3 = {
     "shirtSize": "L",
     "confirmed": true,
     "accountType": Constants.SPONSOR,
+    "birthDate": "1990-01-05",
+    "phoneNumber": 1000000005,
 };
 // volunteer
 const Account4 = {
@@ -84,6 +96,8 @@ const Account4 = {
     "shirtSize": "XL",
     "confirmed": true,
     "accountType": Constants.VOLUNTEER,
+    "birthDate": "1980-01-30",
+    "phoneNumber": 1000000006,
 };
 // sponsor
 const Account5 = {
@@ -96,6 +110,8 @@ const Account5 = {
     "shirtSize": "XXL",
     "confirmed": true,
     "accountType": Constants.SPONSOR,
+    "birthDate": "1980-06-30",
+    "phoneNumber": 1000000236,
 };
 
 // non confirmed account for hacker
@@ -109,6 +125,8 @@ const NonConfirmedAccount1 = {
     "shirtSize": "XXL",
     "confirmed": false,
     "accountType": Constants.SPONSOR,
+    "birthDate": "1980-07-30",
+    "phoneNumber": 1001230236,
 };
 
 const customAccounts = [
@@ -155,6 +173,10 @@ function generateRandomShirtSize() {
 function generateAccounts(n) {
     let accounts = [];
     for (let i = 0; i < n; i++) {
+        let birthMonth = Math.floor(Math.random() * 12) + 1;
+        let birthDay = Math.floor(Math.random() * 28) + 1;
+        let phoneNumber = Math.floor(Math.random() * 10000000000);
+
         let acc = {
             "_id": mongoose.Types.ObjectId(),
             "firstName": "first" + String(i),
@@ -163,7 +185,9 @@ function generateAccounts(n) {
             "password": "probsShouldBeHashed" + String(i),
             "dietaryRestrictions": [],
             "shirtSize": generateRandomShirtSize(),
-            "confirmed": true
+            "confirmed": true,
+            "birthDate": `1980-${birthMonth}-${birthDay}`,
+            "phoneNumber": phoneNumber,
         };
 
         if (i < n / 4) {

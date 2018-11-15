@@ -40,6 +40,14 @@ const AccountSchema = new mongoose.Schema({
         type: String,
         enum: Constants.USER_TYPES,
         default: Constants.HACKER
+    },
+    birthDate: {
+        type: Date,
+        required: true
+    },
+    phoneNumber: {
+        type: Number,
+        required: true
     }
 });
 

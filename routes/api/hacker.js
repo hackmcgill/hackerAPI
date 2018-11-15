@@ -210,7 +210,7 @@ module.exports = {
                 Controllers.Hacker.uploadedResume
             )
             /**
-             * @api {get} /hacker/:id/resume get the resume for a hacker.
+             * @api {get} /hacker/resume:id get the resume for a hacker.
              * @apiName getHackerResume
              * @apiGroup Hacker
              * @apiVersion 0.0.8

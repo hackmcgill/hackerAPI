@@ -38,8 +38,6 @@ const newHackerAccount1 = util.account.allAccounts[13];
 
 const newHacker2 = util.hacker.newHacker2;
 const invalidHacker1 = util.hacker.invalidHacker1;
-const confirmationToken = util.accountConfirmation.ConfirmationToken;
-const hacker1Account = util.account.Account1;
 
 describe("GET hacker", function () {
     // fail on authentication

@@ -72,8 +72,23 @@ const HackerSchema = new mongoose.Schema({
             type: mongoose.Schema.Types.ObjectId,
             ref: "Team"
         }
+    },
+    ethnicity: {
+        type: String,
+        required: true
+    },
+    major: {
+        type: String,
+        required: true
+    },
+    graduationYear: {
+        type: Number,
+        required: true
+    },
+    codeOfConduct: {
+        type: Boolean,
+        required: true
     }
-
 });
 
 HackerSchema.methods.toJSON = function () {
