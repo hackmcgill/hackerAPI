@@ -231,13 +231,13 @@ module.exports = {
          * 
          * @apiError {string} message Error message
          * @apiError {object} data empty
-         * @apiSuccessExample {json} Error-Response:
+         * @apiErrorExample {json} Error-Response:
          *       HTTP/1.1 422
          *      {"message": "Account already confirmed, "data": {}}
          * 
          * @apiError {string} message Error message
          * @apiError {object} data empty
-         * @apiSuccessExample {json} Error-Response:
+         * @apiErrorExample {json} Error-Response:
          *       HTTP/1.1 428
          *      {"message": "Account already confirmed, "data": {}}
          * 
