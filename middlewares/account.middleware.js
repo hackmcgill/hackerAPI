@@ -96,7 +96,7 @@ async function addAccount(req, res, next) {
     if (exists) {
         next({
             status: 500,
-            message: Constants.Error.ACCOUNT_DUPLICATE_500_MESSAGE,
+            message: Constants.Error.ACCOUNT_DUPLICATE_422_MESSAGE,
             error: {
                 route: req.path
             }

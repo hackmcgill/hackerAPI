@@ -14,6 +14,7 @@ const TEAM_MEMBER_409_MESSAGE = "Conflict with team member being in another team
 
 const TEAM_MEMBER_422_MESSAGE = "Duplicate team member in input";
 const VALIDATION_422_MESSAGE = "Validation failed";
+const ACCOUNT_DUPLICATE_422_MESSAGE = "Account already exists";
 
 const ACCOUNT_TOKEN_401_MESSAGE = "Invalid token for account";
 const AUTH_401_MESSAGE = "Invalid Authentication";
@@ -28,8 +29,6 @@ const SPONSOR_CREATE_500_MESSAGE = "Error while creating sponsor";
 const TEAM_CREATE_500_MESSAGE = "Error while creating team";
 const VOLUNTEER_CREATE_500_MESSAGE = "Error while creating volunteer";
 const EMAIL_500_MESSAGE = "Error while generating email";
-
-const ACCOUNT_DUPLICATE_500_MESSAGE = "Account already exists";
 
 
 module.exports = {
@@ -56,5 +55,5 @@ module.exports = {
     TEAM_CREATE_500_MESSAGE: TEAM_CREATE_500_MESSAGE,
     VOLUNTEER_CREATE_500_MESSAGE: VOLUNTEER_CREATE_500_MESSAGE,
     EMAIL_500_MESSAGE: EMAIL_500_MESSAGE,
-    ACCOUNT_DUPLICATE_500_MESSAGE: ACCOUNT_DUPLICATE_500_MESSAGE,
+    ACCOUNT_DUPLICATE_422_MESSAGE: ACCOUNT_DUPLICATE_422_MESSAGE,
 };
