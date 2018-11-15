@@ -4,8 +4,6 @@ const Util = {
 };
 const Staff = require("../../models/staff.model");
 const mongoose = require("mongoose");
-const logger = require("../../services/logger.service");
-const TAG = "[ STAFF.TEST.UTIL.JS ]";
 
 const Staff1 = {
     "_id": mongoose.Types.ObjectId(),
@@ -16,7 +14,7 @@ const Staffs = [
     Staff1,
 ];
 
-function storeAll(attributes, callback) {
+function storeAll(attributes) {
     const staffDocs = [];
     const staffIds = [];
     attributes.forEach((attribute) => {
@@ -24,32 +22,11 @@ function storeAll(attributes, callback) {
         staffIds.push(attribute._id);
     });
 
-    Staff.collection.insertMany(staffDocs).then(
-        () => {
-            logger.info(`${TAG} saved Staffs: ${staffIds.join(",")}`);
-            callback();
-        },
-        (reason) => {
-            logger.error(`${TAG} could not store Staffs ${staffIds.join(",")}. Error: ${JSON.stringify(reason)}`);
-            callback(reason);
-        }
-    );
+    return Staff.collection.insertMany(staffDocs);
 }
 
-function dropAll(callback) {
-    Staff.collection.drop().then(
-        () => {
-            logger.info(`Dropped table Staff`);
-            callback();
-        },
-        (err) => {
-            logger.error(`Could not drop Staff. Error: ${JSON.stringify(err)}`);
-            callback();
-        }
-    ).catch((error) => {
-        logger.error(error);
-        callback();
-    });
+function dropAll() {
+    return Staff.collection.drop();
 }
 
 module.exports = {

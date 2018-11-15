@@ -3,8 +3,6 @@ const Util = {
     Hacker: require("./hacker.test.util")
 };
 const Bus = require("../../models/bus.model");
-const logger = require("../../services/logger.service");
-const TAG = "[ BUS.TEST.UTIL.JS ]";
 
 const Bus1 = {
     "origin": {
@@ -29,38 +27,17 @@ module.exports = {
     dropAll: dropAll
 };
 
-function storeAll(attributes, callback) {
+function storeAll(attributes) {
     const busDocs = [];
     const busZips = [];
     for (var i = 0; i < attributes.length; i++) {
         busDocs.push(new Bus(attributes[i]));
         busZips.push(attributes[i].zip);
     }
-    
-    Bus.collection.insertMany(busDocs).then(
-        () => {
-            logger.info(`${TAG} saved Buses: ${busZips.join(",")}`);
-            callback();
-        },
-        (reason) => {
-            logger.error(`${TAG} could not store Buses ${busZips.join(",")}. Error: ${JSON.stringify(reason)}`);
-            callback(reason);
-        }
-    );
+
+    return Bus.collection.insertMany(busDocs);
 }
 
-function dropAll(callback) {
-    Bus.collection.drop().then(
-        () => {
-            logger.info(`dropped table Bus`);
-            callback();
-        },
-        (err) => {
-            logger.error(`could not drop Buses. Error: ${JSON.stringify(err)}`);
-            callback(err);
-        }
-    ).catch((error) => {
-        logger.error(error);
-        callback();
-    });
+function dropAll() {
+    return Bus.collection.drop();
 }
