@@ -43,5 +43,11 @@ module.exports = {
             message: "Successfully resent account email",
             data: {}
         })
+    },
+    retrieveRoles: function(req, res) {
+        return res.status(200).json({
+            message: "Successfully retrieved all roles",
+            data: req.roles
+        })
     }
 };

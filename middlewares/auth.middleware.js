@@ -364,6 +364,18 @@ async function addSponsorRoleBindings(req, res, next){
     next();
 }
 
+/**
+ * Middleware to retrieve all the roles in the database
+ * @param {*} req 
+ * @param {*} res 
+ * @param {(err?) => void } next 
+ */
+async function retrieveRoles(req, res, next){
+    const roles = await Services.Role.getAll();
+    req.roles = roles;
+    next();
+}
+
 module.exports = {
     //for each route, set up an authentication middleware for that route
     ensureAuthenticated: ensureAuthenticated,
@@ -381,5 +393,6 @@ module.exports = {
     addCreationRoleBindings: Middleware.Util.asyncMiddleware(addCreationRoleBindings),
     addSponsorRoleBindings: Middleware.Util.asyncMiddleware(addSponsorRoleBindings),
     resendConfirmAccountEmail: Middleware.Util.asyncMiddleware(resendConfirmAccountEmail),
-    retrieveRoleBindings: Middleware.Util.asyncMiddleware(retrieveRoleBindings)
+    retrieveRoleBindings: Middleware.Util.asyncMiddleware(retrieveRoleBindings),
+    retrieveRoles: Middleware.Util.asyncMiddleware(retrieveRoles)
 };
