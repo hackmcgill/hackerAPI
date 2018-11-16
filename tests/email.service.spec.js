@@ -43,5 +43,13 @@ describe("Email Service", function () {
             });
             done();
         }).catch(done);
-    })
+    });
+    it("It should compile a handlebars email", (done) => {
+        const handlebarPath = path.join(__dirname, `../assets/email/test.hbs`);
+        const rendered = EmailService.renderEmail(handlebarPath, {
+            TEST: "TESTTEST"
+        });
+        assert.equal("<div>This is used for testing email service. DO NOT REMOVE.TESTTEST</div>", rendered);
+        done();
+    });
 });

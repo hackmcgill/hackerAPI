@@ -2,7 +2,6 @@
 const Services = {
     Hacker: require("../services/hacker.service"),
     Logger: require("../services/logger.service"),
-    Email: require("../services/email.service")
 };
 const Util = require("../middlewares/util.middleware");
 
@@ -40,7 +39,7 @@ async function findById(req, res) {
  */
 async function createHacker(req, res) {
     const hackerDetails = req.body.hackerDetails;
-    
+
     const success = await Services.Hacker.createHacker(hackerDetails);
 
     if (success) {
@@ -75,7 +74,7 @@ async function updatedHacker(req, res) {
     });
 }
 
-function uploadedResume (req, res) {
+function uploadedResume(req, res) {
     return res.status(200).json({
         message: "Uploaded resume",
         data: {
@@ -84,7 +83,7 @@ function uploadedResume (req, res) {
     });
 }
 
-function downloadedResume (req, res) {
+function downloadedResume(req, res) {
     return res.status(200).json({
         message: "Downloaded resume",
         data: {
