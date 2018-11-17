@@ -10,7 +10,7 @@ const AccountConfirmationSchema = new mongoose.Schema({
     },
     accountType: {
         type:String,
-        enum: Constants.USER_TYPES,
+        enum: Constants.EXTENDED_USER_TYPES,
         default: Constants.HACKER
     },
     email: {
