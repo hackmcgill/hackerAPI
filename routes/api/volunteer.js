@@ -18,7 +18,7 @@ const Services = {
     Volunteer: require("../../services/volunteer.service")
 };
 
-const CONSTANTS = require("../../constants");
+const CONSTANTS = require("../../constants/general.constant");
 
 module.exports = {
     activate: function (apiRouter) {

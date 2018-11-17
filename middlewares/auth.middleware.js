@@ -74,9 +74,9 @@ function ensureAuthorized(findByIdFns) {
  * @param {*} res 
  * @param {(err?)=>void} next 
  */
-async function retrieveRoleBindings(req, res, next){
+async function retrieveRoleBindings(req, res, next) {
     const roleBindings = await Services.RoleBinding.getRoleBindingForAcct(req.params.id);
-    if(!roleBindings){
+    if (!roleBindings) {
         return next({
             status: 404,
             message: "Role Bindings not found"
@@ -158,16 +158,16 @@ async function sendConfirmAccountEmailMiddleware(req, res, next) {
  * @param {*} res
  * @param {(err?)=>void} next
  */
-async function resendConfirmAccountEmail(req, res, next){
+async function resendConfirmAccountEmail(req, res, next) {
     const account = await Services.Account.findById(req.user.id);
-    if(account.confirmed){
+    if (account.confirmed) {
         return next({
             status: 422,
             message: "Account already confirmed"
         })
     }
     const accountConfirmationToken = await Services.AccountConfirmation.findByAccountId(account.id);
-    if(!accountConfirmationToken){
+    if (!accountConfirmationToken) {
         return next({
             status: 428,
             message: "Account confirmation token does not exist"
@@ -217,7 +217,7 @@ function parseResetToken(req, res, next) {
  * @param {(err?)=>void} next 
  */
 function parseAccountConfirmationToken(req, res, next) {
-    if(!!req.body.token){
+    if (!!req.body.token) {
         jwt.verify(req.body.token, process.env.JWT_CONFIRM_ACC_SECRET, function (err, decoded) {
             if (err) {
                 next(err);
@@ -303,10 +303,10 @@ async function validateConfirmationToken(req, res, next) {
  * @param {*} res 
  * @param {*} next 
  */
-async function validateConfirmationTokenWithoutAccount(req, res, next){
-    if(!!req.body.decodedToken){
+async function validateConfirmationTokenWithoutAccount(req, res, next) {
+    if (!!req.body.decodedToken) {
         const confirmationObj = await Services.AccountConfirmation.findById(req.body.decodedToken.accountConfirmationId);
-        if(!confirmationObj.accountId){
+        if (!confirmationObj.accountId) {
             req.body.accountDetails.confirmed = true;
             req.body.accountDetails.accountType = confirmationObj.accountType;
         }
@@ -338,9 +338,9 @@ function deleteResetToken(req, res, next) {
  * @param {*} res 
  * @param {(err?)=>void} next 
  */
-async function addCreationRoleBindings(req, res, next){
+async function addCreationRoleBindings(req, res, next) {
     // Get the default role for the account type given
-    const roleName = Constants.POST_ROLES[req.body.account.accountType];
+    const roleName = Constants.General.POST_ROLES[req.body.account.accountType];
     await Services.RoleBinding.createRoleBindingByRoleName(req.body.account.id, roleName);
     next();
 }
@@ -349,7 +349,7 @@ async function addCreationRoleBindings(req, res, next){
  * Adds proper account rolebindings on account creation
  * @param {string} roleName name of the role to be added to account
  */
-function createRoleBindings(roleName = undefined){
+function createRoleBindings(roleName = undefined) {
     return async (req, res, next) => {
         await Services.RoleBinding.createRoleBindingByRoleName(req.user.id, roleName);
         next();
@@ -362,7 +362,7 @@ function createRoleBindings(roleName = undefined){
  * @param {*} res 
  * @param {(err?) => void } next 
  */
-async function addSponsorRoleBindings(req, res, next){
+async function addSponsorRoleBindings(req, res, next) {
     const account = Services.Account.findById(req.body.sponsorDetails.accountId);
     await Services.RoleBinding.createRoleBindingByRoleName(account.id, account.accountType);
     next();

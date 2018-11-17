@@ -18,7 +18,7 @@ const Middleware = {
 const Services = {
     Hacker: require("../../services/hacker.service"),
 }
-const CONSTANTS= require("../../constants");
+const CONSTANTS = require("../../constants/general.constant");
 
 module.exports = {
     activate: function (apiRouter) {

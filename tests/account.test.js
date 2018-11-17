@@ -329,7 +329,7 @@ describe("POST reset password", function () {
     })
 })
 
-describe("GET retrieve permissions", function() {
+describe("GET retrieve permissions", function () {
     it("should SUCCEED and retrieve the rolebindings for the user", function (done) {
         util.auth.login(agent, storedAccount1, (error) => {
             if (error) {
@@ -352,21 +352,21 @@ describe("GET retrieve permissions", function() {
                 });
         });
     });
-    it("should FAIL to retrieve the rolebindings as the account is not authenticated", function(done) {
+    it("should FAIL to retrieve the rolebindings as the account is not authenticated", function (done) {
         chai.request(server.app)
             .get("/api/auth/rolebindings/" + storedAccount1._id)
             .type("application/json")
             .end(function (err, res) {
                 res.should.have.status(401);
                 res.body.should.have.property("message");
-                res.body.message.should.equal("Not Authenticated");
+                res.body.message.should.equal(Constants.Error.AUTH_401_MESSAGE);
                 done();
             });
     });
 });
 
 describe("GET resend confirmation email", function () {
-    it("should SUCCEED and resend the confirmation email", function(done) {
+    it("should SUCCEED and resend the confirmation email", function (done) {
         util.auth.login(agent, storedAccount3, (error) => {
             if (error) {
                 agent.close();
@@ -384,7 +384,7 @@ describe("GET resend confirmation email", function () {
                 })
         })
     });
-    it("should FAIL as the account is already confirmed", function(done) {
+    it("should FAIL as the account is already confirmed", function (done) {
         util.auth.login(agent, storedAccount1, (error) => {
             if (error) {
                 agent.close();
@@ -402,7 +402,7 @@ describe("GET resend confirmation email", function () {
                 })
         })
     });
-    it("should FAIL as account confirmation token does not exist", function(done) {
+    it("should FAIL as account confirmation token does not exist", function (done) {
         util.auth.login(agent, storedAccount2, (error) => {
             if (error) {
                 agent.close();
