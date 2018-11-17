@@ -18,6 +18,8 @@ const Services = {
     Volunteer: require("../../services/volunteer.service")
 };
 
+const CONSTANTS = require("../../constants");
+
 module.exports = {
     activate: function (apiRouter) {
         const volunteerRouter = express.Router();
@@ -57,6 +59,8 @@ module.exports = {
             Middleware.Volunteer.checkDuplicateAccountLinks,
 
             Middleware.Volunteer.parseVolunteer,
+
+            Middleware.Auth.createRoleBindings(CONSTANTS.VOLUNTEER),
 
             Controllers.Volunteer.createVolunteer
         );

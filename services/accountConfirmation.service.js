@@ -3,6 +3,10 @@ const logger = require("./logger.service");
 const AccountConfirmation = require("../models/accountConfirmationToken.model");
 const Constants = require("../constants/general.constant");
 const jwt = require("jsonwebtoken");
+const path = require("path");
+const Services = {
+    Email: require("./email.service")
+};
 
 /**
  * @function findByAccountId
@@ -93,21 +97,18 @@ function generateAccountConfirmationEmail(hostname, receiverEmail, type, token) 
     if (type === Constants.HACKER) {
         emailSubject = Constants.CONFIRM_ACC_EMAIL_SUBJECTS[Constants.HACKER];
     }
+    const handlebarPath = path.join(__dirname, `../assets/email/AccountConfirmation.hbs`);
+
     const mailData = {
         from: process.env.NO_REPLY_EMAIL,
         to: receiverEmail,
         subject: emailSubject,
-        html: generateMailBody(tokenLink, receiverEmail)
+        html: Services.Email.renderEmail(handlebarPath, {
+            link: tokenLink
+        })
     };
     return mailData;
 }
-
-function generateMailBody(link) {
-    return `<b>Confirm Account: 
-            <a href="${link}" class="button button--green" target="_blank" style="-webkit-text-size-adjust: none; background: #22BC66; border-color: #22bc66; border-radius: 3px; border-style: solid; border-width: 10px 18px; box-shadow: 0 2px 3px rgba(0, 0, 0, 0.16); box-sizing: border-box; color: #FFF; display: inline-block; font-family: Arial, "Helvetica Neue", Helvetica, sans-serif; text-decoration: none;">here</a>
-        </b>`;
-}
-
 module.exports = {
     findById: findById,
     findByAccountId: findByAccountId,

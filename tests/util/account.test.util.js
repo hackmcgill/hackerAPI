@@ -81,9 +81,9 @@ const Account3 = {
     "dietaryRestrictions": ["vegan"],
     "shirtSize": "L",
     "confirmed": true,
-    "accountType": Constants.SPONSOR,
     "birthDate": "1990-01-05",
     "phoneNumber": 1000000005,
+    "accountType": Constants.SPONSOR_T1
 };
 // volunteer
 const Account4 = {
@@ -109,9 +109,9 @@ const Account5 = {
     "dietaryRestrictions": ["something1", "something2"],
     "shirtSize": "XXL",
     "confirmed": true,
-    "accountType": Constants.SPONSOR,
+    "accountType": Constants.SPONSOR_T2,
     "birthDate": "1980-06-30",
-    "phoneNumber": 1000000236,
+    "phoneNumber": 1000000236
 };
 
 // non confirmed account for hacker
@@ -119,14 +119,26 @@ const NonConfirmedAccount1 = {
     "_id": mongoose.Types.ObjectId(),
     "firstName": "LMAO",
     "lastName": "ROFL",
-    "email": "abc.def6@blahblah.com",
+    "email": "notconfirmed1@blahblah.com",
     "password": "probsShouldBeHashed5",
     "dietaryRestrictions": ["something1", "something2"],
     "shirtSize": "XXL",
     "confirmed": false,
-    "accountType": Constants.SPONSOR,
     "birthDate": "1980-07-30",
     "phoneNumber": 1001230236,
+    "accountType": Constants.HACKER
+};
+
+const NonConfirmedAccount2 = {
+    "_id": mongoose.Types.ObjectId(),
+    "firstName": "LMAO",
+    "lastName": "ROFL",
+    "email": "notconfirmed2@blahblah.com",
+    "password": "probsShouldBeHashed5",
+    "dietaryRestrictions": ["something1", "something2"],
+    "shirtSize": "XXL",
+    "confirmed": false,
+    "accountType": Constants.HACKER,
 };
 
 const customAccounts = [
@@ -137,6 +149,7 @@ const customAccounts = [
     Account4,
     Account5,
     NonConfirmedAccount1,
+    NonConfirmedAccount2
 ];
 
 const generatedAccounts = generateAccounts(20);
@@ -151,7 +164,8 @@ const allAccounts = customAccounts.concat(generatedAccounts);
 module.exports = {
     nonAccount1: nonAccount1,
     newAccount1: newAccount1,
-    NonConfirmedAccount1,
+    NonConfirmedAccount1: NonConfirmedAccount1,
+    NonConfirmedAccount2: NonConfirmedAccount2,
     Admin1: Admin1,
     Account1: Account1,
     Account2: Account2,

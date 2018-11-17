@@ -77,7 +77,7 @@ async function validateConfirmedStatus(req, res, next) {
             message: Constants.Error.ACCOUNT_403_MESSAGE,
             error: {}
         });
-    } else if (account.accountType !== Constants.General.SPONSOR) {
+    } else if (!account.isSponsor()) {
         next({
             status: 409,
             message: Constants.Error.ACCOUNT_TYPE_409_MESSAGE,

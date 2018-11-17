@@ -1,5 +1,6 @@
 "use strict";
 const RoleBinding = require("../models/roleBinding.model");
+const RoleService = require("./role.service");
 const logger = require("./logger.service");
 
 /**
@@ -29,6 +30,19 @@ async function createRoleBinding(accountId, roleId = undefined) {
         }, logger.queryCallbackFactory(TAG, "roleBinding", query));
     }
 }
+
+/**
+ * Attempts to find a rolebinding given the role name and adds it to the account
+ * @param {ObjectId} accountId the id of the account that you want to add a rolebinding to
+ * @param {String} roleName the name of the role that you want to add
+ */
+async function createRoleBindingByRoleName(accountId, roleName){
+    const role = await RoleService.getRole(roleName);
+    if (!!role) {
+        await createRoleBinding(accountId, role.id);
+    }
+}
+
 /**
  * Removes a role from a rolebinding for a given account.
  * @param {ObjectId} accountId the id of the account that you want to remove a rolebinding from
@@ -86,5 +100,6 @@ module.exports = {
     getRoleBindingForAcct: getRoleBindingForAcct,
     getById: getById,
     createRoleBinding: createRoleBinding,
+    createRoleBindingByRoleName: createRoleBindingByRoleName,
     removeRoleBinding: removeRoleBinding
 };

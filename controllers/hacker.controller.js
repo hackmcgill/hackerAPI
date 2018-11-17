@@ -2,7 +2,6 @@
 const Services = {
     Hacker: require("../services/hacker.service"),
     Logger: require("../services/logger.service"),
-    Email: require("../services/email.service")
 };
 const Util = require("../middlewares/util.middleware");
 const Constants = {
