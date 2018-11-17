@@ -6,15 +6,15 @@ const Constants = require("../constants");
 const AccountSchema = new mongoose.Schema({
     firstName: {
         type: String,
-        required: true,
+        required: true
     },
     lastName: {
         type: String,
-        required: true,
+        required: true
     },
     pronoun: {
         type: String,
-        required: true,
+        default: "Prefer not to say",
     },
     email: {
         type: String,
