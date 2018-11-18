@@ -56,7 +56,7 @@ POST_ROLES[STAFF] = "postStaff";
 const SHIRT_SIZES = ["XS", "S", "M", "L", "XL", "XXL"];
 const USER_TYPES = [HACKER, VOLUNTEER, STAFF, SPONSOR];
 const SPONSOR_TIERS = [SPONSOR_T1, SPONSOR_T2, SPONSOR_T3, SPONSOR_T4, SPONSOR_T5];
-const EXTENDED_USER_TYPES = [HACKER, VOLUNTEER, STAFF, GODSTAFF, SPONSOR_T1, SPONSOR_T2, SPONSOR_T3, SPONSOR_T4, SPONSOR_T5];
+const EXTENDED_USER_TYPES = [HACKER, VOLUNTEER, STAFF, SPONSOR_T1, SPONSOR_T2, SPONSOR_T3, SPONSOR_T4, SPONSOR_T5];
 
 // matches optional http://, https://, http:, https:, and optional www.
 // matches the domain, and then optional route, path, query parameters
