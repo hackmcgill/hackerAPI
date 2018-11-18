@@ -86,42 +86,17 @@ module.exports = {
             // adds default hacker permissions here
             Middleware.Account.parseAccount,
 
-            (req, res, next) => {
-                console.log("HIHIHI!");
-                next();
-            },
             // Parses account token if it exists
             Middleware.Auth.parseAccountConfirmationToken,
-
-            (req, res, next) => {
-                console.log("HIHIHI!!");
-                next();
-            },
             Middleware.Auth.validateConfirmationTokenWithoutAccount,
-            (req, res, next) => {
-                console.log("HIHIHI!!!");
-                next();
-            },
-            // middleware to create hacker object in database
 
+            // middleware to create hacker object in database
             Middleware.Account.addAccount,
-            (req, res, next) => {
-                console.log("HIHIHI!!!!");
-                next();
-            },
             Middleware.Auth.addCreationRoleBindings,
-            (req, res, next) => {
-                console.log("HIHIHI!!!!!");
-                next();
-            },
 
             // middleware to create a hacker token 
             // and send a confirmation message
             Middleware.Auth.sendConfirmAccountEmailMiddleware,
-            (req, res, next) => {
-                console.log("HIHIHI!!!!!!");
-                next();
-            },
             // should return status in this function
             Controllers.Account.addUser
         );
