@@ -10,6 +10,7 @@ module.exports = {
         VALIDATOR.alphaArrayValidator("body", "dietaryRestrictions", false),
         VALIDATOR.shirtSizeValidator("body", "shirtSize", false),
         VALIDATOR.passwordValidator("body", "password", false),
+        VALIDATOR.jwtValidator("param","token", process.env.JWT_CONFIRM_ACC_SECRET, true),
         VALIDATOR.dateValidator("body", "birthDate", false),
         VALIDATOR.phoneNumberValidator("body", "phoneNumber", false)
     ],

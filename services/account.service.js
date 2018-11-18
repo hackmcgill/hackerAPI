@@ -2,6 +2,7 @@
 const Account = require("../models/account.model");
 const logger = require("./logger.service");
 const bcrypt = require("bcrypt");
+const Constants = require('../constants');
 
 /**
  * @function findById
@@ -108,6 +109,7 @@ function updatePassword(id, newPassword) {
     const hashed = hashPassword(newPassword);
     return changeOneAccount(id, {password: hashed});
 }
+
 
 module.exports = {
     findOne: findOne,
