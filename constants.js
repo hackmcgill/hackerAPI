@@ -27,6 +27,12 @@ const STAFF = "Staff";
 const GODSTAFF = "GodStaff";
 const SPONSOR = "Sponsor";
 
+const SPONSOR_T1 = "SponsorT1";
+const SPONSOR_T2 = "SponsorT2";
+const SPONSOR_T3 = "SponsorT3";
+const SPONSOR_T4 = "SponsorT4";
+const SPONSOR_T5 = "SponsorT5";
+
 const JOB_INTERESTS = ["Internship", "Full-time", "None"];
 const ROLE_CATEGORIES = {
     SELF: ":self",
@@ -40,8 +46,19 @@ const REQUEST_TYPES = {
     DELETE: "DELETE", 
     PUT: "PUT"
 };
+
+//Define names of the roles specifically associated with permission to create an account
+const POST_ROLES = {};
+POST_ROLES[HACKER] = "postHacker";
+POST_ROLES[SPONSOR] = "postSponsor";
+POST_ROLES[VOLUNTEER] = "postVolunteer";
+POST_ROLES[STAFF] = "postStaff";
+
 const SHIRT_SIZES = ["XS", "S", "M", "L", "XL", "XXL"];
 const USER_TYPES = [HACKER, VOLUNTEER, STAFF, GODSTAFF, SPONSOR];
+const SPONSOR_TIERS = [SPONSOR_T1, SPONSOR_T2, SPONSOR_T3, SPONSOR_T4, SPONSOR_T5];
+const EXTENDED_USER_TYPES = [HACKER, VOLUNTEER, STAFF, GODSTAFF, SPONSOR_T1, SPONSOR_T2, SPONSOR_T3, SPONSOR_T4, SPONSOR_T5];
+
 // matches optional http://, https://, http:, https:, and optional www.
 // matches the domain, and then optional route, path, query parameters
 const URL_REGEX = /^(http(s)?:(\/\/)?)?(www\.)?([-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6})\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$/;
@@ -76,6 +93,8 @@ module.exports = {
     JOB_INTERESTS: JOB_INTERESTS,
     SHIRT_SIZES: SHIRT_SIZES,
     USER_TYPES: USER_TYPES,
+    SPONSOR_TIERS: SPONSOR_TIERS,
+    EXTENDED_USER_TYPES: EXTENDED_USER_TYPES,
     URL_REGEX: URL_REGEX,
     EMAIL_SUBJECTS: EMAIL_SUBJECTS,
     CONFIRM_ACC_EMAIL_SUBJECTS: CONFIRM_ACC_EMAIL_SUBJECTS,
@@ -84,5 +103,11 @@ module.exports = {
     VOLUNTEER: VOLUNTEER,
     STAFF: STAFF,
     GODSTAFF: GODSTAFF,
+    SPONSOR_T1: SPONSOR_T1,
+    SPONSOR_T2: SPONSOR_T2,
+    SPONSOR_T3: SPONSOR_T3,
+    SPONSOR_T4: SPONSOR_T4,
+    SPONSOR_T5: SPONSOR_T5,
     ROLE_CATEGORIES: ROLE_CATEGORIES,
+    POST_ROLES: POST_ROLES
 };

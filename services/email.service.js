@@ -6,6 +6,7 @@ const path = require("path");
 const TAG = `[ EMAIL.SERVICE ]`;
 const env = require("../services/env.service");
 const Constants = require("../constants");
+const Handlebars = require("handlebars");
 
 class EmailService {
     constructor(apiKey) {
@@ -52,11 +53,12 @@ class EmailService {
     }
 
     sendStatusUpdate(recipient, status, callback) {
+        const handlebarsPath = path.join(__dirname, `../assets/email/statusEmail/${status}.hbs`);
         const mailData = {
             to: recipient,
             from: process.env.NO_REPLY_EMAIL,
             subject: Constants.EMAIL_SUBJECTS[status],
-            html: fs.readFileSync(path.join(__dirname, `../assets/email/statusEmail/${status}.html`)).toString()
+            html: this.renderEmail(handlebarsPath)
         };
         this.send(mailData).then(
             (response) => {
@@ -66,6 +68,16 @@ class EmailService {
                     callback(response[0]);
                 }
             }, callback);
+    }
+    /**
+     * Generates the HTML from the handlebars template file found at the given path.
+     * @param {string} path the absolute path to the handlebars template file
+     * @param {*} context any variables that need to be replaced in the template file
+     */
+    renderEmail(path, context) {
+        const templateStr = fs.readFileSync(path).toString();
+        const template = Handlebars.compile(templateStr);
+        return template(context);
     }
 }
 

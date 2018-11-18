@@ -12,8 +12,6 @@ const Middleware = {
     Util: require("./util.middleware")
 };
 const Constants = require("../constants");
-const fs = require("fs");
-const path = require("path");
 
 /**
  * @function parsePatch
