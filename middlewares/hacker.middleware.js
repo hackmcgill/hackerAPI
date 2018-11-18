@@ -185,11 +185,12 @@ function sendStatusUpdateEmail(req, res, next) {
     if (!req.body.status) {
         return next();
     } else {
+        const handlebarsPath = path.join(__dirname, `../assets/email/statusEmail/${req.body.status}.hbs`);
         const mailData = {
             to: req.email,
             from: process.env.NO_REPLY_EMAIL,
             subject: Constants.EMAIL_SUBJECTS[req.body.status],
-            html: fs.readFileSync(path.join(__dirname, `../assets/email/statusEmail/${req.body.status}.html`)).toString()
+            html: Services.Email.renderEmail(handlebarsPath, {})
         };
         Services.Email.send(mailData).then(
             (response) => {
