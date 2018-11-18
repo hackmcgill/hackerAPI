@@ -60,6 +60,3 @@ node_modules
 
 #creds
 gcp_creds.json
-
-# gitignore file
-.gitignore
