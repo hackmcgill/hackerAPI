@@ -412,3 +412,34 @@ describe("PATCH update one hacker", function () {
         });
     });
 });
+describe("POST add a hacker resume", function () {
+    it("It should SUCCEED and upload a resume for a hacker", function (done) {
+        //this takes a lot of time for some reason
+        util.auth.login(agent, storedHacker1, (error) => {
+            if (error) {
+                return done(error);
+            }
+            return agent
+                .post(`/api/hacker/resume/${storedHacker1._id}`)
+                .type("multipart/form-data")
+                .attach("resume", fs.createReadStream(path.join(__dirname, "testResume.pdf")), {
+                    contentType: "application/pdf"
+                })
+                .end(function (err, res) {
+                    res.should.have.status(200);
+                    res.should.have.property("body");
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal("Uploaded resume");
+                    res.body.should.have.property("data");
+                    res.body.data.should.have.property("filename");
+                    StorageService.download(res.body.data.filename).then((value) => {
+                        const actualFile = fs.readFileSync(path.join(__dirname, "testResume.pdf"))
+                        chai.assert.equal(value[0].length, actualFile.length);
+                        StorageService.delete(res.body.data.filename).then(() => {
+                            done();
+                        }).catch(done);
+                    });
+                });
+        });
+    });
+});
