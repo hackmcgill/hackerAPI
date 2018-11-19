@@ -360,7 +360,7 @@ function applicationValidator(fieldLocation, fieldname, optional = true) {
             hasValid.linkedIn = (!app.portfolioURL.linkedIn || typeof (app.portfolioURL.linkedIn) === "string");
             hasValid.other = (!app.portfolioURL.other || typeof (app.portfolioURL.other) === "string");
             hasValid.jobInterest = (jobInterests.includes(app.jobInterest));
-            hasValid.skills = (!app.skills || Array.isArray(app.skills));
+            hasValid.skills = (!app.skills || alphaArrayValidationHelper(app.skills));
             hasValid.comments = (!app.comments || typeof (app.comments) === "string");
             hasValid.essay = (!app.essay || typeof (app.essay) === "string");
             hasValid.team = (!app.team || mongoose.Types.ObjectId.isValid(app.team));
