@@ -172,3 +172,22 @@ The http request that this would translate to is:
 ```http
 /api/search/hacker?q=%5B%7B%22param%22%3A%22email%22%2C%20%22operation%22%3A%22regex%22%2C%20%22value%22%3A%22.%2B%40mail.mcgill.ca%22%7D%2C%7B%22param%22%3A%22status%22%2C%20%22operation%22%3A%22equals%22%2C%20%22value%22%3A%22Checked-in%22%7D%5D
 ```
+
+### Error Codes and Messages
+Error messages are in the error.constant.js file. The error constants are of the for TYPE_HTTPCODE_MESSAGE. For example, HACKER_404_MESSAGE. When creating a response, use an existing error message, or create a new one. An example:
+```
+next({
+    status: 422,
+    message: Constants.Error.ACCOUNT_DUPLICATE_422_MESSAGE,
+    error: {...}
+});
+```
+Note that the error status and the HTTPCODE in the error constant name are the same. 
+
+Error codes currently in use are:
+401 - Invalid authentication
+403 - Invalid authorization
+404 - Resource not found
+409 - Conflict with Id or some attribute from a valid request.
+422 - Failure at validation, or other forms of invalid input
+500 - General server error

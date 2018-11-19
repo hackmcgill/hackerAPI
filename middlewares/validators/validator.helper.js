@@ -9,7 +9,7 @@ const logger = require("../../services/logger.service");
 const mongoose = require("mongoose");
 const TAG = `[ VALIDATOR.HELPER.js ]`;
 const jwt = require("jsonwebtoken");
-const Constants = require("../../constants");
+const Constants = require("../../constants/general.constant");
 const Models = {
     Hacker: require("../../models/hacker.model")
 }
@@ -134,6 +134,24 @@ function nameValidator(fieldLocation, fieldname, optional = true) {
         }).isAscii().withMessage("must contain only ascii characters");
     } else {
         return name.exists().withMessage("name must exist").isAscii().withMessage("must contain only ascii characters");
+    }
+}
+
+// untested
+/**
+ * Validates that field pronoun is ascii only.
+ * @param {"query" | "body" | "header" | "param"} fieldLocation the location where the field should be found 
+ * @param {string} fieldname name of the field that needs to be validated.
+ * @param {boolean} optional whether the field is optional or not.
+ */
+function pronounValidator(fieldLocation, fieldname, optional = true) {
+    const pronoun = setProperValidationChainBuilder(fieldLocation, fieldname, "invalid pronoun");
+    if (optional) {
+        return pronoun.optional({
+            checkFalsy: true
+        }).isAscii().withMessage("must contain only ascii characters");
+    } else {
+        return pronoun.exists().withMessage("pronoun must exist").isAscii().withMessage("must contain only ascii characters");
     }
 }
 
@@ -573,6 +591,7 @@ module.exports = {
     mongoIdValidator: mongoIdValidator,
     mongoIdArrayValidator: mongoIdArrayValidator,
     nameValidator: nameValidator,
+    pronounValidator: pronounValidator,
     emailValidator: emailValidator,
     alphaValidator: alphaValidator,
     alphaArrayValidator: alphaArrayValidator,

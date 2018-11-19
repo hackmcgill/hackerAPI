@@ -4,6 +4,9 @@ const Services = {
     Logger: require("../services/logger.service"),
 };
 const Util = require("../middlewares/util.middleware");
+const Constants = {
+    Error: require("../constants/error.constant"),
+};
 
 /**
  * @async
@@ -23,7 +26,7 @@ async function findById(req, res) {
         });
     } else {
         return res.status(404).json({
-            message: "Issue with retrieving hacker information",
+            message: Constants.Error.HACKER_404_MESSAGE,
             data: {}
         });
     }
@@ -49,7 +52,7 @@ async function createHacker(req, res) {
         });
     } else {
         return res.status(400).json({
-            message: "Issue with hacker creation",
+            message: Constants.Error.HACKER_CREATE_500_MESSAGE,
             data: {}
         });
     }
