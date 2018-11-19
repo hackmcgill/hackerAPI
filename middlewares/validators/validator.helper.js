@@ -9,7 +9,7 @@ const logger = require("../../services/logger.service");
 const mongoose = require("mongoose");
 const TAG = `[ VALIDATOR.HELPER.js ]`;
 const jwt = require("jsonwebtoken");
-const Constants = require("../../constants");
+const Constants = require("../../constants/general.constant");
 const Models = {
     Hacker: require("../../models/hacker.model")
 }

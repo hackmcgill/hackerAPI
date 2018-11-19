@@ -11,14 +11,20 @@ const mongoose = require("mongoose");
 
 const AccountConfirmationToken = mongoose.model("AccountConfirmationToken");
 
-const Constants = require('../../constants');
-const logger = require("../../services/logger.service");
+const Constants = require('../../constants/general.constant');
 
 const HackerConfirmation = {
     "_id": mongoose.Types.ObjectId(),
     "accountId": Util.Account.Account2._id,
     "accountType": Constants.HACKER,
     "email": Util.Account.Account2.email
+};
+
+const HackerConfirmation2 = {
+    "_id": mongoose.Types.ObjectId(),
+    "accountId": Util.Account.NonConfirmedAccount2._id,
+    "accountType": Constants.HACKER,
+    "email": Util.Account.NonConfirmedAccount2.email
 }
 
 // Using a real ID which is stored but corresponds to another account
@@ -26,49 +32,28 @@ const FakeHackerToken = {
     "_id": HackerConfirmation._id,
     "accountId": Util.Account.Account3._id,
     "accountType": Constants.HACKER
-}
+};
 
 const ConfirmationToken = Services.AccountConfirmation.generateToken(HackerConfirmation._id, HackerConfirmation.accountId);
 const FakeToken = Services.AccountConfirmation.generateToken(FakeHackerToken._id, FakeHackerToken.accountId);
 
 const AccountConfirmationTokens = [
-    HackerConfirmation
-]
+    HackerConfirmation,
+    HackerConfirmation2
+];
 
-function storeAll(attributes, callback) {
+function storeAll(attributes) {
     const accountConfirmationDocs = [];
     const accountConfirmationIds = [];
     for (var i = 0; i < attributes.length; i++) {
         accountConfirmationDocs.push(new AccountConfirmationToken(attributes[i]));
         accountConfirmationIds.push(attributes[i]._id);
     }
-    AccountConfirmationToken.collection.insertMany(accountConfirmationDocs).then(
-        () => {
-            //Flip these two when there are more than one doc
-            callback();
-            logger.info(`${TAG} saved Account Confirmation Tokens: ${accountConfirmationIds.join(",")}`);
-        },
-        (reason) => {
-            logger.error(`${TAG} could not store Account Confirmation Tokens ${accountConfirmationIds.join(",")}. Error: ${JSON.stringify(reason)}`);
-            callback(reason);
-        }
-    );
+    return AccountConfirmationToken.collection.insertMany(accountConfirmationDocs);
 }
 
-function dropAll(callback) {
-    AccountConfirmationToken.collection.drop().then(
-        () => {
-            logger.info(`Dropped table AccountConfirmationToken`);
-            callback();
-        },
-        (err) => {
-            logger.error(`Could not drop AccountConfirmationToken. Error: ${JSON.stringify(err)}`);
-            callback(err);
-        }
-    ).catch((error) => {
-        logger.error(error);
-        callback();
-    });
+function dropAll() {
+    return AccountConfirmationToken.collection.drop();
 }
 
 

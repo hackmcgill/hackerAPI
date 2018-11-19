@@ -10,56 +10,31 @@ const Services = {
 const mongoose = require("mongoose");
 const ResetPassword = require("../../models/passwordResetToken.model");
 
-//const ResetPasswordToken = mongoose.model("ResetPasswordToken");
-
-const Constants = require('../../constants');
-const logger = require("../../services/logger.service");
+const Constants = require('../../constants/general.constant');
 
 const ResetPasswordToken1 = {
     "_id": mongoose.Types.ObjectId(),
     "accountId": Util.Account.Account1._id
-}
+};
 
 const ResetToken = Services.resetPassword.generateToken(ResetPasswordToken1._id, ResetPasswordToken1.accountId);
 
 const ResetPasswords = [
     ResetPasswordToken1
-]
+];
 
-function storeAll(attributes, callback) {
+function storeAll(attributes) {
     const resetPasswordDocs = [];
     const resetPasswordIds = [];
     for (var i = 0; i < attributes.length; i++) {
         resetPasswordDocs.push(new ResetPassword(attributes[i]));
         resetPasswordIds.push(attributes[i]._id);
     }
-    ResetPassword.collection.insertMany(resetPasswordDocs).then(
-        () => {
-            //Flip these two when there are more than one doc
-            callback();
-            logger.info(`${TAG} saved Reset Password Tokens: ${resetPasswordIds.join(",")}`);
-        },
-        (reason) => {
-            logger.error(`${TAG} could not store Reset Password Tokens ${resetPasswordIds.join(",")}. Error: ${JSON.stringify(reason)}`);
-            callback(reason);
-        }
-    );
+    return ResetPassword.collection.insertMany(resetPasswordDocs);
 }
 
-function dropAll(callback) {
-    ResetPassword.collection.drop().then(
-        () => {
-            logger.info(`Dropped table resetPasswordToken`);
-            callback();
-        },
-        (err) => {
-            logger.error(`Could not drop resetPasswordToken. Error: ${JSON.stringify(err)}`);
-            callback(err);
-        }
-    ).catch((error) => {
-        logger.error(error);
-        callback();
-    });
+function dropAll() {
+    ResetPassword.collection.drop();
 }
 
 

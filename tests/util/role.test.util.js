@@ -1,9 +1,7 @@
 "use strict";
 const Role = require("../../models/role.model");
-const Constants = require("../../constants");
+const Constants = require("../../constants/general.constant");
 const mongoose = require("mongoose");
-const TAG = "[ ROLE.TEST.UTIL.JS ]";
-const logger = require("../../services/logger.service");
 
 const authRoutes = {
     "login": {
@@ -13,6 +11,18 @@ const authRoutes = {
     "logout": {
         requestType: Constants.REQUEST_TYPES.POST,
         uri: "/api/auth/logout"
+    },
+    "invite": {
+        requestType: Constants.REQUEST_TYPES.POST,
+        uri: "/api/auth/invite"
+    },
+    "getSelfRoleBindindings" : {
+        requestType: Constants.REQUEST_TYPES.GET,
+        uri: "/api/auth/rolebindings/" + Constants.ROLE_CATEGORIES.SELF
+    },
+    "getAnyRoleBindings" : {
+        requestType: Constants.REQUEST_TYPES.GET,
+        uri: "/api/auth/rolebindings/" + Constants.ROLE_CATEGORIES.ALL
     }
 };
 
@@ -54,11 +64,11 @@ const hackerRoutes = {
     },
     "getSelfResumeById": {
         requestType: Constants.REQUEST_TYPES.GET,
-        uri: "/api/hacker/" + Constants.ROLE_CATEGORIES.SELF + "/resume",
+        uri: "/api/hacker/resume/" + Constants.ROLE_CATEGORIES.SELF,
     },
     "getAnyResumeById": {
         requestType: Constants.REQUEST_TYPES.GET,
-        uri: "/api/hacker/" + Constants.ROLE_CATEGORIES.ALL + "/resume",
+        uri: "/api/hacker/resume/" + Constants.ROLE_CATEGORIES.ALL,
     },
     "post": {
         requestType: Constants.REQUEST_TYPES.POST,
@@ -66,11 +76,11 @@ const hackerRoutes = {
     },
     "postSelfResumeById": {
         requestType: Constants.REQUEST_TYPES.POST,
-        uri: "/api/hacker/" + Constants.ROLE_CATEGORIES.SELF + "/resume",
+        uri: "/api/hacker/resume/" + Constants.ROLE_CATEGORIES.SELF,
     },
     "postAnyResumeById": {
         requestType: Constants.REQUEST_TYPES.POST,
-        uri: "/api/hacker/" + Constants.ROLE_CATEGORIES.ALL + "/resume",
+        uri: "/api/hacker/resume/" + Constants.ROLE_CATEGORIES.ALL,
     },
     "patchSelfById": {
         requestType: Constants.REQUEST_TYPES.PATCH,
@@ -130,16 +140,17 @@ const allRoutes = {
 
 const adminRole = {
     "_id": mongoose.Types.ObjectId(),
-    "name": "admin",
+    "name": Constants.GODSTAFF,
     "routes": getAllRoutes(),
 };
 
 const hackerRole = {
     "_id": mongoose.Types.ObjectId(),
-    "name": "hacker",
+    "name": Constants.HACKER,
     "routes": [
         authRoutes.login,
         authRoutes.logout,
+        authRoutes.getSelfRoleBindindings,
 
         accountRoutes.getSelf,
         accountRoutes.getSelfById,
@@ -154,10 +165,11 @@ const hackerRole = {
 
 const volunteerRole = {
     "_id": mongoose.Types.ObjectId(),
-    "name": "volunteer",
+    "name": Constants.VOLUNTEER,
     "routes": [
         authRoutes.login,
         authRoutes.logout,
+        authRoutes.getSelfRoleBindindings,
 
         volunteerRoutes.post,
     ]
@@ -165,10 +177,11 @@ const volunteerRole = {
 
 const sponsorT1Role = {
     "_id": mongoose.Types.ObjectId(),
-    "name": "sponsorT1",
+    "name": Constants.SPONSOR_T1,
     "routes": [
         authRoutes.login,
         authRoutes.logout,
+        authRoutes.getSelfRoleBindindings,
 
         sponsorRoutes.post,
         sponsorRoutes.getSelfById,
@@ -177,10 +190,11 @@ const sponsorT1Role = {
 
 const sponsorT2Role = {
     "_id": mongoose.Types.ObjectId(),
-    "name": "sponsorT2",
+    "name": Constants.SPONSOR_T2,
     "routes": [
         authRoutes.login,
         authRoutes.logout,
+        authRoutes.getSelfRoleBindindings,
 
         sponsorRoutes.post,
         sponsorRoutes.getSelfById,
@@ -189,10 +203,11 @@ const sponsorT2Role = {
 
 const sponsorT3Role = {
     "_id": mongoose.Types.ObjectId(),
-    "name": "sponsorT3",
+    "name": Constants.SPONSOR_T3,
     "routes": [
         authRoutes.login,
         authRoutes.logout,
+        authRoutes.getSelfRoleBindindings,
 
         sponsorRoutes.post,
         sponsorRoutes.getSelfById,
@@ -201,10 +216,11 @@ const sponsorT3Role = {
 
 const sponsorT4Role = {
     "_id": mongoose.Types.ObjectId(),
-    "name": "sponsorT4",
+    "name": Constants.SPONSOR_T4,
     "routes": [
         authRoutes.login,
         authRoutes.logout,
+        authRoutes.getSelfRoleBindindings,
 
         sponsorRoutes.post,
         sponsorRoutes.getSelfById,
@@ -213,10 +229,11 @@ const sponsorT4Role = {
 
 const sponsorT5Role = {
     "_id": mongoose.Types.ObjectId(),
-    "name": "sponsorT5",
+    "name": Constants.SPONSOR_T5,
     "routes": [
         authRoutes.login,
         authRoutes.logout,
+        authRoutes.getSelfRoleBindindings,
 
         sponsorRoutes.post,
         sponsorRoutes.getSelfById,
@@ -233,11 +250,13 @@ let allRolesObject = {
     sponsorT2Role: sponsorT2Role,
     sponsorT3Role: sponsorT3Role,
     sponsorT4Role: sponsorT4Role,
-    sponsorT5Role: sponsorT5Role,
+    sponsorT5Role: sponsorT5Role
 };
 
 for (let role in singularRoles) {
-    allRolesObject[role] = singularRoles[role];
+    if (singularRoles.hasOwnProperty(role)) {
+        allRolesObject[role] = singularRoles[role];
+    }
 }
 
 const allRolesArray = Object.values(allRolesObject);
@@ -291,7 +310,7 @@ function createAllSingularRoles() {
     return roles;
 }
 
-function storeAll(attributes, callback) {
+function storeAll(attributes) {
     const roleDocs = [];
     const roleNames = [];
     attributes.forEach((attribute) => {
@@ -299,32 +318,11 @@ function storeAll(attributes, callback) {
         roleNames.push(attribute.name);
     });
 
-    Role.collection.insertMany(roleDocs).then(
-        () => {
-            logger.info(`${TAG} saved Roles: ${roleNames.join(",")}`);
-            callback();
-        },
-        (reason) => {
-            logger.error(`${TAG} could not store Roles ${roleNames.join(",")}. Error: ${JSON.stringify(reason)}`);
-            callback(reason);
-        }
-    );
+    return Role.collection.insertMany(roleDocs);
 }
 
-function dropAll(callback) {
-    Role.collection.drop().then(
-        () => {
-            logger.info(`Dropped table Role`);
-            callback();
-        },
-        (err) => {
-            logger.error(`Could not drop Role. Error: ${JSON.stringify(err)}`);
-            callback(err);
-        }
-    ).catch((error) => {
-        logger.error(error);
-        callback();
-    });
+function dropAll() {
+    return Role.collection.drop();
 }
 
 module.exports = {

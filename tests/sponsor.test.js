@@ -7,6 +7,9 @@ const agent = chai.request.agent(server.app);
 const Sponsor = require("../models/sponsor.model");
 const should = chai.should();
 const mongoose = require("mongoose");
+const Constants = {
+    Error: require("../constants/error.constant"),
+};
 
 const util = {
     sponsor: require("./util/sponsor.test.util"),
@@ -42,7 +45,7 @@ describe("GET user sponsor", function () {
                 res.should.have.status(401);
                 res.should.be.json;
                 res.body.should.have.property("message");
-                res.body.message.should.equal("Not Authenticated");
+                res.body.message.should.equal(Constants.Error.AUTH_401_MESSAGE);
 
                 done();
             });
@@ -113,10 +116,10 @@ describe("GET user sponsor", function () {
                     if (err) {
                         return done(err);
                     }
-                    res.should.have.status(401);
+                    res.should.have.status(403);
                     res.should.be.json;
                     res.body.should.have.property("message");
-                    res.body.message.should.equal("Not Authorized for this route");
+                    res.body.message.should.equal(Constants.Error.AUTH_403_MESSAGE);
                     res.body.should.have.property("data");
 
                     done();
@@ -137,10 +140,10 @@ describe("GET user sponsor", function () {
                     if (err) {
                         return done(err);
                     }
-                    res.should.have.status(400);
+                    res.should.have.status(404);
                     res.should.be.json;
                     res.body.should.have.property("message");
-                    res.body.message.should.equal("Issue with retrieving sponsor information");
+                    res.body.message.should.equal(Constants.Error.SPONSOR_404_MESSAGE);
                     res.body.should.have.property("data");
 
                     done();
@@ -159,7 +162,7 @@ describe("POST create sponsor", function () {
                 res.should.have.status(401);
                 res.should.be.json;
                 res.body.should.have.property("message");
-                res.body.message.should.equal("Not Authenticated");
+                res.body.message.should.equal(Constants.Error.AUTH_401_MESSAGE);
 
                 done();
             });
@@ -205,7 +208,7 @@ describe("POST create sponsor", function () {
                 .end(function (err, res) {
                     res.should.have.status(409);
                     res.body.should.have.property("message");
-                    res.body.message.should.equal("Sponsor with same accountId link found");
+                    res.body.message.should.equal(Constants.Error.SPONSOR_ID_409_MESSAGE);
                     res.body.should.have.property("data");
                     done();
                 });
@@ -224,10 +227,10 @@ describe("POST create sponsor", function () {
                 .type("application/json")
                 .send(newSponsor)
                 .end(function (err, res) {
-                    res.should.have.status(401);
+                    res.should.have.status(403);
                     res.should.be.json;
                     res.body.should.have.property("message");
-                    res.body.message.should.equal("Not Authorized for this route");
+                    res.body.message.should.equal(Constants.Error.AUTH_403_MESSAGE);
                     res.body.should.have.property("data");
 
                     done();

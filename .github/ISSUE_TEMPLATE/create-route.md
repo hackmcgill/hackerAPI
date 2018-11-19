@@ -15,7 +15,6 @@ about: Use when proposing a new route
 ### Parameters
 
 #### Body
-
 | Attribute name | Type |
 |----------------|------|
 

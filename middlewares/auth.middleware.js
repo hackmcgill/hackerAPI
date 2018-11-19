@@ -6,14 +6,20 @@ const Services = {
     ResetPasswordToken: require("../services/resetPassword.service"),
     Account: require("../services/account.service"),
     Email: require("../services/email.service"),
-    AccountConfirmation: require("../services/accountConfirmation.service")
+    AccountConfirmation: require("../services/accountConfirmation.service"),
+    Role: require("../services/role.service"),
+    RoleBinding: require("../services/roleBinding.service")
 };
 
 const Middleware = {
     Util: require("./util.middleware")
 };
 
-const Constants = require("../constants");
+const Constants = {
+    General: require("../constants/general.constant"),
+    Error: require("../constants/error.constant"),
+};
+
 /**
  * @returns {Fn} the middleware that will check that the user is properly authenticated.
  * Calls next() if the user is properly authenticated.
@@ -23,7 +29,7 @@ function ensureAuthenticated() {
         if (req.isUnauthenticated()) {
             next({
                 status: 401,
-                message: "Not Authenticated",
+                message: Constants.Error.AUTH_401_MESSAGE,
                 error: {
                     route: req.path
                 }
@@ -45,8 +51,8 @@ function ensureAuthorized(findByIdFns) {
             (auth) => {
                 if (!auth) {
                     next({
-                        status: 401,
-                        message: "Not Authorized for this route",
+                        status: 403,
+                        message: Constants.Error.AUTH_403_MESSAGE,
                         error: {
                             route: req.path
                         }
@@ -60,6 +66,24 @@ function ensureAuthorized(findByIdFns) {
             }
         );
     };
+}
+
+/**
+ * Middleware which retrieves the rolebindings for an account
+ * @param {{body: {param: {id:string}}}} req 
+ * @param {*} res 
+ * @param {(err?)=>void} next 
+ */
+async function retrieveRoleBindings(req, res, next) {
+    const roleBindings = await Services.RoleBinding.getRoleBindingForAcct(req.params.id);
+    if (!roleBindings) {
+        return next({
+            status: 404,
+            message: "Role Bindings not found"
+        })
+    }
+    req.roleBindings = roleBindings;
+    next();
 }
 
 /**
@@ -90,7 +114,7 @@ async function sendResetPasswordEmailMiddleware(req, res, next) {
             });
         } else {
             return next({
-                message: "error while generating email"
+                message: Constants.Error.EMAIL_500_MESSAGE,
             });
         }
     } else {
@@ -109,10 +133,48 @@ async function sendResetPasswordEmailMiddleware(req, res, next) {
  */
 async function sendConfirmAccountEmailMiddleware(req, res, next) {
     const account = req.body.account;
-    await Services.AccountConfirmation.create(Constants.HACKER, account.email, account.id);
+    await Services.AccountConfirmation.create(Constants.General.HACKER, account.email, account.id);
     const accountConfirmationToken = await Services.AccountConfirmation.findByAccountId(account.id);
     const token = Services.AccountConfirmation.generateToken(accountConfirmationToken.id, account.id);
-    const mailData = Services.AccountConfirmation.generateAccountConfirmationEmail(req.hostname, account.email, Constants.HACKER, token);
+    const mailData = Services.AccountConfirmation.generateAccountConfirmationEmail(req.hostname, account.email, Constants.General.HACKER, token);
+    if (mailData !== undefined) {
+        Services.Email.send(mailData, (err) => {
+            if (err) {
+                next(err);
+            } else {
+                next();
+            }
+        });
+    } else {
+        return next({
+            message: Constants.Error.EMAIL_500_MESSAGE,
+        });
+    }
+}
+
+/**
+ * Middleware that resends an email to confirm the account for the inputted email address.
+ * @param {{user {id : String}}} req the request object
+ * @param {*} res
+ * @param {(err?)=>void} next
+ */
+async function resendConfirmAccountEmail(req, res, next) {
+    const account = await Services.Account.findById(req.user.id);
+    if (account.confirmed) {
+        return next({
+            status: 422,
+            message: "Account already confirmed"
+        })
+    }
+    const accountConfirmationToken = await Services.AccountConfirmation.findByAccountId(account.id);
+    if (!accountConfirmationToken) {
+        return next({
+            status: 428,
+            message: "Account confirmation token does not exist"
+        })
+    }
+    const token = Services.AccountConfirmation.generateToken(accountConfirmationToken.id, account.id);
+    const mailData = Services.AccountConfirmation.generateAccountConfirmationEmail(req.hostname, account.email, accountConfirmationToken.accountType, token);
     if (mailData !== undefined) {
         Services.Email.send(mailData, (err) => {
             if (err) {
@@ -149,19 +211,22 @@ function parseResetToken(req, res, next) {
 /**
  * Attempts to parse the jwt token that is found in req.body.token using process.env.JWT_CONFIRM_ACC_SECRET as the key.
  * Places the parsed object into req.body.decodedToken
+ * If the token does not exist it just continues flow
  * @param {{body:{token:string}}} req 
  * @param {any} res 
  * @param {(err?)=>void} next 
  */
 function parseAccountConfirmationToken(req, res, next) {
-    jwt.verify(req.body.token, process.env.JWT_CONFIRM_ACC_SECRET, function (err, decoded) {
-        if (err) {
-            next(err);
-        } else {
-            req.body.decodedToken = decoded;
-            next();
-        }
-    });
+    if (!!req.body.token) {
+        jwt.verify(req.body.token, process.env.JWT_CONFIRM_ACC_SECRET, function (err, decoded) {
+            if (err) {
+                next(err);
+            } else {
+                req.body.decodedToken = decoded;
+            }
+        });
+    }
+    next();
 }
 
 /**
@@ -178,10 +243,10 @@ async function getAccountTypeFromConfirmationToken(req, res, next) {
     } else {
         //Either the token was already used, it's invalid, or user does not exist.
         next({
-            status: 422,
-            message: "Invalid token for confirming account",
+            status: 401,
+            message: Constants.Error.ACCOUNT_TOKEN_401_MESSAGE,
             error: {}
-        })
+        });
     }
 }
 
@@ -200,8 +265,8 @@ async function validateResetToken(req, res, next) {
     } else {
         //Either the token was already used, it's invalid, or user does not exist.
         next({
-            status: 422,
-            message: "invalid token",
+            status: 401,
+            message: Constants.Error.ACCOUNT_TOKEN_401_MESSAGE,
             error: {}
         });
     }
@@ -209,7 +274,7 @@ async function validateResetToken(req, res, next) {
 
 /**
  * Verifies that the confirm account exists, and that the accountId exists.
- * @param {{body:{decodedToken:{accountConfirmationId:string, accountId:string}}}} req 
+ * @param {{body:{decodedToken:{accountConfirmationId: String, accountId: String}}}} req 
  * @param {any} res 
  * @param {(err?)=>void} next 
  */
@@ -225,12 +290,30 @@ async function validateConfirmationToken(req, res, next) {
     } else {
         //Either the token was already used, it's invalid, or user does not exist.
         next({
-            status: 422,
-            message: "Invalid token for confirming account",
+            status: 401,
+            message: Constants.Error.ACCOUNT_TOKEN_401_MESSAGE,
             error: {}
         });
     }
 }
+
+/**
+ * 
+ * @param {body: {decodedToken:{accountConfirmationId: String}}} req 
+ * @param {*} res 
+ * @param {*} next 
+ */
+async function validateConfirmationTokenWithoutAccount(req, res, next) {
+    if (!!req.body.decodedToken) {
+        const confirmationObj = await Services.AccountConfirmation.findById(req.body.decodedToken.accountConfirmationId);
+        if (!confirmationObj.accountId) {
+            req.body.accountDetails.confirmed = true;
+            req.body.accountDetails.accountType = confirmationObj.accountType;
+        }
+    }
+    next();
+}
+
 
 /**
  * Middleware that deletes the reset token in the db
@@ -249,6 +332,42 @@ function deleteResetToken(req, res, next) {
     );
 }
 
+/**
+ * Middleware that creates rolebinding to access POST route for respective account
+ * @param {{body: {account:{accountType:String, id: ObjectId}}}} req the request object
+ * @param {*} res 
+ * @param {(err?)=>void} next 
+ */
+async function addCreationRoleBindings(req, res, next) {
+    // Get the default role for the account type given
+    const roleName = Constants.General.POST_ROLES[req.body.account.accountType];
+    await Services.RoleBinding.createRoleBindingByRoleName(req.body.account.id, roleName);
+    next();
+}
+
+/**
+ * Adds proper account rolebindings on account creation
+ * @param {string} roleName name of the role to be added to account
+ */
+function createRoleBindings(roleName = undefined) {
+    return async (req, res, next) => {
+        await Services.RoleBinding.createRoleBindingByRoleName(req.user.id, roleName);
+        next();
+    }
+}
+
+/**
+ * Middleware which creates rolebinding for appropriate sponsor
+ * @param {{body: {sponsorDetails: {accountId: ObjectId}}}} req request object
+ * @param {*} res 
+ * @param {(err?) => void } next 
+ */
+async function addSponsorRoleBindings(req, res, next) {
+    const account = Services.Account.findById(req.body.sponsorDetails.accountId);
+    await Services.RoleBinding.createRoleBindingByRoleName(account.id, account.accountType);
+    next();
+}
+
 module.exports = {
     //for each route, set up an authentication middleware for that route
     ensureAuthenticated: ensureAuthenticated,
@@ -260,5 +379,11 @@ module.exports = {
     sendConfirmAccountEmailMiddleware: Middleware.Util.asyncMiddleware(sendConfirmAccountEmailMiddleware),
     parseAccountConfirmationToken: parseAccountConfirmationToken,
     validateConfirmationToken: Middleware.Util.asyncMiddleware(validateConfirmationToken),
-    getAccountTypeFromConfirmationToken: Middleware.Util.asyncMiddleware(getAccountTypeFromConfirmationToken)
+    getAccountTypeFromConfirmationToken: Middleware.Util.asyncMiddleware(getAccountTypeFromConfirmationToken),
+    validateConfirmationTokenWithoutAccount: Middleware.Util.asyncMiddleware(validateConfirmationTokenWithoutAccount),
+    createRoleBindings: createRoleBindings,
+    addCreationRoleBindings: Middleware.Util.asyncMiddleware(addCreationRoleBindings),
+    addSponsorRoleBindings: Middleware.Util.asyncMiddleware(addSponsorRoleBindings),
+    resendConfirmAccountEmail: Middleware.Util.asyncMiddleware(resendConfirmAccountEmail),
+    retrieveRoleBindings: Middleware.Util.asyncMiddleware(retrieveRoleBindings)
 };

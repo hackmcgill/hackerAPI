@@ -1,10 +1,8 @@
 "use strict";
-const Constants = require("../../constants");
+const Constants = require("../../constants/general.constant");
 const Account = require("../../models/account.model");
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
-const logger = require("../../services/logger.service");
-const TAG = "[ ACCOUNT.TEST.UTIL.JS ]";
 
 const newAccount1 = {
     "_id": mongoose.Types.ObjectId(),
@@ -81,9 +79,9 @@ const Account3 = {
     "dietaryRestrictions": ["vegan"],
     "shirtSize": "L",
     "confirmed": true,
-    "accountType": Constants.SPONSOR,
     "birthDate": "1990-01-05",
     "phoneNumber": 1000000005,
+    "accountType": Constants.SPONSOR_T1
 };
 // volunteer
 const Account4 = {
@@ -109,9 +107,9 @@ const Account5 = {
     "dietaryRestrictions": ["something1", "something2"],
     "shirtSize": "XXL",
     "confirmed": true,
-    "accountType": Constants.SPONSOR,
+    "accountType": Constants.SPONSOR_T2,
     "birthDate": "1980-06-30",
-    "phoneNumber": 1000000236,
+    "phoneNumber": 1000000236
 };
 
 // non confirmed account for hacker
@@ -119,14 +117,26 @@ const NonConfirmedAccount1 = {
     "_id": mongoose.Types.ObjectId(),
     "firstName": "LMAO",
     "lastName": "ROFL",
-    "email": "abc.def6@blahblah.com",
+    "email": "notconfirmed1@blahblah.com",
     "password": "probsShouldBeHashed5",
     "dietaryRestrictions": ["something1", "something2"],
     "shirtSize": "XXL",
     "confirmed": false,
-    "accountType": Constants.SPONSOR,
     "birthDate": "1980-07-30",
     "phoneNumber": 1001230236,
+    "accountType": Constants.HACKER
+};
+
+const NonConfirmedAccount2 = {
+    "_id": mongoose.Types.ObjectId(),
+    "firstName": "LMAO",
+    "lastName": "ROFL",
+    "email": "notconfirmed2@blahblah.com",
+    "password": "probsShouldBeHashed5",
+    "dietaryRestrictions": ["something1", "something2"],
+    "shirtSize": "XXL",
+    "confirmed": false,
+    "accountType": Constants.HACKER,
 };
 
 const customAccounts = [
@@ -137,6 +147,7 @@ const customAccounts = [
     Account4,
     Account5,
     NonConfirmedAccount1,
+    NonConfirmedAccount2
 ];
 
 const generatedAccounts = generateAccounts(20);
@@ -151,7 +162,8 @@ const allAccounts = customAccounts.concat(generatedAccounts);
 module.exports = {
     nonAccount1: nonAccount1,
     newAccount1: newAccount1,
-    NonConfirmedAccount1,
+    NonConfirmedAccount1: NonConfirmedAccount1,
+    NonConfirmedAccount2: NonConfirmedAccount2,
     Admin1: Admin1,
     Account1: Account1,
     Account2: Account2,
@@ -211,7 +223,7 @@ function encryptPassword(user) {
     return encryptedUser;
 }
 
-function storeAll(attributes, callback) {
+function storeAll(attributes) {
     const acctDocs = [];
     const acctNames = [];
     for (var i = 0; i < attributes.length; i++) {
@@ -220,32 +232,11 @@ function storeAll(attributes, callback) {
         acctNames.push(attributes[i].firstName + "," + attributes[i].lastName);
     }
 
-    Account.collection.insertMany(acctDocs).then(
-        () => {
-            logger.info(`${TAG} saved Account:${acctNames.join(",")}`);
-            callback();
-        },
-        (reason) => {
-            logger.error(`${TAG} could not store Account ${acctNames.join(",")}. Error: ${JSON.stringify(reason)}`);
-            callback(reason);
-        }
-    );
+    return Account.collection.insertMany(acctDocs);
 }
 
-function dropAll(callback) {
-    Account.collection.drop().then(
-        () => {
-            logger.info(`Dropped table Account`);
-            callback();
-        },
-        (err) => {
-            logger.error(`Could not drop Account. Error: ${JSON.stringify(err)}`);
-            callback(err);
-        }
-    ).catch((error) => {
-        logger.error(error);
-        callback();
-    });
+function dropAll() {
+    return Account.collection.drop();
 }
 
 /**
@@ -263,8 +254,4 @@ function equals(acc1, acc2) {
     const dietaryRestrictions = (acc1.dietaryRestrictions.join(",") === acc2.dietaryRestrictions.join(","));
     const shirtSize = (acc1.shirtSize === acc2.shirtSize);
     return [id, firstName, lastName, email, dietaryRestrictions, shirtSize];
-}
-
-function convertMongoIdToString(id) {
-    return (typeof id === "string") ? id : id.valueOf();
 }

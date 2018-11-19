@@ -1,6 +1,8 @@
 "use strict";
 const mongoose = require("mongoose");
-const Constants = require("../constants");
+const Constants = {
+    General: require("../constants/general.constant"),
+};
 
 const AccountConfirmationSchema = new mongoose.Schema({
     accountId: {
@@ -9,12 +11,12 @@ const AccountConfirmationSchema = new mongoose.Schema({
         required: false
     },
     accountType: {
-        type:String,
-        enum: Constants.USER_TYPES,
+        type: String,
+        enum: Constants.EXTENDED_USER_TYPES,
         default: Constants.HACKER
     },
     email: {
-        type:String,
+        type: String,
         required: true
     }
 });

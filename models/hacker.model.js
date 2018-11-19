@@ -1,6 +1,6 @@
 "use strict";
 
-const Constants = require("../constants");
+const Constants = require("../constants/general.constant");
 const mongoose = require("mongoose");
 //describes the data type
 const HackerSchema = new mongoose.Schema({

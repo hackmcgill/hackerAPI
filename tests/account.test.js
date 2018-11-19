@@ -6,6 +6,9 @@ const server = require("../app");
 const logger = require("../services/logger.service");
 const Account = require("../models/account.model");
 const should = chai.should();
+const Constants = {
+    Error: require("../constants/error.constant"),
+};
 
 
 const util = {
@@ -16,6 +19,10 @@ const util = {
 };
 // hacker role binding
 const storedAccount1 = util.account.Account1;
+//This account has a confirmation token in the db
+const storedAccount2 = util.account.NonConfirmedAccount1;
+//This account does not have a confirmation token in the DB
+const storedAccount3 = util.account.NonConfirmedAccount2;
 // admin role binding
 const Admin1 = util.account.Admin1;
 const newAccount1 = util.account.newAccount1;
@@ -33,7 +40,7 @@ describe("GET user account", function () {
                 res.should.have.status(401);
                 res.should.be.json;
                 res.body.should.have.property("message");
-                res.body.message.should.equal("Not Authenticated");
+                res.body.message.should.equal(Constants.Error.AUTH_401_MESSAGE);
                 done();
             });
     });
@@ -139,10 +146,10 @@ describe("GET user account", function () {
                     if (err) {
                         return done(err);
                     }
-                    res.should.have.status(401);
+                    res.should.have.status(403);
                     res.should.be.json;
                     res.body.should.have.property("message");
-                    res.body.message.should.equal("Not Authorized for this route");
+                    res.body.message.should.equal(Constants.Error.AUTH_403_MESSAGE);
                     res.body.should.have.property("data");
 
                     done();
@@ -172,7 +179,7 @@ describe("POST create account", function () {
             .type("application/json")
             .send(storedAccount1)
             .end(function (err, res) {
-                res.should.have.status(409);
+                res.should.have.status(500);
                 done();
             });
     });
@@ -188,16 +195,16 @@ describe("POST confirm account", function () {
                 res.body.should.have.property("message");
                 res.body.message.should.equal("Successfully confirmed account");
                 done();
-            })
-    })
+            });
+    });
     it("should FAIL confirming the account", function (done) {
         chai.request(server.app)
             .post('/api/auth/confirm/' + fakeToken)
             .type("application/json")
             .end(function (err, res) {
-                res.should.have.status(422);
+                res.should.have.status(401);
                 res.body.should.have.property("message");
-                res.body.message.should.equal("Invalid token for confirming account");
+                res.body.message.should.equal(Constants.Error.ACCOUNT_TOKEN_401_MESSAGE);
                 done();
             })
     })
@@ -223,7 +230,7 @@ describe("PATCH update account", function () {
                 res.should.have.status(401);
                 res.should.be.json;
                 res.body.should.have.property("message");
-                res.body.message.should.equal("Not Authenticated");
+                res.body.message.should.equal(Constants.Error.AUTH_401_MESSAGE);
                 done();
             });
     });
@@ -291,10 +298,10 @@ describe("PATCH update account", function () {
                 .type("application/json")
                 .send(updatedInfo)
                 .end(function (err, res) {
-                    res.should.have.status(401);
+                    res.should.have.status(403);
                     res.should.be.json;
                     res.body.should.have.property("message");
-                    res.body.message.should.equal("Not Authorized for this route");
+                    res.body.message.should.equal(Constants.Error.AUTH_403_MESSAGE);
                     res.body.should.have.property("data");
 
                     done();
@@ -321,3 +328,96 @@ describe("POST reset password", function () {
             })
     })
 })
+
+describe("GET retrieve permissions", function () {
+    it("should SUCCEED and retrieve the rolebindings for the user", function (done) {
+        util.auth.login(agent, storedAccount1, (error) => {
+            if (error) {
+                agent.close();
+                return done(error);
+            }
+            agent
+                .get("/api/auth/rolebindings/" + storedAccount1._id)
+                .type("application/json")
+                .end(function (err, res) {
+                    res.should.have.status(200);
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal("Successfully retrieved role bindings");
+                    res.body.should.have.property("data")
+                    res.body.data.should.be.a("object");
+                    res.body.data.should.have.property("roles");
+                    res.body.data.should.have.property("accountId");
+                    res.body.data.accountId.should.equal(storedAccount1._id.toHexString());
+                    done();
+                });
+        });
+    });
+    it("should FAIL to retrieve the rolebindings as the account is not authenticated", function (done) {
+        chai.request(server.app)
+            .get("/api/auth/rolebindings/" + storedAccount1._id)
+            .type("application/json")
+            .end(function (err, res) {
+                res.should.have.status(401);
+                res.body.should.have.property("message");
+                res.body.message.should.equal(Constants.Error.AUTH_401_MESSAGE);
+                done();
+            });
+    });
+});
+
+describe("GET resend confirmation email", function () {
+    it("should SUCCEED and resend the confirmation email", function (done) {
+        util.auth.login(agent, storedAccount3, (error) => {
+            if (error) {
+                agent.close();
+                return done(error);
+            }
+            agent
+                .get(`/api/auth/confirm/resend`)
+                .type("application/json")
+                .end(function (err, res) {
+                    res.should.have.status(200);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal("Successfully resent account email");
+                    done();
+                })
+        })
+    });
+    it("should FAIL as the account is already confirmed", function (done) {
+        util.auth.login(agent, storedAccount1, (error) => {
+            if (error) {
+                agent.close();
+                return done(error);
+            }
+            agent
+                .get(`/api/auth/confirm/resend`)
+                .type("application/json")
+                .end(function (err, res) {
+                    res.should.have.status(422);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal("Account already confirmed");
+                    done();
+                })
+        })
+    });
+    it("should FAIL as account confirmation token does not exist", function (done) {
+        util.auth.login(agent, storedAccount2, (error) => {
+            if (error) {
+                agent.close();
+                return done(error);
+            }
+            agent
+                .get(`/api/auth/confirm/resend`)
+                .type("application/json")
+                .end(function (err, res) {
+                    res.should.have.status(428);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal("Account confirmation token does not exist");
+                    done();
+                })
+        })
+    })
+});
