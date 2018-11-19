@@ -280,7 +280,6 @@ describe("PATCH update account", function () {
                     // Is this correct matching of data?
                     res.body.data.firstName.should.equal(updatedInfo.firstName);
                     res.body.data.lastName.should.equal(updatedInfo.lastName);
-
                     done();
                 });
         });
