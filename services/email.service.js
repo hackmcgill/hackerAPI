@@ -5,7 +5,7 @@ const fs = require("fs");
 const path = require("path");
 const TAG = `[ EMAIL.SERVICE ]`;
 const env = require("../services/env.service");
-const Constants = require("../constants");
+const Constants = require("../constants/general.constant");
 const Handlebars = require("handlebars");
 
 class EmailService {
