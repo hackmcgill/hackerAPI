@@ -40,7 +40,7 @@ const Admin1 = {
     "dietaryRestrictions": ["none"],
     "shirtSize": "S",
     "confirmed": true,
-    "accountType": Constants.GODSTAFF,
+    "accountType": Constants.STAFF,
     "birthDate": "1990-01-02",
     "phoneNumber": 1000000002,
 };
@@ -213,7 +213,7 @@ function generateAccounts(n) {
         };
 
         if (i < n / 4) {
-            acc.accountType = Constants.GODSTAFF;
+            acc.accountType = Constants.STAFF;
         } else if (i >= n / 4 && i < (n / 4) * 2) {
             acc.accountType = Constants.HACKER;
         } else if (i >= (n / 4) * 2 && i < (n / 4) * 3) {

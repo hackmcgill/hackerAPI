@@ -16,11 +16,11 @@ const authRoutes = {
         requestType: Constants.REQUEST_TYPES.POST,
         uri: "/api/auth/invite"
     },
-    "getSelfRoleBindindings" : {
+    "getSelfRoleBindindings": {
         requestType: Constants.REQUEST_TYPES.GET,
         uri: "/api/auth/rolebindings/" + Constants.ROLE_CATEGORIES.SELF
     },
-    "getAnyRoleBindings" : {
+    "getAnyRoleBindings": {
         requestType: Constants.REQUEST_TYPES.GET,
         uri: "/api/auth/rolebindings/" + Constants.ROLE_CATEGORIES.ALL
     }
@@ -140,7 +140,7 @@ const allRoutes = {
 
 const adminRole = {
     "_id": mongoose.Types.ObjectId(),
-    "name": Constants.GODSTAFF,
+    "name": Constants.STAFF,
     "routes": getAllRoutes(),
 };
 
