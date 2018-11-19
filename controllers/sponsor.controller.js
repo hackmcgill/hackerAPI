@@ -4,6 +4,9 @@ const Services = {
     Logger: require("../services/logger.service")
 };
 const Util = require("../middlewares/util.middleware");
+const Constants = {
+    Error: require("../constants/error.constant"),
+}
 
 /**
  * @async
@@ -23,8 +26,8 @@ async function findById(req, res) {
             data: sponsor.toJSON()
         });
     } else {
-        return res.status(400).json({
-            message: "Issue with retrieving sponsor information",
+        return res.status(404).json({
+            message: Constants.Error.SPONSOR_404_MESSAGE,
             data: {}
         });
     }
@@ -49,8 +52,8 @@ async function createSponsor(req, res) {
             data: sponsorDetails
         });
     } else {
-        return res.status(400).json({
-            message: "Issue with sponsor creation",
+        return res.status(500).json({
+            message: Constants.Error.SPONSOR_CREATE_500_MESSAGE,
             data: {}
         });
     }

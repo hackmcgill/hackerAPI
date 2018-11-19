@@ -8,6 +8,9 @@ const should = chai.should();
 const Hacker = require("../models/hacker.model");
 const fs = require("fs");
 const path = require("path");
+const Constants = {
+    Error: require("../constants/error.constant"),
+};
 
 const util = {
     auth: require("./util/auth.test.util"),
@@ -45,7 +48,7 @@ describe("GET hacker", function () {
                 res.should.have.status(401);
                 res.should.be.json;
                 res.body.should.have.property("message");
-                res.body.message.should.equal("Not Authenticated");
+                res.body.message.should.equal(Constants.Error.AUTH_401_MESSAGE);
                 done();
             });
     });
@@ -121,10 +124,10 @@ describe("GET hacker", function () {
                     if (err) {
                         return done(err);
                     }
-                    res.should.have.status(401);
+                    res.should.have.status(403);
                     res.should.be.json;
                     res.body.should.have.property("message");
-                    res.body.message.should.equal("Not Authorized for this route");
+                    res.body.message.should.equal(Constants.Error.AUTH_403_MESSAGE);
                     res.body.should.have.property("data");
 
                     done();
@@ -148,7 +151,7 @@ describe("GET hacker", function () {
                     res.should.have.status(404);
                     res.should.be.json;
                     res.body.should.have.property("message");
-                    res.body.message.should.equal("Issue with retrieving hacker information");
+                    res.body.message.should.equal(Constants.Error.HACKER_404_MESSAGE);
                     res.body.should.have.property("data");
 
                     done();
@@ -169,7 +172,7 @@ describe("POST create hacker", function () {
                     res.should.have.status(401);
                     res.should.be.json;
                     res.body.should.have.property("message");
-                    res.body.message.should.equal("Not Authenticated");
+                    res.body.message.should.equal(Constants.Error.AUTH_401_MESSAGE);
 
                     done();
                 });
@@ -243,7 +246,7 @@ describe("POST create hacker", function () {
                 .end(function (err, res) {
                     res.should.be.json;
                     res.body.should.have.property("message");
-                    res.body.message.should.equal("Account not verified");
+                    res.body.message.should.equal(Constants.Error.ACCOUNT_403_MESSAGE);
                     res.should.have.status(403);
                     done();
                 });
@@ -264,7 +267,7 @@ describe("POST create hacker", function () {
                 .end(function (err, res) {
                     res.should.have.status(409);
                     res.body.should.have.property("message");
-                    res.body.message.should.equal("Hacker with same accountId link found");
+                    res.body.message.should.equal(Constants.Error.HACKER_ID_409_MESSAGE);
                     res.body.should.have.property("data");
                     done();
                 });
@@ -304,7 +307,7 @@ describe("PATCH update one hacker", function () {
                 res.should.have.status(401);
                 res.should.be.json;
                 res.body.should.have.property("message");
-                res.body.message.should.equal("Not Authenticated");
+                res.body.message.should.equal(Constants.Error.AUTH_401_MESSAGE);
                 done();
             });
     });
@@ -377,10 +380,10 @@ describe("PATCH update one hacker", function () {
                     gender: "Other"
                 })
                 .end(function (err, res) {
-                    res.should.have.status(401);
+                    res.should.have.status(403);
                     res.should.be.json;
                     res.body.should.have.property("message");
-                    res.body.message.should.equal("Not Authorized for this route");
+                    res.body.message.should.equal(Constants.Error.AUTH_403_MESSAGE);
                     res.body.should.have.property("data");
 
                     done();
@@ -404,7 +407,7 @@ describe("PATCH update one hacker", function () {
                     res.should.have.status(404);
                     res.should.be.json;
                     res.body.should.have.property("message");
-                    res.body.message.should.equal("Issue with retrieving hacker information");
+                    res.body.message.should.equal(Constants.Error.HACKER_404_MESSAGE);
                     res.body.should.have.property("data");
 
                     done();

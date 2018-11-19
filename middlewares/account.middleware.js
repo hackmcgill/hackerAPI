@@ -12,6 +12,10 @@ const Middleware = {
     Util: require("../middlewares/util.middleware")
 };
 
+const Constants = {
+    Error: require("../constants/error.constant"),
+};
+
 /**
  * @function parsePatch
  * @param {body: {id: ObjectId}} req 
@@ -94,9 +98,13 @@ async function addAccount(req, res, next) {
     //Check duplicate
     const exists = await Services.Account.findByEmail(accountDetails.email);
     if (exists) {
-        var err = new Error("Account already exists");
-        err.status = 409;
-        next(err);
+        next({
+            status: 500,
+            message: Constants.Error.ACCOUNT_DUPLICATE_422_MESSAGE,
+            error: {
+                route: req.path
+            }
+        });
     }
     const account = await Services.Account.addOneAccount(accountDetails);
     req.body.account = account;

@@ -12,7 +12,7 @@ const mongoose = require("mongoose");
 
 const AccountConfirmationToken = mongoose.model("AccountConfirmationToken");
 
-const Constants = require('../../constants');
+const Constants = require('../../constants/general.constant');
 const logger = require("../../services/logger.service");
 
 const HackerConfirmation = {

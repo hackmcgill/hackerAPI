@@ -7,6 +7,9 @@ const Services = {
     Team: require("../services/team.service")
 };
 const Util = require("./util.middleware");
+const Constants = {
+    Error: require("../constants/error.constant"),
+};
 
 /**
  * @async
@@ -18,27 +21,27 @@ const Util = require("./util.middleware");
  * @description Checks to see that the members in a team are not in another team, and that members are not duplicate
  */
 async function ensureUniqueHackerId(req, res, next) {
-    let idSet = [];    
+    let idSet = [];
 
     for (const member of req.body.teamDetails.members) {
         // check to see if a member is entered twice in the application
         if (!!idSet[member]) {
             return next({
                 status: 422,
-                message: "Duplicate member in input",
+                message: Constants.Error.TEAM_MEMBER_422_MESSAGE,
                 error: member
             });
         } else {
             idSet[member] = true;
         }
-        
+
         // check to see if member is part of a another team
         const team = await Services.Team.findTeamByHackerId(member);
 
         if (!!team) {
             return next({
-                status: 422,
-                message: "A member is already part of another team",
+                status: 409,
+                message: Constants.Error.TEAM_MEMBER_409_MESSAGE,
                 error: member
             });
         }
