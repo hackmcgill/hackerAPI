@@ -224,30 +224,26 @@ function alphaArrayValidator(fieldLocation, fieldname, optional = true) {
     if (optional) {
         return name.optional({
             checkFalsy: true
-        }).custom((value) => {
-            if (!Array.isArray(value)) {
-                return false;
-            }
-            for (const el of value) {
-                if (typeof el !== "string") {
-                    return false;
-                }
-            }
-            return true;
-        }).withMessage("must contain alphabet characters in each element of the array");
+        }).custom(alphaArrayValidationHelper).withMessage("must contain alphabet characters in each element of the array");
     } else {
-        return name.exists().withMessage("must exist").custom((value) => {
-            if (!Array.isArray(value)) {
-                return false;
-            }
-            for (const el of value) {
-                if (typeof el !== "string") {
-                    return false;
-                }
-            }
-            return true;
-        }).withMessage("must contain alphabet characters in each element of the array");
+        return name.exists().withMessage("must exist").custom(alphaArrayValidationHelper).withMessage("must contain alphabet characters in each element of the array");
     }
+}
+
+/**
+ * Returns true if value is an alpha array, else false
+ * @param {*} value value to check against
+ */
+function alphaArrayValidationHelper(value) {
+    if (!Array.isArray(value)) {
+        return false;
+    }
+    for (const el of value) {
+        if (typeof el !== "string") {
+            return false;
+        }
+    }
+    return true;
 }
 
 /**
@@ -344,7 +340,7 @@ function applicationValidator(fieldLocation, fieldname, optional = true) {
             hasValid.linkedIn = (!app.portfolioURL.linkedIn || typeof (app.portfolioURL.linkedIn) === "string");
             hasValid.other = (!app.portfolioURL.other || typeof (app.portfolioURL.other) === "string");
             hasValid.jobInterest = (!app.jobInterest || jobInterests.includes(app.jobInterest));
-            hasValid.skills = (!app.skills || isMongoIdArray(app.skills));
+            hasValid.skills = (!app.skills || alphaArrayValidationHelper(app.skills));
             hasValid.comments = (!app.comments || typeof (app.comments) === "string");
             hasValid.essay = (!app.essay || typeof (app.essay) === "string");
             hasValid.team = (!app.team || mongoose.Types.ObjectId.isValid(app.team));
@@ -364,7 +360,7 @@ function applicationValidator(fieldLocation, fieldname, optional = true) {
             hasValid.linkedIn = (!app.portfolioURL.linkedIn || typeof (app.portfolioURL.linkedIn) === "string");
             hasValid.other = (!app.portfolioURL.other || typeof (app.portfolioURL.other) === "string");
             hasValid.jobInterest = (jobInterests.includes(app.jobInterest));
-            hasValid.skills = (!app.skills || isMongoIdArray(app.skills));
+            hasValid.skills = (!app.skills || alphaArrayValidationHelper(app.skills));
             hasValid.comments = (!app.comments || typeof (app.comments) === "string");
             hasValid.essay = (!app.essay || typeof (app.essay) === "string");
             hasValid.team = (!app.team || mongoose.Types.ObjectId.isValid(app.team));

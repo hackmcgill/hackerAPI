@@ -1,7 +1,6 @@
 "use strict";
 const Util = {
     Account: require("./account.test.util"),
-    Skill: require("./skill.test.util")
 };
 
 const mongoose = require("mongoose");
@@ -44,11 +43,7 @@ const duplicateAccountLinkHacker1 = {
             "other": undefined
         },
         "jobInterest": "Full-time",
-        "skills": [
-            Util.Skill.Skill1._id,
-            Util.Skill.Skill5._id,
-            Util.Skill.Skill8._id,
-        ],
+        "skills": ["CSS", "HTML", "JS"],
     },
     "ethnicity": "Caucasian",
     "major": "CS",
@@ -72,11 +67,7 @@ const newHacker1 = {
             "other": undefined
         },
         "jobInterest": "Full-time",
-        "skills": [
-            Util.Skill.Skill1._id,
-            Util.Skill.Skill5._id,
-            Util.Skill.Skill8._id,
-        ],
+        "skills": ["CSS", "HTML", "JS"],
     },
     "ethnicity": "Caucasian",
     "major": "EE",
@@ -100,11 +91,7 @@ const newHacker2 = {
             "other": undefined
         },
         "jobInterest": "Full-time",
-        "skills": [
-            Util.Skill.Skill1._id,
-            Util.Skill.Skill5._id,
-            Util.Skill.Skill8._id,
-        ],
+        "skills": ["CSS", "HTML", "JS"],
     },
     "ethnicity": "African American",
     "major": "EE",
@@ -130,11 +117,7 @@ const HackerA = {
             "other": undefined
         },
         "jobInterest": "Full-time",
-        "skills": [
-            Util.Skill.Skill1._id,
-            Util.Skill.Skill5._id,
-            Util.Skill.Skill8._id,
-        ],
+        "skills": ["CSS", "HTML", "JS"],
     },
     "ethnicity": "Native American",
     "major": "EE",
@@ -159,11 +142,7 @@ const HackerB = {
             "other": undefined
         },
         "jobInterest": "Internship",
-        "skills": [
-            Util.Skill.Skill1._id,
-            Util.Skill.Skill4._id,
-            Util.Skill.Skill7._id,
-        ],
+        "skills": ["CSS", "HTML", "JS"],
     },
     "ethnicity": "European",
     "major": "EE",

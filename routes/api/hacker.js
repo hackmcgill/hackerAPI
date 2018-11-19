@@ -46,7 +46,7 @@ module.exports = {
          *              "other": "..."
          *          },
          *          "jobInterest": "...",
-         *          "skills": [id1, id2],    
+         *          "skills": ["CSS", "HTML"],    
          *          "comments": "...",
          *          "essay": "...",
          *          "team": [id1, id2],
@@ -107,7 +107,7 @@ module.exports = {
          *              "other": "..."
          *          },
          *          "jobInterest": "...",
-         *          "skills": [id1, id2],    
+         *          "skills": ["CSS", "HTML"],    
          *          "comments": "...",
          *          "essay": "...",
          *          "team": [id1, id2],

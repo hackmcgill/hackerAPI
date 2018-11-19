@@ -8,7 +8,6 @@ const Util = {
     Hacker: require("./util/hacker.test.util"),
     Role: require("./util/role.test.util"),
     RoleBinding: require("./util/roleBinding.test.util"),
-    Skill: require("./util/skill.test.util"),
     Sponsor: require("./util/sponsor.test.util"),
     Staff: require("./util/staff.test.util"),
     Team: require("./util/team.test.util"),
@@ -41,10 +40,8 @@ afterEach(function (done) {
         done(error);
     });
 });
-
 async function storeAll() {
     await Util.Account.storeAll(Util.Account.allAccounts);
-    await Util.Skill.storeAll(Util.Skill.Skills);
     await Util.Hacker.storeAll(Util.Hacker.Hackers);
     await Util.Sponsor.storeAll(Util.Sponsor.Sponsors);
     await Util.Team.storeAll(Util.Team.Teams);
@@ -68,6 +65,5 @@ async function dropAll() {
     await Util.Sponsor.dropAll();
     await Util.Bus.dropAll();
     await Util.Hacker.dropAll();
-    await Util.Skill.dropAll();
     await Util.Account.dropAll();
 }

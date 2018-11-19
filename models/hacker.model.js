@@ -55,8 +55,7 @@ const HackerSchema = new mongoose.Schema({
             default: "None"
         },
         skills: [{
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "Skill"
+            type: String
         }],
         //any miscelaneous comments that the user has
         comments: {
