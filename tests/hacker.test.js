@@ -364,7 +364,7 @@ describe("PATCH update one hacker", function () {
                 });
         });
     });
-    it("should FAIL and NOT update a hacker STATUS as an Hacker", function (done) {
+    it("should FAIL and NOT update a hacker STATUS as a Hacker", function (done) {
         util.auth.login(agent, storedAccount1, (error) => {
             if (error) {
                 agent.close();
@@ -377,10 +377,10 @@ describe("PATCH update one hacker", function () {
                     status: "Accepted"
                 })
                 .end(function (err, res) {
-                    res.should.have.status(401);
+                    res.should.have.status(403);
                     res.should.be.json;
                     res.body.should.have.property("message");
-                    res.body.message.should.equal("Not Authorized for this route");
+                    res.body.message.should.equal(Constants.Error.AUTH_403_MESSAGE);
                     res.body.should.have.property("data");
                     done();
                 });
