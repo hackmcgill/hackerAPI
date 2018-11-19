@@ -1,10 +1,8 @@
 "use strict";
-const Constants = require("../../constants");
+const Constants = require("../../constants/general.constant");
 const Account = require("../../models/account.model");
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
-const logger = require("../../services/logger.service");
-const TAG = "[ ACCOUNT.TEST.UTIL.JS ]";
 
 const newAccount1 = {
     "_id": mongoose.Types.ObjectId(),
@@ -225,7 +223,7 @@ function encryptPassword(user) {
     return encryptedUser;
 }
 
-function storeAll(attributes, callback) {
+function storeAll(attributes) {
     const acctDocs = [];
     const acctNames = [];
     for (var i = 0; i < attributes.length; i++) {
@@ -234,32 +232,11 @@ function storeAll(attributes, callback) {
         acctNames.push(attributes[i].firstName + "," + attributes[i].lastName);
     }
 
-    Account.collection.insertMany(acctDocs).then(
-        () => {
-            logger.info(`${TAG} saved Account:${acctNames.join(",")}`);
-            callback();
-        },
-        (reason) => {
-            logger.error(`${TAG} could not store Account ${acctNames.join(",")}. Error: ${JSON.stringify(reason)}`);
-            callback(reason);
-        }
-    );
+    return Account.collection.insertMany(acctDocs);
 }
 
-function dropAll(callback) {
-    Account.collection.drop().then(
-        () => {
-            logger.info(`Dropped table Account`);
-            callback();
-        },
-        (err) => {
-            logger.error(`Could not drop Account. Error: ${JSON.stringify(err)}`);
-            callback(err);
-        }
-    ).catch((error) => {
-        logger.error(error);
-        callback();
-    });
+function dropAll() {
+    return Account.collection.drop();
 }
 
 /**
@@ -277,8 +254,4 @@ function equals(acc1, acc2) {
     const dietaryRestrictions = (acc1.dietaryRestrictions.join(",") === acc2.dietaryRestrictions.join(","));
     const shirtSize = (acc1.shirtSize === acc2.shirtSize);
     return [id, firstName, lastName, email, dietaryRestrictions, shirtSize];
-}
-
-function convertMongoIdToString(id) {
-    return (typeof id === "string") ? id : id.valueOf();
 }

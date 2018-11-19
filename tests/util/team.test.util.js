@@ -4,12 +4,10 @@ const Util = {
 };
 const Team = require("../../models/team.model");
 const mongoose = require("mongoose");
-const logger = require("../../services/logger.service");
-const TAG = "[ TEAM.TEST.UTIL.JS ]";
 
 const newTeam1 = {
     "name": "BronzeTeam",
-    "members": [ Util.Hacker.HackerB._id ],
+    "members": [Util.Hacker.HackerB._id],
     "projectName": "YetAnotherProject"
 };
 
@@ -24,7 +22,7 @@ const Teams = [
     Team1,
 ];
 
-function storeAll(attributes, callback) {
+function storeAll(attributes) {
     const teamDocs = [];
     const teamNames = [];
     attributes.forEach((attribute) => {
@@ -32,32 +30,11 @@ function storeAll(attributes, callback) {
         teamNames.push(attribute.name);
     });
 
-    Team.collection.insertMany(teamDocs).then(
-        () => {
-            logger.info(`${TAG} saved Team: ${teamNames.join(",")}`);
-            callback();
-        },
-        (reason) => {
-            logger.error(`${TAG} could not store Team ${teamNames.join(",")}. Error: ${JSON.stringify(reason)}`);
-            callback(reason);
-        }
-    );
+    return Team.collection.insertMany(teamDocs);
 }
 
-function dropAll(callback) {
-    Team.collection.drop().then(
-        () => {
-            logger.info(`dropped table Team`);
-            callback();
-        },
-        (err) => {
-            logger.error(`Could not drop Team. Error: ${JSON.stringify(err)}`);
-            callback();
-        }
-    ).catch((error) => {
-        logger.error(error);
-        callback();
-    });
+function dropAll() {
+    return Team.collection.drop();
 }
 
 module.exports = {

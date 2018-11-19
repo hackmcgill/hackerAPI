@@ -6,6 +6,9 @@ const server = require("../app");
 const agent = chai.request.agent(server.app);
 const should = chai.should();
 const Volunteer = require("../models/volunteer.model");
+const Constants = {
+    Error: require("../constants/error.constant"),
+};
 
 const util = {
     volunteer: require("./util/volunteer.test.util"),
@@ -32,7 +35,7 @@ describe("POST create volunteer", function () {
                 res.should.have.status(401);
                 res.should.be.json;
                 res.body.should.have.property("message");
-                res.body.message.should.equal("Not Authenticated");
+                res.body.message.should.equal(Constants.Error.AUTH_401_MESSAGE);
 
                 done();
             });
@@ -53,7 +56,7 @@ describe("POST create volunteer", function () {
                     res.should.have.status(409);
                     res.should.be.json;
                     res.body.should.have.property("message");
-                    res.body.message.should.equal("Wrong account type");
+                    res.body.message.should.equal(Constants.Error.ACCOUNT_TYPE_409_MESSAGE);
                     res.body.should.have.property("data");
 
                     done();
@@ -102,7 +105,7 @@ describe("POST create volunteer", function () {
                     res.should.have.status(409);
                     res.should.be.json;
                     res.body.should.have.property("message");
-                    res.body.message.should.equal("Volunteer with same accountId link found");
+                    res.body.message.should.equal(Constants.Error.VOLUNTEER_ID_409_MESSAGE);
                     res.body.should.have.property("data");
 
                     done();
@@ -122,10 +125,10 @@ describe("POST create volunteer", function () {
                 .type("application/json")
                 .send(util.volunteer.newVolunteer1)
                 .end(function (err, res) {
-                    res.should.have.status(401);
+                    res.should.have.status(403);
                     res.should.be.json;
                     res.body.should.have.property("message");
-                    res.body.message.should.equal("Not Authorized for this route");
+                    res.body.message.should.equal(Constants.Error.AUTH_403_MESSAGE);
                     res.body.should.have.property("data");
 
                     done();

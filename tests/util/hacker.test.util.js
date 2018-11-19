@@ -6,8 +6,6 @@ const Util = {
 
 const mongoose = require("mongoose");
 const Hacker = require("../../models/hacker.model");
-const logger = require("../../services/logger.service");
-const TAG = "[ HACKER.TEST.UTIL.JS ]";
 
 const invalidHacker1 = {
     "_id": mongoose.Types.ObjectId(),
@@ -189,7 +187,7 @@ module.exports = {
     dropAll: dropAll
 };
 
-function storeAll(attributes, callback) {
+function storeAll(attributes) {
     const hackerDocs = [];
     const hackerIds = [];
     for (var i = 0; i < attributes.length; i++) {
@@ -197,30 +195,9 @@ function storeAll(attributes, callback) {
         hackerIds.push(attributes[i]._id);
     }
 
-    Hacker.collection.insertMany(hackerDocs).then(
-        () => {
-            logger.info(`${TAG} saved Hackers: ${hackerIds.join(",")}`);
-            callback();
-        },
-        (reason) => {
-            logger.error(`${TAG} could not store Hackers ${hackerIds.join(",")}. Error: ${JSON.stringify(reason)}`);
-            callback(reason);
-        }
-    );
+    return Hacker.collection.insertMany(hackerDocs);
 }
 
-function dropAll(callback) {
-    Hacker.collection.drop().then(
-        () => {
-            logger.info(`Dropped table Hacker`);
-            callback();
-        },
-        (err) => {
-            logger.error(`Could not drop Hacker. Error: ${JSON.stringify(err)}`);
-            callback(err);
-        }
-    ).catch((error) => {
-        logger.error(error);
-        callback();
-    });
+function dropAll() {
+    return Hacker.collection.drop();
 }

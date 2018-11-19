@@ -7,7 +7,10 @@ const Services = {
     Volunteer: require("../services/volunteer.service"),
     Account: require("../services/account.service"),
 };
-const Constants = require("../constants");
+const Constants = {
+    General: require("../constants/general.constant"),
+    Error: require("../constants/error.constant"),
+};
 
 /**
  * @function parseVolunteer
@@ -45,7 +48,7 @@ async function checkDuplicateAccountLinks(req, res, next) {
     } else {
         next({
             status: 409,
-            message: "Volunteer with same accountId link found",
+            message: Constants.Error.VOLUNTEER_ID_409_MESSAGE,
             data: {
                 id: req.body.accountId
             }
@@ -64,19 +67,19 @@ async function validateConfirmedStatus(req, res, next) {
     if (!account) {
         next({
             status: 404,
-            message: "No account found",
+            message: Constants.Error.ACCOUNT_404_MESSAGE,
             error: {}
         });
     } else if (!account.confirmed) {
         next({
             status: 403,
-            message: "Account not verified",
+            message: Constants.Error.ACCOUNT_403_MESSAGE,
             error: {}
         });
-    } else if (account.accountType !== Constants.VOLUNTEER) {
+    } else if (account.accountType !== Constants.General.VOLUNTEER) {
         next({
             status: 409,
-            message: "Wrong account type"
+            message: Constants.Error.ACCOUNT_TYPE_409_MESSAGE,
         });
     } else {
         next();
