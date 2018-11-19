@@ -192,14 +192,12 @@ async function sendStatusUpdateEmail(req, res, next) {
         if (!hacker) {
             return next({
                 status: 404,
-                message: "Hacker does not exist",
-                error: {}
+                message: Constants.Error.HACKER_404_MESSAGE,
             });
         } else if (!account) {
             return next({
                 status: 500,
-                message: "Error while searching for account by id",
-                error: {}
+                message: Constants.Error.GENERIC_500_MESSAGE,
             });
         }
         Services.Email.sendStatusUpdate(account.email, req.body.status, next);
@@ -224,7 +222,7 @@ async function checkIfApplicationCompleted(req, res, next) {
             if (!account) {
                 return next({
                     status: 500,
-                    message: "Error while searching for account by id when updating hacker",
+                    message: Constants.Error.GENERIC_500_MESSAGE,
                     error: {}
                 });
             }
@@ -235,7 +233,7 @@ async function checkIfApplicationCompleted(req, res, next) {
     } else {
         next({
             status: 404,
-            message: "Hacker not found",
+            message: Constants.Error.HACKER_404_MESSAGE,
             data: {
                 id: req.params.id
             }
