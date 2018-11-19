@@ -205,7 +205,7 @@ async function sendStatusUpdateEmail(req, res, next) {
 }
 /**
  * If the current hacker's status is Constants.HACKER_STATUS_NONE, and the hacker's application is completed,
- * then it will change the status of the hacker to Constants.HACKER_STATUS_APPLIED, and then email the hacker to 
+ * then it will change the status of the hacker to Constants.General.HACKER_STATUS_APPLIED, and then email the hacker to 
  * confirm that they applied.
  * @param {{body: {status?: string}, params: {id: string}}} req 
  * @param {*} res 
@@ -214,9 +214,9 @@ async function sendStatusUpdateEmail(req, res, next) {
 async function checkIfApplicationCompleted(req, res, next) {
     const hacker = await Services.Hacker.findById(req.params.id);
     if (hacker) {
-        if (hacker.status === Constants.HACKER_STATUS_NONE && hacker.isApplicationComplete()) {
+        if (hacker.status === Constants.General.HACKER_STATUS_NONE && hacker.isApplicationComplete()) {
             await Services.Hacker.updateOne(req.params.id, {
-                status: Constants.HACKER_STATUS_APPLIED
+                status: Constants.General.HACKER_STATUS_APPLIED
             });
             const account = await Services.Account.findById(hacker.accountId);
             if (!account) {
@@ -226,7 +226,7 @@ async function checkIfApplicationCompleted(req, res, next) {
                     error: {}
                 });
             }
-            Services.Email.sendStatusUpdateEmail(account.email, Constants.HACKER_STATUS_APPLIED, next);
+            Services.Email.sendStatusUpdate(account.email, Constants.General.HACKER_STATUS_APPLIED, next);
         } else {
             next();
         }
