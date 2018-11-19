@@ -11,7 +11,10 @@ const Services = {
 const Middleware = {
     Util: require("./util.middleware")
 };
-const Constants = require("../constants");
+const Constants = {
+    General: require("../constants/general.constant"),
+    Error: require("../constants/error.constant"),
+};
 const fs = require("fs");
 const path = require("path");
 
@@ -94,19 +97,19 @@ async function validateConfirmedStatus(req, res, next) {
     if (!account) {
         next({
             status: 404,
-            message: "No account found",
+            message: Constants.Error.ACCOUNT_404_MESSAGE,
             error: {}
         });
     } else if (!account.confirmed) {
         next({
             status: 403,
-            message: "Account not verified",
+            message: Constants.Error.ACCOUNT_403_MESSAGE,
             error: {}
         });
-    } else if (account.accountType !== Constants.HACKER) {
+    } else if (account.accountType !== Constants.General.HACKER) {
         next({
             status: 409,
-            message: "Wrong account type"
+            message: Constants.Error.ACCOUNT_TYPE_409_MESSAGE
         });
     } else {
         next();
@@ -128,8 +131,8 @@ function ensureAccountLinkedToHacker(req, res, next) {
                 next();
             } else {
                 next({
-                    status: 401,
-                    message: "Unauthorized",
+                    status: 403,
+                    message: Constants.Error.AUTH_403_MESSAGE,
                     error: {}
                 });
             }
@@ -168,7 +171,7 @@ async function downloadResume(req, res, next) {
     } else {
         return next({
             status: 404,
-            message: "Resume does not exist",
+            message: Constants.Error.RESUME_404_MESSAGE,
             error: {}
         });
     }
@@ -217,7 +220,7 @@ async function updateHacker(req, res, next) {
         if (!acct) {
             return next({
                 status: 500,
-                message: "Error while searching for account by id when updating hacker",
+                message: Constants.Error.HACKER_UPDATE_500_MESSAGE,
                 data: {
                     hackerId: hacker.id,
                     accountId: hacker.accountId
@@ -229,7 +232,7 @@ async function updateHacker(req, res, next) {
     } else {
         next({
             status: 404,
-            message: "Hacker not found",
+            message: Constants.Error.HACKER_404_MESSAGE,
             data: {
                 id: req.params.id
             }
@@ -250,7 +253,7 @@ async function checkDuplicateAccountLinks(req, res, next) {
     } else {
         next({
             status: 409,
-            message: "Hacker with same accountId link found",
+            message: Constants.Error.HACKER_ID_409_MESSAGE,
             data: {
                 id: req.body.accountId
             }

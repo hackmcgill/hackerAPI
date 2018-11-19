@@ -1,7 +1,7 @@
 "use strict";
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
-const Constants = require("../constants");
+const Constants = require("../constants/general.constant");
 //describes the data type
 const AccountSchema = new mongoose.Schema({
     firstName: {

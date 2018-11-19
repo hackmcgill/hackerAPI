@@ -1,6 +1,6 @@
 "use strict";
 const Role = require("../../models/role.model");
-const Constants = require("../../constants");
+const Constants = require("../../constants/general.constant");
 const mongoose = require("mongoose");
 
 const authRoutes = {
