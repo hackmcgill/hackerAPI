@@ -8,6 +8,7 @@ const newAccount1 = {
     "_id": mongoose.Types.ObjectId(),
     "firstName": "NEW",
     "lastName": "Account",
+    "pronoun": "He/Him",
     "email": "newexist@blahblah.com",
     "password": "1234567890",
     "dietaryRestrictions": ["none"],
@@ -21,6 +22,7 @@ const nonAccount1 = {
     "_id": mongoose.Types.ObjectId(),
     "firstName": "non",
     "lastName": "Account",
+    "pronoun": "She/Her",
     "email": "notexist@blahblah.com",
     "password": "12345789",
     "dietaryRestrictions": ["none"],
@@ -32,12 +34,13 @@ const Admin1 = {
     "_id": mongoose.Types.ObjectId(),
     "firstName": "Admin1",
     "lastName": "Admin1",
+    "pronoun": "Ze/Hir",
     "email": "Admin1@blahblah.com",
     "password": "Admin1",
     "dietaryRestrictions": ["none"],
     "shirtSize": "S",
     "confirmed": true,
-    "accountType": Constants.GODSTAFF,
+    "accountType": Constants.STAFF,
     "birthDate": "1990-01-02",
     "phoneNumber": 1000000002,
 };
@@ -46,6 +49,7 @@ const Account1 = {
     "_id": mongoose.Types.ObjectId(),
     "firstName": "ABC",
     "lastName": "DEF",
+    "pronoun": "Ze/Zir",
     "email": "abc.def1@blahblah.com",
     "password": "probsShouldBeHashed1",
     "dietaryRestrictions": ["none"],
@@ -60,6 +64,7 @@ const Account2 = {
     "_id": mongoose.Types.ObjectId(),
     "firstName": "abc",
     "lastName": "def",
+    "pronoun": "They/Them",
     "email": "abc.def2@blahblah.com",
     "password": "probsShouldBeHashed2",
     "dietaryRestrictions": ["vegetarian"],
@@ -74,6 +79,7 @@ const Account3 = {
     "_id": mongoose.Types.ObjectId(),
     "firstName": "XYZ",
     "lastName": "UST",
+    "pronoun": "Xey/Xem",
     "email": "abc.def3@blahblah.com",
     "password": "probsShouldBeHashed3",
     "dietaryRestrictions": ["vegan"],
@@ -88,6 +94,7 @@ const Account4 = {
     "_id": mongoose.Types.ObjectId(),
     "firstName": "xyz",
     "lastName": "ust",
+    "pronoun": "Sie/Hir",
     "email": "abc.def4@blahblah.com",
     "password": "probsShouldBeHashed4",
     "dietaryRestrictions": ["vegetarian", "lactose intolerant"],
@@ -102,6 +109,7 @@ const Account5 = {
     "_id": mongoose.Types.ObjectId(),
     "firstName": "LMAO",
     "lastName": "ROFL",
+    "pronoun": "It/It",
     "email": "abc.def0@blahblah.com",
     "password": "probsShouldBeHashed5",
     "dietaryRestrictions": ["something1", "something2"],
@@ -117,7 +125,8 @@ const NonConfirmedAccount1 = {
     "_id": mongoose.Types.ObjectId(),
     "firstName": "LMAO",
     "lastName": "ROFL",
-    "email": "notconfirmed1@blahblah.com",
+    "pronoun": "Ey/Em",
+    "email": "abc.def6@blahblah.com",
     "password": "probsShouldBeHashed5",
     "dietaryRestrictions": ["something1", "something2"],
     "shirtSize": "XXL",
@@ -193,6 +202,7 @@ function generateAccounts(n) {
             "_id": mongoose.Types.ObjectId(),
             "firstName": "first" + String(i),
             "lastName": "last" + String(i),
+            "pronoun" : "They/" + String(i),
             "email": "test" + String(i) + "@blahblah.com",
             "password": "probsShouldBeHashed" + String(i),
             "dietaryRestrictions": [],
@@ -203,7 +213,7 @@ function generateAccounts(n) {
         };
 
         if (i < n / 4) {
-            acc.accountType = Constants.GODSTAFF;
+            acc.accountType = Constants.STAFF;
         } else if (i >= n / 4 && i < (n / 4) * 2) {
             acc.accountType = Constants.HACKER;
         } else if (i >= (n / 4) * 2 && i < (n / 4) * 3) {
@@ -250,6 +260,7 @@ function equals(acc1, acc2) {
     const id = (id1 === id2);
     const firstName = (acc1.firstName === acc2.firstName);
     const lastName = (acc1.lastName === acc2.lastName);
+    const pronoun = (acc1.pronoun === acc2.pronoun);
     const email = (acc1.email === acc2.email);
     const dietaryRestrictions = (acc1.dietaryRestrictions.join(",") === acc2.dietaryRestrictions.join(","));
     const shirtSize = (acc1.shirtSize === acc2.shirtSize);
