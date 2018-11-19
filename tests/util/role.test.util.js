@@ -1,9 +1,7 @@
 "use strict";
 const Role = require("../../models/role.model");
-const Constants = require("../../constants");
+const Constants = require("../../constants/general.constant");
 const mongoose = require("mongoose");
-const TAG = "[ ROLE.TEST.UTIL.JS ]";
-const logger = require("../../services/logger.service");
 
 const authRoutes = {
     "login": {
@@ -18,11 +16,11 @@ const authRoutes = {
         requestType: Constants.REQUEST_TYPES.POST,
         uri: "/api/auth/invite"
     },
-    "getSelfRoleBindindings" : {
+    "getSelfRoleBindindings": {
         requestType: Constants.REQUEST_TYPES.GET,
         uri: "/api/auth/rolebindings/" + Constants.ROLE_CATEGORIES.SELF
     },
-    "getAnyRoleBindings" : {
+    "getAnyRoleBindings": {
         requestType: Constants.REQUEST_TYPES.GET,
         uri: "/api/auth/rolebindings/" + Constants.ROLE_CATEGORIES.ALL
     }
@@ -150,7 +148,7 @@ const allRoutes = {
 
 const adminRole = {
     "_id": mongoose.Types.ObjectId(),
-    "name": Constants.GODSTAFF,
+    "name": Constants.STAFF,
     "routes": getAllRoutes(),
 };
 
@@ -264,7 +262,9 @@ let allRolesObject = {
 };
 
 for (let role in singularRoles) {
-    allRolesObject[role] = singularRoles[role];
+    if (singularRoles.hasOwnProperty(role)) {
+        allRolesObject[role] = singularRoles[role];
+    }
 }
 
 const allRolesArray = Object.values(allRolesObject);
@@ -318,7 +318,7 @@ function createAllSingularRoles() {
     return roles;
 }
 
-function storeAll(attributes, callback) {
+function storeAll(attributes) {
     const roleDocs = [];
     const roleNames = [];
     attributes.forEach((attribute) => {
@@ -326,32 +326,11 @@ function storeAll(attributes, callback) {
         roleNames.push(attribute.name);
     });
 
-    Role.collection.insertMany(roleDocs).then(
-        () => {
-            logger.info(`${TAG} saved Roles: ${roleNames.join(",")}`);
-            callback();
-        },
-        (reason) => {
-            logger.error(`${TAG} could not store Roles ${roleNames.join(",")}. Error: ${JSON.stringify(reason)}`);
-            callback(reason);
-        }
-    );
+    return Role.collection.insertMany(roleDocs);
 }
 
-function dropAll(callback) {
-    Role.collection.drop().then(
-        () => {
-            logger.info(`Dropped table Role`);
-            callback();
-        },
-        (err) => {
-            logger.error(`Could not drop Role. Error: ${JSON.stringify(err)}`);
-            callback(err);
-        }
-    ).catch((error) => {
-        logger.error(error);
-        callback();
-    });
+function dropAll() {
+    return Role.collection.drop();
 }
 
 module.exports = {

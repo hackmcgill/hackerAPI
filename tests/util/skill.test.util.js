@@ -1,17 +1,15 @@
 "use strict";
 const Skill = require("../../models/skill.model");
 const mongoose = require("mongoose");
-const logger = require("../../services/logger.service");
-const TAG = "[ SKILL.TEST.UTIL.JS ]";
 
 const Skill1 = {
     "_id": mongoose.Types.ObjectId(),
-    "name": "Tech1", 
+    "name": "Tech1",
     "category": "category1"
 };
 const Skill2 = {
     "_id": mongoose.Types.ObjectId(),
-    "name": "Tech2", 
+    "name": "Tech2",
     "category": "category2"
 };
 const Skill3 = {
@@ -55,7 +53,7 @@ const Skills = [
     Skill8,
 ];
 
-function storeAll(attributes, callback) {
+function storeAll(attributes) {
     const skillDocs = [];
     const skillNames = [];
     attributes.forEach((attribute) => {
@@ -63,32 +61,11 @@ function storeAll(attributes, callback) {
         skillNames.push(attribute.name);
     });
 
-    Skill.collection.insertMany(skillDocs).then(
-        () => {
-            logger.info(`${TAG} saved Skills: ${skillNames.join(",")}`);
-            callback();
-        },
-        (reason) => {
-            logger.error(`${TAG} could not store Skills ${skillNames.join(",")}. Error: ${JSON.stringify(reason)}`);
-            callback(reason);
-        }
-    );
+    return Skill.collection.insertMany(skillDocs);
 }
 
-function dropAll(callback) {
-    Skill.collection.drop().then(
-        () => {
-            logger.info(`Dropped table Skill`);
-            callback();
-        },
-        (err) => {
-            logger.error(`Could not drop Skill. Error: ${JSON.stringify(err)}`);
-            callback(err);
-        }
-    ).catch((error) => {
-        logger.error(error);
-        callback();
-    });
+function dropAll() {
+    return Skill.collection.drop();
 }
 
 module.exports = {
@@ -104,4 +81,3 @@ module.exports = {
     storeAll: storeAll,
     dropAll: dropAll,
 };
-
