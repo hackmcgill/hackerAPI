@@ -42,7 +42,7 @@ module.exports = {
          * @apiError {string} message Error message
          * @apiError {object} data empty
          * @apiErrorExample {object} Error-Response: 
-         *      {"message": "Issue with team creation", "data": {}}
+         *      {"message": "Error while creating team", "data": {}}
          */
         teamRouter.route("/").post(
             // Validators
@@ -78,12 +78,12 @@ module.exports = {
          * @apiError {String} message Error message
          * @apiError {Object} data empty
          * @apiErrorExample {object} Error-Response: 
-         *      {"message": "Issue with retrieving team information", "data": {}}
+         *      {"message": "Team not found", "data": {}}
          */
         teamRouter.route("/:id").get(
             Middleware.Validator.RouteParam.idValidator,
             Middleware.parseBody.middleware,
-            
+
             Controllers.Team.findById
         );
 

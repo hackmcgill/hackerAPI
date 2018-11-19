@@ -7,7 +7,10 @@ const Services = {
 const Middleware = {
     Util: require("./util.middleware")
 };
-const Constants = require("../constants");
+const Constants = {
+    General: require("../constants/general.constant"),
+    Error: require("../constants/error.constant"),
+};
 
 /**
  * @function parsePatch
@@ -65,19 +68,19 @@ async function validateConfirmedStatus(req, res, next) {
     if (!account) {
         next({
             status: 404,
-            message: "No account found",
+            message: Constants.Error.ACCOUNT_404_MESSAGE,
             error: {}
         });
     } else if (!account.confirmed) {
         next({
             status: 403,
-            message: "Account not verified",
+            message: Constants.Error.ACCOUNT_403_MESSAGE,
             error: {}
         });
     } else if (!account.isSponsor()) {
         next({
             status: 409,
-            message: "Wrong account type, expected sponsor"
+            message: Constants.Error.ACCOUNT_TYPE_409_MESSAGE,
         });
     } else {
         next();
@@ -97,7 +100,7 @@ async function checkDuplicateAccountLinks(req, res, next) {
     } else {
         next({
             status: 409,
-            message: "Sponsor with same accountId link found",
+            message: Constants.Error.SPONSOR_ID_409_MESSAGE,
             data: {
                 id: req.body.accountId
             }
