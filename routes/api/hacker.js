@@ -18,6 +18,7 @@ const Middleware = {
 const Services = {
     Hacker: require("../../services/hacker.service"),
 }
+const CONSTANTS = require("../../constants/general.constant");
 
 module.exports = {
     activate: function (apiRouter) {
@@ -62,7 +63,7 @@ module.exports = {
          * @apiError {string} message Error message
          * @apiError {object} data empty
          * @apiErrorExample {object} Error-Response: 
-         *      {"message": "Issue with hacker creation", "data": {}}
+         *      {"message": "Error while creating hacker", "data": {}}
          */
         hackerRouter.route("/").post(
             Middleware.Auth.ensureAuthenticated(),
@@ -79,6 +80,7 @@ module.exports = {
             Middleware.Hacker.parseHacker,
 
             Middleware.Hacker.addDefaultStatus,
+            Middleware.Auth.createRoleBindings(CONSTANTS.HACKER),
             Controllers.Hacker.createHacker
         );
 
@@ -122,7 +124,7 @@ module.exports = {
          * @apiError {string} message Error message
          * @apiError {object} data empty
          * @apiErrorExample {object} Error-Response: 
-         *      {"message": "Issue with changing hacker information", "data": {}}
+         *      {"message": "Error while updating hacker", "data": {}}
          */
         hackerRouter.route("/:id").patch(
             Middleware.Auth.ensureAuthenticated(),
@@ -160,7 +162,7 @@ module.exports = {
          * @apiError {String} message Error message
          * @apiError {Object} data empty
          * @apiErrorExample {object} Error-Response: 
-         *      {"message": "Issue with retrieving hacker information", "data": {}}
+         *      {"message": "Hacker not found", "data": {}}
          */
         hackerRouter.route("/:id").get(
             Middleware.Auth.ensureAuthenticated(),
@@ -231,7 +233,7 @@ module.exports = {
              * @apiErrorExample {json} Error-Response:
              *      HTTP/1.1 404 
              *      { 
-             *          message: "Resume does not exist", 
+             *          message: "Resume not found", 
              *          data: {} 
              *      }
              * @apiSampleRequest off
