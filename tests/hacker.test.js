@@ -361,7 +361,7 @@ describe("PATCH update one hacker", function () {
                 });
         });
     });
-    it("should FAIL and update a hacker STATUS as an Hacker", function (done) {
+    it("should FAIL and NOT update a hacker STATUS as an Hacker", function (done) {
         util.auth.login(agent, storedAccount1, (error) => {
             if (error) {
                 agent.close();
