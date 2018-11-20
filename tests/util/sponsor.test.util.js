@@ -5,6 +5,7 @@ const Util = {
 };
 const Sponsor = require("../../models/sponsor.model");
 const mongoose = require("mongoose");
+const logger = require("../../services/logger.service");
 
 const newSponsor1 = {
     // no _id as that will be generated
@@ -46,8 +47,16 @@ function storeAll(attributes) {
     return Sponsor.collection.insertMany(sponsorDocs);
 }
 
-function dropAll() {
-    return Sponsor.collection.drop();
+async function dropAll() {
+    try {
+        await Sponsor.collection.drop();
+    } catch (e) {
+        if (e.code === 26) {
+            logger.info("namespace %s not found", Sponsor.collection.name);
+        } else {
+            throw e;
+        }
+    }
 }
 
 module.exports = {

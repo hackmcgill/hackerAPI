@@ -4,6 +4,7 @@ const Util = {
 };
 const mongoose = require("mongoose");
 const Volunteer = require("../../models/volunteer.model");
+const logger = require("../../services/logger.service");
 
 const newVolunteer1 = {
     "accountId": Util.Account.generatedAccounts[15]._id
@@ -36,8 +37,16 @@ function storeAll(attributes) {
     return Volunteer.collection.insertMany(volunteerDocs);
 }
 
-function dropAll() {
-    return Volunteer.collection.drop();
+async function dropAll() {
+    try {
+        await Volunteer.collection.drop();
+    } catch (e) {
+        if (e.code === 26) {
+            logger.info("namespace %s not found", Volunteer.collection.name);
+        } else {
+            throw e;
+        }
+    }
 }
 
 module.exports = {

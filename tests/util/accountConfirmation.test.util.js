@@ -12,6 +12,7 @@ const mongoose = require("mongoose");
 const AccountConfirmationToken = mongoose.model("AccountConfirmationToken");
 
 const Constants = require('../../constants/general.constant');
+const logger = require("../../services/logger.service");
 
 const HackerConfirmation = {
     "_id": mongoose.Types.ObjectId(),
@@ -52,8 +53,16 @@ function storeAll(attributes) {
     return AccountConfirmationToken.collection.insertMany(accountConfirmationDocs);
 }
 
-function dropAll() {
-    return AccountConfirmationToken.collection.drop();
+async function dropAll() {
+    try {
+        await AccountConfirmationToken.collection.drop();
+    } catch (e) {
+        if (e.code === 26) {
+            logger.info("namespace %s not found", AccountConfirmationToken.collection.name);
+        } else {
+            throw e;
+        }
+    }
 }
 
 

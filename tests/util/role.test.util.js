@@ -2,6 +2,7 @@
 const Role = require("../../models/role.model");
 const Constants = require("../../constants/general.constant");
 const mongoose = require("mongoose");
+const logger = require("../../services/logger.service");
 
 const authRoutes = {
     "login": {
@@ -329,8 +330,16 @@ function storeAll(attributes) {
     return Role.collection.insertMany(roleDocs);
 }
 
-function dropAll() {
-    return Role.collection.drop();
+async function dropAll() {
+    try {
+        await Role.collection.drop();
+    } catch (e) {
+        if (e.code === 26) {
+            logger.info("namespace %s not found", Role.collection.name);
+        } else {
+            throw e;
+        }
+    }
 }
 
 module.exports = {

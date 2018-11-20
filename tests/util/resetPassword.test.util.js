@@ -10,7 +10,7 @@ const Services = {
 const mongoose = require("mongoose");
 const ResetPassword = require("../../models/passwordResetToken.model");
 
-const Constants = require('../../constants/general.constant');
+const logger = require("../../services/logger.service");
 
 const ResetPasswordToken1 = {
     "_id": mongoose.Types.ObjectId(),
@@ -33,8 +33,16 @@ function storeAll(attributes) {
     return ResetPassword.collection.insertMany(resetPasswordDocs);
 }
 
-function dropAll() {
-    ResetPassword.collection.drop();
+async function dropAll() {
+    try {
+        await ResetPassword.collection.drop();
+    } catch (e) {
+        if (e.code === 26) {
+            logger.info("namespace %s not found", ResetPassword.collection.name);
+        } else {
+            throw e;
+        }
+    }
 }
 
 
