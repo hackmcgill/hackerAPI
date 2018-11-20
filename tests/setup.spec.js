@@ -6,7 +6,7 @@ const Util = {
     Account: require("./util/account.test.util"),
     Bus: require("./util/bus.test.util"),
     Hacker: require("./util/hacker.test.util"),
-    Role: require("./util/role.test.util"),
+    Role: require("../constants/role.constant"),
     RoleBinding: require("./util/roleBinding.test.util"),
     Skill: require("./util/skill.test.util"),
     Sponsor: require("./util/sponsor.test.util"),
