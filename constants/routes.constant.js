@@ -88,6 +88,14 @@ const hackerRoutes = {
         requestType: Constants.REQUEST_TYPES.PATCH,
         uri: "/api/hacker/" + Constants.ROLE_CATEGORIES.ALL,
     },
+    "patchAnyStatusById": {
+        requestType: Constants.REQUEST_TYPES.PATCH,
+        uri: "/api/hacker/status/" + Constants.ROLE_CATEGORIES.ALL,
+    },
+    "patchSelfStatusById": {
+        requestType: Constants.REQUEST_TYPES.PATCH,
+        uri: "/api/hacker/status/" + Constants.ROLE_CATEGORIES.SELF,
+    }
 };
 
 const sponsorRoutes = {

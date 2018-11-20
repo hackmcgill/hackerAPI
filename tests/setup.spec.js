@@ -6,7 +6,7 @@ const Util = {
     Account: require("./util/account.test.util"),
     Bus: require("./util/bus.test.util"),
     Hacker: require("./util/hacker.test.util"),
-    Role: require("../constants/role.constant"),
+    Role: require("./util/role.test.util"),
     RoleBinding: require("./util/roleBinding.test.util"),
     Sponsor: require("./util/sponsor.test.util"),
     Staff: require("./util/staff.test.util"),
@@ -15,7 +15,9 @@ const Util = {
     AccountConfirmation: require("./util/accountConfirmation.test.util"),
     ResetPassword: require("./util/resetPassword.test.util.js")
 };
-
+const Constants = {
+    Role: require("../constants/role.constant"),
+};
 
 //make sure that we are connected to the database
 before(function (done) {
@@ -50,7 +52,7 @@ async function storeAll() {
     await Util.ResetPassword.storeAll(Util.ResetPassword.ResetPasswords);
     await Util.Bus.storeAll(Util.Bus.Busses);
     await Util.Volunteer.storeAll(Util.Volunteer.Volunteers);
-    await Util.Role.storeAll(Util.Role.allRolesArray);
+    await Util.Role.storeAll(Constants.Role.allRolesArray);
     await Util.RoleBinding.storeAll(Util.RoleBinding.RoleBindings);
 }
 
