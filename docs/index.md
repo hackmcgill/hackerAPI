@@ -51,10 +51,9 @@ HackerAPI
 │   ├── account.model.js            Schema for generic user account
 │   ├── bus.model.js                Schema for a bus route.
 │   ├── hacker.model.js             Schema for a hacker account.
-│   ├── passwordResetToken.model.js 
+│   ├── passwordResetToken.model.js
 │   ├── role.model.js
 │   ├── roleBinding.model.js
-│   ├── skill.model.js              Schema for a skill that a Hacker has
 │   ├── sponsor.model.js            Schema for sponsor account.
 │   ├── staff.model.js              Schema for staff members (not volunteers)
 │   ├── team.model.js               Schema for a hacker team.
@@ -83,7 +82,6 @@ HackerAPI
 │   ├── role.service.js
 │   ├── roleBinding.service.js
 │   ├── search.js
-│   ├── skill.service.js
 │   ├── sponsor.service.js
 │   ├── storage.service.js
 │   ├── team.service.js
@@ -95,7 +93,6 @@ HackerAPI
         ├── account.test.util.js
         ├── bus.test.util.js
         ├── hacker.test.util.js
-        ├── skill.test.util.js
         ├── sponsor.test.util.js
         ├── staff.test.util.js
         ├── team.test.util.js

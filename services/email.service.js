@@ -1,10 +1,12 @@
 "use strict";
 const logger = require("./logger.service");
 const client = require("@sendgrid/mail");
+const fs = require("fs");
+const path = require("path");
 const TAG = `[ EMAIL.SERVICE ]`;
 const env = require("../services/env.service");
+const Constants = require("../constants/general.constant");
 const Handlebars = require("handlebars");
-const fs = require("fs");
 
 class EmailService {
     constructor(apiKey) {
@@ -48,6 +50,24 @@ class EmailService {
                 callback();
             }
         });
+    }
+
+    sendStatusUpdate(recipient, status, callback) {
+        const handlebarsPath = path.join(__dirname, `../assets/email/statusEmail/${status}.hbs`);
+        const mailData = {
+            to: recipient,
+            from: process.env.NO_REPLY_EMAIL,
+            subject: Constants.EMAIL_SUBJECTS[status],
+            html: this.renderEmail(handlebarsPath)
+        };
+        this.send(mailData).then(
+            (response) => {
+                if (response[0].statusCode >= 200 && response[0].statusCode < 300) {
+                    callback();
+                } else {
+                    callback(response[0]);
+                }
+            }, callback);
     }
     /**
      * Generates the HTML from the handlebars template file found at the given path.

@@ -17,12 +17,13 @@ module.exports = {
 
     // untested
     updateHackerValidator: [
-        VALIDATOR.mongoIdArrayValidator("body", "accountId", true),
-        VALIDATOR.hackerStatusValidator("body", "status", true),
         VALIDATOR.nameValidator("body", "school", true),
         VALIDATOR.nameValidator("body", "gender", true),
         VALIDATOR.applicationValidator("body", "application", true),
         VALIDATOR.booleanValidator("body", "needsBus", true)
+    ],
+    updateStatusValidator: [
+        VALIDATOR.hackerStatusValidator("body", "status", false)
     ],
     uploadResumeValidator: [
         VALIDATOR.mongoIdValidator("param", "id", false)
@@ -30,7 +31,4 @@ module.exports = {
     downloadResumeValidator: [
         VALIDATOR.mongoIdValidator("param", "id", false)
     ],
-    updateStatusValidator: [
-        VALIDATOR.mongoIdValidator("param", "id", false)
-    ]
 };

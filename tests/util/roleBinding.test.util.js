@@ -6,8 +6,6 @@ const Util = {
 const Constants = {
     Role: require("../../constants/role.constant")
 };
-const TAG = "[ ROLEBINDING.TEST.UTIL.JS ]";
-const logger = require("../../services/logger.service");
 
 const RoleBinding1 = {
     accountId: Util.Account.allAccounts[6]._id,
@@ -96,7 +94,7 @@ const RoleBindings = [
 ];
 
 
-function storeAll(attributes, callback) {
+function storeAll(attributes) {
     const roleBindingDocs = [];
     const roleBindingNames = [];
     attributes.forEach((attribute) => {
@@ -104,32 +102,11 @@ function storeAll(attributes, callback) {
         roleBindingNames.push(attribute.name);
     });
 
-    RoleBinding.collection.insertMany(roleBindingDocs).then(
-        () => {
-            logger.info(`${TAG} saved RoleBindings: ${roleBindingNames.join(",")}`);
-            callback();
-        },
-        (reason) => {
-            logger.error(`${TAG} could not store RoleBindings ${roleBindingNames.join(",")}. Error: ${JSON.stringify(reason)}`);
-            callback(reason);
-        }
-    );
+    return RoleBinding.collection.insertMany(roleBindingDocs);
 }
 
-function dropAll(callback) {
-    RoleBinding.collection.drop().then(
-        () => {
-            logger.info(`Dropped table RoleBinding`);
-            callback();
-        },
-        (err) => {
-            logger.error(`Could not drop RoleBinding. Error: ${JSON.stringify(err)}`);
-            callback(err);
-        }
-    ).catch((error) => {
-        logger.error(error);
-        callback();
-    });
+function dropAll() {
+    return RoleBinding.collection.drop();
 }
 
 module.exports = {

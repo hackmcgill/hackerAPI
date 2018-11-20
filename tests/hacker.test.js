@@ -339,6 +339,53 @@ describe("PATCH update one hacker", function () {
         });
     });
 
+    it("should SUCCEED and update a hacker STATUS as an Admin", function (done) {
+        util.auth.login(agent, Admin1, (error) => {
+            if (error) {
+                agent.close();
+                return done(error);
+            }
+            return agent
+                .patch(`/api/hacker/status/${storedHacker1._id}`)
+                .type("application/json")
+                .send({
+                    status: "Accepted"
+                })
+                .end(function (err, res) {
+                    res.should.have.status(200);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal("Changed hacker information");
+                    res.body.should.have.property("data");
+                    chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify({
+                        status: "Accepted"
+                    }));
+                    done();
+                });
+        });
+    });
+    it("should FAIL and NOT update a hacker STATUS as a Hacker", function (done) {
+        util.auth.login(agent, storedAccount1, (error) => {
+            if (error) {
+                agent.close();
+                return done(error);
+            }
+            return agent
+                .patch(`/api/hacker/status/${storedHacker1._id}`)
+                .type("application/json")
+                .send({
+                    status: "Accepted"
+                })
+                .end(function (err, res) {
+                    res.should.have.status(403);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal(Constants.Error.AUTH_403_MESSAGE);
+                    res.body.should.have.property("data");
+                    done();
+                });
+        });
+    });
     // should succeed on hacker case
     it("should SUCCEED and update the user's hacker info", function (done) {
         util.auth.login(agent, storedAccount2, (error) => {

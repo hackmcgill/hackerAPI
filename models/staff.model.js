@@ -5,15 +5,11 @@ const StaffSchema = new mongoose.Schema({
     accountId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Account",
-        required:true
-    },
-    godMode: {
-        type: Boolean,
-        default: false
+        required: true
     }
 });
 
-StaffSchema.methods.toJSON = function() {
+StaffSchema.methods.toJSON = function () {
     const ss = this.toObject();
     delete ss.__v;
     ss.id = ss._id;
@@ -21,4 +17,4 @@ StaffSchema.methods.toJSON = function() {
     return ss;
 };
 //export the model
-module.exports = mongoose.model("Staff",StaffSchema);
+module.exports = mongoose.model("Staff", StaffSchema);
