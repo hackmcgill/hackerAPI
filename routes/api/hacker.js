@@ -83,15 +83,43 @@ module.exports = {
             Middleware.Auth.createRoleBindings(CONSTANTS.HACKER),
             Controllers.Hacker.createHacker
         );
+        /**
+         * @api {patch} /hacker/status/:id update a hacker's status
+         * @apiName patchHackerStatus
+         * @apiGroup Hacker
+         * @apiVersion 0.0.9
+         * 
+         * @apiParam (body) {String} [status] Status of the hacker's application
+         * @apiSuccess {string} message Success message
+         * @apiSuccess {object} data Hacker object
+         * @apiSuccessExample {object} Success-Response: 
+         *      {
+         *          "message": "Changed hacker information", 
+         *          "data": {
+         *              "status": "accepted"
+         *          }
+         *      }
+         * @apiPermission Administrator
+         */
+        hackerRouter.route("/status/:id").patch(
+            Middleware.Auth.ensureAuthenticated(),
+            Middleware.Auth.ensureAuthorized([Services.Hacker.findById]),
+            Middleware.Validator.RouteParam.idValidator,
+            Middleware.Validator.Hacker.updateStatusValidator,
+            Middleware.parseBody.middleware,
+            Middleware.Hacker.parsePatch,
+            Middleware.Hacker.updateHacker,
+            Middleware.Hacker.sendStatusUpdateEmail,
+            Controllers.Hacker.updatedHacker
+        );
 
         /**
-         * @api {patch} /hacker/:id update a hacker's information
+         * @api {patch} /hacker/:id update a hacker's information.  
+         * @apiDescription This route only contains the ability to update a subset of a hacker's information. If you want to update a status, you must have Admin priviledges and use PATCH /hacker/status/:id.
          * @apiName patchHacker
          * @apiGroup Hacker
          * @apiVersion 0.0.8
          * 
-         * @apiParam (body) {MongoID} [accountId] ObjectID of the respective account
-         * @apiParam (body) {String} [status] Status of the hacker's application
          * @apiParam (body) {String} [school] Name of the school the hacker goes to
          * @apiParam (body) {String} [gender] Gender of the hacker
          * @apiParam (body) {Boolean} [needsBus] Whether the hacker requires a bus for transportation
@@ -120,7 +148,6 @@ module.exports = {
          *          "message": "Changed hacker information", 
          *          "data": {...}
          *      }
-
          * @apiError {string} message Error message
          * @apiError {object} data empty
          * @apiErrorExample {object} Error-Response: 
@@ -137,9 +164,7 @@ module.exports = {
             Middleware.Hacker.parsePatch,
 
             Middleware.Hacker.updateHacker,
-            Middleware.Hacker.sendStatusUpdateEmail,
-            // no parse hacker because will use req.body as information
-            // because the number of fields will be variable
+            Middleware.Hacker.updateStatusIfApplicationCompleted,
             Controllers.Hacker.updatedHacker
         );
 

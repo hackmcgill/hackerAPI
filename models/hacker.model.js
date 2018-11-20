@@ -97,6 +97,13 @@ HackerSchema.methods.toJSON = function () {
     delete hs._id;
     return hs;
 };
+HackerSchema.methods.isApplicationComplete = function () {
+    const hs = this.toObject();
+    const portfolioDone = !!hs.application.portfolioURL.resume;
+    const jobInterestDone = !!hs.application.jobInterest;
+    const essayDone = !!hs.application.essay;
+    return portfolioDone && jobInterestDone && essayDone;
+};
 
 /**
  * @param field the field which should be queried
