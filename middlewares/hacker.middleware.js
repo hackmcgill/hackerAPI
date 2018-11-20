@@ -211,7 +211,7 @@ async function sendStatusUpdateEmail(req, res, next) {
  * @param {*} res 
  * @param {(err?:*)=>void} next 
  */
-async function checkIfApplicationCompleted(req, res, next) {
+async function updateStatusIfApplicationCompleted(req, res, next) {
     const hacker = await Services.Hacker.findById(req.params.id);
     if (hacker) {
         if (hacker.status === Constants.General.HACKER_STATUS_NONE && hacker.isApplicationComplete()) {
@@ -307,5 +307,5 @@ module.exports = {
     updateHacker: Middleware.Util.asyncMiddleware(updateHacker),
     validateConfirmedStatus: Middleware.Util.asyncMiddleware(validateConfirmedStatus),
     checkDuplicateAccountLinks: Middleware.Util.asyncMiddleware(checkDuplicateAccountLinks),
-    checkIfApplicationCompleted: Middleware.Util.asyncMiddleware(checkIfApplicationCompleted)
+    updateStatusIfApplicationCompleted: Middleware.Util.asyncMiddleware(updateStatusIfApplicationCompleted)
 };
