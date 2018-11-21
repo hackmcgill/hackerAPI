@@ -4,6 +4,7 @@ const Util = {
 };
 const Staff = require("../../models/staff.model");
 const mongoose = require("mongoose");
+const logger = require("../../services/logger.service");
 
 const Staff1 = {
     "_id": mongoose.Types.ObjectId(),
@@ -24,8 +25,16 @@ function storeAll(attributes) {
     return Staff.collection.insertMany(staffDocs);
 }
 
-function dropAll() {
-    return Staff.collection.drop();
+async function dropAll() {
+    try {
+        await Staff.collection.drop();
+    } catch (e) {
+        if (e.code === 26) {
+            logger.info("namespace %s not found", Staff.collection.name);
+        } else {
+            throw e;
+        }
+    }
 }
 
 module.exports = {

@@ -5,6 +5,7 @@ const Util = {
 
 const mongoose = require("mongoose");
 const Hacker = require("../../models/hacker.model");
+const logger = require("../../services/logger.service");
 
 const invalidHacker1 = {
     "_id": mongoose.Types.ObjectId(),
@@ -177,6 +178,14 @@ function storeAll(attributes) {
     return Hacker.collection.insertMany(hackerDocs);
 }
 
-function dropAll() {
-    return Hacker.collection.drop();
+async function dropAll() {
+    try {
+        await Hacker.collection.drop();
+    } catch (e) {
+        if (e.code === 26) {
+            logger.info("namespace %s not found", Hacker.collection.name);
+        } else {
+            throw e;
+        }
+    }
 }

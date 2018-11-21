@@ -15,12 +15,22 @@ const Util = {
     AccountConfirmation: require("./util/accountConfirmation.test.util"),
     ResetPassword: require("./util/resetPassword.test.util.js")
 };
+const logger = require("../services/logger.service");
 
 
 //make sure that we are connected to the database
 before(function (done) {
     this.timeout(60000);
-    server.app.on("event:connected to db", done);
+
+    server.app.on("event:connected to db", () => {
+        /**
+         * Give the database time to create an index on existing schemas before we delete them. 
+         * Hacky way to get around a new error.
+         */
+        setTimeout(() => {
+            dropAll().then(done).catch(done);
+        }, 1000);
+    });
 });
 
 beforeEach(function (done) {

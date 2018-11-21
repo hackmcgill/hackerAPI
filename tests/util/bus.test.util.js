@@ -3,6 +3,7 @@ const Util = {
     Hacker: require("./hacker.test.util")
 };
 const Bus = require("../../models/bus.model");
+const logger = require("../../services/logger.service");
 
 const Bus1 = {
     "origin": {
@@ -38,6 +39,14 @@ function storeAll(attributes) {
     return Bus.collection.insertMany(busDocs);
 }
 
-function dropAll() {
-    return Bus.collection.drop();
+async function dropAll() {
+    try {
+        await Bus.collection.drop();
+    } catch (e) {
+        if (e.code === 26) {
+            logger.info("namespace %s not found", Bus.collection.name);
+        } else {
+            throw e;
+        }
+    }
 }
