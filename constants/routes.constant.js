@@ -146,7 +146,7 @@ const allRoutes = {
 
 /**
  * returns all the routes as a list
- * @return {{requestType, uri}[]}
+ * @return {{requestType: string, uri: string}[]}
  */
 function listAllRoutes() {
     let routes = [];
