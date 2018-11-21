@@ -4,6 +4,7 @@ const Constants = {
     Routes: require("./routes.constant"),
 };
 const mongoose = require("mongoose");
+const Role = require("../models/role.model");
 
 const adminRole = {
     "_id": mongoose.Types.ObjectId(),
@@ -111,7 +112,10 @@ const singularRoles = createAllSingularRoles();
 const allRolesObject = createAllRoles();
 const allRolesArray = Object.values(allRolesObject);
 
-// creates the roles that are just one uri + request type
+/**
+ * Creates all the roles that are of a specific uri and request type
+ * @return {Role[]}
+ */
 function createAllSingularRoles() {
     const allRoutes = Constants.Routes.allRoutes;
     let roles = [];
@@ -141,7 +145,10 @@ function createAllSingularRoles() {
     return roles;
 }
 
-// creates object with all the roles, both singular and of a type (ex hacker)
+/**
+ * creates object with all the roles, both singular and of a type (ex hacker)
+ * @return {*}
+ */
 function createAllRoles() {
     let allRolesObject = {
         adminRole: adminRole,

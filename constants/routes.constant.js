@@ -144,6 +144,10 @@ const allRoutes = {
     "Volunteer": volunteerRoutes,
 };
 
+/**
+ * returns all the routes as a list
+ * @return {{requestType, uri}[]}
+ */
 function listAllRoutes() {
     let routes = [];
 
@@ -159,7 +163,6 @@ function listAllRoutes() {
             }
 
             const route = routeGroup[routeKey];
-            // the for loop over entires includes the entry name, which we do not need
             routes.push(route);
         }
     }
