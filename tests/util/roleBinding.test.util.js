@@ -6,6 +6,7 @@ const Util = {
 const Constants = {
     Role: require("../../constants/role.constant")
 };
+const logger = require("../../services/logger.service");
 
 const RoleBinding1 = {
     accountId: Util.Account.allAccounts[6]._id,
@@ -105,8 +106,16 @@ function storeAll(attributes) {
     return RoleBinding.collection.insertMany(roleBindingDocs);
 }
 
-function dropAll() {
-    return RoleBinding.collection.drop();
+async function dropAll() {
+    try {
+        await RoleBinding.collection.drop();
+    } catch (e) {
+        if (e.code === 26) {
+            logger.info("namespace %s not found", RoleBinding.collection.name);
+        } else {
+            throw e;
+        }
+    }
 }
 
 module.exports = {

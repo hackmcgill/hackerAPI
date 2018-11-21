@@ -4,6 +4,7 @@ const Util = {
 };
 const Team = require("../../models/team.model");
 const mongoose = require("mongoose");
+const logger = require("../../services/logger.service");
 
 const newTeam1 = {
     "name": "BronzeTeam",
@@ -33,8 +34,16 @@ function storeAll(attributes) {
     return Team.collection.insertMany(teamDocs);
 }
 
-function dropAll() {
-    return Team.collection.drop();
+async function dropAll() {
+    try {
+        await Team.collection.drop();
+    } catch (e) {
+        if (e.code === 26) {
+            logger.info("namespace %s not found", Team.collection.name);
+        } else {
+            throw e;
+        }
+    }
 }
 
 module.exports = {

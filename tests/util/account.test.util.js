@@ -3,6 +3,7 @@ const Constants = require("../../constants/general.constant");
 const Account = require("../../models/account.model");
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
+const logger = require("../../services/logger.service");
 
 const newAccount1 = {
     "_id": mongoose.Types.ObjectId(),
@@ -202,7 +203,7 @@ function generateAccounts(n) {
             "_id": mongoose.Types.ObjectId(),
             "firstName": "first" + String(i),
             "lastName": "last" + String(i),
-            "pronoun" : "They/" + String(i),
+            "pronoun": "They/" + String(i),
             "email": "test" + String(i) + "@blahblah.com",
             "password": "probsShouldBeHashed" + String(i),
             "dietaryRestrictions": [],
@@ -245,8 +246,16 @@ function storeAll(attributes) {
     return Account.collection.insertMany(acctDocs);
 }
 
-function dropAll() {
-    return Account.collection.drop();
+async function dropAll() {
+    try {
+        await Account.collection.drop();
+    } catch (e) {
+        if (e.code === 26) {
+            logger.info("namespace %s not found", Account.collection.name);
+        } else {
+            throw e;
+        }
+    }
 }
 
 /**
