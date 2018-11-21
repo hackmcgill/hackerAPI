@@ -15,8 +15,10 @@ const Util = {
     AccountConfirmation: require("./util/accountConfirmation.test.util"),
     ResetPassword: require("./util/resetPassword.test.util.js")
 };
+const Constants = {
+    Role: require("../constants/role.constant"),
+};
 const logger = require("../services/logger.service");
-
 
 //make sure that we are connected to the database
 before(function (done) {
@@ -60,7 +62,7 @@ async function storeAll() {
     await Util.ResetPassword.storeAll(Util.ResetPassword.ResetPasswords);
     await Util.Bus.storeAll(Util.Bus.Busses);
     await Util.Volunteer.storeAll(Util.Volunteer.Volunteers);
-    await Util.Role.storeAll(Util.Role.allRolesArray);
+    await Util.Role.storeAll(Constants.Role.allRolesArray);
     await Util.RoleBinding.storeAll(Util.RoleBinding.RoleBindings);
 }
 
