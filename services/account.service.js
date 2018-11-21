@@ -106,8 +106,11 @@ function changeOneAccount(id, accountDetails) {
  */
 function updatePassword(id, newPassword) {
     const hashed = hashPassword(newPassword);
-    return changeOneAccount(id, {password: hashed});
+    return changeOneAccount(id, {
+        password: hashed
+    });
 }
+
 
 module.exports = {
     findOne: findOne,

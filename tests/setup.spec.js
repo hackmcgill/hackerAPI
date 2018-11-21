@@ -8,7 +8,6 @@ const Util = {
     Hacker: require("./util/hacker.test.util"),
     Role: require("./util/role.test.util"),
     RoleBinding: require("./util/roleBinding.test.util"),
-    Skill: require("./util/skill.test.util"),
     Sponsor: require("./util/sponsor.test.util"),
     Staff: require("./util/staff.test.util"),
     Team: require("./util/team.test.util"),
@@ -16,73 +15,67 @@ const Util = {
     AccountConfirmation: require("./util/accountConfirmation.test.util"),
     ResetPassword: require("./util/resetPassword.test.util.js")
 };
-
+const Constants = {
+    Role: require("../constants/role.constant"),
+};
+const logger = require("../services/logger.service");
 
 //make sure that we are connected to the database
 before(function (done) {
     this.timeout(60000);
+
     server.app.on("event:connected to db", () => {
-        // drop all information, and then add some users
-        dropAll(done);
+        /**
+         * Give the database time to create an index on existing schemas before we delete them. 
+         * Hacky way to get around a new error.
+         */
+        setTimeout(() => {
+            dropAll().then(done).catch(done);
+        }, 1000);
     });
 });
 
 beforeEach(function (done) {
     this.timeout(60000);
-    Util.Account.storeAll(Util.Account.allAccounts, () => {
-        Util.Skill.storeAll(Util.Skill.Skills, () => {
-            Util.Hacker.storeAll(Util.Hacker.Hackers, () => {
-                Util.Sponsor.storeAll(Util.Sponsor.Sponsors, () => {
-                    Util.Team.storeAll(Util.Team.Teams, () => {
-                        Util.Staff.storeAll(Util.Staff.Staffs, () => {
-                            Util.AccountConfirmation.storeAll(Util.AccountConfirmation.AccountConfirmationTokens, () => {
-                                Util.ResetPassword.storeAll(Util.ResetPassword.ResetPasswords, () => {
-                                    Util.Bus.storeAll(Util.Bus.Busses, () => {
-                                        Util.Volunteer.storeAll(Util.Volunteer.Volunteers, () => {
-                                            Util.Role.storeAll(Util.Role.allRolesArray, () => {
-                                                Util.RoleBinding.storeAll(Util.RoleBinding.RoleBindings, () => {
-                                                    done();
-                                                });
-                                            });
-                                        });
-                                    });
-                                });
-                            });
-                        });
-                    });
-                });
-            });
-        });
+    storeAll().then(() => {
+        done();
+    }).catch((error) => {
+        done(error);
     });
 });
 
 afterEach(function (done) {
     this.timeout(60000);
-    dropAll(done);
-});
-
-function dropAll(done) {
-    Util.RoleBinding.dropAll(() => {
-        Util.Role.dropAll(() => {
-            Util.ResetPassword.dropAll(() => {
-                Util.AccountConfirmation.dropAll(() => {
-                    Util.Volunteer.dropAll(() => {
-                        Util.Staff.dropAll(() => {
-                            Util.Team.dropAll(() => {
-                                Util.Sponsor.dropAll(() => {
-                                    Util.Bus.dropAll(() => {
-                                        Util.Hacker.dropAll(() => {
-                                            Util.Skill.dropAll(() => {
-                                                Util.Account.dropAll(done);
-                                            });
-                                        });
-                                    });
-                                });
-                            });
-                        });
-                    });
-                });
-            });
-        });
+    dropAll().then(() => {
+        done();
+    }).catch((error) => {
+        done(error);
     });
+});
+async function storeAll() {
+    await Util.Account.storeAll(Util.Account.allAccounts);
+    await Util.Hacker.storeAll(Util.Hacker.Hackers);
+    await Util.Sponsor.storeAll(Util.Sponsor.Sponsors);
+    await Util.Team.storeAll(Util.Team.Teams);
+    await Util.Staff.storeAll(Util.Staff.Staffs);
+    await Util.AccountConfirmation.storeAll(Util.AccountConfirmation.AccountConfirmationTokens);
+    await Util.ResetPassword.storeAll(Util.ResetPassword.ResetPasswords);
+    await Util.Bus.storeAll(Util.Bus.Busses);
+    await Util.Volunteer.storeAll(Util.Volunteer.Volunteers);
+    await Util.Role.storeAll(Constants.Role.allRolesArray);
+    await Util.RoleBinding.storeAll(Util.RoleBinding.RoleBindings);
+}
+
+async function dropAll() {
+    await Util.RoleBinding.dropAll();
+    await Util.Role.dropAll();
+    await Util.ResetPassword.dropAll();
+    await Util.AccountConfirmation.dropAll();
+    await Util.Volunteer.dropAll();
+    await Util.Staff.dropAll();
+    await Util.Team.dropAll();
+    await Util.Sponsor.dropAll();
+    await Util.Bus.dropAll();
+    await Util.Hacker.dropAll();
+    await Util.Account.dropAll();
 }

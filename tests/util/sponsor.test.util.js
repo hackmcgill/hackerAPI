@@ -6,7 +6,6 @@ const Util = {
 const Sponsor = require("../../models/sponsor.model");
 const mongoose = require("mongoose");
 const logger = require("../../services/logger.service");
-const TAG = "[ SPONSOR.TEST.UTIL.JS ]";
 
 const newSponsor1 = {
     // no _id as that will be generated
@@ -37,7 +36,7 @@ const Sponsors = [
     Sponsor1,
 ];
 
-function storeAll(attributes, callback) {
+function storeAll(attributes) {
     const sponsorDocs = [];
     const sponsorComps = [];
     attributes.forEach((attribute) => {
@@ -45,32 +44,19 @@ function storeAll(attributes, callback) {
         sponsorComps.push(attribute.company);
     });
 
-    Sponsor.collection.insertMany(sponsorDocs).then(
-        () => {
-            logger.info(`${TAG} saved Sponsors: ${sponsorComps.join(",")}`);
-            callback();
-        },
-        (reason) => {
-            logger.error(`${TAG} could not store Sponsors ${sponsorComps.join(",")}. Error: ${JSON.stringify(reason)}`);
-            callback(reason);
-        }
-    );
+    return Sponsor.collection.insertMany(sponsorDocs);
 }
 
-function dropAll(callback) {
-    Sponsor.collection.drop().then(
-        () => {
-            logger.info(`dropped table Sponsor`);
-            callback();
-        },
-        (err) => {
-            logger.infor(`Could not drop Sponsor. Error: ${JSON.stringify(err)}`);
-            callback();
+async function dropAll() {
+    try {
+        await Sponsor.collection.drop();
+    } catch (e) {
+        if (e.code === 26) {
+            logger.info("namespace %s not found", Sponsor.collection.name);
+        } else {
+            throw e;
         }
-    ).catch((error) => {
-        logger.error(error);
-        callback();
-    });
+    }
 }
 
 module.exports = {

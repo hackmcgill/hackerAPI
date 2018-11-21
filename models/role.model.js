@@ -1,6 +1,6 @@
 "use strict";
 const mongoose = require("mongoose");
-const Constants = require("../constants");
+const Constants = require("../constants/general.constant");
 /**
  * The name is descriptive of the role
  * Each role may have different routes, where route parameters in the uri are replaced with :self or :all

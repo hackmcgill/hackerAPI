@@ -1,18 +1,13 @@
 "use strict";
 // Imports the Google Cloud client library
-const GStorage = require("@google-cloud/storage");
-const path = require("path");
+const GStorage = require('@google-cloud/storage');
 const Logger = require("./logger.service");
 class StorageService {
     constructor() {
         this.bucketName = process.env.BUCKET_NAME;
-        try{
-            this.storage = new GStorage({
-                projectId: process.env.GCLOUD_PROJECT,
-                keyFilename: path.join(__dirname, "../gcp_creds.json")
-            });
-    
-        } catch( error ) {
+        try {
+            this.storage = new GStorage.Storage();
+        } catch (error) {
             Logger.error(error);
         }
         this.bucket = this.storage.bucket(this.bucketName);
@@ -27,13 +22,13 @@ class StorageService {
     upload(file, gcfilename) {
         const blob = this.bucket.file(gcfilename);
         const blobStream = blob.createWriteStream({
-          metadata: {
-            contentType: file.mimetype
-          },
-          resumable: false
+            metadata: {
+                contentType: file.mimetype
+            },
+            resumable: false
         });
         const _this = this;
-        return new Promise(function(resolve, reject) {
+        return new Promise(function (resolve, reject) {
             blobStream.on("finish", () => {
                 resolve(_this.getPublicUrl(gcfilename));
             });
@@ -51,14 +46,14 @@ class StorageService {
         const file = this.bucket.file(filename);
         return new Promise((resolve, reject) => {
             file.exists().then((doesExist) => {
-                if(doesExist) {
+                if (doesExist) {
                     file.download()
-                    .then(resolve)
-                    .catch(reject);
+                        .then(resolve)
+                        .catch(reject);
                 } else {
                     reject("file does not exist");
                 }
-            });    
+            });
         });
     }
     /**
@@ -84,7 +79,7 @@ class StorageService {
      * Get the public URL of the file
      * @param {string} filename the path of the file
      */
-    getPublicUrl (filename) {
+    getPublicUrl(filename) {
         return `https://storage.googleapis.com/${this.bucket.name}/${filename}`;
     }
 }

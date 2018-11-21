@@ -18,6 +18,7 @@ const Middleware = {
 const Services = {
     Hacker: require("../../services/hacker.service"),
 }
+const CONSTANTS = require("../../constants/general.constant");
 
 module.exports = {
     activate: function (apiRouter) {
@@ -45,7 +46,7 @@ module.exports = {
          *              "other": "..."
          *          },
          *          "jobInterest": "...",
-         *          "skills": [id1, id2],    
+         *          "skills": ["CSS", "HTML"],    
          *          "comments": "...",
          *          "essay": "...",
          *          "team": [id1, id2],
@@ -62,7 +63,7 @@ module.exports = {
          * @apiError {string} message Error message
          * @apiError {object} data empty
          * @apiErrorExample {object} Error-Response: 
-         *      {"message": "Issue with hacker creation", "data": {}}
+         *      {"message": "Error while creating hacker", "data": {}}
          */
         hackerRouter.route("/").post(
             Middleware.Auth.ensureAuthenticated(),
@@ -79,17 +80,46 @@ module.exports = {
             Middleware.Hacker.parseHacker,
 
             Middleware.Hacker.addDefaultStatus,
+            Middleware.Auth.createRoleBindings(CONSTANTS.HACKER),
             Controllers.Hacker.createHacker
+        );
+        /**
+         * @api {patch} /hacker/status/:id update a hacker's status
+         * @apiName patchHackerStatus
+         * @apiGroup Hacker
+         * @apiVersion 0.0.9
+         * 
+         * @apiParam (body) {String} [status] Status of the hacker's application
+         * @apiSuccess {string} message Success message
+         * @apiSuccess {object} data Hacker object
+         * @apiSuccessExample {object} Success-Response: 
+         *      {
+         *          "message": "Changed hacker information", 
+         *          "data": {
+         *              "status": "accepted"
+         *          }
+         *      }
+         * @apiPermission Administrator
+         */
+        hackerRouter.route("/status/:id").patch(
+            Middleware.Auth.ensureAuthenticated(),
+            Middleware.Auth.ensureAuthorized([Services.Hacker.findById]),
+            Middleware.Validator.RouteParam.idValidator,
+            Middleware.Validator.Hacker.updateStatusValidator,
+            Middleware.parseBody.middleware,
+            Middleware.Hacker.parsePatch,
+            Middleware.Hacker.updateHacker,
+            Middleware.Hacker.sendStatusUpdateEmail,
+            Controllers.Hacker.updatedHacker
         );
 
         /**
-         * @api {patch} /hacker/:id update a hacker's information
+         * @api {patch} /hacker/:id update a hacker's information.  
+         * @apiDescription This route only contains the ability to update a subset of a hacker's information. If you want to update a status, you must have Admin priviledges and use PATCH /hacker/status/:id.
          * @apiName patchHacker
          * @apiGroup Hacker
          * @apiVersion 0.0.8
          * 
-         * @apiParam (body) {MongoID} [accountId] ObjectID of the respective account
-         * @apiParam (body) {String} [status] Status of the hacker's application
          * @apiParam (body) {String} [school] Name of the school the hacker goes to
          * @apiParam (body) {String} [gender] Gender of the hacker
          * @apiParam (body) {Boolean} [needsBus] Whether the hacker requires a bus for transportation
@@ -105,7 +135,7 @@ module.exports = {
          *              "other": "..."
          *          },
          *          "jobInterest": "...",
-         *          "skills": [id1, id2],    
+         *          "skills": ["CSS", "HTML"],    
          *          "comments": "...",
          *          "essay": "...",
          *          "team": [id1, id2],
@@ -118,11 +148,10 @@ module.exports = {
          *          "message": "Changed hacker information", 
          *          "data": {...}
          *      }
-
          * @apiError {string} message Error message
          * @apiError {object} data empty
          * @apiErrorExample {object} Error-Response: 
-         *      {"message": "Issue with changing hacker information", "data": {}}
+         *      {"message": "Error while updating hacker", "data": {}}
          */
         hackerRouter.route("/:id").patch(
             Middleware.Auth.ensureAuthenticated(),
@@ -135,9 +164,7 @@ module.exports = {
             Middleware.Hacker.parsePatch,
 
             Middleware.Hacker.updateHacker,
-            Middleware.Hacker.sendStatusUpdateEmail,
-            // no parse hacker because will use req.body as information
-            // because the number of fields will be variable
+            Middleware.Hacker.updateStatusIfApplicationCompleted,
             Controllers.Hacker.updatedHacker
         );
 
@@ -160,7 +187,7 @@ module.exports = {
          * @apiError {String} message Error message
          * @apiError {Object} data empty
          * @apiErrorExample {object} Error-Response: 
-         *      {"message": "Issue with retrieving hacker information", "data": {}}
+         *      {"message": "Hacker not found", "data": {}}
          */
         hackerRouter.route("/:id").get(
             Middleware.Auth.ensureAuthenticated(),
@@ -231,7 +258,7 @@ module.exports = {
              * @apiErrorExample {json} Error-Response:
              *      HTTP/1.1 404 
              *      { 
-             *          message: "Resume does not exist", 
+             *          message: "Resume not found", 
              *          data: {} 
              *      }
              * @apiSampleRequest off

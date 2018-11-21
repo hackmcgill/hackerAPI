@@ -2,9 +2,11 @@
 const Services = {
     Hacker: require("../services/hacker.service"),
     Logger: require("../services/logger.service"),
-    Email: require("../services/email.service")
 };
 const Util = require("../middlewares/util.middleware");
+const Constants = {
+    Error: require("../constants/error.constant"),
+};
 
 /**
  * @async
@@ -24,7 +26,7 @@ async function findById(req, res) {
         });
     } else {
         return res.status(404).json({
-            message: "Issue with retrieving hacker information",
+            message: Constants.Error.HACKER_404_MESSAGE,
             data: {}
         });
     }
@@ -40,7 +42,7 @@ async function findById(req, res) {
  */
 async function createHacker(req, res) {
     const hackerDetails = req.body.hackerDetails;
-    
+
     const success = await Services.Hacker.createHacker(hackerDetails);
 
     if (success) {
@@ -50,7 +52,7 @@ async function createHacker(req, res) {
         });
     } else {
         return res.status(400).json({
-            message: "Issue with hacker creation",
+            message: Constants.Error.HACKER_CREATE_500_MESSAGE,
             data: {}
         });
     }
@@ -75,7 +77,7 @@ async function updatedHacker(req, res) {
     });
 }
 
-function uploadedResume (req, res) {
+function uploadedResume(req, res) {
     return res.status(200).json({
         message: "Uploaded resume",
         data: {
@@ -84,7 +86,7 @@ function uploadedResume (req, res) {
     });
 }
 
-function downloadedResume (req, res) {
+function downloadedResume(req, res) {
     return res.status(200).json({
         message: "Downloaded resume",
         data: {

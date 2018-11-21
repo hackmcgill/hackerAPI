@@ -1,6 +1,6 @@
 "use strict";
 
-const Constants = require("../constants");
+const Constants = require("../constants/general.constant");
 const mongoose = require("mongoose");
 //describes the data type
 const HackerSchema = new mongoose.Schema({
@@ -55,8 +55,7 @@ const HackerSchema = new mongoose.Schema({
             default: "None"
         },
         skills: [{
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "Skill"
+            type: String
         }],
         //any miscelaneous comments that the user has
         comments: {
@@ -72,8 +71,23 @@ const HackerSchema = new mongoose.Schema({
             type: mongoose.Schema.Types.ObjectId,
             ref: "Team"
         }
+    },
+    ethnicity: {
+        type: String,
+        required: true
+    },
+    major: {
+        type: String,
+        required: true
+    },
+    graduationYear: {
+        type: Number,
+        required: true
+    },
+    codeOfConduct: {
+        type: Boolean,
+        required: true
     }
-
 });
 
 HackerSchema.methods.toJSON = function () {
@@ -83,13 +97,20 @@ HackerSchema.methods.toJSON = function () {
     delete hs._id;
     return hs;
 };
+HackerSchema.methods.isApplicationComplete = function () {
+    const hs = this.toObject();
+    const portfolioDone = !!hs.application.portfolioURL.resume;
+    const jobInterestDone = !!hs.application.jobInterest;
+    const essayDone = !!hs.application.essay;
+    return portfolioDone && jobInterestDone && essayDone;
+};
 
 /**
  * @param field the field which should be queried
  * @returns {String} type of the field being queried
  * @description return the type of the field(if it exists and is allowed to be searched on)
  */
-HackerSchema.statics.searchableField = function(field) {
+HackerSchema.statics.searchableField = function (field) {
     return HackerSchema.path(field).instance;
 };
 
