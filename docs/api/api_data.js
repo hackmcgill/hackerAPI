@@ -600,6 +600,73 @@ define({
       }]
     },
     {
+      "type": "get",
+      "url": "/auth/confirm/resend",
+      "title": "resend confirmation token",
+      "name": "resendConfirmAccount",
+      "group": "Authentication",
+      "version": "0.0.8",
+      "success": {
+        "fields": {
+          "Success 200": [{
+              "group": "Success 200",
+              "type": "string",
+              "optional": false,
+              "field": "message",
+              "description": "<p>Success message</p>"
+            },
+            {
+              "group": "Success 200",
+              "type": "object",
+              "optional": false,
+              "field": "data",
+              "description": "<p>empty</p>"
+            }
+          ]
+        },
+        "examples": [{
+          "title": "Success-Response:",
+          "content": "{\"message\": \"Successfully resent confirmation email\", \"data\": {}}",
+          "type": "json"
+        }]
+      },
+      "error": {
+        "fields": {
+          "Error 4xx": [{
+              "group": "Error 4xx",
+              "type": "string",
+              "optional": false,
+              "field": "message",
+              "description": "<p>Error message</p>"
+            },
+            {
+              "group": "Error 4xx",
+              "type": "object",
+              "optional": false,
+              "field": "data",
+              "description": "<p>empty</p>"
+            }
+          ]
+        },
+        "examples": [{
+            "title": "Error-Response:",
+            "content": " HTTP/1.1 422\n{\"message\": \"Account already confirmed, \"data\": {}}",
+            "type": "json"
+          },
+          {
+            "title": "Error-Response:",
+            "content": " HTTP/1.1 428\n{\"message\": \"Account already confirmed, \"data\": {}}",
+            "type": "json"
+          }
+        ]
+      },
+      "filename": "routes/api/auth.js",
+      "groupTitle": "Authentication",
+      "sampleRequest": [{
+        "url": "https://mchacks.ca/api/auth/confirm/resend"
+      }]
+    },
+    {
       "type": "post",
       "url": "/auth/password/reset",
       "title": "reset password",
@@ -672,6 +739,78 @@ define({
       }]
     },
     {
+      "type": "get",
+      "url": "/auth/rolebindings/:id",
+      "title": "retrieve rolebindings for a user given by their user id :id",
+      "name": "getRoleBindings",
+      "group": "Auth",
+      "version": "0.0.8",
+      "parameter": {
+        "fields": {
+          "param": [{
+            "group": "param",
+            "type": "ObjectId",
+            "optional": false,
+            "field": "id",
+            "description": "<p>MongoId of an account</p>"
+          }]
+        }
+      },
+      "success": {
+        "fields": {
+          "Success 200": [{
+              "group": "Success 200",
+              "type": "string",
+              "optional": false,
+              "field": "message",
+              "description": "<p>Success message</p>"
+            },
+            {
+              "group": "Success 200",
+              "type": "object",
+              "optional": false,
+              "field": "data",
+              "description": "<p>Rolebindings object</p>"
+            }
+          ]
+        },
+        "examples": [{
+          "title": "Success-Response: ",
+          "content": "{\n               \"message\": \"Successfully retrieved role bindings\",\n               \"data\": {\n                   accountId:\"5beca4ab2e069a34f91697b2\"\n                   id:\"5beca4ae2e069a34f91698b1\"\n                   roles: [\n                       {\n                           _id:\"5beca4ab2e069a34f91697d9\",\n                           name:\"hacker\",\n                           routes: [\n                               0:Object {_id: \"5beca4ae2e069a34f9169852\", requestType: \"POST\", uri: \"/api/auth/login\"},\n                               1:Object {_id: \"5beca4ae2e069a34f9169851\", requestType: \"POST\", uri: \"/api/auth/logout\"},\n                               2:Object {_id: \"5beca4ae2e069a34f9169850\", requestType: \"GET\", uri: \"/api/auth/rolebindings/:self\"},\n                               3:Object {_id: \"5beca4ae2e069a34f916984f\", requestType: \"GET\", uri: \"/api/account/self\"},\n                               4:Object {_id: \"5beca4ae2e069a34f916984e\", requestType: \"GET\", uri: \"/api/account/:self\"},\n                               5:Object {_id: \"5beca4ae2e069a34f916984d\", requestType: \"PATCH\", uri: \"/api/account/:self\"},\n                               6:Object {_id: \"5beca4ae2e069a34f916984c\", requestType: \"POST\", uri: \"/api/hacker/\"},\n                               7:Object {_id: \"5beca4ae2e069a34f916984b\", requestType: \"GET\", uri: \"/api/hacker/:self\"},\n                               8:Object {_id: \"5beca4ae2e069a34f916984a\", requestType: \"GET\", uri: \"/api/hacker/:self/resume\"},\n                               9:Object {_id: \"5beca4ae2e069a34f9169849\", requestType: \"PATCH\", uri: \"/api/hacker/:self\"}\n                           ]\n                       }\n                   ]\n               }\n           }",
+          "type": "object"
+        }]
+      },
+      "error": {
+        "fields": {
+          "Error 4xx": [{
+              "group": "Error 4xx",
+              "type": "string",
+              "optional": false,
+              "field": "message",
+              "description": "<p>Error message</p>"
+            },
+            {
+              "group": "Error 4xx",
+              "type": "object",
+              "optional": false,
+              "field": "data",
+              "description": "<p>empty</p>"
+            }
+          ]
+        },
+        "examples": [{
+          "title": "Error-Response: ",
+          "content": "{\"message\": \"Role Bindings not found\", \"data\": {}}",
+          "type": "object"
+        }]
+      },
+      "filename": "routes/api/auth.js",
+      "groupTitle": "Auth",
+      "sampleRequest": [{
+        "url": "https://mchacks.ca/api/auth/rolebindings/:id"
+      }]
+    },
+    {
       "type": "post",
       "url": "/hacker/",
       "title": "create a new hacker",
@@ -719,7 +858,7 @@ define({
         },
         "examples": [{
           "title": "application: ",
-          "content": "{\n    \"portfolioURL\": {\n        \"resume\": \"...\"\n        \"github\": \"...\",\n        \"dropler\": \"...\",\n        \"personal\": \"...\",\n        \"linkedIn\": \"...\",\n        \"other\": \"...\"\n    },\n    \"jobInterest\": \"...\",\n    \"skills\": [id1, id2],    \n    \"comments\": \"...\",\n    \"essay\": \"...\",\n    \"team\": [id1, id2],\n}",
+          "content": "{\n    \"portfolioURL\": {\n        \"resume\": \"...\"\n        \"github\": \"...\",\n        \"dropler\": \"...\",\n        \"personal\": \"...\",\n        \"linkedIn\": \"...\",\n        \"other\": \"...\"\n    },\n    \"jobInterest\": \"...\",\n    \"skills\": [\"CSS\", \"HTML\"],    \n    \"comments\": \"...\",\n    \"essay\": \"...\",\n    \"team\": [id1, id2],\n}",
           "type": "Json"
         }]
       },
@@ -851,7 +990,7 @@ define({
     },
     {
       "type": "get",
-      "url": "/hacker/:id/resume",
+      "url": "/hacker/resume:id",
       "title": "get the resume for a hacker.",
       "name": "getHackerResume",
       "group": "Hacker",
@@ -908,27 +1047,14 @@ define({
     {
       "type": "patch",
       "url": "/hacker/:id",
-      "title": "update a hacker's information",
+      "title": "update a hacker's information.",
+      "description": "<p>This route only contains the ability to update a subset of a hacker's information. If you want to update a status, you must have Admin priviledges and use PATCH /hacker/status/:id.</p>",
       "name": "patchHacker",
       "group": "Hacker",
       "version": "0.0.8",
       "parameter": {
         "fields": {
           "body": [{
-              "group": "body",
-              "type": "MongoID",
-              "optional": true,
-              "field": "accountId",
-              "description": "<p>ObjectID of the respective account</p>"
-            },
-            {
-              "group": "body",
-              "type": "String",
-              "optional": true,
-              "field": "status",
-              "description": "<p>Status of the hacker's application</p>"
-            },
-            {
               "group": "body",
               "type": "String",
               "optional": true,
@@ -960,7 +1086,7 @@ define({
         },
         "examples": [{
           "title": "application: ",
-          "content": "{\n    \"portfolioURL\": {\n        \"resume\": \"...\"\n        \"github\": \"...\",\n        \"dropler\": \"...\",\n        \"personal\": \"...\",\n        \"linkedIn\": \"...\",\n        \"other\": \"...\"\n    },\n    \"jobInterest\": \"...\",\n    \"skills\": [id1, id2],    \n    \"comments\": \"...\",\n    \"essay\": \"...\",\n    \"team\": [id1, id2],\n}",
+          "content": "{\n    \"portfolioURL\": {\n        \"resume\": \"...\"\n        \"github\": \"...\",\n        \"dropler\": \"...\",\n        \"personal\": \"...\",\n        \"linkedIn\": \"...\",\n        \"other\": \"...\"\n    },\n    \"jobInterest\": \"...\",\n    \"skills\": [\"CSS\", \"HTML\"],    \n    \"comments\": \"...\",\n    \"essay\": \"...\",\n    \"team\": [id1, id2],\n}",
           "type": "Json"
         }]
       },
@@ -1016,6 +1142,57 @@ define({
       "groupTitle": "Hacker",
       "sampleRequest": [{
         "url": "https://mchacks.ca/api/hacker/:id"
+      }]
+    },
+    {
+      "type": "patch",
+      "url": "/hacker/status/:id",
+      "title": "update a hacker's status",
+      "name": "patchHackerStatus",
+      "group": "Hacker",
+      "version": "0.0.9",
+      "parameter": {
+        "fields": {
+          "body": [{
+            "group": "body",
+            "type": "String",
+            "optional": true,
+            "field": "status",
+            "description": "<p>Status of the hacker's application</p>"
+          }]
+        }
+      },
+      "success": {
+        "fields": {
+          "Success 200": [{
+              "group": "Success 200",
+              "type": "string",
+              "optional": false,
+              "field": "message",
+              "description": "<p>Success message</p>"
+            },
+            {
+              "group": "Success 200",
+              "type": "object",
+              "optional": false,
+              "field": "data",
+              "description": "<p>Hacker object</p>"
+            }
+          ]
+        },
+        "examples": [{
+          "title": "Success-Response: ",
+          "content": "{\n    \"message\": \"Changed hacker information\", \n    \"data\": {\n        \"status\": \"accepted\"\n    }\n}",
+          "type": "object"
+        }]
+      },
+      "permission": [{
+        "name": "Administrator"
+      }],
+      "filename": "routes/api/hacker.js",
+      "groupTitle": "Hacker",
+      "sampleRequest": [{
+        "url": "https://mchacks.ca/api/hacker/status/:id"
       }]
     },
     {
