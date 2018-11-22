@@ -7,7 +7,7 @@
     "debug": "DEBUG=hackboard:* NODE_ENV=deployment nodemon --ignore gcp_creds.json ./bin/www.js",
     "development": "DEBUG=hackboard:* NODE_ENV=development nodemon --ignore gcp_creds.json ./bin/www.js",
     "test": "DEBUG=hackboard:* NODE_ENV=test mocha --reporter spec tests/**.js --exit",
-    "seed": "node NODE_ENV=development ./populatedb.js",
+    "seed": "NODE_ENV=development node ./seed/index.js",
     "docs": "apidoc -i ./routes -o ./docs/api/"
   },
   "dependencies": {

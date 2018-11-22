@@ -8,7 +8,7 @@ const Role = require("../models/role.model");
 
 const adminRole = {
     "_id": mongoose.Types.ObjectId(),
-    "name": Constants.General.GODSTAFF,
+    "name": Constants.General.STAFF,
     "routes": Constants.Routes.listAllRoutes(),
 };
 
