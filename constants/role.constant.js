@@ -4,7 +4,19 @@ const Constants = {
     Routes: require("./routes.constant"),
 };
 const mongoose = require("mongoose");
-const Role = require("../models/role.model");
+
+const accountRole = {
+    "_id": mongoose.Types.ObjectId(),
+    "name": "account",
+    "routes": [
+        Constants.Routes.authRoutes.login,
+        Constants.Routes.authRoutes.logout,
+        Constants.Routes.authRoutes.getSelfRoleBindindings,
+        Constants.Routes.accountRoutes.getSelf,
+        Constants.Routes.accountRoutes.getSelfById,
+        Constants.Routes.accountRoutes.patchSelfById
+    ]
+};
 
 const adminRole = {
     "_id": mongoose.Types.ObjectId(),
@@ -151,6 +163,7 @@ function createAllSingularRoles() {
  */
 function createAllRoles() {
     let allRolesObject = {
+        accountRole: accountRole,
         adminRole: adminRole,
         hackerRole: hackerRole,
         volunteerRole: volunteerRole,
@@ -158,7 +171,7 @@ function createAllRoles() {
         sponsorT2Role: sponsorT2Role,
         sponsorT3Role: sponsorT3Role,
         sponsorT4Role: sponsorT4Role,
-        sponsorT5Role: sponsorT5Role
+        sponsorT5Role: sponsorT5Role,
     };
 
     const singularRoles = createAllSingularRoles();
@@ -173,6 +186,7 @@ function createAllRoles() {
 }
 
 module.exports = {
+    accountRole: accountRole,
     adminRole: adminRole,
     hackerRole: hackerRole,
     volunteerRole: volunteerRole,
