@@ -4,17 +4,23 @@ const Services = {
     env: require("../services/env.service")
 };
 const path = require("path");
-const mongoose = require("mongoose");
 
 const envLoadResult = Services.env.load(path.join(__dirname, "../.env"));
 if (envLoadResult.error) {
     Services.log.error(envLoadResult.error);
 }
 
+/**
+ * Drops all elements in Role
+ */
 function dropAll() {
     return Role.remove({});
 }
 
+/**
+ * Stores all of the roles in the db
+ * @param {role[]} attributes all attributes
+ */
 function storeAll(attributes) {
     const roleDocs = [];
     const roleNames = [];
