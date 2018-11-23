@@ -46,7 +46,7 @@ module.exports = {
          * @apiPermission: public
          */
         authRouter.route("/login").post(
-            passport.authenticate("emailAndPass"),
+            Middleware.Auth.login,
             Controllers.Auth.onSuccessfulLogin
         );
 
