@@ -41,7 +41,7 @@ module.exports = {
          * @apiError {string} message Error message
          * @apiError {object} data empty
          * @apiErrorExample {object} Error-Response: 
-         *      {"message": "Invalid email or password", "data": {}}
+         *      {"message": "Invalid Authentication", "data": {}}
          * 
          * @apiPermission: public
          */
