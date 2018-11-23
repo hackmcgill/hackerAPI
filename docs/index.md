@@ -7,14 +7,15 @@ API for registration, live-site
 
 ## Getting started
 
-Run `setupEnv.sh` to set up your environment, and install all packages. If something doesn't work, please let us know! Sadly, this script hasn't been fully tested.
+Check out [this page](./getting-started).
   
 ## Helpful links
 
+* [**Getting started**](./getting-started)
 * [**How to deploy**](./deploy)
 * [**Coding standards**](./standards)
-* [**API documentation**](./api/)
-* [**Architecture, Dependencies**](./architecture)
+* [**API HTTP route documentation**](./api/)
+* [**Architecture, Dependencies, Design**](./architecture)
 
 ## Folder structure
 

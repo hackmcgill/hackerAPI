@@ -546,7 +546,7 @@ define({
         },
         "examples": [{
           "title": "Error-Response: ",
-          "content": "{\"message\": \"Invalid email or password\", \"data\": {}}",
+          "content": "{\"message\": \"Invalid Authentication\", \"data\": {}}",
           "type": "object"
         }]
       },
