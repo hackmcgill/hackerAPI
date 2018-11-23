@@ -38,7 +38,7 @@ function login(req, res, next) {
                     error: {}
                 });
             }
-            req.login(user, loginErr => {
+            req.login(user, (loginErr) => {
                 if (loginErr) {
                     return next({
                         status: 500,
