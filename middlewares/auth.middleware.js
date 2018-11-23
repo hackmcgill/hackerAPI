@@ -21,6 +21,13 @@ const Constants = {
     Error: require("../constants/error.constant"),
 };
 
+/**
+ * @param {*} req
+ * @param {*} res
+ * @param {(err?)=>void} next 
+ * Calls passport.authenticate with a custom error handler. Errors during authentication will return res with a generic 500 error, 
+ * Failed authentication returns a AUTH 401 error, and errors during login will return res with a LOGIN 500 error.
+ */
 function login(req, res, next) {
     passport.authenticate("emailAndPass",
         function (err, user) {
