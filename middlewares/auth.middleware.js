@@ -1,5 +1,6 @@
 "use strict";
 const jwt = require("jsonwebtoken");
+const passport = require("passport");
 
 const Services = {
     Auth: require("../services/auth.service"),
@@ -19,6 +20,43 @@ const Constants = {
     General: require("../constants/general.constant"),
     Error: require("../constants/error.constant"),
 };
+
+/**
+ * @param {*} req
+ * @param {*} res
+ * @param {(err?)=>void} next 
+ * Calls passport.authenticate with a custom error handler. Errors during authentication will return res with a generic 500 error, 
+ * Failed authentication returns a AUTH 401 error, and errors during login will return res with a LOGIN 500 error.
+ */
+function login(req, res, next) {
+    passport.authenticate("emailAndPass",
+        function (err, user) {
+            if (err) {
+                return next({
+                    status: 500,
+                    message: Constants.Error.GENERIC_500_MESSAGE,
+                    error: {}
+                });
+            }
+            if (!user) {
+                return next({
+                    status: 401,
+                    message: Constants.Error.AUTH_401_MESSAGE,
+                    error: {}
+                });
+            }
+            req.login(user, (loginErr) => {
+                if (loginErr) {
+                    return next({
+                        status: 500,
+                        message: Constants.Error.LOGIN_500_MESSAGE,
+                        error: {}
+                    });
+                }
+                next();
+            });
+        })(req, res, next);
+}
 
 /**
  * @returns {Fn} the middleware that will check that the user is properly authenticated.
@@ -370,6 +408,7 @@ async function addSponsorRoleBindings(req, res, next) {
 
 module.exports = {
     //for each route, set up an authentication middleware for that route
+    login: login,
     ensureAuthenticated: ensureAuthenticated,
     ensureAuthorized: ensureAuthorized,
     sendResetPasswordEmailMiddleware: Middleware.Util.asyncMiddleware(sendResetPasswordEmailMiddleware),

@@ -41,12 +41,12 @@ module.exports = {
          * @apiError {string} message Error message
          * @apiError {object} data empty
          * @apiErrorExample {object} Error-Response: 
-         *      {"message": "Invalid email or password", "data": {}}
+         *      {"message": "Invalid Authentication", "data": {}}
          * 
          * @apiPermission: public
          */
         authRouter.route("/login").post(
-            passport.authenticate("emailAndPass"),
+            Middleware.Auth.login,
             Controllers.Auth.onSuccessfulLogin
         );
 

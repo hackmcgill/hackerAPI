@@ -9,7 +9,7 @@ const assert = require("chai").assert;
 
 var fs = require("fs");
 
-describe("Storage service", function() {
+describe("Storage service", function () {
     this.timeout(0);
     const file = {
         mimetype: "application/pdf",
@@ -40,7 +40,7 @@ describe("Storage service", function() {
                         assert.isFalse(exists[0]);
                         done();
                     }
-                ).catch(done);    
+                ).catch(done);
             }
         ).catch(done);
     });
