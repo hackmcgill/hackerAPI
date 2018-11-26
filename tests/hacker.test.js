@@ -8,6 +8,9 @@ const should = chai.should();
 const Hacker = require("../models/hacker.model");
 const fs = require("fs");
 const path = require("path");
+const Constants = {
+    Error: require("../constants/error.constant"),
+};
 
 const util = {
     auth: require("./util/auth.test.util"),
@@ -45,7 +48,7 @@ describe("GET hacker", function () {
                 res.should.have.status(401);
                 res.should.be.json;
                 res.body.should.have.property("message");
-                res.body.message.should.equal("Not Authenticated");
+                res.body.message.should.equal(Constants.Error.AUTH_401_MESSAGE);
                 done();
             });
     });
@@ -121,10 +124,10 @@ describe("GET hacker", function () {
                     if (err) {
                         return done(err);
                     }
-                    res.should.have.status(401);
+                    res.should.have.status(403);
                     res.should.be.json;
                     res.body.should.have.property("message");
-                    res.body.message.should.equal("Not Authorized for this route");
+                    res.body.message.should.equal(Constants.Error.AUTH_403_MESSAGE);
                     res.body.should.have.property("data");
 
                     done();
@@ -148,7 +151,7 @@ describe("GET hacker", function () {
                     res.should.have.status(404);
                     res.should.be.json;
                     res.body.should.have.property("message");
-                    res.body.message.should.equal("Issue with retrieving hacker information");
+                    res.body.message.should.equal(Constants.Error.HACKER_404_MESSAGE);
                     res.body.should.have.property("data");
 
                     done();
@@ -169,7 +172,7 @@ describe("POST create hacker", function () {
                     res.should.have.status(401);
                     res.should.be.json;
                     res.body.should.have.property("message");
-                    res.body.message.should.equal("Not Authenticated");
+                    res.body.message.should.equal(Constants.Error.AUTH_401_MESSAGE);
 
                     done();
                 });
@@ -243,7 +246,7 @@ describe("POST create hacker", function () {
                 .end(function (err, res) {
                     res.should.be.json;
                     res.body.should.have.property("message");
-                    res.body.message.should.equal("Account not verified");
+                    res.body.message.should.equal(Constants.Error.ACCOUNT_403_MESSAGE);
                     res.should.have.status(403);
                     done();
                 });
@@ -264,7 +267,7 @@ describe("POST create hacker", function () {
                 .end(function (err, res) {
                     res.should.have.status(409);
                     res.body.should.have.property("message");
-                    res.body.message.should.equal("Hacker with same accountId link found");
+                    res.body.message.should.equal(Constants.Error.HACKER_ID_409_MESSAGE);
                     res.body.should.have.property("data");
                     done();
                 });
@@ -304,7 +307,7 @@ describe("PATCH update one hacker", function () {
                 res.should.have.status(401);
                 res.should.be.json;
                 res.body.should.have.property("message");
-                res.body.message.should.equal("Not Authenticated");
+                res.body.message.should.equal(Constants.Error.AUTH_401_MESSAGE);
                 done();
             });
     });
@@ -336,6 +339,53 @@ describe("PATCH update one hacker", function () {
         });
     });
 
+    it("should SUCCEED and update a hacker STATUS as an Admin", function (done) {
+        util.auth.login(agent, Admin1, (error) => {
+            if (error) {
+                agent.close();
+                return done(error);
+            }
+            return agent
+                .patch(`/api/hacker/status/${storedHacker1._id}`)
+                .type("application/json")
+                .send({
+                    status: "Accepted"
+                })
+                .end(function (err, res) {
+                    res.should.have.status(200);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal("Changed hacker information");
+                    res.body.should.have.property("data");
+                    chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify({
+                        status: "Accepted"
+                    }));
+                    done();
+                });
+        });
+    });
+    it("should FAIL and NOT update a hacker STATUS as a Hacker", function (done) {
+        util.auth.login(agent, storedAccount1, (error) => {
+            if (error) {
+                agent.close();
+                return done(error);
+            }
+            return agent
+                .patch(`/api/hacker/status/${storedHacker1._id}`)
+                .type("application/json")
+                .send({
+                    status: "Accepted"
+                })
+                .end(function (err, res) {
+                    res.should.have.status(403);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal(Constants.Error.AUTH_403_MESSAGE);
+                    res.body.should.have.property("data");
+                    done();
+                });
+        });
+    });
     // should succeed on hacker case
     it("should SUCCEED and update the user's hacker info", function (done) {
         util.auth.login(agent, storedAccount2, (error) => {
@@ -377,10 +427,10 @@ describe("PATCH update one hacker", function () {
                     gender: "Other"
                 })
                 .end(function (err, res) {
-                    res.should.have.status(401);
+                    res.should.have.status(403);
                     res.should.be.json;
                     res.body.should.have.property("message");
-                    res.body.message.should.equal("Not Authorized for this route");
+                    res.body.message.should.equal(Constants.Error.AUTH_403_MESSAGE);
                     res.body.should.have.property("data");
 
                     done();
@@ -404,10 +454,41 @@ describe("PATCH update one hacker", function () {
                     res.should.have.status(404);
                     res.should.be.json;
                     res.body.should.have.property("message");
-                    res.body.message.should.equal("Issue with retrieving hacker information");
+                    res.body.message.should.equal(Constants.Error.HACKER_404_MESSAGE);
                     res.body.should.have.property("data");
 
                     done();
+                });
+        });
+    });
+});
+describe("POST add a hacker resume", function () {
+    it("It should SUCCEED and upload a resume for a hacker", function (done) {
+        //this takes a lot of time for some reason
+        util.auth.login(agent, storedHacker1, (error) => {
+            if (error) {
+                return done(error);
+            }
+            return agent
+                .post(`/api/hacker/resume/${storedHacker1._id}`)
+                .type("multipart/form-data")
+                .attach("resume", fs.createReadStream(path.join(__dirname, "testResume.pdf")), {
+                    contentType: "application/pdf"
+                })
+                .end(function (err, res) {
+                    res.should.have.status(200);
+                    res.should.have.property("body");
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal("Uploaded resume");
+                    res.body.should.have.property("data");
+                    res.body.data.should.have.property("filename");
+                    StorageService.download(res.body.data.filename).then((value) => {
+                        const actualFile = fs.readFileSync(path.join(__dirname, "testResume.pdf"))
+                        chai.assert.equal(value[0].length, actualFile.length);
+                        StorageService.delete(res.body.data.filename).then(() => {
+                            done();
+                        }).catch(done);
+                    });
                 });
         });
     });

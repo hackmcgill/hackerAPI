@@ -1,13 +1,11 @@
 "use strict";
 const Util = {
     Account: require("./account.test.util"),
-    Skill: require("./skill.test.util")
 };
 
 const mongoose = require("mongoose");
 const Hacker = require("../../models/hacker.model");
 const logger = require("../../services/logger.service");
-const TAG = "[ HACKER.TEST.UTIL.JS ]";
 
 const invalidHacker1 = {
     "_id": mongoose.Types.ObjectId(),
@@ -46,11 +44,7 @@ const duplicateAccountLinkHacker1 = {
             "other": undefined
         },
         "jobInterest": "Full-time",
-        "skills": [
-            Util.Skill.Skill1._id,
-            Util.Skill.Skill5._id,
-            Util.Skill.Skill8._id,
-        ],
+        "skills": ["CSS", "HTML", "JS"],
     },
     "ethnicity": "Caucasian",
     "major": "CS",
@@ -74,11 +68,7 @@ const newHacker1 = {
             "other": undefined
         },
         "jobInterest": "Full-time",
-        "skills": [
-            Util.Skill.Skill1._id,
-            Util.Skill.Skill5._id,
-            Util.Skill.Skill8._id,
-        ],
+        "skills": ["CSS", "HTML", "JS"],
     },
     "ethnicity": "Caucasian",
     "major": "EE",
@@ -102,11 +92,7 @@ const newHacker2 = {
             "other": undefined
         },
         "jobInterest": "Full-time",
-        "skills": [
-            Util.Skill.Skill1._id,
-            Util.Skill.Skill5._id,
-            Util.Skill.Skill8._id,
-        ],
+        "skills": ["CSS", "HTML", "JS"],
     },
     "ethnicity": "African American",
     "major": "EE",
@@ -132,11 +118,7 @@ const HackerA = {
             "other": undefined
         },
         "jobInterest": "Full-time",
-        "skills": [
-            Util.Skill.Skill1._id,
-            Util.Skill.Skill5._id,
-            Util.Skill.Skill8._id,
-        ],
+        "skills": ["CSS", "HTML", "JS"],
     },
     "ethnicity": "Native American",
     "major": "EE",
@@ -161,11 +143,7 @@ const HackerB = {
             "other": undefined
         },
         "jobInterest": "Internship",
-        "skills": [
-            Util.Skill.Skill1._id,
-            Util.Skill.Skill4._id,
-            Util.Skill.Skill7._id,
-        ],
+        "skills": ["CSS", "HTML", "JS"],
     },
     "ethnicity": "European",
     "major": "EE",
@@ -189,7 +167,7 @@ module.exports = {
     dropAll: dropAll
 };
 
-function storeAll(attributes, callback) {
+function storeAll(attributes) {
     const hackerDocs = [];
     const hackerIds = [];
     for (var i = 0; i < attributes.length; i++) {
@@ -197,30 +175,17 @@ function storeAll(attributes, callback) {
         hackerIds.push(attributes[i]._id);
     }
 
-    Hacker.collection.insertMany(hackerDocs).then(
-        () => {
-            logger.info(`${TAG} saved Hackers: ${hackerIds.join(",")}`);
-            callback();
-        },
-        (reason) => {
-            logger.error(`${TAG} could not store Hackers ${hackerIds.join(",")}. Error: ${JSON.stringify(reason)}`);
-            callback(reason);
-        }
-    );
+    return Hacker.collection.insertMany(hackerDocs);
 }
 
-function dropAll(callback) {
-    Hacker.collection.drop().then(
-        () => {
-            logger.info(`Dropped table Hacker`);
-            callback();
-        },
-        (err) => {
-            logger.error(`Could not drop Hacker. Error: ${JSON.stringify(err)}`);
-            callback(err);
+async function dropAll() {
+    try {
+        await Hacker.collection.drop();
+    } catch (e) {
+        if (e.code === 26) {
+            logger.info("namespace %s not found", Hacker.collection.name);
+        } else {
+            throw e;
         }
-    ).catch((error) => {
-        logger.error(error);
-        callback();
-    });
+    }
 }

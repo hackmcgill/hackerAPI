@@ -77,7 +77,7 @@ Model files define the schemas we have in our database. Below is an example Mode
 ```javascript
 "use strict";
 const mongoose = require("mongoose");
-const Constants = require("../constants");
+const Constants = require("../constants/general.constant.js");
 
 const AccountSchema = new mongoose.Schema({
     email: {

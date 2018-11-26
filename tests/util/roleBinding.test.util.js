@@ -2,81 +2,79 @@
 const RoleBinding = require("../../models/roleBinding.model");
 const Util = {
     Account: require("./account.test.util"),
-    Role: require("./role.test.util"),
 };
-const TAG = "[ ROLEBINDING.TEST.UTIL.JS ]";
+const Constants = {
+    Role: require("../../constants/role.constant")
+};
 const logger = require("../../services/logger.service");
 
 const RoleBinding1 = {
     accountId: Util.Account.allAccounts[6]._id,
-    roles: [Util.Role.adminRole._id],
+    roles: [Constants.Role.adminRole._id],
 };
 const RoleBinding2 = {
     accountId: Util.Account.allAccounts[7]._id,
-    roles: [Util.Role.hackerRole._id],
+    roles: [Constants.Role.hackerRole._id],
 };
 const RoleBinding3 = {
     accountId: Util.Account.allAccounts[8]._id,
-    roles: [Util.Role.volunteerRole._id],
+    roles: [Constants.Role.volunteerRole._id],
 };
 const RoleBinding4 = {
     accountId: Util.Account.allAccounts[9]._id,
-    roles: [Util.Role.sponsorT1Role._id],
+    roles: [Constants.Role.sponsorT1Role._id],
 };
 const RoleBinding5 = {
     accountId: Util.Account.allAccounts[10]._id,
-    roles: [Util.Role.sponsorT2Role._id],
+    roles: [Constants.Role.sponsorT2Role._id],
 };
 const RoleBinding6 = {
     accountId: Util.Account.allAccounts[11]._id,
-    roles: [Util.Role.singularRoles.getSelfAccount._id],
+    roles: [Constants.Role.allRolesObject.getSelfAccount._id],
 };
 
 const RoleBinding7 = {
     accountId: Util.Account.allAccounts[12]._id,
-    roles: [Util.Role.allRolesObject.getAnyByIdHacker._id, Util.Role.allRolesObject.patchSelfByIdHacker._id],
+    roles: [Constants.Role.allRolesObject.getAnyByIdHacker._id, Constants.Role.allRolesObject.patchSelfByIdHacker._id],
 };
 
 const RoleBindingHacker1 = {
     accountId: Util.Account.Account1._id,
-    roles: [Util.Role.hackerRole._id],
+    roles: [Constants.Role.hackerRole._id],
 };
 const RoleBindingHacker2 = {
     accountId: Util.Account.Account2._id,
-    roles: [Util.Role.hackerRole._id],
+    roles: [Constants.Role.hackerRole._id],
 };
 const RoleBindingNewHacker1 = {
     accountId: Util.Account.allAccounts[13]._id,
-    roles: [Util.Role.hackerRole._id],
+    roles: [Constants.Role.hackerRole._id],
 };
 
 const RoleBindingSponsor1 = {
     accountId: Util.Account.Account3._id,
-    roles: [Util.Role.sponsorT1Role._id],
+    roles: [Constants.Role.sponsorT1Role._id],
 };
 
 const RoleBindingSponsor2 = {
     accountId: Util.Account.Account5._id,
-    roles: [Util.Role.sponsorT1Role._id],
+    roles: [Constants.Role.sponsorT1Role._id],
 };
 
 const RoleBindingVolunteer1 = {
     accountId: Util.Account.Account4._id,
-    roles: [Util.Role.volunteerRole._id],
+    roles: [Constants.Role.volunteerRole._id],
 };
 
 const RoleBindingNewVolunteer1 = {
     accountId: Util.Account.generatedAccounts[15]._id,
-    roles: [Util.Role.volunteerRole._id],
+    roles: [Constants.Role.volunteerRole._id],
 };
 
 const RoleBindingAdmin1 = {
     accountId: Util.Account.Admin1._id,
-    roles: [Util.Role.adminRole._id],
+    roles: [Constants.Role.adminRole._id],
 };
-
-
-
 
 const RoleBindings = [
     RoleBinding1,
@@ -97,7 +95,7 @@ const RoleBindings = [
 ];
 
 
-function storeAll(attributes, callback) {
+function storeAll(attributes) {
     const roleBindingDocs = [];
     const roleBindingNames = [];
     attributes.forEach((attribute) => {
@@ -105,32 +103,19 @@ function storeAll(attributes, callback) {
         roleBindingNames.push(attribute.name);
     });
 
-    RoleBinding.collection.insertMany(roleBindingDocs).then(
-        () => {
-            logger.info(`${TAG} saved RoleBindings: ${roleBindingNames.join(",")}`);
-            callback();
-        },
-        (reason) => {
-            logger.error(`${TAG} could not store RoleBindings ${roleBindingNames.join(",")}. Error: ${JSON.stringify(reason)}`);
-            callback(reason);
-        }
-    );
+    return RoleBinding.collection.insertMany(roleBindingDocs);
 }
 
-function dropAll(callback) {
-    RoleBinding.collection.drop().then(
-        () => {
-            logger.info(`Dropped table RoleBinding`);
-            callback();
-        },
-        (err) => {
-            logger.error(`Could not drop RoleBinding. Error: ${JSON.stringify(err)}`);
-            callback(err);
+async function dropAll() {
+    try {
+        await RoleBinding.collection.drop();
+    } catch (e) {
+        if (e.code === 26) {
+            logger.info("namespace %s not found", RoleBinding.collection.name);
+        } else {
+            throw e;
         }
-    ).catch((error) => {
-        logger.error(error);
-        callback();
-    });
+    }
 }
 
 module.exports = {

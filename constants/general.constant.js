@@ -1,5 +1,7 @@
 "use strict";
 
+const HACKATHON_NAME = "McHacks";
+
 // constants kept in alphabetical order
 // matches optional http://, https://, http:, https:, and optional www., and then matches for devpost.com and further parameters
 const DEVPOST_REGEX = /^(http(s)?:(\/\/)?)?(www\.)?(([-a-zA-Z0-9@:%._\+~#=]{2,256}\.)?devpost\.com)\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$/;
@@ -24,7 +26,6 @@ const HACKER_STATUSES = [
 const HACKER = "Hacker";
 const VOLUNTEER = "Volunteer";
 const STAFF = "Staff";
-const GODSTAFF = "GodStaff";
 const SPONSOR = "Sponsor";
 
 const SPONSOR_T1 = "SponsorT1";
@@ -40,10 +41,10 @@ const ROLE_CATEGORIES = {
 };
 // enum of type of requests
 const REQUEST_TYPES = {
-    GET: "GET", 
-    POST: "POST", 
-    PATCH: "PATCH", 
-    DELETE: "DELETE", 
+    GET: "GET",
+    POST: "POST",
+    PATCH: "PATCH",
+    DELETE: "DELETE",
     PUT: "PUT"
 };
 
@@ -55,30 +56,31 @@ POST_ROLES[VOLUNTEER] = "postVolunteer";
 POST_ROLES[STAFF] = "postStaff";
 
 const SHIRT_SIZES = ["XS", "S", "M", "L", "XL", "XXL"];
-const USER_TYPES = [HACKER, VOLUNTEER, STAFF, GODSTAFF, SPONSOR];
+const USER_TYPES = [HACKER, VOLUNTEER, STAFF, SPONSOR];
 const SPONSOR_TIERS = [SPONSOR_T1, SPONSOR_T2, SPONSOR_T3, SPONSOR_T4, SPONSOR_T5];
-const EXTENDED_USER_TYPES = [HACKER, VOLUNTEER, STAFF, GODSTAFF, SPONSOR_T1, SPONSOR_T2, SPONSOR_T3, SPONSOR_T4, SPONSOR_T5];
+const EXTENDED_USER_TYPES = [HACKER, VOLUNTEER, STAFF, SPONSOR_T1, SPONSOR_T2, SPONSOR_T3, SPONSOR_T4, SPONSOR_T5];
 
 // matches optional http://, https://, http:, https:, and optional www.
 // matches the domain, and then optional route, path, query parameters
 const URL_REGEX = /^(http(s)?:(\/\/)?)?(www\.)?([-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6})\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$/;
 
 const EMAIL_SUBJECTS = {};
-EMAIL_SUBJECTS[HACKER_STATUS_NONE] = `Application for ${process.env.HACKATHON} incomplete`;
-EMAIL_SUBJECTS[HACKER_STATUS_APPLIED] = `Thanks for applying to ${process.env.HACKATHON}`;
-EMAIL_SUBJECTS[HACKER_STATUS_ACCEPTED] = `Great update from ${process.env.HACKATHON}`;
-EMAIL_SUBJECTS[HACKER_STATUS_WAITLISTED] = `Update from ${process.env.HACKATHON}`;
-EMAIL_SUBJECTS[HACKER_STATUS_CONFIRMED] = `Thanks for confirming your attendance to ${process.env.HACKATHON}`;
+EMAIL_SUBJECTS[HACKER_STATUS_NONE] = `Application for ${HACKATHON_NAME} incomplete`;
+EMAIL_SUBJECTS[HACKER_STATUS_APPLIED] = `Thanks for applying to ${HACKATHON_NAME}`;
+EMAIL_SUBJECTS[HACKER_STATUS_ACCEPTED] = `Great update from ${HACKATHON_NAME}`;
+EMAIL_SUBJECTS[HACKER_STATUS_WAITLISTED] = `Update from ${HACKATHON_NAME}`;
+EMAIL_SUBJECTS[HACKER_STATUS_CONFIRMED] = `Thanks for confirming your attendance to ${HACKATHON_NAME}`;
 EMAIL_SUBJECTS[HACKER_STATUS_CANCELLED] = "Sorry to see you go";
-EMAIL_SUBJECTS[HACKER_STATUS_CHECKED_IN] = `Welcome to ${process.env.HACKATHON}`;
+EMAIL_SUBJECTS[HACKER_STATUS_CHECKED_IN] = `Welcome to ${HACKATHON_NAME}`;
 
 const CONFIRM_ACC_EMAIL_SUBJECTS = {};
-CONFIRM_ACC_EMAIL_SUBJECTS[HACKER] = `Please complete your hacker application for ${process.env.HACKATHON}`;
-CONFIRM_ACC_EMAIL_SUBJECTS[SPONSOR] = `You've been invited to create a sponsor account for ${process.env.HACKATHON}`;
-CONFIRM_ACC_EMAIL_SUBJECTS[VOLUNTEER] = `You've been invited to create a volunteer account for ${process.env.HACKATHON}`;
-CONFIRM_ACC_EMAIL_SUBJECTS[STAFF] = `You've been invited to create a staff account for ${process.env.HACKATHON}`;
+CONFIRM_ACC_EMAIL_SUBJECTS[HACKER] = `Please complete your hacker application for ${HACKATHON_NAME}`;
+CONFIRM_ACC_EMAIL_SUBJECTS[SPONSOR] = `You've been invited to create a sponsor account for ${HACKATHON_NAME}`;
+CONFIRM_ACC_EMAIL_SUBJECTS[VOLUNTEER] = `You've been invited to create a volunteer account for ${HACKATHON_NAME}`;
+CONFIRM_ACC_EMAIL_SUBJECTS[STAFF] = `You've been invited to create a staff account for ${HACKATHON_NAME}`;
 
 module.exports = {
+    HACKATHON_NAME: HACKATHON_NAME,
     DEVPOST_REGEX: DEVPOST_REGEX,
     EMAIL_REGEX: EMAIL_REGEX,
     HACKER_STATUS_NONE: HACKER_STATUS_NONE,
@@ -102,7 +104,6 @@ module.exports = {
     SPONSOR: SPONSOR,
     VOLUNTEER: VOLUNTEER,
     STAFF: STAFF,
-    GODSTAFF: GODSTAFF,
     SPONSOR_T1: SPONSOR_T1,
     SPONSOR_T2: SPONSOR_T2,
     SPONSOR_T3: SPONSOR_T3,

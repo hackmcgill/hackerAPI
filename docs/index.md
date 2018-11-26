@@ -7,14 +7,15 @@ API for registration, live-site
 
 ## Getting started
 
-Run `setupEnv.sh` to set up your environment, and install all packages. If something doesn't work, please let us know! Sadly, this script hasn't been fully tested.
+Check out [this page](./getting-started).
   
 ## Helpful links
 
+* [**Getting started**](./getting-started)
 * [**How to deploy**](./deploy)
 * [**Coding standards**](./standards)
-* [**API documentation**](./api/)
-* [**Architecture, Dependencies**](./architecture)
+* [**API HTTP route documentation**](./api/)
+* [**Architecture, Dependencies, Design**](./architecture)
 
 ## Folder structure
 
@@ -51,10 +52,9 @@ HackerAPI
 │   ├── account.model.js            Schema for generic user account
 │   ├── bus.model.js                Schema for a bus route.
 │   ├── hacker.model.js             Schema for a hacker account.
-│   ├── passwordResetToken.model.js 
+│   ├── passwordResetToken.model.js
 │   ├── role.model.js
 │   ├── roleBinding.model.js
-│   ├── skill.model.js              Schema for a skill that a Hacker has
 │   ├── sponsor.model.js            Schema for sponsor account.
 │   ├── staff.model.js              Schema for staff members (not volunteers)
 │   ├── team.model.js               Schema for a hacker team.
@@ -83,7 +83,6 @@ HackerAPI
 │   ├── role.service.js
 │   ├── roleBinding.service.js
 │   ├── search.js
-│   ├── skill.service.js
 │   ├── sponsor.service.js
 │   ├── storage.service.js
 │   ├── team.service.js
@@ -95,7 +94,6 @@ HackerAPI
         ├── account.test.util.js
         ├── bus.test.util.js
         ├── hacker.test.util.js
-        ├── skill.test.util.js
         ├── sponsor.test.util.js
         ├── staff.test.util.js
         ├── team.test.util.js

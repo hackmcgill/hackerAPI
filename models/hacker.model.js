@@ -1,6 +1,6 @@
 "use strict";
 
-const Constants = require("../constants");
+const Constants = require("../constants/general.constant");
 const mongoose = require("mongoose");
 //describes the data type
 const HackerSchema = new mongoose.Schema({
@@ -55,8 +55,7 @@ const HackerSchema = new mongoose.Schema({
             default: "None"
         },
         skills: [{
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "Skill"
+            type: String
         }],
         //any miscelaneous comments that the user has
         comments: {
@@ -97,6 +96,13 @@ HackerSchema.methods.toJSON = function () {
     hs.id = hs._id;
     delete hs._id;
     return hs;
+};
+HackerSchema.methods.isApplicationComplete = function () {
+    const hs = this.toObject();
+    const portfolioDone = !!hs.application.portfolioURL.resume;
+    const jobInterestDone = !!hs.application.jobInterest;
+    const essayDone = !!hs.application.essay;
+    return portfolioDone && jobInterestDone && essayDone;
 };
 
 /**
