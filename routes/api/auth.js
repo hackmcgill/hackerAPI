@@ -251,6 +251,7 @@ module.exports = {
         /**
          * @api {get} /auth/roles get roles
          * @apiName getRoles
+         * @apiDescription get all roles that exist in the database
          * @apiGroup Authentication
          * @apiVersion 0.0.8
          *
@@ -258,25 +259,14 @@ module.exports = {
          * @apiSuccess {object} data empty
          * @apiSuccessExample {json} Success-Response:
          *      {"message": "Sucessfully retrieved all roles", "data":
-         *      [
-         *          0:Object {name: "GodStaff", routes: Array(27), id: "5bee20ef3ca9dd4754382880"}
-         *          1:Object {name: "Hacker", routes: Array(10), id: "5bee20ef3ca9dd4754382881"}
-         *          2:Object {name: "Volunteer", routes: Array(4), id: "5bee20ef3ca9dd4754382882"}
-         *          3:Object {name: "SponsorT1", routes: Array(5), id: "5bee20ef3ca9dd4754382883"}
-         *          4:Object {name: "SponsorT2", routes: Array(5), id: "5bee20ef3ca9dd4754382884"}
-         *          5:Object {name: "SponsorT3", routes: Array(5), id: "5bee20ef3ca9dd4754382885"}
-         *          6:Object {name: "SponsorT4", routes: Array(5), id: "5bee20ef3ca9dd4754382886"}
-         *          7:Object {name: "SponsorT5", routes: Array(5), id: "5bee20ef3ca9dd4754382887"}
-         *          8:Object {name: "loginAuth", routes: Array(1), id: "5bee20ef3ca9dd4754382888"}
-         *          9:Object {name: "logoutAuth", routes: Array(1), id: "5bee20ef3ca9dd4754382889"}
-         *          10:Object {name: "inviteAuth", routes: Array(1), id: "5bee20ef3ca9dd475438288a"}
-         *          11:Object {name: "getSelfRoleBindindingsAuth", routes: Array(1), id: "5bee20ef3ca9dd475438288b"}
-         *      ]
+         *      [{name: "GodStaff", routes: Array(27), id: "5bee20ef3ca9dd4754382880"},
+         *       {name: "Hacker", routes: Array(10), id: "5bee20ef3ca9dd4754382881"},
+         *       {name: "Volunteer", routes: Array(4), id: "5bee20ef3ca9dd4754382882"}]
          * 
          */
         authRouter.route("/roles").get(
             Middleware.Auth.retrieveRoles,
-            Controllers.Auth.retrieveRoles
+            Controllers.Auth.retrievedRoles
         );
 
         apiRouter.use("/auth", authRouter);

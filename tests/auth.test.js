@@ -16,6 +16,9 @@ const util = {
     reset: require("./util/resetPassword.test.util"),
     role: require("./util/role.test.util")
 };
+
+const roles = require("../constants/role.constant");
+
 // hacker role binding
 const storedAccount1 = util.account.Account1;
 
@@ -38,8 +41,18 @@ describe("GET roles", function () {
                     res.body.message.should.equal("Successfully retrieved all roles");
                     res.body.should.have.property("data");
                     res.body.data.should.be.a("Array");
-                    res.body.data.should.have.lengthOf(util.role.allRolesArray.length);
-                    console.log(res)
+
+                    let rolenames = []
+                    roles.allRolesArray.forEach(element => {
+                        rolenames.push(element.name)
+                    });
+
+                    let retrievedRoleNames = []
+                    res.body.data.forEach(element => {
+                        retrievedRoleNames.push(element.name)
+                    });
+
+                    rolenames.should.have.members(retrievedRoleNames)
                     done();
                 });
         });

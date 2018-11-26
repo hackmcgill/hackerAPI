@@ -44,7 +44,7 @@ module.exports = {
             data: {}
         })
     },
-    retrieveRoles: function(req, res) {
+    retrievedRoles: function(req, res) {
         return res.status(200).json({
             message: "Successfully retrieved all roles",
             data: req.roles
