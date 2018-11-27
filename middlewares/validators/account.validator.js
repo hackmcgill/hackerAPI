@@ -10,12 +10,11 @@ module.exports = {
         VALIDATOR.alphaArrayValidator("body", "dietaryRestrictions", false),
         VALIDATOR.shirtSizeValidator("body", "shirtSize", false),
         VALIDATOR.passwordValidator("body", "password", false),
-        VALIDATOR.jwtValidator("param","token", process.env.JWT_CONFIRM_ACC_SECRET, true),
+        VALIDATOR.jwtValidator("param", "token", process.env.JWT_CONFIRM_ACC_SECRET, true),
         VALIDATOR.dateValidator("body", "birthDate", false),
         VALIDATOR.phoneNumberValidator("body", "phoneNumber", false)
     ],
     updateAccountValidator: [
-        VALIDATOR.mongoIdValidator("body", "_id", true),
         VALIDATOR.nameValidator("body", "firstName", true),
         VALIDATOR.nameValidator("body", "lastName", true),
         VALIDATOR.pronounValidator("body", "pronoun", true),
@@ -24,5 +23,8 @@ module.exports = {
         VALIDATOR.shirtSizeValidator("body", "shirtSize", true),
         VALIDATOR.dateValidator("body", "birthDate", true),
         VALIDATOR.phoneNumberValidator("body", "phoneNumber", true)
-    ]
+    ],
+    updateConfirmationValidator: [
+        VALIDATOR.booleanValidator("body", "confirmed", false),
+    ],
 };
