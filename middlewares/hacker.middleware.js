@@ -241,7 +241,14 @@ async function updateStatusIfApplicationCompleted(req, res, next) {
     }
 }
 
-async function checkHackerStatus(req, res, next) {
+/**
+ * Checks that the hacker's status is appropriate to be checked in by a volunteer.
+ * The status should be 'Confirmed'
+ * @param {{params:{id: string}, body: *}} req 
+ * @param {*} res 
+ * @param {*} next 
+ */
+async function validateCheckInHackerStatus(req, res, next) {
     const hacker = await Services.Hacker.findById(req.params.id, req.body);
     if (hacker) {
         const status = hacker.status;
@@ -335,5 +342,5 @@ module.exports = {
     validateConfirmedStatus: Middleware.Util.asyncMiddleware(validateConfirmedStatus),
     checkDuplicateAccountLinks: Middleware.Util.asyncMiddleware(checkDuplicateAccountLinks),
     updateStatusIfApplicationCompleted: Middleware.Util.asyncMiddleware(updateStatusIfApplicationCompleted),
-    checkHackerStatus: Middleware.Util.asyncMiddleware(checkHackerStatus),
+    validateCheckInHackerStatus: Middleware.Util.asyncMiddleware(validateCheckInHackerStatus),
 };

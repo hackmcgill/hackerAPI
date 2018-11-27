@@ -14,34 +14,34 @@ module.exports = {
             data: {}
         });
     },
-    sentResetEmail: function(req, res) {
+    sentResetEmail: function (req, res) {
         return res.status(200).json({
             message: "Sent reset email",
             data: {}
         });
     },
-    resetPassword: function(req, res) {
+    resetPassword: function (req, res) {
         return res.status(200).json({
             message: "Successfully reset password",
             data: {}
         });
     },
-    confirmAccount: function(req, res) {
+    confirmAccount: function (req, res) {
         return res.status(200).json({
             message: "Successfully confirmed account",
             data: {}
-        })
+        });
     },
-    retrieveRoleBindings: function(req, res) {
+    retrieveRoleBindings: function (req, res) {
         return res.status(200).json({
             message: "Successfully retrieved role bindings",
             data: req.roleBindings.toJSON()
-        })
+        });
     },
-    sentConfirmationEmail: function(req, res){
+    sentConfirmationEmail: function (req, res) {
         return res.status(200).json({
             message: "Successfully resent account email",
             data: {}
-        })
+        });
     }
 };

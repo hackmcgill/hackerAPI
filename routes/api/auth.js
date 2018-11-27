@@ -246,7 +246,7 @@ module.exports = {
             Middleware.Auth.ensureAuthenticated(),
             Middleware.Auth.resendConfirmAccountEmail,
             Controllers.Auth.sentConfirmationEmail
-        )
+        );
 
         apiRouter.use("/auth", authRouter);
     }

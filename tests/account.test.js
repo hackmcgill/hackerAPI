@@ -442,8 +442,8 @@ describe("GET resend confirmation email", function () {
                     res.body.should.have.property("message");
                     res.body.message.should.equal("Successfully resent account email");
                     done();
-                })
-        })
+                });
+        });
     });
     it("should FAIL as the account is already confirmed", function (done) {
         util.auth.login(agent, storedAccount1, (error) => {

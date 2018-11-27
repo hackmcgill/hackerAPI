@@ -180,6 +180,57 @@ define({
       }]
     },
     {
+      "type": "patch",
+      "url": "/account/confirmation/:id",
+      "title": "update an account's confirmed status",
+      "name": "patchAccountConfirmed",
+      "group": "Account",
+      "version": "0.0.9",
+      "parameter": {
+        "fields": {
+          "body": [{
+            "group": "body",
+            "type": "Boolean",
+            "optional": true,
+            "field": "confirmed",
+            "description": "<p>Whether the account is confirmed or not</p>"
+          }]
+        }
+      },
+      "success": {
+        "fields": {
+          "Success 200": [{
+              "group": "Success 200",
+              "type": "string",
+              "optional": false,
+              "field": "message",
+              "description": "<p>Success message</p>"
+            },
+            {
+              "group": "Success 200",
+              "type": "object",
+              "optional": false,
+              "field": "data",
+              "description": "<p>Hacker object</p>"
+            }
+          ]
+        },
+        "examples": [{
+          "title": "Success-Response: ",
+          "content": "{\n    \"message\": \"Changed account information\", \n    \"data\": {\n        \"confirmed\": \"true\"\n    }\n}",
+          "type": "object"
+        }]
+      },
+      "permission": [{
+        "name": "Administrator"
+      }],
+      "filename": "routes/api/account.js",
+      "groupTitle": "Account",
+      "sampleRequest": [{
+        "url": "https://mchacks.ca/api/account/confirmation/:id"
+      }]
+    },
+    {
       "type": "get",
       "url": "/account/self",
       "title": "get information about own account",
@@ -808,6 +859,61 @@ define({
       "groupTitle": "Auth",
       "sampleRequest": [{
         "url": "https://mchacks.ca/api/auth/rolebindings/:id"
+      }]
+    },
+    {
+      "type": "patch",
+      "url": "/hacker/checkin/:id",
+      "title": "update a hacker's status to be 'Checked-in'",
+      "name": "checkinHacker",
+      "group": "Hacker",
+      "version": "0.0.9",
+      "parameter": {
+        "fields": {
+          "body": [{
+            "group": "body",
+            "type": "String",
+            "optional": true,
+            "field": "status",
+            "description": "<p>Check-in status</p>"
+          }]
+        }
+      },
+      "success": {
+        "fields": {
+          "Success 200": [{
+              "group": "Success 200",
+              "type": "string",
+              "optional": false,
+              "field": "message",
+              "description": "<p>Success message</p>"
+            },
+            {
+              "group": "Success 200",
+              "type": "object",
+              "optional": false,
+              "field": "data",
+              "description": "<p>Hacker object</p>"
+            }
+          ]
+        },
+        "examples": [{
+          "title": "Success-Response: ",
+          "content": "{\n    \"message\": \"Changed hacker information\", \n    \"data\": {\n        \"status\": \"Checked-in\"\n    }\n}",
+          "type": "object"
+        }]
+      },
+      "permission": [{
+          "name": "Administrator"
+        },
+        {
+          "name": "Volunteer"
+        }
+      ],
+      "filename": "routes/api/hacker.js",
+      "groupTitle": "Hacker",
+      "sampleRequest": [{
+        "url": "https://mchacks.ca/api/hacker/checkin/:id"
       }]
     },
     {

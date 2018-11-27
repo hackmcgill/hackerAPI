@@ -113,6 +113,25 @@ module.exports = {
             Controllers.Hacker.updatedHacker
         );
 
+        /**
+         * @api {patch} /hacker/checkin/:id update a hacker's status to be 'Checked-in'
+         * @apiName checkinHacker
+         * @apiGroup Hacker
+         * @apiVersion 0.0.9
+         * 
+         * @apiParam (body) {String} [status] Check-in status
+         * @apiSuccess {string} message Success message
+         * @apiSuccess {object} data Hacker object
+         * @apiSuccessExample {object} Success-Response: 
+         *      {
+         *          "message": "Changed hacker information", 
+         *          "data": {
+         *              "status": "Checked-in"
+         *          }
+         *      }
+         * @apiPermission Administrator
+         * @apiPermission Volunteer
+         */
         hackerRouter.route("/checkin/:id").patch(
             Middleware.Auth.ensureAuthenticated(),
             Middleware.Auth.ensureAuthorized([Services.Hacker.findById]),
@@ -122,7 +141,7 @@ module.exports = {
             Middleware.parseBody.middleware,
             Middleware.Hacker.parsePatch,
 
-            Middleware.Hacker.checkHackerStatus,
+            Middleware.Hacker.validateCheckInHackerStatus,
             Middleware.Hacker.updateHacker,
 
             Middleware.Hacker.sendStatusUpdateEmail,
