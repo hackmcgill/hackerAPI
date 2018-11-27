@@ -190,7 +190,7 @@ describe("POST create account", function () {
             .type("application/json")
             .send(storedAccount1)
             .end(function (err, res) {
-                res.should.have.status(500);
+                res.should.have.status(422);
                 done();
             });
     });

@@ -26,7 +26,7 @@ const Constants = {
  */
 function parsePatch(req, res, next) {
     delete req.body.id;
-    next();
+    return next();
 }
 
 /**
@@ -66,7 +66,7 @@ function parseAccount(req, res, next) {
 
     req.body.accountDetails = accountDetails;
 
-    next();
+    return next();
 }
 
 /**
@@ -77,13 +77,13 @@ function parseAccount(req, res, next) {
  */
 async function updatePassword(req, res, next) {
     req.body.account = await Services.Account.updatePassword(req.body.decodedToken.accountId, req.body.password);
-    next();
+    return next();
 }
 
 // TODO: fix when new permission system is created
 async function addDefaultHackerPermissions(req, res, next) {
     // await Services.RoleBinding.createRoleBinding(req.);
-    next();
+    return next();
 }
 
 /**
@@ -100,8 +100,8 @@ async function addAccount(req, res, next) {
     //Check duplicate
     const exists = await Services.Account.findByEmail(accountDetails.email);
     if (exists) {
-        next({
-            status: 500,
+        return next({
+            status: 422,
             message: Constants.Error.ACCOUNT_DUPLICATE_422_MESSAGE,
             error: {
                 route: req.path
@@ -110,7 +110,7 @@ async function addAccount(req, res, next) {
     }
     const account = await Services.Account.addOneAccount(accountDetails);
     req.body.account = account;
-    next();
+    return next();
 }
 
 /**
@@ -122,9 +122,9 @@ async function addAccount(req, res, next) {
 async function updateAccount(req, res, next) {
     const account = await Services.Account.updateOne(req.params.id, req.body);
     if (account) {
-        next();
+        return next();
     } else {
-        next({
+        return next({
             status: 404,
             message: Constants.Error.ACCOUNT_404_MESSAGE,
             data: {

@@ -53,7 +53,7 @@ function login(req, res, next) {
                         error: {}
                     });
                 }
-                next();
+                return next();
             });
         })(req, res, next);
 }
@@ -65,7 +65,7 @@ function login(req, res, next) {
 function ensureAuthenticated() {
     return function (req, res, next) {
         if (req.isUnauthenticated()) {
-            next({
+            return next({
                 status: 401,
                 message: Constants.Error.AUTH_401_MESSAGE,
                 error: {
@@ -73,7 +73,7 @@ function ensureAuthenticated() {
                 }
             });
         } else {
-            next();
+            return next();
         }
     };
 }
@@ -88,7 +88,7 @@ function ensureAuthorized(findByIdFns) {
         Services.Auth.ensureAuthorized(req, findByIdFns).then(
             (auth) => {
                 if (!auth) {
-                    next({
+                    return next({
                         status: 403,
                         message: Constants.Error.AUTH_403_MESSAGE,
                         error: {
@@ -96,11 +96,11 @@ function ensureAuthorized(findByIdFns) {
                         }
                     });
                 } else {
-                    next();
+                    return next();
                 }
             },
             (err) => {
-                next(err);
+                return next(err);
             }
         );
     };
@@ -121,7 +121,7 @@ async function retrieveRoleBindings(req, res, next) {
         })
     }
     req.roleBindings = roleBindings;
-    next();
+    return next();
 }
 
 /**
@@ -145,9 +145,9 @@ async function sendResetPasswordEmailMiddleware(req, res, next) {
         if (mailData !== undefined) {
             Services.Email.send(mailData, (err) => {
                 if (err) {
-                    next(err);
+                    return next(err);
                 } else {
-                    next();
+                    return next();
                 }
             });
         } else {
@@ -157,7 +157,7 @@ async function sendResetPasswordEmailMiddleware(req, res, next) {
         }
     } else {
         //Didn't find the user, but we don't want to throw an error because someone might be trying to see who has an account.
-        next();
+        return next();
     }
 }
 
@@ -178,9 +178,9 @@ async function sendConfirmAccountEmailMiddleware(req, res, next) {
     if (mailData !== undefined) {
         Services.Email.send(mailData, (err) => {
             if (err) {
-                next(err);
+                return next(err);
             } else {
-                next();
+                return next();
             }
         });
     } else {
@@ -216,9 +216,9 @@ async function resendConfirmAccountEmail(req, res, next) {
     if (mailData !== undefined) {
         Services.Email.send(mailData, (err) => {
             if (err) {
-                next(err);
+                return next(err);
             } else {
-                next();
+                return next();
             }
         });
     } else {
@@ -238,10 +238,10 @@ async function resendConfirmAccountEmail(req, res, next) {
 function parseResetToken(req, res, next) {
     jwt.verify(req.body['x-reset-token'], process.env.JWT_RESET_PWD_SECRET, function (err, decoded) {
         if (err) {
-            next(err);
+            return next(err);
         } else {
             req.body.decodedToken = decoded;
-            next();
+            return next();
         }
     });
 }
@@ -258,13 +258,13 @@ function parseAccountConfirmationToken(req, res, next) {
     if (!!req.body.token) {
         jwt.verify(req.body.token, process.env.JWT_CONFIRM_ACC_SECRET, function (err, decoded) {
             if (err) {
-                next(err);
+                return next(err);
             } else {
                 req.body.decodedToken = decoded;
             }
         });
     }
-    next();
+    return next();
 }
 
 /**
@@ -277,10 +277,10 @@ async function getAccountTypeFromConfirmationToken(req, res, next) {
     const confirmationObj = await Services.AccountConfirmation.findById(req.body.decodedToken.accountConfirmationId);
     if (confirmationObj) {
         req.body.accountType = confirmationObj.accountType;
-        next();
+        return next();
     } else {
         //Either the token was already used, it's invalid, or user does not exist.
-        next({
+        return next({
             status: 401,
             message: Constants.Error.ACCOUNT_TOKEN_401_MESSAGE,
             error: {}
@@ -299,10 +299,10 @@ async function validateResetToken(req, res, next) {
     const userObj = await Services.Account.findById(req.body.decodedToken.accountId);
     if (resetObj && userObj) {
         req.body.user = userObj;
-        next();
+        return next();
     } else {
         //Either the token was already used, it's invalid, or user does not exist.
-        next({
+        return next({
             status: 401,
             message: Constants.Error.ACCOUNT_TOKEN_401_MESSAGE,
             error: {}
@@ -324,10 +324,10 @@ async function validateConfirmationToken(req, res, next) {
         userObj.accountType = confirmationObj.accountType;
         await Services.Account.updateOne(confirmationObj.accountId, userObj);
         req.body.user = userObj;
-        next();
+        return next();
     } else {
         //Either the token was already used, it's invalid, or user does not exist.
-        next({
+        return next({
             status: 401,
             message: Constants.Error.ACCOUNT_TOKEN_401_MESSAGE,
             error: {}
@@ -349,7 +349,7 @@ async function validateConfirmationTokenWithoutAccount(req, res, next) {
             req.body.accountDetails.accountType = confirmationObj.accountType;
         }
     }
-    next();
+    return next();
 }
 
 
@@ -362,10 +362,10 @@ async function validateConfirmationTokenWithoutAccount(req, res, next) {
 function deleteResetToken(req, res, next) {
     Services.ResetPasswordToken.deleteToken(req.body.decodedToken.resetId).then(
         () => {
-            next();
+            return next();
         },
         (err) => {
-            next(err);
+            return next(err);
         }
     );
 }
@@ -380,7 +380,7 @@ async function addCreationRoleBindings(req, res, next) {
     // Get the default role for the account type given
     const roleName = Constants.General.POST_ROLES[req.body.account.accountType];
     await Services.RoleBinding.createRoleBindingByRoleName(req.body.account.id, roleName);
-    next();
+    return next();
 }
 
 /**
@@ -390,7 +390,7 @@ async function addCreationRoleBindings(req, res, next) {
 function createRoleBindings(roleName = undefined) {
     return async (req, res, next) => {
         await Services.RoleBinding.createRoleBindingByRoleName(req.user.id, roleName);
-        next();
+        return next();
     }
 }
 
@@ -403,7 +403,7 @@ function createRoleBindings(roleName = undefined) {
 async function addSponsorRoleBindings(req, res, next) {
     const account = Services.Account.findById(req.body.sponsorDetails.accountId);
     await Services.RoleBinding.createRoleBindingByRoleName(account.id, account.accountType);
-    next();
+    return next();
 }
 
 module.exports = {
