@@ -241,6 +241,33 @@ async function updateStatusIfApplicationCompleted(req, res, next) {
     }
 }
 
+async function checkHackerStatus(req, res, next) {
+    const hacker = await Services.Hacker.findById(req.params.id, req.body);
+    if (hacker) {
+        const status = hacker.status;
+
+        if (status !== Constants.General.HACKER_STATUS_CONFIRMED) {
+            return next({
+                status: 409,
+                message: Constants.Error.HACKER_CHECKIN_409_MESSAGE,
+                data: {
+                    id: req.params.id
+                }
+            });
+        }
+
+        return next();
+    } else {
+        return next({
+            status: 404,
+            message: Constants.Error.HACKER_404_MESSAGE,
+            data: {
+                id: req.params.id
+            }
+        });
+    }
+}
+
 /**
  * Updates a hacker that is specified by req.params.id, and then sets req.email 
  * to the email of the hacker, found in Account.
@@ -307,5 +334,6 @@ module.exports = {
     updateHacker: Middleware.Util.asyncMiddleware(updateHacker),
     validateConfirmedStatus: Middleware.Util.asyncMiddleware(validateConfirmedStatus),
     checkDuplicateAccountLinks: Middleware.Util.asyncMiddleware(checkDuplicateAccountLinks),
-    updateStatusIfApplicationCompleted: Middleware.Util.asyncMiddleware(updateStatusIfApplicationCompleted)
+    updateStatusIfApplicationCompleted: Middleware.Util.asyncMiddleware(updateStatusIfApplicationCompleted),
+    checkHackerStatus: Middleware.Util.asyncMiddleware(checkHackerStatus),
 };

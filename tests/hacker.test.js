@@ -26,6 +26,7 @@ const Volunteer1 = util.account.Account4;
 
 // storedAccount1 and storedHacker1 are linked together, and have hacker priviledges
 // newHackerDuplicateAccountLink1 is also linked with Account1
+// storedHacker1 has status confirmed
 const storedAccount1 = util.account.Account1;
 const storedHacker1 = util.hacker.HackerA;
 const newHackerDuplicateAccountLink1 = util.hacker.duplicateAccountLinkHacker1;

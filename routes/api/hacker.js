@@ -122,7 +122,9 @@ module.exports = {
             Middleware.parseBody.middleware,
             Middleware.Hacker.parsePatch,
 
+            Middleware.Hacker.checkHackerStatus,
             Middleware.Hacker.updateHacker,
+
             Middleware.Hacker.sendStatusUpdateEmail,
             Controllers.Hacker.updatedHacker
         );

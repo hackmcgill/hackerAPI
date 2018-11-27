@@ -103,7 +103,7 @@ const newHacker2 = {
 const HackerA = {
     "_id": mongoose.Types.ObjectId(),
     "accountId": Util.Account.Account1._id,
-    "status": "Applied",
+    "status": "Confirmed",
     "school": "University of Blah",
     "gender": "Male",
     "needsBus": true,
