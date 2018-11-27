@@ -28,10 +28,6 @@ const hackerRole = {
     "_id": mongoose.Types.ObjectId(),
     "name": Constants.General.HACKER,
     "routes": [
-        Constants.Routes.authRoutes.login,
-        Constants.Routes.authRoutes.logout,
-        Constants.Routes.authRoutes.getSelfRoleBindindings,
-
         Constants.Routes.accountRoutes.getSelf,
         Constants.Routes.accountRoutes.getSelfById,
         Constants.Routes.accountRoutes.patchSelfById,
@@ -47,10 +43,6 @@ const volunteerRole = {
     "_id": mongoose.Types.ObjectId(),
     "name": Constants.General.VOLUNTEER,
     "routes": [
-        Constants.Routes.authRoutes.login,
-        Constants.Routes.authRoutes.logout,
-        Constants.Routes.authRoutes.getSelfRoleBindindings,
-
         Constants.Routes.volunteerRoutes.post,
     ]
 };
@@ -59,10 +51,6 @@ const sponsorT1Role = {
     "_id": mongoose.Types.ObjectId(),
     "name": Constants.General.SPONSOR_T1,
     "routes": [
-        Constants.Routes.authRoutes.login,
-        Constants.Routes.authRoutes.logout,
-        Constants.Routes.authRoutes.getSelfRoleBindindings,
-
         Constants.Routes.sponsorRoutes.post,
         Constants.Routes.sponsorRoutes.getSelfById,
     ]
@@ -72,10 +60,6 @@ const sponsorT2Role = {
     "_id": mongoose.Types.ObjectId(),
     "name": Constants.General.SPONSOR_T2,
     "routes": [
-        Constants.Routes.authRoutes.login,
-        Constants.Routes.authRoutes.logout,
-        Constants.Routes.authRoutes.getSelfRoleBindindings,
-
         Constants.Routes.sponsorRoutes.post,
         Constants.Routes.sponsorRoutes.getSelfById,
     ]
@@ -85,10 +69,6 @@ const sponsorT3Role = {
     "_id": mongoose.Types.ObjectId(),
     "name": Constants.General.SPONSOR_T3,
     "routes": [
-        Constants.Routes.authRoutes.login,
-        Constants.Routes.authRoutes.logout,
-        Constants.Routes.authRoutes.getSelfRoleBindindings,
-
         Constants.Routes.sponsorRoutes.post,
         Constants.Routes.sponsorRoutes.getSelfById,
     ]
@@ -98,10 +78,6 @@ const sponsorT4Role = {
     "_id": mongoose.Types.ObjectId(),
     "name": Constants.General.SPONSOR_T4,
     "routes": [
-        Constants.Routes.authRoutes.login,
-        Constants.Routes.authRoutes.logout,
-        Constants.Routes.authRoutes.getSelfRoleBindindings,
-
         Constants.Routes.sponsorRoutes.post,
         Constants.Routes.sponsorRoutes.getSelfById,
     ]
@@ -111,10 +87,6 @@ const sponsorT5Role = {
     "_id": mongoose.Types.ObjectId(),
     "name": Constants.General.SPONSOR_T5,
     "routes": [
-        Constants.Routes.authRoutes.login,
-        Constants.Routes.authRoutes.logout,
-        Constants.Routes.authRoutes.getSelfRoleBindindings,
-
         Constants.Routes.sponsorRoutes.post,
         Constants.Routes.sponsorRoutes.getSelfById,
     ]
