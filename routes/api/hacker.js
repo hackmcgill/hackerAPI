@@ -306,6 +306,37 @@ module.exports = {
                 Middleware.Hacker.downloadResume,
                 Controllers.Hacker.downloadedResume
             );
+
+        /**
+         * @api {patch} /hacker/confirmation/self Allows a hacker to confirm they are attending
+         * @apiName patchHackerConfirmed
+         * @apiGroup Hacker
+         * @apiVersion 0.0.9
+         * 
+         * @apiParam (body) {Boolean} [confirmed] Whether the account is confirmed or not
+         * @apiSuccess {string} message Success message
+         * @apiSuccess {object} data Hacker object
+         * @apiSuccessExample {object} Success-Response: 
+         *      {
+         *          "message": "Changed account information", 
+         *          "data": {
+         *              "confirmed": "true"
+         *          }
+         *      }
+         * @apiPermission Administrator
+         */
+        accountRouter.route("/confirmation/:id").patch(
+            Middleware.Auth.ensureAuthenticated(),
+            Middleware.Auth.ensureAuthorized([Services.Account.findById]),
+
+            Middleware.Validator.RouteParam.idValidator,
+            Middleware.Validator.Account.updateConfirmationValidator,
+            Middleware.parseBody.middleware,
+            Middleware.Account.parsePatch,
+
+            Middleware.Account.updateAccount,
+            Controllers.Account.updatedAccount
+        );
         apiRouter.use("/hacker", hackerRouter);
     }
 };
