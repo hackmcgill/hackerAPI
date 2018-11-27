@@ -83,7 +83,6 @@ module.exports = {
             Middleware.parseBody.middleware,
 
             // middlewares to parse body/organize body
-            // adds default hacker permissions here
             Middleware.Account.parseAccount,
 
             // Parses account token if it exists
@@ -172,37 +171,6 @@ module.exports = {
             Middleware.parseBody.middleware,
 
             Controllers.Account.getUserById
-        );
-
-        /**
-         * @api {patch} /account/confirmation/:id update an account's confirmed status
-         * @apiName patchAccountConfirmed
-         * @apiGroup Account
-         * @apiVersion 0.0.9
-         * 
-         * @apiParam (body) {Boolean} [confirmed] Whether the account is confirmed or not
-         * @apiSuccess {string} message Success message
-         * @apiSuccess {object} data Hacker object
-         * @apiSuccessExample {object} Success-Response: 
-         *      {
-         *          "message": "Changed account information", 
-         *          "data": {
-         *              "confirmed": "true"
-         *          }
-         *      }
-         * @apiPermission Administrator
-         */
-        accountRouter.route("/confirmation/:id").patch(
-            Middleware.Auth.ensureAuthenticated(),
-            Middleware.Auth.ensureAuthorized([Services.Account.findById]),
-
-            Middleware.Validator.RouteParam.idValidator,
-            Middleware.Validator.Account.updateConfirmationValidator,
-            Middleware.parseBody.middleware,
-            Middleware.Account.parsePatch,
-
-            Middleware.Account.updateAccount,
-            Controllers.Account.updatedAccount
         );
 
         apiRouter.use("/account", accountRouter);
