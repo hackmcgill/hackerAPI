@@ -103,7 +103,15 @@ const hackerRoutes = {
     "patchSelfStatusById": {
         requestType: Constants.REQUEST_TYPES.PATCH,
         uri: "/api/hacker/status/" + Constants.ROLE_CATEGORIES.SELF,
-    }
+    },
+    "patchSelfCheckInById": {
+        requestType: Constants.REQUEST_TYPES.PATCH,
+        uri: "/api/hacker/checkin/" + Constants.ROLE_CATEGORIES.SELF,
+    },
+    "patchAnyCheckInById": {
+        requestType: Constants.REQUEST_TYPES.PATCH,
+        uri: "/api/hacker/checkin/" + Constants.ROLE_CATEGORIES.ALL,
+    },
 };
 
 const sponsorRoutes = {

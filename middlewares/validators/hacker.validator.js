@@ -25,6 +25,9 @@ module.exports = {
     updateStatusValidator: [
         VALIDATOR.hackerStatusValidator("body", "status", false)
     ],
+    checkInStatusValidator: [
+        VALIDATOR.hackerCheckInStatusValidator("body", "status", false)
+    ],
     uploadResumeValidator: [
         VALIDATOR.mongoIdValidator("param", "id", false)
     ],

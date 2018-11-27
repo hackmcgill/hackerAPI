@@ -305,6 +305,18 @@ function hackerStatusValidator(fieldLocation, fieldname, optional = true) {
     }
 }
 
+function hackerCheckInStatusValidator(fieldLocation, fieldname, optional = true) {
+    const status = setProperValidationChainBuilder(fieldLocation, fieldname, "invalid status");
+
+    if (optional) {
+        return status.optional({
+            checkFalsy: true
+        }).isIn(Constants.HACKER_STATUS_CHECKED_IN).withMessage(`Status must be ${Constants.HACKER_STATUS_CHECKED_IN}`);
+    } else {
+        return status.exists().withMessage(`Status must be ${Constants.HACKER_STATUS_CHECKED_IN}`);
+    }
+}
+
 /**
  * Validates that field must be a valid application.
  * @param {"query" | "body" | "header" | "param"} fieldLocation the location where the field should be found 
@@ -601,5 +613,6 @@ module.exports = {
     searchValidator: searchValidator,
     searchSortValidator: searchSortValidator,
     phoneNumberValidator: phoneNumberValidator,
-    dateValidator: dateValidator
+    dateValidator: dateValidator,
+    hackerCheckInStatusValidator: hackerCheckInStatusValidator,
 };

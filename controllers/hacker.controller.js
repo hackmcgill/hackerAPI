@@ -59,7 +59,6 @@ async function createHacker(req, res) {
 }
 
 /**
- * @async
  * @function updateHacker
  * @param {{params: {id: ObjectId}, body: {Object}}} req
  * @param {*} res
@@ -70,7 +69,7 @@ async function createHacker(req, res) {
  *      Returns a 200 status for an updated hacker.
  *      The new information is located in req.body.
  */
-async function updatedHacker(req, res) {
+function updatedHacker(req, res) {
     return res.status(200).json({
         message: "Changed hacker information",
         data: req.body

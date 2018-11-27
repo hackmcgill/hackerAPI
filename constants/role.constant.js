@@ -40,6 +40,9 @@ const volunteerRole = {
         Constants.Routes.authRoutes.getSelfRoleBindindings,
 
         Constants.Routes.volunteerRoutes.post,
+
+        Constants.Routes.hackerRoutes.patchAnyCheckInById,
+        Constants.Routes.hackerRoutes.patchSelfCheckInById,
     ]
 };
 

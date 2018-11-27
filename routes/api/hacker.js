@@ -113,6 +113,20 @@ module.exports = {
             Controllers.Hacker.updatedHacker
         );
 
+        hackerRouter.route("/checkin/:id").patch(
+            Middleware.Auth.ensureAuthenticated(),
+            Middleware.Auth.ensureAuthorized([Services.Hacker.findById]),
+
+            Middleware.Validator.RouteParam.idValidator,
+            Middleware.Validator.Hacker.checkInStatusValidator,
+            Middleware.parseBody.middleware,
+            Middleware.Hacker.parsePatch,
+
+            Middleware.Hacker.updateHacker,
+            Middleware.Hacker.sendStatusUpdateEmail,
+            Controllers.Hacker.updatedHacker
+        );
+
         /**
          * @api {patch} /hacker/:id update a hacker's information.  
          * @apiDescription This route only contains the ability to update a subset of a hacker's information. If you want to update a status, you must have Admin priviledges and use PATCH /hacker/status/:id.
