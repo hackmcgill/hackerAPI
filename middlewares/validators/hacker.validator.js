@@ -15,6 +15,10 @@ module.exports = {
         VALIDATOR.booleanValidator("body", "codeOfConduct", false),
     ],
 
+    updateConfirmationValidator: [
+        VALIDATOR.booleanValidator("body", "confirm", false),
+    ],
+
     // untested
     updateHackerValidator: [
         VALIDATOR.nameValidator("body", "school", true),

@@ -114,7 +114,7 @@ module.exports = {
         );
 
         /**
-         * @api {patch} /hacker/checkin/:id update a hacker's status to be 'Checked-in'
+         * @api {patch} /hacker/checkin/:id update a hacker's status to be 'Checked-in'.
          * @apiName checkinHacker
          * @apiGroup Hacker
          * @apiVersion 0.0.9
@@ -137,11 +137,12 @@ module.exports = {
             Middleware.Auth.ensureAuthorized([Services.Hacker.findById]),
 
             Middleware.Validator.RouteParam.idValidator,
-            Middleware.Validator.Hacker.checkInStatusValidator,
             Middleware.parseBody.middleware,
             Middleware.Hacker.parsePatch,
 
-            Middleware.Hacker.validateCheckInHackerStatus,
+            Middleware.Hacker.parseHacker,
+            Middleware.Hacker.checkStatus([CONSTANTS.HACKER_STATUS_ACCEPTED, CONSTANTS.HACKER_STATUS_CONFIRMED]),
+            Middleware.Hacker.parseCheckIn,
             Middleware.Hacker.updateHacker,
 
             Middleware.Hacker.sendStatusUpdateEmail,
@@ -308,34 +309,41 @@ module.exports = {
             );
 
         /**
-         * @api {patch} /hacker/confirmation/self Allows a hacker to confirm they are attending
+         * @api {patch} /hacker/confirmation/self Allows a hacker to confirm they are attending from 'accepted',
+         * or they can undo the confirmation and return to 'accepted'
          * @apiName patchHackerConfirmed
          * @apiGroup Hacker
          * @apiVersion 0.0.9
          * 
-         * @apiParam (body) {Boolean} [confirmed] Whether the account is confirmed or not
+         * @apiParam (body) {String} [status] The new status of the hacker. 'Accepted' or 'Confirmed'
          * @apiSuccess {string} message Success message
          * @apiSuccess {object} data Hacker object
          * @apiSuccessExample {object} Success-Response: 
          *      {
-         *          "message": "Changed account information", 
+         *          "message": "Changed hacker information", 
          *          "data": {
-         *              "confirmed": "true"
+         *              "status": "Confirmed"
          *          }
          *      }
          * @apiPermission Administrator
+         * @apiPermission Hacker
          */
-        accountRouter.route("/confirmation/:id").patch(
+        hackerRouter.route("/confirmation/self").patch(
             Middleware.Auth.ensureAuthenticated(),
-            Middleware.Auth.ensureAuthorized([Services.Account.findById]),
+            Middleware.Auth.ensureAuthorized([Services.Hacker.findById]),
 
             Middleware.Validator.RouteParam.idValidator,
-            Middleware.Validator.Account.updateConfirmationValidator,
+            Middleware.Validator.Hacker.updateConfirmationValidator,
             Middleware.parseBody.middleware,
-            Middleware.Account.parsePatch,
+            Middleware.Hacker.parsePatch,
 
-            Middleware.Account.updateAccount,
-            Controllers.Account.updatedAccount
+            Middleware.Hacker.checkStatus([CONSTANTS.HACKER_STATUS_ACCEPTED, CONSTANTS.HACKER_STATUS_CONFIRMED]),
+
+            Middleware.Hacker.parseConfirmation,
+            Middleware.Hacker.updateHacker,
+
+            Middleware.Hacker.sendStatusUpdateEmail,
+            Controllers.Hacker.updatedHacker
         );
         apiRouter.use("/hacker", hackerRouter);
     }

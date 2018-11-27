@@ -36,8 +36,8 @@ function parsePatch(req, res, next) {
  * @param {(err?)=>void} next
  * @return {void}
  * @description 
- * Moves accountId, school, gender, needsBus, application from req.body to req.body.teamDetails. 
- * Adds _id to teamDetails.
+ * Moves accountId, school, gender, needsBus, application from req.body to req.body.hackerDetails. 
+ * Adds _id to hackerDetails.
  */
 function parseHacker(req, res, next) {
     const hackerDetails = {
@@ -69,6 +69,34 @@ function parseHacker(req, res, next) {
     req.body.hackerDetails = hackerDetails;
 
     next();
+}
+
+/**
+ * @function parseCheckin
+ * @param {{body: {accountId: ObjectId, school: string, gender: string, needsBus: string, application: Object, authorization: string}}} req
+ * @param {*} res
+ * @param {(err?)=>void} next
+ * @return {void}
+ * @description 
+ * Moves accountId, school, gender, needsBus, application from req.body to req.body.teamDetails. 
+ * Adds _id to teamDetails.
+ */
+function parseCheckIn(req, res, next) {
+    req.body.status = Constants.General.HACKER_STATUS_CHECKED_IN;
+
+    return next();
+}
+
+function parseConfirmation(req, res, next) {
+    confirm = req.body.confirm;
+
+    if (confirm) {
+        req.body.status = Constants.General.HACKER_STATUS_CONFIRMED;
+    } else {
+        req.body.status = Constants.General.HACKER_STATUS_ACCEPTED;
+    }
+
+    return next();
 }
 
 /**
@@ -242,36 +270,36 @@ async function updateStatusIfApplicationCompleted(req, res, next) {
 }
 
 /**
- * Checks that the hacker's status is appropriate to be checked in by a volunteer.
- * The status should be 'Confirmed'
- * @param {{params:{id: string}, body: *}} req 
- * @param {*} res 
- * @param {*} next 
+ * Checks that the hacker's status matches one of the input statuses
+ * @param {String[]} statuses
+ * @returns {(req, res, next) => {}} the middleware that will check hacker's status
  */
-async function validateCheckInHackerStatus(req, res, next) {
-    const hacker = await Services.Hacker.findById(req.params.id, req.body);
-    if (hacker) {
-        const status = hacker.status;
+async function checkStatus(statuses) {
+    return (req, res, next) => {
+        const hacker = await Services.Hacker.findById(req.params.id, req.body);
+        if (hacker) {
+            const status = hacker.status;
+            // makes sure the hacker's status is in the accepted statuses list
+            if (statuses.indexOf(status) === -1) {
+                return next({
+                    status: 409,
+                    message: Constants.Error.HACKER_CHECKIN_409_MESSAGE,
+                    data: {
+                        id: req.params.id
+                    }
+                });
+            }
 
-        if (status !== Constants.General.HACKER_STATUS_CONFIRMED) {
+            return next();
+        } else {
             return next({
-                status: 409,
-                message: Constants.Error.HACKER_CHECKIN_409_MESSAGE,
+                status: 404,
+                message: Constants.Error.HACKER_404_MESSAGE,
                 data: {
                     id: req.params.id
                 }
             });
         }
-
-        return next();
-    } else {
-        return next({
-            status: 404,
-            message: Constants.Error.HACKER_404_MESSAGE,
-            data: {
-                id: req.params.id
-            }
-        });
     }
 }
 
@@ -342,5 +370,7 @@ module.exports = {
     validateConfirmedStatus: Middleware.Util.asyncMiddleware(validateConfirmedStatus),
     checkDuplicateAccountLinks: Middleware.Util.asyncMiddleware(checkDuplicateAccountLinks),
     updateStatusIfApplicationCompleted: Middleware.Util.asyncMiddleware(updateStatusIfApplicationCompleted),
-    validateCheckInHackerStatus: Middleware.Util.asyncMiddleware(validateCheckInHackerStatus),
+    checkStatus: Middleware.Util.asyncMiddleware(checkStatus),
+    parseCheckIn: parseCheckIn,
+    parseConfirmation: parseConfirmation
 };
