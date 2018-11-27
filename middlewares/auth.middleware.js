@@ -322,7 +322,7 @@ async function validateConfirmationToken(req, res, next) {
     if (confirmationObj && userObj && (confirmationObj.accountId == userObj.id)) {
         userObj.confirmed = true;
         userObj.accountType = confirmationObj.accountType;
-        await Services.Account.changeOneAccount(confirmationObj.accountId, userObj);
+        await Services.Account.updateOne(confirmationObj.accountId, userObj);
         req.body.user = userObj;
         next();
     } else {

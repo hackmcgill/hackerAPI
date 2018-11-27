@@ -48,6 +48,14 @@ const accountRoutes = {
     "patchAnyById": {
         requestType: Constants.REQUEST_TYPES.PATCH,
         uri: "/api/account/" + Constants.ROLE_CATEGORIES.ALL,
+    },
+    "patchSelfConfirmationById": {
+        requestType: Constants.REQUEST_TYPES.PATCH,
+        uri: "/api/account/confirmation/" + Constants.ROLE_CATEGORIES.SELF,
+    },
+    "patchAnyConfirmationById": {
+        requestType: Constants.REQUEST_TYPES.PATCH,
+        uri: "/api/account/confirmation/" + Constants.ROLE_CATEGORIES.ALL,
     }
 };
 

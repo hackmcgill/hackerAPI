@@ -77,32 +77,20 @@ async function addUser(req, res) {
 
 
 /**
- * @async
- * @function updateAccount
- * @param {{params: {id: string}, body: {Object}}} req
+ * @function updatedAccount
+ * @param {{body: {Object}}} req
  * @param {*} res
  * @return {JSON} Success or error status
  * @description 
- *      Change a user's account information based on the account's mongoID. 
+ *      Returns a 200 status for an updated account.
  *      The new account information is located in req.body.
  *      The id is moved to req.body.id from req.params.id by validation.
  */
-async function updateAccount(req, res) {
-    const id = req.params.id;
-
-    const success = await Services.Account.changeOneAccount(id, req.body);
-
-    if (success) {
-        return res.status(200).json({
-            message: "Changed account information",
-            data: req.body
-        });
-    } else {
-        return res.status(500).json({
-            message: Constants.Error.ACCOUNT_UPDATE_500_MESSAGE,
-            data: {}
-        });
-    }
+function updatedAccount(req, res) {
+    return res.status(200).json({
+        message: "Changed account information",
+        data: req.body
+    });
 }
 
 module.exports = {
@@ -112,5 +100,5 @@ module.exports = {
     // assumes all information in req.body
     addUser: Util.asyncMiddleware(addUser),
 
-    updateAccount: Util.asyncMiddleware(updateAccount),
+    updatedAccount: updatedAccount,
 };
