@@ -322,53 +322,6 @@ describe("PATCH update account", function () {
                 });
         });
     });
-
-    // succeed to update confirm on :all case
-    it("should SUCCEED and update a user's account confirm status", function (done) {
-        util.auth.login(agent, Admin1, (error) => {
-            if (error) {
-                agent.close();
-                return done(error);
-            }
-            agent
-                .patch(`/api/account/confirmation/${updateConfirmedInfo._id}`)
-                .type("application/json")
-                .send(updateConfirmedInfo)
-                .end(function (err, res) {
-                    res.should.have.status(200);
-                    res.should.be.json;
-                    res.body.should.have.property("message");
-                    res.body.message.should.equal("Changed account information");
-                    res.body.should.have.property("data");
-                    // Is this correct matching of data?
-                    res.body.data.confirmed.should.equal(updateConfirmedInfo.confirmed);
-                    done();
-                });
-        });
-    });
-
-    // fail on non admin
-    it("should FAIL and update a user's own confirm status", function (done) {
-        util.auth.login(agent, storedAccount1, (error) => {
-            if (error) {
-                agent.close();
-                return done(error);
-            }
-            agent
-                .patch(`/api/account/confirmation/${updateConfirmedInfo._id}`)
-                .type("application/json")
-                .send(updateConfirmedInfo)
-                .end(function (err, res) {
-                    res.should.have.status(403);
-                    res.should.be.json;
-                    res.body.should.have.property("message");
-                    res.body.message.should.equal(Constants.Error.AUTH_403_MESSAGE);
-                    res.body.should.have.property("data");
-
-                    done();
-                });
-        });
-    });
 });
 
 describe("POST reset password", function () {
