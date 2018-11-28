@@ -179,57 +179,6 @@
     }]
   },
   {
-    "type": "patch",
-    "url": "/account/confirmation/:id",
-    "title": "update an account's confirmed status",
-    "name": "patchAccountConfirmed",
-    "group": "Account",
-    "version": "0.0.9",
-    "parameter": {
-      "fields": {
-        "body": [{
-          "group": "body",
-          "type": "Boolean",
-          "optional": true,
-          "field": "confirmed",
-          "description": "<p>Whether the account is confirmed or not</p>"
-        }]
-      }
-    },
-    "success": {
-      "fields": {
-        "Success 200": [{
-            "group": "Success 200",
-            "type": "string",
-            "optional": false,
-            "field": "message",
-            "description": "<p>Success message</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "object",
-            "optional": false,
-            "field": "data",
-            "description": "<p>Hacker object</p>"
-          }
-        ]
-      },
-      "examples": [{
-        "title": "Success-Response: ",
-        "content": "{\n    \"message\": \"Changed account information\", \n    \"data\": {\n        \"confirmed\": \"true\"\n    }\n}",
-        "type": "object"
-      }]
-    },
-    "permission": [{
-      "name": "Administrator"
-    }],
-    "filename": "routes/api/account.js",
-    "groupTitle": "Account",
-    "sampleRequest": [{
-      "url": "https://mchacks.ca/api/account/confirmation/:id"
-    }]
-  },
-  {
     "type": "get",
     "url": "/account/self",
     "title": "get information about own account",
@@ -524,6 +473,44 @@
     "groupTitle": "Authentication",
     "sampleRequest": [{
       "url": "https://mchacks.ca/api/auth/password/forgot"
+    }]
+  },
+  {
+    "type": "get",
+    "url": "/auth/roles",
+    "title": "get roles",
+    "name": "getRoles",
+    "description": "<p>get all roles that exist in the database</p>",
+    "group": "Authentication",
+    "version": "0.0.8",
+    "success": {
+      "fields": {
+        "Success 200": [{
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "message",
+            "description": "<p>Success message</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>empty</p>"
+          }
+        ]
+      },
+      "examples": [{
+        "title": "Success-Response:",
+        "content": "{\"message\": \"Sucessfully retrieved all roles\", \"data\":\n[{name: \"GodStaff\", routes: Array(27), id: \"5bee20ef3ca9dd4754382880\"},\n {name: \"Hacker\", routes: Array(10), id: \"5bee20ef3ca9dd4754382881\"},\n {name: \"Volunteer\", routes: Array(4), id: \"5bee20ef3ca9dd4754382882\"}]",
+        "type": "json"
+      }]
+    },
+    "filename": "routes/api/auth.js",
+    "groupTitle": "Authentication",
+    "sampleRequest": [{
+      "url": "https://mchacks.ca/api/auth/roles"
     }]
   },
   {
@@ -863,7 +850,7 @@
   {
     "type": "patch",
     "url": "/hacker/checkin/:id",
-    "title": "update a hacker's status to be 'Checked-in'",
+    "title": "update a hacker's status to be 'Checked-in'.",
     "name": "checkinHacker",
     "group": "Hacker",
     "version": "0.0.9",
@@ -1247,6 +1234,61 @@
     "groupTitle": "Hacker",
     "sampleRequest": [{
       "url": "https://mchacks.ca/api/hacker/:id"
+    }]
+  },
+  {
+    "type": "patch",
+    "url": "/hacker/confirmation/self Allows a hacker to confirm they are attending from 'accepted',",
+    "title": "or they can undo the confirmation and return to 'accepted'",
+    "name": "patchHackerConfirmed",
+    "group": "Hacker",
+    "version": "0.0.9",
+    "parameter": {
+      "fields": {
+        "body": [{
+          "group": "body",
+          "type": "String",
+          "optional": true,
+          "field": "status",
+          "description": "<p>The new status of the hacker. 'Accepted' or 'Confirmed'</p>"
+        }]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [{
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "message",
+            "description": "<p>Success message</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>Hacker object</p>"
+          }
+        ]
+      },
+      "examples": [{
+        "title": "Success-Response: ",
+        "content": "{\n    \"message\": \"Changed hacker information\", \n    \"data\": {\n        \"status\": \"Confirmed\"\n    }\n}",
+        "type": "object"
+      }]
+    },
+    "permission": [{
+        "name": "Administrator"
+      },
+      {
+        "name": "Hacker"
+      }
+    ],
+    "filename": "routes/api/hacker.js",
+    "groupTitle": "Hacker",
+    "sampleRequest": [{
+      "url": "https://mchacks.ca/api/hacker/confirmation/self Allows a hacker to confirm they are attending from 'accepted',"
     }]
   },
   {
