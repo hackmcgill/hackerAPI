@@ -34,8 +34,8 @@ Services.db.connect(app);
 
 let corsOptions = {};
 
-if (!Services.env.isDevelopment()) {
-    corsOptions = { origin: ["http://localhost:1337"], credentials: true };
+if (!Services.env.isProduction()) {
+    corsOptions = { origin: ["http://localhost:1337", "http://localhost:8989"], credentials: true };
 } else {
     // TODO: change this when necessary
     corsOptions = { origin: ["https://mchacks.ca/"], credentials: true };
