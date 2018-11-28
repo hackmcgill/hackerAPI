@@ -81,7 +81,8 @@ module.exports = {
 
             Middleware.Hacker.addDefaultStatus,
             Middleware.Auth.createRoleBindings(CONSTANTS.HACKER),
-            Controllers.Hacker.createHacker
+            Middleware.Hacker.createHacker,
+            Controllers.Hacker.createdHacker
         );
         /**
          * @api {patch} /hacker/status/:id update a hacker's status

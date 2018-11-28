@@ -338,6 +338,43 @@ async function updateHacker(req, res, next) {
 }
 
 /**
+ * @function createhacker
+ * @param {{body: {hackerDetails: object}}} req 
+ * @param {*} res 
+ * @param {(err?)=>void} next 
+ * @return {void}
+ * @description
+ * Creates hacker document after making sure there is no other hacker with the same linked accountId
+ */
+async function createHacker(req, res, next) {
+    const hackerDetails = req.body.hackerDetails;
+
+    const exists = await Services.Hacker.findByAccountId(hackerDetails.accountId);
+
+    if (exists) {
+        return next({
+            status: 422,
+            message: Constants.Error.ACCOUNT_DUPLICATE_422_MESSAGE,
+            data: {
+                id: hackerDetails.accountId
+            }
+        });
+    }
+
+    const hacker = await Services.Hacker.createHacker(hackerDetails);
+
+    if (!!hacker) {
+        return next();
+    } else {
+        return next({
+            status: 500,
+            message: Constants.Error.HACKER_CREATE_500_MESSAGE,
+            data: {}
+        })
+    }
+}
+
+/**
  * Checks that there are no other hackers with the same account id as the one passed into req.body.accountId
  * @param {{body:{accountId: ObjectId}}} req 
  * @param {*} res 
@@ -372,5 +409,5 @@ module.exports = {
     updateStatusIfApplicationCompleted: Middleware.Util.asyncMiddleware(updateStatusIfApplicationCompleted),
     checkStatus: Middleware.Util.asyncMiddleware(checkStatus),
     parseCheckIn: parseCheckIn,
-    parseConfirmation: parseConfirmation
+    createHacker: Middleware.Util.asyncMiddleware(createHacker),
 };
