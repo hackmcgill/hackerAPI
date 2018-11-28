@@ -9,6 +9,7 @@ const Hacker = require("../models/hacker.model");
 const fs = require("fs");
 const path = require("path");
 const Constants = {
+    General: require("../constants/general.constant"),
     Error: require("../constants/error.constant"),
 };
 
@@ -510,6 +511,124 @@ describe("PATCH update one hacker", function () {
                     res.should.be.json;
                     res.body.should.have.property("message");
                     res.body.message.should.equal(Constants.Error.HACKER_404_MESSAGE);
+                    res.body.should.have.property("data");
+
+                    done();
+                });
+        });
+    });
+
+    // Succeed and change accepted to confirm
+    it("should succeed for hacker to change from accepted to confirmed", function (done) {
+        util.auth.login(agent, storedAccount2, (error) => {
+            if (error) {
+                agent.close();
+                return done(error);
+            }
+            return agent
+                .patch(`/api/hacker/confirmation/${storedHacker2._id}`)
+                .type("application/json")
+                .send({
+                    confirm: true
+                })
+                .end(function (err, res) {
+                    if (err) {
+                        return done(err);
+                    }
+                    res.should.have.status(200);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal("Changed hacker information");
+                    res.body.should.have.property("data");
+                    chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify({
+                        status: Constants.General.HACKER_STATUS_CONFIRMED
+                    }));
+
+                    done();
+                });
+        });
+    });
+
+    // Succeed and change confirmed to accepted
+    it("should succeed for hacker to change from confirmed to accepted", function (done) {
+        util.auth.login(agent, storedAccount1, (error) => {
+            if (error) {
+                agent.close();
+                return done(error);
+            }
+            return agent
+                .patch(`/api/hacker/confirmation/${storedHacker1._id}`)
+                .type("application/json")
+                .send({
+                    confirm: false
+                })
+                .end(function (err, res) {
+                    if (err) {
+                        return done(err);
+                    }
+                    res.should.have.status(200);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal("Changed hacker information");
+                    res.body.should.have.property("data");
+                    chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify({
+                        status: Constants.General.HACKER_STATUS_ACCEPTED
+                    }));
+
+                    done();
+                });
+        });
+    });
+
+    // fail for a hacker that's not accepted
+    it("should fail for hacker who is not accepted or confirmed", function (done) {
+        util.auth.login(agent, util.account.Hacker3, (error) => {
+            if (error) {
+                agent.close();
+                return done(error);
+            }
+            return agent
+                .patch(`/api/hacker/confirmation/${util.hacker.HackerC._id}`)
+                .type("application/json")
+                .send({
+                    confirm: true
+                })
+                .end(function (err, res) {
+                    if (err) {
+                        return done(err);
+                    }
+                    res.should.have.status(409);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal(Constants.Error.HACKER_CHECKIN_409_MESSAGE);
+                    res.body.should.have.property("data");
+
+                    done();
+                });
+        });
+    });
+
+    // fail for a hacker that's not accepted
+    it("should fail for hacker trying to confirm someone else", function (done) {
+        util.auth.login(agent, util.account.Hacker3, (error) => {
+            if (error) {
+                agent.close();
+                return done(error);
+            }
+            return agent
+                .patch(`/api/hacker/confirmation/${storedHacker1._id}`)
+                .type("application/json")
+                .send({
+                    confirm: true
+                })
+                .end(function (err, res) {
+                    if (err) {
+                        return done(err);
+                    }
+                    res.should.have.status(403);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal(Constants.Error.AUTH_403_MESSAGE);
                     res.body.should.have.property("data");
 
                     done();

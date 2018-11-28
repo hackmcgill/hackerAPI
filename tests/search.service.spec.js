@@ -44,7 +44,7 @@ describe("Searching for hackers", function () {
             .end(function (err, res) {
                 res.should.have.status(200);
                 res.body.should.have.property('data');
-                res.body.data.should.have.length(1);
+                res.body.data.should.have.length(2);
                 done();
             });
     })

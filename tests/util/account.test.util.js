@@ -149,6 +149,22 @@ const NonConfirmedAccount2 = {
     "accountType": Constants.HACKER,
 };
 
+// hacker waitlisted
+const Hacker3 = {
+    "_id": mongoose.Types.ObjectId(),
+    "firstName": "abcd",
+    "lastName": "defg",
+    "pronoun": "They/Them",
+    "email": "abc.def7@blahblah.com",
+    "password": "probsShouldBeHashed2",
+    "dietaryRestrictions": ["vegetarian"],
+    "shirtSize": "M",
+    "confirmed": true,
+    "accountType": Constants.Hacker,
+    "birthDate": "1990-01-04",
+    "phoneNumber": 1000000004,
+};
+
 const customAccounts = [
     Admin1,
     Account1,
@@ -156,6 +172,7 @@ const customAccounts = [
     Account3,
     Account4,
     Account5,
+    Hacker3,
     NonConfirmedAccount1,
     NonConfirmedAccount2
 ];
@@ -180,6 +197,7 @@ module.exports = {
     Account3: Account3,
     Account4: Account4,
     Account5: Account5,
+    Hacker3: Hacker3,
     customAccounts: customAccounts,
     generatedAccounts: generatedAccounts,
     allAccounts: allAccounts,

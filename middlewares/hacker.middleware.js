@@ -88,7 +88,7 @@ function parseCheckIn(req, res, next) {
 }
 
 function parseConfirmation(req, res, next) {
-    confirm = req.body.confirm;
+    let confirm = req.body.confirm;
 
     if (confirm) {
         req.body.status = Constants.General.HACKER_STATUS_CONFIRMED;
@@ -96,6 +96,7 @@ function parseConfirmation(req, res, next) {
         req.body.status = Constants.General.HACKER_STATUS_ACCEPTED;
     }
 
+    delete req.body.confirm;
     return next();
 }
 
@@ -274,10 +275,12 @@ async function updateStatusIfApplicationCompleted(req, res, next) {
  * @param {String[]} statuses
  * @returns {(req, res, next) => {}} the middleware that will check hacker's status
  */
-async function checkStatus(statuses) {
-    return (req, res, next) => {
-        const hacker = await Services.Hacker.findById(req.params.id, req.body);
-        if (hacker) {
+function checkStatus(statuses) {
+    return Middleware.Util.asyncMiddleware(async (req, res, next) => {
+
+        let hacker = await Services.Hacker.findById(req.params.id);
+
+        if (!!hacker) {
             const status = hacker.status;
             // makes sure the hacker's status is in the accepted statuses list
             if (statuses.indexOf(status) === -1) {
@@ -300,7 +303,7 @@ async function checkStatus(statuses) {
                 }
             });
         }
-    }
+    });
 }
 
 /**
@@ -407,7 +410,8 @@ module.exports = {
     validateConfirmedStatus: Middleware.Util.asyncMiddleware(validateConfirmedStatus),
     checkDuplicateAccountLinks: Middleware.Util.asyncMiddleware(checkDuplicateAccountLinks),
     updateStatusIfApplicationCompleted: Middleware.Util.asyncMiddleware(updateStatusIfApplicationCompleted),
-    checkStatus: Middleware.Util.asyncMiddleware(checkStatus),
+    checkStatus: checkStatus,
     parseCheckIn: parseCheckIn,
+    parseConfirmation: parseConfirmation,
     createHacker: Middleware.Util.asyncMiddleware(createHacker),
 };

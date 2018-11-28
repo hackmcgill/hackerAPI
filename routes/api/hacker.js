@@ -141,7 +141,6 @@ module.exports = {
             Middleware.parseBody.middleware,
             Middleware.Hacker.parsePatch,
 
-            Middleware.Hacker.parseHacker,
             Middleware.Hacker.checkStatus([CONSTANTS.HACKER_STATUS_ACCEPTED, CONSTANTS.HACKER_STATUS_CONFIRMED]),
             Middleware.Hacker.parseCheckIn,
             Middleware.Hacker.updateHacker,
@@ -329,7 +328,7 @@ module.exports = {
          * @apiPermission Administrator
          * @apiPermission Hacker
          */
-        hackerRouter.route("/confirmation/self").patch(
+        hackerRouter.route("/confirmation/:id").patch(
             Middleware.Auth.ensureAuthenticated(),
             Middleware.Auth.ensureAuthorized([Services.Hacker.findById]),
 
