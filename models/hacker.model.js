@@ -111,7 +111,13 @@ HackerSchema.methods.isApplicationComplete = function () {
  * @description return the type of the field(if it exists and is allowed to be searched on)
  */
 HackerSchema.statics.searchableField = function (field) {
-    return HackerSchema.path(field).instance;
+    const schemaField = HackerSchema.path(field)
+    if(schemaField != undefined){
+        return schemaField.instance
+    }
+    else{
+        return null;
+    }
 };
 
 //export the model
