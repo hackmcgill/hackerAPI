@@ -32,7 +32,19 @@ async function getById(id) {
     return await Role.findById(query, logger.queryCallbackFactory(TAG, "role", query));
 }
 
+/**
+ * @async
+ * @function getAll
+ * @description 
+ * Returns all the roles in the database
+ */
+async function getAll(){
+    const TAG = "[Role Service # getAll]:";
+    return await Role.find({},logger.queryCallbackFactory(TAG, "role", {}));
+}
+
 module.exports = {
     getRole: getRole,
-    getById: getById
+    getById: getById,
+    getAll: getAll
 }

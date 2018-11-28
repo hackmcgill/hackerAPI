@@ -248,6 +248,27 @@ module.exports = {
             Controllers.Auth.sentConfirmationEmail
         );
 
+        /**
+         * @api {get} /auth/roles get roles
+         * @apiName getRoles
+         * @apiDescription get all roles that exist in the database
+         * @apiGroup Authentication
+         * @apiVersion 0.0.8
+         *
+         * @apiSuccess {string} message Success message
+         * @apiSuccess {object} data empty
+         * @apiSuccessExample {json} Success-Response:
+         *      {"message": "Sucessfully retrieved all roles", "data":
+         *      [{name: "GodStaff", routes: Array(27), id: "5bee20ef3ca9dd4754382880"},
+         *       {name: "Hacker", routes: Array(10), id: "5bee20ef3ca9dd4754382881"},
+         *       {name: "Volunteer", routes: Array(4), id: "5bee20ef3ca9dd4754382882"}]
+         * 
+         */
+        authRouter.route("/roles").get(
+            Middleware.Auth.retrieveRoles,
+            Controllers.Auth.retrievedRoles
+        );
+
         apiRouter.use("/auth", authRouter);
     }
 };
