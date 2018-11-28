@@ -383,6 +383,7 @@ async function addCreationRoleBindings(req, res, next) {
     // Get the default role for the account type given
     const roleName = Constants.General.POST_ROLES[req.body.account.accountType];
     await Services.RoleBinding.createRoleBindingByRoleName(req.body.account.id, roleName);
+    await Services.RoleBinding.createRoleBindingByRoleName(req.body.account.id, "account");
     next();
 }
 
