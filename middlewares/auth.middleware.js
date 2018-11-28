@@ -164,13 +164,16 @@ async function sendResetPasswordEmailMiddleware(req, res, next) {
 /**
  * Middleware that sends an email to confirm the account for the inputted email address.
  * This is only sent on account creation for HACKERS as other users are sent an invite email
- * which confirms their account
+ * which confirms their account, if a user is another type they should be confirmed so an email is not
  * @param {{body: {email:String}}} req the request object
  * @param {*} res
  * @param {(err?)=>void} next
  */
 async function sendConfirmAccountEmailMiddleware(req, res, next) {
     const account = req.body.account;
+    if(account.confirmed){
+        return next();
+    }
     await Services.AccountConfirmation.create(Constants.General.HACKER, account.email, account.id);
     const accountConfirmationToken = await Services.AccountConfirmation.findByAccountId(account.id);
     const token = Services.AccountConfirmation.generateToken(accountConfirmationToken.id, account.id);
