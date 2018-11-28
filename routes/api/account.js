@@ -173,6 +173,32 @@ module.exports = {
             Controllers.Account.getUserById
         );
 
+        /**
+         * @api {post} /account/invite invites a user to create an account with the specified accountType
+         * @apiName inviteAccount
+         * @apiGroup Account
+         * @apiVersion 0.0.8
+         * 
+         * @apiParam (body) {String} [email] email of the account to be created and where to send the link
+         * @apiParam (body) {String} [accountType] the type of the account which the user can create, for sponsor this should specify tier as well
+         * 
+         * @apiSuccess {string} message Success message
+         * @apiSuccess {object} data Account object
+         * @apiSuccessExample {object} Success-Response: 
+         *      {
+                    "message": "Successfully invited user  ", 
+                    "data": {}
+                }
+         */
+        accountRouter.route("/invite").post(
+            Middleware.Auth.ensureAuthenticated(),
+            Middleware.Auth.ensureAuthorized(),
+            Middleware.Validator.Account.inviteAccountValidator,
+            Middleware.parseBody.middleware,
+            Middleware.Account.inviteAccount,
+            Controllers.Account.invitedAccount
+        );
+
         apiRouter.use("/account", accountRouter);
     }
 };

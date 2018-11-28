@@ -8,6 +8,7 @@ const Account = require("../models/account.model");
 const should = chai.should();
 const Constants = {
     Error: require("../constants/error.constant"),
+    General: require("../constants/general.constant")
 };
 
 
@@ -429,5 +430,31 @@ describe("GET resend confirmation email", function () {
                     done();
                 })
         })
+    })
+});
+
+describe("POST invite account", function () {
+    it("Should succeed to invite a user to create an account", function(done){
+        util.auth.login(agent, Admin1, (error) => {
+            if (error) {
+                agent.close();
+                return done(error);
+            }
+            return agent
+                .post("/api/account/invite")
+                .type("application/json")
+                .send({email: newAccount1.email,
+                    accountType: Constants.General.VOLUNTEER})
+                // does not have password because of to stripped json
+                .end(function (err, res) {
+                    if (err) {
+                        return done(err);
+                    }
+                    res.should.have.status(200);
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal("Successfully invited user");
+                    done();
+                });
+        });
     })
 });

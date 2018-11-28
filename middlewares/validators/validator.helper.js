@@ -553,6 +553,26 @@ function phoneNumberValidator(fieldLocation, fieldname, optional = true) {
 }
 
 /**
+ * Validates that field must be a valid account type
+ * @param {"query" | "body" | "header" | "param"} fieldLocation the location where the field should be found 
+ * @param {string} fieldname name of the field that needs to be validated.
+ * @param {boolean} optional whether the field is optional or not.
+ */
+function accountTypeValidator(fieldLocation, fieldname, optional = true) {
+    const accountType = setProperValidationChainBuilder(fieldLocation, fieldname, "Invalid account type");
+    if (optional) {
+        return accountType.optional({
+            checkFalsy: true
+        }).isIn(Constants.EXTENDED_USER_TYPES);
+    }
+    else{
+        return accountType.exists()
+            .withMessage("Account type must be provided")
+            .isIn(Constants.EXTENDED_USER_TYPES);
+    }
+}
+
+/**
  *
  * @param {"query" | "body" | "header" | "param"} fieldLocation the location where the field should be found
  * @param {string} fieldname name of the field that needs to be validated.
@@ -601,5 +621,6 @@ module.exports = {
     searchValidator: searchValidator,
     searchSortValidator: searchSortValidator,
     phoneNumberValidator: phoneNumberValidator,
-    dateValidator: dateValidator
+    dateValidator: dateValidator,
+    accountTypeValidator: accountTypeValidator
 };
