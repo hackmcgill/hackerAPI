@@ -178,6 +178,7 @@ module.exports = {
          * @apiName inviteAccount
          * @apiGroup Account
          * @apiVersion 0.0.8
+         * @apiDescription sends link with token to be used with the account/create route
          * 
          * @apiParam (body) {String} [email] email of the account to be created and where to send the link
          * @apiParam (body) {String} [accountType] the type of the account which the user can create, for sponsor this should specify tier as well

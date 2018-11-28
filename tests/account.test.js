@@ -219,7 +219,18 @@ describe("POST confirm account", function () {
                 res.body.message.should.equal(Constants.Error.ACCOUNT_TOKEN_401_MESSAGE);
                 done();
             })
-    })
+    });
+    it("should FAIL to confirm account that has token with email but no account", function(done) {
+        chai.request(server.app)
+        .post('/api/auth/confirm/' + fakeToken)
+        .type("application/json")
+        .end(function (err, res) {
+            res.should.have.status(401);
+            res.body.should.have.property("message");
+            res.body.message.should.equal(Constants.Error.ACCOUNT_TOKEN_401_MESSAGE);
+            done();
+        })
+    });
 })
 
 describe("PATCH update account", function () {
