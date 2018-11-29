@@ -100,8 +100,8 @@ async function addAccount(req, res, next) {
     //Check duplicate
     const exists = await Services.Account.findByEmail(accountDetails.email);
     if (exists) {
-        next({
-            status: 500,
+        return next({
+            status: 422,
             message: Constants.Error.ACCOUNT_DUPLICATE_422_MESSAGE,
             error: {
                 route: req.path

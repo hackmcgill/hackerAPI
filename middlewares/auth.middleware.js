@@ -383,6 +383,7 @@ async function addCreationRoleBindings(req, res, next) {
     // Get the default role for the account type given
     const roleName = Constants.General.POST_ROLES[req.body.account.accountType];
     await Services.RoleBinding.createRoleBindingByRoleName(req.body.account.id, roleName);
+    await Services.RoleBinding.createRoleBindingByRoleName(req.body.account.id, "account");
     next();
 }
 
@@ -391,22 +392,10 @@ async function addCreationRoleBindings(req, res, next) {
  * @param {string} roleName name of the role to be added to account
  */
 function createRoleBindings(roleName = undefined) {
-    return async (req, res, next) => {
+    return Middleware.Util.asyncMiddleware(async (req, res, next) => {
         await Services.RoleBinding.createRoleBindingByRoleName(req.user.id, roleName);
         next();
-    }
-}
-
-/**
- * Middleware which creates rolebinding for appropriate sponsor
- * @param {{body: {sponsorDetails: {accountId: ObjectId}}}} req request object
- * @param {*} res 
- * @param {(err?) => void } next 
- */
-async function addSponsorRoleBindings(req, res, next) {
-    const account = Services.Account.findById(req.body.sponsorDetails.accountId);
-    await Services.RoleBinding.createRoleBindingByRoleName(account.id, account.accountType);
-    next();
+    });
 }
 
 /**
@@ -437,7 +426,6 @@ module.exports = {
     validateConfirmationTokenWithoutAccount: Middleware.Util.asyncMiddleware(validateConfirmationTokenWithoutAccount),
     createRoleBindings: createRoleBindings,
     addCreationRoleBindings: Middleware.Util.asyncMiddleware(addCreationRoleBindings),
-    addSponsorRoleBindings: Middleware.Util.asyncMiddleware(addSponsorRoleBindings),
     resendConfirmAccountEmail: Middleware.Util.asyncMiddleware(resendConfirmAccountEmail),
     retrieveRoleBindings: Middleware.Util.asyncMiddleware(retrieveRoleBindings),
     retrieveRoles: Middleware.Util.asyncMiddleware(retrieveRoles)

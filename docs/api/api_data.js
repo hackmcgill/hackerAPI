@@ -26,6 +26,13 @@ define({
               "group": "body",
               "type": "String",
               "optional": false,
+              "field": "pronoun",
+              "description": "<p>the pronoun of the account creator.</p>"
+            },
+            {
+              "group": "body",
+              "type": "String",
+              "optional": false,
               "field": "email",
               "description": "<p>Email of the account.</p>"
             },
@@ -47,8 +54,22 @@ define({
               "group": "body",
               "type": "String",
               "optional": false,
-              "field": "passowrd",
+              "field": "password",
               "description": "<p>The password of the account.</p>"
+            },
+            {
+              "group": "body",
+              "type": "String",
+              "optional": false,
+              "field": "birthDate",
+              "description": "<p>a Date parsable string.</p>"
+            },
+            {
+              "group": "body",
+              "type": "Number",
+              "optional": false,
+              "field": "phoneNumber",
+              "description": "<p>the user's phone number, represented as a string.</p>"
             }
           ]
         }
@@ -267,6 +288,13 @@ define({
               "group": "body",
               "type": "String",
               "optional": true,
+              "field": "pronoun",
+              "description": "<p>the pronoun of the account creator.</p>"
+            },
+            {
+              "group": "body",
+              "type": "String",
+              "optional": true,
               "field": "email",
               "description": "<p>Email of the account.</p>"
             },
@@ -290,6 +318,20 @@ define({
               "optional": true,
               "field": "passowrd",
               "description": "<p>The password of the account.</p>"
+            },
+            {
+              "group": "body",
+              "type": "String",
+              "optional": true,
+              "field": "birthDate",
+              "description": "<p>a Date parsable string.</p>"
+            },
+            {
+              "group": "body",
+              "type": "Number",
+              "optional": true,
+              "field": "phoneNumber",
+              "description": "<p>the user's phone number, represented as a string.</p>"
             }
           ]
         }
@@ -474,6 +516,44 @@ define({
       "groupTitle": "Authentication",
       "sampleRequest": [{
         "url": "https://mchacks.ca/api/auth/password/forgot"
+      }]
+    },
+    {
+      "type": "get",
+      "url": "/auth/roles",
+      "title": "get roles",
+      "name": "getRoles",
+      "description": "<p>get all roles that exist in the database</p>",
+      "group": "Authentication",
+      "version": "0.0.8",
+      "success": {
+        "fields": {
+          "Success 200": [{
+              "group": "Success 200",
+              "type": "string",
+              "optional": false,
+              "field": "message",
+              "description": "<p>Success message</p>"
+            },
+            {
+              "group": "Success 200",
+              "type": "object",
+              "optional": false,
+              "field": "data",
+              "description": "<p>empty</p>"
+            }
+          ]
+        },
+        "examples": [{
+          "title": "Success-Response:",
+          "content": "{\"message\": \"Sucessfully retrieved all roles\", \"data\":\n[{name: \"GodStaff\", routes: Array(27), id: \"5bee20ef3ca9dd4754382880\"},\n {name: \"Hacker\", routes: Array(10), id: \"5bee20ef3ca9dd4754382881\"},\n {name: \"Volunteer\", routes: Array(4), id: \"5bee20ef3ca9dd4754382882\"}]",
+          "type": "json"
+        }]
+      },
+      "filename": "routes/api/auth.js",
+      "groupTitle": "Authentication",
+      "sampleRequest": [{
+        "url": "https://mchacks.ca/api/auth/roles"
       }]
     },
     {
@@ -846,6 +926,34 @@ define({
               "optional": false,
               "field": "needsBus",
               "description": "<p>Whether the hacker requires a bus for transportation</p>"
+            },
+            {
+              "group": "body",
+              "type": "String[]",
+              "optional": false,
+              "field": "ethnicity",
+              "description": "<p>the ethnicities of the hacker</p>"
+            },
+            {
+              "group": "body",
+              "type": "String",
+              "optional": false,
+              "field": "major",
+              "description": "<p>the major of the hacker</p>"
+            },
+            {
+              "group": "body",
+              "type": "Number",
+              "optional": false,
+              "field": "graduationYear",
+              "description": "<p>the graduation year of the hacker</p>"
+            },
+            {
+              "group": "body",
+              "type": "Boolean",
+              "optional": false,
+              "field": "codeOfConduct",
+              "description": "<p>acceptance of the code of conduct</p>"
             },
             {
               "group": "body",

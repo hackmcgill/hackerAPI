@@ -51,16 +51,16 @@ function integerValidator(fieldLocation, fieldname, optional = true, lowerBound 
         return value.optional({
                 checkFalsy: true
             })
-            .isInt().withMessage("tier must be an integer.")
+            .isInt().withMessage(`${fieldname} must be an integer.`)
             .custom((value) => {
                 return value >= lowerBound && value <= upperBound;
-            }).withMessage("tier must be between 0 and 5");
+            }).withMessage(`${fieldname} must be between ${lowerBound} and  ${upperBound}`);
     } else {
         return value.exists().withMessage("tier must exist")
-            .isInt().withMessage("tier must be an integer.")
+            .isInt().withMessage(`${fieldname} must be an integer.`)
             .custom((value) => {
                 return value >= lowerBound && value <= upperBound;
-            }).withMessage("tier must be between 0 and 5");
+            }).withMessage(`${fieldname} must be between ${lowerBound} and  ${upperBound}`);
     }
 }
 
@@ -71,7 +71,7 @@ function integerValidator(fieldLocation, fieldname, optional = true, lowerBound 
  * @param {boolean} optional Whether the field is optional or not.
  */
 function mongoIdValidator(fieldLocation, fieldname, optional = true) {
-    const mongoId = setProperValidationChainBuilder(fieldLocation, fieldname, "invalid mongoID array");
+    const mongoId = setProperValidationChainBuilder(fieldLocation, fieldname, "invalid mongoID");
 
     if (optional) {
         return mongoId.optional({
