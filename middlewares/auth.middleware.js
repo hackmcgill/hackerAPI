@@ -391,10 +391,10 @@ async function addCreationRoleBindings(req, res, next) {
  * @param {string} roleName name of the role to be added to account
  */
 function createRoleBindings(roleName = undefined) {
-    return async (req, res, next) => {
+    return Middleware.Util.asyncMiddleware(async (req, res, next) => {
         await Services.RoleBinding.createRoleBindingByRoleName(req.user.id, roleName);
         next();
-    }
+    });
 }
 
 /**

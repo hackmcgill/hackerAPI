@@ -42,16 +42,16 @@ async function findById(req, res) {
  */
 async function createHacker(req, res) {
     const hackerDetails = req.body.hackerDetails;
-
     const success = await Services.Hacker.createHacker(hackerDetails);
-
+    hackerDetails.id = hackerDetails._id;
+    delete hackerDetails._id;
     if (success) {
         return res.status(200).json({
             message: "Hacker creation successful",
             data: hackerDetails
         });
     } else {
-        return res.status(400).json({
+        return res.status(500).json({
             message: Constants.Error.HACKER_CREATE_500_MESSAGE,
             data: {}
         });
