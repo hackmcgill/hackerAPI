@@ -26,6 +26,13 @@ define({
               "group": "body",
               "type": "String",
               "optional": false,
+              "field": "pronoun",
+              "description": "<p>the pronoun of the account creator.</p>"
+            },
+            {
+              "group": "body",
+              "type": "String",
+              "optional": false,
               "field": "email",
               "description": "<p>Email of the account.</p>"
             },
@@ -47,8 +54,22 @@ define({
               "group": "body",
               "type": "String",
               "optional": false,
-              "field": "passowrd",
+              "field": "password",
               "description": "<p>The password of the account.</p>"
+            },
+            {
+              "group": "body",
+              "type": "String",
+              "optional": false,
+              "field": "birthDate",
+              "description": "<p>a Date parsable string.</p>"
+            },
+            {
+              "group": "body",
+              "type": "Number",
+              "optional": false,
+              "field": "phoneNumber",
+              "description": "<p>the user's phone number, represented as a string.</p>"
             }
           ]
         }
@@ -267,6 +288,13 @@ define({
               "group": "body",
               "type": "String",
               "optional": true,
+              "field": "pronoun",
+              "description": "<p>the pronoun of the account creator.</p>"
+            },
+            {
+              "group": "body",
+              "type": "String",
+              "optional": true,
               "field": "email",
               "description": "<p>Email of the account.</p>"
             },
@@ -290,6 +318,20 @@ define({
               "optional": true,
               "field": "passowrd",
               "description": "<p>The password of the account.</p>"
+            },
+            {
+              "group": "body",
+              "type": "String",
+              "optional": true,
+              "field": "birthDate",
+              "description": "<p>a Date parsable string.</p>"
+            },
+            {
+              "group": "body",
+              "type": "Number",
+              "optional": true,
+              "field": "phoneNumber",
+              "description": "<p>the user's phone number, represented as a string.</p>"
             }
           ]
         }
@@ -939,6 +981,34 @@ define({
               "optional": false,
               "field": "needsBus",
               "description": "<p>Whether the hacker requires a bus for transportation</p>"
+            },
+            {
+              "group": "body",
+              "type": "String[]",
+              "optional": false,
+              "field": "ethnicity",
+              "description": "<p>the ethnicities of the hacker</p>"
+            },
+            {
+              "group": "body",
+              "type": "String",
+              "optional": false,
+              "field": "major",
+              "description": "<p>the major of the hacker</p>"
+            },
+            {
+              "group": "body",
+              "type": "Number",
+              "optional": false,
+              "field": "graduationYear",
+              "description": "<p>the graduation year of the hacker</p>"
+            },
+            {
+              "group": "body",
+              "type": "Boolean",
+              "optional": false,
+              "field": "codeOfConduct",
+              "description": "<p>acceptance of the code of conduct</p>"
             },
             {
               "group": "body",

@@ -93,12 +93,20 @@ function updatedAccount(req, res) {
     });
 }
 
+function invitedAccount(req, res) {
+    return res.status(200).json({
+        message: "Successfully invited user",
+        data: {}
+    });
+}
+
+
 module.exports = {
     getUserByEmail: Util.asyncMiddleware(getUserByEmail),
     getUserById: Util.asyncMiddleware(getUserById),
 
     // assumes all information in req.body
     addUser: Util.asyncMiddleware(addUser),
-
     updatedAccount: updatedAccount,
+    invitedAccount: invitedAccount
 };

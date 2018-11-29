@@ -17,7 +17,6 @@ const util = {
     auth: require("./util/auth.test.util"),
     hacker: require("./util/hacker.test.util"),
     account: require("./util/account.test.util"),
-    auth: require("./util/auth.test.util"),
     accountConfirmation: require("./util/accountConfirmation.test.util")
 };
 const StorageService = require("../services/storage.service");
@@ -200,7 +199,7 @@ describe("POST create hacker", function () {
                     res.body.should.have.property("data");
 
                     // delete _id and status because those fields were generated
-                    delete res.body.data._id;
+                    delete res.body.data.id;
                     delete res.body.data.status;
                     chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify(newHacker1));
                     done();
@@ -227,7 +226,7 @@ describe("POST create hacker", function () {
                     res.body.should.have.property("data");
 
                     // delete _id and status because those fields were generated
-                    delete res.body.data._id;
+                    delete res.body.data.id;
                     delete res.body.data.status;
                     chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify(newHacker1));
                     done();
@@ -657,7 +656,7 @@ describe("POST add a hacker resume", function () {
                     res.body.should.have.property("data");
                     res.body.data.should.have.property("filename");
                     StorageService.download(res.body.data.filename).then((value) => {
-                        const actualFile = fs.readFileSync(path.join(__dirname, "testResume.pdf"))
+                        const actualFile = fs.readFileSync(path.join(__dirname, "testResume.pdf"));
                         chai.assert.equal(value[0].length, actualFile.length);
                         StorageService.delete(res.body.data.filename).then(() => {
                             done();

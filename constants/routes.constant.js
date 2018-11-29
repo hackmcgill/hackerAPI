@@ -49,6 +49,10 @@ const accountRoutes = {
         requestType: Constants.REQUEST_TYPES.PATCH,
         uri: "/api/account/" + Constants.ROLE_CATEGORIES.ALL,
     },
+    "inviteAccount": {
+        requestType: Constants.REQUEST_TYPES.POST,
+        uri: "/api/account/invite"
+    }
 };
 
 const hackerRoutes = {

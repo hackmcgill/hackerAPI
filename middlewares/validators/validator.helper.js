@@ -12,7 +12,7 @@ const jwt = require("jsonwebtoken");
 const Constants = require("../../constants/general.constant");
 const Models = {
     Hacker: require("../../models/hacker.model")
-}
+};
 
 /**
  * Validates that field is a valid devpost URL
@@ -51,16 +51,16 @@ function integerValidator(fieldLocation, fieldname, optional = true, lowerBound 
         return value.optional({
                 checkFalsy: true
             })
-            .isInt().withMessage("tier must be an integer.")
+            .isInt().withMessage(`${fieldname} must be an integer.`)
             .custom((value) => {
                 return value >= lowerBound && value <= upperBound;
-            }).withMessage("tier must be between 0 and 5");
+            }).withMessage(`${fieldname} must be between ${lowerBound} and  ${upperBound}`);
     } else {
         return value.exists().withMessage("tier must exist")
-            .isInt().withMessage("tier must be an integer.")
+            .isInt().withMessage(`${fieldname} must be an integer.`)
             .custom((value) => {
                 return value >= lowerBound && value <= upperBound;
-            }).withMessage("tier must be between 0 and 5");
+            }).withMessage(`${fieldname} must be between ${lowerBound} and  ${upperBound}`);
     }
 }
 
@@ -71,7 +71,7 @@ function integerValidator(fieldLocation, fieldname, optional = true, lowerBound 
  * @param {boolean} optional Whether the field is optional or not.
  */
 function mongoIdValidator(fieldLocation, fieldname, optional = true) {
-    const mongoId = setProperValidationChainBuilder(fieldLocation, fieldname, "invalid mongoID array");
+    const mongoId = setProperValidationChainBuilder(fieldLocation, fieldname, "invalid mongoID");
 
     if (optional) {
         return mongoId.optional({
@@ -565,6 +565,25 @@ function phoneNumberValidator(fieldLocation, fieldname, optional = true) {
 }
 
 /**
+ * Validates that field must be a valid account type
+ * @param {"query" | "body" | "header" | "param"} fieldLocation the location where the field should be found 
+ * @param {string} fieldname name of the field that needs to be validated.
+ * @param {boolean} optional whether the field is optional or not.
+ */
+function accountTypeValidator(fieldLocation, fieldname, optional = true) {
+    const accountType = setProperValidationChainBuilder(fieldLocation, fieldname, "Invalid account type");
+    if (optional) {
+        return accountType.optional({
+            checkFalsy: true
+        }).isIn(Constants.EXTENDED_USER_TYPES);
+    } else {
+        return accountType.exists()
+            .withMessage("Account type must be provided")
+            .isIn(Constants.EXTENDED_USER_TYPES);
+    }
+}
+
+/**
  *
  * @param {"query" | "body" | "header" | "param"} fieldLocation the location where the field should be found
  * @param {string} fieldname name of the field that needs to be validated.
@@ -615,4 +634,5 @@ module.exports = {
     phoneNumberValidator: phoneNumberValidator,
     dateValidator: dateValidator,
     hackerCheckInStatusValidator: hackerCheckInStatusValidator,
+    accountTypeValidator: accountTypeValidator
 };
