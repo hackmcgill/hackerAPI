@@ -23,5 +23,9 @@ module.exports = {
         VALIDATOR.shirtSizeValidator("body", "shirtSize", true),
         VALIDATOR.dateValidator("body", "birthDate", true),
         VALIDATOR.phoneNumberValidator("body", "phoneNumber", true)
+    ],
+    inviteAccountValidator: [
+        VALIDATOR.emailValidator("body", "email", false),
+        VALIDATOR.accountTypeValidator("body", "accountType", false)
     ]
 };

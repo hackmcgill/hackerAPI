@@ -73,11 +73,12 @@ EMAIL_SUBJECTS[HACKER_STATUS_CONFIRMED] = `Thanks for confirming your attendance
 EMAIL_SUBJECTS[HACKER_STATUS_CANCELLED] = "Sorry to see you go";
 EMAIL_SUBJECTS[HACKER_STATUS_CHECKED_IN] = `Welcome to ${HACKATHON_NAME}`;
 
-const CONFIRM_ACC_EMAIL_SUBJECTS = {};
-CONFIRM_ACC_EMAIL_SUBJECTS[HACKER] = `Please complete your hacker application for ${HACKATHON_NAME}`;
-CONFIRM_ACC_EMAIL_SUBJECTS[SPONSOR] = `You've been invited to create a sponsor account for ${HACKATHON_NAME}`;
-CONFIRM_ACC_EMAIL_SUBJECTS[VOLUNTEER] = `You've been invited to create a volunteer account for ${HACKATHON_NAME}`;
-CONFIRM_ACC_EMAIL_SUBJECTS[STAFF] = `You've been invited to create a staff account for ${HACKATHON_NAME}`;
+const CONFIRM_ACC_EMAIL_SUBJECT = `Please complete your hacker application for ${HACKATHON_NAME}`;
+const CREATE_ACC_EMAIL_SUBJECTS = {};
+CREATE_ACC_EMAIL_SUBJECTS[HACKER] = `You've been invited to create a hacker account for ${HACKATHON_NAME}`;
+CREATE_ACC_EMAIL_SUBJECTS[SPONSOR] = `You've been invited to create a sponsor account for ${HACKATHON_NAME}`;
+CREATE_ACC_EMAIL_SUBJECTS[VOLUNTEER] = `You've been invited to create a volunteer account for ${HACKATHON_NAME}`;
+CREATE_ACC_EMAIL_SUBJECTS[STAFF] = `You've been invited to create a staff account for ${HACKATHON_NAME}`;
 
 module.exports = {
     HACKATHON_NAME: HACKATHON_NAME,
@@ -99,7 +100,8 @@ module.exports = {
     EXTENDED_USER_TYPES: EXTENDED_USER_TYPES,
     URL_REGEX: URL_REGEX,
     EMAIL_SUBJECTS: EMAIL_SUBJECTS,
-    CONFIRM_ACC_EMAIL_SUBJECTS: CONFIRM_ACC_EMAIL_SUBJECTS,
+    CREATE_ACC_EMAIL_SUBJECTS: CREATE_ACC_EMAIL_SUBJECTS,
+    CONFIRM_ACC_EMAIL_SUBJECT: CONFIRM_ACC_EMAIL_SUBJECT,
     HACKER: HACKER,
     SPONSOR: SPONSOR,
     VOLUNTEER: VOLUNTEER,

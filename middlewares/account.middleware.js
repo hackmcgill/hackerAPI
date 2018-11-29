@@ -5,7 +5,9 @@ const mongoose = require("mongoose");
 const Services = {
     RoleBinding: require("../services/roleBinding.service"),
     Logger: require("../services/logger.service"),
-    Account: require("../services/account.service")
+    Account: require("../services/account.service"),
+    AccountConfirmation: require("../services/accountConfirmation.service"),
+    Email: require("../services/email.service")
 };
 
 const Middleware = {
@@ -113,6 +115,37 @@ async function addAccount(req, res, next) {
     next();
 }
 
+/**
+ * @function inviteAccount
+ * @param {{body: {email: string, accountType: string}}} req 
+ * @param {*} res 
+ * @param {(err?)=>void} next 
+ * @return {void}
+ * Creates email to provide a link for the user to create an account
+ */
+async function inviteAccount(req, res, next) {
+    const email = req.body.email;
+    const accountType = req.body.accountType;
+    const confirmationObj = await Services.AccountConfirmation.create(accountType, email);
+    const confirmationToken = Services.AccountConfirmation.generateToken(confirmationObj.id);
+
+    const mailData = Services.AccountConfirmation.generateAccountInvitationEmail(req.hostname, email, accountType, confirmationToken);
+    if (mailData !== undefined) {
+        Services.Email.send(mailData, (err) => {
+            if (err) {
+                next(err);
+            } else {
+                next();
+            }
+        });
+    } else {
+        return next({
+            message: Constants.Error.EMAIL_500_MESSAGE,
+        });
+    }
+
+}
+
 module.exports = {
     parsePatch: parsePatch,
     parseAccount: parseAccount,
@@ -120,5 +153,6 @@ module.exports = {
     addDefaultHackerPermissions: Middleware.Util.asyncMiddleware(addDefaultHackerPermissions),
     // untested
     updatePassword: Middleware.Util.asyncMiddleware(updatePassword),
-    addAccount: Middleware.Util.asyncMiddleware(addAccount)
+    addAccount: Middleware.Util.asyncMiddleware(addAccount),
+    inviteAccount: Middleware.Util.asyncMiddleware(inviteAccount)
 };
