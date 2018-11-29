@@ -434,7 +434,7 @@ function searchModelValidator(fieldLocation, fieldName){
     return paramChain.exists().withMessage("Model must be provided")
         .isLowercase().withMessage("Model must be lower case")
         .isAlpha().withMessage("must contain alphabet characters")
-        .isIn(["hacker"])
+        .isIn([Constants.Hacker])
 }
 
 /**==
@@ -452,7 +452,7 @@ function searchValidator(fieldLocation, fieldname) {
             let modelString = req.params.model
             //Supported models for searching
             let model;
-            if (modelString == "hacker") {
+            if (modelString === Constants.HACKER) {
                 model = Models.Hacker;
             } else {
                 return false;
