@@ -97,7 +97,7 @@ describe("GET user account", function () {
                 return done(error);
             }
             return agent
-                .get(`/api/account/` + storedAccount1._id)
+                .get(`/api/account/${storedAccount1._id}`)
                 // does not have password because of to stripped json
                 .end(function (err, res) {
                     if (err) {
@@ -124,7 +124,7 @@ describe("GET user account", function () {
                 return done(error);
             }
             return agent
-                .get(`/api/account/` + storedAccount1._id)
+                .get(`/api/account/${storedAccount1._id}`)
                 // does not have password because of to stripped json
                 .end(function (err, res) {
                     if (err) {
@@ -152,7 +152,7 @@ describe("GET user account", function () {
                 return done(error);
             }
             return agent
-                .get(`/api/account/` + Admin1._id)
+                .get(`/api/account/${Admin1._id}`)
                 // does not have password because of to stripped json
                 .end(function (err, res) {
                     if (err) {
@@ -240,13 +240,20 @@ describe("PATCH update account", function () {
         "lastName": "name"
     };
 
+    const failUpdatedInfo = {
+        "_id": Admin1._id,
+        "firstName": "fail",
+        "lastName": "fail"
+    };
+    const updateConfirmedInfo = {
+        "_id": storedAccount1._id,
+        "confirmed": true
+    };
+
     // fail on authentication
     it("should fail to update an account due to authentication", function (done) {
         chai.request(server.app)
-            .get(` / api / account / $ {
-                                    updatedInfo._id
-                                }
-                                `)
+            .patch(`/api/account/${updatedInfo._id}`)
             .end(function (err, res) {
                 res.should.have.status(401);
                 res.should.be.json;
@@ -264,10 +271,7 @@ describe("PATCH update account", function () {
                 return done(error);
             }
             agent
-                .patch(` / api / account / $ {
-                                    updatedInfo._id
-                                }
-                                `)
+                .patch(`/api/account/${updatedInfo._id}`)
                 .type("application/json")
                 .send(updatedInfo)
                 .end(function (err, res) {
@@ -292,10 +296,7 @@ describe("PATCH update account", function () {
                 return done(error);
             }
             agent
-                .patch(` / api / account / $ {
-                                    updatedInfo._id
-                                }
-                                `)
+                .patch(`/api/account/${updatedInfo._id}`)
                 .type("application/json")
                 .send(updatedInfo)
                 .end(function (err, res) {
@@ -320,10 +321,7 @@ describe("PATCH update account", function () {
                 return done(error);
             }
             agent
-                .patch(` / api / account / $ {
-                                    failUpdatedInfo._id
-                                }
-                                `)
+                .patch(`/api/account/${failUpdatedInfo._id}`)
                 .type("application/json")
                 .send(updatedInfo)
                 .end(function (err, res) {
@@ -402,7 +400,7 @@ describe("GET resend confirmation email", function () {
                 return done(error);
             }
             agent
-                .get(` / api / auth / confirm / resend `)
+                .get("/api/auth/confirm/resend")
                 .type("application/json")
                 .end(function (err, res) {
                     res.should.have.status(200);
@@ -420,7 +418,7 @@ describe("GET resend confirmation email", function () {
                 return done(error);
             }
             agent
-                .get(` / api / auth / confirm / resend `)
+                .get("/api/auth/confirm/resend")
                 .type("application/json")
                 .end(function (err, res) {
                     res.should.have.status(422);
@@ -438,7 +436,7 @@ describe("GET resend confirmation email", function () {
                 return done(error);
             }
             agent
-                .get(` / api / auth / confirm / resend `)
+                .get("/api/auth/confirm/resend")
                 .type("application/json")
                 .end(function (err, res) {
                     res.should.have.status(428);
