@@ -73,13 +73,12 @@ function parseHacker(req, res, next) {
 
 /**
  * @function parseCheckin
- * @param {{body: {accountId: ObjectId, school: string, gender: string, needsBus: string, application: Object, authorization: string}}} req
+ * @param {{body: {*}}} req
  * @param {*} res
  * @param {(err?)=>void} next
  * @return {void}
  * @description 
- * Moves accountId, school, gender, needsBus, application from req.body to req.body.teamDetails. 
- * Adds _id to teamDetails.
+ * Adds the checked-in status to req.body
  */
 function parseCheckIn(req, res, next) {
     req.body.status = Constants.General.HACKER_STATUS_CHECKED_IN;
@@ -87,8 +86,18 @@ function parseCheckIn(req, res, next) {
     return next();
 }
 
+/**
+ * @function parseCheckin
+ * @param {{body: {confirm: boolean}}} req
+ * @param {*} res
+ * @param {(err?)=>void} next
+ * @return {void}
+ * @description 
+ * Changes req.body.status to confirmed or accepted depending on whether req.body.confirm is true or false respectively.
+ * Deletes req.body.confirm afterwards
+ */
 function parseConfirmation(req, res, next) {
-    let confirm = req.body.confirm;
+    const confirm = req.body.confirm;
 
     if (confirm) {
         req.body.status = Constants.General.HACKER_STATUS_CONFIRMED;
@@ -286,7 +295,7 @@ function checkStatus(statuses) {
             if (statuses.indexOf(status) === -1) {
                 return next({
                     status: 409,
-                    message: Constants.Error.HACKER_CHECKIN_409_MESSAGE,
+                    message: Constants.Error.HACKER_STATUS_409_MESSAGE,
                     data: {
                         id: req.params.id
                     }

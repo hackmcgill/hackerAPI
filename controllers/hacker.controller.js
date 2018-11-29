@@ -37,7 +37,7 @@ async function findById(req, res) {
  * @param {{body: {hacker: {_id: ObjectId, accountId: ObjectId, school: string, gender: string, needsBus: boolean, application: {Object}}}}} req
  * @param {*} res
  * @return {JSON} Success status
- * @description returns success message and 
+ * @description returns success message
  */
 async function createdHacker(req, res) {
     return res.status(200).json({

@@ -519,7 +519,7 @@ describe("PATCH update one hacker", function () {
     });
 
     // Succeed and change accepted to confirm
-    it("should succeed for hacker to change from accepted to confirmed", function (done) {
+    it("should succeed for hacker to update their own status from accepted to confirmed", function (done) {
         util.auth.login(agent, storedAccount2, (error) => {
             if (error) {
                 agent.close();
@@ -550,7 +550,7 @@ describe("PATCH update one hacker", function () {
     });
 
     // Succeed and change confirmed to accepted
-    it("should succeed for hacker to change from confirmed to accepted", function (done) {
+    it("should succeed for hacker to update their own status from confirmed to accepted", function (done) {
         util.auth.login(agent, storedAccount1, (error) => {
             if (error) {
                 agent.close();
@@ -581,7 +581,7 @@ describe("PATCH update one hacker", function () {
     });
 
     // fail for a hacker that's not accepted
-    it("should fail for hacker who is not accepted or confirmed", function (done) {
+    it("should fail to update hacker status when hacker status is not accepted or confirmed", function (done) {
         util.auth.login(agent, util.account.Hacker3, (error) => {
             if (error) {
                 agent.close();
