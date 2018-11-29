@@ -15,7 +15,6 @@ module.exports = {
         VALIDATOR.phoneNumberValidator("body", "phoneNumber", false)
     ],
     updateAccountValidator: [
-        VALIDATOR.mongoIdValidator("body", "_id", true),
         VALIDATOR.nameValidator("body", "firstName", true),
         VALIDATOR.nameValidator("body", "lastName", true),
         VALIDATOR.pronounValidator("body", "pronoun", true),
