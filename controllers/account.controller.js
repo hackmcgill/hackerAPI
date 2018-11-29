@@ -105,6 +105,14 @@ async function updateAccount(req, res) {
     }
 }
 
+function invitedAccount(req, res){
+    return res.status(200).json({
+        message: "Successfully invited user",
+        data: {}
+    })
+}
+
+
 module.exports = {
     getUserByEmail: Util.asyncMiddleware(getUserByEmail),
     getUserById: Util.asyncMiddleware(getUserById),
@@ -113,4 +121,5 @@ module.exports = {
     addUser: Util.asyncMiddleware(addUser),
 
     updateAccount: Util.asyncMiddleware(updateAccount),
+    invitedAccount: invitedAccount
 };

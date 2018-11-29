@@ -30,7 +30,6 @@ const HackerSchema = new mongoose.Schema({
             //gcloud bucket link
             resume: {
                 type: String,
-                required: true
             },
             github: {
                 type: String
@@ -73,7 +72,10 @@ const HackerSchema = new mongoose.Schema({
         }
     },
     ethnicity: {
-        type: String,
+        type: [{
+            type: String,
+            required: true
+        }],
         required: true
     },
     major: {
