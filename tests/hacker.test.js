@@ -600,7 +600,7 @@ describe("PATCH update one hacker", function () {
                     res.should.have.status(409);
                     res.should.be.json;
                     res.body.should.have.property("message");
-                    res.body.message.should.equal(Constants.Error.HACKER_CHECKIN_409_MESSAGE);
+                    res.body.message.should.equal(Constants.Error.HACKER_STATUS_409_MESSAGE);
                     res.body.should.have.property("data");
 
                     done();
