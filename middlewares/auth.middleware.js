@@ -131,9 +131,7 @@ async function retrieveRoleBindings(req, res, next) {
  * @param {(err?)=>void} next 
  */
 async function sendResetPasswordEmailMiddleware(req, res, next) {
-    const user = await Services.Account.findByEmail({
-        email: req.body.email
-    });
+    const user = await Services.Account.findByEmail(req.body.email);
     if (user) {
         //create the reset password token
         await Services.ResetPasswordToken.create(user.id);
@@ -171,7 +169,7 @@ async function sendResetPasswordEmailMiddleware(req, res, next) {
  */
 async function sendConfirmAccountEmailMiddleware(req, res, next) {
     const account = req.body.account;
-    if(account.confirmed){
+    if (account.confirmed) {
         return next();
     }
     await Services.AccountConfirmation.create(Constants.General.HACKER, account.email, account.id);
@@ -404,7 +402,7 @@ function createRoleBindings(roleName = undefined) {
  * @param {*} res 
  * @param {(err?) => void } next 
  */
-async function retrieveRoles(req, res, next){
+async function retrieveRoles(req, res, next) {
     const roles = await Services.Role.getAll();
     req.roles = roles;
     next();
