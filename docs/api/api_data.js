@@ -201,6 +201,63 @@ define({
       }]
     },
     {
+      "type": "post",
+      "url": "/account/invite",
+      "title": "invites a user to create an account with the specified accountType",
+      "name": "inviteAccount",
+      "group": "Account",
+      "version": "0.0.8",
+      "description": "<p>sends link with token to be used with the account/create route</p>",
+      "parameter": {
+        "fields": {
+          "body": [{
+              "group": "body",
+              "type": "String",
+              "optional": true,
+              "field": "email",
+              "description": "<p>email of the account to be created and where to send the link</p>"
+            },
+            {
+              "group": "body",
+              "type": "String",
+              "optional": true,
+              "field": "accountType",
+              "description": "<p>the type of the account which the user can create, for sponsor this should specify tier as well</p>"
+            }
+          ]
+        }
+      },
+      "success": {
+        "fields": {
+          "Success 200": [{
+              "group": "Success 200",
+              "type": "string",
+              "optional": false,
+              "field": "message",
+              "description": "<p>Success message</p>"
+            },
+            {
+              "group": "Success 200",
+              "type": "object",
+              "optional": false,
+              "field": "data",
+              "description": "<p>Account object</p>"
+            }
+          ]
+        },
+        "examples": [{
+          "title": "Success-Response: ",
+          "content": "{\n               \"message\": \"Successfully invited user  \", \n               \"data\": {}\n           }",
+          "type": "object"
+        }]
+      },
+      "filename": "routes/api/account.js",
+      "groupTitle": "Account",
+      "sampleRequest": [{
+        "url": "https://mchacks.ca/api/account/invite"
+      }]
+    },
+    {
       "type": "get",
       "url": "/account/self",
       "title": "get information about own account",
@@ -1309,8 +1366,8 @@ define({
     },
     {
       "type": "patch",
-      "url": "/hacker/confirmation/self Allows a hacker to confirm they are attending from 'accepted',",
-      "title": "or they can undo the confirmation and return to 'accepted'",
+      "url": "/hacker/confirmation/:id Allows confirmation of hacker attendence if they are accepted.",
+      "title": "Also allows change from 'confirmed' back to 'accepted'",
       "name": "patchHackerConfirmed",
       "group": "Hacker",
       "version": "0.0.9",
@@ -1359,7 +1416,7 @@ define({
       "filename": "routes/api/hacker.js",
       "groupTitle": "Hacker",
       "sampleRequest": [{
-        "url": "https://mchacks.ca/api/hacker/confirmation/self Allows a hacker to confirm they are attending from 'accepted',"
+        "url": "https://mchacks.ca/api/hacker/confirmation/:id Allows confirmation of hacker attendence if they are accepted."
       }]
     },
     {
