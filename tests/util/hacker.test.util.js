@@ -70,7 +70,7 @@ const newHacker1 = {
         "jobInterest": "Full-time",
         "skills": ["CSS", "HTML", "JS"],
     },
-    "ethnicity":  ["Caucasian"],
+    "ethnicity": ["Caucasian"],
     "major": "EE",
     "graduationYear": 2019,
     "codeOfConduct": true,

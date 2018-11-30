@@ -198,10 +198,15 @@ describe("POST create hacker", function () {
                     res.body.message.should.equal("Hacker creation successful");
                     res.body.should.have.property("data");
 
-                    // delete _id and status because those fields were generated
-                    delete res.body.data._id;
-                    delete res.body.data.status;
-                    chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify(newHacker1));
+                    // create JSON version of model
+                    // delete id as they will be different between model objects
+                    // update status to be applied on the comparator hacker object
+                    const hacker = (new Hacker(newHacker1)).toJSON();
+                    hacker.status = Constants.General.HACKER_STATUS_APPLIED;
+                    delete res.body.data.id;
+                    delete hacker.id;
+                    chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify(hacker));
+
                     done();
                 });
         });
@@ -225,10 +230,14 @@ describe("POST create hacker", function () {
                     res.body.message.should.equal("Hacker creation successful");
                     res.body.should.have.property("data");
 
-                    // delete _id and status because those fields were generated
-                    delete res.body.data._id;
-                    delete res.body.data.status;
-                    chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify(newHacker1));
+                    // create JSON version of model
+                    // delete id as they will be different between model objects
+                    // update status to be applied on the comparator hacker object
+                    const hacker = (new Hacker(newHacker1)).toJSON();
+                    hacker.status = Constants.General.HACKER_STATUS_APPLIED;
+                    delete res.body.data.id;
+                    delete hacker.id;
+                    chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify(hacker));
                     done();
                 });
         });

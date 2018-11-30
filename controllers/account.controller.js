@@ -67,11 +67,10 @@ async function getUserById(req, res) {
  * @description Adds a user from information in req.body.accountDetails
  */
 async function addUser(req, res) {
-    const accountDetails = req.body.accountDetails;
-    delete accountDetails.password;
+    const acc = req.body.account;
     return res.status(200).json({
         message: "Account creation successful",
-        data: accountDetails
+        data: acc.toStrippedJSON()
     });
 }
 

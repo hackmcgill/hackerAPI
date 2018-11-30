@@ -181,6 +181,13 @@ describe("POST create account", function () {
                 res.should.be.json;
                 res.body.should.have.property("message");
                 res.body.message.should.equal("Account creation successful");
+
+                // use acc.toStrippedJSON to deal with hidden passwords and convert _id to id
+                const acc = (new Account(newAccount1)).toStrippedJSON();
+                // delete id as those are generated
+                delete acc.id;
+                delete res.body.data.id;
+                chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify(acc));
                 done();
             });
     });
@@ -244,10 +251,6 @@ describe("PATCH update account", function () {
         "_id": Admin1._id,
         "firstName": "fail",
         "lastName": "fail"
-    };
-    const updateConfirmedInfo = {
-        "_id": storedAccount1._id,
-        "confirmed": true
     };
 
     // fail on authentication

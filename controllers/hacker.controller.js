@@ -42,7 +42,7 @@ async function findById(req, res) {
 async function createdHacker(req, res) {
     return res.status(200).json({
         message: "Hacker creation successful",
-        data: req.body.hackerDetails
+        data: req.body.hacker.toJSON()
     });
 }
 

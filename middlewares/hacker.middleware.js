@@ -297,7 +297,8 @@ function checkStatus(statuses) {
                     status: 409,
                     message: Constants.Error.HACKER_STATUS_409_MESSAGE,
                     data: {
-                        id: req.params.id
+                        id: req.params.id,
+                        validStatuses: statuses
                     }
                 });
             }
@@ -376,6 +377,7 @@ async function createHacker(req, res, next) {
     const hacker = await Services.Hacker.createHacker(hackerDetails);
 
     if (!!hacker) {
+        req.body.hacker = hacker;
         return next();
     } else {
         return next({

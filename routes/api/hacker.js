@@ -313,8 +313,8 @@ module.exports = {
             );
 
         /**
-         * @api {patch} /hacker/confirmation/self Allows a hacker to confirm they are attending from 'accepted',
-         * or they can undo the confirmation and return to 'accepted'
+         * @api {patch} /hacker/confirmation/:id Allows confirmation of hacker attendence if they are accepted. 
+         * Also allows change from 'confirmed' back to 'accepted'
          * @apiName patchHackerConfirmed
          * @apiGroup Hacker
          * @apiVersion 0.0.9

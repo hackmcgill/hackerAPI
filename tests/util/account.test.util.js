@@ -14,7 +14,6 @@ const newAccount1 = {
     "password": "1234567890",
     "dietaryRestrictions": ["none"],
     "shirtSize": "S",
-    "confirmed": true,
     "accountType": Constants.Hacker,
     "birthDate": "1997-12-30",
     "phoneNumber": 1234567890,
