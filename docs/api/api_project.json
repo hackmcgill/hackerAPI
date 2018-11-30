@@ -4,12 +4,12 @@
   "description": "Documentation for the API used for mchacks",
   "defaultVersion": "0.0.8",
   "title": "hackerAPI documentation",
-  "url": "https://mchacks.ca/api",
-  "sampleUrl": "https://mchacks.ca/api",
+  "url": "https://api.mchacks.ca/api",
+  "sampleUrl": "https://api.mchacks.ca/api",
   "apidoc": "0.3.0",
   "generator": {
     "name": "apidoc",
-    "time": "2018-11-29T02:39:05.040Z",
+    "time": "2018-11-30T07:04:37.968Z",
     "url": "http://apidocjs.com",
     "version": "0.17.6"
   }

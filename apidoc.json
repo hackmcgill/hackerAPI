@@ -4,6 +4,6 @@
     "defaultVersion": "0.0.8",
     "description": "Documentation for the API used for mchacks",
     "title": "hackerAPI documentation",
-    "url": "https://mchacks.ca/api",
-    "sampleUrl": "https://mchacks.ca/api"
+    "url": "https://api.mchacks.ca/api",
+    "sampleUrl": "https://api.mchacks.ca/api"
 }
