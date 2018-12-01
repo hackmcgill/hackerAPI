@@ -19,6 +19,7 @@ const Middleware = {
 const Constants = {
     General: require("../constants/general.constant"),
     Error: require("../constants/error.constant"),
+    Role: require("../constants/role.constant")
 };
 
 /**
@@ -381,7 +382,8 @@ async function addCreationRoleBindings(req, res, next) {
     // Get the default role for the account type given
     const roleName = Constants.General.POST_ROLES[req.body.account.accountType];
     await Services.RoleBinding.createRoleBindingByRoleName(req.body.account.id, roleName);
-    await Services.RoleBinding.createRoleBindingByRoleName(req.body.account.id, "account");
+    // Add default account role bindings
+    await Services.RoleBinding.createRoleBindingByRoleName(req.body.account.id, Constants.Role.accountRole.name);
     next();
 }
 

@@ -4,7 +4,19 @@ const Constants = {
     Routes: require("./routes.constant"),
 };
 const mongoose = require("mongoose");
-const Role = require("../models/role.model");
+
+const accountRole = {
+    "_id": mongoose.Types.ObjectId(),
+    "name": "account",
+    "routes": [
+        Constants.Routes.authRoutes.login,
+        Constants.Routes.authRoutes.logout,
+        Constants.Routes.authRoutes.getSelfRoleBindindings,
+        Constants.Routes.accountRoutes.getSelf,
+        Constants.Routes.accountRoutes.getSelfById,
+        Constants.Routes.accountRoutes.patchSelfById
+    ]
+};
 
 const adminRole = {
     "_id": mongoose.Types.ObjectId(),
@@ -16,10 +28,6 @@ const hackerRole = {
     "_id": mongoose.Types.ObjectId(),
     "name": Constants.General.HACKER,
     "routes": [
-        Constants.Routes.authRoutes.login,
-        Constants.Routes.authRoutes.logout,
-        Constants.Routes.authRoutes.getSelfRoleBindindings,
-
         Constants.Routes.accountRoutes.getSelf,
         Constants.Routes.accountRoutes.getSelfById,
         Constants.Routes.accountRoutes.patchSelfById,
@@ -35,10 +43,6 @@ const volunteerRole = {
     "_id": mongoose.Types.ObjectId(),
     "name": Constants.General.VOLUNTEER,
     "routes": [
-        Constants.Routes.authRoutes.login,
-        Constants.Routes.authRoutes.logout,
-        Constants.Routes.authRoutes.getSelfRoleBindindings,
-
         Constants.Routes.volunteerRoutes.post,
     ]
 };
@@ -47,10 +51,6 @@ const sponsorT1Role = {
     "_id": mongoose.Types.ObjectId(),
     "name": Constants.General.SPONSOR_T1,
     "routes": [
-        Constants.Routes.authRoutes.login,
-        Constants.Routes.authRoutes.logout,
-        Constants.Routes.authRoutes.getSelfRoleBindindings,
-
         Constants.Routes.sponsorRoutes.post,
         Constants.Routes.sponsorRoutes.getSelfById,
     ]
@@ -60,10 +60,6 @@ const sponsorT2Role = {
     "_id": mongoose.Types.ObjectId(),
     "name": Constants.General.SPONSOR_T2,
     "routes": [
-        Constants.Routes.authRoutes.login,
-        Constants.Routes.authRoutes.logout,
-        Constants.Routes.authRoutes.getSelfRoleBindindings,
-
         Constants.Routes.sponsorRoutes.post,
         Constants.Routes.sponsorRoutes.getSelfById,
     ]
@@ -73,10 +69,6 @@ const sponsorT3Role = {
     "_id": mongoose.Types.ObjectId(),
     "name": Constants.General.SPONSOR_T3,
     "routes": [
-        Constants.Routes.authRoutes.login,
-        Constants.Routes.authRoutes.logout,
-        Constants.Routes.authRoutes.getSelfRoleBindindings,
-
         Constants.Routes.sponsorRoutes.post,
         Constants.Routes.sponsorRoutes.getSelfById,
     ]
@@ -86,10 +78,6 @@ const sponsorT4Role = {
     "_id": mongoose.Types.ObjectId(),
     "name": Constants.General.SPONSOR_T4,
     "routes": [
-        Constants.Routes.authRoutes.login,
-        Constants.Routes.authRoutes.logout,
-        Constants.Routes.authRoutes.getSelfRoleBindindings,
-
         Constants.Routes.sponsorRoutes.post,
         Constants.Routes.sponsorRoutes.getSelfById,
     ]
@@ -99,10 +87,6 @@ const sponsorT5Role = {
     "_id": mongoose.Types.ObjectId(),
     "name": Constants.General.SPONSOR_T5,
     "routes": [
-        Constants.Routes.authRoutes.login,
-        Constants.Routes.authRoutes.logout,
-        Constants.Routes.authRoutes.getSelfRoleBindindings,
-
         Constants.Routes.sponsorRoutes.post,
         Constants.Routes.sponsorRoutes.getSelfById,
     ]
@@ -151,6 +135,7 @@ function createAllSingularRoles() {
  */
 function createAllRoles() {
     let allRolesObject = {
+        accountRole: accountRole,
         adminRole: adminRole,
         hackerRole: hackerRole,
         volunteerRole: volunteerRole,
@@ -158,7 +143,7 @@ function createAllRoles() {
         sponsorT2Role: sponsorT2Role,
         sponsorT3Role: sponsorT3Role,
         sponsorT4Role: sponsorT4Role,
-        sponsorT5Role: sponsorT5Role
+        sponsorT5Role: sponsorT5Role,
     };
 
     const singularRoles = createAllSingularRoles();
@@ -173,6 +158,7 @@ function createAllRoles() {
 }
 
 module.exports = {
+    accountRole: accountRole,
     adminRole: adminRole,
     hackerRole: hackerRole,
     volunteerRole: volunteerRole,
