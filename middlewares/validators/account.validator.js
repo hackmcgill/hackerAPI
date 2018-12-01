@@ -15,7 +15,6 @@ module.exports = {
         VALIDATOR.phoneNumberValidator("body", "phoneNumber", false)
     ],
     updateAccountValidator: [
-        VALIDATOR.mongoIdValidator("body", "_id", true),
         VALIDATOR.nameValidator("body", "firstName", true),
         VALIDATOR.nameValidator("body", "lastName", true),
         VALIDATOR.pronounValidator("body", "pronoun", true),
@@ -24,5 +23,9 @@ module.exports = {
         VALIDATOR.shirtSizeValidator("body", "shirtSize", true),
         VALIDATOR.dateValidator("body", "birthDate", true),
         VALIDATOR.phoneNumberValidator("body", "phoneNumber", true)
+    ],
+    inviteAccountValidator: [
+        VALIDATOR.emailValidator("body", "email", false),
+        VALIDATOR.accountTypeValidator("body", "accountType", false)
     ]
 };

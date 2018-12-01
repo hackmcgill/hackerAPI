@@ -26,6 +26,13 @@ define({
               "group": "body",
               "type": "String",
               "optional": false,
+              "field": "pronoun",
+              "description": "<p>the pronoun of the account creator.</p>"
+            },
+            {
+              "group": "body",
+              "type": "String",
+              "optional": false,
               "field": "email",
               "description": "<p>Email of the account.</p>"
             },
@@ -47,8 +54,22 @@ define({
               "group": "body",
               "type": "String",
               "optional": false,
-              "field": "passowrd",
+              "field": "password",
               "description": "<p>The password of the account.</p>"
+            },
+            {
+              "group": "body",
+              "type": "String",
+              "optional": false,
+              "field": "birthDate",
+              "description": "<p>a Date parsable string.</p>"
+            },
+            {
+              "group": "body",
+              "type": "Number",
+              "optional": false,
+              "field": "phoneNumber",
+              "description": "<p>the user's phone number, represented as a string.</p>"
             }
           ]
         }
@@ -104,7 +125,7 @@ define({
       "filename": "routes/api/account.js",
       "groupTitle": "Account",
       "sampleRequest": [{
-        "url": "https://mchacks.ca/api/account/"
+        "url": "https://api.mchacks.ca/api/account/"
       }]
     },
     {
@@ -176,7 +197,64 @@ define({
       "filename": "routes/api/account.js",
       "groupTitle": "Account",
       "sampleRequest": [{
-        "url": "https://mchacks.ca/api/account/:id"
+        "url": "https://api.mchacks.ca/api/account/:id"
+      }]
+    },
+    {
+      "type": "post",
+      "url": "/account/invite",
+      "title": "invites a user to create an account with the specified accountType",
+      "name": "inviteAccount",
+      "group": "Account",
+      "version": "0.0.8",
+      "description": "<p>sends link with token to be used with the account/create route</p>",
+      "parameter": {
+        "fields": {
+          "body": [{
+              "group": "body",
+              "type": "String",
+              "optional": true,
+              "field": "email",
+              "description": "<p>email of the account to be created and where to send the link</p>"
+            },
+            {
+              "group": "body",
+              "type": "String",
+              "optional": true,
+              "field": "accountType",
+              "description": "<p>the type of the account which the user can create, for sponsor this should specify tier as well</p>"
+            }
+          ]
+        }
+      },
+      "success": {
+        "fields": {
+          "Success 200": [{
+              "group": "Success 200",
+              "type": "string",
+              "optional": false,
+              "field": "message",
+              "description": "<p>Success message</p>"
+            },
+            {
+              "group": "Success 200",
+              "type": "object",
+              "optional": false,
+              "field": "data",
+              "description": "<p>Account object</p>"
+            }
+          ]
+        },
+        "examples": [{
+          "title": "Success-Response: ",
+          "content": "{\n               \"message\": \"Successfully invited user  \", \n               \"data\": {}\n           }",
+          "type": "object"
+        }]
+      },
+      "filename": "routes/api/account.js",
+      "groupTitle": "Account",
+      "sampleRequest": [{
+        "url": "https://api.mchacks.ca/api/account/invite"
       }]
     },
     {
@@ -237,7 +315,7 @@ define({
       "filename": "routes/api/account.js",
       "groupTitle": "Account",
       "sampleRequest": [{
-        "url": "https://mchacks.ca/api/account/self"
+        "url": "https://api.mchacks.ca/api/account/self"
       }]
     },
     {
@@ -267,6 +345,13 @@ define({
               "group": "body",
               "type": "String",
               "optional": true,
+              "field": "pronoun",
+              "description": "<p>the pronoun of the account creator.</p>"
+            },
+            {
+              "group": "body",
+              "type": "String",
+              "optional": true,
               "field": "email",
               "description": "<p>Email of the account.</p>"
             },
@@ -290,6 +375,20 @@ define({
               "optional": true,
               "field": "passowrd",
               "description": "<p>The password of the account.</p>"
+            },
+            {
+              "group": "body",
+              "type": "String",
+              "optional": true,
+              "field": "birthDate",
+              "description": "<p>a Date parsable string.</p>"
+            },
+            {
+              "group": "body",
+              "type": "Number",
+              "optional": true,
+              "field": "phoneNumber",
+              "description": "<p>the user's phone number, represented as a string.</p>"
             }
           ]
         }
@@ -345,7 +444,7 @@ define({
       "filename": "routes/api/account.js",
       "groupTitle": "Account",
       "sampleRequest": [{
-        "url": "https://mchacks.ca/api/account/:id"
+        "url": "https://api.mchacks.ca/api/account/:id"
       }]
     },
     {
@@ -417,7 +516,7 @@ define({
       "filename": "routes/api/auth.js",
       "groupTitle": "Authentication",
       "sampleRequest": [{
-        "url": "https://mchacks.ca/api/auth/confirm/:token"
+        "url": "https://api.mchacks.ca/api/auth/confirm/:token"
       }]
     },
     {
@@ -473,7 +572,45 @@ define({
       "filename": "routes/api/auth.js",
       "groupTitle": "Authentication",
       "sampleRequest": [{
-        "url": "https://mchacks.ca/api/auth/password/forgot"
+        "url": "https://api.mchacks.ca/api/auth/password/forgot"
+      }]
+    },
+    {
+      "type": "get",
+      "url": "/auth/roles",
+      "title": "get roles",
+      "name": "getRoles",
+      "description": "<p>get all roles that exist in the database</p>",
+      "group": "Authentication",
+      "version": "0.0.8",
+      "success": {
+        "fields": {
+          "Success 200": [{
+              "group": "Success 200",
+              "type": "string",
+              "optional": false,
+              "field": "message",
+              "description": "<p>Success message</p>"
+            },
+            {
+              "group": "Success 200",
+              "type": "object",
+              "optional": false,
+              "field": "data",
+              "description": "<p>empty</p>"
+            }
+          ]
+        },
+        "examples": [{
+          "title": "Success-Response:",
+          "content": "{\"message\": \"Sucessfully retrieved all roles\", \"data\":\n[{name: \"GodStaff\", routes: Array(27), id: \"5bee20ef3ca9dd4754382880\"},\n {name: \"Hacker\", routes: Array(10), id: \"5bee20ef3ca9dd4754382881\"},\n {name: \"Volunteer\", routes: Array(4), id: \"5bee20ef3ca9dd4754382882\"}]",
+          "type": "json"
+        }]
+      },
+      "filename": "routes/api/auth.js",
+      "groupTitle": "Authentication",
+      "sampleRequest": [{
+        "url": "https://api.mchacks.ca/api/auth/roles"
       }]
     },
     {
@@ -546,7 +683,7 @@ define({
         },
         "examples": [{
           "title": "Error-Response: ",
-          "content": "{\"message\": \"Invalid email or password\", \"data\": {}}",
+          "content": "{\"message\": \"Invalid Authentication\", \"data\": {}}",
           "type": "object"
         }]
       },
@@ -556,7 +693,7 @@ define({
       "filename": "routes/api/auth.js",
       "groupTitle": "Authentication",
       "sampleRequest": [{
-        "url": "https://mchacks.ca/api/auth/login"
+        "url": "https://api.mchacks.ca/api/auth/login"
       }]
     },
     {
@@ -596,7 +733,7 @@ define({
       "filename": "routes/api/auth.js",
       "groupTitle": "Authentication",
       "sampleRequest": [{
-        "url": "https://mchacks.ca/api/auth/logout"
+        "url": "https://api.mchacks.ca/api/auth/logout"
       }]
     },
     {
@@ -663,7 +800,7 @@ define({
       "filename": "routes/api/auth.js",
       "groupTitle": "Authentication",
       "sampleRequest": [{
-        "url": "https://mchacks.ca/api/auth/confirm/resend"
+        "url": "https://api.mchacks.ca/api/auth/confirm/resend"
       }]
     },
     {
@@ -735,7 +872,7 @@ define({
       "filename": "routes/api/auth.js",
       "groupTitle": "Authentication",
       "sampleRequest": [{
-        "url": "https://mchacks.ca/api/auth/password/reset"
+        "url": "https://api.mchacks.ca/api/auth/password/reset"
       }]
     },
     {
@@ -807,7 +944,7 @@ define({
       "filename": "routes/api/auth.js",
       "groupTitle": "Auth",
       "sampleRequest": [{
-        "url": "https://mchacks.ca/api/auth/rolebindings/:id"
+        "url": "https://api.mchacks.ca/api/auth/rolebindings/:id"
       }]
     },
     {
@@ -846,6 +983,34 @@ define({
               "optional": false,
               "field": "needsBus",
               "description": "<p>Whether the hacker requires a bus for transportation</p>"
+            },
+            {
+              "group": "body",
+              "type": "String[]",
+              "optional": false,
+              "field": "ethnicity",
+              "description": "<p>the ethnicities of the hacker</p>"
+            },
+            {
+              "group": "body",
+              "type": "String",
+              "optional": false,
+              "field": "major",
+              "description": "<p>the major of the hacker</p>"
+            },
+            {
+              "group": "body",
+              "type": "Number",
+              "optional": false,
+              "field": "graduationYear",
+              "description": "<p>the graduation year of the hacker</p>"
+            },
+            {
+              "group": "body",
+              "type": "Boolean",
+              "optional": false,
+              "field": "codeOfConduct",
+              "description": "<p>acceptance of the code of conduct</p>"
             },
             {
               "group": "body",
@@ -913,7 +1078,7 @@ define({
       "filename": "routes/api/hacker.js",
       "groupTitle": "Hacker",
       "sampleRequest": [{
-        "url": "https://mchacks.ca/api/hacker/"
+        "url": "https://api.mchacks.ca/api/hacker/"
       }]
     },
     {
@@ -985,7 +1150,7 @@ define({
       "filename": "routes/api/hacker.js",
       "groupTitle": "Hacker",
       "sampleRequest": [{
-        "url": "https://mchacks.ca/api/hacker/:id"
+        "url": "https://api.mchacks.ca/api/hacker/:id"
       }]
     },
     {
@@ -1141,7 +1306,7 @@ define({
       "filename": "routes/api/hacker.js",
       "groupTitle": "Hacker",
       "sampleRequest": [{
-        "url": "https://mchacks.ca/api/hacker/:id"
+        "url": "https://api.mchacks.ca/api/hacker/:id"
       }]
     },
     {
@@ -1192,7 +1357,7 @@ define({
       "filename": "routes/api/hacker.js",
       "groupTitle": "Hacker",
       "sampleRequest": [{
-        "url": "https://mchacks.ca/api/hacker/status/:id"
+        "url": "https://api.mchacks.ca/api/hacker/status/:id"
       }]
     },
     {
@@ -1251,7 +1416,7 @@ define({
       "filename": "routes/api/hacker.js",
       "groupTitle": "Hacker",
       "sampleRequest": [{
-        "url": "https://mchacks.ca/api/hacker/resume/:id"
+        "url": "https://api.mchacks.ca/api/hacker/resume/:id"
       }]
     },
     {
@@ -1267,7 +1432,7 @@ define({
       "filename": "routes/index.js",
       "groupTitle": "Index",
       "sampleRequest": [{
-        "url": "https://mchacks.ca/api/"
+        "url": "https://api.mchacks.ca/api/"
       }]
     },
     {
@@ -1352,7 +1517,7 @@ define({
       "filename": "routes/api/search.js",
       "groupTitle": "Search",
       "sampleRequest": [{
-        "url": "https://mchacks.ca/api/search/:model"
+        "url": "https://api.mchacks.ca/api/search/:model"
       }]
     },
     {
@@ -1453,7 +1618,7 @@ define({
       "filename": "routes/api/sponsor.js",
       "groupTitle": "Sponsor",
       "sampleRequest": [{
-        "url": "https://mchacks.ca/api/sponsor/"
+        "url": "https://api.mchacks.ca/api/sponsor/"
       }]
     },
     {
@@ -1525,7 +1690,7 @@ define({
       "filename": "routes/api/sponsor.js",
       "groupTitle": "Sponsor",
       "sampleRequest": [{
-        "url": "https://mchacks.ca/api/sponsor/:id"
+        "url": "https://api.mchacks.ca/api/sponsor/:id"
       }]
     },
     {
@@ -1619,7 +1784,7 @@ define({
       "filename": "routes/api/team.js",
       "groupTitle": "Team",
       "sampleRequest": [{
-        "url": "https://mchacks.ca/api/team/"
+        "url": "https://api.mchacks.ca/api/team/"
       }]
     },
     {
@@ -1691,7 +1856,7 @@ define({
       "filename": "routes/api/team.js",
       "groupTitle": "Team",
       "sampleRequest": [{
-        "url": "https://mchacks.ca/api/team/:id"
+        "url": "https://api.mchacks.ca/api/team/:id"
       }]
     },
     {
@@ -1763,7 +1928,7 @@ define({
       "filename": "routes/api/volunteer.js",
       "groupTitle": "Volunteer",
       "sampleRequest": [{
-        "url": "https://mchacks.ca/api/volunteer/"
+        "url": "https://api.mchacks.ca/api/volunteer/"
       }]
     }
   ]

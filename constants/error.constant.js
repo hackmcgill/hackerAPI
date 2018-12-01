@@ -30,6 +30,7 @@ const TEAM_CREATE_500_MESSAGE = "Error while creating team";
 const VOLUNTEER_CREATE_500_MESSAGE = "Error while creating volunteer";
 const EMAIL_500_MESSAGE = "Error while generating email";
 const GENERIC_500_MESSAGE = "Internal error";
+const LOGIN_500_MESSAGE = "Error while logging in";
 
 module.exports = {
     ACCOUNT_404_MESSAGE: ACCOUNT_404_MESSAGE,
@@ -57,4 +58,5 @@ module.exports = {
     EMAIL_500_MESSAGE: EMAIL_500_MESSAGE,
     GENERIC_500_MESSAGE: GENERIC_500_MESSAGE,
     ACCOUNT_DUPLICATE_422_MESSAGE: ACCOUNT_DUPLICATE_422_MESSAGE,
+    LOGIN_500_MESSAGE: LOGIN_500_MESSAGE,
 };

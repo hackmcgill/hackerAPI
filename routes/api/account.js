@@ -58,10 +58,13 @@ module.exports = {
          * 
          * @apiParam (body) {String} firstName First name of the account creator.
          * @apiParam (body) {String} lastName Last name of the account creator.
+         * @apiParam (body) {String} pronoun the pronoun of the account creator.
          * @apiParam (body) {String} email Email of the account.
          * @apiParam (body) {String} dietaryRestrictions Any dietary restrictions for the user. 'None' if there are no restrictions
          * @apiParam (body) {String} shirtSize Size of the shirt that the user will receive.
-         * @apiParam (body) {String} passowrd The password of the account.
+         * @apiParam (body) {String} password The password of the account.
+         * @apiParam (body) {String} birthDate a Date parsable string.
+         * @apiParam (body) {Number} phoneNumber the user's phone number, represented as a string.
          * 
          * @apiSuccess {string} message Success message
          * @apiSuccess {object} data Account object
@@ -109,11 +112,14 @@ module.exports = {
          * 
          * @apiParam (body) {String} [firstName] First name of the account creator.
          * @apiParam (body) {String} [lastName] Last name of the account creator.
+         * @apiParam (body) {String} [pronoun] the pronoun of the account creator.
          * @apiParam (body) {String} [email] Email of the account.
          * @apiParam (body) {String} [dietaryRestrictions] Any dietary restrictions for the user. 'None' if there are no restrictions
          * @apiParam (body) {String} [shirtSize] Size of the shirt that the user will receive.
          * @apiParam (body) {String} [passowrd] The password of the account.
-         * 
+         * @apiParam (body) {String} [birthDate] a Date parsable string.
+         * @apiParam (body) {Number} [phoneNumber] the user's phone number, represented as a string.
+
          * @apiSuccess {string} message Success message
          * @apiSuccess {object} data Account object
          * @apiSuccessExample {object} Success-Response: 
@@ -171,6 +177,33 @@ module.exports = {
             Middleware.parseBody.middleware,
 
             Controllers.Account.getUserById
+        );
+
+        /**
+         * @api {post} /account/invite invites a user to create an account with the specified accountType
+         * @apiName inviteAccount
+         * @apiGroup Account
+         * @apiVersion 0.0.8
+         * @apiDescription sends link with token to be used with the account/create route
+         * 
+         * @apiParam (body) {String} [email] email of the account to be created and where to send the link
+         * @apiParam (body) {String} [accountType] the type of the account which the user can create, for sponsor this should specify tier as well
+         * 
+         * @apiSuccess {string} message Success message
+         * @apiSuccess {object} data Account object
+         * @apiSuccessExample {object} Success-Response: 
+         *      {
+                    "message": "Successfully invited user  ", 
+                    "data": {}
+                }
+         */
+        accountRouter.route("/invite").post(
+            Middleware.Auth.ensureAuthenticated(),
+            Middleware.Auth.ensureAuthorized(),
+            Middleware.Validator.Account.inviteAccountValidator,
+            Middleware.parseBody.middleware,
+            Middleware.Account.inviteAccount,
+            Controllers.Account.invitedAccount
         );
 
         apiRouter.use("/account", accountRouter);

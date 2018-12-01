@@ -15,7 +15,7 @@ module.exports = {
                 if (!!account) {
                     done(null, account);
                 } else {
-                    done("Invalid email or password.", false);
+                    done(null, false);
                 }
             },
             (reason) => {

@@ -8,6 +8,7 @@ const Account = require("../models/account.model");
 const should = chai.should();
 const Constants = {
     Error: require("../constants/error.constant"),
+    General: require("../constants/general.constant")
 };
 
 
@@ -45,6 +46,19 @@ describe("GET user account", function () {
             });
     });
 
+    // fail due to invalid login
+    it("should fail due to invalid password", function (done) {
+        agent.post("/api/auth/login").type("application/json").send({
+            email: Admin1.email,
+            password: "FakePassword"
+        }).end((err, res) => {
+            res.should.have.status(401);
+            res.body.should.have.property("message");
+            res.body.message.should.equal(Constants.Error.AUTH_401_MESSAGE);
+            done();
+        });
+    });
+
     // success case
     it("should list the user's account on /api/account/self GET", function (done) {
         util.auth.login(agent, Admin1, (error) => {
@@ -68,8 +82,6 @@ describe("GET user account", function () {
                     res.body.data.should.have.property("firstName");
                     res.body.data.should.have.property("lastName");
                     res.body.data.should.have.property("email");
-                    // ???
-                    // res.body.data.should.equal(req.user.email);
                     res.body.data.should.have.property("dietaryRestrictions");
                     res.body.data.should.have.property("shirtSize");
                     done();
@@ -179,7 +191,7 @@ describe("POST create account", function () {
             .type("application/json")
             .send(storedAccount1)
             .end(function (err, res) {
-                res.should.have.status(500);
+                res.should.have.status(422);
                 done();
             });
     });
@@ -207,7 +219,18 @@ describe("POST confirm account", function () {
                 res.body.message.should.equal(Constants.Error.ACCOUNT_TOKEN_401_MESSAGE);
                 done();
             })
-    })
+    });
+    it("should FAIL to confirm account that has token with email but no account", function(done) {
+        chai.request(server.app)
+        .post('/api/auth/confirm/' + fakeToken)
+        .type("application/json")
+        .end(function (err, res) {
+            res.should.have.status(401);
+            res.body.should.have.property("message");
+            res.body.message.should.equal(Constants.Error.ACCOUNT_TOKEN_401_MESSAGE);
+            done();
+        })
+    });
 })
 
 describe("PATCH update account", function () {
@@ -418,5 +441,31 @@ describe("GET resend confirmation email", function () {
                     done();
                 })
         })
+    })
+});
+
+describe("POST invite account", function () {
+    it("Should succeed to invite a user to create an account", function(done){
+        util.auth.login(agent, Admin1, (error) => {
+            if (error) {
+                agent.close();
+                return done(error);
+            }
+            return agent
+                .post("/api/account/invite")
+                .type("application/json")
+                .send({email: newAccount1.email,
+                    accountType: Constants.General.VOLUNTEER})
+                // does not have password because of to stripped json
+                .end(function (err, res) {
+                    if (err) {
+                        return done(err);
+                    }
+                    res.should.have.status(200);
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal("Successfully invited user");
+                    done();
+                });
+        });
     })
 });
