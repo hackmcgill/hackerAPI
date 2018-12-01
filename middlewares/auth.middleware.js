@@ -379,6 +379,9 @@ function deleteResetToken(req, res, next) {
  * @param {(err?)=>void} next 
  */
 async function addCreationRoleBindings(req, res, next) {
+    // Get the default role for the account type given
+    const roleName = Constants.General.POST_ROLES[req.body.account.accountType];
+    await Services.RoleBinding.createRoleBindingByRoleName(req.body.account.id, roleName);
     // Add default account role bindings
     await Services.RoleBinding.createRoleBindingByRoleName(req.body.account.id, Constants.Role.accountRole.name);
     return next();
@@ -401,12 +404,6 @@ function createRoleBindings(roleName = undefined) {
  * @param {*} res 
  * @param {(err?) => void } next 
  */
-async function addSponsorRoleBindings(req, res, next) {
-    const account = Services.Account.findById(req.body.sponsorDetails.accountId);
-    await Services.RoleBinding.createRoleBindingByRoleName(account.id, account.accountType);
-    return next();
-}
-
 async function retrieveRoles(req, res, next) {
     const roles = await Services.Role.getAll();
     req.roles = roles;
