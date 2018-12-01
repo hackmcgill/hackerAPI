@@ -36,8 +36,8 @@ function parsePatch(req, res, next) {
  * @param {(err?)=>void} next
  * @return {void}
  * @description 
- * Moves accountId, school, gender, needsBus, application from req.body to req.body.teamDetails. 
- * Adds _id to teamDetails.
+ * Moves accountId, school, gender, needsBus, application from req.body to req.body.hackerDetails. 
+ * Adds _id to hackerDetails.
  */
 function parseHacker(req, res, next) {
     const hackerDetails = {
@@ -69,6 +69,44 @@ function parseHacker(req, res, next) {
     req.body.hackerDetails = hackerDetails;
 
     next();
+}
+
+/**
+ * @function parseCheckin
+ * @param {{body: {*}}} req
+ * @param {*} res
+ * @param {(err?)=>void} next
+ * @return {void}
+ * @description 
+ * Adds the checked-in status to req.body
+ */
+function parseCheckIn(req, res, next) {
+    req.body.status = Constants.General.HACKER_STATUS_CHECKED_IN;
+
+    return next();
+}
+
+/**
+ * @function parseCheckin
+ * @param {{body: {confirm: boolean}}} req
+ * @param {*} res
+ * @param {(err?)=>void} next
+ * @return {void}
+ * @description 
+ * Changes req.body.status to confirmed or accepted depending on whether req.body.confirm is true or false respectively.
+ * Deletes req.body.confirm afterwards
+ */
+function parseConfirmation(req, res, next) {
+    const confirm = req.body.confirm;
+
+    if (confirm) {
+        req.body.status = Constants.General.HACKER_STATUS_CONFIRMED;
+    } else {
+        req.body.status = Constants.General.HACKER_STATUS_ACCEPTED;
+    }
+
+    delete req.body.confirm;
+    return next();
 }
 
 /**
@@ -242,6 +280,43 @@ async function updateStatusIfApplicationCompleted(req, res, next) {
 }
 
 /**
+ * Checks that the hacker's status matches one of the input statuses
+ * @param {String[]} statuses
+ * @returns {(req, res, next) => {}} the middleware that will check hacker's status
+ */
+function checkStatus(statuses) {
+    return Middleware.Util.asyncMiddleware(async (req, res, next) => {
+
+        let hacker = await Services.Hacker.findById(req.params.id);
+
+        if (!!hacker) {
+            const status = hacker.status;
+            // makes sure the hacker's status is in the accepted statuses list
+            if (statuses.indexOf(status) === -1) {
+                return next({
+                    status: 409,
+                    message: Constants.Error.HACKER_STATUS_409_MESSAGE,
+                    data: {
+                        id: req.params.id,
+                        validStatuses: statuses
+                    }
+                });
+            }
+
+            return next();
+        } else {
+            return next({
+                status: 404,
+                message: Constants.Error.HACKER_404_MESSAGE,
+                data: {
+                    id: req.params.id
+                }
+            });
+        }
+    });
+}
+
+/**
  * Updates a hacker that is specified by req.params.id, and then sets req.email 
  * to the email of the hacker, found in Account.
  * @param {{params:{id: string}, body: *}} req 
@@ -272,6 +347,44 @@ async function updateHacker(req, res, next) {
                 id: req.params.id
             }
         });
+    }
+}
+
+/**
+ * @function createhacker
+ * @param {{body: {hackerDetails: object}}} req 
+ * @param {*} res 
+ * @param {(err?)=>void} next 
+ * @return {void}
+ * @description
+ * Creates hacker document after making sure there is no other hacker with the same linked accountId
+ */
+async function createHacker(req, res, next) {
+    const hackerDetails = req.body.hackerDetails;
+
+    const exists = await Services.Hacker.findByAccountId(hackerDetails.accountId);
+
+    if (exists) {
+        return next({
+            status: 422,
+            message: Constants.Error.ACCOUNT_DUPLICATE_422_MESSAGE,
+            data: {
+                id: hackerDetails.accountId
+            }
+        });
+    }
+
+    const hacker = await Services.Hacker.createHacker(hackerDetails);
+
+    if (!!hacker) {
+        req.body.hacker = hacker;
+        return next();
+    } else {
+        return next({
+            status: 500,
+            message: Constants.Error.HACKER_CREATE_500_MESSAGE,
+            data: {}
+        })
     }
 }
 
@@ -307,5 +420,9 @@ module.exports = {
     updateHacker: Middleware.Util.asyncMiddleware(updateHacker),
     validateConfirmedStatus: Middleware.Util.asyncMiddleware(validateConfirmedStatus),
     checkDuplicateAccountLinks: Middleware.Util.asyncMiddleware(checkDuplicateAccountLinks),
-    updateStatusIfApplicationCompleted: Middleware.Util.asyncMiddleware(updateStatusIfApplicationCompleted)
+    updateStatusIfApplicationCompleted: Middleware.Util.asyncMiddleware(updateStatusIfApplicationCompleted),
+    checkStatus: checkStatus,
+    parseCheckIn: parseCheckIn,
+    parseConfirmation: parseConfirmation,
+    createHacker: Middleware.Util.asyncMiddleware(createHacker),
 };

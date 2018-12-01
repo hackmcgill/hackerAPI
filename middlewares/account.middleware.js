@@ -116,6 +116,27 @@ async function addAccount(req, res, next) {
 }
 
 /**
+ * Updates an account that is specified by req.params.id
+ * @param {{params:{id: string}, body: *}} req 
+ * @param {*} res 
+ * @param {*} next 
+ */
+async function updateAccount(req, res, next) {
+    const account = await Services.Account.updateOne(req.params.id, req.body);
+    if (account) {
+        next();
+    } else {
+        next({
+            status: 404,
+            message: Constants.Error.ACCOUNT_404_MESSAGE,
+            data: {
+                id: req.params.id
+            }
+        });
+    }
+}
+
+/**
  * @function inviteAccount
  * @param {{body: {email: string, accountType: string}}} req 
  * @param {*} res 
@@ -154,5 +175,6 @@ module.exports = {
     // untested
     updatePassword: Middleware.Util.asyncMiddleware(updatePassword),
     addAccount: Middleware.Util.asyncMiddleware(addAccount),
+    updateAccount: Middleware.Util.asyncMiddleware(updateAccount),
     inviteAccount: Middleware.Util.asyncMiddleware(inviteAccount)
 };

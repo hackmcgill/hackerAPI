@@ -204,14 +204,14 @@ async function resendConfirmAccountEmail(req, res, next) {
         return next({
             status: 422,
             message: "Account already confirmed"
-        })
+        });
     }
     const accountConfirmationToken = await Services.AccountConfirmation.findByAccountId(account.id);
     if (!accountConfirmationToken) {
         return next({
             status: 428,
             message: "Account confirmation token does not exist"
-        })
+        });
     }
     const token = Services.AccountConfirmation.generateToken(accountConfirmationToken.id, account.id);
     const mailData = Services.AccountConfirmation.generateAccountConfirmationEmail(req.hostname, account.email, accountConfirmationToken.accountType, token);
@@ -324,7 +324,7 @@ async function validateConfirmationToken(req, res, next) {
     if (confirmationObj && userObj && (confirmationObj.accountId == userObj.id)) {
         userObj.confirmed = true;
         userObj.accountType = confirmationObj.accountType;
-        await Services.Account.changeOneAccount(confirmationObj.accountId, userObj);
+        await Services.Account.updateOne(confirmationObj.accountId, userObj);
         req.body.user = userObj;
         next();
     } else {

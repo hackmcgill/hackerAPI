@@ -46,6 +46,11 @@ const RoleBindingHacker2 = {
     accountId: Util.Account.Account2._id,
     roles: [Constants.Role.accountRole._id, Constants.Role.hackerRole._id],
 };
+const RoleBindingHacker3 = {
+    accountId: Util.Account.Hacker3._id,
+    roles: [Constants.Role.hackerRole._id],
+};
+
 const RoleBindingNewHacker1 = {
     accountId: Util.Account.allAccounts[13]._id,
     roles: [Constants.Role.accountRole._id, Constants.Role.allRolesObject["postHacker"]],
@@ -92,6 +97,7 @@ const RoleBindings = [
     RoleBindingVolunteer1,
     RoleBindingNewVolunteer1,
     RoleBindingAdmin1,
+    RoleBindingHacker3,
 ];
 
 
@@ -127,6 +133,7 @@ module.exports = {
     RoleBinding6: RoleBinding6,
     RoleBinding7: RoleBinding7,
     RoleBindings: RoleBindings,
+    RoleBindingHacker3: RoleBindingHacker3,
     storeAll: storeAll,
     dropAll: dropAll,
 };

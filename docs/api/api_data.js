@@ -258,6 +258,63 @@ define({
       }]
     },
     {
+      "type": "post",
+      "url": "/account/invite",
+      "title": "invites a user to create an account with the specified accountType",
+      "name": "inviteAccount",
+      "group": "Account",
+      "version": "0.0.8",
+      "description": "<p>sends link with token to be used with the account/create route</p>",
+      "parameter": {
+        "fields": {
+          "body": [{
+              "group": "body",
+              "type": "String",
+              "optional": true,
+              "field": "email",
+              "description": "<p>email of the account to be created and where to send the link</p>"
+            },
+            {
+              "group": "body",
+              "type": "String",
+              "optional": true,
+              "field": "accountType",
+              "description": "<p>the type of the account which the user can create, for sponsor this should specify tier as well</p>"
+            }
+          ]
+        }
+      },
+      "success": {
+        "fields": {
+          "Success 200": [{
+              "group": "Success 200",
+              "type": "string",
+              "optional": false,
+              "field": "message",
+              "description": "<p>Success message</p>"
+            },
+            {
+              "group": "Success 200",
+              "type": "object",
+              "optional": false,
+              "field": "data",
+              "description": "<p>Account object</p>"
+            }
+          ]
+        },
+        "examples": [{
+          "title": "Success-Response: ",
+          "content": "{\n               \"message\": \"Successfully invited user  \", \n               \"data\": {}\n           }",
+          "type": "object"
+        }]
+      },
+      "filename": "routes/api/account.js",
+      "groupTitle": "Account",
+      "sampleRequest": [{
+        "url": "https://mchacks.ca/api/account/invite"
+      }]
+    },
+    {
       "type": "get",
       "url": "/account/self",
       "title": "get information about own account",
@@ -948,6 +1005,61 @@ define({
       }]
     },
     {
+      "type": "patch",
+      "url": "/hacker/checkin/:id",
+      "title": "update a hacker's status to be 'Checked-in'.",
+      "name": "checkinHacker",
+      "group": "Hacker",
+      "version": "0.0.9",
+      "parameter": {
+        "fields": {
+          "body": [{
+            "group": "body",
+            "type": "String",
+            "optional": true,
+            "field": "status",
+            "description": "<p>Check-in status</p>"
+          }]
+        }
+      },
+      "success": {
+        "fields": {
+          "Success 200": [{
+              "group": "Success 200",
+              "type": "string",
+              "optional": false,
+              "field": "message",
+              "description": "<p>Success message</p>"
+            },
+            {
+              "group": "Success 200",
+              "type": "object",
+              "optional": false,
+              "field": "data",
+              "description": "<p>Hacker object</p>"
+            }
+          ]
+        },
+        "examples": [{
+          "title": "Success-Response: ",
+          "content": "{\n    \"message\": \"Changed hacker information\", \n    \"data\": {\n        \"status\": \"Checked-in\"\n    }\n}",
+          "type": "object"
+        }]
+      },
+      "permission": [{
+          "name": "Administrator"
+        },
+        {
+          "name": "Volunteer"
+        }
+      ],
+      "filename": "routes/api/hacker.js",
+      "groupTitle": "Hacker",
+      "sampleRequest": [{
+        "url": "https://mchacks.ca/api/hacker/checkin/:id"
+      }]
+    },
+    {
       "type": "post",
       "url": "/hacker/",
       "title": "create a new hacker",
@@ -1307,6 +1419,61 @@ define({
       "groupTitle": "Hacker",
       "sampleRequest": [{
         "url": "https://api.mchacks.ca/api/hacker/:id"
+      }]
+    },
+    {
+      "type": "patch",
+      "url": "/hacker/confirmation/:id Allows confirmation of hacker attendence if they are accepted.",
+      "title": "Also allows change from 'confirmed' back to 'accepted'",
+      "name": "patchHackerConfirmed",
+      "group": "Hacker",
+      "version": "0.0.9",
+      "parameter": {
+        "fields": {
+          "body": [{
+            "group": "body",
+            "type": "String",
+            "optional": true,
+            "field": "status",
+            "description": "<p>The new status of the hacker. 'Accepted' or 'Confirmed'</p>"
+          }]
+        }
+      },
+      "success": {
+        "fields": {
+          "Success 200": [{
+              "group": "Success 200",
+              "type": "string",
+              "optional": false,
+              "field": "message",
+              "description": "<p>Success message</p>"
+            },
+            {
+              "group": "Success 200",
+              "type": "object",
+              "optional": false,
+              "field": "data",
+              "description": "<p>Hacker object</p>"
+            }
+          ]
+        },
+        "examples": [{
+          "title": "Success-Response: ",
+          "content": "{\n    \"message\": \"Changed hacker information\", \n    \"data\": {\n        \"status\": \"Confirmed\"\n    }\n}",
+          "type": "object"
+        }]
+      },
+      "permission": [{
+          "name": "Administrator"
+        },
+        {
+          "name": "Hacker"
+        }
+      ],
+      "filename": "routes/api/hacker.js",
+      "groupTitle": "Hacker",
+      "sampleRequest": [{
+        "url": "https://mchacks.ca/api/hacker/confirmation/:id Allows confirmation of hacker attendence if they are accepted."
       }]
     },
     {

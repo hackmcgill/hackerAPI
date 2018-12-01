@@ -36,6 +36,7 @@ const hackerRole = {
         Constants.Routes.hackerRoutes.getSelfById,
         Constants.Routes.hackerRoutes.getSelfResumeById,
         Constants.Routes.hackerRoutes.patchSelfById,
+        Constants.Routes.hackerRoutes.patchSelfConfirmationById
     ]
 };
 
@@ -44,6 +45,9 @@ const volunteerRole = {
     "name": Constants.General.VOLUNTEER,
     "routes": [
         Constants.Routes.volunteerRoutes.post,
+
+        Constants.Routes.hackerRoutes.patchAnyCheckInById,
+        Constants.Routes.hackerRoutes.patchSelfCheckInById,
     ]
 };
 
