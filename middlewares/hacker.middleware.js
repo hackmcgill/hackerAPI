@@ -409,6 +409,39 @@ async function checkDuplicateAccountLinks(req, res, next) {
     }
 }
 
+/**
+ * Finds the hacker information of the logged in user
+ * @param {{user: {id: string}}} req 
+ * @param {*} res 
+ * @param {(err?)=>void} next 
+ */
+async function findSelf(req, res, next) {
+    const acc = await Services.Account.findById(req.user.id);
+
+    if (acc.accountType != Constants.General.HACKER) {
+        return res.status(409).json({
+            message: Constants.Error.ACCOUNT_TYPE_409_MESSAGE,
+            data: {
+                id: req.user.id,
+            }
+        });
+    }
+
+    const hacker = await Services.Hacker.findByAccountId(req.user.id);
+
+    if (!!hacker) {
+        req.body.hacker = hacker;
+        return next();
+    } else {
+        return res.status(404).json({
+            message: Constants.Error.HACKER_404_MESSAGE,
+            data: {
+                id: req.user.id,
+            }
+        });
+    }
+}
+
 module.exports = {
     parsePatch: parsePatch,
     parseHacker: parseHacker,
@@ -425,4 +458,5 @@ module.exports = {
     parseCheckIn: parseCheckIn,
     parseConfirmation: parseConfirmation,
     createHacker: Middleware.Util.asyncMiddleware(createHacker),
+    findSelf: Middleware.Util.asyncMiddleware(findSelf),
 };

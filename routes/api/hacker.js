@@ -25,6 +25,33 @@ module.exports = {
         const hackerRouter = express.Router();
 
         /**
+         * @api {get} /hacker/self get information about own hacker
+         * @apiName self
+         * @apiGroup Hacker
+         * @apiVersion 0.0.8
+         * 
+         * @apiSuccess {string} message Success message
+         * @apiSuccess {object} data Hacker object
+         * @apiSuccessExample {object} Success-Response: 
+         *      {
+                    "message": "Hacker found by logged in account id", 
+                    "data": {HackerObject}
+                }
+
+         * @apiError {string} message Error message
+         * @apiError {object} data empty
+         * @apiErrorExample {object} Error-Response: 
+         *      {"message": "Hacker not found", "data": {}}
+         */
+        hackerRouter.route("/self").get(
+            Middleware.Auth.ensureAuthenticated(),
+            Middleware.Auth.ensureAuthorized(),
+
+            Middleware.Hacker.findSelf,
+            Controllers.Hacker.showHacker,
+        );
+
+        /**
          * @api {post} /hacker/ create a new hacker
          * @apiName createHacker
          * @apiGroup Hacker

@@ -55,6 +55,51 @@ describe("GET hacker", function () {
             });
     });
 
+    // success case
+    it("should list the user's hacker info on /api/hacker/self GET", function (done) {
+        util.auth.login(agent, storedAccount1, (error) => {
+            if (error) {
+                agent.close();
+                return done(error);
+            }
+            return agent
+                .get("/api/hacker/self")
+                .end(function (err, res) {
+                    if (err) {
+                        return done(err);
+                    }
+                    res.should.have.status(200);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal("Hacker retrieval successful");
+                    res.body.should.have.property("data");
+
+                    let hacker = new Hacker(storedHacker1);
+                    chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify(hacker.toJSON()));
+                    done();
+                });
+        });
+    });
+
+    // fail case due to wrong account type
+    it("should fail to list the hacker info of an admin due to wrong account type /api/account/self GET", function (done) {
+        util.auth.login(agent, Admin1, (error) => {
+            if (error) {
+                agent.close();
+                return done(error);
+            }
+            return agent
+                .get("/api/hacker/self")
+                .end(function (err, res) {
+                    res.should.have.status(409);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal(Constants.Error.ACCOUNT_TYPE_409_MESSAGE);
+                    done();
+                });
+        });
+    });
+
     // succeed on admin case
     it("should list a hacker's information using admin power on /api/hacker/:id GET", function (done) {
         util.auth.login(agent, Admin1, (error) => {
