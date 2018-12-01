@@ -10,41 +10,41 @@ const logger = require("../../services/logger.service");
 
 const RoleBinding1 = {
     accountId: Util.Account.allAccounts[6]._id,
-    roles: [Constants.Role.adminRole._id],
+    roles: [Constants.Role.accountRole._id, Constants.Role.adminRole._id],
 };
 const RoleBinding2 = {
     accountId: Util.Account.allAccounts[7]._id,
-    roles: [Constants.Role.hackerRole._id],
+    roles: [Constants.Role.accountRole._id, Constants.Role.hackerRole._id],
 };
 const RoleBinding3 = {
     accountId: Util.Account.allAccounts[8]._id,
-    roles: [Constants.Role.volunteerRole._id],
+    roles: [Constants.Role.accountRole._id, Constants.Role.volunteerRole._id],
 };
 const RoleBinding4 = {
     accountId: Util.Account.allAccounts[9]._id,
-    roles: [Constants.Role.sponsorT1Role._id],
+    roles: [Constants.Role.accountRole._id, Constants.Role.sponsorT1Role._id],
 };
 const RoleBinding5 = {
     accountId: Util.Account.allAccounts[10]._id,
-    roles: [Constants.Role.sponsorT2Role._id],
+    roles: [Constants.Role.accountRole._id, Constants.Role.sponsorT2Role._id],
 };
 const RoleBinding6 = {
     accountId: Util.Account.allAccounts[11]._id,
-    roles: [Constants.Role.allRolesObject.getSelfAccount._id],
+    roles: [Constants.Role.accountRole._id, Constants.Role.allRolesObject.getSelfAccount._id],
 };
 
 const RoleBinding7 = {
     accountId: Util.Account.allAccounts[12]._id,
-    roles: [Constants.Role.allRolesObject.getAnyByIdHacker._id, Constants.Role.allRolesObject.patchSelfByIdHacker._id],
+    roles: [Constants.Role.accountRole._id, Constants.Role.allRolesObject.getAnyByIdHacker._id, Constants.Role.allRolesObject.patchSelfByIdHacker._id],
 };
 
 const RoleBindingHacker1 = {
     accountId: Util.Account.Account1._id,
-    roles: [Constants.Role.hackerRole._id],
+    roles: [Constants.Role.accountRole._id, Constants.Role.hackerRole._id],
 };
 const RoleBindingHacker2 = {
     accountId: Util.Account.Account2._id,
-    roles: [Constants.Role.hackerRole._id],
+    roles: [Constants.Role.accountRole._id, Constants.Role.hackerRole._id],
 };
 const RoleBindingHacker3 = {
     accountId: Util.Account.Hacker3._id,
@@ -53,27 +53,27 @@ const RoleBindingHacker3 = {
 
 const RoleBindingNewHacker1 = {
     accountId: Util.Account.allAccounts[13]._id,
-    roles: [Constants.Role.hackerRole._id],
+    roles: [Constants.Role.accountRole._id, Constants.Role.allRolesObject["postHacker"]],
 };
 
 const RoleBindingSponsor1 = {
     accountId: Util.Account.Account3._id,
-    roles: [Constants.Role.sponsorT1Role._id],
+    roles: [Constants.Role.accountRole._id, Constants.Role.sponsorT1Role._id],
 };
 
 const RoleBindingSponsor2 = {
     accountId: Util.Account.Account5._id,
-    roles: [Constants.Role.sponsorT1Role._id],
+    roles: [Constants.Role.accountRole._id, Constants.Role.sponsorT1Role._id],
 };
 
 const RoleBindingVolunteer1 = {
     accountId: Util.Account.Account4._id,
-    roles: [Constants.Role.volunteerRole._id],
+    roles: [Constants.Role.accountRole._id, Constants.Role.volunteerRole._id],
 };
 
 const RoleBindingNewVolunteer1 = {
     accountId: Util.Account.generatedAccounts[15]._id,
-    roles: [Constants.Role.volunteerRole._id],
+    roles: [Constants.Role.accountRole._id, Constants.Role.allRolesObject["postVolunteer"]],
 };
 
 const RoleBindingAdmin1 = {
