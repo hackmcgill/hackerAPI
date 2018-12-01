@@ -32,7 +32,7 @@ function parseVolunteer(req, res, next) {
 
     req.body.volunteerDetails = volunteerDetails;
 
-    next();
+    return next();
 }
 
 /**
@@ -44,9 +44,9 @@ function parseVolunteer(req, res, next) {
 async function checkDuplicateAccountLinks(req, res, next) {
     const volunteer = await Services.Volunteer.findByAccountId(req.body.accountId);
     if (!volunteer) {
-        next();
+        return next();
     } else {
-        next({
+        return next({
             status: 409,
             message: Constants.Error.VOLUNTEER_ID_409_MESSAGE,
             data: {
@@ -65,24 +65,24 @@ async function checkDuplicateAccountLinks(req, res, next) {
 async function validateConfirmedStatus(req, res, next) {
     const account = await Services.Account.findById(req.body.accountId);
     if (!account) {
-        next({
+        return next({
             status: 404,
             message: Constants.Error.ACCOUNT_404_MESSAGE,
             error: {}
         });
     } else if (!account.confirmed) {
-        next({
+        return next({
             status: 403,
             message: Constants.Error.ACCOUNT_403_MESSAGE,
             error: {}
         });
     } else if (account.accountType !== Constants.General.VOLUNTEER) {
-        next({
+        return next({
             status: 409,
             message: Constants.Error.ACCOUNT_TYPE_409_MESSAGE,
         });
     } else {
-        next();
+        return next();
     }
 }
 

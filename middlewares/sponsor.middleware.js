@@ -22,7 +22,7 @@ const Constants = {
  */
 function parsePatch(req, res, next) {
     delete req.body.id;
-    next();
+    return next();
 }
 
 /**
@@ -53,7 +53,7 @@ function parseSponsor(req, res, next) {
 
     req.body.sponsorDetails = sponsorDetails;
 
-    next();
+    return next();
 }
 
 /**
@@ -66,24 +66,24 @@ async function validateConfirmedStatus(req, res, next) {
     const account = await Services.Account.findById(req.body.accountId);
 
     if (!account) {
-        next({
+        return next({
             status: 404,
             message: Constants.Error.ACCOUNT_404_MESSAGE,
             error: {}
         });
     } else if (!account.confirmed) {
-        next({
+        return next({
             status: 403,
             message: Constants.Error.ACCOUNT_403_MESSAGE,
             error: {}
         });
     } else if (!account.isSponsor()) {
-        next({
+        return next({
             status: 409,
             message: Constants.Error.ACCOUNT_TYPE_409_MESSAGE,
         });
     } else {
-        next();
+        return next();
     }
 }
 
@@ -96,9 +96,9 @@ async function validateConfirmedStatus(req, res, next) {
 async function checkDuplicateAccountLinks(req, res, next) {
     const sponsor = await Services.Sponsor.findByAccountId(req.body.accountId);
     if (!sponsor) {
-        next();
+        return next();
     } else {
-        next({
+        return next({
             status: 409,
             message: Constants.Error.SPONSOR_ID_409_MESSAGE,
             data: {

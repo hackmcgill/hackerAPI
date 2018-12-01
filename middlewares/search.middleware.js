@@ -13,32 +13,30 @@ const Middleware = {
  * @param {JSON} next
  * @description parses the json in the parameter
  */
-function parseQuery(req, res, next){
+function parseQuery(req, res, next) {
     let query = req.body.q;
 
     req.body.q = JSON.parse(query);
 
     //Default page
-    if(!req.body.hasOwnProperty("page")){
+    if (!req.body.hasOwnProperty("page")) {
         req.body.page = 0;
-    }
-    else{
+    } else {
         req.body.page = parseInt(req.body.page);
     }
     //Default limit
-    if(!req.body.hasOwnProperty("limit")){
+    if (!req.body.hasOwnProperty("limit")) {
         req.body.limit = 25;
-    }
-    else{
+    } else {
         req.body.limit = parseInt(req.body.limit);
     }
     //Default sorting
-    if(!req.body.hasOwnProperty("sort")){
+    if (!req.body.hasOwnProperty("sort")) {
         req.body.sort = "";
         req.body.sort_by = "";
     }
 
-    next();
+    return next();
 }
 
 /**
@@ -56,7 +54,7 @@ async function executeQuery(req, res, next) {
         req.body.sort,
         req.body.sort_by
     );
-    next();
+    return next();
 }
 
 

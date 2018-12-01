@@ -26,7 +26,7 @@ const Constants = {
  */
 function parsePatch(req, res, next) {
     delete req.body.id;
-    next();
+    return next();
 }
 
 /**
@@ -68,7 +68,7 @@ function parseHacker(req, res, next) {
 
     req.body.hackerDetails = hackerDetails;
 
-    next();
+    return next();
 }
 
 /**
@@ -119,7 +119,7 @@ function parseConfirmation(req, res, next) {
  */
 function addDefaultStatus(req, res, next) {
     req.body.hackerDetails.status = "Applied";
-    next();
+    return next();
 }
 
 /**
@@ -131,24 +131,24 @@ function addDefaultStatus(req, res, next) {
 async function validateConfirmedStatus(req, res, next) {
     const account = await Services.Account.findById(req.body.accountId);
     if (!account) {
-        next({
+        return next({
             status: 404,
             message: Constants.Error.ACCOUNT_404_MESSAGE,
             error: {}
         });
     } else if (!account.confirmed) {
-        next({
+        return next({
             status: 403,
             message: Constants.Error.ACCOUNT_403_MESSAGE,
             error: {}
         });
     } else if (account.accountType !== Constants.General.HACKER) {
-        next({
+        return next({
             status: 409,
             message: Constants.Error.ACCOUNT_TYPE_409_MESSAGE
         });
     } else {
-        next();
+        return next();
     }
 }
 
@@ -164,9 +164,9 @@ function ensureAccountLinkedToHacker(req, res, next) {
         (hacker) => {
             req.hacker = hacker;
             if (hacker && req.user && String.toString(hacker.accountId) === String.toString(req.user.id)) {
-                next();
+                return next();
             } else {
-                next({
+                return next({
                     status: 403,
                     message: Constants.Error.AUTH_403_MESSAGE,
                     error: {}
@@ -191,7 +191,7 @@ async function uploadResume(req, res, next) {
             "application.portfolioURL.resume": gcfilename
         }
     });
-    next();
+    return next();
 }
 
 /**
@@ -211,7 +211,7 @@ async function downloadResume(req, res, next) {
             error: {}
         });
     }
-    next();
+    return next();
 }
 /**
  * Sends a preset email to a user if a status change occured.
@@ -266,10 +266,10 @@ async function updateStatusIfApplicationCompleted(req, res, next) {
             }
             Services.Email.sendStatusUpdate(account.email, Constants.General.HACKER_STATUS_APPLIED, next);
         } else {
-            next();
+            return next();
         }
     } else {
-        next({
+        return next({
             status: 404,
             message: Constants.Error.HACKER_404_MESSAGE,
             data: {
@@ -338,9 +338,9 @@ async function updateHacker(req, res, next) {
             });
         }
         req.email = acct.email;
-        next();
+        return next();
     } else {
-        next({
+        return next({
             status: 404,
             message: Constants.Error.HACKER_404_MESSAGE,
             data: {
@@ -397,9 +397,9 @@ async function createHacker(req, res, next) {
 async function checkDuplicateAccountLinks(req, res, next) {
     const hacker = await Services.Hacker.findByAccountId(req.body.accountId);
     if (!hacker) {
-        next();
+        return next();
     } else {
-        next({
+        return next({
             status: 409,
             message: Constants.Error.HACKER_ID_409_MESSAGE,
             data: {

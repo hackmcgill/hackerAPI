@@ -47,7 +47,7 @@ async function ensureUniqueHackerId(req, res, next) {
         }
     }
 
-    next();
+    return next();
 }
 
 /**
@@ -76,7 +76,7 @@ function parseTeam(req, res, next) {
 
     req.body.teamDetails = teamDetails;
 
-    next();
+    return next();
 }
 
 module.exports = {
