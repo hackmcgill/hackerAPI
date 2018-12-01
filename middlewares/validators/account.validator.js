@@ -24,7 +24,8 @@ module.exports = {
         VALIDATOR.dateValidator("body", "birthDate", true),
         VALIDATOR.phoneNumberValidator("body", "phoneNumber", true)
     ],
-    updateConfirmationValidator: [
-        VALIDATOR.booleanValidator("body", "confirmed", false),
-    ],
+    inviteAccountValidator: [
+        VALIDATOR.emailValidator("body", "email", false),
+        VALIDATOR.accountTypeValidator("body", "accountType", false)
+    ]
 };

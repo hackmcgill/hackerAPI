@@ -8,6 +8,7 @@ const Account = require("../models/account.model");
 const should = chai.should();
 const Constants = {
     Error: require("../constants/error.constant"),
+    General: require("../constants/general.constant")
 };
 
 
@@ -96,7 +97,7 @@ describe("GET user account", function () {
                 return done(error);
             }
             return agent
-                .get(`/api/account/` + storedAccount1._id)
+                .get(`/api/account/${storedAccount1._id}`)
                 // does not have password because of to stripped json
                 .end(function (err, res) {
                     if (err) {
@@ -123,7 +124,7 @@ describe("GET user account", function () {
                 return done(error);
             }
             return agent
-                .get(`/api/account/` + storedAccount1._id)
+                .get(`/api/account/${storedAccount1._id}`)
                 // does not have password because of to stripped json
                 .end(function (err, res) {
                     if (err) {
@@ -151,7 +152,7 @@ describe("GET user account", function () {
                 return done(error);
             }
             return agent
-                .get(`/api/account/` + Admin1._id)
+                .get(`/api/account/${Admin1._id}`)
                 // does not have password because of to stripped json
                 .end(function (err, res) {
                     if (err) {
@@ -180,6 +181,13 @@ describe("POST create account", function () {
                 res.should.be.json;
                 res.body.should.have.property("message");
                 res.body.message.should.equal("Account creation successful");
+
+                // use acc.toStrippedJSON to deal with hidden passwords and convert _id to id
+                const acc = (new Account(newAccount1)).toStrippedJSON();
+                // delete id as those are generated
+                delete acc.id;
+                delete res.body.data.id;
+                chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify(acc));
                 done();
             });
     });
@@ -199,7 +207,7 @@ describe("POST create account", function () {
 describe("POST confirm account", function () {
     it("should SUCCEED and confirm the account", function (done) {
         chai.request(server.app)
-            .post('/api/auth/confirm/' + confirmationToken)
+            .post(`/api/auth/confirm/${confirmationToken}`)
             .type("application/json")
             .end(function (err, res) {
                 res.should.have.status(200);
@@ -210,15 +218,26 @@ describe("POST confirm account", function () {
     });
     it("should FAIL confirming the account", function (done) {
         chai.request(server.app)
-            .post('/api/auth/confirm/' + fakeToken)
+            .post(`/api/auth/confirm/${fakeToken}`)
             .type("application/json")
             .end(function (err, res) {
                 res.should.have.status(401);
                 res.body.should.have.property("message");
                 res.body.message.should.equal(Constants.Error.ACCOUNT_TOKEN_401_MESSAGE);
                 done();
-            })
-    })
+            });
+    });
+    it("should FAIL to confirm account that has token with email but no account", function (done) {
+        chai.request(server.app)
+            .post(`/api/auth/confirm/${fakeToken}`)
+            .type("application/json")
+            .end(function (err, res) {
+                res.should.have.status(401);
+                res.body.should.have.property("message");
+                res.body.message.should.equal(Constants.Error.ACCOUNT_TOKEN_401_MESSAGE);
+                done();
+            });
+    });
 });
 
 describe("PATCH update account", function () {
@@ -227,20 +246,17 @@ describe("PATCH update account", function () {
         "firstName": "new",
         "lastName": "name"
     };
+
     const failUpdatedInfo = {
         "_id": Admin1._id,
         "firstName": "fail",
         "lastName": "fail"
     };
-    const updateConfirmedInfo = {
-        "_id": storedAccount1._id,
-        "confirmed": true
-    };
 
     // fail on authentication
     it("should fail to update an account due to authentication", function (done) {
         chai.request(server.app)
-            .get(`/api/account/${updatedInfo._id}`)
+            .patch(`/api/account/${updatedInfo._id}`)
             .end(function (err, res) {
                 res.should.have.status(401);
                 res.should.be.json;
@@ -330,18 +346,18 @@ describe("POST reset password", function () {
     };
     it("should SUCCEED and change the password", function (done) {
         chai.request(server.app)
-            .post('/api/auth/password/reset')
+            .post("/api/auth/password/reset")
             .type("application/json")
-            .set('X-Reset-Token', resetToken)
+            .set("X-Reset-Token", resetToken)
             .send(password)
             .end(function (err, res) {
                 res.should.have.status(200);
                 res.body.should.have.property("message");
                 res.body.message.should.equal("Successfully reset password");
                 done();
-            })
-    })
-})
+            });
+    });
+});
 
 describe("GET retrieve permissions", function () {
     it("should SUCCEED and retrieve the rolebindings for the user", function (done) {
@@ -357,7 +373,7 @@ describe("GET retrieve permissions", function () {
                     res.should.have.status(200);
                     res.body.should.have.property("message");
                     res.body.message.should.equal("Successfully retrieved role bindings");
-                    res.body.should.have.property("data")
+                    res.body.should.have.property("data");
                     res.body.data.should.be.a("object");
                     res.body.data.should.have.property("roles");
                     res.body.data.should.have.property("accountId");
@@ -387,7 +403,7 @@ describe("GET resend confirmation email", function () {
                 return done(error);
             }
             agent
-                .get(`/api/auth/confirm/resend`)
+                .get("/api/auth/confirm/resend")
                 .type("application/json")
                 .end(function (err, res) {
                     res.should.have.status(200);
@@ -405,7 +421,7 @@ describe("GET resend confirmation email", function () {
                 return done(error);
             }
             agent
-                .get(`/api/auth/confirm/resend`)
+                .get("/api/auth/confirm/resend")
                 .type("application/json")
                 .end(function (err, res) {
                     res.should.have.status(422);
@@ -413,8 +429,8 @@ describe("GET resend confirmation email", function () {
                     res.body.should.have.property("message");
                     res.body.message.should.equal("Account already confirmed");
                     done();
-                })
-        })
+                });
+        });
     });
     it("should FAIL as account confirmation token does not exist", function (done) {
         util.auth.login(agent, storedAccount2, (error) => {
@@ -423,7 +439,7 @@ describe("GET resend confirmation email", function () {
                 return done(error);
             }
             agent
-                .get(`/api/auth/confirm/resend`)
+                .get("/api/auth/confirm/resend")
                 .type("application/json")
                 .end(function (err, res) {
                     res.should.have.status(428);
@@ -431,7 +447,35 @@ describe("GET resend confirmation email", function () {
                     res.body.should.have.property("message");
                     res.body.message.should.equal("Account confirmation token does not exist");
                     done();
+                });
+        });
+    });
+});
+
+describe("POST invite account", function () {
+    it("Should succeed to invite a user to create an account", function (done) {
+        util.auth.login(agent, Admin1, (error) => {
+            if (error) {
+                agent.close();
+                return done(error);
+            }
+            return agent
+                .post("/api/account/invite")
+                .type("application/json")
+                .send({
+                    email: newAccount1.email,
+                    accountType: Constants.General.VOLUNTEER
                 })
-        })
-    })
+                // does not have password because of to stripped json
+                .end(function (err, res) {
+                    if (err) {
+                        return done(err);
+                    }
+                    res.should.have.status(200);
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal("Successfully invited user");
+                    done();
+                });
+        });
+    });
 });

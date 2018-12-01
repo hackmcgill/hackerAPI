@@ -34,6 +34,10 @@ module.exports = {
          * @apiParam (body) {String} school Name of the school the hacker goes to
          * @apiParam (body) {String} gender Gender of the hacker
          * @apiParam (body) {Boolean} needsBus Whether the hacker requires a bus for transportation
+         * @apiParam (body) {String[]} ethnicity the ethnicities of the hacker
+         * @apiParam (body) {String} major the major of the hacker
+         * @apiParam (body) {Number} graduationYear the graduation year of the hacker
+         * @apiParam (body) {Boolean} codeOfConduct acceptance of the code of conduct 
          * @apiParam (body) {Json} application The hacker's application. Resume and jobInterest fields are required.
          * @apiParamExample {Json} application: 
          *      {
@@ -81,7 +85,8 @@ module.exports = {
 
             Middleware.Hacker.addDefaultStatus,
             Middleware.Auth.createRoleBindings(CONSTANTS.HACKER),
-            Controllers.Hacker.createHacker
+            Middleware.Hacker.createHacker,
+            Controllers.Hacker.createdHacker
         );
         /**
          * @api {patch} /hacker/status/:id update a hacker's status
@@ -114,7 +119,7 @@ module.exports = {
         );
 
         /**
-         * @api {patch} /hacker/checkin/:id update a hacker's status to be 'Checked-in'
+         * @api {patch} /hacker/checkin/:id update a hacker's status to be 'Checked-in'.
          * @apiName checkinHacker
          * @apiGroup Hacker
          * @apiVersion 0.0.9
@@ -137,11 +142,11 @@ module.exports = {
             Middleware.Auth.ensureAuthorized([Services.Hacker.findById]),
 
             Middleware.Validator.RouteParam.idValidator,
-            Middleware.Validator.Hacker.checkInStatusValidator,
             Middleware.parseBody.middleware,
             Middleware.Hacker.parsePatch,
 
-            Middleware.Hacker.validateCheckInHackerStatus,
+            Middleware.Hacker.checkStatus([CONSTANTS.HACKER_STATUS_ACCEPTED, CONSTANTS.HACKER_STATUS_CONFIRMED]),
+            Middleware.Hacker.parseCheckIn,
             Middleware.Hacker.updateHacker,
 
             Middleware.Hacker.sendStatusUpdateEmail,
@@ -306,6 +311,44 @@ module.exports = {
                 Middleware.Hacker.downloadResume,
                 Controllers.Hacker.downloadedResume
             );
+
+        /**
+         * @api {patch} /hacker/confirmation/:id Allows confirmation of hacker attendence if they are accepted. 
+         * Also allows change from 'confirmed' back to 'accepted'
+         * @apiName patchHackerConfirmed
+         * @apiGroup Hacker
+         * @apiVersion 0.0.9
+         * 
+         * @apiParam (body) {String} [status] The new status of the hacker. 'Accepted' or 'Confirmed'
+         * @apiSuccess {string} message Success message
+         * @apiSuccess {object} data Hacker object
+         * @apiSuccessExample {object} Success-Response: 
+         *      {
+         *          "message": "Changed hacker information", 
+         *          "data": {
+         *              "status": "Confirmed"
+         *          }
+         *      }
+         * @apiPermission Administrator
+         * @apiPermission Hacker
+         */
+        hackerRouter.route("/confirmation/:id").patch(
+            Middleware.Auth.ensureAuthenticated(),
+            Middleware.Auth.ensureAuthorized([Services.Hacker.findById]),
+
+            Middleware.Validator.RouteParam.idValidator,
+            Middleware.Validator.Hacker.updateConfirmationValidator,
+            Middleware.parseBody.middleware,
+            Middleware.Hacker.parsePatch,
+
+            Middleware.Hacker.checkStatus([CONSTANTS.HACKER_STATUS_ACCEPTED, CONSTANTS.HACKER_STATUS_CONFIRMED]),
+
+            Middleware.Hacker.parseConfirmation,
+            Middleware.Hacker.updateHacker,
+
+            Middleware.Hacker.sendStatusUpdateEmail,
+            Controllers.Hacker.updatedHacker
+        );
         apiRouter.use("/hacker", hackerRouter);
     }
 };

@@ -11,7 +11,7 @@ const SPONSOR_ID_409_MESSAGE = "Conflict with sponsor accountId link";
 const VOLUNTEER_ID_409_MESSAGE = "Conflict with volunteer accountId link";
 const HACKER_ID_409_MESSAGE = "Conflict with hacker accountId link";
 const TEAM_MEMBER_409_MESSAGE = "Conflict with team member being in another team";
-const HACKER_CHECKIN_409_MESSAGE = "Cannot check-in non-confirmed hacker";
+const HACKER_STATUS_409_MESSAGE = "Conflict with hacker status";
 
 const TEAM_MEMBER_422_MESSAGE = "Duplicate team member in input";
 const VALIDATION_422_MESSAGE = "Validation failed";
@@ -60,5 +60,5 @@ module.exports = {
     GENERIC_500_MESSAGE: GENERIC_500_MESSAGE,
     ACCOUNT_DUPLICATE_422_MESSAGE: ACCOUNT_DUPLICATE_422_MESSAGE,
     LOGIN_500_MESSAGE: LOGIN_500_MESSAGE,
-    HACKER_CHECKIN_409_MESSAGE: HACKER_CHECKIN_409_MESSAGE,
+    HACKER_STATUS_409_MESSAGE: HACKER_STATUS_409_MESSAGE,
 };

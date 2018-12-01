@@ -28,6 +28,11 @@ const HackerConfirmation2 = {
     "email": Util.Account.NonConfirmedAccount2.email
 }
 
+const HackerConfirmation3 = {
+    "_id": mongoose.Types.ObjectId(),
+    "email": Util.Account.newAccount1
+};
+
 // Using a real ID which is stored but corresponds to another account
 const FakeHackerToken = {
     "_id": HackerConfirmation._id,
@@ -40,7 +45,8 @@ const FakeToken = Services.AccountConfirmation.generateToken(FakeHackerToken._id
 
 const AccountConfirmationTokens = [
     HackerConfirmation,
-    HackerConfirmation2
+    HackerConfirmation2,
+    HackerConfirmation3
 ];
 
 function storeAll(attributes) {

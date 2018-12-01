@@ -67,11 +67,10 @@ async function getUserById(req, res) {
  * @description Adds a user from information in req.body.accountDetails
  */
 async function addUser(req, res) {
-    const accountDetails = req.body.accountDetails;
-    delete accountDetails.password;
+    const acc = req.body.account;
     return res.status(200).json({
         message: "Account creation successful",
-        data: accountDetails
+        data: acc.toStrippedJSON()
     });
 }
 
@@ -93,12 +92,20 @@ function updatedAccount(req, res) {
     });
 }
 
+function invitedAccount(req, res) {
+    return res.status(200).json({
+        message: "Successfully invited user",
+        data: {}
+    });
+}
+
+
 module.exports = {
     getUserByEmail: Util.asyncMiddleware(getUserByEmail),
     getUserById: Util.asyncMiddleware(getUserById),
 
     // assumes all information in req.body
     addUser: Util.asyncMiddleware(addUser),
-
     updatedAccount: updatedAccount,
+    invitedAccount: invitedAccount
 };

@@ -44,7 +44,7 @@ describe("Searching for hackers", function () {
             .end(function (err, res) {
                 res.should.have.status(200);
                 res.body.should.have.property('data');
-                res.body.data.should.have.length(1);
+                res.body.data.should.have.length(2);
                 done();
             });
     })
@@ -67,8 +67,33 @@ describe("Searching for hackers", function () {
             })
             .end(function (err, res) {
                 res.should.have.status(422);
+                res.body.data.data.model.msg.should.equal("Must be a valid searchable model");
                 done();
             });
+    })
+    it("Should throw an error because model is not lowercase", function (done) {
+        chai.request(server.app)
+            .get("/api/search/Hacker")
+            .query({
+                q: JSON.stringify(query2)
+            })
+            .end(function (err, res) {
+                res.should.have.status(422);
+                res.body.data.data.model.msg.should.equal("Model must be lower case");
+                done();
+            })
+    })
+    it("Should throw an error because out of a fake model", function (done) {
+        chai.request(server.app)
+            .get("/api/search/hackerz")
+            .query({
+                q: JSON.stringify(query2)
+            })
+            .end(function (err, res) {
+                res.should.have.status(422);
+                res.body.data.data.model.msg.should.equal("Must be a valid searchable model");
+                done();
+            })
     })
     it("Should only return 1 hacker (page size)", function (done) {
         chai.request(server.app)

@@ -20,7 +20,7 @@ const invalidHacker1 = {
         // invalid jobInterest
         "jobInterest": "ASDF",
     },
-    "ethnicity": "Asian",
+    "ethnicity": ["Asian", "Caucasian"],
     "major": "CS",
     "graduationYear": 2020,
     "codeOfConduct": true,
@@ -46,7 +46,7 @@ const duplicateAccountLinkHacker1 = {
         "jobInterest": "Full-time",
         "skills": ["CSS", "HTML", "JS"],
     },
-    "ethnicity": "Caucasian",
+    "ethnicity": ["Caucasian"],
     "major": "CS",
     "graduationYear": 2019,
     "codeOfConduct": true,
@@ -70,7 +70,7 @@ const newHacker1 = {
         "jobInterest": "Full-time",
         "skills": ["CSS", "HTML", "JS"],
     },
-    "ethnicity": "Caucasian",
+    "ethnicity": ["Caucasian"],
     "major": "EE",
     "graduationYear": 2019,
     "codeOfConduct": true,
@@ -94,7 +94,7 @@ const newHacker2 = {
         "jobInterest": "Full-time",
         "skills": ["CSS", "HTML", "JS"],
     },
-    "ethnicity": "African American",
+    "ethnicity": ["African American"],
     "major": "EE",
     "graduationYear": 2019,
     "codeOfConduct": true,
@@ -120,7 +120,7 @@ const HackerA = {
         "jobInterest": "Full-time",
         "skills": ["CSS", "HTML", "JS"],
     },
-    "ethnicity": "Native American",
+    "ethnicity": ["Native American"],
     "major": "EE",
     "graduationYear": 2019,
     "codeOfConduct": true,
@@ -145,14 +145,42 @@ const HackerB = {
         "jobInterest": "Internship",
         "skills": ["CSS", "HTML", "JS"],
     },
-    "ethnicity": "European",
+    "ethnicity": ["European"],
     "major": "EE",
     "graduationYear": 2019,
     "codeOfConduct": true,
 };
+
+const HackerC = {
+    "_id": mongoose.Types.ObjectId(),
+    "accountId": Util.Account.Hacker3._id,
+    "status": "Waitlisted",
+    "school": "University of Blah1",
+    "gender": "Female",
+    "needsBus": false,
+    "application": {
+        "portfolioURL": {
+            //gcloud bucket link
+            "resume": "www.gcloud.com/myResume2",
+            "github": "www.github.com/Personasdf",
+            "dropler": undefined,
+            "personal": undefined,
+            "linkedIn": undefined,
+            "other": undefined
+        },
+        "jobInterest": "Internship",
+        "skills": ["CSS", "HTML", "JS"],
+    },
+    "ethnicity": "European",
+    "major": "EE",
+    "graduationYear": 2019,
+    "codeOfConduct": true,
+}
+
 const Hackers = [
     HackerA,
     HackerB,
+    HackerC,
 ];
 
 module.exports = {
@@ -162,6 +190,7 @@ module.exports = {
     newHacker2: newHacker2,
     HackerA: HackerA,
     HackerB: HackerB,
+    HackerC: HackerC,
     Hackers: Hackers,
     storeAll: storeAll,
     dropAll: dropAll

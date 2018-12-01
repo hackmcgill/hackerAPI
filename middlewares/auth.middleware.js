@@ -19,6 +19,7 @@ const Middleware = {
 const Constants = {
     General: require("../constants/general.constant"),
     Error: require("../constants/error.constant"),
+    Role: require("../constants/role.constant")
 };
 
 /**
@@ -131,9 +132,7 @@ async function retrieveRoleBindings(req, res, next) {
  * @param {(err?)=>void} next 
  */
 async function sendResetPasswordEmailMiddleware(req, res, next) {
-    const user = await Services.Account.findByEmail({
-        email: req.body.email
-    });
+    const user = await Services.Account.findByEmail(req.body.email);
     if (user) {
         //create the reset password token
         await Services.ResetPasswordToken.create(user.id);
@@ -164,13 +163,16 @@ async function sendResetPasswordEmailMiddleware(req, res, next) {
 /**
  * Middleware that sends an email to confirm the account for the inputted email address.
  * This is only sent on account creation for HACKERS as other users are sent an invite email
- * which confirms their account
+ * which confirms their account, if a user is another type they should be confirmed so an email is not
  * @param {{body: {email:String}}} req the request object
  * @param {*} res
  * @param {(err?)=>void} next
  */
 async function sendConfirmAccountEmailMiddleware(req, res, next) {
     const account = req.body.account;
+    if (account.confirmed) {
+        return next();
+    }
     await Services.AccountConfirmation.create(Constants.General.HACKER, account.email, account.id);
     const accountConfirmationToken = await Services.AccountConfirmation.findByAccountId(account.id);
     const token = Services.AccountConfirmation.generateToken(accountConfirmationToken.id, account.id);
@@ -377,9 +379,8 @@ function deleteResetToken(req, res, next) {
  * @param {(err?)=>void} next 
  */
 async function addCreationRoleBindings(req, res, next) {
-    // Get the default role for the account type given
-    const roleName = Constants.General.POST_ROLES[req.body.account.accountType];
-    await Services.RoleBinding.createRoleBindingByRoleName(req.body.account.id, roleName);
+    // Add default account role bindings
+    await Services.RoleBinding.createRoleBindingByRoleName(req.body.account.id, Constants.Role.accountRole.name);
     return next();
 }
 
@@ -388,21 +389,27 @@ async function addCreationRoleBindings(req, res, next) {
  * @param {string} roleName name of the role to be added to account
  */
 function createRoleBindings(roleName = undefined) {
-    return async (req, res, next) => {
+    return Middleware.Util.asyncMiddleware(async (req, res, next) => {
         await Services.RoleBinding.createRoleBindingByRoleName(req.user.id, roleName);
         return next();
-    }
+    });
 }
 
 /**
- * Middleware which creates rolebinding for appropriate sponsor
- * @param {{body: {sponsorDetails: {accountId: ObjectId}}}} req request object
+ * Middleware to retrieve all the roles in the database
+ * @param {*} req 
  * @param {*} res 
  * @param {(err?) => void } next 
  */
 async function addSponsorRoleBindings(req, res, next) {
     const account = Services.Account.findById(req.body.sponsorDetails.accountId);
     await Services.RoleBinding.createRoleBindingByRoleName(account.id, account.accountType);
+    return next();
+}
+
+async function retrieveRoles(req, res, next) {
+    const roles = await Services.Role.getAll();
+    req.roles = roles;
     return next();
 }
 
@@ -422,7 +429,7 @@ module.exports = {
     validateConfirmationTokenWithoutAccount: Middleware.Util.asyncMiddleware(validateConfirmationTokenWithoutAccount),
     createRoleBindings: createRoleBindings,
     addCreationRoleBindings: Middleware.Util.asyncMiddleware(addCreationRoleBindings),
-    addSponsorRoleBindings: Middleware.Util.asyncMiddleware(addSponsorRoleBindings),
     resendConfirmAccountEmail: Middleware.Util.asyncMiddleware(resendConfirmAccountEmail),
-    retrieveRoleBindings: Middleware.Util.asyncMiddleware(retrieveRoleBindings)
+    retrieveRoleBindings: Middleware.Util.asyncMiddleware(retrieveRoleBindings),
+    retrieveRoles: Middleware.Util.asyncMiddleware(retrieveRoles)
 };

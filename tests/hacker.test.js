@@ -9,6 +9,7 @@ const Hacker = require("../models/hacker.model");
 const fs = require("fs");
 const path = require("path");
 const Constants = {
+    General: require("../constants/general.constant"),
     Error: require("../constants/error.constant"),
 };
 
@@ -16,7 +17,6 @@ const util = {
     auth: require("./util/auth.test.util"),
     hacker: require("./util/hacker.test.util"),
     account: require("./util/account.test.util"),
-    auth: require("./util/auth.test.util"),
     accountConfirmation: require("./util/accountConfirmation.test.util")
 };
 const StorageService = require("../services/storage.service");
@@ -198,10 +198,15 @@ describe("POST create hacker", function () {
                     res.body.message.should.equal("Hacker creation successful");
                     res.body.should.have.property("data");
 
-                    // delete _id and status because those fields were generated
-                    delete res.body.data._id;
-                    delete res.body.data.status;
-                    chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify(newHacker1));
+                    // create JSON version of model
+                    // delete id as they will be different between model objects
+                    // update status to be applied on the comparator hacker object
+                    const hacker = (new Hacker(newHacker1)).toJSON();
+                    hacker.status = Constants.General.HACKER_STATUS_APPLIED;
+                    delete res.body.data.id;
+                    delete hacker.id;
+                    chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify(hacker));
+
                     done();
                 });
         });
@@ -225,10 +230,14 @@ describe("POST create hacker", function () {
                     res.body.message.should.equal("Hacker creation successful");
                     res.body.should.have.property("data");
 
-                    // delete _id and status because those fields were generated
-                    delete res.body.data._id;
-                    delete res.body.data.status;
-                    chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify(newHacker1));
+                    // create JSON version of model
+                    // delete id as they will be different between model objects
+                    // update status to be applied on the comparator hacker object
+                    const hacker = (new Hacker(newHacker1)).toJSON();
+                    hacker.status = Constants.General.HACKER_STATUS_APPLIED;
+                    delete res.body.data.id;
+                    delete hacker.id;
+                    chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify(hacker));
                     done();
                 });
         });
@@ -516,6 +525,124 @@ describe("PATCH update one hacker", function () {
                 });
         });
     });
+
+    // Succeed and change accepted to confirm
+    it("should succeed for hacker to update their own status from accepted to confirmed", function (done) {
+        util.auth.login(agent, storedAccount2, (error) => {
+            if (error) {
+                agent.close();
+                return done(error);
+            }
+            return agent
+                .patch(`/api/hacker/confirmation/${storedHacker2._id}`)
+                .type("application/json")
+                .send({
+                    confirm: true
+                })
+                .end(function (err, res) {
+                    if (err) {
+                        return done(err);
+                    }
+                    res.should.have.status(200);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal("Changed hacker information");
+                    res.body.should.have.property("data");
+                    chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify({
+                        status: Constants.General.HACKER_STATUS_CONFIRMED
+                    }));
+
+                    done();
+                });
+        });
+    });
+
+    // Succeed and change confirmed to accepted
+    it("should succeed for hacker to update their own status from confirmed to accepted", function (done) {
+        util.auth.login(agent, storedAccount1, (error) => {
+            if (error) {
+                agent.close();
+                return done(error);
+            }
+            return agent
+                .patch(`/api/hacker/confirmation/${storedHacker1._id}`)
+                .type("application/json")
+                .send({
+                    confirm: false
+                })
+                .end(function (err, res) {
+                    if (err) {
+                        return done(err);
+                    }
+                    res.should.have.status(200);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal("Changed hacker information");
+                    res.body.should.have.property("data");
+                    chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify({
+                        status: Constants.General.HACKER_STATUS_ACCEPTED
+                    }));
+
+                    done();
+                });
+        });
+    });
+
+    // fail for a hacker that's not accepted
+    it("should fail to update hacker status when hacker status is not accepted or confirmed", function (done) {
+        util.auth.login(agent, util.account.Hacker3, (error) => {
+            if (error) {
+                agent.close();
+                return done(error);
+            }
+            return agent
+                .patch(`/api/hacker/confirmation/${util.hacker.HackerC._id}`)
+                .type("application/json")
+                .send({
+                    confirm: true
+                })
+                .end(function (err, res) {
+                    if (err) {
+                        return done(err);
+                    }
+                    res.should.have.status(409);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal(Constants.Error.HACKER_STATUS_409_MESSAGE);
+                    res.body.should.have.property("data");
+
+                    done();
+                });
+        });
+    });
+
+    // fail for a hacker that's not accepted
+    it("should fail for hacker trying to confirm someone else", function (done) {
+        util.auth.login(agent, util.account.Hacker3, (error) => {
+            if (error) {
+                agent.close();
+                return done(error);
+            }
+            return agent
+                .patch(`/api/hacker/confirmation/${storedHacker1._id}`)
+                .type("application/json")
+                .send({
+                    confirm: true
+                })
+                .end(function (err, res) {
+                    if (err) {
+                        return done(err);
+                    }
+                    res.should.have.status(403);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal(Constants.Error.AUTH_403_MESSAGE);
+                    res.body.should.have.property("data");
+
+                    done();
+                });
+        });
+    });
 });
 describe("POST add a hacker resume", function () {
     it("It should SUCCEED and upload a resume for a hacker", function (done) {
@@ -538,7 +665,7 @@ describe("POST add a hacker resume", function () {
                     res.body.should.have.property("data");
                     res.body.data.should.have.property("filename");
                     StorageService.download(res.body.data.filename).then((value) => {
-                        const actualFile = fs.readFileSync(path.join(__dirname, "testResume.pdf"))
+                        const actualFile = fs.readFileSync(path.join(__dirname, "testResume.pdf"));
                         chai.assert.equal(value[0].length, actualFile.length);
                         StorageService.delete(res.body.data.filename).then(() => {
                             done();

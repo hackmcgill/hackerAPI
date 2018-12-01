@@ -12,7 +12,7 @@ const jwt = require("jsonwebtoken");
 const Constants = require("../../constants/general.constant");
 const Models = {
     Hacker: require("../../models/hacker.model")
-}
+};
 
 /**
  * Validates that field is a valid devpost URL
@@ -51,16 +51,16 @@ function integerValidator(fieldLocation, fieldname, optional = true, lowerBound 
         return value.optional({
                 checkFalsy: true
             })
-            .isInt().withMessage("tier must be an integer.")
+            .isInt().withMessage(`${fieldname} must be an integer.`)
             .custom((value) => {
                 return value >= lowerBound && value <= upperBound;
-            }).withMessage("tier must be between 0 and 5");
+            }).withMessage(`${fieldname} must be between ${lowerBound} and  ${upperBound}`);
     } else {
         return value.exists().withMessage("tier must exist")
-            .isInt().withMessage("tier must be an integer.")
+            .isInt().withMessage(`${fieldname} must be an integer.`)
             .custom((value) => {
                 return value >= lowerBound && value <= upperBound;
-            }).withMessage("tier must be between 0 and 5");
+            }).withMessage(`${fieldname} must be between ${lowerBound} and  ${upperBound}`);
     }
 }
 
@@ -71,7 +71,7 @@ function integerValidator(fieldLocation, fieldname, optional = true, lowerBound 
  * @param {boolean} optional Whether the field is optional or not.
  */
 function mongoIdValidator(fieldLocation, fieldname, optional = true) {
-    const mongoId = setProperValidationChainBuilder(fieldLocation, fieldname, "invalid mongoID array");
+    const mongoId = setProperValidationChainBuilder(fieldLocation, fieldname, "invalid mongoID");
 
     if (optional) {
         return mongoId.optional({
@@ -437,20 +437,34 @@ function jwtValidator(fieldLocation, fieldname, jwtSecret, optional = true) {
 }
 
 /**
+ * Validates that field must be a valid searchable model
+ * @param {"query" | "body" | "header" | "param"} fieldLocation the location where the field should be found
+ * @param {string} fieldname name of the field that needs to be validated.
+ */
+function searchModelValidator(fieldLocation, fieldName){
+    const paramChain = setProperValidationChainBuilder(fieldLocation, fieldName, "Must be a valid searchable model");
+    return paramChain.exists().withMessage("Model must be provided")
+        .isLowercase().withMessage("Model must be lower case")
+        .isAlpha().withMessage("must contain alphabet characters")
+        .isIn([Constants.HACKER.toLowerCase()])
+}
+
+/**==
  * Validates that field must be a valid search query.
  * @param {"query" | "body" | "header" | "param"} fieldLocation the location where the field should be found
  * @param {string} fieldname name of the field that needs to be validated.
  */
 function searchValidator(fieldLocation, fieldname) {
     const search = setProperValidationChainBuilder(fieldLocation, fieldname, "Invalid search query");
+    
     return search.exists().withMessage("Search query must be provided")
-        .custom((value) => {
+        .custom((value, {req}) => {
             //value is a serialized JSON
             value = JSON.parse(value);
-            let modelString = param("model", "Corresponding model not found");
-            let model;
+            let modelString = req.params.model
             //Supported models for searching
-            if (modelString.equals("hacker")) {
+            let model;
+            if (modelString === Constants.HACKER.toLowerCase()) {
                 model = Models.Hacker;
             } else {
                 return false;
@@ -492,9 +506,8 @@ function searchSortValidator(fieldLocation, fieldName) {
     return searchSort.optional({
             checkFalsy: true
         })
-        .custom((value) => {
-            let modelString = param("model", "Corresponding model not found");
-            let model;
+        .custom((value, {req}) => {
+            let modelString = req.params.model
             if (modelString.equals("hacker")) {
                 model = Models.Hacker;
             } else {
@@ -565,6 +578,25 @@ function phoneNumberValidator(fieldLocation, fieldname, optional = true) {
 }
 
 /**
+ * Validates that field must be a valid account type
+ * @param {"query" | "body" | "header" | "param"} fieldLocation the location where the field should be found 
+ * @param {string} fieldname name of the field that needs to be validated.
+ * @param {boolean} optional whether the field is optional or not.
+ */
+function accountTypeValidator(fieldLocation, fieldname, optional = true) {
+    const accountType = setProperValidationChainBuilder(fieldLocation, fieldname, "Invalid account type");
+    if (optional) {
+        return accountType.optional({
+            checkFalsy: true
+        }).isIn(Constants.EXTENDED_USER_TYPES);
+    } else {
+        return accountType.exists()
+            .withMessage("Account type must be provided")
+            .isIn(Constants.EXTENDED_USER_TYPES);
+    }
+}
+
+/**
  *
  * @param {"query" | "body" | "header" | "param"} fieldLocation the location where the field should be found
  * @param {string} fieldname name of the field that needs to be validated.
@@ -611,8 +643,10 @@ module.exports = {
     jwtValidator: jwtValidator,
     urlValidator: urlValidator,
     searchValidator: searchValidator,
+    searchModelValidator: searchModelValidator,
     searchSortValidator: searchSortValidator,
     phoneNumberValidator: phoneNumberValidator,
     dateValidator: dateValidator,
     hackerCheckInStatusValidator: hackerCheckInStatusValidator,
+    accountTypeValidator: accountTypeValidator
 };

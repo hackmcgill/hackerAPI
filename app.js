@@ -31,7 +31,17 @@ const volunteerRouter = require("./routes/api/volunteer");
 
 const app = express();
 Services.db.connect(app);
-app.use(cors());
+
+let corsOptions = {};
+
+if (!Services.env.isProduction()) {
+    corsOptions = { origin: ["http://localhost:1337", "http://localhost:8989"], credentials: true };
+} else {
+    // TODO: change this when necessary
+    corsOptions = { origin: ["https://mchacks.ca/"], credentials: true };
+}
+
+app.use(cors(corsOptions));
 app.use(Services.log.requestLogger);
 app.use(Services.log.errorLogger);
 app.use(express.json());
