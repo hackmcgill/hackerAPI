@@ -416,9 +416,7 @@ async function checkDuplicateAccountLinks(req, res, next) {
  * @param {(err?)=>void} next 
  */
 async function findSelf(req, res, next) {
-    const acc = await Services.Account.findById(req.user.id);
-
-    if (acc.accountType != Constants.General.HACKER) {
+    if (req.user.accountType != Constants.General.HACKER) {
         return res.status(409).json({
             message: Constants.Error.ACCOUNT_TYPE_409_MESSAGE,
             data: {
