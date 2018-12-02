@@ -85,6 +85,7 @@ searchRouter.activate(apiRouter);
 Services.log.info("Search router activated");
 
 apiRouter.use("/", indexRouter);
+app.use("/", indexRouter);
 
 app.use("/api", apiRouter);
 

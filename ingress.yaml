@@ -1,0 +1,16 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: hackboard-ingress
+  annotations:
+    kubernetes.io/ingress.global-static-ip-name: hackboard-ingress-static-ip
+spec:
+  # tls:
+  # - secretName: hackboard-secret
+  # rules:
+  # - http:
+  #     paths:
+  #     - path: /*
+  backend:
+    serviceName: hackboard-service
+    servicePort: 80
