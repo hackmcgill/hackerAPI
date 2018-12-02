@@ -83,14 +83,14 @@ function addOneAccount(accountDetails) {
 }
 
 /**
- * @function changeOneAccount
+ * @function updateOne
  * @param {ObjectId} id
  * @param {{_id?: ObjectId, firstName?: string, lastName?: string, email?: string, password?: string, dietaryRestrictions?: string, shirtSize?: string}} accountDetails 
  * @return {DocumentQuery} The document query will resolve to either account or null.
  * @description Changes account information to the specified information in accountDetails.
  */
-function changeOneAccount(id, accountDetails) {
-    const TAG = `[Account Service # changeOneAccount ]:`;
+function updateOne(id, accountDetails) {
+    const TAG = `[Account Service # updateOne ]:`;
 
     const query = {
         _id: id
@@ -106,7 +106,7 @@ function changeOneAccount(id, accountDetails) {
  */
 function updatePassword(id, newPassword) {
     const hashed = hashPassword(newPassword);
-    return changeOneAccount(id, {
+    return updateOne(id, {
         password: hashed
     });
 }
@@ -119,6 +119,6 @@ module.exports = {
     addOneAccount: addOneAccount,
     getAccountIfValid: getAccountIfValid,
     hashPassword: hashPassword,
-    changeOneAccount: changeOneAccount,
+    updateOne: updateOne,
     updatePassword: updatePassword
 };

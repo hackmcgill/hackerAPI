@@ -26,7 +26,7 @@ const Constants = {
  */
 function parsePatch(req, res, next) {
     delete req.body.id;
-    next();
+    return next();
 }
 
 /**
@@ -36,8 +36,8 @@ function parsePatch(req, res, next) {
  * @param {(err?)=>void} next
  * @return {void}
  * @description 
- * Moves accountId, school, gender, needsBus, application from req.body to req.body.teamDetails. 
- * Adds _id to teamDetails.
+ * Moves accountId, school, gender, needsBus, application from req.body to req.body.hackerDetails. 
+ * Adds _id to hackerDetails.
  */
 function parseHacker(req, res, next) {
     const hackerDetails = {
@@ -68,7 +68,45 @@ function parseHacker(req, res, next) {
 
     req.body.hackerDetails = hackerDetails;
 
-    next();
+    return next();
+}
+
+/**
+ * @function parseCheckin
+ * @param {{body: {*}}} req
+ * @param {*} res
+ * @param {(err?)=>void} next
+ * @return {void}
+ * @description 
+ * Adds the checked-in status to req.body
+ */
+function parseCheckIn(req, res, next) {
+    req.body.status = Constants.General.HACKER_STATUS_CHECKED_IN;
+
+    return next();
+}
+
+/**
+ * @function parseCheckin
+ * @param {{body: {confirm: boolean}}} req
+ * @param {*} res
+ * @param {(err?)=>void} next
+ * @return {void}
+ * @description 
+ * Changes req.body.status to confirmed or accepted depending on whether req.body.confirm is true or false respectively.
+ * Deletes req.body.confirm afterwards
+ */
+function parseConfirmation(req, res, next) {
+    const confirm = req.body.confirm;
+
+    if (confirm) {
+        req.body.status = Constants.General.HACKER_STATUS_CONFIRMED;
+    } else {
+        req.body.status = Constants.General.HACKER_STATUS_ACCEPTED;
+    }
+
+    delete req.body.confirm;
+    return next();
 }
 
 /**
@@ -81,7 +119,7 @@ function parseHacker(req, res, next) {
  */
 function addDefaultStatus(req, res, next) {
     req.body.hackerDetails.status = "Applied";
-    next();
+    return next();
 }
 
 /**
@@ -93,24 +131,24 @@ function addDefaultStatus(req, res, next) {
 async function validateConfirmedStatus(req, res, next) {
     const account = await Services.Account.findById(req.body.accountId);
     if (!account) {
-        next({
+        return next({
             status: 404,
             message: Constants.Error.ACCOUNT_404_MESSAGE,
             error: {}
         });
     } else if (!account.confirmed) {
-        next({
+        return next({
             status: 403,
             message: Constants.Error.ACCOUNT_403_MESSAGE,
             error: {}
         });
     } else if (account.accountType !== Constants.General.HACKER) {
-        next({
+        return next({
             status: 409,
             message: Constants.Error.ACCOUNT_TYPE_409_MESSAGE
         });
     } else {
-        next();
+        return next();
     }
 }
 
@@ -126,9 +164,9 @@ function ensureAccountLinkedToHacker(req, res, next) {
         (hacker) => {
             req.hacker = hacker;
             if (hacker && req.user && String.toString(hacker.accountId) === String.toString(req.user.id)) {
-                next();
+                return next();
             } else {
-                next({
+                return next({
                     status: 403,
                     message: Constants.Error.AUTH_403_MESSAGE,
                     error: {}
@@ -153,7 +191,7 @@ async function uploadResume(req, res, next) {
             "application.portfolioURL.resume": gcfilename
         }
     });
-    next();
+    return next();
 }
 
 /**
@@ -173,7 +211,7 @@ async function downloadResume(req, res, next) {
             error: {}
         });
     }
-    next();
+    return next();
 }
 /**
  * Sends a preset email to a user if a status change occured.
@@ -228,10 +266,10 @@ async function updateStatusIfApplicationCompleted(req, res, next) {
             }
             Services.Email.sendStatusUpdate(account.email, Constants.General.HACKER_STATUS_APPLIED, next);
         } else {
-            next();
+            return next();
         }
     } else {
-        next({
+        return next({
             status: 404,
             message: Constants.Error.HACKER_404_MESSAGE,
             data: {
@@ -239,6 +277,43 @@ async function updateStatusIfApplicationCompleted(req, res, next) {
             }
         });
     }
+}
+
+/**
+ * Checks that the hacker's status matches one of the input statuses
+ * @param {String[]} statuses
+ * @returns {(req, res, next) => {}} the middleware that will check hacker's status
+ */
+function checkStatus(statuses) {
+    return Middleware.Util.asyncMiddleware(async (req, res, next) => {
+
+        let hacker = await Services.Hacker.findById(req.params.id);
+
+        if (!!hacker) {
+            const status = hacker.status;
+            // makes sure the hacker's status is in the accepted statuses list
+            if (statuses.indexOf(status) === -1) {
+                return next({
+                    status: 409,
+                    message: Constants.Error.HACKER_STATUS_409_MESSAGE,
+                    data: {
+                        id: req.params.id,
+                        validStatuses: statuses
+                    }
+                });
+            }
+
+            return next();
+        } else {
+            return next({
+                status: 404,
+                message: Constants.Error.HACKER_404_MESSAGE,
+                data: {
+                    id: req.params.id
+                }
+            });
+        }
+    });
 }
 
 /**
@@ -263,15 +338,53 @@ async function updateHacker(req, res, next) {
             });
         }
         req.email = acct.email;
-        next();
+        return next();
     } else {
-        next({
+        return next({
             status: 404,
             message: Constants.Error.HACKER_404_MESSAGE,
             data: {
                 id: req.params.id
             }
         });
+    }
+}
+
+/**
+ * @function createhacker
+ * @param {{body: {hackerDetails: object}}} req 
+ * @param {*} res 
+ * @param {(err?)=>void} next 
+ * @return {void}
+ * @description
+ * Creates hacker document after making sure there is no other hacker with the same linked accountId
+ */
+async function createHacker(req, res, next) {
+    const hackerDetails = req.body.hackerDetails;
+
+    const exists = await Services.Hacker.findByAccountId(hackerDetails.accountId);
+
+    if (exists) {
+        return next({
+            status: 422,
+            message: Constants.Error.ACCOUNT_DUPLICATE_422_MESSAGE,
+            data: {
+                id: hackerDetails.accountId
+            }
+        });
+    }
+
+    const hacker = await Services.Hacker.createHacker(hackerDetails);
+
+    if (!!hacker) {
+        req.body.hacker = hacker;
+        return next();
+    } else {
+        return next({
+            status: 500,
+            message: Constants.Error.HACKER_CREATE_500_MESSAGE,
+            data: {}
+        })
     }
 }
 
@@ -284,13 +397,44 @@ async function updateHacker(req, res, next) {
 async function checkDuplicateAccountLinks(req, res, next) {
     const hacker = await Services.Hacker.findByAccountId(req.body.accountId);
     if (!hacker) {
-        next();
+        return next();
     } else {
-        next({
+        return next({
             status: 409,
             message: Constants.Error.HACKER_ID_409_MESSAGE,
             data: {
                 id: req.body.accountId
+            }
+        });
+    }
+}
+
+/**
+ * Finds the hacker information of the logged in user
+ * @param {{user: {id: string}}} req 
+ * @param {*} res 
+ * @param {(err?)=>void} next 
+ */
+async function findSelf(req, res, next) {
+    if (req.user.accountType != Constants.General.HACKER) {
+        return res.status(409).json({
+            message: Constants.Error.ACCOUNT_TYPE_409_MESSAGE,
+            data: {
+                id: req.user.id,
+            }
+        });
+    }
+
+    const hacker = await Services.Hacker.findByAccountId(req.user.id);
+
+    if (!!hacker) {
+        req.body.hacker = hacker;
+        return next();
+    } else {
+        return res.status(404).json({
+            message: Constants.Error.HACKER_404_MESSAGE,
+            data: {
+                id: req.user.id,
             }
         });
     }
@@ -307,5 +451,10 @@ module.exports = {
     updateHacker: Middleware.Util.asyncMiddleware(updateHacker),
     validateConfirmedStatus: Middleware.Util.asyncMiddleware(validateConfirmedStatus),
     checkDuplicateAccountLinks: Middleware.Util.asyncMiddleware(checkDuplicateAccountLinks),
-    updateStatusIfApplicationCompleted: Middleware.Util.asyncMiddleware(updateStatusIfApplicationCompleted)
+    updateStatusIfApplicationCompleted: Middleware.Util.asyncMiddleware(updateStatusIfApplicationCompleted),
+    checkStatus: checkStatus,
+    parseCheckIn: parseCheckIn,
+    parseConfirmation: parseConfirmation,
+    createHacker: Middleware.Util.asyncMiddleware(createHacker),
+    findSelf: Middleware.Util.asyncMiddleware(findSelf),
 };

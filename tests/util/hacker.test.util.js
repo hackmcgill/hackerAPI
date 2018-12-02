@@ -70,7 +70,7 @@ const newHacker1 = {
         "jobInterest": "Full-time",
         "skills": ["CSS", "HTML", "JS"],
     },
-    "ethnicity":  ["Caucasian"],
+    "ethnicity": ["Caucasian"],
     "major": "EE",
     "graduationYear": 2019,
     "codeOfConduct": true,
@@ -103,7 +103,7 @@ const newHacker2 = {
 const HackerA = {
     "_id": mongoose.Types.ObjectId(),
     "accountId": Util.Account.Account1._id,
-    "status": "Applied",
+    "status": "Confirmed",
     "school": "University of Blah",
     "gender": "Male",
     "needsBus": true,
@@ -150,9 +150,37 @@ const HackerB = {
     "graduationYear": 2019,
     "codeOfConduct": true,
 };
+
+const HackerC = {
+    "_id": mongoose.Types.ObjectId(),
+    "accountId": Util.Account.Hacker3._id,
+    "status": "Waitlisted",
+    "school": "University of Blah1",
+    "gender": "Female",
+    "needsBus": false,
+    "application": {
+        "portfolioURL": {
+            //gcloud bucket link
+            "resume": "www.gcloud.com/myResume2",
+            "github": "www.github.com/Personasdf",
+            "dropler": undefined,
+            "personal": undefined,
+            "linkedIn": undefined,
+            "other": undefined
+        },
+        "jobInterest": "Internship",
+        "skills": ["CSS", "HTML", "JS"],
+    },
+    "ethnicity": "European",
+    "major": "EE",
+    "graduationYear": 2019,
+    "codeOfConduct": true,
+}
+
 const Hackers = [
     HackerA,
     HackerB,
+    HackerC,
 ];
 
 module.exports = {
@@ -162,6 +190,7 @@ module.exports = {
     newHacker2: newHacker2,
     HackerA: HackerA,
     HackerB: HackerB,
+    HackerC: HackerC,
     Hackers: Hackers,
     storeAll: storeAll,
     dropAll: dropAll

@@ -9,6 +9,7 @@ const Hacker = require("../models/hacker.model");
 const fs = require("fs");
 const path = require("path");
 const Constants = {
+    General: require("../constants/general.constant"),
     Error: require("../constants/error.constant"),
 };
 
@@ -16,15 +17,16 @@ const util = {
     auth: require("./util/auth.test.util"),
     hacker: require("./util/hacker.test.util"),
     account: require("./util/account.test.util"),
-    auth: require("./util/auth.test.util"),
     accountConfirmation: require("./util/accountConfirmation.test.util")
 };
 const StorageService = require("../services/storage.service");
 
 const Admin1 = util.account.Admin1;
+const Volunteer1 = util.account.Account4;
 
 // storedAccount1 and storedHacker1 are linked together, and have hacker priviledges
 // newHackerDuplicateAccountLink1 is also linked with Account1
+// storedHacker1 has status confirmed
 const storedAccount1 = util.account.Account1;
 const storedHacker1 = util.hacker.HackerA;
 const newHackerDuplicateAccountLink1 = util.hacker.duplicateAccountLinkHacker1;
@@ -51,6 +53,51 @@ describe("GET hacker", function () {
                 res.body.message.should.equal(Constants.Error.AUTH_401_MESSAGE);
                 done();
             });
+    });
+
+    // success case
+    it("should list the user's hacker info on /api/hacker/self GET", function (done) {
+        util.auth.login(agent, storedAccount1, (error) => {
+            if (error) {
+                agent.close();
+                return done(error);
+            }
+            return agent
+                .get("/api/hacker/self")
+                .end(function (err, res) {
+                    if (err) {
+                        return done(err);
+                    }
+                    res.should.have.status(200);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal("Hacker retrieval successful");
+                    res.body.should.have.property("data");
+
+                    let hacker = new Hacker(storedHacker1);
+                    chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify(hacker.toJSON()));
+                    done();
+                });
+        });
+    });
+
+    // fail case due to wrong account type
+    it("should fail to list the hacker info of an admin due to wrong account type /api/account/self GET", function (done) {
+        util.auth.login(agent, Admin1, (error) => {
+            if (error) {
+                agent.close();
+                return done(error);
+            }
+            return agent
+                .get("/api/hacker/self")
+                .end(function (err, res) {
+                    res.should.have.status(409);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal(Constants.Error.ACCOUNT_TYPE_409_MESSAGE);
+                    done();
+                });
+        });
     });
 
     // succeed on admin case
@@ -196,10 +243,15 @@ describe("POST create hacker", function () {
                     res.body.message.should.equal("Hacker creation successful");
                     res.body.should.have.property("data");
 
-                    // delete _id and status because those fields were generated
+                    // create JSON version of model
+                    // delete id as they will be different between model objects
+                    // update status to be applied on the comparator hacker object
+                    const hacker = (new Hacker(newHacker1)).toJSON();
+                    hacker.status = Constants.General.HACKER_STATUS_APPLIED;
                     delete res.body.data.id;
-                    delete res.body.data.status;
-                    chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify(newHacker1));
+                    delete hacker.id;
+                    chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify(hacker));
+
                     done();
                 });
         });
@@ -223,10 +275,14 @@ describe("POST create hacker", function () {
                     res.body.message.should.equal("Hacker creation successful");
                     res.body.should.have.property("data");
 
-                    // delete _id and status because those fields were generated
+                    // create JSON version of model
+                    // delete id as they will be different between model objects
+                    // update status to be applied on the comparator hacker object
+                    const hacker = (new Hacker(newHacker1)).toJSON();
+                    hacker.status = Constants.General.HACKER_STATUS_APPLIED;
                     delete res.body.data.id;
-                    delete res.body.data.status;
-                    chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify(newHacker1));
+                    delete hacker.id;
+                    chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify(hacker));
                     done();
                 });
         });
@@ -364,6 +420,7 @@ describe("PATCH update one hacker", function () {
                 });
         });
     });
+
     it("should FAIL and NOT update a hacker STATUS as a Hacker", function (done) {
         util.auth.login(agent, storedAccount1, (error) => {
             if (error) {
@@ -386,6 +443,58 @@ describe("PATCH update one hacker", function () {
                 });
         });
     });
+
+    // volunteer should successfully checkin hacker
+    it("should SUCCEED and check in hacker as a volunteer", function (done) {
+        util.auth.login(agent, Volunteer1, (error) => {
+            if (error) {
+                agent.close();
+                return done(error);
+            }
+            return agent
+                .patch(`/api/hacker/checkin/${storedHacker1._id}`)
+                .type("application/json")
+                .send({
+                    status: "Checked-in"
+                })
+                .end(function (err, res) {
+                    res.should.have.status(200);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal("Changed hacker information");
+                    res.body.should.have.property("data");
+                    chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify({
+                        status: "Checked-in"
+                    }));
+                    done();
+                });
+        });
+    });
+
+    // hacker should fail to checkin hacker
+    it("should FAIL to check in hacker as a hacker", function (done) {
+        util.auth.login(agent, storedAccount1, (error) => {
+            if (error) {
+                agent.close();
+                return done(error);
+            }
+            return agent
+                .patch(`/api/hacker/checkin/${storedHacker1._id}`)
+                .type("application/json")
+                .send({
+                    status: "Checked-in"
+                })
+                .end(function (err, res) {
+                    res.should.have.status(403);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal(Constants.Error.AUTH_403_MESSAGE);
+                    res.body.should.have.property("data");
+                    done();
+                });
+        });
+    });
+
     // should succeed on hacker case
     it("should SUCCEED and update the user's hacker info", function (done) {
         util.auth.login(agent, storedAccount2, (error) => {
@@ -461,6 +570,124 @@ describe("PATCH update one hacker", function () {
                 });
         });
     });
+
+    // Succeed and change accepted to confirm
+    it("should succeed for hacker to update their own status from accepted to confirmed", function (done) {
+        util.auth.login(agent, storedAccount2, (error) => {
+            if (error) {
+                agent.close();
+                return done(error);
+            }
+            return agent
+                .patch(`/api/hacker/confirmation/${storedHacker2._id}`)
+                .type("application/json")
+                .send({
+                    confirm: true
+                })
+                .end(function (err, res) {
+                    if (err) {
+                        return done(err);
+                    }
+                    res.should.have.status(200);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal("Changed hacker information");
+                    res.body.should.have.property("data");
+                    chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify({
+                        status: Constants.General.HACKER_STATUS_CONFIRMED
+                    }));
+
+                    done();
+                });
+        });
+    });
+
+    // Succeed and change confirmed to accepted
+    it("should succeed for hacker to update their own status from confirmed to accepted", function (done) {
+        util.auth.login(agent, storedAccount1, (error) => {
+            if (error) {
+                agent.close();
+                return done(error);
+            }
+            return agent
+                .patch(`/api/hacker/confirmation/${storedHacker1._id}`)
+                .type("application/json")
+                .send({
+                    confirm: false
+                })
+                .end(function (err, res) {
+                    if (err) {
+                        return done(err);
+                    }
+                    res.should.have.status(200);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal("Changed hacker information");
+                    res.body.should.have.property("data");
+                    chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify({
+                        status: Constants.General.HACKER_STATUS_ACCEPTED
+                    }));
+
+                    done();
+                });
+        });
+    });
+
+    // fail for a hacker that's not accepted
+    it("should fail to update hacker status when hacker status is not accepted or confirmed", function (done) {
+        util.auth.login(agent, util.account.Hacker3, (error) => {
+            if (error) {
+                agent.close();
+                return done(error);
+            }
+            return agent
+                .patch(`/api/hacker/confirmation/${util.hacker.HackerC._id}`)
+                .type("application/json")
+                .send({
+                    confirm: true
+                })
+                .end(function (err, res) {
+                    if (err) {
+                        return done(err);
+                    }
+                    res.should.have.status(409);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal(Constants.Error.HACKER_STATUS_409_MESSAGE);
+                    res.body.should.have.property("data");
+
+                    done();
+                });
+        });
+    });
+
+    // fail for a hacker that's not accepted
+    it("should fail for hacker trying to confirm someone else", function (done) {
+        util.auth.login(agent, util.account.Hacker3, (error) => {
+            if (error) {
+                agent.close();
+                return done(error);
+            }
+            return agent
+                .patch(`/api/hacker/confirmation/${storedHacker1._id}`)
+                .type("application/json")
+                .send({
+                    confirm: true
+                })
+                .end(function (err, res) {
+                    if (err) {
+                        return done(err);
+                    }
+                    res.should.have.status(403);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal(Constants.Error.AUTH_403_MESSAGE);
+                    res.body.should.have.property("data");
+
+                    done();
+                });
+        });
+    });
 });
 describe("POST add a hacker resume", function () {
     it("It should SUCCEED and upload a resume for a hacker", function (done) {
@@ -483,7 +710,7 @@ describe("POST add a hacker resume", function () {
                     res.body.should.have.property("data");
                     res.body.data.should.have.property("filename");
                     StorageService.download(res.body.data.filename).then((value) => {
-                        const actualFile = fs.readFileSync(path.join(__dirname, "testResume.pdf"))
+                        const actualFile = fs.readFileSync(path.join(__dirname, "testResume.pdf"));
                         chai.assert.equal(value[0].length, actualFile.length);
                         StorageService.delete(res.body.data.filename).then(() => {
                             done();

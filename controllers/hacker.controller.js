@@ -33,33 +33,34 @@ async function findById(req, res) {
 }
 
 /**
- * @async
- * @function createHacker
- * @param {{body: {hackerDetails: {_id: ObjectId, accountId: ObjectId, school: string, gender: string, needsBus: boolean, application: {Object}}}}} req
+ * @function showHacker
+ * @param {{body: {hacker: Object}}} req
  * @param {*} res
- * @return {JSON} Success or error status
- * @description create a hacker from information in req.body.hackerDetails
+ * @return {JSON} Success status and hacker object
+ * @description Returns the JSON of hacker object located in req.body.hacker
  */
-async function createHacker(req, res) {
-    const hackerDetails = req.body.hackerDetails;
-    const success = await Services.Hacker.createHacker(hackerDetails);
-    hackerDetails.id = hackerDetails._id;
-    delete hackerDetails._id;
-    if (success) {
-        return res.status(200).json({
-            message: "Hacker creation successful",
-            data: hackerDetails
-        });
-    } else {
-        return res.status(500).json({
-            message: Constants.Error.HACKER_CREATE_500_MESSAGE,
-            data: {}
-        });
-    }
+function showHacker(req, res) {
+    return res.status(200).json({
+        message: "Hacker retrieval successful",
+        data: req.body.hacker.toJSON()
+    });
 }
 
 /**
- * @async
+ * @function createdHacker
+ * @param {{body: {hacker: {_id: ObjectId, accountId: ObjectId, school: string, gender: string, needsBus: boolean, application: {Object}}}}} req
+ * @param {*} res
+ * @return {JSON} Success status
+ * @description returns success message
+ */
+function createdHacker(req, res) {
+    return res.status(200).json({
+        message: "Hacker creation successful",
+        data: req.body.hacker.toJSON()
+    });
+}
+
+/**
  * @function updateHacker
  * @param {{params: {id: ObjectId}, body: {Object}}} req
  * @param {*} res
@@ -70,7 +71,7 @@ async function createHacker(req, res) {
  *      Returns a 200 status for an updated hacker.
  *      The new information is located in req.body.
  */
-async function updatedHacker(req, res) {
+function updatedHacker(req, res) {
     return res.status(200).json({
         message: "Changed hacker information",
         data: req.body
@@ -99,7 +100,8 @@ function downloadedResume(req, res) {
 module.exports = {
     updatedHacker: updatedHacker,
     findById: Util.asyncMiddleware(findById),
-    createHacker: Util.asyncMiddleware(createHacker),
+    createdHacker: createdHacker,
     uploadedResume: uploadedResume,
-    downloadedResume: downloadedResume
+    downloadedResume: downloadedResume,
+    showHacker: showHacker,
 };

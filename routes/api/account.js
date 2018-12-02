@@ -86,7 +86,6 @@ module.exports = {
             Middleware.parseBody.middleware,
 
             // middlewares to parse body/organize body
-            // adds default hacker permissions here
             Middleware.Account.parseAccount,
 
             // Parses account token if it exists
@@ -143,9 +142,10 @@ module.exports = {
             Middleware.parseBody.middleware,
             Middleware.Account.parsePatch,
 
+            Middleware.Account.updateAccount,
             // no parse account because will use req.body as information
             // because the number of fields will be variable
-            Controllers.Account.updateAccount
+            Controllers.Account.updatedAccount
         );
 
         /**

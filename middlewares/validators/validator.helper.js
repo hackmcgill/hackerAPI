@@ -12,7 +12,7 @@ const jwt = require("jsonwebtoken");
 const Constants = require("../../constants/general.constant");
 const Models = {
     Hacker: require("../../models/hacker.model")
-}
+};
 
 /**
  * Validates that field is a valid devpost URL
@@ -305,6 +305,18 @@ function hackerStatusValidator(fieldLocation, fieldname, optional = true) {
     }
 }
 
+function hackerCheckInStatusValidator(fieldLocation, fieldname, optional = true) {
+    const status = setProperValidationChainBuilder(fieldLocation, fieldname, "invalid status");
+
+    if (optional) {
+        return status.optional({
+            checkFalsy: true
+        }).isIn(Constants.HACKER_STATUS_CHECKED_IN).withMessage(`Status must be ${Constants.HACKER_STATUS_CHECKED_IN}`);
+    } else {
+        return status.exists().withMessage(`Status must be ${Constants.HACKER_STATUS_CHECKED_IN}`);
+    }
+}
+
 /**
  * Validates that field must be a valid application.
  * @param {"query" | "body" | "header" | "param"} fieldLocation the location where the field should be found 
@@ -425,20 +437,34 @@ function jwtValidator(fieldLocation, fieldname, jwtSecret, optional = true) {
 }
 
 /**
+ * Validates that field must be a valid searchable model
+ * @param {"query" | "body" | "header" | "param"} fieldLocation the location where the field should be found
+ * @param {string} fieldname name of the field that needs to be validated.
+ */
+function searchModelValidator(fieldLocation, fieldName){
+    const paramChain = setProperValidationChainBuilder(fieldLocation, fieldName, "Must be a valid searchable model");
+    return paramChain.exists().withMessage("Model must be provided")
+        .isLowercase().withMessage("Model must be lower case")
+        .isAlpha().withMessage("must contain alphabet characters")
+        .isIn([Constants.HACKER.toLowerCase()])
+}
+
+/**==
  * Validates that field must be a valid search query.
  * @param {"query" | "body" | "header" | "param"} fieldLocation the location where the field should be found
  * @param {string} fieldname name of the field that needs to be validated.
  */
 function searchValidator(fieldLocation, fieldname) {
     const search = setProperValidationChainBuilder(fieldLocation, fieldname, "Invalid search query");
+    
     return search.exists().withMessage("Search query must be provided")
-        .custom((value) => {
+        .custom((value, {req}) => {
             //value is a serialized JSON
             value = JSON.parse(value);
-            let modelString = param("model", "Corresponding model not found");
-            let model;
+            let modelString = req.params.model
             //Supported models for searching
-            if (modelString.equals("hacker")) {
+            let model;
+            if (modelString === Constants.HACKER.toLowerCase()) {
                 model = Models.Hacker;
             } else {
                 return false;
@@ -480,9 +506,8 @@ function searchSortValidator(fieldLocation, fieldName) {
     return searchSort.optional({
             checkFalsy: true
         })
-        .custom((value) => {
-            let modelString = param("model", "Corresponding model not found");
-            let model;
+        .custom((value, {req}) => {
+            let modelString = req.params.model
             if (modelString.equals("hacker")) {
                 model = Models.Hacker;
             } else {
@@ -564,8 +589,7 @@ function accountTypeValidator(fieldLocation, fieldname, optional = true) {
         return accountType.optional({
             checkFalsy: true
         }).isIn(Constants.EXTENDED_USER_TYPES);
-    }
-    else{
+    } else {
         return accountType.exists()
             .withMessage("Account type must be provided")
             .isIn(Constants.EXTENDED_USER_TYPES);
@@ -619,8 +643,10 @@ module.exports = {
     jwtValidator: jwtValidator,
     urlValidator: urlValidator,
     searchValidator: searchValidator,
+    searchModelValidator: searchModelValidator,
     searchSortValidator: searchSortValidator,
     phoneNumberValidator: phoneNumberValidator,
     dateValidator: dateValidator,
+    hackerCheckInStatusValidator: hackerCheckInStatusValidator,
     accountTypeValidator: accountTypeValidator
 };

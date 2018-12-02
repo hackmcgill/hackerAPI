@@ -25,6 +25,33 @@ module.exports = {
         const hackerRouter = express.Router();
 
         /**
+         * @api {get} /hacker/self get information about own hacker
+         * @apiName self
+         * @apiGroup Hacker
+         * @apiVersion 0.0.8
+         * 
+         * @apiSuccess {string} message Success message
+         * @apiSuccess {object} data Hacker object
+         * @apiSuccessExample {object} Success-Response: 
+         *      {
+                    "message": "Hacker found by logged in account id", 
+                    "data": {HackerObject}
+                }
+
+         * @apiError {string} message Error message
+         * @apiError {object} data empty
+         * @apiErrorExample {object} Error-Response: 
+         *      {"message": "Hacker not found", "data": {}}
+         */
+        hackerRouter.route("/self").get(
+            Middleware.Auth.ensureAuthenticated(),
+            Middleware.Auth.ensureAuthorized(),
+
+            Middleware.Hacker.findSelf,
+            Controllers.Hacker.showHacker,
+        );
+
+        /**
          * @api {post} /hacker/ create a new hacker
          * @apiName createHacker
          * @apiGroup Hacker
@@ -85,7 +112,8 @@ module.exports = {
 
             Middleware.Hacker.addDefaultStatus,
             Middleware.Auth.createRoleBindings(CONSTANTS.HACKER),
-            Controllers.Hacker.createHacker
+            Middleware.Hacker.createHacker,
+            Controllers.Hacker.createdHacker
         );
         /**
          * @api {patch} /hacker/status/:id update a hacker's status
@@ -113,6 +141,41 @@ module.exports = {
             Middleware.parseBody.middleware,
             Middleware.Hacker.parsePatch,
             Middleware.Hacker.updateHacker,
+            Middleware.Hacker.sendStatusUpdateEmail,
+            Controllers.Hacker.updatedHacker
+        );
+
+        /**
+         * @api {patch} /hacker/checkin/:id update a hacker's status to be 'Checked-in'.
+         * @apiName checkinHacker
+         * @apiGroup Hacker
+         * @apiVersion 0.0.9
+         * 
+         * @apiParam (body) {String} [status] Check-in status
+         * @apiSuccess {string} message Success message
+         * @apiSuccess {object} data Hacker object
+         * @apiSuccessExample {object} Success-Response: 
+         *      {
+         *          "message": "Changed hacker information", 
+         *          "data": {
+         *              "status": "Checked-in"
+         *          }
+         *      }
+         * @apiPermission Administrator
+         * @apiPermission Volunteer
+         */
+        hackerRouter.route("/checkin/:id").patch(
+            Middleware.Auth.ensureAuthenticated(),
+            Middleware.Auth.ensureAuthorized([Services.Hacker.findById]),
+
+            Middleware.Validator.RouteParam.idValidator,
+            Middleware.parseBody.middleware,
+            Middleware.Hacker.parsePatch,
+
+            Middleware.Hacker.checkStatus([CONSTANTS.HACKER_STATUS_ACCEPTED, CONSTANTS.HACKER_STATUS_CONFIRMED]),
+            Middleware.Hacker.parseCheckIn,
+            Middleware.Hacker.updateHacker,
+
             Middleware.Hacker.sendStatusUpdateEmail,
             Controllers.Hacker.updatedHacker
         );
@@ -275,6 +338,44 @@ module.exports = {
                 Middleware.Hacker.downloadResume,
                 Controllers.Hacker.downloadedResume
             );
+
+        /**
+         * @api {patch} /hacker/confirmation/:id Allows confirmation of hacker attendence if they are accepted. 
+         * Also allows change from 'confirmed' back to 'accepted'
+         * @apiName patchHackerConfirmed
+         * @apiGroup Hacker
+         * @apiVersion 0.0.9
+         * 
+         * @apiParam (body) {String} [status] The new status of the hacker. 'Accepted' or 'Confirmed'
+         * @apiSuccess {string} message Success message
+         * @apiSuccess {object} data Hacker object
+         * @apiSuccessExample {object} Success-Response: 
+         *      {
+         *          "message": "Changed hacker information", 
+         *          "data": {
+         *              "status": "Confirmed"
+         *          }
+         *      }
+         * @apiPermission Administrator
+         * @apiPermission Hacker
+         */
+        hackerRouter.route("/confirmation/:id").patch(
+            Middleware.Auth.ensureAuthenticated(),
+            Middleware.Auth.ensureAuthorized([Services.Hacker.findById]),
+
+            Middleware.Validator.RouteParam.idValidator,
+            Middleware.Validator.Hacker.updateConfirmationValidator,
+            Middleware.parseBody.middleware,
+            Middleware.Hacker.parsePatch,
+
+            Middleware.Hacker.checkStatus([CONSTANTS.HACKER_STATUS_ACCEPTED, CONSTANTS.HACKER_STATUS_CONFIRMED]),
+
+            Middleware.Hacker.parseConfirmation,
+            Middleware.Hacker.updateHacker,
+
+            Middleware.Hacker.sendStatusUpdateEmail,
+            Controllers.Hacker.updatedHacker
+        );
         apiRouter.use("/hacker", hackerRouter);
     }
 };

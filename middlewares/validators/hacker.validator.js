@@ -15,6 +15,10 @@ module.exports = {
         VALIDATOR.booleanValidator("body", "codeOfConduct", false),
     ],
 
+    updateConfirmationValidator: [
+        VALIDATOR.booleanValidator("body", "confirm", false),
+    ],
+
     // untested
     updateHackerValidator: [
         VALIDATOR.nameValidator("body", "school", true),
@@ -24,6 +28,9 @@ module.exports = {
     ],
     updateStatusValidator: [
         VALIDATOR.hackerStatusValidator("body", "status", false)
+    ],
+    checkInStatusValidator: [
+        VALIDATOR.hackerCheckInStatusValidator("body", "status", false)
     ],
     uploadResumeValidator: [
         VALIDATOR.mongoIdValidator("param", "id", false)

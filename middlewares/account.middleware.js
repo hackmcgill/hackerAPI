@@ -7,7 +7,8 @@ const Services = {
     Logger: require("../services/logger.service"),
     Account: require("../services/account.service"),
     AccountConfirmation: require("../services/accountConfirmation.service"),
-    Email: require("../services/email.service")
+    Email: require("../services/email.service"),
+    Env: require("../services/env.service")
 };
 
 const Middleware = {
@@ -28,7 +29,7 @@ const Constants = {
  */
 function parsePatch(req, res, next) {
     delete req.body.id;
-    next();
+    return next();
 }
 
 /**
@@ -68,7 +69,7 @@ function parseAccount(req, res, next) {
 
     req.body.accountDetails = accountDetails;
 
-    next();
+    return next();
 }
 
 /**
@@ -79,13 +80,13 @@ function parseAccount(req, res, next) {
  */
 async function updatePassword(req, res, next) {
     req.body.account = await Services.Account.updatePassword(req.body.decodedToken.accountId, req.body.password);
-    next();
+    return next();
 }
 
 // TODO: fix when new permission system is created
 async function addDefaultHackerPermissions(req, res, next) {
     // await Services.RoleBinding.createRoleBinding(req.);
-    next();
+    return next();
 }
 
 /**
@@ -112,7 +113,28 @@ async function addAccount(req, res, next) {
     }
     const account = await Services.Account.addOneAccount(accountDetails);
     req.body.account = account;
-    next();
+    return next();
+}
+
+/**
+ * Updates an account that is specified by req.params.id
+ * @param {{params:{id: string}, body: *}} req 
+ * @param {*} res 
+ * @param {*} next 
+ */
+async function updateAccount(req, res, next) {
+    const account = await Services.Account.updateOne(req.params.id, req.body);
+    if (account) {
+        return next();
+    } else {
+        return next({
+            status: 404,
+            message: Constants.Error.ACCOUNT_404_MESSAGE,
+            data: {
+                id: req.params.id
+            }
+        });
+    }
 }
 
 /**
@@ -128,8 +150,9 @@ async function inviteAccount(req, res, next) {
     const accountType = req.body.accountType;
     const confirmationObj = await Services.AccountConfirmation.create(accountType, email);
     const confirmationToken = Services.AccountConfirmation.generateToken(confirmationObj.id);
+    const address = Services.Env.isProduction() ? process.env.FRONTEND_ADDRESS_DEPLOY : process.env.FRONTEND_ADDRESS_DEV;
 
-    const mailData = Services.AccountConfirmation.generateAccountInvitationEmail(req.hostname, email, accountType, confirmationToken);
+    const mailData = Services.AccountConfirmation.generateAccountInvitationEmail(address, email, accountType, confirmationToken);
     if (mailData !== undefined) {
         Services.Email.send(mailData, (err) => {
             if (err) {
@@ -154,5 +177,6 @@ module.exports = {
     // untested
     updatePassword: Middleware.Util.asyncMiddleware(updatePassword),
     addAccount: Middleware.Util.asyncMiddleware(addAccount),
+    updateAccount: Middleware.Util.asyncMiddleware(updateAccount),
     inviteAccount: Middleware.Util.asyncMiddleware(inviteAccount)
 };

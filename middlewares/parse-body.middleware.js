@@ -22,12 +22,12 @@ module.exports = {
 function middleware(req, res, next) {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        next({
+        return next({
             status: 422,
             message: Constants.Error.VALIDATION_422_MESSAGE,
             data: errors.mapped()
         });
     }
     req.body = matchedData(req);
-    next();
+    return next();
 }

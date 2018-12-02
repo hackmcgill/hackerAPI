@@ -61,5 +61,8 @@ node_modules
 #creds
 gcp_creds.json
 
+#certbot 
+certbot/
+
 #secrets
 secret.yaml

@@ -24,7 +24,8 @@ async function create(accountId) {
     const TAG = `[ PasswordReset Service # create]:`;
     //Create new instance of password reset token
     const newResetToken = PasswordReset({
-        accountId: accountId
+        accountId: accountId,
+        created: new Date()
     });
 
     //invalidate all of the previous reset tokens such that they do not work anymore
@@ -86,18 +87,17 @@ function generateTokenLink(httpOrHttps, domain, token) {
 
 /**
  * Generates the mailData for the resetPassword Email.
- * @param {string} hostname The hostname that this service is running on
+ * @param {string} address The web address that the front-end service is running on
  * @param {string} receiverEmail The receiver of the email
  * @param {string} token The resetPassword token
  */
-function generateResetPasswordEmail(hostname, receiverEmail, token) {
-    const httpOrHttps = (hostname === "localhost") ? "http" : "https";
-    const address = (hostname === "localhost") ? `localhost:${process.env.PORT}` : hostname;
+function generateResetPasswordEmail(address, receiverEmail, token) {
+    const httpOrHttps = (address.includes("localhost")) ? "http" : "https";
     const tokenLink = generateTokenLink(httpOrHttps, address, token);
     if (token === undefined || tokenLink === undefined) {
         return undefined;
     }
-    const handlebarPath = path.join(__dirname, `../assets/email/AccountConfirmation.hbs`);
+    const handlebarPath = path.join(__dirname, `../assets/email/ResetPassword.hbs`);
     const mailData = {
         from: process.env.NO_REPLY_EMAIL,
         to: receiverEmail,

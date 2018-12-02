@@ -56,6 +56,10 @@ const accountRoutes = {
 };
 
 const hackerRoutes = {
+    "getSelf": {
+        requestType: Constants.REQUEST_TYPES.GET,
+        uri: "/api/hacker/self/"
+    },
     "getSelfById": {
         requestType: Constants.REQUEST_TYPES.GET,
         uri: "/api/hacker/" + Constants.ROLE_CATEGORIES.SELF,
@@ -99,7 +103,19 @@ const hackerRoutes = {
     "patchSelfStatusById": {
         requestType: Constants.REQUEST_TYPES.PATCH,
         uri: "/api/hacker/status/" + Constants.ROLE_CATEGORIES.SELF,
-    }
+    },
+    "patchSelfCheckInById": {
+        requestType: Constants.REQUEST_TYPES.PATCH,
+        uri: "/api/hacker/checkin/" + Constants.ROLE_CATEGORIES.SELF,
+    },
+    "patchAnyCheckInById": {
+        requestType: Constants.REQUEST_TYPES.PATCH,
+        uri: "/api/hacker/checkin/" + Constants.ROLE_CATEGORIES.ALL,
+    },
+    "patchSelfConfirmationById": {
+        requestType: Constants.REQUEST_TYPES.PATCH,
+        uri: "/api/hacker/confirmation/" + Constants.ROLE_CATEGORIES.SELF,
+    },
 };
 
 const sponsorRoutes = {
