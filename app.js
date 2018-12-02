@@ -36,13 +36,13 @@ let corsOptions = {};
 
 if (!Services.env.isProduction()) {
     corsOptions = {
-        origin: [process.env.FRONTEND_ADDRESS_DEV],
+        origin: [`http://${process.env.FRONTEND_ADDRESS_DEV}`],
         credentials: true
     };
 } else {
     // TODO: change this when necessary
     corsOptions = {
-        origin: [process.env.FRONTEND_ADDRESS_DEPLOY],
+        origin: [`https://${process.env.FRONTEND_ADDRESS_DEPLOY}`, `https://hackerapi.mchacks.ca`],
         credentials: true
     };
 }
