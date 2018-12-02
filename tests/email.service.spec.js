@@ -47,9 +47,10 @@ describe("Email Service", function () {
     it("It should compile a handlebars email", (done) => {
         const handlebarPath = path.join(__dirname, `../assets/email/test.hbs`);
         const rendered = EmailService.renderEmail(handlebarPath, {
-            TEST: "TESTTEST"
+            TEST: "TESTTEST",
+            NOT_ESCAPED: "localhost:1337/reset?token=lala"
         });
-        assert.equal("<div>This is used for testing email service. DO NOT REMOVE.TESTTEST</div>", rendered);
+        assert.equal('<div>This is used for testing email service. DO NOT REMOVE.TESTTEST. <a href="localhost:1337/reset?token=lala">link</a></div>', rendered);
         done();
     });
 });
