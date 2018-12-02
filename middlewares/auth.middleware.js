@@ -9,7 +9,8 @@ const Services = {
     Email: require("../services/email.service"),
     AccountConfirmation: require("../services/accountConfirmation.service"),
     Role: require("../services/role.service"),
-    RoleBinding: require("../services/roleBinding.service")
+    RoleBinding: require("../services/roleBinding.service"),
+    Env: require("../services/env.service")
 };
 
 const Middleware = {
