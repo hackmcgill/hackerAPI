@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: hackboard-service
+  labels:
+    run: hackboard # because that's the label on the deployment (not sure what labels do tho)
+  # annotations:
+  #   cloud.google.com/app-protocols: '{"hackboard-https-port":"HTTPS","hackboard-http-port":"HTTP"}'
+spec:
+  selector: 
+    run: hackboard # because that's the selector on the deployment (not sure what labels do tho)
+  ports:
+    - name: http #hackboard-http-port
+      protocol: TCP
+      port: 80
+      targetPort: 8080 # because the deployment port is 80/TCP
+    # - name: hackboard-https-port
+    #   protocol: TCP
+    #   port: 443
+  type: LoadBalancer
+
+# endpoint of service same as ip of pods -> means communication between service and pod (direction?)
+# can talk to this service with cluster-ip:port from any other node on cluster
