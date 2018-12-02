@@ -238,7 +238,7 @@ async function sendStatusUpdateEmail(req, res, next) {
                 message: Constants.Error.GENERIC_500_MESSAGE,
             });
         }
-        Services.Email.sendStatusUpdate(account.email, req.body.status, next);
+        Services.Email.sendStatusUpdate(account.firstName, account.email, req.body.status, next);
     }
 }
 /**
@@ -264,7 +264,7 @@ async function updateStatusIfApplicationCompleted(req, res, next) {
                     error: {}
                 });
             }
-            Services.Email.sendStatusUpdate(account.email, Constants.General.HACKER_STATUS_APPLIED, next);
+            Services.Email.sendStatusUpdate(account.firstName, account.email, Constants.General.HACKER_STATUS_APPLIED, next);
         } else {
             return next();
         }
