@@ -33,13 +33,27 @@ async function findById(req, res) {
 }
 
 /**
+ * @function showHacker
+ * @param {{body: {hacker: Object}}} req
+ * @param {*} res
+ * @return {JSON} Success status and hacker object
+ * @description Returns the JSON of hacker object located in req.body.hacker
+ */
+function showHacker(req, res) {
+    return res.status(200).json({
+        message: "Hacker retrieval successful",
+        data: req.body.hacker.toJSON()
+    });
+}
+
+/**
  * @function createdHacker
  * @param {{body: {hacker: {_id: ObjectId, accountId: ObjectId, school: string, gender: string, needsBus: boolean, application: {Object}}}}} req
  * @param {*} res
  * @return {JSON} Success status
  * @description returns success message
  */
-async function createdHacker(req, res) {
+function createdHacker(req, res) {
     return res.status(200).json({
         message: "Hacker creation successful",
         data: req.body.hacker.toJSON()
@@ -88,5 +102,6 @@ module.exports = {
     findById: Util.asyncMiddleware(findById),
     createdHacker: createdHacker,
     uploadedResume: uploadedResume,
-    downloadedResume: downloadedResume
+    downloadedResume: downloadedResume,
+    showHacker: showHacker,
 };

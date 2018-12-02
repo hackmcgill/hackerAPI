@@ -36,7 +36,8 @@ const hackerRole = {
         Constants.Routes.hackerRoutes.getSelfById,
         Constants.Routes.hackerRoutes.getSelfResumeById,
         Constants.Routes.hackerRoutes.patchSelfById,
-        Constants.Routes.hackerRoutes.patchSelfConfirmationById
+        Constants.Routes.hackerRoutes.patchSelfConfirmationById,
+        Constants.Routes.hackerRoutes.getSelf,
     ]
 };
 
