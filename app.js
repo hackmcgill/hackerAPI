@@ -36,13 +36,13 @@ let corsOptions = {};
 
 if (!Services.env.isProduction()) {
     corsOptions = {
-        origin: ["http://localhost:1337", "http://localhost:8989"],
+        origin: [process.env.FRONTEND_ADDRESS_DEV],
         credentials: true
     };
 } else {
     // TODO: change this when necessary
     corsOptions = {
-        origin: ["https://mchacks.ca/"],
+        origin: [process.env.FRONTEND_ADDRESS_DEPLOY],
         credentials: true
     };
 }
