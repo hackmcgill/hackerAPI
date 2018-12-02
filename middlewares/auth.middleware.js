@@ -140,7 +140,8 @@ async function sendResetPasswordEmailMiddleware(req, res, next) {
         const ResetPasswordTokenModel = await Services.ResetPasswordToken.findByAccountId(user.id);
         //generate email
         const token = Services.ResetPasswordToken.generateToken(ResetPasswordTokenModel.id, user.id);
-        const mailData = Services.ResetPasswordToken.generateResetPasswordEmail(process.env.FRONTEND_ADDRESS, req.body.email, token);
+        const address = Services.Env.isProduction() ? process.env.FRONTEND_ADDRESS_DEPLOY : process.env.FRONTEND_ADDRESS_DEV;
+        const mailData = Services.ResetPasswordToken.generateResetPasswordEmail(address, req.body.email, token);
         if (mailData !== undefined) {
             Services.Email.send(mailData, (err) => {
                 if (err) {
@@ -176,7 +177,8 @@ async function sendConfirmAccountEmailMiddleware(req, res, next) {
     await Services.AccountConfirmation.create(Constants.General.HACKER, account.email, account.id);
     const accountConfirmationToken = await Services.AccountConfirmation.findByAccountId(account.id);
     const token = Services.AccountConfirmation.generateToken(accountConfirmationToken.id, account.id);
-    const mailData = Services.AccountConfirmation.generateAccountConfirmationEmail(process.env.FRONTEND_ADDRESS, account.email, Constants.General.HACKER, token);
+    const address = Services.Env.isProduction() ? process.env.FRONTEND_ADDRESS_DEPLOY : process.env.FRONTEND_ADDRESS_DEV;
+    const mailData = Services.AccountConfirmation.generateAccountConfirmationEmail(address, account.email, Constants.General.HACKER, token);
     if (mailData !== undefined) {
         Services.Email.send(mailData, (err) => {
             if (err) {
@@ -214,7 +216,8 @@ async function resendConfirmAccountEmail(req, res, next) {
         });
     }
     const token = Services.AccountConfirmation.generateToken(accountConfirmationToken.id, account.id);
-    const mailData = Services.AccountConfirmation.generateAccountConfirmationEmail(process.env.FRONTEND_ADDRESS, account.email, accountConfirmationToken.accountType, token);
+    const address = Services.Env.isProduction() ? process.env.FRONTEND_ADDRESS_DEPLOY : process.env.FRONTEND_ADDRESS_DEV;
+    const mailData = Services.AccountConfirmation.generateAccountConfirmationEmail(address, account.email, accountConfirmationToken.accountType, token);
     if (mailData !== undefined) {
         Services.Email.send(mailData, (err) => {
             if (err) {

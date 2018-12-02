@@ -35,10 +35,16 @@ Services.db.connect(app);
 let corsOptions = {};
 
 if (!Services.env.isProduction()) {
-    corsOptions = { origin: ["http://localhost:1337", "http://localhost:8989"], credentials: true };
+    corsOptions = {
+        origin: [process.env.FRONTEND_ADDRESS_DEV],
+        credentials: true
+    };
 } else {
     // TODO: change this when necessary
-    corsOptions = { origin: ["https://mchacks.ca/"], credentials: true };
+    corsOptions = {
+        origin: [process.env.FRONTEND_ADDRESS_DEPLOY],
+        credentials: true
+    };
 }
 
 app.use(cors(corsOptions));

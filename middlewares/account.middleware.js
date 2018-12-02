@@ -7,7 +7,8 @@ const Services = {
     Logger: require("../services/logger.service"),
     Account: require("../services/account.service"),
     AccountConfirmation: require("../services/accountConfirmation.service"),
-    Email: require("../services/email.service")
+    Email: require("../services/email.service"),
+    Env: require("../services/env.service")
 };
 
 const Middleware = {
@@ -149,8 +150,9 @@ async function inviteAccount(req, res, next) {
     const accountType = req.body.accountType;
     const confirmationObj = await Services.AccountConfirmation.create(accountType, email);
     const confirmationToken = Services.AccountConfirmation.generateToken(confirmationObj.id);
+    const address = Services.Env.isProduction() ? process.env.FRONTEND_ADDRESS_DEPLOY : process.env.FRONTEND_ADDRESS_DEV;
 
-    const mailData = Services.AccountConfirmation.generateAccountInvitationEmail(process.env.FRONTEND_ADDRESS, email, accountType, confirmationToken);
+    const mailData = Services.AccountConfirmation.generateAccountInvitationEmail(address, email, accountType, confirmationToken);
     if (mailData !== undefined) {
         Services.Email.send(mailData, (err) => {
             if (err) {
