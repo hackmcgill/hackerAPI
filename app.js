@@ -42,7 +42,7 @@ if (!Services.env.isProduction()) {
 } else {
     // TODO: change this when necessary
     corsOptions = {
-        origin: [`https://${process.env.FRONTEND_ADDRESS_DEPLOY}`],
+        origin: [`https://${process.env.FRONTEND_ADDRESS_DEPLOY}`, `https://hackerapi.mchacks.ca`],
         credentials: true
     };
 }
