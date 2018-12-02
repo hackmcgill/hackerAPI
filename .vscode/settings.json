@@ -4,5 +4,6 @@
         "node":true,
         "this":false,
         "bad_property":false
-    }
+    },
+    "search.usePCRE2": true
 }

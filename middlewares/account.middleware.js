@@ -150,7 +150,7 @@ async function inviteAccount(req, res, next) {
     const confirmationObj = await Services.AccountConfirmation.create(accountType, email);
     const confirmationToken = Services.AccountConfirmation.generateToken(confirmationObj.id);
 
-    const mailData = Services.AccountConfirmation.generateAccountInvitationEmail(req.hostname, email, accountType, confirmationToken);
+    const mailData = Services.AccountConfirmation.generateAccountInvitationEmail(process.env.FRONTEND_ADDRESS, email, accountType, confirmationToken);
     if (mailData !== undefined) {
         Services.Email.send(mailData, (err) => {
             if (err) {
