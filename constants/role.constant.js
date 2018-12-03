@@ -19,13 +19,13 @@ const accountRole = {
 };
 
 const adminRole = {
-    "_id": mongoose.Types.ObjectId(),
+    "_id": mongoose.Types.ObjectId.createFromTime(1),
     "name": Constants.General.STAFF,
     "routes": Constants.Routes.listAllRoutes(),
 };
 
 const hackerRole = {
-    "_id": mongoose.Types.ObjectId(),
+    "_id": mongoose.Types.ObjectId.createFromTime(2),
     "name": Constants.General.HACKER,
     "routes": [
         Constants.Routes.accountRoutes.getSelf,
@@ -42,7 +42,7 @@ const hackerRole = {
 };
 
 const volunteerRole = {
-    "_id": mongoose.Types.ObjectId(),
+    "_id": mongoose.Types.ObjectId.createFromTime(3),
     "name": Constants.General.VOLUNTEER,
     "routes": [
         Constants.Routes.volunteerRoutes.post,
@@ -53,7 +53,7 @@ const volunteerRole = {
 };
 
 const sponsorT1Role = {
-    "_id": mongoose.Types.ObjectId(),
+    "_id": mongoose.Types.ObjectId.createFromTime(4),
     "name": Constants.General.SPONSOR_T1,
     "routes": [
         Constants.Routes.sponsorRoutes.post,
@@ -62,7 +62,7 @@ const sponsorT1Role = {
 };
 
 const sponsorT2Role = {
-    "_id": mongoose.Types.ObjectId(),
+    "_id": mongoose.Types.ObjectId.createFromTime(5),
     "name": Constants.General.SPONSOR_T2,
     "routes": [
         Constants.Routes.sponsorRoutes.post,
@@ -71,7 +71,7 @@ const sponsorT2Role = {
 };
 
 const sponsorT3Role = {
-    "_id": mongoose.Types.ObjectId(),
+    "_id": mongoose.Types.ObjectId.createFromTime(6),
     "name": Constants.General.SPONSOR_T3,
     "routes": [
         Constants.Routes.sponsorRoutes.post,
@@ -80,7 +80,7 @@ const sponsorT3Role = {
 };
 
 const sponsorT4Role = {
-    "_id": mongoose.Types.ObjectId(),
+    "_id": mongoose.Types.ObjectId.createFromTime(7),
     "name": Constants.General.SPONSOR_T4,
     "routes": [
         Constants.Routes.sponsorRoutes.post,
