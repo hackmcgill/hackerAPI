@@ -447,6 +447,70 @@
     }]
   },
   {
+    "type": "patch",
+    "url": "/auth/password/change",
+    "title": "change password for logged in user",
+    "name": "changePassword",
+    "group": "Authentication",
+    "version": "0.0.8",
+    "parameter": {
+      "fields": {
+        "Parameter": [{
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "oldPassword",
+            "description": "<p>The current password of the user</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "newPassword",
+            "description": "<p>The new password of the user</p>"
+          }
+        ]
+      },
+      "examples": [{
+        "title": "Request-Example:",
+        "content": "{ \n    \"oldPassword\": \"password12345\",\n    \"newPassword\": \"password123456\"\n}",
+        "type": "json"
+      }]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [{
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "message",
+            "description": "<p>Success message</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>empty</p>"
+          }
+        ]
+      },
+      "examples": [{
+        "title": "Success-Response: ",
+        "content": "{\"message\": \"Successfully reset password\", \"data\": {}}",
+        "type": "json"
+      }]
+    },
+    "permission": [{
+      "name": ": Must be logged in"
+    }],
+    "filename": "routes/api/auth.js",
+    "groupTitle": "Authentication",
+    "sampleRequest": [{
+      "url": "https://api.mchacks.ca/api/auth/password/change"
+    }]
+  },
+  {
     "type": "post",
     "url": "/auth/confirm/:token",
     "title": "confirm account using the JWT in :token",
