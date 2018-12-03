@@ -97,6 +97,14 @@ module.exports = {
             Controllers.Auth.sentResetEmail
         );
 
+        authRouter.coute("/password/change").post(
+            Middleware.Validator.Auth.ChangePasswordValidator,
+            Middleware.parseBody.middleware,
+
+            Middleware.Auth.changePassword,
+            Controllers.Auth.resetPassword,
+        );
+
         //untested
         /**
          * @api {post} /auth/password/reset reset password

@@ -126,6 +126,26 @@ async function retrieveRoleBindings(req, res, next) {
 }
 
 /**
+ * 
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ */
+async function changePassword(req, res, next) {
+    acc = await Services.Account.getAccountIfValid(req.user.email, req.body.oldPassword);
+    // user's old password is correct
+    if (!!acc) {
+        req.body.account = await Services.Account.updatePassword(req.user.id, req.body.newPassword);
+        return next();
+    } else {
+        return next({
+            status: 401,
+            message: Constants.Error.AUTH_401_MESSAGE,
+        });
+    }
+}
+
+/**
  * Middleware that sends an email to reset the password for the inputted email address.
  * @param {{body: {email:String}}} req the request object
  * @param {*} res 
@@ -428,5 +448,6 @@ module.exports = {
     addCreationRoleBindings: Middleware.Util.asyncMiddleware(addCreationRoleBindings),
     resendConfirmAccountEmail: Middleware.Util.asyncMiddleware(resendConfirmAccountEmail),
     retrieveRoleBindings: Middleware.Util.asyncMiddleware(retrieveRoleBindings),
-    retrieveRoles: Middleware.Util.asyncMiddleware(retrieveRoles)
+    retrieveRoles: Middleware.Util.asyncMiddleware(retrieveRoles),
+    changePassword: Middleware.Util.asyncMiddleware(changePassword),
 };
