@@ -67,7 +67,7 @@ describe("Searching for hackers", function () {
             })
             .end(function (err, res) {
                 res.should.have.status(422);
-                res.body.data.data.model.msg.should.equal("Must be a valid searchable model");
+                res.body.data.model.msg.should.equal("Must be a valid searchable model");
                 done();
             });
     })
@@ -79,7 +79,7 @@ describe("Searching for hackers", function () {
             })
             .end(function (err, res) {
                 res.should.have.status(422);
-                res.body.data.data.model.msg.should.equal("Model must be lower case");
+                res.body.data.model.msg.should.equal("Model must be lower case");
                 done();
             })
     })
@@ -91,7 +91,7 @@ describe("Searching for hackers", function () {
             })
             .end(function (err, res) {
                 res.should.have.status(422);
-                res.body.data.data.model.msg.should.equal("Must be a valid searchable model");
+                res.body.data.model.msg.should.equal("Must be a valid searchable model");
                 done();
             })
     })
