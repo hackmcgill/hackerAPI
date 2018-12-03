@@ -20,6 +20,10 @@ const HackerSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    degree: {
+        type: String,
+        required: true
+    },
     //no enum for this
     gender: {
         type: String
