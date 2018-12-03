@@ -98,7 +98,7 @@ module.exports = {
         );
 
         /**
-         * @api {post} /auth/password/change change password for logged in user
+         * @api {patch} /auth/password/change change password for logged in user
          * @apiName changePassword
          * @apiGroup Authentication
          * @apiVersion 0.0.8

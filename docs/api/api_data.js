@@ -448,7 +448,7 @@ define({
       }]
     },
     {
-      "type": "post",
+      "type": "patch",
       "url": "/auth/password/change",
       "title": "change password for logged in user",
       "name": "changePassword",
