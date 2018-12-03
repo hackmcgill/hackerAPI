@@ -12,6 +12,7 @@ const invalidHacker1 = {
     // invalid mongoID
     "accountId": "UtilAccountAccount1_id",
     // invalid missing school attribute
+    "degree": "Undersaduate",
     "gender": "Female",
     "needsBus": true,
     "application": {
@@ -31,6 +32,7 @@ const duplicateAccountLinkHacker1 = {
     "accountId": Util.Account.Account1._id,
     "status": "Applied",
     "school": "University of Blah",
+    "degree": "Undergraduate",
     "gender": "Male",
     "needsBus": true,
     "application": {
@@ -55,6 +57,7 @@ const duplicateAccountLinkHacker1 = {
 const newHacker1 = {
     "accountId": Util.Account.generatedAccounts[6]._id,
     "school": "University of ASDF",
+    "degree": "Masters",
     "gender": "Female",
     "needsBus": true,
     "application": {
@@ -79,6 +82,7 @@ const newHacker1 = {
 const newHacker2 = {
     "accountId": Util.Account.NonConfirmedAccount1._id,
     "school": "University of YIKES",
+    "degree": "PhD",
     "gender": "Female",
     "needsBus": true,
     "application": {
@@ -105,6 +109,7 @@ const HackerA = {
     "accountId": Util.Account.Account1._id,
     "status": "Confirmed",
     "school": "University of Blah",
+    "degree": "Masters",
     "gender": "Male",
     "needsBus": true,
     "application": {
@@ -130,6 +135,7 @@ const HackerB = {
     "accountId": Util.Account.Account2._id,
     "status": "Accepted",
     "school": "University of Blah1",
+    "degree": "Masters",
     "gender": "Female",
     "needsBus": false,
     "application": {
@@ -156,6 +162,7 @@ const HackerC = {
     "accountId": Util.Account.Hacker3._id,
     "status": "Waitlisted",
     "school": "University of Blah1",
+    "degree": "Masters",
     "gender": "Female",
     "needsBus": false,
     "application": {

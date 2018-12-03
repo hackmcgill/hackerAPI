@@ -6,6 +6,7 @@ module.exports = {
         // status will be added automatically
         VALIDATOR.mongoIdValidator("body", "accountId", false),
         VALIDATOR.nameValidator("body", "school", false),
+        VALIDATOR.nameValidator("body", "degree", false),
         VALIDATOR.nameValidator("body", "gender", false),
         VALIDATOR.booleanValidator("body", "needsBus", false),
         VALIDATOR.applicationValidator("body", "application", false),
@@ -22,6 +23,7 @@ module.exports = {
     // untested
     updateHackerValidator: [
         VALIDATOR.nameValidator("body", "school", true),
+        VALIDATOR.nameValidator("body", "degree", true),
         VALIDATOR.nameValidator("body", "gender", true),
         VALIDATOR.applicationValidator("body", "application", true),
         VALIDATOR.booleanValidator("body", "needsBus", true)
