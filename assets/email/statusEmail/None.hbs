@@ -1,3 +1,463 @@
-<h1>
-    Just a note: your application is not yet complete!
-</h1>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<style type="text/css">
+    @import url(http://fonts.googleapis.com/css?family=Hind:400);
+    @import url(https://storage.googleapis.com/mchacks6_emails/fonts/lineto-brown-bold.ttf);
+
+    #outlook a {
+        padding: 0;
+    }
+
+    /* Force Outlook to provide a "view in browser" message */
+    .ReadMsgBody {
+        width: 100%;
+    }
+
+    .ExternalClass {
+        width: 100%;
+    }
+
+    /* Force Hotmail to display emails at full width */
+    .ExternalClass,
+    .ExternalClass p,
+    .ExternalClass span,
+    .ExternalClass font,
+    .ExternalClass td,
+    .ExternalClass div {
+        line-height: 100%;
+    }
+
+    /* Force Hotmail to display normal line spacing */
+    body,
+    table,
+    td,
+    p,
+    a,
+    li,
+    blockquote {
+        -webkit-text-size-adjust: 100%;
+        -ms-text-size-adjust: 100%;
+        color: #4D4D4D;
+    }
+
+    /* Prevent WebKit and Windows mobile changing default text sizes */
+    table,
+    td {
+        mso-table-lspace: 0pt;
+        mso-table-rspace: 0pt;
+    }
+
+    /* Remove spacing between tables in Outlook 2007 and up */
+    img {
+        -ms-interpolation-mode: bicubic;
+    }
+
+    /* Allow smoother rendering of resized image in Internet Explorer */
+
+    body {
+        margin: 0;
+        padding: 0;
+    }
+
+    img {
+        border: 0;
+        height: auto;
+        line-height: 100%;
+        outline: none;
+        text-decoration: none;
+    }
+
+    table {
+        border-collapse: collapse;
+    }
+
+    body,
+    #bodyTable,
+    #bodyCell {
+        height: 100% !important;
+        margin: 0;
+        padding: 0;
+        width: 100% !important;
+    }
+
+    #bodyCell {
+        padding: 20px;
+    }
+
+    #templateContainer {
+        width: 600px;
+    }
+
+    body,
+    #bodyTable {
+        background-color: #F9F9F9;
+    }
+
+    h1 {
+        display: block;
+        font-family: 'Brown', Helvetica;
+        font-size: 26px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 100%;
+        letter-spacing: normal;
+        color: #F2463A !important;
+        margin-top: 0;
+        margin-right: 0;
+        margin-bottom: 28px;
+        margin-left: 0px;
+        text-align: center;
+    }
+
+    #headerImage {
+        height: auto;
+        max-width: 30%;
+        width: 250px;
+        padding-top: 20px;
+        padding-bottom: 20px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    /* ========== Body Styles ========== */
+
+    #templateBody {
+        background-color: #FFFFFF;
+        border: 5px solid #E9E9E9;
+        border-radius: 6px;
+        border-collapse: separate;
+    }
+
+    .bodyContent {
+        color: #202020;
+        font-family: 'Hind', Helvetica;
+        font-size: 14px;
+        line-height: 150%;
+        padding-top: 36px;
+        padding-right: 30px;
+        padding-bottom: 20px;
+        padding-left: 30px;
+        text-align: left;
+    }
+
+    .center {
+        text-align: center;
+    }
+
+    .bodyContent a:link,
+    .bodyContent a:visited,
+    /* Yahoo! Mail Override */
+    .bodyContent a .yshortcuts
+
+    /* Yahoo! Mail Override */
+        {
+        color: #F2463A;
+        text-decoration: none;
+    }
+
+    .bodyContent a:hover {
+        color: #F56F65;
+    }
+
+    .button {
+        color: white !important;
+        background: #F2463A !important;
+        font-size: 16px !important;
+        display: inline-block;
+        background: none;
+        margin-top: 25px;
+        margin-bottom: 25px;
+        padding: 12px 24px;
+        border-radius: 6px;
+        text-align: center;
+        font-family: 'Brown', sans-serif;
+        font-size: 20px;
+        font-weight: 700;
+    }
+
+    .button:hover {
+        background: #F56F65 !important;
+    }
+
+    /* ========== Footer Styles ========== */
+
+    .footerContent {
+        color: #808080;
+        font-family: 'Lato', Helvetica;
+        font-size: 10px;
+        line-height: 150%;
+        padding-top: 20px;
+        padding-right: 20px;
+        padding-bottom: 20px;
+        padding-left: 20px;
+        text-align: left;
+    }
+
+    .footerContent a:link,
+    .footerContent a:visited,
+    /* Yahoo! Mail Override */
+    .footerContent a .yshortcuts,
+    .footerContent a span
+
+    /* Yahoo! Mail Override */
+        {
+        color: #606060;
+        font-weight: normal;
+        text-decoration: underline;
+    }
+
+    /* /\/\/\/\/\/\/\/\/ MOBILE STYLES /\/\/\/\/\/\/\/\/ */
+
+    @media only screen and (max-width: 480px) {
+
+        /* /\/\/\/\/\/\/ CLIENT-SPECIFIC MOBILE STYLES /\/\/\/\/\/\/ */
+        body,
+        table,
+        td,
+        p,
+        a,
+        li,
+        blockquote {
+            -webkit-text-size-adjust: none !important;
+        }
+
+        /* Prevent Webkit platforms from changing default text sizes */
+        body {
+            width: 100% !important;
+            min-width: 100% !important;
+        }
+
+        /* Prevent iOS Mail from adding padding to the body */
+
+        /* /\/\/\/\/\/\/ MOBILE RESET STYLES /\/\/\/\/\/\/ */
+        #bodyCell {
+            padding: 10px !important;
+        }
+
+        /* /\/\/\/\/\/\/ MOBILE TEMPLATE STYLES /\/\/\/\/\/\/ */
+
+        /* ======== Page Styles ======== */
+
+        /**
+  * @tab Mobile Styles
+  * @section template width
+  * @tip Make the template fluid for portrait or landscape view adaptability. If a fluid layout doesn't work for you, set the width to 300px instead.
+  */
+        #templateContainer {
+            width: 600px !important;
+
+            max-width: 100% !important;
+        }
+
+        /**
+  * @tab Mobile Styles
+  * @section heading 1
+  * @tip Make the first-level headings larger in size for better readability on small screens.
+  */
+        h1 {
+
+            font-size: 24px !important;
+
+            line-height: 100% !important;
+        }
+
+        /**
+  * @tab Mobile Styles
+  * @section heading 2
+  * @tip Make the second-level headings larger in size for better readability on small screens.
+  */
+        h2 {
+
+            font-size: 20px !important;
+
+            line-height: 100% !important;
+        }
+
+        /**
+  * @tab Mobile Styles
+  * @section heading 3
+  * @tip Make the third-level headings larger in size for better readability on small screens.
+  */
+        h3 {
+
+            font-size: 18px !important;
+
+            line-height: 100% !important;
+        }
+
+        /**
+  * @tab Mobile Styles
+  * @section heading 4
+  * @tip Make the fourth-level headings larger in size for better readability on small screens.
+  */
+        h4 {
+
+            font-size: 16px !important;
+
+            line-height: 100% !important;
+        }
+
+        /* ======== Header Styles ======== */
+
+        #templatePreheader {
+            display: none !important;
+        }
+
+        /* Hide the template preheader to save space */
+
+        /**
+  * @tab Mobile Styles
+  * @section header image
+  * @tip Make the main header image fluid for portrait or landscape view adaptability, and set the image's original width as the max-width. If a fluid setting doesn't work, set the image width to half its original size instead.
+  */
+        #headerImage {
+            height: auto !important;
+            max-width: 80% !important;
+        }
+
+        /**
+  * @tab Mobile Styles
+  * @section header text
+  * @tip Make the header content text larger in size for better readability on small screens. We recommend a font size of at least 16px.
+  */
+        .headerContent {
+
+            font-size: 20px !important;
+
+            line-height: 125% !important;
+        }
+
+        /* ======== Body Styles ======== */
+
+        /**
+  * @tab Mobile Styles
+  * @section body image
+  * @tip Make the main body image fluid for portrait or landscape view adaptability, and set the image's original width as the max-width. If a fluid setting doesn't work, set the image width to half its original size instead.
+  */
+        #bodyImage {
+            height: auto !important;
+
+            max-width: 560px !important;
+
+            width: 100% !important;
+        }
+
+        /**
+  * @tab Mobile Styles
+  * @section body text
+  * @tip Make the body content text larger in size for better readability on small screens. We recommend a font size of at least 16px.
+  */
+        .bodyContent {
+
+            font-size: 18px !important;
+
+            line-height: 125% !important;
+        }
+
+        /* ======== Footer Styles ======== */
+
+        /**
+  * @tab Mobile Styles
+  * @section footer text
+  * @tip Make the body content text larger in size for better readability on small screens.
+  */
+        .footerContent {
+
+            font-size: 14px !important;
+
+            line-height: 115% !important;
+        }
+
+        .footerContent a {
+            display: block !important;
+        }
+
+        /* Place footer social and utility links on their own lines, for easier access */
+    }
+</style>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>We've got your application!</title>
+</head>
+
+<body leftmargin="0" marginwidth="0" topmargin="0" marginheight="0" offset="0">
+    <center>
+        <table align="center" border="0" cellpadding="0" cellspacing="0" height="100%" width="100%" id="bodyTable">
+            <tr>
+                <td align="center" valign="top" id="bodyCell">
+                    <!-- BEGIN TEMPLATE // -->
+                    <table border="0" cellpadding="0" cellspacing="0" id="templateContainer">
+                        <tr>
+                            <td align="center" valign="top">
+                                <!-- BEGIN HEADER // -->
+                                <table border="0" cellpadding="0" cellspacing="0" width="100%" id="templateHeader">
+                                    <tr>
+                                        <td valign="top" class="headerContent">
+                                            <img src="https://storage.googleapis.com/mchacks6_emails/email_logo.svg" id="headerImage"
+                                                mc:label="header_image" mc:edit="header_image" mc:allowdesigner
+                                                mc:allowtext />
+                                        </td>
+                                    </tr>
+                                </table>
+                                <!-- // END HEADER -->
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center" valign="top">
+                                <!-- BEGIN BODY // -->
+                                <table cellpadding="0" cellspacing="0" width="100%" id="templateBody">
+                                    <tr>
+                                        <td valign="top" class="bodyContent" mc:edit="body_content00">
+                                            <h1>Complete Your Application</h1>
+                                            <p>
+                                                Thanks for starting your application, {{firstName}}!
+                                                <br><br>
+                                                You're one step closer to an epic weekend at McHacks, Canada's favourite hackathon! You can sign in to <a href="https://app.mchacks.ca">app.mchacks.ca</a> to edit and submit your application for review.
+                                                <br><br>
+                                            </p>
+                                            <p>
+                                                In the meantime, follow us on <a href="https://facebook.com/mcgillhacks">Facebook</a>, <a href="https://twitter.com/mcgillhacks">Twitter</a>, and <a href="https://instagram.com/mcgillhacks">Instagram</a> for important updates and news about McHacks 6! If you have any questions, feel free to reach out at <a href="mailto:contact@mchacks.ca">contact@mchacks.ca</a>.
+                                            </p>
+                                            <p>
+                                                <br>
+                                                McHacks Team
+                                                <br>
+                                                <a href="https://mchacks.ca">mchacks.ca</a>
+                                            </p>
+
+                                        </td>
+                                    </tr>
+                                </table>
+                                <!-- // END BODY -->
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center" valign="top">
+                                <!-- BEGIN FOOTER // -->
+                                <!-- <table border="0" cellpadding="0" cellspacing="0" width="100%" id="templateFooter">
+                                    <tr>
+                                        <td valign="top" class="footerContent" mc:edit="footer_content00">
+                                            <a href="https://facebook.com/{{ facebookHandle }}">Like on Facebook</a>&nbsp;&nbsp;&nbsp;
+                                            <a href="mailto:{{ emailAddress }}">Email Us</a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td valign="top" class="footerContent" style="padding-top:0;" mc:edit="footer_content01">
+                                            <em>Copyright &copy; {{ hackathonName }} 2018, All rights reserved.</em>
+                                            <br />
+                                        </td>
+                                    </tr>
+                                </table> -->
+                                <!-- // END FOOTER -->
+                            </td>
+                        </tr>
+                    </table>
+                    <!-- // END TEMPLATE -->
+                </td>
+            </tr>
+        </table>
+    </center>
+    </body>
+
+</html>
