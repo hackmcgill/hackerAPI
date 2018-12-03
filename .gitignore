@@ -63,4 +63,8 @@ gcp_creds.json
 
 #certbot 
 certbot/
+
 assets/.DS_Store
+
+#secrets
+secret.yaml
