@@ -89,7 +89,7 @@ const sponsorT4Role = {
 };
 
 const sponsorT5Role = {
-    "_id": mongoose.Types.ObjectId(),
+    "_id": mongoose.Types.ObjectId.createFromTime(7),
     "name": Constants.General.SPONSOR_T5,
     "routes": [
         Constants.Routes.sponsorRoutes.post,
@@ -109,6 +109,8 @@ function createAllSingularRoles() {
     const allRoutes = Constants.Routes.allRoutes;
     let roles = [];
 
+    // i is unique integer so that objectId is constant
+    var i = 1000000;
     for (let routeGroupKey in allRoutes) {
 
         if (!allRoutes.hasOwnProperty(routeGroupKey)) {
@@ -122,12 +124,13 @@ function createAllSingularRoles() {
             }
 
             let role = {
-                _id: mongoose.Types.ObjectId(),
+                _id: mongoose.Types.ObjectId(i),
                 name: routeKey + routeGroupKey,
                 routes: routeGroup[routeKey],
             };
             let roleName = role.name;
             roles[roleName] = role;
+            i -= 1;
         }
     }
 
