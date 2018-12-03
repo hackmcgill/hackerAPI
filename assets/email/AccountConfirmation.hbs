@@ -37,6 +37,7 @@
     blockquote {
         -webkit-text-size-adjust: 100%;
         -ms-text-size-adjust: 100%;
+        color: #4D4D4D;
     }
 
     /* Prevent WebKit and Windows mobile changing default text sizes */
@@ -100,12 +101,12 @@
         font-weight: 700;
         line-height: 100%;
         letter-spacing: normal;
-        color: #F2463A;
+        color: #F2463A !important;
         margin-top: 0;
         margin-right: 0;
         margin-bottom: 28px;
         margin-left: 0px;
-        text-align: left;
+        text-align: center;
     }
 
     #headerImage {
@@ -114,6 +115,8 @@
         width: 250px;
         padding-top: 20px;
         padding-bottom: 20px;
+        margin-left: auto;
+        margin-right: auto;
     }
 
     /* ========== Body Styles ========== */
@@ -148,22 +151,32 @@
 
     /* Yahoo! Mail Override */
         {
-        color: white;
+        color: #F2463A;
         text-decoration: none;
-        font-family: 'Brown', Helvetica;
-        font-size: 20px;
-        font-weight: 700;
+    }
 
+    .bodyContent a:hover {
+        color: #F56F65;
     }
 
     .button {
+        color: white !important;
+        background: #F2463A !important;
+        font-size: 16px !important;
         display: inline-block;
-        background: #F2463A;
+        background: none;
         margin-top: 25px;
         margin-bottom: 25px;
         padding: 12px 24px;
         border-radius: 6px;
         text-align: center;
+        font-family: 'Brown', sans-serif;
+        font-size: 20px;
+        font-weight: 700;
+    }
+
+    .button:hover {
+        background: #F56F65 !important;
     }
 
     /* ========== Footer Styles ========== */
@@ -397,15 +410,25 @@
                                     <tr>
                                         <td valign="top" class="bodyContent" mc:edit="body_content00">
                                             <h1>Email Confirmation</h1>
-                                            <p>In order to start your McHacks 6 application, we need to confirm your
-                                                email.
+                                            <p>
+                                                Hi {{firstName}},
+                                                <br><br>
+                                                To start your McHacks 6 application, we first need to confirm your email.
+                                                <br><br>
+                                                Get that sorted by clicking below!
                                             </p>
-                                            <p>Best, <br> The McHacks Team</p>
                                             <div class="center">
                                                 <a href="{{link}}" class="button">
-                                                    Confirm Email
+                                                    Confirm your email
                                                 </a>
                                             </div>
+                                            <p>
+                                                <br>
+                                                McHacks Team
+                                                <br>
+                                                <a href="https://mchacks.ca">mchacks.ca</a>
+                                            </p>
+
                                         </td>
                                     </tr>
                                 </table>

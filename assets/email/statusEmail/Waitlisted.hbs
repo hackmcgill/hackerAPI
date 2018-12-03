@@ -37,6 +37,7 @@
     blockquote {
         -webkit-text-size-adjust: 100%;
         -ms-text-size-adjust: 100%;
+        color: #4D4D4D;
     }
 
     /* Prevent WebKit and Windows mobile changing default text sizes */
@@ -100,12 +101,12 @@
         font-weight: 700;
         line-height: 100%;
         letter-spacing: normal;
-        color: #F2463A;
+        color: #F2463A !important;
         margin-top: 0;
         margin-right: 0;
         margin-bottom: 28px;
         margin-left: 0px;
-        text-align: left;
+        text-align: center;
     }
 
     #headerImage {
@@ -114,6 +115,8 @@
         width: 250px;
         padding-top: 20px;
         padding-bottom: 20px;
+        margin-left: auto;
+        margin-right: auto;
     }
 
     /* ========== Body Styles ========== */
@@ -148,22 +151,32 @@
 
     /* Yahoo! Mail Override */
         {
-        color: white;
+        color: #F2463A;
         text-decoration: none;
-        font-family: 'Brown', Helvetica;
-        font-size: 20px;
-        font-weight: 700;
+    }
 
+    .bodyContent a:hover {
+        color: #F56F65;
     }
 
     .button {
+        color: white !important;
+        background: #F2463A !important;
+        font-size: 16px !important;
         display: inline-block;
-        background: #F2463A;
+        background: none;
         margin-top: 25px;
         margin-bottom: 25px;
         padding: 12px 24px;
         border-radius: 6px;
         text-align: center;
+        font-family: 'Brown', sans-serif;
+        font-size: 20px;
+        font-weight: 700;
+    }
+
+    .button:hover {
+        background: #F56F65 !important;
     }
 
     /* ========== Footer Styles ========== */
@@ -381,8 +394,9 @@
                                 <table border="0" cellpadding="0" cellspacing="0" width="100%" id="templateHeader">
                                     <tr>
                                         <td valign="top" class="headerContent">
-                                            <img src="https://storage.googleapis.com/mchacks6_emails/email_logo.svg" id="headerImage" mc:label="header_image"
-                                                mc:edit="header_image" mc:allowdesigner mc:allowtext />
+                                            <img src="https://storage.googleapis.com/mchacks6_emails/email_logo.svg" id="headerImage"
+                                                mc:label="header_image" mc:edit="header_image" mc:allowdesigner
+                                                mc:allowtext />
                                         </td>
                                     </tr>
                                 </table>
@@ -395,11 +409,25 @@
                                 <table cellpadding="0" cellspacing="0" width="100%" id="templateBody">
                                     <tr>
                                         <td valign="top" class="bodyContent" mc:edit="body_content00">
-                                            <h1>Application Wailisted</h1>
-                                            <p>Hi {{firstName}},</p>
-                                            <p>We received a ton of great applicants this year and are unfortunately unable to offer you a place at McHacks 6 this year. We have placed you on the waitlist and will let you know if a spot opens up!
+                                            <h1>McHacks 6 Decision</h1>
+                                            <p>
+                                                Hi {{firstName}},
+                                                <br><br>
+                                                Thank you for applying to McHacks 6. We received a ton of great applicants this year and are unfortunately unable to offer you a place at McHacks 6 this year.
+                                                <br><br>
+                                                Don't sweat yet, we have placed you on the waitlist and will let you know if a spot opens up!
+                                                <br><br>
                                             </p>
-                                            <p>Best, <br> The McHacks Team</p>
+                                            <p>
+                                                In the meantime, follow us on <a href="https://facebook.com/mcgillhacks">Facebook</a>, <a href="https://twitter.com/mcgillhacks">Twitter</a>, and <a href="https://instagram.com/mcgillhacks">Instagram</a> for important updates and news about McHacks 6! If you have any questions, feel free to reach out at <a href="mailto:contact@mchacks.ca">contact@mchacks.ca</a>.
+                                            </p>
+                                            <p>
+                                                <br>
+                                                McHacks Team
+                                                <br>
+                                                <a href="https://mchacks.ca">mchacks.ca</a>
+                                            </p>
+
                                         </td>
                                     </tr>
                                 </table>
