@@ -110,7 +110,7 @@ function createAllSingularRoles() {
     let roles = [];
 
     // i is unique integer so that objectId is constant
-    var i = 1000000;
+    var i = 10000;
     for (let routeGroupKey in allRoutes) {
 
         if (!allRoutes.hasOwnProperty(routeGroupKey)) {
