@@ -126,13 +126,14 @@ async function retrieveRoleBindings(req, res, next) {
 }
 
 /**
- * 
- * @param {*} req 
+ * Checks that the oldPassword is the current password for the logged in user. If the password is correct,
+ * then updates the password to the string in newPassword.
+ * @param {{user: {email: string}, body: {oldPassword: string, newPassword: string}} req 
  * @param {*} res 
  * @param {*} next 
  */
 async function changePassword(req, res, next) {
-    acc = await Services.Account.getAccountIfValid(req.user.email, req.body.oldPassword);
+    const acc = await Services.Account.getAccountIfValid(req.user.email, req.body.oldPassword);
     // user's old password is correct
     if (!!acc) {
         req.body.account = await Services.Account.updatePassword(req.user.id, req.body.newPassword);

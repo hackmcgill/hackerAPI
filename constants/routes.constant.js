@@ -21,7 +21,11 @@ const authRoutes = {
     "getAnyRoleBindings": {
         requestType: Constants.REQUEST_TYPES.GET,
         uri: "/api/auth/rolebindings/" + Constants.ROLE_CATEGORIES.ALL
-    }
+    },
+    "changePassword": {
+        requestType: Constants.REQUEST_TYPES.PATCH,
+        uri: "/api/auth/password/change"
+    },
 };
 
 const accountRoutes = {

@@ -56,5 +56,5 @@ describe("GET roles", function () {
                     done();
                 });
         });
-    })
+    });
 });

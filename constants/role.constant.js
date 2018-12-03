@@ -11,6 +11,7 @@ const accountRole = {
     "routes": [
         Constants.Routes.authRoutes.login,
         Constants.Routes.authRoutes.logout,
+        Constants.Routes.authRoutes.changePassword,
         Constants.Routes.authRoutes.getSelfRoleBindindings,
         Constants.Routes.accountRoutes.getSelf,
         Constants.Routes.accountRoutes.getSelfById,

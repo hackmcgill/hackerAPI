@@ -359,6 +359,71 @@ describe("POST reset password", function () {
     });
 });
 
+describe("PATCH change password for logged in user", function () {
+    const successChangePassword = {
+        "oldPassword": Admin1.password,
+        "newPassword": "password12345"
+    };
+    const failChangePassword = {
+        "oldPassword": "WrongPassword",
+        "newPassword": "password12345"
+    };
+    // fail on authentication
+    it("should fail to change the user's password because they are not logged in", function (done) {
+        chai.request(server.app)
+            .patch("/api/auth/password/change")
+            .type("application/json")
+            .send(failChangePassword)
+            .end(function (err, res) {
+                res.should.have.status(401);
+                res.should.be.json;
+                res.body.should.have.property("message");
+                res.body.message.should.equal(Constants.Error.AUTH_401_MESSAGE);
+                done();
+            });
+    });
+    // success case
+    it("should change the logged in user's password to a new password", function (done) {
+        util.auth.login(agent, Admin1, (error) => {
+            if (error) {
+                agent.close();
+                return done(error);
+            }
+            agent
+                .patch("/api/auth/password/change")
+                .type("application/json")
+                .send(successChangePassword)
+                .end(function (err, res) {
+                    res.should.have.status(200);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal("Successfully reset password");
+                    done();
+                });
+        });
+    });
+    // fail case because old password in incorrect
+    it("should fail to change the logged in user's password to a new password because old password is incorrect", function (done) {
+        util.auth.login(agent, Admin1, (error) => {
+            if (error) {
+                agent.close();
+                return done(error);
+            }
+            agent
+                .patch("/api/auth/password/change")
+                .type("application/json")
+                .send(failChangePassword)
+                .end(function (err, res) {
+                    res.should.have.status(401);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal(Constants.Error.AUTH_401_MESSAGE);
+                    done();
+                });
+        });
+    });
+});
+
 describe("GET retrieve permissions", function () {
     it("should SUCCEED and retrieve the rolebindings for the user", function (done) {
         util.auth.login(agent, storedAccount1, (error) => {
