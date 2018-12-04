@@ -88,8 +88,8 @@ function generateCreateAccountTokenLink(httpOrHttps, domain, type, token) {
  * @param {string} token the reset token
  * @returns {string} the string, of form: [http|https]://{domain}/{model}/create?token={token}
  */
-function generateConfirmTokenLink(httpOrHttps, domain, type, token) {
-    const link = `${httpOrHttps}://${domain}/${type}/confirm?token=${token}`;
+function generateConfirmTokenLink(httpOrHttps, domain, token) {
+    const link = `${httpOrHttps}://${domain}/account/confirm?token=${token}`;
     return link;
 }
 /**
@@ -102,7 +102,7 @@ function generateConfirmTokenLink(httpOrHttps, domain, type, token) {
  */
 function generateAccountConfirmationEmail(address, receiverEmail, type, token) {
     const httpOrHttps = (address.includes("localhost")) ? "http" : "https";
-    const tokenLink = generateConfirmTokenLink(httpOrHttps, address, type, token);
+    const tokenLink = generateConfirmTokenLink(httpOrHttps, address, token);
     var emailSubject = "";
     if (token === undefined || tokenLink === undefined) {
         return undefined;

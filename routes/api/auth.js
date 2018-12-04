@@ -97,6 +97,38 @@ module.exports = {
             Controllers.Auth.sentResetEmail
         );
 
+        /**
+         * @api {patch} /auth/password/change change password for logged in user
+         * @apiName changePassword
+         * @apiGroup Authentication
+         * @apiVersion 0.0.8
+         * 
+         * @apiParam {String} oldPassword The current password of the user
+         * @apiParam {String} newPassword The new password of the user
+         * 
+         * @apiParamExample {json} Request-Example:
+         *      { 
+         *          "oldPassword": "password12345",
+         *          "newPassword": "password123456"
+         *      }
+         * 
+         * @apiSuccess {string} message Success message
+         * @apiSuccess {object} data empty
+         * @apiSuccessExample {json} Success-Response: 
+         *      {"message": "Successfully reset password", "data": {}}
+         * 
+         * @apiPermission: Must be logged in
+         */
+        authRouter.route("/password/change").patch(
+            Middleware.Auth.ensureAuthenticated(),
+            Middleware.Auth.ensureAuthorized(),
+            Middleware.Validator.Auth.ChangePasswordValidator,
+            Middleware.parseBody.middleware,
+
+            Middleware.Auth.changePassword,
+            Controllers.Auth.resetPassword,
+        );
+
         //untested
         /**
          * @api {post} /auth/password/reset reset password
