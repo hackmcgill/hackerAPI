@@ -8,7 +8,7 @@
         padding: 0;
     }
 
-    /* Force Outlook to provide a "view in browser" message */
+    
     .ReadMsgBody {
         width: 100%;
     }
@@ -17,7 +17,7 @@
         width: 100%;
     }
 
-    /* Force Hotmail to display emails at full width */
+    
     .ExternalClass,
     .ExternalClass p,
     .ExternalClass span,
@@ -27,7 +27,7 @@
         line-height: 100%;
     }
 
-    /* Force Hotmail to display normal line spacing */
+    
     body,
     table,
     td,
@@ -40,19 +40,19 @@
         color: #4D4D4D;
     }
 
-    /* Prevent WebKit and Windows mobile changing default text sizes */
+    
     table,
     td {
         mso-table-lspace: 0pt;
         mso-table-rspace: 0pt;
     }
 
-    /* Remove spacing between tables in Outlook 2007 and up */
+    
     img {
         -ms-interpolation-mode: bicubic;
     }
 
-    /* Allow smoother rendering of resized image in Internet Explorer */
+    
 
     body {
         margin: 0;
@@ -120,7 +120,7 @@
         display: block;
     }
 
-    /* ========== Body Styles ========== */
+    
 
     #templateBody {
         background-color: #FFFFFF;
@@ -147,10 +147,10 @@
 
     .bodyContent a:link,
     .bodyContent a:visited,
-    /* Yahoo! Mail Override */
+    
     .bodyContent a .yshortcuts
 
-    /* Yahoo! Mail Override */
+    
         {
         color: #F2463A;
         text-decoration: none;
@@ -180,7 +180,7 @@
         background: #F56F65 !important;
     }
 
-    /* ========== Footer Styles ========== */
+    
 
     .footerContent {
         color: #808080;
@@ -196,22 +196,22 @@
 
     .footerContent a:link,
     .footerContent a:visited,
-    /* Yahoo! Mail Override */
+    
     .footerContent a .yshortcuts,
     .footerContent a span
 
-    /* Yahoo! Mail Override */
+    
         {
         color: #606060;
         font-weight: normal;
         text-decoration: underline;
     }
 
-    /* /\/\/\/\/\/\/\/\/ MOBILE STYLES /\/\/\/\/\/\/\/\/ */
+    
 
     @media only screen and (max-width: 480px) {
 
-        /* /\/\/\/\/\/\/ CLIENT-SPECIFIC MOBILE STYLES /\/\/\/\/\/\/ */
+        
         body,
         table,
         td,
@@ -222,39 +222,31 @@
             -webkit-text-size-adjust: none !important;
         }
 
-        /* Prevent Webkit platforms from changing default text sizes */
+        
         body {
             width: 100% !important;
             min-width: 100% !important;
         }
 
-        /* Prevent iOS Mail from adding padding to the body */
+        
 
-        /* /\/\/\/\/\/\/ MOBILE RESET STYLES /\/\/\/\/\/\/ */
+        
         #bodyCell {
             padding: 10px !important;
         }
 
-        /* /\/\/\/\/\/\/ MOBILE TEMPLATE STYLES /\/\/\/\/\/\/ */
+        
 
-        /* ======== Page Styles ======== */
+        
 
-        /**
-  * @tab Mobile Styles
-  * @section template width
-  * @tip Make the template fluid for portrait or landscape view adaptability. If a fluid layout doesn't work for you, set the width to 300px instead.
-  */
+        
         #templateContainer {
             width: 600px !important;
 
             max-width: 100% !important;
         }
 
-        /**
-  * @tab Mobile Styles
-  * @section heading 1
-  * @tip Make the first-level headings larger in size for better readability on small screens.
-  */
+        
         h1 {
 
             font-size: 24px !important;
@@ -262,11 +254,7 @@
             line-height: 100% !important;
         }
 
-        /**
-  * @tab Mobile Styles
-  * @section heading 2
-  * @tip Make the second-level headings larger in size for better readability on small screens.
-  */
+        
         h2 {
 
             font-size: 20px !important;
@@ -274,11 +262,7 @@
             line-height: 100% !important;
         }
 
-        /**
-  * @tab Mobile Styles
-  * @section heading 3
-  * @tip Make the third-level headings larger in size for better readability on small screens.
-  */
+        
         h3 {
 
             font-size: 18px !important;
@@ -286,11 +270,7 @@
             line-height: 100% !important;
         }
 
-        /**
-  * @tab Mobile Styles
-  * @section heading 4
-  * @tip Make the fourth-level headings larger in size for better readability on small screens.
-  */
+        
         h4 {
 
             font-size: 16px !important;
@@ -298,29 +278,21 @@
             line-height: 100% !important;
         }
 
-        /* ======== Header Styles ======== */
+        
 
         #templatePreheader {
             display: none !important;
         }
 
-        /* Hide the template preheader to save space */
+        
 
-        /**
-  * @tab Mobile Styles
-  * @section header image
-  * @tip Make the main header image fluid for portrait or landscape view adaptability, and set the image's original width as the max-width. If a fluid setting doesn't work, set the image width to half its original size instead.
-  */
+        
         #headerImage {
             height: auto !important;
             max-width: 80% !important;
         }
 
-        /**
-  * @tab Mobile Styles
-  * @section header text
-  * @tip Make the header content text larger in size for better readability on small screens. We recommend a font size of at least 16px.
-  */
+        
         .headerContent {
 
             font-size: 20px !important;
@@ -328,13 +300,9 @@
             line-height: 125% !important;
         }
 
-        /* ======== Body Styles ======== */
+        
 
-        /**
-  * @tab Mobile Styles
-  * @section body image
-  * @tip Make the main body image fluid for portrait or landscape view adaptability, and set the image's original width as the max-width. If a fluid setting doesn't work, set the image width to half its original size instead.
-  */
+        
         #bodyImage {
             height: auto !important;
 
@@ -343,11 +311,7 @@
             width: 100% !important;
         }
 
-        /**
-  * @tab Mobile Styles
-  * @section body text
-  * @tip Make the body content text larger in size for better readability on small screens. We recommend a font size of at least 16px.
-  */
+        
         .bodyContent {
 
             font-size: 18px !important;
@@ -355,13 +319,9 @@
             line-height: 125% !important;
         }
 
-        /* ======== Footer Styles ======== */
+        
 
-        /**
-  * @tab Mobile Styles
-  * @section footer text
-  * @tip Make the body content text larger in size for better readability on small screens.
-  */
+        
         .footerContent {
 
             font-size: 14px !important;
@@ -373,7 +333,7 @@
             display: block !important;
         }
 
-        /* Place footer social and utility links on their own lines, for easier access */
+        
     }
 </style>
 
@@ -382,22 +342,22 @@
     <title>We've got your application!</title>
 </head>
 
-<body leftmargin="0" marginwidth="0" topmargin="0" marginheight="0" offset="0">
+<body leftmargin="0" marginwidth="0" topmargin="0" marginheight="0" offset="0" style="-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;color:#4D4D4D;height:100% !important;margin-top:0;margin-bottom:0;margin-right:0;margin-left:0;padding-top:0;padding-bottom:0;padding-right:0;padding-left:0;width:100% !important;background-color:#F9F9F9;" >
     <center>
-        <table align="center" border="0" cellpadding="0" cellspacing="0" height="100%" width="100%" id="bodyTable">
+        <table align="center" border="0" cellpadding="0" cellspacing="0" height="100%" width="100%" id="bodyTable" style="-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;color:#4D4D4D;mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;height:100% !important;margin-top:0;margin-bottom:0;margin-right:0;margin-left:0;padding-top:0;padding-bottom:0;padding-right:0;padding-left:0;width:100% !important;background-color:#F9F9F9;" >
             <tr>
-                <td align="center" valign="top" id="bodyCell">
+                <td align="center" valign="top" id="bodyCell" style="-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;color:#4D4D4D;mso-table-lspace:0pt;mso-table-rspace:0pt;height:100% !important;margin-top:0;margin-bottom:0;margin-right:0;margin-left:0;width:100% !important;padding-top:20px;padding-bottom:20px;padding-right:20px;padding-left:20px;" >
                     <!-- BEGIN TEMPLATE // -->
-                    <table border="0" cellpadding="0" cellspacing="0" id="templateContainer">
+                    <table border="0" cellpadding="0" cellspacing="0" id="templateContainer" style="-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;color:#4D4D4D;mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;width:600px;" >
                         <tr>
-                            <td align="center" valign="top">
+                            <td align="center" valign="top" style="-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;color:#4D4D4D;mso-table-lspace:0pt;mso-table-rspace:0pt;" >
                                 <!-- BEGIN HEADER // -->
-                                <table border="0" cellpadding="0" cellspacing="0" width="100%" id="templateHeader">
+                                <table border="0" cellpadding="0" cellspacing="0" width="100%" id="templateHeader" style="-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;color:#4D4D4D;mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;" >
                                     <tr>
-                                        <td valign="top" class="headerContent">
+                                        <td valign="top" class="headerContent" style="-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;color:#4D4D4D;mso-table-lspace:0pt;mso-table-rspace:0pt;" >
                                             <img src="https://mchacks.ca/static/mchacks-long-tight.png" width="250" height="59" alt="Logo" title="Logo" id="headerImage"
                                                 mc:label="header_image" mc:edit="header_image" mc:allowdesigner
-                                                mc:allowtext />
+                                                mc:allowtext style="-ms-interpolation-mode:bicubic;border-width:0;line-height:100%;outline-style:none;text-decoration:none;height:auto;max-width:30%;width:250px;padding-top:20px;padding-bottom:20px;margin-left:auto;margin-right:auto;display:block;" />
                                         </td>
                                     </tr>
                                 </table>
@@ -405,35 +365,35 @@
                             </td>
                         </tr>
                         <tr>
-                            <td align="center" valign="top">
+                            <td align="center" valign="top" style="-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;color:#4D4D4D;mso-table-lspace:0pt;mso-table-rspace:0pt;" >
                                 <!-- BEGIN BODY // -->
-                                <table cellpadding="0" cellspacing="0" width="100%" id="templateBody">
+                                <table cellpadding="0" cellspacing="0" width="100%" id="templateBody" style="-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;color:#4D4D4D;mso-table-lspace:0pt;mso-table-rspace:0pt;background-color:#FFFFFF;border-width:5px;border-style:solid;border-color:#E9E9E9;border-radius:6px;border-collapse:separate;" >
                                     <tr>
-                                        <td valign="top" class="bodyContent" mc:edit="body_content00">
-                                            <h1>Create Your Account</h1>
-                                            <p>
+                                        <td valign="top" class="bodyContent" mc:edit="body_content00" style="-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;mso-table-lspace:0pt;mso-table-rspace:0pt;color:#202020;font-family:'Hind', Helvetica;font-size:14px;line-height:150%;padding-top:36px;padding-right:30px;padding-bottom:20px;padding-left:30px;text-align:left;" >
+                                            <h1 style="display:block;font-family:'Brown', Helvetica;font-size:26px;font-style:normal;font-weight:700;line-height:100%;letter-spacing:normal;color:#F2463A !important;margin-top:0;margin-right:0;margin-bottom:28px;margin-left:0px;text-align:center;" >Create Your Account</h1>
+                                            <p style="-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;color:#4D4D4D;" >
                                                 Hi {{firstName}},
                                                 <br><br>
                                                 You've been invited to create an account on our hacker dashboard.
                                                 <br><br>
                                                 Click the button below to get things started!
                                             </p>
-                                            <div class="center">
-                                                <a href="{{{link}}}" class="button">
+                                            <div class="center" style="text-align:center;" >
+                                                <a href="{{{link}}}" class="button" style="-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;background-color:#F2463A !important;background-image:none !important;background-repeat:repeat !important;background-position:top left !important;background-attachment:scroll !important;font-size:16px !important;display:inline-block;margin-top:25px;margin-bottom:25px;padding-top:12px;padding-bottom:12px;padding-right:24px;padding-left:24px;border-radius:6px;text-align:center;font-family:'Brown', sans-serif;font-weight:700;color:white !important;text-decoration:none;" >
                                                     Create my account
                                                 </a>
                                             </div>
-                                            <p>
-                                                In the meantime, follow us on <a href="https://facebook.com/mcgillhacks">Facebook</a>,
-                                                <a href="https://twitter.com/mcgillhacks">Twitter</a>, and <a href="https://instagram.com/mcgillhacks">Instagram</a>
+                                            <p style="-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;color:#4D4D4D;" >
+                                                In the meantime, follow us on <a href="https://facebook.com/mcgillhacks" style="-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;color:#F2463A;text-decoration:none;" >Facebook</a>,
+                                                <a href="https://twitter.com/mcgillhacks" style="-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;color:#F2463A;text-decoration:none;" >Twitter</a>, and <a href="https://instagram.com/mcgillhacks" style="-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;color:#F2463A;text-decoration:none;" >Instagram</a>
                                                 for important updates and news about McHacks 6! If you have any
-                                                questions, feel free to reach out at <a href="mailto:contact@mchacks.ca">contact@mchacks.ca</a>.
+                                                questions, feel free to reach out at <a href="mailto:contact@mchacks.ca" style="-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;color:#F2463A;text-decoration:none;" >contact@mchacks.ca</a>.
                                             </p>
-                                            <p>
+                                            <p style="-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;color:#4D4D4D;" >
                                                 <br>
                                                 McHacks Team
                                                 <br>
-                                                <a href="https://mchacks.ca">mchacks.ca</a>
+                                                <a href="https://mchacks.ca" style="-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;color:#F2463A;text-decoration:none;" >mchacks.ca</a>
                                             </p>
 
                                         </td>
@@ -443,17 +403,17 @@
                             </td>
                         </tr>
                         <tr>
-                            <td align="center" valign="top">
+                            <td align="center" valign="top" style="-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;color:#4D4D4D;mso-table-lspace:0pt;mso-table-rspace:0pt;" >
                                 <!-- BEGIN FOOTER // -->
-                                <!-- <table border="0" cellpadding="0" cellspacing="0" width="100%" id="templateFooter">
+                                <!-- <table border="0" cellpadding="0" cellspacing="0" width="100%" id="templateFooter" style="-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;color:#4D4D4D;mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;" >
                                     <tr>
-                                        <td valign="top" class="footerContent" mc:edit="footer_content00">
-                                            <a href="https://facebook.com/{{ facebookHandle }}">Like on Facebook</a>&nbsp;&nbsp;&nbsp;
-                                            <a href="mailto:{{ emailAddress }}">Email Us</a>
+                                        <td valign="top" class="footerContent" mc:edit="footer_content00" style="-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;mso-table-lspace:0pt;mso-table-rspace:0pt;color:#808080;font-family:'Lato', Helvetica;font-size:10px;line-height:150%;padding-top:20px;padding-right:20px;padding-bottom:20px;padding-left:20px;text-align:left;" >
+                                            <a href="https://facebook.com/{{ facebookHandle }}" style="-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;color:#606060;font-weight:normal;text-decoration:underline;" >Like on Facebook</a>&nbsp;&nbsp;&nbsp;
+                                            <a href="mailto:{{ emailAddress }}" style="-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;color:#606060;font-weight:normal;text-decoration:underline;" >Email Us</a>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td valign="top" class="footerContent" style="padding-top:0;" mc:edit="footer_content01">
+                                        <td valign="top" class="footerContent"  mc:edit="footer_content01" style="padding-top:0;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;mso-table-lspace:0pt;mso-table-rspace:0pt;color:#808080;font-family:'Lato', Helvetica;font-size:10px;line-height:150%;padding-right:20px;padding-bottom:20px;padding-left:20px;text-align:left;" >
                                             <em>Copyright &copy; {{ hackathonName }} 2018, All rights reserved.</em>
                                             <br />
                                         </td>
