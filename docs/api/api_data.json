@@ -667,6 +667,78 @@
   },
   {
     "type": "get",
+    "url": "/auth/rolebindings/:id",
+    "title": "retrieve rolebindings for a user given by their user id :id",
+    "name": "getRoleBindings",
+    "group": "Authentication",
+    "version": "0.0.8",
+    "parameter": {
+      "fields": {
+        "param": [{
+          "group": "param",
+          "type": "ObjectId",
+          "optional": false,
+          "field": "id",
+          "description": "<p>MongoId of an account</p>"
+        }]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [{
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "message",
+            "description": "<p>Success message</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>Rolebindings object</p>"
+          }
+        ]
+      },
+      "examples": [{
+        "title": "Success-Response: ",
+        "content": "{\n               \"message\": \"Successfully retrieved role bindings\",\n               \"data\": {\n                   accountId:\"5beca4ab2e069a34f91697b2\"\n                   id:\"5beca4ae2e069a34f91698b1\"\n                   roles: [\n                       {\n                           _id:\"5beca4ab2e069a34f91697d9\",\n                           name:\"hacker\",\n                           routes: [\n                               {_id: \"5beca4ae2e069a34f9169852\", requestType: \"POST\", uri: \"/api/auth/login\"},\n                               {_id: \"5beca4ae2e069a34f9169851\", requestType: \"POST\", uri: \"/api/auth/logout\"},\n                               {_id: \"5beca4ae2e069a34f9169850\", requestType: \"GET\", uri: \"/api/auth/rolebindings/:self\"},\n                               {_id: \"5beca4ae2e069a34f916984f\", requestType: \"GET\", uri: \"/api/account/self\"},\n                               {_id: \"5beca4ae2e069a34f916984e\", requestType: \"GET\", uri: \"/api/account/:self\"},\n                               {_id: \"5beca4ae2e069a34f916984d\", requestType: \"PATCH\", uri: \"/api/account/:self\"},\n                               {_id: \"5beca4ae2e069a34f916984c\", requestType: \"POST\", uri: \"/api/hacker/\"},\n                               {_id: \"5beca4ae2e069a34f916984b\", requestType: \"GET\", uri: \"/api/hacker/:self\"},\n                               {_id: \"5beca4ae2e069a34f916984a\", requestType: \"GET\", uri: \"/api/hacker/:self/resume\"},\n                               {_id: \"5beca4ae2e069a34f9169849\", requestType: \"PATCH\", uri: \"/api/hacker/:self\"}\n                           ]\n                       }\n                   ]\n               }\n           }",
+        "type": "object"
+      }]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [{
+            "group": "Error 4xx",
+            "type": "string",
+            "optional": false,
+            "field": "message",
+            "description": "<p>Error message</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>empty</p>"
+          }
+        ]
+      },
+      "examples": [{
+        "title": "Error-Response: ",
+        "content": "{\"message\": \"Role Bindings not found\", \"data\": {}}",
+        "type": "object"
+      }]
+    },
+    "filename": "routes/api/auth.js",
+    "groupTitle": "Authentication",
+    "sampleRequest": [{
+      "url": "https://api.mchacks.ca/api/auth/rolebindings/:id"
+    }]
+  },
+  {
+    "type": "get",
     "url": "/auth/roles",
     "title": "get roles",
     "name": "getRoles",
@@ -963,78 +1035,6 @@
     "groupTitle": "Authentication",
     "sampleRequest": [{
       "url": "https://api.mchacks.ca/api/auth/password/reset"
-    }]
-  },
-  {
-    "type": "get",
-    "url": "/auth/rolebindings/:id",
-    "title": "retrieve rolebindings for a user given by their user id :id",
-    "name": "getRoleBindings",
-    "group": "Auth",
-    "version": "0.0.8",
-    "parameter": {
-      "fields": {
-        "param": [{
-          "group": "param",
-          "type": "ObjectId",
-          "optional": false,
-          "field": "id",
-          "description": "<p>MongoId of an account</p>"
-        }]
-      }
-    },
-    "success": {
-      "fields": {
-        "Success 200": [{
-            "group": "Success 200",
-            "type": "string",
-            "optional": false,
-            "field": "message",
-            "description": "<p>Success message</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "object",
-            "optional": false,
-            "field": "data",
-            "description": "<p>Rolebindings object</p>"
-          }
-        ]
-      },
-      "examples": [{
-        "title": "Success-Response: ",
-        "content": "{\n               \"message\": \"Successfully retrieved role bindings\",\n               \"data\": {\n                   accountId:\"5beca4ab2e069a34f91697b2\"\n                   id:\"5beca4ae2e069a34f91698b1\"\n                   roles: [\n                       {\n                           _id:\"5beca4ab2e069a34f91697d9\",\n                           name:\"hacker\",\n                           routes: [\n                               {_id: \"5beca4ae2e069a34f9169852\", requestType: \"POST\", uri: \"/api/auth/login\"},\n                               {_id: \"5beca4ae2e069a34f9169851\", requestType: \"POST\", uri: \"/api/auth/logout\"},\n                               {_id: \"5beca4ae2e069a34f9169850\", requestType: \"GET\", uri: \"/api/auth/rolebindings/:self\"},\n                               {_id: \"5beca4ae2e069a34f916984f\", requestType: \"GET\", uri: \"/api/account/self\"},\n                               {_id: \"5beca4ae2e069a34f916984e\", requestType: \"GET\", uri: \"/api/account/:self\"},\n                               {_id: \"5beca4ae2e069a34f916984d\", requestType: \"PATCH\", uri: \"/api/account/:self\"},\n                               {_id: \"5beca4ae2e069a34f916984c\", requestType: \"POST\", uri: \"/api/hacker/\"},\n                               {_id: \"5beca4ae2e069a34f916984b\", requestType: \"GET\", uri: \"/api/hacker/:self\"},\n                               {_id: \"5beca4ae2e069a34f916984a\", requestType: \"GET\", uri: \"/api/hacker/:self/resume\"},\n                               {_id: \"5beca4ae2e069a34f9169849\", requestType: \"PATCH\", uri: \"/api/hacker/:self\"}\n                           ]\n                       }\n                   ]\n               }\n           }",
-        "type": "object"
-      }]
-    },
-    "error": {
-      "fields": {
-        "Error 4xx": [{
-            "group": "Error 4xx",
-            "type": "string",
-            "optional": false,
-            "field": "message",
-            "description": "<p>Error message</p>"
-          },
-          {
-            "group": "Error 4xx",
-            "type": "object",
-            "optional": false,
-            "field": "data",
-            "description": "<p>empty</p>"
-          }
-        ]
-      },
-      "examples": [{
-        "title": "Error-Response: ",
-        "content": "{\"message\": \"Role Bindings not found\", \"data\": {}}",
-        "type": "object"
-      }]
-    },
-    "filename": "routes/api/auth.js",
-    "groupTitle": "Auth",
-    "sampleRequest": [{
-      "url": "https://api.mchacks.ca/api/auth/rolebindings/:id"
     }]
   },
   {

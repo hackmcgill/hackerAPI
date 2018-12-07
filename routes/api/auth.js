@@ -202,7 +202,7 @@ module.exports = {
         /**
          * @api {get} /auth/rolebindings/:id retrieve rolebindings for a user given by their user id :id
          * @apiName getRoleBindings
-         * @apiGroup Auth
+         * @apiGroup Authentication
          * @apiVersion 0.0.8
          * 
          * @apiParam (param) {ObjectId} id MongoId of an account
