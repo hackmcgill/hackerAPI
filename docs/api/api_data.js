@@ -1457,8 +1457,8 @@ define({
     },
     {
       "type": "patch",
-      "url": "/hacker/confirmation/:id Allows confirmation of hacker attendence if they are accepted.",
-      "title": "Also allows change from 'confirmed' back to 'accepted'",
+      "url": "/hacker/confirmation/:id",
+      "title": "Allows confirmation of hacker attendence if they are accepted. Also allows change from 'confirmed' back to 'accepted'",
       "name": "patchHackerConfirmed",
       "group": "Hacker",
       "version": "0.0.9",
@@ -1507,7 +1507,7 @@ define({
       "filename": "routes/api/hacker.js",
       "groupTitle": "Hacker",
       "sampleRequest": [{
-        "url": "https://api.mchacks.ca/api/hacker/confirmation/:id Allows confirmation of hacker attendence if they are accepted."
+        "url": "https://api.mchacks.ca/api/hacker/confirmation/:id"
       }]
     },
     {
