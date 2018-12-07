@@ -42,7 +42,7 @@ module.exports = {
                             "pronoun":"he/him",
                             "email":"theo@klein.com",
                             "dietaryRestrictions":["Halal"],
-                            "phoneNumber":19173737889,
+                            "phoneNumber":1234567890,
                         	"shirtSize":"S",
                             "birthDate":Date("10/30/1997")
                     }
@@ -83,7 +83,7 @@ module.exports = {
                     "email":"theo@klein.com",
                     "password":"hunter2",
                     "dietaryRestrictions":["Halal"],
-                    "phoneNumber":19173737889,
+                    "phoneNumber":1234567890,
                     "shirtSize":"S",
                     "birthDate":"10/30/1997"
          *      }
@@ -100,7 +100,7 @@ module.exports = {
                             "pronoun":"he/him",
                             "email":"theo@klein.com",
                             "dietaryRestrictions":["Halal"],
-                            "phoneNumber":19173737889,
+                            "phoneNumber":1234567890,
                         	"shirtSize":"S",
                             "birthDate":Date("10/30/1997")
                     }
@@ -171,7 +171,7 @@ module.exports = {
                             "pronoun":"he/him",
                             "email":"theo@klein.com",
                             "dietaryRestrictions":["Halal"],
-                            "phoneNumber":19173737889,
+                            "phoneNumber":1234567890,
                         	"shirtSize":"M",
                             "birthDate":Date("10/30/1997")
                     }
@@ -218,7 +218,7 @@ module.exports = {
                         "pronoun":"he/him",
                         "email":"theo@klein.com",
                         "dietaryRestrictions":["Halal"],
-                        "phoneNumber":19173737889,
+                        "phoneNumber":1234567890,
                         "shirtSize":"S",
                         "birthDate":Date("10/30/1997")
                     }
