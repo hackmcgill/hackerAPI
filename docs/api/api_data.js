@@ -38,7 +38,7 @@ define({
             },
             {
               "group": "body",
-              "type": "String",
+              "type": "String[]",
               "optional": false,
               "field": "dietaryRestrictions",
               "description": "<p>Any dietary restrictions for the user. 'None' if there are no restrictions</p>"
@@ -386,7 +386,7 @@ define({
             },
             {
               "group": "body",
-              "type": "String",
+              "type": "String[]",
               "optional": true,
               "field": "dietaryRestrictions",
               "description": "<p>Any dietary restrictions for the user. 'None' if there are no restrictions</p>"

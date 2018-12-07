@@ -69,7 +69,7 @@ module.exports = {
          * @apiParam (body) {String} lastName Last name of the account creator.
          * @apiParam (body) {String} pronoun the pronoun of the account creator.
          * @apiParam (body) {String} email Email of the account.
-         * @apiParam (body) {String} dietaryRestrictions Any dietary restrictions for the user. 'None' if there are no restrictions
+         * @apiParam (body) {String[]} dietaryRestrictions Any dietary restrictions for the user. 'None' if there are no restrictions
          * @apiParam (body) {String} shirtSize Size of the shirt that the user will receive.
          * @apiParam (body) {String} password The password of the account.
          * @apiParam (body) {String} birthDate a Date parsable string.
@@ -150,7 +150,7 @@ module.exports = {
          * @apiParam (body) {String} [lastName] Last name of the account creator.
          * @apiParam (body) {String} [pronoun] the pronoun of the account creator.
          * @apiParam (body) {String} [email] Email of the account.
-         * @apiParam (body) {String} [dietaryRestrictions] Any dietary restrictions for the user. 'None' if there are no restrictions
+         * @apiParam (body) {String[]} [dietaryRestrictions] Any dietary restrictions for the user. 'None' if there are no restrictions
          * @apiParam (body) {String} [shirtSize] Size of the shirt that the user will receive.
          * @apiParam (body) {String} [birthDate] a Date parsable string.
          * @apiParam (body) {Number} [phoneNumber] the user's phone number, represented as a string.
