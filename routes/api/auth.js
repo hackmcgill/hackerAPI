@@ -126,7 +126,7 @@ module.exports = {
             Middleware.parseBody.middleware,
 
             Middleware.Auth.changePassword,
-            Controllers.Auth.resetPassword,
+            Controllers.Auth.resetPassword
         );
 
         //untested
@@ -220,16 +220,16 @@ module.exports = {
                                 _id:"5beca4ab2e069a34f91697d9",
                                 name:"hacker",
                                 routes: [
-                                    0:Object {_id: "5beca4ae2e069a34f9169852", requestType: "POST", uri: "/api/auth/login"},
-                                    1:Object {_id: "5beca4ae2e069a34f9169851", requestType: "POST", uri: "/api/auth/logout"},
-                                    2:Object {_id: "5beca4ae2e069a34f9169850", requestType: "GET", uri: "/api/auth/rolebindings/:self"},
-                                    3:Object {_id: "5beca4ae2e069a34f916984f", requestType: "GET", uri: "/api/account/self"},
-                                    4:Object {_id: "5beca4ae2e069a34f916984e", requestType: "GET", uri: "/api/account/:self"},
-                                    5:Object {_id: "5beca4ae2e069a34f916984d", requestType: "PATCH", uri: "/api/account/:self"},
-                                    6:Object {_id: "5beca4ae2e069a34f916984c", requestType: "POST", uri: "/api/hacker/"},
-                                    7:Object {_id: "5beca4ae2e069a34f916984b", requestType: "GET", uri: "/api/hacker/:self"},
-                                    8:Object {_id: "5beca4ae2e069a34f916984a", requestType: "GET", uri: "/api/hacker/:self/resume"},
-                                    9:Object {_id: "5beca4ae2e069a34f9169849", requestType: "PATCH", uri: "/api/hacker/:self"}
+                                    {_id: "5beca4ae2e069a34f9169852", requestType: "POST", uri: "/api/auth/login"},
+                                    {_id: "5beca4ae2e069a34f9169851", requestType: "POST", uri: "/api/auth/logout"},
+                                    {_id: "5beca4ae2e069a34f9169850", requestType: "GET", uri: "/api/auth/rolebindings/:self"},
+                                    {_id: "5beca4ae2e069a34f916984f", requestType: "GET", uri: "/api/account/self"},
+                                    {_id: "5beca4ae2e069a34f916984e", requestType: "GET", uri: "/api/account/:self"},
+                                    {_id: "5beca4ae2e069a34f916984d", requestType: "PATCH", uri: "/api/account/:self"},
+                                    {_id: "5beca4ae2e069a34f916984c", requestType: "POST", uri: "/api/hacker/"},
+                                    {_id: "5beca4ae2e069a34f916984b", requestType: "GET", uri: "/api/hacker/:self"},
+                                    {_id: "5beca4ae2e069a34f916984a", requestType: "GET", uri: "/api/hacker/:self/resume"},
+                                    {_id: "5beca4ae2e069a34f9169849", requestType: "PATCH", uri: "/api/hacker/:self"}
                                 ]
                             }
                         ]
@@ -265,13 +265,13 @@ module.exports = {
          * @apiError {object} data empty
          * @apiErrorExample {json} Error-Response:
          *       HTTP/1.1 422
-         *      {"message": "Account already confirmed, "data": {}}
+         *      {"message": "Account already confirmed", "data": {}}
          * 
          * @apiError {string} message Error message
          * @apiError {object} data empty
          * @apiErrorExample {json} Error-Response:
          *       HTTP/1.1 428
-         *      {"message": "Account already confirmed, "data": {}}
+         *      {"message": "Account confirmation token does not exist", "data": {}}
          * 
          */
         authRouter.route("/confirm/resend").get(
