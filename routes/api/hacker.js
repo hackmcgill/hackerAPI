@@ -48,7 +48,7 @@ module.exports = {
             Middleware.Auth.ensureAuthorized(),
 
             Middleware.Hacker.findSelf,
-            Controllers.Hacker.showHacker,
+            Controllers.Hacker.showHacker
         );
 
         /**
@@ -113,6 +113,7 @@ module.exports = {
             Middleware.Hacker.addDefaultStatus,
             Middleware.Auth.createRoleBindings(CONSTANTS.HACKER),
             Middleware.Hacker.createHacker,
+            Middleware.Hacker.sendAppliedStatusEmail,
             Controllers.Hacker.createdHacker
         );
         /**

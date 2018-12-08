@@ -243,6 +243,26 @@ async function sendStatusUpdateEmail(req, res, next) {
         Services.Email.sendStatusUpdate(account.firstName, account.email, req.body.status, next);
     }
 }
+
+/**
+ * Sends an email telling the user that they have applied. This is used exclusively when we POST a hacker.
+ * @param {{body: {hacker: {accountId: string}}}} req 
+ * @param {*} res 
+ * @param {(err?:*)=>void} next 
+ */
+async function sendAppliedStatusEmail(req, res, next) {
+    const hacker = req.body.hacker;
+    const account = await Services.Account.findById(hacker.accountId);
+    if (!account) {
+        return next({
+            status: 500,
+            message: Constants.Error.GENERIC_500_MESSAGE,
+            error: {}
+        });
+    }
+    Services.Email.sendStatusUpdate(account.firstName, account.email, Constants.General.HACKER_STATUS_APPLIED, next);
+}
+
 /**
  * If the current hacker's status is Constants.HACKER_STATUS_NONE, and the hacker's application is completed,
  * then it will change the status of the hacker to Constants.General.HACKER_STATUS_APPLIED, and then email the hacker to 
@@ -450,6 +470,7 @@ module.exports = {
     uploadResume: Middleware.Util.asyncMiddleware(uploadResume),
     downloadResume: Middleware.Util.asyncMiddleware(downloadResume),
     sendStatusUpdateEmail: Middleware.Util.asyncMiddleware(sendStatusUpdateEmail),
+    sendAppliedStatusEmail: Middleware.Util.asyncMiddleware(sendAppliedStatusEmail),
     updateHacker: Middleware.Util.asyncMiddleware(updateHacker),
     validateConfirmedStatus: Middleware.Util.asyncMiddleware(validateConfirmedStatus),
     checkDuplicateAccountLinks: Middleware.Util.asyncMiddleware(checkDuplicateAccountLinks),
