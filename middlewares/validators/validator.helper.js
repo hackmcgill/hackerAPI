@@ -328,7 +328,6 @@ function applicationValidator(fieldLocation, fieldname, optional = true) {
 
     //helper object to iterate through the items in the application and track which items are not valid.
     const hasValid = {
-        resume: false,
         github: false,
         dropler: false,
         personal: false,
