@@ -345,7 +345,6 @@ function applicationValidator(fieldLocation, fieldname, optional = true) {
             checkFalsy: true
         }).custom(app => {
             const jobInterests = Constants.JOB_INTERESTS;
-            hasValid.resume = (!app.portfolioURL.resume || typeof (app.portfolioURL.resume) === "string");
             hasValid.github = (!app.portfolioURL.github || typeof (app.portfolioURL.github) === "string");
             hasValid.dropler = (!app.portfolioURL.dropler || typeof (app.portfolioURL.dropler) === "string");
             hasValid.personal = (!app.portfolioURL.personal || typeof (app.portfolioURL.personal) === "string");
@@ -365,7 +364,6 @@ function applicationValidator(fieldLocation, fieldname, optional = true) {
     } else {
         return application.custom(app => {
             const jobInterests = Constants.JOB_INTERESTS;
-            hasValid.resume = (typeof (app.portfolioURL.resume) === "string");
             hasValid.github = (!app.portfolioURL.github || typeof (app.portfolioURL.github) === "string");
             hasValid.dropler = (!app.portfolioURL.dropler || typeof (app.portfolioURL.dropler) === "string");
             hasValid.personal = (!app.portfolioURL.personal || typeof (app.portfolioURL.personal) === "string");
@@ -441,7 +439,7 @@ function jwtValidator(fieldLocation, fieldname, jwtSecret, optional = true) {
  * @param {"query" | "body" | "header" | "param"} fieldLocation the location where the field should be found
  * @param {string} fieldname name of the field that needs to be validated.
  */
-function searchModelValidator(fieldLocation, fieldName){
+function searchModelValidator(fieldLocation, fieldName) {
     const paramChain = setProperValidationChainBuilder(fieldLocation, fieldName, "Must be a valid searchable model");
     return paramChain.exists().withMessage("Model must be provided")
         .isLowercase().withMessage("Model must be lower case")
@@ -456,9 +454,11 @@ function searchModelValidator(fieldLocation, fieldName){
  */
 function searchValidator(fieldLocation, fieldname) {
     const search = setProperValidationChainBuilder(fieldLocation, fieldname, "Invalid search query");
-    
+
     return search.exists().withMessage("Search query must be provided")
-        .custom((value, {req}) => {
+        .custom((value, {
+            req
+        }) => {
             //value is a serialized JSON
             value = JSON.parse(value);
             let modelString = req.params.model
@@ -506,7 +506,9 @@ function searchSortValidator(fieldLocation, fieldName) {
     return searchSort.optional({
             checkFalsy: true
         })
-        .custom((value, {req}) => {
+        .custom((value, {
+            req
+        }) => {
             let modelString = req.params.model
             if (modelString.equals("hacker")) {
                 model = Models.Hacker;

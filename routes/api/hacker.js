@@ -69,7 +69,6 @@ module.exports = {
          * @apiParamExample {Json} application: 
          *      {
          *          "portfolioURL": {
-         *              "resume": "..."
          *              "github": "...",
          *              "dropler": "...",
          *              "personal": "...",
@@ -194,7 +193,6 @@ module.exports = {
          * @apiParamExample {Json} application: 
          *      {
          *          "portfolioURL": {
-         *              "resume": "..."
          *              "github": "...",
          *              "dropler": "...",
          *              "personal": "...",
