@@ -34,6 +34,7 @@ const HackerSchema = new mongoose.Schema({
             //gcloud bucket link
             resume: {
                 type: String,
+                default: ""
             },
             github: {
                 type: String
@@ -118,10 +119,9 @@ HackerSchema.methods.isApplicationComplete = function () {
  */
 HackerSchema.statics.searchableField = function (field) {
     const schemaField = HackerSchema.path(field)
-    if(schemaField != undefined){
+    if (schemaField != undefined) {
         return schemaField.instance
-    }
-    else{
+    } else {
         return null;
     }
 };
