@@ -205,7 +205,7 @@ async function uploadResume(req, res, next) {
 async function downloadResume(req, res, next) {
     const hacker = await Services.Hacker.findById(req.body.id);
     if (hacker && hacker.application && hacker.application.portfolioURL && hacker.application.portfolioURL.resume) {
-        res.body.resume = await Services.Storage.download(hacker.application.portfolioURL.resume);
+        req.body.resume = await Services.Storage.download(hacker.application.portfolioURL.resume);
     } else {
         return next({
             status: 404,
