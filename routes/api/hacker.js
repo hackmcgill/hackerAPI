@@ -35,7 +35,32 @@ module.exports = {
          * @apiSuccessExample {object} Success-Response: 
          *      {
                     "message": "Hacker found by logged in account id", 
-                    "data": {HackerObject}
+                    "data": {
+                        "id":"5bff4d736f86be0a41badb91",
+                        "application":{
+                            "portfolioURL":{
+                                "resume":"resumes/1543458163426-5bff4d736f86be0a41badb91",
+                                "github":"https://github.com/abcd",
+                                "dropler":"https://dribbble.com/abcd",
+                                "personal":"https://www.hi.com/",
+                                "linkedIn":"https://linkedin.com/in/abcd",
+                                "other":"https://github.com/hackmcgill/hackerAPI/issues/168"
+                            },
+                            "jobInterest":"Internship",
+                            "skills":["Javascript","Typescript"],
+                            "comments":"hi!",
+                            "essay":"Pls accept me"
+                        },
+                        "status":"Applied",
+                        "ethnicity":["White or Caucasian"," Asian or Pacific Islander"],
+                        "accountId":"5bff2a35e533b0f6562b4998",
+                        "school":"McPherson College",
+                        "gender":"Female",
+                        "needsBus":false,
+                        "major":"Accounting",
+                        "graduationYear":2019,
+                        "codeOfConduct":true,
+                    }  
                 }
 
          * @apiError {string} message Error message
@@ -68,18 +93,19 @@ module.exports = {
          * @apiParam (body) {Json} application The hacker's application. Resume and jobInterest fields are required.
          * @apiParamExample {Json} application: 
          *      {
-         *          "portfolioURL": {
-         *              "github": "...",
-         *              "dropler": "...",
-         *              "personal": "...",
-         *              "linkedIn": "...",
-         *              "other": "..."
-         *          },
-         *          "jobInterest": "...",
-         *          "skills": ["CSS", "HTML"],    
-         *          "comments": "...",
-         *          "essay": "...",
-         *          "team": [id1, id2],
+                    "application":{
+                        "portfolioURL":{
+                            "resume":"resumes/1543458163426-5bff4d736f86be0a41badb91",
+                            "github":"https://github.com/abcd",
+                            "dropler":"https://dribbble.com/abcd",
+                            "personal":"https://www.hi.com/",
+                            "linkedIn":"https://linkedin.com/in/abcd",
+                            "other":"https://github.com/hackmcgill/hackerAPI/issues/168"
+                        },
+                        "jobInterest":"Internship",
+                        "skills":["Javascript","Typescript"],
+                        "comments":"hi!",
+                        "essay":"Pls accept me"
          *      }
          * 
          * @apiSuccess {string} message Success message
@@ -87,7 +113,32 @@ module.exports = {
          * @apiSuccessExample {object} Success-Response: 
          *      {
          *          "message": "Hacker creation successful", 
-         *          "data": {...}
+         *          "data": {
+                        "id":"5bff4d736f86be0a41badb91",
+                        "application":{
+                            "portfolioURL":{
+                                "resume":"resumes/1543458163426-5bff4d736f86be0a41badb91",
+                                "github":"https://github.com/abcd",
+                                "dropler":"https://dribbble.com/abcd",
+                                "personal":"https://www.hi.com/",
+                                "linkedIn":"https://linkedin.com/in/abcd",
+                                "other":"https://github.com/hackmcgill/hackerAPI/issues/168"
+                            },
+                            "jobInterest":"Internship",
+                            "skills":["Javascript","Typescript"],
+                            "comments":"hi!",
+                            "essay":"Pls accept me"
+                        },
+                        "status":"Applied",
+                        "ethnicity":["White or Caucasian"," Asian or Pacific Islander"],
+                        "accountId":"5bff2a35e533b0f6562b4998",
+                        "school":"McPherson College",
+                        "gender":"Female",
+                        "needsBus":false,
+                        "major":"Accounting",
+                        "graduationYear":2019,
+                        "codeOfConduct":true,
+         *          }
          *      }
 
          * @apiError {string} message Error message
@@ -121,14 +172,14 @@ module.exports = {
          * @apiGroup Hacker
          * @apiVersion 0.0.9
          * 
-         * @apiParam (body) {String} [status] Status of the hacker's application
+         * @apiParam (body) {string} [status] Status of the hacker's application ("None"|"Applied"|"Waitlisted"|"Confirmed"|"Cancelled"|"Checked-in")
          * @apiSuccess {string} message Success message
          * @apiSuccess {object} data Hacker object
          * @apiSuccessExample {object} Success-Response: 
          *      {
          *          "message": "Changed hacker information", 
          *          "data": {
-         *              "status": "accepted"
+         *              "status": "Accepted"
          *          }
          *      }
          * @apiPermission Administrator
@@ -146,12 +197,11 @@ module.exports = {
         );
 
         /**
-         * @api {patch} /hacker/checkin/:id update a hacker's status to be 'Checked-in'.
+         * @api {patch} /hacker/checkin/:id update a hacker's status to be 'Checked-in'. Note that the Hacker must eitehr be Accepted or Confirmed.
          * @apiName checkinHacker
          * @apiGroup Hacker
          * @apiVersion 0.0.9
-         * 
-         * @apiParam (body) {String} [status] Check-in status
+         * @apiParam (body) {string} [status] Check-in status. "Checked-in"
          * @apiSuccess {string} message Success message
          * @apiSuccess {object} data Hacker object
          * @apiSuccessExample {object} Success-Response: 
@@ -193,26 +243,50 @@ module.exports = {
          * @apiParam (body) {Json} [application] The hacker's application
          * @apiParamExample {Json} application: 
          *      {
-         *          "portfolioURL": {
-         *              "github": "...",
-         *              "dropler": "...",
-         *              "personal": "...",
-         *              "linkedIn": "...",
-         *              "other": "..."
-         *          },
-         *          "jobInterest": "...",
-         *          "skills": ["CSS", "HTML"],    
-         *          "comments": "...",
-         *          "essay": "...",
-         *          "team": [id1, id2],
-         *      }
+                    "portfolioURL":{
+                        "resume":"resumes/1543458163426-5bff4d736f86be0a41badb91",
+                        "github":"https://github.com/abcd",
+                        "dropler":"https://dribbble.com/abcd",
+                        "personal":"https://www.hi.com/",
+                        "linkedIn":"https://linkedin.com/in/abcd",
+                        "other":"https://github.com/hackmcgill/hackerAPI/issues/168"
+                    },
+                    "jobInterest":"Internship",
+                    "skills":["Javascript","Typescript"],
+                    "comments":"hi!",
+                    "essay":"Pls accept me"
+                }
          * 
          * @apiSuccess {string} message Success message
          * @apiSuccess {object} data Hacker object
          * @apiSuccessExample {object} Success-Response: 
          *      {
          *          "message": "Changed hacker information", 
-         *          "data": {...}
+         *          "data": {
+                        "id":"5bff4d736f86be0a41badb91",
+                        "application":{
+                            "portfolioURL":{
+                                "resume":"resumes/1543458163426-5bff4d736f86be0a41badb91",
+                                "github":"https://github.com/abcd",
+                                "dropler":"https://dribbble.com/abcd",
+                                "personal":"https://www.hi.com/",
+                                "linkedIn":"https://linkedin.com/in/abcd",
+                                "other":"https://github.com/hackmcgill/hackerAPI/issues/168"
+                            },
+                            "jobInterest":"Internship",
+                            "skills":["Javascript","Typescript"],
+                            "comments":"hi!",
+                            "essay":"Pls accept me"
+                        },
+                        "status":"Applied",
+                        "ethnicity":["White or Caucasian"," Asian or Pacific Islander"],
+                        "accountId":"5bff2a35e533b0f6562b4998",
+                        "school":"McPherson College",
+                        "gender":"Female",
+                        "needsBus":false,
+                        "major":"Accounting",
+                        "graduationYear":2019,
+                        "codeOfConduct":true,
          *      }
          * @apiError {string} message Error message
          * @apiError {object} data empty
@@ -247,7 +321,32 @@ module.exports = {
          * @apiSuccessExample {object} Success-Response: 
          *      {
                     "message": "Successfully retrieved hacker information", 
-                    "data": {...}
+                    "data": {
+                        "id":"5bff4d736f86be0a41badb91",
+                        "application":{
+                            "portfolioURL":{
+                                "resume":"resumes/1543458163426-5bff4d736f86be0a41badb91",
+                                "github":"https://github.com/abcd",
+                                "dropler":"https://dribbble.com/abcd",
+                                "personal":"https://www.hi.com/",
+                                "linkedIn":"https://linkedin.com/in/abcd",
+                                "other":"https://github.com/hackmcgill/hackerAPI/issues/168"
+                            },
+                            "jobInterest":"Internship",
+                            "skills":["Javascript","Typescript"],
+                            "comments":"hi!",
+                            "essay":"Pls accept me"
+                        },
+                        "status":"Applied",
+                        "ethnicity":["White or Caucasian"," Asian or Pacific Islander"],
+                        "accountId":"5bff2a35e533b0f6562b4998",
+                        "school":"McPherson College",
+                        "gender":"Female",
+                        "needsBus":false,
+                        "major":"Accounting",
+                        "graduationYear":2019,
+                        "codeOfConduct":true,
+                    }
                 }
 
          * @apiError {String} message Error message
@@ -339,13 +438,13 @@ module.exports = {
             );
 
         /**
-         * @api {patch} /hacker/confirmation/:id Allows confirmation of hacker attendence if they are accepted. 
-         * Also allows change from 'confirmed' back to 'accepted'
+         * @api {patch} /hacker/confirmation/:id
+         * Allows confirmation of hacker attendence if they are accepted. Also allows change from 'confirmed' back to 'accepted'
          * @apiName patchHackerConfirmed
          * @apiGroup Hacker
          * @apiVersion 0.0.9
          * 
-         * @apiParam (body) {String} [status] The new status of the hacker. 'Accepted' or 'Confirmed'
+         * @apiParam (body) {string} [status] The new status of the hacker. "Accepted" or "Confirmed"
          * @apiSuccess {string} message Success message
          * @apiSuccess {object} data Hacker object
          * @apiSuccessExample {object} Success-Response: 

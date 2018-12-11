@@ -35,11 +35,20 @@ module.exports = {
          * @apiSuccessExample {object} Success-Response: 
          *      {
                     "message": "Account found by user email", 
-                    "data": {AccountObject}
+                    "data": {
+                        	"id": ObjectId("5bff8b9f3274cf001bc71048"),
+                        	"firstName": "Theo",
+                            "lastName":"Klein",
+                            "pronoun":"he/him",
+                            "email":"theo@klein.com",
+                            "dietaryRestrictions":["Halal"],
+                            "phoneNumber":1234567890,
+                        	"shirtSize":"S",
+                            "birthDate":Date("10/30/1997")
+                    }
                 }
-
          * @apiError {string} message Error message
-         * @apiError {object} data empty
+         * @apiError {object} data empty object
          * @apiErrorExample {object} Error-Response: 
          *      {"message": "Account not found", "data": {}}
          */
@@ -60,24 +69,52 @@ module.exports = {
          * @apiParam (body) {String} lastName Last name of the account creator.
          * @apiParam (body) {String} pronoun the pronoun of the account creator.
          * @apiParam (body) {String} email Email of the account.
-         * @apiParam (body) {String} dietaryRestrictions Any dietary restrictions for the user. 'None' if there are no restrictions
+         * @apiParam (body) {String[]} dietaryRestrictions Any dietary restrictions for the user. 'None' if there are no restrictions
          * @apiParam (body) {String} shirtSize Size of the shirt that the user will receive.
          * @apiParam (body) {String} password The password of the account.
          * @apiParam (body) {String} birthDate a Date parsable string.
          * @apiParam (body) {Number} phoneNumber the user's phone number, represented as a string.
+         * 
+         * @apiParamExample {json} Request-Example:
+         *      { 
+                    "firstName": "Theo",
+                    "lastName":"Klein",
+                    "pronoun":"he/him",
+                    "email":"theo@klein.com",
+                    "password":"hunter2",
+                    "dietaryRestrictions":["Halal"],
+                    "phoneNumber":1234567890,
+                    "shirtSize":"S",
+                    "birthDate":"10/30/1997"
+         *      }
          * 
          * @apiSuccess {string} message Success message
          * @apiSuccess {object} data Account object
          * @apiSuccessExample {object} Success-Response: 
          *      {
                     "message": "Account creation successful", 
-                    "data": {...}
+                    "data": {
+                            "id": ObjectId("5bff8b9f3274cf001bc71048"),
+                        	"firstName": "Theo",
+                            "lastName":"Klein",
+                            "pronoun":"he/him",
+                            "email":"theo@klein.com",
+                            "dietaryRestrictions":["Halal"],
+                            "phoneNumber":1234567890,
+                        	"shirtSize":"S",
+                            "birthDate":Date("10/30/1997")
+                    }
                 }
 
          * @apiError {string} message Error message
          * @apiError {object} data empty
          * @apiErrorExample {object} Error-Response: 
-         *      {"message": "Account already exists", "data": {}}
+         *      {
+         *         "message": "Account already exists", 
+         *          "data": {
+         *              "route": "/"
+         *          }
+         *      }
          */
         accountRouter.route("/").post(
             // validators
@@ -113,18 +150,31 @@ module.exports = {
          * @apiParam (body) {String} [lastName] Last name of the account creator.
          * @apiParam (body) {String} [pronoun] the pronoun of the account creator.
          * @apiParam (body) {String} [email] Email of the account.
-         * @apiParam (body) {String} [dietaryRestrictions] Any dietary restrictions for the user. 'None' if there are no restrictions
+         * @apiParam (body) {String[]} [dietaryRestrictions] Any dietary restrictions for the user. 'None' if there are no restrictions
          * @apiParam (body) {String} [shirtSize] Size of the shirt that the user will receive.
-         * @apiParam (body) {String} [passowrd] The password of the account.
          * @apiParam (body) {String} [birthDate] a Date parsable string.
          * @apiParam (body) {Number} [phoneNumber] the user's phone number, represented as a string.
+
+         * @apiParamExample {json} Request-Example:
+         *      { "shirtSize": "M" }
+         * 
 
          * @apiSuccess {string} message Success message
          * @apiSuccess {object} data Account object
          * @apiSuccessExample {object} Success-Response: 
          *      {
                     "message": "Changed account information", 
-                    "data": {...}
+                    "data": {
+                            "id": ObjectId("5bff8b9f3274cf001bc71048"),
+                        	"firstName": "Theo",
+                            "lastName":"Klein",
+                            "pronoun":"he/him",
+                            "email":"theo@klein.com",
+                            "dietaryRestrictions":["Halal"],
+                            "phoneNumber":1234567890,
+                        	"shirtSize":"M",
+                            "birthDate":Date("10/30/1997")
+                    }
                 }
 
          * @apiError {string} message Error message
@@ -161,7 +211,17 @@ module.exports = {
          * @apiSuccessExample {object} Success-Response: 
          *      {
                     "message": "Account found by user id", 
-                    "data": {AccountObject}
+                    "data": {
+                        "id": ObjectId("5bff8b9f3274cf001bc71048"),
+                        "firstName": "Theo",
+                        "lastName":"Klein",
+                        "pronoun":"he/him",
+                        "email":"theo@klein.com",
+                        "dietaryRestrictions":["Halal"],
+                        "phoneNumber":1234567890,
+                        "shirtSize":"S",
+                        "birthDate":Date("10/30/1997")
+                    }
                 }
 
          * @apiError {string} message Error message
@@ -193,9 +253,18 @@ module.exports = {
          * @apiSuccess {object} data Account object
          * @apiSuccessExample {object} Success-Response: 
          *      {
-                    "message": "Successfully invited user  ", 
+                    "message": "Successfully invited user", 
                     "data": {}
                 }
+         * @apiError {string} message Error message
+         * @apiError {object} data Error object
+         * @apiErrorExample {object} Error-Response:
+         * {
+                "message": "Invalid Authentication",
+                "data": {
+                    "route": "/invite"
+                }
+            }
          */
         accountRouter.route("/invite").post(
             Middleware.Auth.ensureAuthenticated(),

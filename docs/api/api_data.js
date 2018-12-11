@@ -38,7 +38,7 @@ define({
             },
             {
               "group": "body",
-              "type": "String",
+              "type": "String[]",
               "optional": false,
               "field": "dietaryRestrictions",
               "description": "<p>Any dietary restrictions for the user. 'None' if there are no restrictions</p>"
@@ -72,7 +72,12 @@ define({
               "description": "<p>the user's phone number, represented as a string.</p>"
             }
           ]
-        }
+        },
+        "examples": [{
+          "title": "Request-Example:",
+          "content": "{ \n               \"firstName\": \"Theo\",\n               \"lastName\":\"Klein\",\n               \"pronoun\":\"he/him\",\n               \"email\":\"theo@klein.com\",\n               \"password\":\"hunter2\",\n               \"dietaryRestrictions\":[\"Halal\"],\n               \"phoneNumber\":1234567890,\n               \"shirtSize\":\"S\",\n               \"birthDate\":\"10/30/1997\"\n}",
+          "type": "json"
+        }]
       },
       "success": {
         "fields": {
@@ -94,7 +99,7 @@ define({
         },
         "examples": [{
           "title": "Success-Response: ",
-          "content": "{\n               \"message\": \"Account creation successful\", \n               \"data\": {...}\n           }",
+          "content": "{\n               \"message\": \"Account creation successful\", \n               \"data\": {\n                       \"id\": ObjectId(\"5bff8b9f3274cf001bc71048\"),\n                   \t\"firstName\": \"Theo\",\n                       \"lastName\":\"Klein\",\n                       \"pronoun\":\"he/him\",\n                       \"email\":\"theo@klein.com\",\n                       \"dietaryRestrictions\":[\"Halal\"],\n                       \"phoneNumber\":1234567890,\n                   \t\"shirtSize\":\"S\",\n                       \"birthDate\":Date(\"10/30/1997\")\n               }\n           }",
           "type": "object"
         }]
       },
@@ -118,7 +123,7 @@ define({
         },
         "examples": [{
           "title": "Error-Response: ",
-          "content": "{\"message\": \"Account already exists\", \"data\": {}}",
+          "content": "{\n   \"message\": \"Account already exists\", \n    \"data\": {\n        \"route\": \"/\"\n    }\n}",
           "type": "object"
         }]
       },
@@ -166,7 +171,7 @@ define({
         },
         "examples": [{
           "title": "Success-Response: ",
-          "content": "{\n               \"message\": \"Account found by user id\", \n               \"data\": {AccountObject}\n           }",
+          "content": "{\n               \"message\": \"Account found by user id\", \n               \"data\": {\n                   \"id\": ObjectId(\"5bff8b9f3274cf001bc71048\"),\n                   \"firstName\": \"Theo\",\n                   \"lastName\":\"Klein\",\n                   \"pronoun\":\"he/him\",\n                   \"email\":\"theo@klein.com\",\n                   \"dietaryRestrictions\":[\"Halal\"],\n                   \"phoneNumber\":1234567890,\n                   \"shirtSize\":\"S\",\n                   \"birthDate\":Date(\"10/30/1997\")\n               }\n           }",
           "type": "object"
         }]
       },
@@ -247,7 +252,31 @@ define({
         },
         "examples": [{
           "title": "Success-Response: ",
-          "content": "{\n               \"message\": \"Successfully invited user  \", \n               \"data\": {}\n           }",
+          "content": "{\n               \"message\": \"Successfully invited user\", \n               \"data\": {}\n           }",
+          "type": "object"
+        }]
+      },
+      "error": {
+        "fields": {
+          "Error 4xx": [{
+              "group": "Error 4xx",
+              "type": "string",
+              "optional": false,
+              "field": "message",
+              "description": "<p>Error message</p>"
+            },
+            {
+              "group": "Error 4xx",
+              "type": "object",
+              "optional": false,
+              "field": "data",
+              "description": "<p>Error object</p>"
+            }
+          ]
+        },
+        "examples": [{
+          "title": "Error-Response:",
+          "content": "{\n                \"message\": \"Invalid Authentication\",\n                \"data\": {\n                    \"route\": \"/invite\"\n                }\n            }",
           "type": "object"
         }]
       },
@@ -284,7 +313,7 @@ define({
         },
         "examples": [{
           "title": "Success-Response: ",
-          "content": "{\n               \"message\": \"Account found by user email\", \n               \"data\": {AccountObject}\n           }",
+          "content": "{\n               \"message\": \"Account found by user email\", \n               \"data\": {\n                   \t\"id\": ObjectId(\"5bff8b9f3274cf001bc71048\"),\n                   \t\"firstName\": \"Theo\",\n                       \"lastName\":\"Klein\",\n                       \"pronoun\":\"he/him\",\n                       \"email\":\"theo@klein.com\",\n                       \"dietaryRestrictions\":[\"Halal\"],\n                       \"phoneNumber\":1234567890,\n                   \t\"shirtSize\":\"S\",\n                       \"birthDate\":Date(\"10/30/1997\")\n               }\n           }",
           "type": "object"
         }]
       },
@@ -302,7 +331,7 @@ define({
               "type": "object",
               "optional": false,
               "field": "data",
-              "description": "<p>empty</p>"
+              "description": "<p>empty object</p>"
             }
           ]
         },
@@ -357,7 +386,7 @@ define({
             },
             {
               "group": "body",
-              "type": "String",
+              "type": "String[]",
               "optional": true,
               "field": "dietaryRestrictions",
               "description": "<p>Any dietary restrictions for the user. 'None' if there are no restrictions</p>"
@@ -368,13 +397,6 @@ define({
               "optional": true,
               "field": "shirtSize",
               "description": "<p>Size of the shirt that the user will receive.</p>"
-            },
-            {
-              "group": "body",
-              "type": "String",
-              "optional": true,
-              "field": "passowrd",
-              "description": "<p>The password of the account.</p>"
             },
             {
               "group": "body",
@@ -391,7 +413,12 @@ define({
               "description": "<p>the user's phone number, represented as a string.</p>"
             }
           ]
-        }
+        },
+        "examples": [{
+          "title": "Request-Example:",
+          "content": "{ \"shirtSize\": \"M\" }",
+          "type": "json"
+        }]
       },
       "success": {
         "fields": {
@@ -413,7 +440,7 @@ define({
         },
         "examples": [{
           "title": "Success-Response: ",
-          "content": "{\n               \"message\": \"Changed account information\", \n               \"data\": {...}\n           }",
+          "content": "{\n               \"message\": \"Changed account information\", \n               \"data\": {\n                       \"id\": ObjectId(\"5bff8b9f3274cf001bc71048\"),\n                   \t\"firstName\": \"Theo\",\n                       \"lastName\":\"Klein\",\n                       \"pronoun\":\"he/him\",\n                       \"email\":\"theo@klein.com\",\n                       \"dietaryRestrictions\":[\"Halal\"],\n                       \"phoneNumber\":1234567890,\n                   \t\"shirtSize\":\"M\",\n                       \"birthDate\":Date(\"10/30/1997\")\n               }\n           }",
           "type": "object"
         }]
       },
@@ -641,6 +668,78 @@ define({
     },
     {
       "type": "get",
+      "url": "/auth/rolebindings/:id",
+      "title": "retrieve rolebindings for a user given by their user id :id",
+      "name": "getRoleBindings",
+      "group": "Authentication",
+      "version": "0.0.8",
+      "parameter": {
+        "fields": {
+          "param": [{
+            "group": "param",
+            "type": "ObjectId",
+            "optional": false,
+            "field": "id",
+            "description": "<p>MongoId of an account</p>"
+          }]
+        }
+      },
+      "success": {
+        "fields": {
+          "Success 200": [{
+              "group": "Success 200",
+              "type": "string",
+              "optional": false,
+              "field": "message",
+              "description": "<p>Success message</p>"
+            },
+            {
+              "group": "Success 200",
+              "type": "object",
+              "optional": false,
+              "field": "data",
+              "description": "<p>Rolebindings object</p>"
+            }
+          ]
+        },
+        "examples": [{
+          "title": "Success-Response: ",
+          "content": "{\n               \"message\": \"Successfully retrieved role bindings\",\n               \"data\": {\n                   accountId:\"5beca4ab2e069a34f91697b2\"\n                   id:\"5beca4ae2e069a34f91698b1\"\n                   roles: [\n                       {\n                           _id:\"5beca4ab2e069a34f91697d9\",\n                           name:\"hacker\",\n                           routes: [\n                               {_id: \"5beca4ae2e069a34f9169852\", requestType: \"POST\", uri: \"/api/auth/login\"},\n                               {_id: \"5beca4ae2e069a34f9169851\", requestType: \"POST\", uri: \"/api/auth/logout\"},\n                               {_id: \"5beca4ae2e069a34f9169850\", requestType: \"GET\", uri: \"/api/auth/rolebindings/:self\"},\n                               {_id: \"5beca4ae2e069a34f916984f\", requestType: \"GET\", uri: \"/api/account/self\"},\n                               {_id: \"5beca4ae2e069a34f916984e\", requestType: \"GET\", uri: \"/api/account/:self\"},\n                               {_id: \"5beca4ae2e069a34f916984d\", requestType: \"PATCH\", uri: \"/api/account/:self\"},\n                               {_id: \"5beca4ae2e069a34f916984c\", requestType: \"POST\", uri: \"/api/hacker/\"},\n                               {_id: \"5beca4ae2e069a34f916984b\", requestType: \"GET\", uri: \"/api/hacker/:self\"},\n                               {_id: \"5beca4ae2e069a34f916984a\", requestType: \"GET\", uri: \"/api/hacker/:self/resume\"},\n                               {_id: \"5beca4ae2e069a34f9169849\", requestType: \"PATCH\", uri: \"/api/hacker/:self\"}\n                           ]\n                       }\n                   ]\n               }\n           }",
+          "type": "object"
+        }]
+      },
+      "error": {
+        "fields": {
+          "Error 4xx": [{
+              "group": "Error 4xx",
+              "type": "string",
+              "optional": false,
+              "field": "message",
+              "description": "<p>Error message</p>"
+            },
+            {
+              "group": "Error 4xx",
+              "type": "object",
+              "optional": false,
+              "field": "data",
+              "description": "<p>empty</p>"
+            }
+          ]
+        },
+        "examples": [{
+          "title": "Error-Response: ",
+          "content": "{\"message\": \"Role Bindings not found\", \"data\": {}}",
+          "type": "object"
+        }]
+      },
+      "filename": "routes/api/auth.js",
+      "groupTitle": "Authentication",
+      "sampleRequest": [{
+        "url": "https://api.mchacks.ca/api/auth/rolebindings/:id"
+      }]
+    },
+    {
+      "type": "get",
       "url": "/auth/roles",
       "title": "get roles",
       "name": "getRoles",
@@ -851,12 +950,12 @@ define({
         },
         "examples": [{
             "title": "Error-Response:",
-            "content": " HTTP/1.1 422\n{\"message\": \"Account already confirmed, \"data\": {}}",
+            "content": " HTTP/1.1 422\n{\"message\": \"Account already confirmed\", \"data\": {}}",
             "type": "json"
           },
           {
             "title": "Error-Response:",
-            "content": " HTTP/1.1 428\n{\"message\": \"Account already confirmed, \"data\": {}}",
+            "content": " HTTP/1.1 428\n{\"message\": \"Account confirmation token does not exist\", \"data\": {}}",
             "type": "json"
           }
         ]
@@ -940,81 +1039,9 @@ define({
       }]
     },
     {
-      "type": "get",
-      "url": "/auth/rolebindings/:id",
-      "title": "retrieve rolebindings for a user given by their user id :id",
-      "name": "getRoleBindings",
-      "group": "Auth",
-      "version": "0.0.8",
-      "parameter": {
-        "fields": {
-          "param": [{
-            "group": "param",
-            "type": "ObjectId",
-            "optional": false,
-            "field": "id",
-            "description": "<p>MongoId of an account</p>"
-          }]
-        }
-      },
-      "success": {
-        "fields": {
-          "Success 200": [{
-              "group": "Success 200",
-              "type": "string",
-              "optional": false,
-              "field": "message",
-              "description": "<p>Success message</p>"
-            },
-            {
-              "group": "Success 200",
-              "type": "object",
-              "optional": false,
-              "field": "data",
-              "description": "<p>Rolebindings object</p>"
-            }
-          ]
-        },
-        "examples": [{
-          "title": "Success-Response: ",
-          "content": "{\n               \"message\": \"Successfully retrieved role bindings\",\n               \"data\": {\n                   accountId:\"5beca4ab2e069a34f91697b2\"\n                   id:\"5beca4ae2e069a34f91698b1\"\n                   roles: [\n                       {\n                           _id:\"5beca4ab2e069a34f91697d9\",\n                           name:\"hacker\",\n                           routes: [\n                               0:Object {_id: \"5beca4ae2e069a34f9169852\", requestType: \"POST\", uri: \"/api/auth/login\"},\n                               1:Object {_id: \"5beca4ae2e069a34f9169851\", requestType: \"POST\", uri: \"/api/auth/logout\"},\n                               2:Object {_id: \"5beca4ae2e069a34f9169850\", requestType: \"GET\", uri: \"/api/auth/rolebindings/:self\"},\n                               3:Object {_id: \"5beca4ae2e069a34f916984f\", requestType: \"GET\", uri: \"/api/account/self\"},\n                               4:Object {_id: \"5beca4ae2e069a34f916984e\", requestType: \"GET\", uri: \"/api/account/:self\"},\n                               5:Object {_id: \"5beca4ae2e069a34f916984d\", requestType: \"PATCH\", uri: \"/api/account/:self\"},\n                               6:Object {_id: \"5beca4ae2e069a34f916984c\", requestType: \"POST\", uri: \"/api/hacker/\"},\n                               7:Object {_id: \"5beca4ae2e069a34f916984b\", requestType: \"GET\", uri: \"/api/hacker/:self\"},\n                               8:Object {_id: \"5beca4ae2e069a34f916984a\", requestType: \"GET\", uri: \"/api/hacker/:self/resume\"},\n                               9:Object {_id: \"5beca4ae2e069a34f9169849\", requestType: \"PATCH\", uri: \"/api/hacker/:self\"}\n                           ]\n                       }\n                   ]\n               }\n           }",
-          "type": "object"
-        }]
-      },
-      "error": {
-        "fields": {
-          "Error 4xx": [{
-              "group": "Error 4xx",
-              "type": "string",
-              "optional": false,
-              "field": "message",
-              "description": "<p>Error message</p>"
-            },
-            {
-              "group": "Error 4xx",
-              "type": "object",
-              "optional": false,
-              "field": "data",
-              "description": "<p>empty</p>"
-            }
-          ]
-        },
-        "examples": [{
-          "title": "Error-Response: ",
-          "content": "{\"message\": \"Role Bindings not found\", \"data\": {}}",
-          "type": "object"
-        }]
-      },
-      "filename": "routes/api/auth.js",
-      "groupTitle": "Auth",
-      "sampleRequest": [{
-        "url": "https://api.mchacks.ca/api/auth/rolebindings/:id"
-      }]
-    },
-    {
       "type": "patch",
       "url": "/hacker/checkin/:id",
-      "title": "update a hacker's status to be 'Checked-in'.",
+      "title": "update a hacker's status to be 'Checked-in'. Note that the Hacker must eitehr be Accepted or Confirmed.",
       "name": "checkinHacker",
       "group": "Hacker",
       "version": "0.0.9",
@@ -1022,10 +1049,10 @@ define({
         "fields": {
           "body": [{
             "group": "body",
-            "type": "String",
+            "type": "string",
             "optional": true,
             "field": "status",
-            "description": "<p>Check-in status</p>"
+            "description": "<p>Check-in status. &quot;Checked-in&quot;</p>"
           }]
         }
       },
@@ -1142,7 +1169,7 @@ define({
         },
         "examples": [{
           "title": "application: ",
-          "content": "{\n    \"portfolioURL\": {\n        \"resume\": \"...\"\n        \"github\": \"...\",\n        \"dropler\": \"...\",\n        \"personal\": \"...\",\n        \"linkedIn\": \"...\",\n        \"other\": \"...\"\n    },\n    \"jobInterest\": \"...\",\n    \"skills\": [\"CSS\", \"HTML\"],    \n    \"comments\": \"...\",\n    \"essay\": \"...\",\n    \"team\": [id1, id2],\n}",
+          "content": "{\n               \"application\":{\n                   \"portfolioURL\":{\n                       \"resume\":\"resumes/1543458163426-5bff4d736f86be0a41badb91\",\n                       \"github\":\"https://github.com/abcd\",\n                       \"dropler\":\"https://dribbble.com/abcd\",\n                       \"personal\":\"https://www.hi.com/\",\n                       \"linkedIn\":\"https://linkedin.com/in/abcd\",\n                       \"other\":\"https://github.com/hackmcgill/hackerAPI/issues/168\"\n                   },\n                   \"jobInterest\":\"Internship\",\n                   \"skills\":[\"Javascript\",\"Typescript\"],\n                   \"comments\":\"hi!\",\n                   \"essay\":\"Pls accept me\"\n}",
           "type": "Json"
         }]
       },
@@ -1166,7 +1193,7 @@ define({
         },
         "examples": [{
           "title": "Success-Response: ",
-          "content": "{\n    \"message\": \"Hacker creation successful\", \n    \"data\": {...}\n}",
+          "content": "{\n    \"message\": \"Hacker creation successful\", \n    \"data\": {\n                   \"id\":\"5bff4d736f86be0a41badb91\",\n                   \"application\":{\n                       \"portfolioURL\":{\n                           \"resume\":\"resumes/1543458163426-5bff4d736f86be0a41badb91\",\n                           \"github\":\"https://github.com/abcd\",\n                           \"dropler\":\"https://dribbble.com/abcd\",\n                           \"personal\":\"https://www.hi.com/\",\n                           \"linkedIn\":\"https://linkedin.com/in/abcd\",\n                           \"other\":\"https://github.com/hackmcgill/hackerAPI/issues/168\"\n                       },\n                       \"jobInterest\":\"Internship\",\n                       \"skills\":[\"Javascript\",\"Typescript\"],\n                       \"comments\":\"hi!\",\n                       \"essay\":\"Pls accept me\"\n                   },\n                   \"status\":\"Applied\",\n                   \"ethnicity\":[\"White or Caucasian\",\" Asian or Pacific Islander\"],\n                   \"accountId\":\"5bff2a35e533b0f6562b4998\",\n                   \"school\":\"McPherson College\",\n                   \"gender\":\"Female\",\n                   \"needsBus\":false,\n                   \"major\":\"Accounting\",\n                   \"graduationYear\":2019,\n                   \"codeOfConduct\":true,\n    }\n}",
           "type": "object"
         }]
       },
@@ -1238,7 +1265,7 @@ define({
         },
         "examples": [{
           "title": "Success-Response: ",
-          "content": "{\n               \"message\": \"Successfully retrieved hacker information\", \n               \"data\": {...}\n           }",
+          "content": "{\n               \"message\": \"Successfully retrieved hacker information\", \n               \"data\": {\n                   \"id\":\"5bff4d736f86be0a41badb91\",\n                   \"application\":{\n                       \"portfolioURL\":{\n                           \"resume\":\"resumes/1543458163426-5bff4d736f86be0a41badb91\",\n                           \"github\":\"https://github.com/abcd\",\n                           \"dropler\":\"https://dribbble.com/abcd\",\n                           \"personal\":\"https://www.hi.com/\",\n                           \"linkedIn\":\"https://linkedin.com/in/abcd\",\n                           \"other\":\"https://github.com/hackmcgill/hackerAPI/issues/168\"\n                       },\n                       \"jobInterest\":\"Internship\",\n                       \"skills\":[\"Javascript\",\"Typescript\"],\n                       \"comments\":\"hi!\",\n                       \"essay\":\"Pls accept me\"\n                   },\n                   \"status\":\"Applied\",\n                   \"ethnicity\":[\"White or Caucasian\",\" Asian or Pacific Islander\"],\n                   \"accountId\":\"5bff2a35e533b0f6562b4998\",\n                   \"school\":\"McPherson College\",\n                   \"gender\":\"Female\",\n                   \"needsBus\":false,\n                   \"major\":\"Accounting\",\n                   \"graduationYear\":2019,\n                   \"codeOfConduct\":true,\n               }\n           }",
           "type": "object"
         }]
       },
@@ -1370,7 +1397,7 @@ define({
         },
         "examples": [{
           "title": "application: ",
-          "content": "{\n    \"portfolioURL\": {\n        \"resume\": \"...\"\n        \"github\": \"...\",\n        \"dropler\": \"...\",\n        \"personal\": \"...\",\n        \"linkedIn\": \"...\",\n        \"other\": \"...\"\n    },\n    \"jobInterest\": \"...\",\n    \"skills\": [\"CSS\", \"HTML\"],    \n    \"comments\": \"...\",\n    \"essay\": \"...\",\n    \"team\": [id1, id2],\n}",
+          "content": "{\n               \"portfolioURL\":{\n                   \"resume\":\"resumes/1543458163426-5bff4d736f86be0a41badb91\",\n                   \"github\":\"https://github.com/abcd\",\n                   \"dropler\":\"https://dribbble.com/abcd\",\n                   \"personal\":\"https://www.hi.com/\",\n                   \"linkedIn\":\"https://linkedin.com/in/abcd\",\n                   \"other\":\"https://github.com/hackmcgill/hackerAPI/issues/168\"\n               },\n               \"jobInterest\":\"Internship\",\n               \"skills\":[\"Javascript\",\"Typescript\"],\n               \"comments\":\"hi!\",\n               \"essay\":\"Pls accept me\"\n           }",
           "type": "Json"
         }]
       },
@@ -1394,7 +1421,7 @@ define({
         },
         "examples": [{
           "title": "Success-Response: ",
-          "content": "{\n    \"message\": \"Changed hacker information\", \n    \"data\": {...}\n}",
+          "content": "{\n    \"message\": \"Changed hacker information\", \n    \"data\": {\n                   \"id\":\"5bff4d736f86be0a41badb91\",\n                   \"application\":{\n                       \"portfolioURL\":{\n                           \"resume\":\"resumes/1543458163426-5bff4d736f86be0a41badb91\",\n                           \"github\":\"https://github.com/abcd\",\n                           \"dropler\":\"https://dribbble.com/abcd\",\n                           \"personal\":\"https://www.hi.com/\",\n                           \"linkedIn\":\"https://linkedin.com/in/abcd\",\n                           \"other\":\"https://github.com/hackmcgill/hackerAPI/issues/168\"\n                       },\n                       \"jobInterest\":\"Internship\",\n                       \"skills\":[\"Javascript\",\"Typescript\"],\n                       \"comments\":\"hi!\",\n                       \"essay\":\"Pls accept me\"\n                   },\n                   \"status\":\"Applied\",\n                   \"ethnicity\":[\"White or Caucasian\",\" Asian or Pacific Islander\"],\n                   \"accountId\":\"5bff2a35e533b0f6562b4998\",\n                   \"school\":\"McPherson College\",\n                   \"gender\":\"Female\",\n                   \"needsBus\":false,\n                   \"major\":\"Accounting\",\n                   \"graduationYear\":2019,\n                   \"codeOfConduct\":true,\n}",
           "type": "object"
         }]
       },
@@ -1430,8 +1457,8 @@ define({
     },
     {
       "type": "patch",
-      "url": "/hacker/confirmation/:id Allows confirmation of hacker attendence if they are accepted.",
-      "title": "Also allows change from 'confirmed' back to 'accepted'",
+      "url": "/hacker/confirmation/:id",
+      "title": "Allows confirmation of hacker attendence if they are accepted. Also allows change from 'confirmed' back to 'accepted'",
       "name": "patchHackerConfirmed",
       "group": "Hacker",
       "version": "0.0.9",
@@ -1439,10 +1466,10 @@ define({
         "fields": {
           "body": [{
             "group": "body",
-            "type": "String",
+            "type": "string",
             "optional": true,
             "field": "status",
-            "description": "<p>The new status of the hacker. 'Accepted' or 'Confirmed'</p>"
+            "description": "<p>The new status of the hacker. &quot;Accepted&quot; or &quot;Confirmed&quot;</p>"
           }]
         }
       },
@@ -1480,7 +1507,7 @@ define({
       "filename": "routes/api/hacker.js",
       "groupTitle": "Hacker",
       "sampleRequest": [{
-        "url": "https://api.mchacks.ca/api/hacker/confirmation/:id Allows confirmation of hacker attendence if they are accepted."
+        "url": "https://api.mchacks.ca/api/hacker/confirmation/:id"
       }]
     },
     {
@@ -1494,10 +1521,10 @@ define({
         "fields": {
           "body": [{
             "group": "body",
-            "type": "String",
+            "type": "string",
             "optional": true,
             "field": "status",
-            "description": "<p>Status of the hacker's application</p>"
+            "description": "<p>Status of the hacker's application (&quot;None&quot;|&quot;Applied&quot;|&quot;Waitlisted&quot;|&quot;Confirmed&quot;|&quot;Cancelled&quot;|&quot;Checked-in&quot;)</p>"
           }]
         }
       },
@@ -1521,7 +1548,7 @@ define({
         },
         "examples": [{
           "title": "Success-Response: ",
-          "content": "{\n    \"message\": \"Changed hacker information\", \n    \"data\": {\n        \"status\": \"accepted\"\n    }\n}",
+          "content": "{\n    \"message\": \"Changed hacker information\", \n    \"data\": {\n        \"status\": \"Accepted\"\n    }\n}",
           "type": "object"
         }]
       },
@@ -1620,7 +1647,7 @@ define({
         },
         "examples": [{
           "title": "Success-Response: ",
-          "content": "{\n               \"message\": \"Hacker found by logged in account id\", \n               \"data\": {HackerObject}\n           }",
+          "content": "{\n               \"message\": \"Hacker found by logged in account id\", \n               \"data\": {\n                   \"id\":\"5bff4d736f86be0a41badb91\",\n                   \"application\":{\n                       \"portfolioURL\":{\n                           \"resume\":\"resumes/1543458163426-5bff4d736f86be0a41badb91\",\n                           \"github\":\"https://github.com/abcd\",\n                           \"dropler\":\"https://dribbble.com/abcd\",\n                           \"personal\":\"https://www.hi.com/\",\n                           \"linkedIn\":\"https://linkedin.com/in/abcd\",\n                           \"other\":\"https://github.com/hackmcgill/hackerAPI/issues/168\"\n                       },\n                       \"jobInterest\":\"Internship\",\n                       \"skills\":[\"Javascript\",\"Typescript\"],\n                       \"comments\":\"hi!\",\n                       \"essay\":\"Pls accept me\"\n                   },\n                   \"status\":\"Applied\",\n                   \"ethnicity\":[\"White or Caucasian\",\" Asian or Pacific Islander\"],\n                   \"accountId\":\"5bff2a35e533b0f6562b4998\",\n                   \"school\":\"McPherson College\",\n                   \"gender\":\"Female\",\n                   \"needsBus\":false,\n                   \"major\":\"Accounting\",\n                   \"graduationYear\":2019,\n                   \"codeOfConduct\":true,\n               }  \n           }",
           "type": "object"
         }]
       },
@@ -1691,7 +1718,7 @@ define({
             "type": "Array",
             "optional": false,
             "field": "q",
-            "description": "<p>the query to be executed. For more information on how to format this, please see https://hackerapi.mchacks.ca/architecture/</p>"
+            "description": "<p>the query to be executed. For more information on how to format this, please see https://docs.mchacks.ca/architecture/</p>"
           }]
         }
       },

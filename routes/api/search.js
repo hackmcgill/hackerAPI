@@ -25,7 +25,7 @@ module.exports = {
          * @apiVersion 0.0.8
          *
          * @apiParam (param) {String} model the model to be searched
-         * @apiParam (query) {Array} q the query to be executed. For more information on how to format this, please see https://hackerapi.mchacks.ca/architecture/
+         * @apiParam (query) {Array} q the query to be executed. For more information on how to format this, please see https://docs.mchacks.ca/architecture/
          *
          * @apiSuccess {String} message Success message
          * @apiSuccess {Object} data Results
