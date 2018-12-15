@@ -103,19 +103,29 @@ function mongoIdArrayValidator(fieldLocation, fieldname, optional = true) {
 }
 
 /**
- * Validates that field must be boolean.
+ * Validates that field must be boolean. Optionally checks for desired boolean
  * @param {"query" | "body" | "header" | "param"} fieldLocation the location where the field should be found 
  * @param {string} fieldname name of the field that needs to be validated.
  * @param {boolean} optional whether the field is optional or not.
  */
-function booleanValidator(fieldLocation, fieldname, optional = true) {
+function booleanValidator(fieldLocation, fieldname, optional = true, desire = null) {
     const booleanField = setProperValidationChainBuilder(fieldLocation, fieldname, "invalid boolean");
 
     if (optional) {
         // do not use check falsy option as a 'false' boolean will be skipped
-        return booleanField.optional().isBoolean().withMessage("must be boolean");
+        return booleanField.optional().isBoolean().withMessage("must be boolean").custom((val) => {
+            if (desire !== null) {
+                return desire === val;
+            }
+            return true;
+        }).withMessage(`Must be equal to ${desire}`);
     } else {
-        return booleanField.exists().isBoolean().withMessage("must be boolean");
+        return booleanField.exists().isBoolean().withMessage("must be boolean").custom((val) => {
+            if (desire !== null) {
+                return desire === val;
+            }
+            return true;
+        }).withMessage(`Must be equal to ${desire}`);
     }
 }
 

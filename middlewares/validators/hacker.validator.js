@@ -13,7 +13,7 @@ module.exports = {
         VALIDATOR.alphaArrayValidator("body", "ethnicity", false),
         VALIDATOR.nameValidator("body", "major", false),
         VALIDATOR.integerValidator("body", "graduationYear", false, 2019, 2030),
-        VALIDATOR.booleanValidator("body", "codeOfConduct", false),
+        VALIDATOR.booleanValidator("body", "codeOfConduct", false, true),
     ],
 
     updateConfirmationValidator: [
