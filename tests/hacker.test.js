@@ -36,6 +36,9 @@ const storedAccount2 = util.account.Account2;
 const storedHacker2 = util.hacker.HackerB;
 
 const newHacker1 = util.hacker.newHacker1;
+// badConductHacker1 is the same as newHacker1, even linking to the same account
+// the difference is that badConductHacker1 does not accept the code of conducts
+const badConductHacker1 = util.hacker.badCodeOfConductHacker1;
 const newHackerAccount1 = util.account.allAccounts[13];
 
 const newHacker2 = util.hacker.newHacker2;
@@ -283,6 +286,30 @@ describe("POST create hacker", function () {
                     delete res.body.data.id;
                     delete hacker.id;
                     chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify(hacker));
+                    done();
+                });
+        });
+    });
+
+    // should fail due to 'false' on code of conduct
+    it("should FAIL if the new hacker does not accept code of conduct", function (done) {
+        util.auth.login(agent, newHackerAccount1, (error) => {
+            if (error) {
+                agent.close();
+                return done(error);
+            }
+            return agent
+                .post(`/api/hacker/`)
+                .type("application/json")
+                .send(badConductHacker1)
+                .end(function (err, res) {
+                    res.should.have.status(422);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal("Validation failed");
+                    res.body.should.have.property("data");
+                    res.body.data.should.have.property("codeOfConduct");
+                    res.body.data.codeOfConduct.msg.should.equal("Must be equal to true");
                     done();
                 });
         });
