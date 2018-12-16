@@ -4,16 +4,16 @@ const Services = {
     Logger: require("../services/logger.service")
 };
 const Util = require("../middlewares/util.middleware");
+const Success = require("../constants/success.constant")
 
 async function searchResults(req, res) {
     let results = req.body.results;
     let message;
-    if(results.length < 1){
-        message = "No results found."
+    if (results.length < 1) {
+        message = "No results found.";
         results = {}
-    }
-    else{
-        message = "Successfully executed query, returning all results"
+    } else {
+        message = Success.SEARCH_QUERY;
     }
     return res.status(200).json({
         message: message,
