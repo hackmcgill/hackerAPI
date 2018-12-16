@@ -608,6 +608,49 @@ function accountTypeValidator(fieldLocation, fieldname, optional = true) {
 }
 
 /**
+ * Validates that field must be a value within the enum passed in through parameter 'enums'
+ * @param {"query" | "body" | "header" | "param"} fieldLocation The location where the field should be found.
+ * @param {string} fieldname The name of the field that needs to be validated.
+ * @param {Object} enums The enum object that the field must be part of. 
+ * @param {boolean} optional Whether the field is optional or not.
+ */
+function enumValidator(fieldLocation, fieldname, enums, optional = true) {
+    const enumValue = setProperValidationChainBuilder(fieldLocation, fieldname, "Invalid enums");
+
+    if (optional) {
+        return enumValue
+            .optional({
+                checkFalsy: true
+            })
+            .custom((val) => {
+                return checkEnum(val, enums);
+            }).withMessage("The value must be part of the enum");
+    } else {
+        return enumValue
+            .exists()
+            .withMessage("The value being checked agains the enums must exist.")
+            .custom((val) => {
+                return checkEnum(val, enums);
+            }).withMessage("The value must be part of the enum");
+    }
+}
+
+/**
+ * Checks that 'value' is part of 'enums'. 'enums' should be an enum dict.
+ * @param {*} value Should be of the same type as the values of the enum
+ * @param {Object} enums An object that represents an enum. They keys are the keys of the enum, and the values are the enum values. 
+ * @return {boolean} Returns true if the value is part of the enum, false otherwise.
+ */
+function checkEnum(value, enums) {
+    for (var enumKey in enums) {
+        if (value === enumKey) {
+            return true;
+        }
+    }
+    return false;
+}
+
+/**
  *
  * @param {"query" | "body" | "header" | "param"} fieldLocation the location where the field should be found
  * @param {string} fieldname name of the field that needs to be validated.
@@ -659,5 +702,6 @@ module.exports = {
     phoneNumberValidator: phoneNumberValidator,
     dateValidator: dateValidator,
     hackerCheckInStatusValidator: hackerCheckInStatusValidator,
-    accountTypeValidator: accountTypeValidator
+    accountTypeValidator: accountTypeValidator,
+    enumValidator: enumValidator,
 };

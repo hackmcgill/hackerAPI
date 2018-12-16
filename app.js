@@ -28,6 +28,7 @@ const teamRouter = require("./routes/api/team");
 const sponsorRouter = require("./routes/api/sponsor");
 const searchRouter = require("./routes/api/search");
 const volunteerRouter = require("./routes/api/volunteer");
+const roleRouter = require("./routes/api/role");
 
 const app = express();
 Services.db.connect(app);
