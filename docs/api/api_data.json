@@ -1355,6 +1355,43 @@
     "groupTitle": "Hacker"
   },
   {
+    "type": "get",
+    "url": "/hacker/stats",
+    "title": "Gets the stats of all of the hackers who have applied.",
+    "name": "getHackerStats",
+    "group": "Hacker",
+    "version": "0.0.9",
+    "success": {
+      "fields": {
+        "Success 200": [{
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "message",
+            "description": "<p>Success message</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>Hacker object</p>"
+          }
+        ]
+      },
+      "examples": [{
+        "title": "Success-Response: ",
+        "content": "{\n    \"message\": \"Retrieved stats\",\n    \"data\": {\n        \"stats\" : {\n            \"total\": 10,\n                       \"status\": { \"Applied\": 10 },\n                       \"school\": { \"McGill University\": 3, \"Harvard University\": 7 },\n                       degree: { \"Undergraduate\": 10 },\n                       gender: { \"Male\": 1, \"Female\": 9 },\n                       needsBus: { \"true\": 7, \"false\": 3 },\n                       ethnicity: { \"White\": 10, },\n                       jobInterest: { \"Internship\": 10 },\n                       major: { \"Computer Science\": 10 },\n                       graduationYear: { \"2019\": 10 },\n                       dietaryRestrictions: { \"None\": 10 },\n                       shirtSize: { \"M\": 3, \"XL\": 7 },\n                       age: { \"22\": 10 }\n                   }\n    }\n}",
+        "type": "object"
+      }]
+    },
+    "filename": "routes/api/hacker.js",
+    "groupTitle": "Hacker",
+    "sampleRequest": [{
+      "url": "https://api.mchacks.ca/api/hacker/stats"
+    }]
+  },
+  {
     "type": "patch",
     "url": "/hacker/:id",
     "title": "update a hacker's information.",
