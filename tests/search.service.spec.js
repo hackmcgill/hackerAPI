@@ -264,7 +264,7 @@ describe("Searching for hackers", function () {
         });
     });
 
-    it("Should expand the accountId", function (done) {
+    it("Should expand the accountId when expand is set to true", function (done) {
         util.auth.login(agent, Admin1, (error) => {
             if (error) {
                 agent.close();
@@ -281,7 +281,8 @@ describe("Searching for hackers", function () {
                     res.should.have.status(200);
                     res.body.should.have.property("data");
                     res.body.data.should.have.length(2);
-                    res.body.data.should.have.length(2);
+                    res.body.data[0].should.have.property("accountId");
+                    res.body.data[0].accountId.should.have.property("email");
                     done();
                 });
         });
