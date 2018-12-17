@@ -84,6 +84,8 @@ volunteerRouter.activate(apiRouter);
 Services.log.info("Volunteer router activated");
 searchRouter.activate(apiRouter);
 Services.log.info("Search router activated");
+roleRouter.activate(apiRouter);
+Services.log.info("Role router activated");
 
 apiRouter.use("/", indexRouter);
 app.use("/", indexRouter);
