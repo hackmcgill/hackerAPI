@@ -2,6 +2,9 @@
 const Hacker = require("../models/hacker.model");
 const logger = require("./logger.service");
 
+const cache = require("memory-cache");
+
+const Constants = require("../constants/general.constant");
 /**
  * @function createHacker
  * @param {{_id: ObjectId, accountId: ObjectId, school: string, gender: string, needsBus: boolean, application: {Object}}} hackerDetails
@@ -56,11 +59,10 @@ async function findIds(queries) {
     const TAG = `[Hacker Service # findIds ]:`;
     let ids = [];
 
-    queries.forEach(async (query) => {
+    for (const query of queries) {
         let currId = await Hacker.findOne(query, "_id", logger.queryCallbackFactory(TAG, "hacker", query));
         ids.push(currId);
-    });
-
+    }
     return ids;
 }
 
@@ -79,10 +81,69 @@ function findByAccountId(accountId) {
     return Hacker.findOne(query, logger.updateCallbackFactory(TAG, "hacker"));
 }
 
+async function getStats() {
+    const TAG = `[ hacker Service # getHackerStats ]`;
+    const CACHE_KEY = "hackerStats";
+    if (cache.get(CACHE_KEY) !== null) {
+        logger.info(`${TAG} Getting cached stats`);
+        return cache.get(CACHE_KEY);
+    }
+    const allHackers = await Hacker.find({}, logger.updateCallbackFactory(TAG, "hacker")).populate({
+        path: "accountId",
+    });
+    const stats = {
+        total: 0,
+        status: {},
+        school: {},
+        degree: {},
+        gender: {},
+        needsBus: {},
+        ethnicity: {},
+        jobInterest: {},
+        major: {},
+        graduationYear: {},
+        dietaryRestrictions: {},
+        shirtSize: {},
+        age: {}
+    };
+
+    allHackers.forEach((hacker) => {
+        if (!hacker.accountId) {
+            // user is no longer with us for some reason :(
+            return;
+        }
+        stats.total += 1;
+        stats.status[hacker.status] = (stats.status[hacker.status]) ? stats.status[hacker.status] + 1 : 1;
+        stats.school[hacker.school] = (stats.school[hacker.school]) ? stats.school[hacker.school] + 1 : 1;
+        stats.degree[hacker.degree] = (stats.degree[hacker.degree]) ? stats.degree[hacker.degree] + 1 : 1;
+        stats.gender[hacker.gender] = (stats.gender[hacker.gender]) ? stats.gender[hacker.gender] + 1 : 1;
+        stats.needsBus[hacker.needsBus] = (stats.needsBus[hacker.needsBus]) ? stats.needsBus[hacker.needsBus] + 1 : 1;
+
+        for (const ethnicity of hacker.ethnicity) {
+            stats.ethnicity[ethnicity] = (stats.ethnicity[ethnicity]) ? stats.ethnicity[ethnicity] + 1 : 1;
+        }
+
+        stats.jobInterest[hacker.application.jobInterest] = (stats.jobInterest[hacker.application.jobInterest]) ? stats.jobInterest[hacker.application.jobInterest] + 1 : 1;
+        stats.major[hacker.major] = (stats.major[hacker.major]) ? stats.major[hacker.major] + 1 : 1;
+        stats.graduationYear[hacker.graduationYear] = (stats.graduationYear[hacker.graduationYear]) ? stats.graduationYear[hacker.graduationYear] + 1 : 1;
+
+        for (const dietaryRestrictions of hacker.accountId.dietaryRestrictions) {
+            stats.dietaryRestrictions[dietaryRestrictions] = (stats.dietaryRestrictions[dietaryRestrictions]) ? stats.dietaryRestrictions[dietaryRestrictions] + 1 : 1;
+        }
+        stats.shirtSize[hacker.accountId.shirtSize] = (stats.shirtSize[hacker.accountId.shirtSize]) ? stats.shirtSize[hacker.accountId.shirtSize] + 1 : 1;
+        const age = hacker.accountId.getAge();
+        stats.age[age] = (stats.age[age]) ? stats.age[age] + 1 : 1;
+    });
+    cache.put(CACHE_KEY, stats, 5 * 60 * 1000); //set a time-out of 5 minutes
+    return stats;
+}
+
+
 module.exports = {
     createHacker: createHacker,
     findById: findById,
     updateOne: updateOne,
     findIds: findIds,
     findByAccountId: findByAccountId,
+    getStats: getStats
 };
