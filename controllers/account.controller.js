@@ -59,14 +59,13 @@ async function getUserById(req, res) {
 }
 
 /**
- * @async
  * @function addUser
  * @param {{body: {accountDetails: {_id: ObjectId, firstName: string, lastName: string, email: string, password: string, dietaryRestrictions: string, shirtSize: string}}}} req
  * @param {*} res
  * @return {JSON} Success or error status
  * @description Adds a user from information in req.body.accountDetails
  */
-async function addUser(req, res) {
+function addUser(req, res) {
     const acc = req.body.account;
     return res.status(200).json({
         message: "Account creation successful",
@@ -105,7 +104,7 @@ module.exports = {
     getUserById: Util.asyncMiddleware(getUserById),
 
     // assumes all information in req.body
-    addUser: Util.asyncMiddleware(addUser),
+    addUser: addUser,
     updatedAccount: updatedAccount,
     invitedAccount: invitedAccount
 };
