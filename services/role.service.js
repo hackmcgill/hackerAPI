@@ -2,8 +2,59 @@
 const Role = require("../models/role.model");
 const logger = require("./logger.service");
 
+function createRole(roleDetails) {
+    const role = new Role(roleDetails);
+
+    return role.save();
+}
+
+function isDuplicate(roleDetails) {
+    const roles = getAll();
+    for (let roleName in roles) {
+        // skip loop if roleName is from prototype
+        if (!roles.hasOwnProperty(roleName)) {
+            continue;
+        }
+
+        let existRole = roles[roleName];
+
+        let existRoutes = existRole.routes;
+
+        if (routesEquals(existRoutes, roleDetails.routes)) {
+            return true;
+        }
+    }
+    return false;
+}
+
+function routeEquals(route1, route2) {
+    return route1.uri === route2.uri && route1.requestType === route2.requestType;
+}
+
+function routesEquals(routes1, routes2) {
+    if (routes1.length !== routes2.length) {
+        return false;
+    }
+
+    for (let i = 0; i < routes1.length; i++) {
+        if (!routeEquals(routes1[i], routes2[i])) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+function getByRoutes(routes) {
+    const TAG = "[Role Service # getByRoutes]:";
+    const query = {
+        routes: routes
+    };
+
+    return Role.findOne(query, logger.queryCallbackFactory(TAG, "role", query));
+}
+
 /**
- * @async
  * @function getRole
  * @param {string} roleName The name of the role that you're looking for.
  * @description 
@@ -46,7 +97,10 @@ function getAll() {
 }
 
 module.exports = {
+    getByRoutes: getByRoutes,
     getRole: getRole,
     getById: getById,
-    getAll: getAll
-}
+    getAll: getAll,
+    createRole: createRole,
+    isDuplicate: isDuplicate,
+};
