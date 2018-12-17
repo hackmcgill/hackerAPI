@@ -4,6 +4,14 @@ const Constants = require("../../constants/general.constant");
 const mongoose = require("mongoose");
 const logger = require("../../services/logger.service");
 
+const newRole1 = {
+    name: "newRole",
+    routes: [{
+        uri: "/api/fake/uri",
+        requestType: Constants.REQUEST_TYPES.GET,
+    }]
+};
+
 function storeAll(attributes) {
     const roleDocs = [];
     const roleNames = [];
@@ -28,6 +36,7 @@ async function dropAll() {
 }
 
 module.exports = {
+    newRole1: newRole1,
     storeAll: storeAll,
     dropAll: dropAll,
 };

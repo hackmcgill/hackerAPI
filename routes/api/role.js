@@ -2,7 +2,7 @@
 
 const express = require("express");
 const Controllers = {
-
+    Role: require("../../controllers/role.controller")
 };
 const Middleware = {
     Auth: require("../../middlewares/auth.middleware"),
@@ -26,8 +26,10 @@ module.exports = {
 
             Middleware.Validator.Role.newRoleValidator,
             Middleware.parseBody.middleware,
-            Middleware.Role.parseBody
+            Middleware.Role.parseRole,
 
+            Middleware.Role.createRole,
+            Controllers.Role.createdRole
         );
 
         apiRouter.use("/role", roleRouter);
