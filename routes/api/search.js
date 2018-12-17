@@ -20,13 +20,19 @@ module.exports = {
         const searchRouter = new express.Router();
 
         /**
-         * @api {get} /search/:model provide a specific query for any defined model
+         * @api {get} /search/ provide a specific query for any defined model
          * @apiName search
          * @apiGroup Search
          * @apiVersion 0.0.8
          *
-         * @apiParam (param) {String} model the model to be searched
+         * @apiParam (query) {String} model the model to be searched
          * @apiParam (query) {Array} q the query to be executed. For more information on how to format this, please see https://docs.mchacks.ca/architecture/
+         * @apiParam (query) {String} model the model to be searched
+         * @apiParam (query) {String} sort either "asc" or "desc"
+         * @apiParam (query) {number} page the page number that you would like
+         * @apiParam (query) {number} limit the maximum number of results that you would like returned
+         * @apiParam (query) {any} sort_by any parameter you want to sort the results by
+         * @apiParam (query) {boolean} expand whether you want to expand sub documents within the results
          *
          * @apiSuccess {String} message Success message
          * @apiSuccess {Object} data Results
