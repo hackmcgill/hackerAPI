@@ -14,7 +14,7 @@ const newAccount1 = {
     "password": "1234567890",
     "dietaryRestrictions": ["none"],
     "shirtSize": "S",
-    "accountType": Constants.Hacker,
+    "accountType": Constants.HACKER,
     "birthDate": "1997-12-30",
     "phoneNumber": 1234567890,
 };
@@ -70,7 +70,7 @@ const Account2 = {
     "dietaryRestrictions": ["vegetarian"],
     "shirtSize": "M",
     "confirmed": true,
-    "accountType": Constants.Hacker,
+    "accountType": Constants.HACKER,
     "birthDate": "1990-01-04",
     "phoneNumber": 1000000004,
 };
@@ -159,7 +159,7 @@ const Hacker3 = {
     "dietaryRestrictions": ["vegetarian"],
     "shirtSize": "M",
     "confirmed": true,
-    "accountType": Constants.Hacker,
+    "accountType": Constants.HACKER,
     "birthDate": "1990-01-04",
     "phoneNumber": 1000000004,
 };

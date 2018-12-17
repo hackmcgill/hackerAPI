@@ -11,7 +11,8 @@ const Middleware = {
         Search: require("../../middlewares/validators/search.validator")
     },
     parseBody: require("../../middlewares/parse-body.middleware"),
-    Search: require('../../middlewares/search.middleware')
+    Search: require("../../middlewares/search.middleware"),
+    Auth: require("../../middlewares/auth.middleware")
 };
 
 module.exports = {
@@ -50,7 +51,9 @@ module.exports = {
          * @apiErrorExample {object} Error-Response:
          *      {"message": "Validation failed", "data": {}}
          */
-        searchRouter.route("/:model").get(
+        searchRouter.route("/").get(
+            Middleware.Auth.ensureAuthenticated(),
+            Middleware.Auth.ensureAuthorized(),
             Middleware.Validator.Search.searchQueryValidator,
             Middleware.parseBody.middleware,
             Middleware.Search.parseQuery,
