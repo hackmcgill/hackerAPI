@@ -97,6 +97,16 @@ function downloadedResume(req, res) {
     });
 }
 
+function gotStats(req, res) {
+    return res.status(200).json({
+        message: "Retrieved stats",
+        data: {
+            stats: req.body.stats,
+        }
+    });
+
+}
+
 module.exports = {
     updatedHacker: updatedHacker,
     findById: Util.asyncMiddleware(findById),
@@ -104,4 +114,5 @@ module.exports = {
     uploadedResume: uploadedResume,
     downloadedResume: downloadedResume,
     showHacker: showHacker,
+    gotStats: gotStats,
 };
