@@ -159,6 +159,12 @@ const volunteerRoutes = {
     },
 };
 
+const searchRoutes = {
+    "get": {
+        requestType: Constants.REQUEST_TYPES.GET,
+        uri: "/api/search/"
+    }
+};
 
 const staffRoutes = {
     "hackerStats": {
@@ -174,6 +180,7 @@ const allRoutes = {
     "Sponsor": sponsorRoutes,
     "Team": teamRoutes,
     "Volunteer": volunteerRoutes,
+    "Search": searchRoutes,
     "Staff": staffRoutes,
 };
 
@@ -210,6 +217,7 @@ module.exports = {
     sponsorRoutes: sponsorRoutes,
     teamRoutes: teamRoutes,
     volunteerRoutes: volunteerRoutes,
+    searchRoutes: searchRoutes,
     staffRoutes: staffRoutes,
     allRoutes: allRoutes,
     listAllRoutes: listAllRoutes,

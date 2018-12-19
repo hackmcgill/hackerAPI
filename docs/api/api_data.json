@@ -1735,27 +1735,63 @@
   },
   {
     "type": "get",
-    "url": "/search/:model",
+    "url": "/search/",
     "title": "provide a specific query for any defined model",
     "name": "search",
     "group": "Search",
     "version": "0.0.8",
     "parameter": {
       "fields": {
-        "param": [{
-          "group": "param",
-          "type": "String",
-          "optional": false,
-          "field": "model",
-          "description": "<p>the model to be searched</p>"
-        }],
         "query": [{
-          "group": "query",
-          "type": "Array",
-          "optional": false,
-          "field": "q",
-          "description": "<p>the query to be executed. For more information on how to format this, please see https://docs.mchacks.ca/architecture/</p>"
-        }]
+            "group": "query",
+            "type": "String",
+            "optional": false,
+            "field": "model",
+            "description": "<p>the model to be searched</p>"
+          },
+          {
+            "group": "query",
+            "type": "Array",
+            "optional": false,
+            "field": "q",
+            "description": "<p>the query to be executed. For more information on how to format this, please see https://docs.mchacks.ca/architecture/</p>"
+          },
+          {
+            "group": "query",
+            "type": "String",
+            "optional": false,
+            "field": "sort",
+            "description": "<p>either &quot;asc&quot; or &quot;desc&quot;</p>"
+          },
+          {
+            "group": "query",
+            "type": "number",
+            "optional": false,
+            "field": "page",
+            "description": "<p>the page number that you would like</p>"
+          },
+          {
+            "group": "query",
+            "type": "number",
+            "optional": false,
+            "field": "limit",
+            "description": "<p>the maximum number of results that you would like returned</p>"
+          },
+          {
+            "group": "query",
+            "type": "any",
+            "optional": false,
+            "field": "sort_by",
+            "description": "<p>any parameter you want to sort the results by</p>"
+          },
+          {
+            "group": "query",
+            "type": "boolean",
+            "optional": false,
+            "field": "expand",
+            "description": "<p>whether you want to expand sub documents within the results</p>"
+          }
+        ]
       }
     },
     "success": {
@@ -1815,7 +1851,7 @@
     "filename": "routes/api/search.js",
     "groupTitle": "Search",
     "sampleRequest": [{
-      "url": "https://api.mchacks.ca/api/search/:model"
+      "url": "https://api.mchacks.ca/api/search/"
     }]
   },
   {

@@ -460,7 +460,7 @@ function searchValidator(fieldLocation, fieldname) {
         }) => {
             //value is a serialized JSON
             value = JSON.parse(value);
-            let modelString = req.params.model
+            let modelString = req.query.model
             //Supported models for searching
             let model;
             if (modelString === Constants.HACKER.toLowerCase()) {
@@ -508,7 +508,7 @@ function searchSortValidator(fieldLocation, fieldName) {
         .custom((value, {
             req
         }) => {
-            let modelString = req.params.model
+            let modelString = req.query.model
             if (modelString.equals("hacker")) {
                 model = Models.Hacker;
             } else {
