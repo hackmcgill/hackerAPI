@@ -83,10 +83,9 @@ function findByAccountId(accountId) {
 
 async function getStats() {
     const TAG = `[ hacker Service # getHackerStats ]`;
-    const CACHE_KEY = "hackerStats";
-    if (cache.get(CACHE_KEY) !== null) {
+    if (cache.get(Constants.CACHE_KEY_STATS) !== null) {
         logger.info(`${TAG} Getting cached stats`);
-        return cache.get(CACHE_KEY);
+        return cache.get(Constants.CACHE_KEY_STATS);
     }
     const allHackers = await Hacker.find({}, logger.updateCallbackFactory(TAG, "hacker")).populate({
         path: "accountId",
@@ -134,7 +133,7 @@ async function getStats() {
         const age = hacker.accountId.getAge();
         stats.age[age] = (stats.age[age]) ? stats.age[age] + 1 : 1;
     });
-    cache.put(CACHE_KEY, stats, 5 * 60 * 1000); //set a time-out of 5 minutes
+    cache.put(Constants.CACHE_KEY_STATS, stats, Constants.CACHE_TIMEOUT_STATS); //set a time-out of 5 minutes
     return stats;
 }
 
