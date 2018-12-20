@@ -1,15 +1,27 @@
 "use strict";
 const Role = require("../../models/role.model");
 const Constants = require("../../constants/general.constant");
+const Routes = require("../../constants/routes.constant");
 const mongoose = require("mongoose");
 const logger = require("../../services/logger.service");
 
+const newRoute1 = {
+    uri: "/api/fake/uri",
+    requestType: Constants.REQUEST_TYPES.GET,
+};
+
 const newRole1 = {
     name: "newRole",
-    routes: [{
-        uri: "/api/fake/uri",
-        requestType: Constants.REQUEST_TYPES.GET,
-    }]
+    routes: [
+        newRoute1,
+    ]
+};
+
+const duplicateRole1 = {
+    name: "duplicateRole",
+    routes: [
+        Routes.hackerRoutes.getAnyById,
+    ]
 };
 
 function storeAll(attributes) {
@@ -37,6 +49,7 @@ async function dropAll() {
 
 module.exports = {
     newRole1: newRole1,
+    duplicateRole1: duplicateRole1,
     storeAll: storeAll,
     dropAll: dropAll,
 };

@@ -15,6 +15,7 @@ const util = {
 
 const Constants = {
     Error: require("../constants/error.constant"),
+    Success: require("../constants/success.constants"),
 };
 
 describe("POST create role", function () {
@@ -29,12 +30,12 @@ describe("POST create role", function () {
                 res.body.should.have.property("message");
                 res.body.message.should.equal(Constants.Error.AUTH_401_MESSAGE);
 
-                done()
+                done();
             });
     });
 
     // should succeed on logged in admin
-    it("should SUCCEED and update the user's hacker info", function (done) {
+    it("should SUCCEED and add new role", function (done) {
         util.auth.login(agent, util.account.Admin1, (error) => {
             if (error) {
                 agent.close();
@@ -48,20 +49,65 @@ describe("POST create role", function () {
                     res.should.have.status(200);
                     res.should.be.json;
                     res.body.should.have.property("message");
-                    res.body.message.should.equal("Create role successful.");
+                    res.body.message.should.equal(Constants.Success.ROLE_CREATE);
 
                     res.body.should.have.property("data");
 
-                    // deleting _id because that was generated, and not part of original data
-                    delete res.body.data._id;
-                    chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify(util.role.newRole1));
+                    // create JSON version of model
+                    // delete id as they will be different between model objects
+                    // delete ids of route objects in 'routes'
+                    const role = (new Role(util.role.newRole1)).toJSON();
+                    delete res.body.data.id;
+                    delete res.body.data.routes[0]._id;
+                    delete role.id;
+                    delete role.routes[0]._id;
+
+                    chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify(role));
                     done();
                 });
         });
     });
 
     // should fail due to lack of authorization
+    it("should Fail to add new role due to lack of authorization", function (done) {
+        util.auth.login(agent, util.account.Account1, (error) => {
+            if (error) {
+                agent.close();
+                return done(error);
+            }
+            return agent
+                .post(`/api/role/`)
+                .type("application/json")
+                .send(util.role.newRole1)
+                .end(function (err, res) {
+                    res.should.have.status(403);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal(Constants.Error.AUTH_403_MESSAGE);
+                    done();
+                });
+        });
+    });
 
     // should fail due to duplicate routes
+    it("should Fail to add new role due to duplicate role", function (done) {
+        util.auth.login(agent, util.account.Admin1, (error) => {
+            if (error) {
+                agent.close();
+                return done(error);
+            }
+            return agent
+                .post(`/api/role/`)
+                .type("application/json")
+                .send(util.role.duplicateRole1)
+                .end(function (err, res) {
+                    res.should.have.status(422);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal(Constants.Error.ROLE_DUPLICATE_422_MESSAGE);
+                    done();
+                });
+        });
+    });
 
 });
