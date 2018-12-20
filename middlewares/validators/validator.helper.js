@@ -607,6 +607,12 @@ function accountTypeValidator(fieldLocation, fieldname, optional = true) {
     }
 }
 
+/**
+ * Validates that field must be an array of routes
+ * @param {"query" | "body" | "header" | "param"} fieldLocation the location where the field should be found 
+ * @param {string} fieldname name of the field that needs to be validated.
+ * @param {boolean} optional whether the field is optional or not.
+ */
 function routesValidator(fieldLocation, fieldname, optional = true) {
     const routes = setProperValidationChainBuilder(fieldLocation, fieldname, "Invalid routes");
 

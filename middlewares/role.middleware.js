@@ -7,6 +7,16 @@ const Constants = {
     Error: require("../constants/error.constant"),
 };
 
+/**
+ * @function parseRole
+ * @param {{body: name: String, routes: route[]}}} req
+ * @param {*} res
+ * @param {(err?)=>void} next
+ * @return {void}
+ * @description 
+ * Moves name and routes from req.body to req.body.roleDetails.
+ * Adds _id to roleDetails.
+ */
 function parseRole(req, res, next) {
     const roleDetails = {
         _id: mongoose.Types.ObjectId(),
@@ -22,6 +32,15 @@ function parseRole(req, res, next) {
     return next();
 }
 
+/**
+ * @function createRole
+ * @param {{body: {roleDetails: object}}} req 
+ * @param {*} res 
+ * @param {(err?)=>void} next 
+ * @return {void}
+ * @description
+ * Creates role document after making sure there is no other role with the same routes
+ */
 async function createRole(req, res, next) {
     const roleDetails = req.body.roleDetails;
 
