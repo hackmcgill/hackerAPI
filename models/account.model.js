@@ -79,8 +79,17 @@ AccountSchema.methods.comparePassword = function (password) {
 /**
  * Returns if the accountType corresponds to a sponsor 
  */
-AccountSchema.methods.isSponsor = function(){
+AccountSchema.methods.isSponsor = function () {
     return Constants.SPONSOR_TIERS.includes(this.accountType) || this.accountType == Constants.SPONSOR;
-}
+};
+/**
+ * Calculates the user's age
+ */
+AccountSchema.methods.getAge = function () { // birthday is a date
+    var ageDifMs = Date.now() - this.birthDate.getTime();
+    var ageDate = new Date(ageDifMs); // miliseconds from epoch
+    return Math.abs(ageDate.getUTCFullYear() - 1970);
+};
+
 //export the model
 module.exports = mongoose.model("Account", AccountSchema);

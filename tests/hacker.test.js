@@ -747,3 +747,68 @@ describe("POST add a hacker resume", function () {
         });
     });
 });
+
+describe("GET Hacker stats", function () {
+    it("It should SUCCEED and get hacker stats", function (done) {
+        //this takes a lot of time for some reason
+        util.auth.login(agent, Admin1, (error) => {
+            if (error) {
+                return done(error);
+            }
+            return agent
+                .get(`/api/hacker/stats`)
+                .end(function (err, res) {
+                    res.should.have.status(200);
+                    res.should.have.property("body");
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal("Retrieved stats");
+                    res.body.should.have.property("data");
+                    res.body.data.should.have.property("stats");
+                    res.body.data.stats.should.have.property("total");
+                    res.body.data.stats.should.have.property("status");
+                    res.body.data.stats.should.have.property("school");
+                    res.body.data.stats.should.have.property("degree");
+                    res.body.data.stats.should.have.property("gender");
+                    res.body.data.stats.should.have.property("needsBus");
+                    res.body.data.stats.should.have.property("ethnicity");
+                    res.body.data.stats.should.have.property("jobInterest");
+                    res.body.data.stats.should.have.property("major");
+                    res.body.data.stats.should.have.property("graduationYear");
+                    res.body.data.stats.should.have.property("dietaryRestrictions");
+                    res.body.data.stats.should.have.property("shirtSize");
+                    res.body.data.stats.should.have.property("age");
+                    done();
+                });
+        });
+    });
+    it("It should FAIL and get hacker stats due to invalid Authorization", function (done) {
+        //this takes a lot of time for some reason
+        util.auth.login(agent, storedAccount1, (error) => {
+            if (error) {
+                return done(error);
+            }
+            return agent
+                .get(`/api/hacker/stats`)
+                .end(function (err, res) {
+                    res.should.have.status(403);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal(Constants.Error.AUTH_403_MESSAGE);
+                    res.body.should.have.property("data");
+                    done();
+                });
+        });
+    });
+    it("It should FAIL and get hacker stats due to invalid Authentication", function (done) {
+        //this takes a lot of time for some reason
+        chai.request(server.app)
+            .get(`/api/hacker/stats`)
+            .end(function (err, res) {
+                res.should.have.status(401);
+                res.should.be.json;
+                res.body.should.have.property("message");
+                res.body.message.should.equal(Constants.Error.AUTH_401_MESSAGE);
+                done();
+            });
+    });
+});
