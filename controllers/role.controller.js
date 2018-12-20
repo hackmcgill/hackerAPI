@@ -1,9 +1,11 @@
 "use strict";
 
+const Success = require("../constants/success.constants");
+
 function createdRole(req, res) {
     return res.status(200).json({
-        message: "Create sponsor successful",
-        data: req.body.sponsor.toJSON(),
+        message: Success.ROLE_CREATE,
+        data: req.body.role.toJSON(),
     });
 }
 
