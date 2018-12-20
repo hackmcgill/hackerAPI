@@ -159,6 +159,13 @@ const volunteerRoutes = {
     },
 };
 
+const roleRoutes = {
+    "post": {
+        requestType: Constants.REQUEST_TYPES.POST,
+        uri: "/api/role/",
+    }
+};
+
 const allRoutes = {
     "Auth": authRoutes,
     "Account": accountRoutes,
@@ -166,6 +173,7 @@ const allRoutes = {
     "Sponsor": sponsorRoutes,
     "Team": teamRoutes,
     "Volunteer": volunteerRoutes,
+    "Role": roleRoutes,
 };
 
 /**
@@ -201,6 +209,7 @@ module.exports = {
     sponsorRoutes: sponsorRoutes,
     teamRoutes: teamRoutes,
     volunteerRoutes: volunteerRoutes,
+    roleRoutes: roleRoutes,
     allRoutes: allRoutes,
     listAllRoutes: listAllRoutes,
 };
