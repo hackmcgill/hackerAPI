@@ -39,23 +39,10 @@ function parseRole(req, res, next) {
  * @param {(err?)=>void} next 
  * @return {void}
  * @description
- * Creates role document after making sure there is no other role with the same routes
+ * Creates role document
  */
 async function createRole(req, res, next) {
     const roleDetails = req.body.roleDetails;
-
-    // check for duplicate roles
-    if (await Services.Role.isDuplicate(roleDetails)) {
-        // get by the route
-        const existingRole = await Services.Role.getByRoutes(roleDetails.routes);
-
-        return res.status(422).json({
-            message: Constants.Error.ROLE_DUPLICATE_422_MESSAGE,
-            data: {
-                role: existingRole,
-            }
-        });
-    }
 
     const role = await Services.Role.createRole(roleDetails);
 

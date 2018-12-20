@@ -62,7 +62,7 @@ const accountRoutes = {
 const hackerRoutes = {
     "getSelf": {
         requestType: Constants.REQUEST_TYPES.GET,
-        uri: "/api/hacker/self/"
+        uri: "/api/hacker/self/",
     },
     "getSelfById": {
         requestType: Constants.REQUEST_TYPES.GET,

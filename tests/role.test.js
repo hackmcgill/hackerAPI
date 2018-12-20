@@ -93,8 +93,8 @@ describe("POST create role", function () {
         });
     });
 
-    // should fail due to duplicate routes
-    it("should Fail to add new role due to duplicate role", function (done) {
+    // should succeed despite duplicate routes
+    it("should Suceed to add new role despite to duplicate routes", function (done) {
         util.auth.login(agent, util.account.Admin1, (error) => {
             if (error) {
                 agent.close();
@@ -105,10 +105,10 @@ describe("POST create role", function () {
                 .type("application/json")
                 .send(util.role.duplicateRole1)
                 .end(function (err, res) {
-                    res.should.have.status(422);
+                    res.should.have.status(200);
                     res.should.be.json;
                     res.body.should.have.property("message");
-                    res.body.message.should.equal(Constants.Error.ROLE_DUPLICATE_422_MESSAGE);
+                    res.body.message.should.equal(Constants.Success.ROLE_CREATE);
                     done();
                 });
         });
