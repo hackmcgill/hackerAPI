@@ -5,15 +5,11 @@ const Routes = require("../../constants/routes.constant");
 const mongoose = require("mongoose");
 const logger = require("../../services/logger.service");
 
-const newRoute1 = {
-    uri: "/api/fake/uri",
-    requestType: Constants.REQUEST_TYPES.GET,
-};
-
 const newRole1 = {
     name: "newRole",
     routes: [
-        newRoute1,
+        Routes.hackerRoutes.getSelf,
+        Routes.hackerRoutes.getSelfById,
     ]
 };
 

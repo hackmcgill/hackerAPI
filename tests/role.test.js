@@ -58,9 +58,13 @@ describe("POST create role", function () {
                     // delete ids of route objects in 'routes'
                     const role = (new Role(util.role.newRole1)).toJSON();
                     delete res.body.data.id;
-                    delete res.body.data.routes[0]._id;
+                    for (var route of res.body.data.routes) {
+                        delete route._id;
+                    }
                     delete role.id;
-                    delete role.routes[0]._id;
+                    for (route of role.routes) {
+                        delete route._id;
+                    }
 
                     chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify(role));
                     done();
