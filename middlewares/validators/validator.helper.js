@@ -607,6 +607,42 @@ function accountTypeValidator(fieldLocation, fieldname, optional = true) {
     }
 }
 
+function routesValidator(fieldLocation, fieldname, optional = true) {
+    const routes = setProperValidationChainBuilder(fieldLocation, fieldname, "Invalid routes");
+
+    if (optional) {
+        return routes
+            .optional({
+                checkFalsy: true
+            })
+            .custom(routesArrayValidationHelper).withMessage("The value must be a route");
+    } else {
+        return routes
+            .exists()
+            .withMessage("The value being checked agains the enums must exist.")
+            .custom(routesArrayValidationHelper).withMessage("The value must be a route");
+    }
+}
+
+/**
+ * Returns true if value an array of routes
+ * @param {*} routes value to check against
+ */
+function routesArrayValidationHelper(routes) {
+    if (!Array.isArray(routes)) {
+        return false;
+    }
+    for (const route of routes) {
+        if (route.uri === null || typeof route.uri !== "string") {
+            return false;
+        }
+        if (route.requestType === null || !checkEnum(route.requestType, Constants.REQUEST_TYPES)) {
+            return false;
+        }
+    }
+    return true;
+}
+
 /**
  * Validates that field must be a value within the enum passed in through parameter 'enums'
  * @param {"query" | "body" | "header" | "param"} fieldLocation The location where the field should be found.
@@ -643,7 +679,7 @@ function enumValidator(fieldLocation, fieldname, enums, optional = true) {
  */
 function checkEnum(value, enums) {
     for (var enumKey in enums) {
-        if (value === enumKey) {
+        if (value === enums[enumKey]) {
             return true;
         }
     }
@@ -704,4 +740,5 @@ module.exports = {
     hackerCheckInStatusValidator: hackerCheckInStatusValidator,
     accountTypeValidator: accountTypeValidator,
     enumValidator: enumValidator,
+    routesValidator: routesValidator,
 };
