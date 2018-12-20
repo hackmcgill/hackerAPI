@@ -166,6 +166,20 @@ const roleRoutes = {
     }
 };
 
+const searchRoutes = {
+    "get": {
+        requestType: Constants.REQUEST_TYPES.GET,
+        uri: "/api/search/"
+    }
+};
+
+const staffRoutes = {
+    "hackerStats": {
+        requestType: Constants.REQUEST_TYPES.GET,
+        uri: "/api/hacker/stats",
+    }
+}
+
 const allRoutes = {
     "Auth": authRoutes,
     "Account": accountRoutes,
@@ -174,6 +188,8 @@ const allRoutes = {
     "Team": teamRoutes,
     "Volunteer": volunteerRoutes,
     "Role": roleRoutes,
+    "Search": searchRoutes,
+    "Staff": staffRoutes,
 };
 
 /**
@@ -210,6 +226,8 @@ module.exports = {
     teamRoutes: teamRoutes,
     volunteerRoutes: volunteerRoutes,
     roleRoutes: roleRoutes,
+    searchRoutes: searchRoutes,
+    staffRoutes: staffRoutes,
     allRoutes: allRoutes,
     listAllRoutes: listAllRoutes,
 };
