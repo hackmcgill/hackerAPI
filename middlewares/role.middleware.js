@@ -26,7 +26,7 @@ async function createRole(req, res, next) {
     const roleDetails = req.body.roleDetails;
 
     // check for duplicate roles
-    if (Services.Role.isDuplicate(roleDetails)) {
+    if (await Services.Role.isDuplicate(roleDetails)) {
         // get by the route
         const existingRole = await Services.Role.getByRoutes(roleDetails.routes);
 

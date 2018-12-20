@@ -8,8 +8,8 @@ function createRole(roleDetails) {
     return role.save();
 }
 
-function isDuplicate(roleDetails) {
-    const roles = getAll();
+async function isDuplicate(roleDetails) {
+    const roles = await getAll();
     for (let roleName in roles) {
         // skip loop if roleName is from prototype
         if (!roles.hasOwnProperty(roleName)) {
