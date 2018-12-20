@@ -18,7 +18,7 @@ spec:
           secretName: hackboard-secret
       containers:
       - name: hackboard
-        image: gcr.io/mchacks-api/hackboard:1.0.2
+        image: gcr.io/mchacks-api/hackboard:latest
         ports:
         # - containerPort: 443
         - containerPort: 8080
