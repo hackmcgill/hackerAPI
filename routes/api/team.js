@@ -55,8 +55,8 @@ module.exports = {
             // check that member is not already in a team
             Middleware.Team.ensureUniqueHackerId,
 
-            Controllers.Team.createTeam
-
+            Middleware.Team.createTeam,
+            Controllers.Team.createdTeam
         );
 
         /**
@@ -84,7 +84,8 @@ module.exports = {
             Middleware.Validator.RouteParam.idValidator,
             Middleware.parseBody.middleware,
 
-            Controllers.Team.findById
+            Middleware.Team.findById,
+            Controllers.Team.showTeam
         );
 
         apiRouter.use("/team", teamRouter);
