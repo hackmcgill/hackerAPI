@@ -27,8 +27,8 @@ const RESUME_DOWNLOAD = "Resume download successful.";
 const SEARCH_QUERY = "Query search successful. Returning results.";
 const SEARCH_NO_RESULTS = "Query search successful. No results found.";
 
-
 const SPONSOR_GET_BY_ID = "Sponsor found by id.";
+const SPONSOR_READ = "Sponsor retrieval successful.";
 const SPONSOR_CREATE = "Sponsor creation successful.";
 
 const TEAM_GET_BY_ID = "Team found by id.";
@@ -66,6 +66,7 @@ module.exports = {
 
     SPONSOR_GET_BY_ID: SPONSOR_GET_BY_ID,
     SPONSOR_CREATE: SPONSOR_CREATE,
+    SPONSOR_READ: SPONSOR_READ,
 
     TEAM_GET_BY_ID: TEAM_GET_BY_ID,
     TEAM_CREATE: TEAM_CREATE,
