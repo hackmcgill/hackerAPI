@@ -62,7 +62,8 @@ module.exports = {
 
             Middleware.Auth.createRoleBindings(CONSTANTS.VOLUNTEER),
 
-            Controllers.Volunteer.createVolunteer
+            Middleware.Volunteer.createVolunteer,
+            Controllers.Volunteer.createdVolunteer
         );
 
         apiRouter.use("/volunteer", volunteerRouter);
