@@ -9,6 +9,7 @@ const Hacker = require("../models/hacker.model");
 const fs = require("fs");
 const path = require("path");
 const Constants = {
+    Success: require("../constants/success.constant"),
     General: require("../constants/general.constant"),
     Error: require("../constants/error.constant"),
 };
@@ -74,7 +75,7 @@ describe("GET hacker", function () {
                     res.should.have.status(200);
                     res.should.be.json;
                     res.body.should.have.property("message");
-                    res.body.message.should.equal("Hacker retrieval successful");
+                    res.body.message.should.equal(Constants.Success.HACKER_READ);
                     res.body.should.have.property("data");
 
                     let hacker = new Hacker(storedHacker1);
@@ -120,7 +121,7 @@ describe("GET hacker", function () {
                     res.should.have.status(200);
                     res.should.be.json;
                     res.body.should.have.property("message");
-                    res.body.message.should.equal("Successfully retrieved hacker information");
+                    res.body.message.should.equal(Constants.Success.HACKER_GET_BY_ID);
                     res.body.should.have.property("data");
 
                     let hacker = new Hacker(storedHacker1);
@@ -148,7 +149,7 @@ describe("GET hacker", function () {
                     res.should.have.status(200);
                     res.should.be.json;
                     res.body.should.have.property("message");
-                    res.body.message.should.equal("Successfully retrieved hacker information");
+                    res.body.message.should.equal(Constants.Success.HACKER_GET_BY_ID);
                     res.body.should.have.property("data");
 
                     let hacker = new Hacker(storedHacker1);
@@ -243,7 +244,7 @@ describe("POST create hacker", function () {
                     res.should.have.status(200);
                     res.should.be.json;
                     res.body.should.have.property("message");
-                    res.body.message.should.equal("Hacker creation successful");
+                    res.body.message.should.equal(Constants.Success.HACKER_CREATE);
                     res.body.should.have.property("data");
 
                     // create JSON version of model
@@ -275,7 +276,7 @@ describe("POST create hacker", function () {
                     res.should.have.status(200);
                     res.should.be.json;
                     res.body.should.have.property("message");
-                    res.body.message.should.equal("Hacker creation successful");
+                    res.body.message.should.equal(Constants.Success.HACKER_CREATE);
                     res.body.should.have.property("data");
 
                     // create JSON version of model
@@ -412,7 +413,7 @@ describe("PATCH update one hacker", function () {
                     res.should.have.status(200);
                     res.should.be.json;
                     res.body.should.have.property("message");
-                    res.body.message.should.equal("Changed hacker information");
+                    res.body.message.should.equal(Constants.Success.HACKER_UPDATE);
                     res.body.should.have.property("data");
                     chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify({
                         gender: "Other"
@@ -438,7 +439,7 @@ describe("PATCH update one hacker", function () {
                     res.should.have.status(200);
                     res.should.be.json;
                     res.body.should.have.property("message");
-                    res.body.message.should.equal("Changed hacker information");
+                    res.body.message.should.equal(Constants.Success.HACKER_UPDATE);
                     res.body.should.have.property("data");
                     chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify({
                         status: "Accepted"
@@ -488,7 +489,7 @@ describe("PATCH update one hacker", function () {
                     res.should.have.status(200);
                     res.should.be.json;
                     res.body.should.have.property("message");
-                    res.body.message.should.equal("Changed hacker information");
+                    res.body.message.should.equal(Constants.Success.HACKER_UPDATE);
                     res.body.should.have.property("data");
                     chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify({
                         status: "Checked-in"
@@ -539,7 +540,7 @@ describe("PATCH update one hacker", function () {
                     res.should.have.status(200);
                     res.should.be.json;
                     res.body.should.have.property("message");
-                    res.body.message.should.equal("Changed hacker information");
+                    res.body.message.should.equal(Constants.Success.HACKER_UPDATE);
                     res.body.should.have.property("data");
                     chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify({
                         gender: "Other"
@@ -618,7 +619,7 @@ describe("PATCH update one hacker", function () {
                     res.should.have.status(200);
                     res.should.be.json;
                     res.body.should.have.property("message");
-                    res.body.message.should.equal("Changed hacker information");
+                    res.body.message.should.equal(Constants.Success.HACKER_UPDATE);
                     res.body.should.have.property("data");
                     chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify({
                         status: Constants.General.HACKER_STATUS_CONFIRMED
@@ -649,7 +650,7 @@ describe("PATCH update one hacker", function () {
                     res.should.have.status(200);
                     res.should.be.json;
                     res.body.should.have.property("message");
-                    res.body.message.should.equal("Changed hacker information");
+                    res.body.message.should.equal(Constants.Success.HACKER_UPDATE);
                     res.body.should.have.property("data");
                     chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify({
                         status: Constants.General.HACKER_STATUS_ACCEPTED
@@ -733,7 +734,7 @@ describe("POST add a hacker resume", function () {
                     res.should.have.status(200);
                     res.should.have.property("body");
                     res.body.should.have.property("message");
-                    res.body.message.should.equal("Uploaded resume");
+                    res.body.message.should.equal(Constants.Success.RESUME_UPLOAD);
                     res.body.should.have.property("data");
                     res.body.data.should.have.property("filename");
                     StorageService.download(res.body.data.filename).then((value) => {
@@ -745,5 +746,70 @@ describe("POST add a hacker resume", function () {
                     });
                 });
         });
+    });
+});
+
+describe("GET Hacker stats", function () {
+    it("It should SUCCEED and get hacker stats", function (done) {
+        //this takes a lot of time for some reason
+        util.auth.login(agent, Admin1, (error) => {
+            if (error) {
+                return done(error);
+            }
+            return agent
+                .get(`/api/hacker/stats`)
+                .end(function (err, res) {
+                    res.should.have.status(200);
+                    res.should.have.property("body");
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal("Retrieved stats");
+                    res.body.should.have.property("data");
+                    res.body.data.should.have.property("stats");
+                    res.body.data.stats.should.have.property("total");
+                    res.body.data.stats.should.have.property("status");
+                    res.body.data.stats.should.have.property("school");
+                    res.body.data.stats.should.have.property("degree");
+                    res.body.data.stats.should.have.property("gender");
+                    res.body.data.stats.should.have.property("needsBus");
+                    res.body.data.stats.should.have.property("ethnicity");
+                    res.body.data.stats.should.have.property("jobInterest");
+                    res.body.data.stats.should.have.property("major");
+                    res.body.data.stats.should.have.property("graduationYear");
+                    res.body.data.stats.should.have.property("dietaryRestrictions");
+                    res.body.data.stats.should.have.property("shirtSize");
+                    res.body.data.stats.should.have.property("age");
+                    done();
+                });
+        });
+    });
+    it("It should FAIL and get hacker stats due to invalid Authorization", function (done) {
+        //this takes a lot of time for some reason
+        util.auth.login(agent, storedAccount1, (error) => {
+            if (error) {
+                return done(error);
+            }
+            return agent
+                .get(`/api/hacker/stats`)
+                .end(function (err, res) {
+                    res.should.have.status(403);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal(Constants.Error.AUTH_403_MESSAGE);
+                    res.body.should.have.property("data");
+                    done();
+                });
+        });
+    });
+    it("It should FAIL and get hacker stats due to invalid Authentication", function (done) {
+        //this takes a lot of time for some reason
+        chai.request(server.app)
+            .get(`/api/hacker/stats`)
+            .end(function (err, res) {
+                res.should.have.status(401);
+                res.should.be.json;
+                res.body.should.have.property("message");
+                res.body.message.should.equal(Constants.Error.AUTH_401_MESSAGE);
+                done();
+            });
     });
 });

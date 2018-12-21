@@ -8,6 +8,7 @@ const Sponsor = require("../models/sponsor.model");
 const should = chai.should();
 const mongoose = require("mongoose");
 const Constants = {
+    Success: require("../constants/success.constant"),
     Error: require("../constants/error.constant"),
 };
 
@@ -67,7 +68,7 @@ describe("GET user sponsor", function () {
                     res.should.have.status(200);
                     res.should.be.json;
                     res.body.should.have.property("message");
-                    res.body.message.should.equal("Successfully retrieved sponsor information");
+                    res.body.message.should.equal(Constants.Success.SPONSOR_GET_BY_ID);
                     res.body.should.have.property("data");
                     res.body.data.should.be.a("object");
 
@@ -93,7 +94,7 @@ describe("GET user sponsor", function () {
                     res.should.have.status(200);
                     res.should.be.json;
                     res.body.should.have.property("message");
-                    res.body.message.should.equal("Successfully retrieved sponsor information");
+                    res.body.message.should.equal(Constants.Success.SPONSOR_GET_BY_ID);
                     res.body.should.have.property("data");
                     res.body.data.should.be.a("object");
 
@@ -180,10 +181,10 @@ describe("POST create sponsor", function () {
                 .type("application/json")
                 .send(newSponsor)
                 .end(function (err, res) {
-                    // res.should.have.status(200);
+                    res.should.have.status(200);
                     res.should.be.json;
                     res.body.should.have.property("message");
-                    res.body.message.should.equal("Sponsor creation successful");
+                    res.body.message.should.equal(Constants.Success.SPONSOR_CREATE);
                     res.body.should.have.property("data");
 
                     // deleting _id because that was generated, and not part of original data

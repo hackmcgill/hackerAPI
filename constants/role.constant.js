@@ -6,7 +6,7 @@ const Constants = {
 const mongoose = require("mongoose");
 
 const accountRole = {
-    "_id": mongoose.Types.ObjectId(0),
+    "_id": mongoose.Types.ObjectId("00000000e285ec4f6ec7e5c2"),
     "name": "account",
     "routes": [
         Constants.Routes.authRoutes.login,

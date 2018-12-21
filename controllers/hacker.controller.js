@@ -5,6 +5,7 @@ const Services = {
 };
 const Util = require("../middlewares/util.middleware");
 const Constants = {
+    Success: require("../constants/success.constant"),
     Error: require("../constants/error.constant"),
 };
 
@@ -21,7 +22,7 @@ async function findById(req, res) {
 
     if (hacker) {
         return res.status(200).json({
-            message: "Successfully retrieved hacker information",
+            message: Constants.Success.HACKER_GET_BY_ID,
             data: hacker.toJSON()
         });
     } else {
@@ -41,7 +42,7 @@ async function findById(req, res) {
  */
 function showHacker(req, res) {
     return res.status(200).json({
-        message: "Hacker retrieval successful",
+        message: Constants.Success.HACKER_READ,
         data: req.body.hacker.toJSON()
     });
 }
@@ -55,7 +56,7 @@ function showHacker(req, res) {
  */
 function createdHacker(req, res) {
     return res.status(200).json({
-        message: "Hacker creation successful",
+        message: Constants.Success.HACKER_CREATE,
         data: req.body.hacker.toJSON()
     });
 }
@@ -73,14 +74,14 @@ function createdHacker(req, res) {
  */
 function updatedHacker(req, res) {
     return res.status(200).json({
-        message: "Changed hacker information",
+        message: Constants.Success.HACKER_UPDATE,
         data: req.body
     });
 }
 
 function uploadedResume(req, res) {
     return res.status(200).json({
-        message: "Uploaded resume",
+        message: Constants.Success.RESUME_UPLOAD,
         data: {
             filename: req.body.gcfilename
         }
@@ -89,12 +90,22 @@ function uploadedResume(req, res) {
 
 function downloadedResume(req, res) {
     return res.status(200).json({
-        message: "Downloaded resume",
+        message: Constants.Success.RESUME_DOWNLOAD,
         data: {
             id: req.body.id,
             resume: req.body.resume
         }
     });
+}
+
+function gotStats(req, res) {
+    return res.status(200).json({
+        message: "Retrieved stats",
+        data: {
+            stats: req.body.stats,
+        }
+    });
+
 }
 
 module.exports = {
@@ -104,4 +115,5 @@ module.exports = {
     uploadedResume: uploadedResume,
     downloadedResume: downloadedResume,
     showHacker: showHacker,
+    gotStats: gotStats,
 };

@@ -36,6 +36,10 @@ function parseQuery(req, res, next) {
         req.body.sort_by = "";
     }
 
+    if (!req.body.hasOwnProperty("expand")) {
+        req.body.expand = false;
+    }
+
     return next();
 }
 
@@ -52,7 +56,8 @@ async function executeQuery(req, res, next) {
         req.body.page,
         req.body.limit,
         req.body.sort,
-        req.body.sort_by
+        req.body.sort_by,
+        req.body.expand
     );
     return next();
 }
