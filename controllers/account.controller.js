@@ -19,7 +19,7 @@ const Constants = {
 function showAccount(req, res) {
     return res.status(200).json({
         message: Constants.Success.ACCOUNT_READ,
-        data: req.body.account.toJSON()
+        data: req.body.account.toStrippedJSON()
     });
 }
 

@@ -68,7 +68,7 @@ describe("GET user sponsor", function () {
                     res.should.have.status(200);
                     res.should.be.json;
                     res.body.should.have.property("message");
-                    res.body.message.should.equal(Constants.Success.SPONSOR_GET_BY_ID);
+                    res.body.message.should.equal(Constants.Success.SPONSOR_READ);
                     res.body.should.have.property("data");
                     res.body.data.should.be.a("object");
 
@@ -94,7 +94,7 @@ describe("GET user sponsor", function () {
                     res.should.have.status(200);
                     res.should.be.json;
                     res.body.should.have.property("message");
-                    res.body.message.should.equal(Constants.Success.SPONSOR_GET_BY_ID);
+                    res.body.message.should.equal(Constants.Success.SPONSOR_READ);
                     res.body.should.have.property("data");
                     res.body.data.should.be.a("object");
 
@@ -187,9 +187,11 @@ describe("POST create sponsor", function () {
                     res.body.message.should.equal(Constants.Success.SPONSOR_CREATE);
                     res.body.should.have.property("data");
 
-                    // deleting _id because that was generated, and not part of original data
-                    delete res.body.data._id;
-                    chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify(newSponsor));
+                    // deleting id because that was generated, and not part of original data
+                    const sponsor = (new Sponsor(newSponsor)).toJSON();
+                    delete res.body.data.id;
+                    delete sponsor.id;
+                    chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify(sponsor));
                     done();
                 });
         });
