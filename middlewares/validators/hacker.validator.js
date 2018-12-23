@@ -14,6 +14,7 @@ module.exports = {
         VALIDATOR.nameValidator("body", "major", false),
         VALIDATOR.integerValidator("body", "graduationYear", false, 2019, 2030),
         VALIDATOR.booleanValidator("body", "codeOfConduct", false, true),
+        VALIDATOR.mongoIdValidator("body", "teamId", true)
     ],
 
     updateConfirmationValidator: [
