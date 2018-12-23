@@ -3,9 +3,9 @@ const VALIDATOR = require("./validator.helper");
 
 module.exports = {
     newAccountValidator: [
-        VALIDATOR.nameValidator("body", "firstName", false),
-        VALIDATOR.nameValidator("body", "lastName", false),
-        VALIDATOR.pronounValidator("body", "pronoun", false),
+        VALIDATOR.asciiValidator("body", "firstName", false),
+        VALIDATOR.asciiValidator("body", "lastName", false),
+        VALIDATOR.asciiValidator("body", "pronoun", false),
         VALIDATOR.emailValidator("body", "email", false),
         VALIDATOR.alphaArrayValidator("body", "dietaryRestrictions", false),
         VALIDATOR.shirtSizeValidator("body", "shirtSize", false),
@@ -15,9 +15,9 @@ module.exports = {
         VALIDATOR.phoneNumberValidator("body", "phoneNumber", false)
     ],
     updateAccountValidator: [
-        VALIDATOR.nameValidator("body", "firstName", true),
-        VALIDATOR.nameValidator("body", "lastName", true),
-        VALIDATOR.pronounValidator("body", "pronoun", true),
+        VALIDATOR.asciiValidator("body", "firstName", true),
+        VALIDATOR.asciiValidator("body", "lastName", true),
+        VALIDATOR.asciiValidator("body", "pronoun", true),
         VALIDATOR.emailValidator("body", "email", true),
         VALIDATOR.alphaArrayValidator("body", "dietaryRestrictions", true),
         VALIDATOR.shirtSizeValidator("body", "shirtSize", true),

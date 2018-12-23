@@ -5,13 +5,13 @@ module.exports = {
     newHackerValidator: [
         // status will be added automatically
         VALIDATOR.mongoIdValidator("body", "accountId", false),
-        VALIDATOR.nameValidator("body", "school", false),
-        VALIDATOR.nameValidator("body", "degree", false),
-        VALIDATOR.nameValidator("body", "gender", false),
+        VALIDATOR.asciiValidator("body", "school", false),
+        VALIDATOR.asciiValidator("body", "degree", false),
+        VALIDATOR.asciiValidator("body", "gender", false),
         VALIDATOR.booleanValidator("body", "needsBus", false),
         VALIDATOR.applicationValidator("body", "application", false),
         VALIDATOR.alphaArrayValidator("body", "ethnicity", false),
-        VALIDATOR.nameValidator("body", "major", false),
+        VALIDATOR.asciiValidator("body", "major", false),
         VALIDATOR.integerValidator("body", "graduationYear", false, 2019, 2030),
         VALIDATOR.booleanValidator("body", "codeOfConduct", false, true),
         VALIDATOR.mongoIdValidator("body", "teamId", true)
@@ -23,9 +23,9 @@ module.exports = {
 
     // untested
     updateHackerValidator: [
-        VALIDATOR.nameValidator("body", "school", true),
-        VALIDATOR.nameValidator("body", "degree", true),
-        VALIDATOR.nameValidator("body", "gender", true),
+        VALIDATOR.asciiValidator("body", "school", true),
+        VALIDATOR.asciiValidator("body", "degree", true),
+        VALIDATOR.asciiValidator("body", "gender", true),
         VALIDATOR.applicationValidator("body", "application", true),
         VALIDATOR.booleanValidator("body", "needsBus", true)
     ],

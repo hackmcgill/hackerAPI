@@ -136,7 +136,7 @@ function booleanValidator(fieldLocation, fieldname, optional = true, desire = nu
  * @param {string} fieldname name of the field that needs to be validated.
  * @param {boolean} optional whether the field is optional or not.
  */
-function nameValidator(fieldLocation, fieldname, optional = true) {
+function asciiValidator(fieldLocation, fieldname, optional = true) {
     const name = setProperValidationChainBuilder(fieldLocation, fieldname, "invalid name");
     if (optional) {
         return name.optional({
@@ -144,24 +144,6 @@ function nameValidator(fieldLocation, fieldname, optional = true) {
         }).isAscii().withMessage("must contain only ascii characters");
     } else {
         return name.exists().withMessage("name must exist").isAscii().withMessage("must contain only ascii characters");
-    }
-}
-
-// untested
-/**
- * Validates that field pronoun is ascii only.
- * @param {"query" | "body" | "header" | "param"} fieldLocation the location where the field should be found 
- * @param {string} fieldname name of the field that needs to be validated.
- * @param {boolean} optional whether the field is optional or not.
- */
-function pronounValidator(fieldLocation, fieldname, optional = true) {
-    const pronoun = setProperValidationChainBuilder(fieldLocation, fieldname, "invalid pronoun");
-    if (optional) {
-        return pronoun.optional({
-            checkFalsy: true
-        }).isAscii().withMessage("must contain only ascii characters");
-    } else {
-        return pronoun.exists().withMessage("pronoun must exist").isAscii().withMessage("must contain only ascii characters");
     }
 }
 
@@ -641,8 +623,7 @@ module.exports = {
     integerValidator: integerValidator,
     mongoIdValidator: mongoIdValidator,
     mongoIdArrayValidator: mongoIdArrayValidator,
-    nameValidator: nameValidator,
-    pronounValidator: pronounValidator,
+    asciiValidator: asciiValidator,
     emailValidator: emailValidator,
     alphaValidator: alphaValidator,
     alphaArrayValidator: alphaArrayValidator,
