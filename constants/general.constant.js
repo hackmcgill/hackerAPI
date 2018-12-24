@@ -63,6 +63,8 @@ const EXTENDED_USER_TYPES = [HACKER, VOLUNTEER, STAFF, SPONSOR_T1, SPONSOR_T2, S
 // matches optional http://, https://, http:, https:, and optional www.
 // matches the domain, and then optional route, path, query parameters
 const URL_REGEX = /^(http(s)?:(\/\/)?)?(www\.)?([-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6})\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$/;
+const ANY_REGEX = /^.+$/;
+
 
 const EMAIL_SUBJECTS = {};
 EMAIL_SUBJECTS[HACKER_STATUS_NONE] = `Application for ${HACKATHON_NAME} incomplete`;
@@ -87,6 +89,7 @@ module.exports = {
     HACKATHON_NAME: HACKATHON_NAME,
     DEVPOST_REGEX: DEVPOST_REGEX,
     EMAIL_REGEX: EMAIL_REGEX,
+    ANY_REGEX: ANY_REGEX,
     HACKER_STATUS_NONE: HACKER_STATUS_NONE,
     HACKER_STATUS_APPLIED: HACKER_STATUS_APPLIED,
     HACKER_STATUS_ACCEPTED: HACKER_STATUS_ACCEPTED,

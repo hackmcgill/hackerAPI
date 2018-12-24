@@ -1,12 +1,13 @@
 "use strict";
 const VALIDATOR = require("./validator.helper");
+const Constants = require("../../constants/general.constant");
 
 module.exports = {
     newAccountValidator: [
         VALIDATOR.asciiValidator("body", "firstName", false),
         VALIDATOR.asciiValidator("body", "lastName", false),
         VALIDATOR.asciiValidator("body", "pronoun", false),
-        VALIDATOR.emailValidator("body", "email", false),
+        VALIDATOR.regexValidator("body", "email", false, Constants.EMAIL_REGEX),
         VALIDATOR.alphaArrayValidator("body", "dietaryRestrictions", false),
         VALIDATOR.shirtSizeValidator("body", "shirtSize", false),
         VALIDATOR.passwordValidator("body", "password", false),
@@ -18,14 +19,14 @@ module.exports = {
         VALIDATOR.asciiValidator("body", "firstName", true),
         VALIDATOR.asciiValidator("body", "lastName", true),
         VALIDATOR.asciiValidator("body", "pronoun", true),
-        VALIDATOR.emailValidator("body", "email", true),
+        VALIDATOR.regexValidator("body", "email", true, Constants.EMAIL_REGEX),
         VALIDATOR.alphaArrayValidator("body", "dietaryRestrictions", true),
         VALIDATOR.shirtSizeValidator("body", "shirtSize", true),
         VALIDATOR.dateValidator("body", "birthDate", true),
         VALIDATOR.phoneNumberValidator("body", "phoneNumber", true)
     ],
     inviteAccountValidator: [
-        VALIDATOR.emailValidator("body", "email", false),
+        VALIDATOR.regexValidator("body", "email", false, Constants.EMAIL_REGEX),
         VALIDATOR.accountTypeValidator("body", "accountType", false)
     ]
 };
