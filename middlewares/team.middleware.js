@@ -4,11 +4,13 @@ const TAG = `[ TEAM.MIDDLEWARE.js ]`;
 const mongoose = require("mongoose");
 const Services = {
     Logger: require("../services/logger.service"),
-    Team: require("../services/team.service")
+    Team: require("../services/team.service"),
+    Hacker: require("../services/hacker.service")
 };
 const Util = require("./util.middleware");
 const Constants = {
     Error: require("../constants/error.constant"),
+    General: require("../constants/general.constant"),
 };
 
 /**
@@ -69,6 +71,55 @@ async function ensureSpace(req, res, next) {
 
     return next();
 }
+
+async function updateHackerTeam(req, res, next) {
+    // how to make this ACID?
+
+    const receivingTeam = await Services.Team.findByName(req.body.teamName);
+    const previousTeam = await Services.Team.findTeamByHackerId(req.body.hackerId);
+    const hacker = await Services.Hacker.findById(req.body.hackerId);
+
+    if (!receivingTeam) {
+        return next({
+            status: 404,
+            message: Constants.Error.TEAM_404_MESSAGE,
+            data: req.body.teamName
+        });
+    }
+
+    if (!hacker) {
+        return next({
+            status: 404,
+            message: Constants.Error.HACKER_404_MESSAGE,
+            data: {
+                id: req.body.accountId
+            }
+        });
+    }
+
+    // means hacker is already in a team
+    if (previousTeam) {
+        // delete old team if old team only had that one hacker
+        if (previousTeam.members.length === 1) {
+            await Services.Team.removeTeam(previousTeam._id);
+        }
+        // remove hacker from old team
+        else {
+            await Services.Team.removeMember(previousTeam._id, req.body.hackerId);
+        }
+    }
+
+    // add hacker to the new team
+    await Services.Team.addMember(receivingTeam._id, req.body.hackerId);
+
+    // change teamId of hacker
+    await Services.Hacker.updateOne(req.body.hackerId, {
+        teamId: receivingTeam._id
+    });
+
+    next();
+}
+
 /**
  * @function parseTeam
  * @param {{body: {name: string, members: Object[], devpostURL: string, projectName: string}}} req
@@ -101,4 +152,6 @@ function parseTeam(req, res, next) {
 module.exports = {
     parseTeam: parseTeam,
     ensureUniqueHackerId: Util.asyncMiddleware(ensureUniqueHackerId),
+    ensureSpace: Util.asyncMiddleware(ensureSpace),
+    updateHackerTeam: Util.asyncMiddleware(updateHackerTeam),
 };

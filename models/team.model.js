@@ -1,6 +1,6 @@
 "use strict";
 const mongoose = require("mongoose");
-const MAX_TEAM_SIZE = 4;
+
 //describes the data type
 const TeamSchema = new mongoose.Schema({
     name: {

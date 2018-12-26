@@ -1,6 +1,9 @@
 "use strict";
 const Team = require("../models/team.model");
 const logger = require("./logger.service");
+const Services = {
+    Hacker: require("../services/hacker.service"),
+};
 
 /**
  * @function findTeamByHackerId
@@ -55,6 +58,39 @@ function findByName(name) {
 
     return Team.findOne(query, logger.queryCallbackFactory(TAG, "team", query));
 }
+
+function removeMember(teamId, hackerId) {
+    const TAG = `[Team Services # removeMember]:`;
+
+    return Team.update({
+        _id: teamId
+    }, {
+        $pull: {
+            members: [hackerId]
+        }
+    });
+}
+
+function addMember(teamId, hackerId) {
+    const TAG = `[Team Services # addMember]:`;
+
+    return Team.update({
+        _id: teamId
+    }, {
+        $push: {
+            members: [hackerId]
+        }
+    });
+}
+
+function removeTeam(teamId) {
+    const TAG = `[Team Services # removeTeam]`;
+
+    return Team.deleteOne({
+        _id: teamId
+    });
+}
+
 /**
  * Gets the number of current members of a team defined by name
  * @param {*} name 
@@ -86,4 +122,9 @@ module.exports = {
     createTeam: createTeam,
     findTeamByHackerId: findTeamByHackerId,
     findById: findById,
+    findByName: findByName,
+    getSize: getSize,
+    removeMember: removeMember,
+    removeTeam: removeTeam,
+    addMember: addMember
 };

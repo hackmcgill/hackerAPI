@@ -60,6 +60,31 @@ module.exports = {
         );
 
         /**
+         * Update the team specified by the id param
+         */
+        teamRouter.route("/:id").patch(
+
+        );
+
+
+        /**
+         * Allows a hacker to join a team by name. Takes in teamName, and hackerId in parameters
+         */
+        teamRouter.route("/join").patch(
+            Middleware.Auth.ensureAuthenticated(),
+            Middleware.Auth.ensureAuthorized(),
+
+            Middleware.Validator.Team.joinTeamValidator,
+            // need to check that the team is not full
+            Middleware.Team.ensureSpace,
+            Middleware.Hacker.ensureHackerExists,
+
+
+            Middleware.Hacker.updateHackerTeam
+
+        );
+
+        /**
          * @api {get} /team/:id get a team's information
          * @apiName getTeam
          * @apiGroup Team

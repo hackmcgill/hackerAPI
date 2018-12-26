@@ -10,4 +10,9 @@ module.exports = {
         VALIDATOR.regexValidator("body", "devpostURL", true, Constants.DEVPOST_REGEX),
         VALIDATOR.asciiValidator("body", "projectName", false)
     ],
+
+    joinTeamValidator: [
+        VALIDATOR.mongoIdValidator("body", "hackerId", false),
+        VALIDATOR.asciiValidator("body", "teamName", false),
+    ]
 };
