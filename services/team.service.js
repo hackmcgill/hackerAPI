@@ -46,6 +46,29 @@ function findById(id) {
     return Team.findById(query, logger.queryCallbackFactory(TAG, "team", query));
 }
 
+function findByName(name) {
+    const TAG = `[Team Services # findByName]:`;
+
+    const query = {
+        name: name
+    };
+
+    return Team.findOne(query, logger.queryCallbackFactory(TAG, "team", query));
+}
+/**
+ * Gets the number of current members of a team defined by name
+ * @param {*} name 
+ */
+async function getSize(name) {
+    const team = await Services.Team.findByName(name);
+
+    if (!team) {
+        return -1;
+    } else {
+        return team.members.length;
+    }
+}
+
 /**
  * @async
  * @function isTeamIdValid

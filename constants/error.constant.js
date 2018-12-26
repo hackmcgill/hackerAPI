@@ -16,6 +16,7 @@ const HACKER_STATUS_409_MESSAGE = "Conflict with hacker status";
 const TEAM_MEMBER_422_MESSAGE = "Duplicate team member in input";
 const VALIDATION_422_MESSAGE = "Validation failed";
 const ACCOUNT_DUPLICATE_422_MESSAGE = "Account already exists";
+const TEAM_SIZE_422_MESSAGE = "Team full";
 
 const ACCOUNT_TOKEN_401_MESSAGE = "Invalid token for account";
 const AUTH_401_MESSAGE = "Invalid Authentication";
@@ -61,4 +62,5 @@ module.exports = {
     ACCOUNT_DUPLICATE_422_MESSAGE: ACCOUNT_DUPLICATE_422_MESSAGE,
     LOGIN_500_MESSAGE: LOGIN_500_MESSAGE,
     HACKER_STATUS_409_MESSAGE: HACKER_STATUS_409_MESSAGE,
+    TEAM_SIZE_422_MESSAGE: TEAM_SIZE_422_MESSAGE,
 };

@@ -50,6 +50,25 @@ async function ensureUniqueHackerId(req, res, next) {
     return next();
 }
 
+async function ensureSpace(req, res, next) {
+    const teamSize = Services.Team.getSize(req.body.teamName);
+
+    if (teamSize === -1) {
+        return next({
+            status: 404,
+            message: Constants.Error.TEAM_404_MESSAGE,
+            data: req.body.teamName
+        });
+    } else if (teamSize >= Constants.General.MAX_TEAM_SIZE) {
+        return next({
+            status: 422,
+            message: Constants.Error.TEAM_SIZE_422_MESSAGE,
+            data: teamSize,
+        });
+    }
+
+    return next();
+}
 /**
  * @function parseTeam
  * @param {{body: {name: string, members: Object[], devpostURL: string, projectName: string}}} req
