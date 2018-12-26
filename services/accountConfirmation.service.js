@@ -32,6 +32,12 @@ function findById(id) {
     return AccountConfirmation.findById(id, logger.queryCallbackFactory(TAG, "AccountConfirmation", "mongoId"));
 }
 
+/**
+ * @function find 
+ * @param {*} query the query to search the database by.
+ * @return {DocumentQuery<any[]>} The document query will resolve to either account confirmations or null.
+ * @description Finds an account by query.
+ */
 function find(query) {
     const TAG = `[ AccountConfirmation Service # find ]`;
     return AccountConfirmation.find(query, logger.queryCallbackFactory(TAG, "AccountConfirmation", query));

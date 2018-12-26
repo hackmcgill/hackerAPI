@@ -167,6 +167,12 @@ async function inviteAccount(req, res, next) {
         });
     }
 }
+/**
+ * Gets all of the invites in the database and adds it to req.body.
+ * @param {{}} req 
+ * @param {*} res 
+ * @param {(err?)=>void} next 
+ */
 async function getInvites(req, res, next) {
     const invites = await Services.AccountConfirmation.find({});
     req.body.invites = invites;
