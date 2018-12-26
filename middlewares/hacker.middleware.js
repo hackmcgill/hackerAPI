@@ -6,7 +6,7 @@ const Services = {
     Hacker: require("../services/hacker.service"),
     Storage: require("../services/storage.service"),
     Email: require("../services/email.service"),
-    Account: require("../services/account.service")
+    Account: require("../services/account.service"),
 };
 const Middleware = {
     Util: require("./util.middleware")
@@ -53,6 +53,8 @@ function parseHacker(req, res, next) {
         major: req.body.major,
         graduationYear: req.body.graduationYear,
         codeOfConduct: req.body.codeOfConduct,
+
+        teamId: teamId,
     };
     req.body.token = req.body.authorization;
 
@@ -67,6 +69,7 @@ function parseHacker(req, res, next) {
     delete req.body.major;
     delete req.body.graduationYear;
     delete req.body.codeOfConduct;
+    delete req.body.teamId;
 
     req.body.hackerDetails = hackerDetails;
 
@@ -486,5 +489,5 @@ module.exports = {
     parseConfirmation: parseConfirmation,
     createHacker: Middleware.Util.asyncMiddleware(createHacker),
     findSelf: Middleware.Util.asyncMiddleware(findSelf),
-    getStats: Middleware.Util.asyncMiddleware(getStats)
+    getStats: Middleware.Util.asyncMiddleware(getStats),
 };
