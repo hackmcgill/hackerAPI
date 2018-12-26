@@ -166,7 +166,11 @@ async function inviteAccount(req, res, next) {
             message: Constants.Error.EMAIL_500_MESSAGE,
         });
     }
-
+}
+async function getInvites(req, res, next) {
+    const invites = await Services.AccountConfirmation.find({});
+    req.body.invites = invites;
+    next();
 }
 
 module.exports = {
@@ -174,7 +178,7 @@ module.exports = {
     parseAccount: parseAccount,
     // untested
     addDefaultHackerPermissions: Middleware.Util.asyncMiddleware(addDefaultHackerPermissions),
-    // untested
+    getInvites: Middleware.Util.asyncMiddleware(getInvites),
     updatePassword: Middleware.Util.asyncMiddleware(updatePassword),
     addAccount: Middleware.Util.asyncMiddleware(addAccount),
     updateAccount: Middleware.Util.asyncMiddleware(updateAccount),

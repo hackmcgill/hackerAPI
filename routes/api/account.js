@@ -141,6 +141,64 @@ module.exports = {
         );
 
         /**
+         * @api {post} /account/invite invites a user to create an account with the specified accountType
+         * @apiName inviteAccount
+         * @apiGroup Account
+         * @apiVersion 0.0.8
+         * @apiDescription sends link with token to be used with the account/create route
+         * 
+         * @apiParam (body) {String} [email] email of the account to be created and where to send the link
+         * @apiParam (body) {String} [accountType] the type of the account which the user can create, for sponsor this should specify tier as well
+         * 
+         * @apiSuccess {string} message Success message
+         * @apiSuccess {object} data Account object
+         * @apiSuccessExample {object} Success-Response: 
+         *      {
+                    "message": "Successfully invited user", 
+                    "data": {}
+                }
+         * @apiError {string} message Error message
+         * @apiError {object} data Error object
+         * @apiErrorExample {object} Error-Response:
+         * {
+                "message": "Invalid Authentication",
+                "data": {
+                    "route": "/invite"
+                }
+            }
+         */
+        accountRouter.route("/invite").post(
+            Middleware.Auth.ensureAuthenticated(),
+            Middleware.Auth.ensureAuthorized(),
+            Middleware.Validator.Account.inviteAccountValidator,
+            Middleware.parseBody.middleware,
+            Middleware.Account.inviteAccount,
+            Controllers.Account.invitedAccount
+        );
+        /**
+         * @api {get} /account/invite Get all of the invites.
+         * @apiName getAllInvites
+         * @apiGroup Account
+         * @apiVersion 0.0.8
+         * @apiDescription Get all of the invites that currently exist in the database.
+         * @apiSuccessExample {object} Success-Response: 
+         *      {
+                    "message": "Invite retrieval successful.", 
+                    "data": [{
+                        "email":"abc@def.com",
+                        "accountType":"Hacker"
+                    }]
+                }
+         */
+        accountRouter.route("/invite").get(
+            Middleware.Auth.ensureAuthenticated(),
+            Middleware.Auth.ensureAuthorized(),
+            Middleware.parseBody.middleware,
+            Middleware.Account.getInvites,
+            Controllers.Account.gotInvites
+        );
+
+        /**
          * @api {patch} /account/:id update an account's information
          * @apiName updateOneUser
          * @apiGroup Account
@@ -237,42 +295,6 @@ module.exports = {
             Middleware.parseBody.middleware,
 
             Controllers.Account.getUserById
-        );
-
-        /**
-         * @api {post} /account/invite invites a user to create an account with the specified accountType
-         * @apiName inviteAccount
-         * @apiGroup Account
-         * @apiVersion 0.0.8
-         * @apiDescription sends link with token to be used with the account/create route
-         * 
-         * @apiParam (body) {String} [email] email of the account to be created and where to send the link
-         * @apiParam (body) {String} [accountType] the type of the account which the user can create, for sponsor this should specify tier as well
-         * 
-         * @apiSuccess {string} message Success message
-         * @apiSuccess {object} data Account object
-         * @apiSuccessExample {object} Success-Response: 
-         *      {
-                    "message": "Successfully invited user", 
-                    "data": {}
-                }
-         * @apiError {string} message Error message
-         * @apiError {object} data Error object
-         * @apiErrorExample {object} Error-Response:
-         * {
-                "message": "Invalid Authentication",
-                "data": {
-                    "route": "/invite"
-                }
-            }
-         */
-        accountRouter.route("/invite").post(
-            Middleware.Auth.ensureAuthenticated(),
-            Middleware.Auth.ensureAuthorized(),
-            Middleware.Validator.Account.inviteAccountValidator,
-            Middleware.parseBody.middleware,
-            Middleware.Account.inviteAccount,
-            Controllers.Account.invitedAccount
         );
 
         apiRouter.use("/account", accountRouter);

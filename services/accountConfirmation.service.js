@@ -32,6 +32,11 @@ function findById(id) {
     return AccountConfirmation.findById(id, logger.queryCallbackFactory(TAG, "AccountConfirmation", "mongoId"));
 }
 
+function find(query) {
+    const TAG = `[ AccountConfirmation Service # find ]`;
+    return AccountConfirmation.find(query, logger.queryCallbackFactory(TAG, "AccountConfirmation", query));
+}
+
 /**
  * Creates Account Confirmation document in the database
  * @param {String} type the type of user which to create the token for
@@ -158,6 +163,7 @@ function generateAccountInvitationEmail(address, receiverEmail, type, token) {
     return mailData;
 }
 module.exports = {
+    find: find,
     findById: findById,
     findByAccountId: findByAccountId,
     create: create,

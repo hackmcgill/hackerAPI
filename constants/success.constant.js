@@ -5,6 +5,7 @@ const ACCOUNT_GET_BY_ID = "Account found by user id.";
 const ACCOUNT_CREATE = "Account creation successful.";
 const ACCOUNT_UPDATE = "Account update successful.";
 const ACCOUNT_INVITE = "Account invitation successful.";
+const ACCOUNT_GET_INVITES = "Invite retrieval successful.";
 
 const AUTH_LOGIN = "Login successful.";
 const AUTH_LOGOUT = "Logout successful.";
@@ -41,6 +42,7 @@ module.exports = {
     ACCOUNT_CREATE: ACCOUNT_CREATE,
     ACCOUNT_UPDATE: ACCOUNT_UPDATE,
     ACCOUNT_INVITE: ACCOUNT_INVITE,
+    ACCOUNT_GET_INVITES: ACCOUNT_GET_INVITES,
 
     AUTH_LOGIN: AUTH_LOGIN,
     AUTH_LOGOUT: AUTH_LOGOUT,
