@@ -25,7 +25,7 @@
     "express-validator": "^5.2.0",
     "express-winston": "^2.5.1",
     "handlebars": "^4.0.12",
-    "jsonwebtoken": "^8.1.0",
+    "jsonwebtoken": "^8.4.0",
     "memory-cache": "^0.2.0",
     "mongoose": "^5.1.0",
     "multer": "^1.4.1",
