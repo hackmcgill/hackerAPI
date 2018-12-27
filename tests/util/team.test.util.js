@@ -19,8 +19,18 @@ const Team1 = {
     "devpostURL": "justanother.devpost.com",
     "projectName": "YetAnotherProject"
 };
+
+const Team2 = {
+    "_id": mongoose.Types.ObjectId(),
+    "name": "SilverTeam",
+    "members": [Util.Hacker.HackerC._id],
+    "devpostURL": "watwatwat.devpost.com",
+    "projectName": "WatWatWat",
+};
+
 const Teams = [
     Team1,
+    Team2
 ];
 
 function storeAll(attributes) {

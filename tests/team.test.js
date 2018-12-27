@@ -7,11 +7,13 @@ const Team = require("../models/team.model");
 
 const util = {
     team: require("./util/team.test.util"),
+    hacker: require("./util/hacker.test.util"),
 };
 
 const Constants = {
     Success: require("../constants/success.constant"),
-}
+    Error: require("../constants/error.constant"),
+};
 
 describe("GET team", function () {
     it("should SUCCEED and list a team's information from /api/team/:id GET", function (done) {
@@ -42,6 +44,49 @@ describe("POST create team", function () {
                 res.should.be.json;
                 res.body.should.have.property("message");
                 res.body.message.should.equal(Constants.Success.TEAM_CREATE);
+                res.body.should.have.property("data");
+
+                // deleting _id because that was generated, and not part of original data
+                delete res.body.data._id;
+                chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify(util.team.newTeam1));
+                done();
+            });
+    });
+});
+
+describe("PATCH change team", function () {
+    it("should FAIL to join a hacker to a team due to lack of authentication", function (done) {
+        chai.request(server.app)
+            .post(`/api/team/`)
+            .type("application/json")
+            .send({
+                teamName: "BronzeTeam",
+                hackerId: util.hacker.C._id,
+            })
+            .end(function (err, res) {
+                res.should.have.status(401);
+                res.should.be.json;
+                res.body.should.have.property("message");
+                res.body.message.should.equal(Constants.Error.AUTH_401_MESSAGE);
+                res.body.should.have.property("data");
+
+                done();
+            });
+    });
+
+    it("should FAIL to join a hacker to a team due to lack of authentication", function (done) {
+        chai.request(server.app)
+            .post(`/api/team/`)
+            .type("application/json")
+            .send({
+                teamName: "BronzeTeam",
+                hackerId: util.hacker.C._id,
+            })
+            .end(function (err, res) {
+                res.should.have.status(401);
+                res.should.be.json;
+                res.body.should.have.property("message");
+                res.body.message.should.equal(Constants.Error.AUTH_401_MESSAGE);
                 res.body.should.have.property("data");
 
                 // deleting _id because that was generated, and not part of original data

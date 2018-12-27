@@ -35,6 +35,13 @@ async function findById(req, res) {
     }
 }
 
+function joinedTeam(req, res) {
+    return res.status(200).json({
+        message: Constants.Success.TEAM_JOIN,
+        data: {},
+    });
+}
+
 /**
  * @async
  * @function createTeam
@@ -64,4 +71,5 @@ async function createTeam(req, res) {
 module.exports = {
     createTeam: Util.asyncMiddleware(createTeam),
     findById: Util.asyncMiddleware(findById),
+    joinedTeam: joinedTeam,
 };

@@ -13,7 +13,7 @@ const Middleware = {
     },
     /* Insert all of ther middleware require statements here */
     parseBody: require("../../middlewares/parse-body.middleware"),
-    Team: require("../../middlewares/team.middleware")
+    Team: require("../../middlewares/team.middleware"),
 };
 
 module.exports = {
@@ -77,11 +77,10 @@ module.exports = {
             Middleware.Validator.Team.joinTeamValidator,
             // need to check that the team is not full
             Middleware.Team.ensureSpace,
-            Middleware.Hacker.ensureHackerExists,
 
+            Middleware.Team.updateHackerTeam,
 
-            Middleware.Hacker.updateHackerTeam
-
+            Controllers.Team.joinedTeam
         );
 
         /**
