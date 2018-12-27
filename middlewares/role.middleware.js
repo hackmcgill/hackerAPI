@@ -53,7 +53,7 @@ async function createRole(req, res, next) {
     } else {
         return next({
             status: 500,
-            message: Constants.Error.HACKER_CREATE_500_MESSAGE,
+            message: Constants.Error.ROLE_CREATE_500_MESSAGE,
             data: {}
         });
     }
