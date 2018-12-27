@@ -5,8 +5,9 @@ const Services = {
 };
 const Util = require("../middlewares/util.middleware");
 const Constants = {
+    Success: require("../constants/success.constant"),
     Error: require("../constants/error.constant"),
-}
+};
 
 /**
  * @async
@@ -22,7 +23,7 @@ async function findById(req, res) {
 
     if (sponsor) {
         return res.status(200).json({
-            message: "Successfully retrieved sponsor information",
+            message: Constants.Success.SPONSOR_GET_BY_ID,
             data: sponsor.toJSON()
         });
     } else {
@@ -48,7 +49,7 @@ async function createSponsor(req, res) {
 
     if (success) {
         return res.status(200).json({
-            message: "Sponsor creation successful",
+            message: Constants.Success.SPONSOR_CREATE,
             data: sponsorDetails
         });
     } else {
