@@ -1,6 +1,6 @@
 "use strict";
 
-const Success = require("../constants/success.constants");
+const Success = require("../constants/success.constant");
 
 /**
  * @function createdRole

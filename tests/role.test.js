@@ -15,7 +15,7 @@ const util = {
 
 const Constants = {
     Error: require("../constants/error.constant"),
-    Success: require("../constants/success.constants"),
+    Success: require("../constants/success.constant"),
 };
 
 describe("POST create role", function () {
