@@ -53,7 +53,7 @@ async function ensureUniqueHackerId(req, res, next) {
 /**
  * @async
  * @function createTeam
- * @param {{body: {teamDetails: {_id: ObjectId, name: string, members: ObjectId[], devpostURL: string, projectName: string}}}} req
+ * @param {{body: {teamDetails: {_id: ObjectId, name: string, members: ObjectId[], devpostURL?: string, projectName: string}}}} req
  * @param {*} res
  * @description create a team from information in req.body.teamDetails.
  */

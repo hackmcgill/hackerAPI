@@ -18,7 +18,7 @@ const Constants = {
  * @return {JSON} Success status and team object
  * @description Returns the JSON of team object located in req.body.team
  */
-async function showTeam(req, res) {
+function showTeam(req, res) {
     return res.status(200).json({
         message: Constants.Success.TEAM_READ,
         data: req.body.team.toJSON()
