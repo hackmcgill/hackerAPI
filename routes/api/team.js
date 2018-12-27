@@ -15,6 +15,9 @@ const Middleware = {
     parseBody: require("../../middlewares/parse-body.middleware"),
     Team: require("../../middlewares/team.middleware"),
 };
+const Services = {
+    Hacker: require("../../services/hacker.service"),
+};
 
 module.exports = {
     activate: function (apiRouter) {
@@ -70,9 +73,9 @@ module.exports = {
         /**
          * Allows a hacker to join a team by name. Takes in teamName, and hackerId in parameters
          */
-        teamRouter.route("/join").patch(
+        teamRouter.route("/join/:id").patch(
             Middleware.Auth.ensureAuthenticated(),
-            Middleware.Auth.ensureAuthorized(),
+            Middleware.Auth.ensureAuthorized([Services.Hacker.findById]),
 
             Middleware.Validator.Team.joinTeamValidator,
             // need to check that the team is not full
