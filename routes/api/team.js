@@ -14,6 +14,7 @@ const Middleware = {
     /* Insert all of ther middleware require statements here */
     parseBody: require("../../middlewares/parse-body.middleware"),
     Team: require("../../middlewares/team.middleware"),
+    Auth: require("../../middlewares/auth.middleware"),
 };
 const Services = {
     Hacker: require("../../services/hacker.service"),
@@ -71,11 +72,11 @@ module.exports = {
 
 
         /**
-         * Allows a hacker to join a team by name. Takes in teamName, and hackerId in parameters
+         * Allows a logged in hacker to join a team by name
          */
-        teamRouter.route("/join/:id").patch(
+        teamRouter.route("/join/").patch(
             Middleware.Auth.ensureAuthenticated(),
-            Middleware.Auth.ensureAuthorized([Services.Hacker.findById]),
+            Middleware.Auth.ensureAuthorized(),
 
             Middleware.Validator.Team.joinTeamValidator,
             // need to check that the team is not full

@@ -152,7 +152,7 @@ const teamRoutes = {
     },
     "join": {
         requestType: Constants.REQUEST_TYPES.PATCH,
-        uri: "api/team/join",
+        uri: "/api/team/join/",
     },
 };
 

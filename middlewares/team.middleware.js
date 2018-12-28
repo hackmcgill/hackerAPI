@@ -74,10 +74,9 @@ async function ensureSpace(req, res, next) {
 
 async function updateHackerTeam(req, res, next) {
     // how to make this ACID?
-
     const receivingTeam = await Services.Team.findByName(req.body.teamName);
     const previousTeam = await Services.Team.findTeamByHackerId(req.body.hackerId);
-    const hacker = await Services.Hacker.findById(req.body.hackerId);
+    const hacker = await Services.Hacker.findByAccountId(req.user.id);
 
     if (!receivingTeam) {
         return next({
@@ -92,7 +91,7 @@ async function updateHackerTeam(req, res, next) {
             status: 404,
             message: Constants.Error.HACKER_404_MESSAGE,
             data: {
-                id: req.body.accountId
+                id: req.user.id
             }
         });
     }
@@ -105,12 +104,12 @@ async function updateHackerTeam(req, res, next) {
         }
         // remove hacker from old team
         else {
-            await Services.Team.removeMember(previousTeam._id, req.body.hackerId);
+            await Services.Team.removeMember(previousTeam._id, req.user.id);
         }
     }
 
     // add hacker to the new team
-    await Services.Team.addMember(receivingTeam._id, req.body.hackerId);
+    await Services.Team.addMember(receivingTeam._id, req.user.id);
 
     // change teamId of hacker
     await Services.Hacker.updateOne(req.body.hackerId, {

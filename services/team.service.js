@@ -96,7 +96,7 @@ function removeTeam(teamId) {
  * @param {*} name 
  */
 async function getSize(name) {
-    const team = await Services.Team.findByName(name);
+    const team = await findByName(name);
 
     if (!team) {
         return -1;

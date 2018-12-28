@@ -1,6 +1,7 @@
 "use strict";
 const chai = require("chai");
 const chaiHttp = require("chai-http");
+const should = chai.should();
 chai.use(chaiHttp);
 const server = require("../app");
 const Team = require("../models/team.model");
@@ -8,6 +9,8 @@ const Team = require("../models/team.model");
 const util = {
     team: require("./util/team.test.util"),
     hacker: require("./util/hacker.test.util"),
+    account: require("./util/account.test.util"),
+    auth: require("./util/auth.test.util"),
 };
 
 const Constants = {
@@ -59,11 +62,10 @@ describe("POST create team", function () {
 describe("PATCH change team", function () {
     it("should FAIL to join a hacker to a team due to lack of authentication", function (done) {
         chai.request(server.app)
-            .post(`/api/team/`)
+            .patch(`/api/team/join/`)
             .type("application/json")
             .send({
                 teamName: "BronzeTeam",
-                hackerId: util.hacker.C._id,
             })
             .end(function (err, res) {
                 res.should.have.status(401);
@@ -76,18 +78,65 @@ describe("PATCH change team", function () {
             });
     });
 
-    it("should SUCCEED and join a hacker without a team to a team.", function (done) {
-        util.auth.login(agent, Admin1, (error) => {
+    it("should FAIL to join a volunteer to a team.", function (done) {
+        util.auth.login(agent, util.account.Account5, (error) => {
             if (error) {
                 agent.close();
                 return done(error);
             }
             return agent
-                .post(`/api/team/`)
+                .patch(`/api/team/join/`)
                 .type("application/json")
                 .send({
                     teamName: "BronzeTeam",
-                    hackerId: util.hacker.C._id,
+                })
+                .end(function (err, res) {
+                    res.should.have.status(403);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal(Constants.Error.AUTH_403_MESSAGE);
+                    res.body.should.have.property("data");
+
+                    done();
+                });
+        });
+    });
+
+    it("should FAIL to join a hacker to a team that doesn't exist.", function (done) {
+        util.auth.login(agent, util.account.Account1, (error) => {
+            if (error) {
+                agent.close();
+                return done(error);
+            }
+            return agent
+                .patch(`/api/team/join/`)
+                .type("application/json")
+                .send({
+                    teamName: "NonExistTeam",
+                })
+                .end(function (err, res) {
+                    res.should.have.status(404);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal(Constants.Error.TEAM_404_MESSAGE);
+                    res.body.should.have.property("data");
+
+                    done();
+                });
+        });
+    });
+
+    it("should SUCCEED and join a hacker without a team to a team.", function (done) {
+        util.auth.login(agent, util.account.Account2, (error) => {
+            if (error) {
+                agent.close();
+                return done(error);
+            }
+            return agent
+                .patch(`/api/team/join/`)
+                .type("application/json")
+                .send({
+                    teamName: "BronzeTeam",
                 })
                 .end(function (err, res) {
                     res.should.have.status(200);
@@ -95,6 +144,32 @@ describe("PATCH change team", function () {
                     res.body.should.have.property("message");
                     res.body.message.should.equal(Constants.Success.TEAM_JOIN);
                     res.body.should.have.property("data");
+
+                    done();
+                });
+        });
+    });
+
+    it("should SUCCEED and join a hacker on a team to aother team.", function (done) {
+        util.auth.login(agent, util.account.Account1, (error) => {
+            if (error) {
+                agent.close();
+                return done(error);
+            }
+            return agent
+                .patch(`/api/team/join/`)
+                .type("application/json")
+                .send({
+                    teamName: "SilverTeam",
+                })
+                .end(function (err, res) {
+                    res.should.have.status(200);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal(Constants.Success.TEAM_JOIN);
+                    res.body.should.have.property("data");
+
+                    done();
                 });
         });
     });
