@@ -208,12 +208,124 @@ const HackerC = {
     "major": "EE",
     "graduationYear": 2019,
     "codeOfConduct": true,
-}
+};
+
+const HackerD = {
+    "_id": mongoose.Types.ObjectId(),
+    "accountId": Util.Account.Hacker4._id,
+    "status": "Waitlisted",
+    "school": "University of Blah1",
+    "degree": "Masters",
+    "gender": "Female",
+    "needsBus": false,
+    "application": {
+        "portfolioURL": {
+            //gcloud bucket link
+            "resume": "www.gcloud.com/myResume2",
+            "github": "www.github.com/Personasdf",
+            "dropler": undefined,
+            "personal": undefined,
+            "linkedIn": undefined,
+            "other": undefined
+        },
+        "jobInterest": "Internship",
+        "skills": ["CSS", "HTML", "JS"],
+    },
+    "ethnicity": "European",
+    "major": "EE",
+    "graduationYear": 2019,
+    "codeOfConduct": true,
+};
+
+const HackerE = {
+    "_id": mongoose.Types.ObjectId(),
+    "accountId": Util.Account.Hacker5._id,
+    "status": "Waitlisted",
+    "school": "University of Blah1",
+    "degree": "Masters",
+    "gender": "Female",
+    "needsBus": false,
+    "application": {
+        "portfolioURL": {
+            //gcloud bucket link
+            "resume": "www.gcloud.com/myResume2",
+            "github": "www.github.com/Personasdf",
+            "dropler": undefined,
+            "personal": undefined,
+            "linkedIn": undefined,
+            "other": undefined
+        },
+        "jobInterest": "Internship",
+        "skills": ["CSS", "HTML", "JS"],
+    },
+    "ethnicity": "European",
+    "major": "EE",
+    "graduationYear": 2019,
+    "codeOfConduct": true,
+};
+
+const HackerF = {
+    "_id": mongoose.Types.ObjectId(),
+    "accountId": Util.Account.Hacker6._id,
+    "status": "Waitlisted",
+    "school": "University of Blah1",
+    "degree": "Masters",
+    "gender": "Female",
+    "needsBus": false,
+    "application": {
+        "portfolioURL": {
+            //gcloud bucket link
+            "resume": "www.gcloud.com/myResume2",
+            "github": "www.github.com/Personasdf",
+            "dropler": undefined,
+            "personal": undefined,
+            "linkedIn": undefined,
+            "other": undefined
+        },
+        "jobInterest": "Internship",
+        "skills": ["CSS", "HTML", "JS"],
+    },
+    "ethnicity": "European",
+    "major": "EE",
+    "graduationYear": 2019,
+    "codeOfConduct": true,
+};
+
+const HackerG = {
+    "_id": mongoose.Types.ObjectId(),
+    "accountId": Util.Account.Hacker7._id,
+    "status": "Waitlisted",
+    "school": "University of Blah1",
+    "degree": "Masters",
+    "gender": "Female",
+    "needsBus": false,
+    "application": {
+        "portfolioURL": {
+            //gcloud bucket link
+            "resume": "www.gcloud.com/myResume2",
+            "github": "www.github.com/Personasdf",
+            "dropler": undefined,
+            "personal": undefined,
+            "linkedIn": undefined,
+            "other": undefined
+        },
+        "jobInterest": "Internship",
+        "skills": ["CSS", "HTML", "JS"],
+    },
+    "ethnicity": "European",
+    "major": "EE",
+    "graduationYear": 2019,
+    "codeOfConduct": true,
+};
 
 const Hackers = [
     HackerA,
     HackerB,
     HackerC,
+    HackerD,
+    HackerE,
+    HackerF,
+    HackerG,
 ];
 
 module.exports = {
@@ -225,6 +337,10 @@ module.exports = {
     HackerA: HackerA,
     HackerB: HackerB,
     HackerC: HackerC,
+    HackerD: HackerD,
+    HackerE: HackerE,
+    HackerF: HackerF,
+    HackerG: HackerG,
     Hackers: Hackers,
     storeAll: storeAll,
     dropAll: dropAll

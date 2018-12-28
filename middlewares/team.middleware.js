@@ -53,7 +53,7 @@ async function ensureUniqueHackerId(req, res, next) {
 }
 
 async function ensureSpace(req, res, next) {
-    const teamSize = Services.Team.getSize(req.body.teamName);
+    const teamSize = await Services.Team.getSize(req.body.teamName);
 
     if (teamSize === -1) {
         return next({
