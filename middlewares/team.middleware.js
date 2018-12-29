@@ -119,34 +119,30 @@ async function updateHackerTeam(req, res, next) {
     if (previousTeam) {
         // delete old team if old team only had that one hacker
         if (previousTeam.members.length === 1) {
-            const x = await Services.Team.removeTeam(previousTeam._id);
-            console.log(x);
+            await Services.Team.removeTeam(previousTeam._id);
         }
         // remove hacker from old team
         else {
-            const y = await Services.Team.removeMember(previousTeam._id, hacker._id);
-            console.log(y);
+            await Services.Team.removeMember(previousTeam._id, hacker._id);
         }
     }
 
     // add hacker to the new team
-    const z = await Services.Team.addMember(receivingTeam._id, hacker._id);
-    console.log(z);
+    await Services.Team.addMember(receivingTeam._id, hacker._id);
 
     // change teamId of hacker
-    const t = await Services.Hacker.updateOne(hacker._id, {
+    const updatedHacker = await Services.Hacker.updateOne(hacker._id, {
         teamId: receivingTeam._id
     });
 
     // Services.Hacker.updateOne should return a hacker object, as the hacker exists
-    if (!t) {
+    if (!updatedHacker) {
         return next({
             status: 500,
             message: Constants.Error.HACKER_UPDATE_500_MESSAGE,
             data: hacker._id,
         });
     }
-    console.log(t);
 
     next();
 }
