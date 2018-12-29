@@ -54,7 +54,7 @@ function parseHacker(req, res, next) {
         graduationYear: req.body.graduationYear,
         codeOfConduct: req.body.codeOfConduct,
 
-        teamId: teamId,
+        teamId: req.body.teamId,
     };
     req.body.token = req.body.authorization;
 
