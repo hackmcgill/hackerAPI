@@ -64,14 +64,6 @@ module.exports = {
         );
 
         /**
-         * Update the team specified by the id param
-         */
-        teamRouter.route("/:id").patch(
-
-        );
-
-
-        /**
          * @api {patch} /team/join/ Allows a logged in hacker to join a team by name
          * @apiName patchJoinTeam
          * @apiGroup Team
