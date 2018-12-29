@@ -24,7 +24,6 @@ function showAccount(req, res) {
 }
 
 /**
- * @async
  * @function addUser
  * @param {{body: {accountDetails: {_id: ObjectId, firstName: string, lastName: string, email: string, password: string, dietaryRestrictions: string, shirtSize: string}}}} req
  * @param {*} res
