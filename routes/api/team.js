@@ -72,7 +72,20 @@ module.exports = {
 
 
         /**
-         * Allows a logged in hacker to join a team by name
+         * @api {patch} /team/join/ Allows a logged in hacker to join a team by name
+         * @apiName patchJoinTeam
+         * @apiGroup Team
+         * @apiVersion 1.1.1
+         * 
+         * @apiParam (body) {string} [teamName] Name of the team to join
+         * @apiSuccess {string} message Success message
+         * @apiSuccess {object} data {}
+         * @apiSuccessExample {object} Success-Response: 
+         *      {
+         *          "message": "Team join successful.", 
+         *          "data": {}
+         *      }
+         * @apiPermission Administrator
          */
         teamRouter.route("/join/").patch(
             Middleware.Auth.ensureAuthenticated(),

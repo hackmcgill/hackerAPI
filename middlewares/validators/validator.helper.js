@@ -107,7 +107,6 @@ function booleanValidator(fieldLocation, fieldname, optional = true, desire = nu
     }
 }
 
-// untested
 /**
  * Validates that field name is ascii only.
  * @param {"query" | "body" | "header" | "param"} fieldLocation the location where the field should be found 

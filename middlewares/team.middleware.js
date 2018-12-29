@@ -52,6 +52,15 @@ async function ensureUniqueHackerId(req, res, next) {
     return next();
 }
 
+/**
+ * @async
+ * @function ensureSpance
+ * @param {{body: {teamName: string}}} req
+ * @param {JSON} res
+ * @param {(err?)=>void} next
+ * @return {void}
+ * @description Checks to see that team is not full.
+ */
 async function ensureSpace(req, res, next) {
     const teamSize = await Services.Team.getSize(req.body.teamName);
 
@@ -72,19 +81,17 @@ async function ensureSpace(req, res, next) {
     return next();
 }
 
+/**
+ * @async
+ * @function updateHackerTeam
+ * @param {{body: {teamName: string}}} req
+ * @param {JSON} res
+ * @param {(err?)=>void} next
+ * @return {void}
+ * @description Adds the logged in user to the team specified by teamName.
+ */
 async function updateHackerTeam(req, res, next) {
-    // how to make this ACID?
-    const receivingTeam = await Services.Team.findByName(req.body.teamName);
-    const previousTeam = await Services.Team.findTeamByHackerId(req.body.hackerId);
     const hacker = await Services.Hacker.findByAccountId(req.user.id);
-
-    if (!receivingTeam) {
-        return next({
-            status: 404,
-            message: Constants.Error.TEAM_404_MESSAGE,
-            data: req.body.teamName
-        });
-    }
 
     if (!hacker) {
         return next({
@@ -96,25 +103,50 @@ async function updateHackerTeam(req, res, next) {
         });
     }
 
+    const receivingTeam = await Services.Team.findByName(req.body.teamName);
+    const previousTeam = await Services.Team.findTeamByHackerId(hacker._id);
+
+
+    if (!receivingTeam) {
+        return next({
+            status: 404,
+            message: Constants.Error.TEAM_404_MESSAGE,
+            data: req.body.teamName
+        });
+    }
+
     // means hacker is already in a team
     if (previousTeam) {
         // delete old team if old team only had that one hacker
         if (previousTeam.members.length === 1) {
-            await Services.Team.removeTeam(previousTeam._id);
+            const x = await Services.Team.removeTeam(previousTeam._id);
+            console.log(x);
         }
         // remove hacker from old team
         else {
-            await Services.Team.removeMember(previousTeam._id, req.user.id);
+            const y = await Services.Team.removeMember(previousTeam._id, hacker._id);
+            console.log(y);
         }
     }
 
     // add hacker to the new team
-    await Services.Team.addMember(receivingTeam._id, req.user.id);
+    const z = await Services.Team.addMember(receivingTeam._id, hacker._id);
+    console.log(z);
 
     // change teamId of hacker
-    await Services.Hacker.updateOne(req.body.hackerId, {
+    const t = await Services.Hacker.updateOne(hacker._id, {
         teamId: receivingTeam._id
     });
+
+    // Services.Hacker.updateOne should return a hacker object, as the hacker exists
+    if (!t) {
+        return next({
+            status: 500,
+            message: Constants.Error.HACKER_UPDATE_500_MESSAGE,
+            data: hacker._id,
+        });
+    }
+    console.log(t);
 
     next();
 }

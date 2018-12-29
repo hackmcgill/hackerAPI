@@ -22,7 +22,7 @@ function createHacker(hackerDetails) {
 /**
  * @function updateOne
  * @param {ObjectId} id
- * @param {{_id?: ObjectId, accountId?: ObjectId, school?: string, gender?: string, needsBus?: boolean, application?: {Object}, teamId:? ObjectId}} hackerDetails
+ * @param {{_id?: ObjectId, accountId?: ObjectId, school?: string, gender?: string, needsBus?: boolean, application?: {Object}, teamId?: ObjectId}} hackerDetails
  * @return {DocumentQuery} The document query will resolve to hacker or null.
  * @description Update an account specified by its mongoId with information specified by hackerDetails.
  */
