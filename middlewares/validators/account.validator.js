@@ -1,5 +1,6 @@
 "use strict";
 const VALIDATOR = require("./validator.helper");
+const Constants = require("../../constants/general.constant");
 
 module.exports = {
     newAccountValidator: [
@@ -8,7 +9,7 @@ module.exports = {
         VALIDATOR.pronounValidator("body", "pronoun", false),
         VALIDATOR.emailValidator("body", "email", false),
         VALIDATOR.alphaArrayValidator("body", "dietaryRestrictions", false),
-        VALIDATOR.shirtSizeValidator("body", "shirtSize", false),
+        VALIDATOR.enumValidator("body", "shirtSize", Constants.SHIRT_SIZES, false),
         VALIDATOR.passwordValidator("body", "password", false),
         VALIDATOR.jwtValidator("param", "token", process.env.JWT_CONFIRM_ACC_SECRET, true),
         VALIDATOR.dateValidator("body", "birthDate", false),
@@ -20,12 +21,12 @@ module.exports = {
         VALIDATOR.pronounValidator("body", "pronoun", true),
         VALIDATOR.emailValidator("body", "email", true),
         VALIDATOR.alphaArrayValidator("body", "dietaryRestrictions", true),
-        VALIDATOR.shirtSizeValidator("body", "shirtSize", true),
+        VALIDATOR.enumValidator("body", "shirtSize", Constants.SHIRT_SIZES, true),
         VALIDATOR.dateValidator("body", "birthDate", true),
         VALIDATOR.phoneNumberValidator("body", "phoneNumber", true)
     ],
     inviteAccountValidator: [
         VALIDATOR.emailValidator("body", "email", false),
-        VALIDATOR.accountTypeValidator("body", "accountType", false)
+        VALIDATOR.enumValidator("body", "accountType", Constants.EXTENDED_USER_TYPES, false)
     ]
 };
