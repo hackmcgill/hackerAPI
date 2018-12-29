@@ -625,7 +625,7 @@ function routesValidator(fieldLocation, fieldname, optional = true) {
     } else {
         return routes
             .exists()
-            .withMessage("The value being checked agains the enums must exist.")
+            .withMessage("The route must exist.")
             .custom(routesArrayValidationHelper).withMessage("The value must be a route");
     }
 }
