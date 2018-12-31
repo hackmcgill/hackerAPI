@@ -127,19 +127,14 @@ async function updateHackerTeam(req, res, next) {
         }
     }
 
-    // add hacker to the new team
-    await Services.Team.addMember(receivingTeam._id, hacker._id);
-
-    // change teamId of hacker
-    const updatedHacker = await Services.Hacker.updateOne(hacker._id, {
-        teamId: receivingTeam._id
-    });
+    // add hacker to the new team and change teamId of hacker
+    const update = await Services.Team.addMember(receivingTeam._id, hacker._id);
 
     // Services.Hacker.updateOne should return a hacker object, as the hacker exists
-    if (!updatedHacker) {
+    if (!update) {
         return next({
             status: 500,
-            message: Constants.Error.HACKER_UPDATE_500_MESSAGE,
+            message: Constants.Error.TEAM_UPDATE_500_MESSAGE,
             data: hacker._id,
         });
     }

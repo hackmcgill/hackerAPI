@@ -24,6 +24,7 @@ const AUTH_401_MESSAGE = "Invalid Authentication";
 const AUTH_403_MESSAGE = "Invalid Authorization";
 const ACCOUNT_403_MESSAGE = "Account not verified";
 
+const TEAM_UPDATE_500_MESSAGE = "Error while updating team";
 const HACKER_UPDATE_500_MESSAGE = "Error while updating hacker";
 const ACCOUNT_UPDATE_500_MESSAGE = "Error while updating account";
 const HACKER_CREATE_500_MESSAGE = "Error while creating hacker";
@@ -49,6 +50,7 @@ module.exports = {
     AUTH_401_MESSAGE: AUTH_401_MESSAGE,
     AUTH_403_MESSAGE: AUTH_403_MESSAGE,
     ACCOUNT_403_MESSAGE: ACCOUNT_403_MESSAGE,
+    TEAM_UPDATE_500_MESSAGE: TEAM_UPDATE_500_MESSAGE,
     HACKER_UPDATE_500_MESSAGE: HACKER_UPDATE_500_MESSAGE,
     HACKER_ID_409_MESSAGE: HACKER_ID_409_MESSAGE,
     ACCOUNT_UPDATE_500_MESSAGE: ACCOUNT_UPDATE_500_MESSAGE,
