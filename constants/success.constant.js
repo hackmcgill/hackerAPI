@@ -23,9 +23,10 @@ const HACKER_UPDATE = "Hacker update successful.";
 const RESUME_UPLOAD = "Resume upload successful.";
 const RESUME_DOWNLOAD = "Resume download successful.";
 
+const ROLE_CREATE = "Role creation successful.";
+
 const SEARCH_QUERY = "Query search successful. Returning results.";
 const SEARCH_NO_RESULTS = "Query search successful. No results found.";
-
 
 const SPONSOR_GET_BY_ID = "Sponsor found by id.";
 const SPONSOR_CREATE = "Sponsor creation successful.";
@@ -59,6 +60,8 @@ module.exports = {
 
     RESUME_UPLOAD: RESUME_UPLOAD,
     RESUME_DOWNLOAD: RESUME_DOWNLOAD,
+
+    ROLE_CREATE: ROLE_CREATE,
 
     SEARCH_QUERY: SEARCH_QUERY,
     SEARCH_NO_RESULTS: SEARCH_NO_RESULTS,
