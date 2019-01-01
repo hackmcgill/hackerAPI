@@ -55,6 +55,69 @@ describe("POST create team", function () {
             });
     });
 
+    it("should FAIL to create a new team due to lack of authorization", function (done) {
+        util.auth.login(agent, util.account.Account3, (error) => {
+            if (error) {
+                agent.close();
+                return done(error);
+            }
+            return agent
+                .post(`/api/team/`)
+                .type("application/json")
+                .send(util.team.newTeam1)
+                .end(function (err, res) {
+                    res.should.have.status(403);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal(Constants.Error.AUTH_403_MESSAGE);
+                    res.body.should.have.property("data");
+
+                    done();
+                });
+        });
+    });
+
+    it("should FAIL to create a new team due to logged in user not being a hacker", function (done) {
+        util.auth.login(agent, util.account.Admin1, (error) => {
+            if (error) {
+                agent.close();
+                return done(error);
+            }
+            return agent
+                .post(`/api/team/`)
+                .type("application/json")
+                .send(util.team.newTeam1)
+                .end(function (err, res) {
+                    res.should.have.status(404);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal(Constants.Error.HACKER_404_MESSAGE);
+                    res.body.should.have.property("data");
+
+                    done();
+                });
+        });
+    });
+
+    it("should FAIL to create a new team due to duplicate team name", function (done) {
+        util.auth.login(agent, util.account.Account2, (error) => {
+            if (error) {
+                agent.close();
+                return done(error);
+            }
+            return agent
+                .post(`/api/team/`)
+                .type("application/json")
+                .send(util.team.duplicateTeamName1)
+                .end(function (err, res) {
+                    res.should.have.status(422);
+                    res.should.be.json;
+
+                    done();
+                });
+        });
+    });
+
     it("should SUCCEED and create a new team", function (done) {
         util.auth.login(agent, util.account.Account2, (error) => {
             if (error) {

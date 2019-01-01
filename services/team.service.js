@@ -35,7 +35,8 @@ function createTeam(teamDetails) {
 
     const team = new Team(teamDetails);
 
-    return team.save();
+    // return team.save();
+    return Team.create(teamDetails);
 }
 
 /**

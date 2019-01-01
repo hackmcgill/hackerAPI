@@ -62,6 +62,8 @@ async function ensureUniqueHackerId(req, res, next) {
 async function createTeam(req, res, next) {
     const teamDetails = req.body.teamDetails;
 
+    const prevTeam = await Services.Team.findByName(teamDetails.name);
+
     const team = await Services.Team.createTeam(teamDetails);
 
     if (!team) {
