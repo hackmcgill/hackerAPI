@@ -9,10 +9,6 @@ const util = {
     team: require("./util/team.test.util"),
 };
 
-const Constants = {
-    Success: require("../constants/success.constant"),
-}
-
 describe("GET team", function () {
     it("should SUCCEED and list a team's information from /api/team/:id GET", function (done) {
         chai.request(server.app)
@@ -21,7 +17,7 @@ describe("GET team", function () {
                 res.should.have.status(200);
                 res.should.be.json;
                 res.body.should.have.property("message");
-                res.body.message.should.equal(Constants.Success.TEAM_GET_BY_ID);
+                res.body.message.should.equal("Successfully retrieved team information");
                 res.body.should.have.property("data");
 
                 let team = new Team(util.team.Team1);
@@ -41,7 +37,7 @@ describe("POST create team", function () {
                 res.should.have.status(200);
                 res.should.be.json;
                 res.body.should.have.property("message");
-                res.body.message.should.equal(Constants.Success.TEAM_CREATE);
+                res.body.message.should.equal("Team creation successful");
                 res.body.should.have.property("data");
 
                 // deleting _id because that was generated, and not part of original data

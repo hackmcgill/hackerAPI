@@ -5,7 +5,6 @@ const Services = {
 };
 const Util = require("../middlewares/util.middleware");
 const Constants = {
-    Success: require("../constants/success.constant"),
     Error: require("../constants/error.constant"),
 }
 
@@ -24,7 +23,7 @@ async function createVolunteer(req, res) {
 
     if (success) {
         return res.status(200).json({
-            message: Constants.Success.VOLUNTEER_CREATE,
+            message: "Volunteer creation successful",
             data: volunteerDetails
         });
     } else {

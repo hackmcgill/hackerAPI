@@ -7,7 +7,6 @@ const agent = chai.request.agent(server.app);
 const should = chai.should();
 const Volunteer = require("../models/volunteer.model");
 const Constants = {
-    Success: require("../constants/success.constant"),
     Error: require("../constants/error.constant"),
 };
 
@@ -80,7 +79,7 @@ describe("POST create volunteer", function () {
                     res.should.have.status(200);
                     res.should.be.json;
                     res.body.should.have.property("message");
-                    res.body.message.should.equal(Constants.Success.VOLUNTEER_CREATE);
+                    res.body.message.should.equal("Volunteer creation successful");
                     res.body.should.have.property("data");
 
                     // deleting _id because that was generated, and not part of original data

@@ -462,12 +462,6 @@ async function findSelf(req, res, next) {
     }
 }
 
-async function getStats(req, res, next) {
-    const stats = await Services.Hacker.getStats();
-    req.body.stats = stats;
-    next();
-}
-
 module.exports = {
     parsePatch: parsePatch,
     parseHacker: parseHacker,
@@ -486,5 +480,4 @@ module.exports = {
     parseConfirmation: parseConfirmation,
     createHacker: Middleware.Util.asyncMiddleware(createHacker),
     findSelf: Middleware.Util.asyncMiddleware(findSelf),
-    getStats: Middleware.Util.asyncMiddleware(getStats)
 };

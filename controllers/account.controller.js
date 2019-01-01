@@ -6,7 +6,6 @@ const Services = {
 const Util = require("../middlewares/util.middleware");
 const Constants = {
     Error: require("../constants/error.constant"),
-    Success: require("../constants/success.constant"),
 };
 
 
@@ -23,7 +22,7 @@ async function getUserByEmail(req, res) {
 
     if (acc) {
         return res.status(200).json({
-            message: Constants.Success.ACCOUNT_GET_BY_EMAIL,
+            message: "Account found by user email",
             data: acc.toStrippedJSON()
         });
     } else {
@@ -48,7 +47,7 @@ async function getUserById(req, res) {
 
     if (acc) {
         return res.status(200).json({
-            message: Constants.Success.ACCOUNT_GET_BY_ID,
+            message: "Account found by user id",
             data: acc.toStrippedJSON()
         });
     } else {
@@ -70,7 +69,7 @@ async function getUserById(req, res) {
 async function addUser(req, res) {
     const acc = req.body.account;
     return res.status(200).json({
-        message: Constants.Success.ACCOUNT_CREATE,
+        message: "Account creation successful",
         data: acc.toStrippedJSON()
     });
 }
@@ -88,14 +87,14 @@ async function addUser(req, res) {
  */
 function updatedAccount(req, res) {
     return res.status(200).json({
-        message: Constants.Success.ACCOUNT_UPDATE,
+        message: "Changed account information",
         data: req.body
     });
 }
 
 function invitedAccount(req, res) {
     return res.status(200).json({
-        message: Constants.Success.ACCOUNT_INVITE,
+        message: "Successfully invited user",
         data: {}
     });
 }

@@ -81,9 +81,6 @@ CREATE_ACC_EMAIL_SUBJECTS[SPONSOR] = `You've been invited to create a sponsor ac
 CREATE_ACC_EMAIL_SUBJECTS[VOLUNTEER] = `You've been invited to create a volunteer account for ${HACKATHON_NAME}`;
 CREATE_ACC_EMAIL_SUBJECTS[STAFF] = `You've been invited to create a staff account for ${HACKATHON_NAME}`;
 
-const CACHE_TIMEOUT_STATS = 5 * 60 * 1000;
-const CACHE_KEY_STATS = "hackerStats";
-
 module.exports = {
     HACKATHON_NAME: HACKATHON_NAME,
     DEVPOST_REGEX: DEVPOST_REGEX,
@@ -116,7 +113,5 @@ module.exports = {
     SPONSOR_T4: SPONSOR_T4,
     SPONSOR_T5: SPONSOR_T5,
     ROLE_CATEGORIES: ROLE_CATEGORIES,
-    POST_ROLES: POST_ROLES,
-    CACHE_TIMEOUT_STATS: CACHE_TIMEOUT_STATS,
-    CACHE_KEY_STATS: CACHE_KEY_STATS
+    POST_ROLES: POST_ROLES
 };

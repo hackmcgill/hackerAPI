@@ -7,7 +7,6 @@ const Services = {
 };
 const Util = require("../middlewares/util.middleware");
 const Constants = {
-    Success: require("../constants/success.constant"),
     Error: require("../constants/error.constant"),
 };
 
@@ -24,7 +23,7 @@ async function findById(req, res) {
 
     if (team) {
         return res.status(200).json({
-            message: Constants.Success.TEAM_GET_BY_ID,
+            message: "Successfully retrieved team information",
             data: team.toJSON()
         });
     } else {
@@ -50,7 +49,7 @@ async function createTeam(req, res) {
 
     if (success) {
         return res.status(200).json({
-            message: Constants.Success.TEAM_CREATE,
+            message: "Team creation successful",
             data: teamDetails
         });
     } else {

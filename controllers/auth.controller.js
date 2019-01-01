@@ -1,54 +1,52 @@
 "use strict";
 
-const Success = require("../constants/success.constant");
-
 module.exports = {
     onSuccessfulLogin: function (req, res) {
         return res.status(200).json({
-            message: Success.LOGIN,
+            message: "Successfully logged in",
             data: {}
         });
     },
     logout: function (req, res) {
         req.logout();
         return res.status(200).json({
-            message: Success.LOGOUT,
+            message: "Successfully logged out",
             data: {}
         });
     },
     sentResetEmail: function (req, res) {
         return res.status(200).json({
-            message: Success.AUTH_SEND_RESET_EMAIL,
+            message: "Sent reset email",
             data: {}
         });
     },
     resetPassword: function (req, res) {
         return res.status(200).json({
-            message: Success.AUTH_RESET_PASSWORD,
+            message: "Successfully reset password",
             data: {}
         });
     },
     confirmAccount: function (req, res) {
         return res.status(200).json({
-            message: Success.AUTH_CONFIRM_ACCOUNT,
+            message: "Successfully confirmed account",
             data: {}
         });
     },
     retrieveRoleBindings: function (req, res) {
         return res.status(200).json({
-            message: Success.AUTH_GET_ROLE_BINDINGS,
+            message: "Successfully retrieved role bindings",
             data: req.roleBindings.toJSON()
         });
     },
     sentConfirmationEmail: function (req, res) {
         return res.status(200).json({
-            message: Success.AUTH_SEND_CONFIRMATION_EMAIL,
+            message: "Successfully resent account email",
             data: {}
         })
     },
     retrievedRoles: function (req, res) {
         return res.status(200).json({
-            message: Success.AUTH_GET_ROLES,
+            message: "Successfully retrieved all roles",
             data: req.roles
         })
     }

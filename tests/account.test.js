@@ -8,8 +8,7 @@ const Account = require("../models/account.model");
 const should = chai.should();
 const Constants = {
     Error: require("../constants/error.constant"),
-    General: require("../constants/general.constant"),
-    Success: require("../constants/success.constant"),
+    General: require("../constants/general.constant")
 };
 
 
@@ -77,7 +76,7 @@ describe("GET user account", function () {
                     res.should.have.status(200);
                     res.should.be.json;
                     res.body.should.have.property("message");
-                    res.body.message.should.equal(Constants.Success.ACCOUNT_GET_BY_EMAIL);
+                    res.body.message.should.equal("Account found by user email");
                     res.body.should.have.property("data");
                     res.body.data.should.be.a("object");
                     res.body.data.should.have.property("firstName");
@@ -107,7 +106,7 @@ describe("GET user account", function () {
                     res.should.have.status(200);
                     res.should.be.json;
                     res.body.should.have.property("message");
-                    res.body.message.should.equal(Constants.Success.ACCOUNT_GET_BY_ID);
+                    res.body.message.should.equal("Account found by user id");
                     res.body.should.have.property("data");
 
                     // use acc.toStrippedJSON to deal with hidden passwords and convert _id to id
@@ -134,7 +133,7 @@ describe("GET user account", function () {
                     res.should.have.status(200);
                     res.should.be.json;
                     res.body.should.have.property("message");
-                    res.body.message.should.equal(Constants.Success.ACCOUNT_GET_BY_ID);
+                    res.body.message.should.equal("Account found by user id");
                     res.body.should.have.property("data");
 
                     // use acc.toStrippedJSON to deal with hidden passwords and convert _id to id
@@ -181,7 +180,7 @@ describe("POST create account", function () {
                 res.should.have.status(200);
                 res.should.be.json;
                 res.body.should.have.property("message");
-                res.body.message.should.equal(Constants.Success.ACCOUNT_CREATE);
+                res.body.message.should.equal("Account creation successful");
 
                 // use acc.toStrippedJSON to deal with hidden passwords and convert _id to id
                 const acc = (new Account(newAccount1)).toStrippedJSON();
@@ -213,7 +212,7 @@ describe("POST confirm account", function () {
             .end(function (err, res) {
                 res.should.have.status(200);
                 res.body.should.have.property("message");
-                res.body.message.should.equal(Constants.Success.AUTH_CONFIRM_ACCOUNT);
+                res.body.message.should.equal("Successfully confirmed account");
                 done();
             });
     });
@@ -282,7 +281,7 @@ describe("PATCH update account", function () {
                     res.should.have.status(200);
                     res.should.be.json;
                     res.body.should.have.property("message");
-                    res.body.message.should.equal(Constants.Success.ACCOUNT_UPDATE);
+                    res.body.message.should.equal("Changed account information");
                     res.body.should.have.property("data");
                     // Is this correct matching of data?
                     res.body.data.firstName.should.equal(updatedInfo.firstName);
@@ -307,7 +306,7 @@ describe("PATCH update account", function () {
                     res.should.have.status(200);
                     res.should.be.json;
                     res.body.should.have.property("message");
-                    res.body.message.should.equal(Constants.Success.ACCOUNT_UPDATE);
+                    res.body.message.should.equal("Changed account information");
                     res.body.should.have.property("data");
                     // Is this correct matching of data?
                     res.body.data.firstName.should.equal(updatedInfo.firstName);
@@ -354,7 +353,7 @@ describe("POST reset password", function () {
             .end(function (err, res) {
                 res.should.have.status(200);
                 res.body.should.have.property("message");
-                res.body.message.should.equal(Constants.Success.AUTH_RESET_PASSWORD);
+                res.body.message.should.equal("Successfully reset password");
                 done();
             });
     });
@@ -398,7 +397,7 @@ describe("PATCH change password for logged in user", function () {
                     res.should.have.status(200);
                     res.should.be.json;
                     res.body.should.have.property("message");
-                    res.body.message.should.equal(Constants.Success.AUTH_RESET_PASSWORD);
+                    res.body.message.should.equal("Successfully reset password");
                     done();
                 });
         });
@@ -438,7 +437,7 @@ describe("GET retrieve permissions", function () {
                 .end(function (err, res) {
                     res.should.have.status(200);
                     res.body.should.have.property("message");
-                    res.body.message.should.equal(Constants.Success.AUTH_GET_ROLE_BINDINGS);
+                    res.body.message.should.equal("Successfully retrieved role bindings");
                     res.body.should.have.property("data");
                     res.body.data.should.be.a("object");
                     res.body.data.should.have.property("roles");
@@ -475,7 +474,7 @@ describe("GET resend confirmation email", function () {
                     res.should.have.status(200);
                     res.should.be.json;
                     res.body.should.have.property("message");
-                    res.body.message.should.equal(Constants.Success.AUTH_SEND_CONFIRMATION_EMAIL);
+                    res.body.message.should.equal("Successfully resent account email");
                     done();
                 });
         });
@@ -539,7 +538,7 @@ describe("POST invite account", function () {
                     }
                     res.should.have.status(200);
                     res.body.should.have.property("message");
-                    res.body.message.should.equal(Constants.Success.ACCOUNT_INVITE);
+                    res.body.message.should.equal("Successfully invited user");
                     done();
                 });
         });

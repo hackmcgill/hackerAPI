@@ -17,10 +17,6 @@ const util = {
     role: require("./util/role.test.util")
 };
 
-const constants = {
-    success: require("../constants/success.constant"),
-}
-
 const roles = require("../constants/role.constant");
 
 // hacker role binding
@@ -42,7 +38,7 @@ describe("GET roles", function () {
                     res.should.have.status(200);
                     res.should.be.json;
                     res.body.should.have.property("message");
-                    res.body.message.should.equal(constants.success.AUTH_GET_ROLES);
+                    res.body.message.should.equal("Successfully retrieved all roles");
                     res.body.should.have.property("data");
                     res.body.data.should.be.a("Array");
 

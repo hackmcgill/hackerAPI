@@ -166,45 +166,6 @@ module.exports = {
             Middleware.Hacker.sendAppliedStatusEmail,
             Controllers.Hacker.createdHacker
         );
-
-        /**
-         * @api {get} /hacker/stats
-         * Gets the stats of all of the hackers who have applied.
-         * @apiName getHackerStats
-         * @apiGroup Hacker
-         * @apiVersion 0.0.9
-         * @apiSuccess {string} message Success message
-         * @apiSuccess {object} data Hacker object
-         * @apiSuccessExample {object} Success-Response: 
-         *      {
-         *          "message": "Retrieved stats",
-         *          "data": {
-         *              "stats" : {
-         *                  "total": 10,
-                            "status": { "Applied": 10 },
-                            "school": { "McGill University": 3, "Harvard University": 7 },
-                            degree: { "Undergraduate": 10 },
-                            gender: { "Male": 1, "Female": 9 },
-                            needsBus: { "true": 7, "false": 3 },
-                            ethnicity: { "White": 10, },
-                            jobInterest: { "Internship": 10 },
-                            major: { "Computer Science": 10 },
-                            graduationYear: { "2019": 10 },
-                            dietaryRestrictions: { "None": 10 },
-                            shirtSize: { "M": 3, "XL": 7 },
-                            age: { "22": 10 }
-                        }
-         *          }
-         *      }
-         * 
-         */
-        hackerRouter.route("/stats").get(
-            Middleware.Auth.ensureAuthenticated(),
-            Middleware.Auth.ensureAuthorized(),
-            Middleware.Hacker.getStats,
-            Controllers.Hacker.gotStats
-        );
-
         /**
          * @api {patch} /hacker/status/:id update a hacker's status
          * @apiName patchHackerStatus

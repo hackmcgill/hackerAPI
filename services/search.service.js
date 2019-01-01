@@ -6,30 +6,23 @@ const logger = require("./logger.service");
  * @function executeQuery
  * @param {string} model the model which is being searched
  * @param {Array} queryArray array of clauses for the query
- * @param {number} page the page number you want
- * @param {number} limit the limit to the number of responses you want
- * @param {"asc"|"desc"} sort which direction you want to sort by
- * @param {string} sort_by the attribute you want to sort by
  * @returns {Promise<[Array]>}
  * @description Builds and executes a search query based on a subset of mongodb
  */
-function executeQuery(model, queryArray, page, limit, sort, sort_by, shouldExpand = false) {
+function executeQuery(model, queryArray, page, limit, sort, sort_by){
     var query;
-    switch (model.toLowerCase()) {
+    switch(model.toLowerCase()){
         case "hacker":
-            query = (shouldExpand) ? Hacker.find().populate({
-                path: "accountId",
-                select: " -password"
-            }) : Hacker.find();
+            query = Hacker.find();
             break;
         default:
-            return [];
+             return [];
     }
-    for (var i in queryArray) {
+    for(var i in queryArray) {
         var clause = queryArray[i];
-        var param = clause.param;
-        var val = clause.value;
-        switch (clause.operation) {
+        var param = clause["param"];
+        var val = clause["value"];
+        switch (clause["operation"]) {
             case "equals":
                 query.where(param).equals(val);
                 break;
@@ -60,9 +53,10 @@ function executeQuery(model, queryArray, page, limit, sort, sort_by, shouldExpan
         }
     }
 
-    if (sort == "desc") {
-        query.sort("-" + sort_by);
-    } else if (sort == "asc") {
+    if(sort == "desc"){
+        query.sort("-"+sort_by);
+    }
+    else if(sort == "asc"){
         query.sort(sort_by);
     }
     return query.lean()
