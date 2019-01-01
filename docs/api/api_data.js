@@ -1356,6 +1356,43 @@ define({
       "groupTitle": "Hacker"
     },
     {
+      "type": "get",
+      "url": "/hacker/stats",
+      "title": "Gets the stats of all of the hackers who have applied.",
+      "name": "getHackerStats",
+      "group": "Hacker",
+      "version": "0.0.9",
+      "success": {
+        "fields": {
+          "Success 200": [{
+              "group": "Success 200",
+              "type": "string",
+              "optional": false,
+              "field": "message",
+              "description": "<p>Success message</p>"
+            },
+            {
+              "group": "Success 200",
+              "type": "object",
+              "optional": false,
+              "field": "data",
+              "description": "<p>Hacker object</p>"
+            }
+          ]
+        },
+        "examples": [{
+          "title": "Success-Response: ",
+          "content": "{\n    \"message\": \"Retrieved stats\",\n    \"data\": {\n        \"stats\" : {\n            \"total\": 10,\n                       \"status\": { \"Applied\": 10 },\n                       \"school\": { \"McGill University\": 3, \"Harvard University\": 7 },\n                       degree: { \"Undergraduate\": 10 },\n                       gender: { \"Male\": 1, \"Female\": 9 },\n                       needsBus: { \"true\": 7, \"false\": 3 },\n                       ethnicity: { \"White\": 10, },\n                       jobInterest: { \"Internship\": 10 },\n                       major: { \"Computer Science\": 10 },\n                       graduationYear: { \"2019\": 10 },\n                       dietaryRestrictions: { \"None\": 10 },\n                       shirtSize: { \"M\": 3, \"XL\": 7 },\n                       age: { \"22\": 10 }\n                   }\n    }\n}",
+          "type": "object"
+        }]
+      },
+      "filename": "routes/api/hacker.js",
+      "groupTitle": "Hacker",
+      "sampleRequest": [{
+        "url": "https://api.mchacks.ca/api/hacker/stats"
+      }]
+    },
+    {
       "type": "patch",
       "url": "/hacker/:id",
       "title": "update a hacker's information.",
@@ -1698,28 +1735,149 @@ define({
       }]
     },
     {
+      "type": "post",
+      "url": "/api/role/",
+      "title": "create a new hacker",
+      "name": "createRole",
+      "group": "Role",
+      "version": "1.1.1",
+      "parameter": {
+        "fields": {
+          "body": [{
+              "group": "body",
+              "type": "String",
+              "optional": false,
+              "field": "name",
+              "description": "<p>Name of the route</p>"
+            },
+            {
+              "group": "body",
+              "type": "Route[]",
+              "optional": false,
+              "field": "routes",
+              "description": "<p>The routes that this role gives access to</p>"
+            }
+          ]
+        },
+        "examples": [{
+          "title": "application: ",
+          "content": "{\n               \"name\": \"routename\",\n               \"routes\": [\n                   {\n                       uri: \"/api/hacker/\"\n                       requestType: \"POST\"\n                   }\n               ]\n}",
+          "type": "Json"
+        }]
+      },
+      "success": {
+        "fields": {
+          "Success 200": [{
+              "group": "Success 200",
+              "type": "string",
+              "optional": false,
+              "field": "message",
+              "description": "<p>Success message</p>"
+            },
+            {
+              "group": "Success 200",
+              "type": "object",
+              "optional": false,
+              "field": "data",
+              "description": "<p>Role object</p>"
+            }
+          ]
+        },
+        "examples": [{
+          "title": "Success-Response: ",
+          "content": "{\n    \"message\": \"Role creation successful\", \n    \"data\": {\n                   \"name\": \"routename\",\n                   \"routes\": [\n                       {\n                           uri: \"/api/hacker/\"\n                           requestType: \"POST\"\n                       }\n                   ]\n    }\n}",
+          "type": "object"
+        }]
+      },
+      "error": {
+        "fields": {
+          "Error 4xx": [{
+              "group": "Error 4xx",
+              "type": "string",
+              "optional": false,
+              "field": "message",
+              "description": "<p>Error message</p>"
+            },
+            {
+              "group": "Error 4xx",
+              "type": "object",
+              "optional": false,
+              "field": "data",
+              "description": "<p>empty</p>"
+            }
+          ]
+        },
+        "examples": [{
+          "title": "Error-Response: ",
+          "content": "{\"message\": \"Error while creating role\", \"data\": {}}",
+          "type": "object"
+        }]
+      },
+      "filename": "routes/api/role.js",
+      "groupTitle": "Role",
+      "sampleRequest": [{
+        "url": "https://api.mchacks.ca/api/api/role/"
+      }]
+    },
+    {
       "type": "get",
-      "url": "/search/:model",
+      "url": "/search/",
       "title": "provide a specific query for any defined model",
       "name": "search",
       "group": "Search",
       "version": "0.0.8",
       "parameter": {
         "fields": {
-          "param": [{
-            "group": "param",
-            "type": "String",
-            "optional": false,
-            "field": "model",
-            "description": "<p>the model to be searched</p>"
-          }],
           "query": [{
-            "group": "query",
-            "type": "Array",
-            "optional": false,
-            "field": "q",
-            "description": "<p>the query to be executed. For more information on how to format this, please see https://docs.mchacks.ca/architecture/</p>"
-          }]
+              "group": "query",
+              "type": "String",
+              "optional": false,
+              "field": "model",
+              "description": "<p>the model to be searched</p>"
+            },
+            {
+              "group": "query",
+              "type": "Array",
+              "optional": false,
+              "field": "q",
+              "description": "<p>the query to be executed. For more information on how to format this, please see https://docs.mchacks.ca/architecture/</p>"
+            },
+            {
+              "group": "query",
+              "type": "String",
+              "optional": false,
+              "field": "sort",
+              "description": "<p>either &quot;asc&quot; or &quot;desc&quot;</p>"
+            },
+            {
+              "group": "query",
+              "type": "number",
+              "optional": false,
+              "field": "page",
+              "description": "<p>the page number that you would like</p>"
+            },
+            {
+              "group": "query",
+              "type": "number",
+              "optional": false,
+              "field": "limit",
+              "description": "<p>the maximum number of results that you would like returned</p>"
+            },
+            {
+              "group": "query",
+              "type": "any",
+              "optional": false,
+              "field": "sort_by",
+              "description": "<p>any parameter you want to sort the results by</p>"
+            },
+            {
+              "group": "query",
+              "type": "boolean",
+              "optional": false,
+              "field": "expand",
+              "description": "<p>whether you want to expand sub documents within the results</p>"
+            }
+          ]
         }
       },
       "success": {
@@ -1779,7 +1937,7 @@ define({
       "filename": "routes/api/search.js",
       "groupTitle": "Search",
       "sampleRequest": [{
-        "url": "https://api.mchacks.ca/api/search/:model"
+        "url": "https://api.mchacks.ca/api/search/"
       }]
     },
     {

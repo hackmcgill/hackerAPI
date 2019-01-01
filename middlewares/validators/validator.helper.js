@@ -257,25 +257,6 @@ function alphaArrayValidationHelper(value) {
 }
 
 /**
- * Validates that field must be one of the shirt size enums.
- * @param {"query" | "body" | "header" | "param"} fieldLocation the location where the field should be found 
- * @param {string} fieldname name of the field that needs to be validated.
- * @param {boolean} optional whether the field is optional or not.
- */
-function shirtSizeValidator(fieldLocation, fieldname, optional = true) {
-    const size = setProperValidationChainBuilder(fieldLocation, fieldname, "invalid shirt size");
-    const shirtSizes = ["XS", "S", "M", "L", "XL", "XXL"];
-
-    if (optional) {
-        return size.optional({
-            checkFalsy: true
-        }).isIn(shirtSizes).withMessage(`Must be one of ${shirtSizes.join(",")}`);
-    } else {
-        return size.exists().withMessage("shirt size must exist").isIn(shirtSizes).withMessage(`must be one of ${shirtSizes.join(",")}`);
-    }
-}
-
-/**
  * Validates that field must be at least 6 characters long. 
  * TODO: impose better restrictions.
  * @param {"query" | "body" | "header" | "param"} fieldLocation the location where the field should be found 
@@ -297,35 +278,6 @@ function passwordValidator(fieldLocation, fieldname, optional = true) {
     }
 }
 
-/**
- * Validates that field must be one of the status enums.
- * @param {"query" | "body" | "header" | "param"} fieldLocation the location where the field should be found 
- * @param {string} fieldname name of the field that needs to be validated.
- * @param {boolean} optional whether the field is optional or not.
- */
-function hackerStatusValidator(fieldLocation, fieldname, optional = true) {
-    const status = setProperValidationChainBuilder(fieldLocation, fieldname, "invalid status");
-
-    if (optional) {
-        return status.optional({
-            checkFalsy: true
-        }).isIn(Constants.HACKER_STATUSES).withMessage(`Status must be in ${Constants.HACKER_STATUSES}`);
-    } else {
-        return status.exists().withMessage(`Status must be in ${Constants.HACKER_STATUSES}`);
-    }
-}
-
-function hackerCheckInStatusValidator(fieldLocation, fieldname, optional = true) {
-    const status = setProperValidationChainBuilder(fieldLocation, fieldname, "invalid status");
-
-    if (optional) {
-        return status.optional({
-            checkFalsy: true
-        }).isIn(Constants.HACKER_STATUS_CHECKED_IN).withMessage(`Status must be ${Constants.HACKER_STATUS_CHECKED_IN}`);
-    } else {
-        return status.exists().withMessage(`Status must be ${Constants.HACKER_STATUS_CHECKED_IN}`);
-    }
-}
 
 /**
  * Validates that field must be a valid application.
@@ -470,7 +422,7 @@ function searchValidator(fieldLocation, fieldname) {
         }) => {
             //value is a serialized JSON
             value = JSON.parse(value);
-            let modelString = req.params.model
+            let modelString = req.query.model
             //Supported models for searching
             let model;
             if (modelString === Constants.HACKER.toLowerCase()) {
@@ -518,7 +470,7 @@ function searchSortValidator(fieldLocation, fieldName) {
         .custom((value, {
             req
         }) => {
-            let modelString = req.params.model
+            let modelString = req.query.model
             if (modelString.equals("hacker")) {
                 model = Models.Hacker;
             } else {
@@ -589,22 +541,88 @@ function phoneNumberValidator(fieldLocation, fieldname, optional = true) {
 }
 
 /**
- * Validates that field must be a valid account type
+ * Validates that field must be an array of routes
  * @param {"query" | "body" | "header" | "param"} fieldLocation the location where the field should be found 
  * @param {string} fieldname name of the field that needs to be validated.
  * @param {boolean} optional whether the field is optional or not.
  */
-function accountTypeValidator(fieldLocation, fieldname, optional = true) {
-    const accountType = setProperValidationChainBuilder(fieldLocation, fieldname, "Invalid account type");
+function routesValidator(fieldLocation, fieldname, optional = true) {
+    const routes = setProperValidationChainBuilder(fieldLocation, fieldname, "Invalid routes");
+
     if (optional) {
-        return accountType.optional({
-            checkFalsy: true
-        }).isIn(Constants.EXTENDED_USER_TYPES);
+        return routes
+            .optional({
+                checkFalsy: true
+            })
+            .custom(routesArrayValidationHelper).withMessage("The value must be a route");
     } else {
-        return accountType.exists()
-            .withMessage("Account type must be provided")
-            .isIn(Constants.EXTENDED_USER_TYPES);
+        return routes
+            .exists()
+            .withMessage("The route must exist.")
+            .custom(routesArrayValidationHelper).withMessage("The value must be a route");
     }
+}
+
+/**
+ * Returns true if value an array of routes
+ * @param {*} routes value to check against
+ */
+function routesArrayValidationHelper(routes) {
+    if (!Array.isArray(routes)) {
+        return false;
+    }
+    for (const route of routes) {
+        if (route.uri === null || typeof route.uri !== "string") {
+            return false;
+        }
+        if (route.requestType === null || !checkEnum(route.requestType, Constants.REQUEST_TYPES)) {
+            return false;
+        }
+    }
+    return true;
+}
+
+/**
+ * Validates that field must be a value within the enum passed in through parameter 'enums'
+ * @param {"query" | "body" | "header" | "param"} fieldLocation The location where the field should be found.
+ * @param {string} fieldname The name of the field that needs to be validated.
+ * @param {Object} enums The enum object that the field must be part of. 
+ * @param {boolean} optional Whether the field is optional or not.
+ */
+function enumValidator(fieldLocation, fieldname, enums, optional = true) {
+    const enumValue = setProperValidationChainBuilder(fieldLocation, fieldname, "Invalid enums");
+
+    if (optional) {
+        return enumValue
+            .optional({
+                checkFalsy: true
+            })
+            .custom((val) => {
+                return checkEnum(val, enums);
+            }).withMessage("The value must be part of the enum");
+    } else {
+        return enumValue
+            .exists()
+            .withMessage("The value being checked agains the enums must exist.")
+            .custom((val) => {
+                return checkEnum(val, enums);
+            }).withMessage("The value must be part of the enum");
+    }
+}
+
+/**
+ * Checks that 'value' is part of 'enums'. 'enums' should be an enum dict.
+ * @param {*} value Should be of the same type as the values of the enum
+ * @param {Object} enums An object that represents an enum. They keys are the keys of the enum, and the values are the enum values. 
+ * @return {boolean} Returns true if the value is part of the enum, false otherwise.
+ */
+function checkEnum(value, enums) {
+    for (var enumKey in enums) {
+        if (value === enums[enumKey]) {
+            return true;
+        }
+    }
+    return false;
 }
 
 /**
@@ -646,9 +664,7 @@ module.exports = {
     emailValidator: emailValidator,
     alphaValidator: alphaValidator,
     alphaArrayValidator: alphaArrayValidator,
-    shirtSizeValidator: shirtSizeValidator,
     passwordValidator: passwordValidator,
-    hackerStatusValidator: hackerStatusValidator,
     booleanValidator: booleanValidator,
     applicationValidator: applicationValidator,
     jwtValidator: jwtValidator,
@@ -658,6 +674,6 @@ module.exports = {
     searchSortValidator: searchSortValidator,
     phoneNumberValidator: phoneNumberValidator,
     dateValidator: dateValidator,
-    hackerCheckInStatusValidator: hackerCheckInStatusValidator,
-    accountTypeValidator: accountTypeValidator
+    enumValidator: enumValidator,
+    routesValidator: routesValidator,
 };

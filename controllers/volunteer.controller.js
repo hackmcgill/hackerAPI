@@ -5,35 +5,26 @@ const Services = {
 };
 const Util = require("../middlewares/util.middleware");
 const Constants = {
+    Success: require("../constants/success.constant"),
     Error: require("../constants/error.constant"),
 }
 
 /**
  * @async
- * @function createVolunteer
- * @param {{body: {volunteerDetails: {_id: ObjectId, accountId: ObjectId}}}} req
+ * @function createdVolunteer
+ * @param {{body: {volunteer: {_id: ObjectId, accountId: ObjectId}}}} req
  * @param {*} res
  * @return {JSON} Success or error status
- * @description create a volunteer from information in req.body.volunteerDetails
+ * @description Show the success message and the created volunteer
  */
-async function createVolunteer(req, res) {
-    const volunteerDetails = req.body.volunteerDetails;
+async function createdVolunteer(req, res) {
 
-    const success = await Services.Volunteer.createVolunteer(volunteerDetails);
-
-    if (success) {
-        return res.status(200).json({
-            message: "Volunteer creation successful",
-            data: volunteerDetails
-        });
-    } else {
-        return res.status(400).json({
-            message: Constants.Error.VOLUNTEER_CREATE_500_MESSAGE,
-            data: {}
-        });
-    }
+    return res.status(200).json({
+        message: Constants.Success.VOLUNTEER_CREATE,
+        data: req.body.volunteer
+    });
 }
 
 module.exports = {
-    createVolunteer: Util.asyncMiddleware(createVolunteer),
+    createdVolunteer: createdVolunteer,
 };
