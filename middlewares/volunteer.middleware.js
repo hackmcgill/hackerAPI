@@ -57,6 +57,29 @@ async function checkDuplicateAccountLinks(req, res, next) {
 }
 
 /**
+ * @async
+ * @function createdVolunteer
+ * @param {{body: {volunteerDetails: {_id: ObjectId, accountId: ObjectId}}}} req
+ * @param {*} res
+ * @description create a volunteer from information in req.body.volunteerDetails
+ */
+async function createVolunteer(req, res, next) {
+    const volunteerDetails = req.body.volunteerDetails;
+
+    const volunteer = await Services.Volunteer.createVolunteer(volunteerDetails);
+
+    if (!volunteer) {
+        return res.status(400).json({
+            message: Constants.Error.VOLUNTEER_CREATE_500_MESSAGE,
+            data: {}
+        });
+    }
+
+    req.body.volunteer = volunteer;
+    next();
+}
+
+/**
  * Verifies that account is confirmed and of proper type from the account ID passed in req.body.accountId
  * @param {{body: {accountId: ObjectId}}} req 
  * @param {*} res 
@@ -88,6 +111,7 @@ async function validateConfirmedStatus(req, res, next) {
 
 module.exports = {
     parseVolunteer: parseVolunteer,
+    createVolunteer: Middleware.Util.asyncMiddleware(createVolunteer),
     checkDuplicateAccountLinks: Middleware.Util.asyncMiddleware(checkDuplicateAccountLinks),
     validateConfirmedStatus: Middleware.Util.asyncMiddleware(validateConfirmedStatus),
 };
