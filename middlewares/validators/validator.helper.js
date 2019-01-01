@@ -257,25 +257,6 @@ function alphaArrayValidationHelper(value) {
 }
 
 /**
- * Validates that field must be one of the shirt size enums.
- * @param {"query" | "body" | "header" | "param"} fieldLocation the location where the field should be found 
- * @param {string} fieldname name of the field that needs to be validated.
- * @param {boolean} optional whether the field is optional or not.
- */
-function shirtSizeValidator(fieldLocation, fieldname, optional = true) {
-    const size = setProperValidationChainBuilder(fieldLocation, fieldname, "invalid shirt size");
-    const shirtSizes = ["XS", "S", "M", "L", "XL", "XXL"];
-
-    if (optional) {
-        return size.optional({
-            checkFalsy: true
-        }).isIn(shirtSizes).withMessage(`Must be one of ${shirtSizes.join(",")}`);
-    } else {
-        return size.exists().withMessage("shirt size must exist").isIn(shirtSizes).withMessage(`must be one of ${shirtSizes.join(",")}`);
-    }
-}
-
-/**
  * Validates that field must be at least 6 characters long. 
  * TODO: impose better restrictions.
  * @param {"query" | "body" | "header" | "param"} fieldLocation the location where the field should be found 
@@ -297,35 +278,6 @@ function passwordValidator(fieldLocation, fieldname, optional = true) {
     }
 }
 
-/**
- * Validates that field must be one of the status enums.
- * @param {"query" | "body" | "header" | "param"} fieldLocation the location where the field should be found 
- * @param {string} fieldname name of the field that needs to be validated.
- * @param {boolean} optional whether the field is optional or not.
- */
-function hackerStatusValidator(fieldLocation, fieldname, optional = true) {
-    const status = setProperValidationChainBuilder(fieldLocation, fieldname, "invalid status");
-
-    if (optional) {
-        return status.optional({
-            checkFalsy: true
-        }).isIn(Constants.HACKER_STATUSES).withMessage(`Status must be in ${Constants.HACKER_STATUSES}`);
-    } else {
-        return status.exists().withMessage(`Status must be in ${Constants.HACKER_STATUSES}`);
-    }
-}
-
-function hackerCheckInStatusValidator(fieldLocation, fieldname, optional = true) {
-    const status = setProperValidationChainBuilder(fieldLocation, fieldname, "invalid status");
-
-    if (optional) {
-        return status.optional({
-            checkFalsy: true
-        }).isIn(Constants.HACKER_STATUS_CHECKED_IN).withMessage(`Status must be ${Constants.HACKER_STATUS_CHECKED_IN}`);
-    } else {
-        return status.exists().withMessage(`Status must be ${Constants.HACKER_STATUS_CHECKED_IN}`);
-    }
-}
 
 /**
  * Validates that field must be a valid application.
@@ -589,25 +541,6 @@ function phoneNumberValidator(fieldLocation, fieldname, optional = true) {
 }
 
 /**
- * Validates that field must be a valid account type
- * @param {"query" | "body" | "header" | "param"} fieldLocation the location where the field should be found 
- * @param {string} fieldname name of the field that needs to be validated.
- * @param {boolean} optional whether the field is optional or not.
- */
-function accountTypeValidator(fieldLocation, fieldname, optional = true) {
-    const accountType = setProperValidationChainBuilder(fieldLocation, fieldname, "Invalid account type");
-    if (optional) {
-        return accountType.optional({
-            checkFalsy: true
-        }).isIn(Constants.EXTENDED_USER_TYPES);
-    } else {
-        return accountType.exists()
-            .withMessage("Account type must be provided")
-            .isIn(Constants.EXTENDED_USER_TYPES);
-    }
-}
-
-/**
  * Validates that field must be an array of routes
  * @param {"query" | "body" | "header" | "param"} fieldLocation the location where the field should be found 
  * @param {string} fieldname name of the field that needs to be validated.
@@ -731,9 +664,7 @@ module.exports = {
     emailValidator: emailValidator,
     alphaValidator: alphaValidator,
     alphaArrayValidator: alphaArrayValidator,
-    shirtSizeValidator: shirtSizeValidator,
     passwordValidator: passwordValidator,
-    hackerStatusValidator: hackerStatusValidator,
     booleanValidator: booleanValidator,
     applicationValidator: applicationValidator,
     jwtValidator: jwtValidator,
@@ -743,8 +674,6 @@ module.exports = {
     searchSortValidator: searchSortValidator,
     phoneNumberValidator: phoneNumberValidator,
     dateValidator: dateValidator,
-    hackerCheckInStatusValidator: hackerCheckInStatusValidator,
-    accountTypeValidator: accountTypeValidator,
     enumValidator: enumValidator,
     routesValidator: routesValidator,
 };
