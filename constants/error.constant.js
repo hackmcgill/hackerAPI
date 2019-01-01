@@ -17,6 +17,7 @@ const TEAM_MEMBER_422_MESSAGE = "Duplicate team member in input";
 const VALIDATION_422_MESSAGE = "Validation failed";
 const ACCOUNT_DUPLICATE_422_MESSAGE = "Account already exists";
 const TEAM_SIZE_422_MESSAGE = "Team full";
+const ROLE_DUPLICATE_422_MESSAGE = "Role already exists";
 
 const ACCOUNT_TOKEN_401_MESSAGE = "Invalid token for account";
 const AUTH_401_MESSAGE = "Invalid Authentication";
@@ -34,6 +35,7 @@ const VOLUNTEER_CREATE_500_MESSAGE = "Error while creating volunteer";
 const EMAIL_500_MESSAGE = "Error while generating email";
 const GENERIC_500_MESSAGE = "Internal error";
 const LOGIN_500_MESSAGE = "Error while logging in";
+const ROLE_CREATE_500_MESSAGE = "Error while creating role";
 
 module.exports = {
     ACCOUNT_404_MESSAGE: ACCOUNT_404_MESSAGE,
@@ -65,4 +67,6 @@ module.exports = {
     LOGIN_500_MESSAGE: LOGIN_500_MESSAGE,
     HACKER_STATUS_409_MESSAGE: HACKER_STATUS_409_MESSAGE,
     TEAM_SIZE_422_MESSAGE: TEAM_SIZE_422_MESSAGE,
+    ROLE_DUPLICATE_422_MESSAGE: ROLE_DUPLICATE_422_MESSAGE,
+    ROLE_CREATE_500_MESSAGE: ROLE_CREATE_500_MESSAGE,
 };
