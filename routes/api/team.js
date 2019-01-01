@@ -120,6 +120,21 @@ module.exports = {
             Controllers.Team.findById
         );
 
+        // option 1: /:id where id is the team, but this makes ensureAuthorized hard. How do we select the exact user from the team members?
+        // option 2: /:id where id is the hacker id, /team/<hackerid> seems weird. Unless we take it to mean change the team that hackerId is on
+        // option 3: / and only change the team that the user is logged into. This decreases admin access, and is different from rest of the patches
+        teamRouter.route("/:hackerId").patch(
+            Middleware.Auth.ensureAuthenticated(),
+            Middleware.Auth.ensureAuthorized(),
+
+            Middleware.Validator.Team.patchTeamValidator,
+            Middleware.parseBody.middleware,
+            Middleware.Team.parsePatch,
+
+            Middleware.Team.getTeamFromUser,
+            Middleware.Team.updateTeam,
+        );
+
         apiRouter.use("/team", teamRouter);
     }
 };

@@ -8,6 +8,10 @@ const Middleware = {
     Util: require("../middlewares/util.middleware"),
 };
 
+function updateTeam(teamId) {
+
+}
+
 /**
  * @function findTeamByHackerId
  * @param {ObjectId} hackerId objectID of the hacker

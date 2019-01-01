@@ -81,6 +81,28 @@ async function ensureSpace(req, res, next) {
     return next();
 }
 
+async function updateTeam(req, res, next) {
+    const team = Services.Team.updateTeam
+}
+
+async function getTeamFromUser(req, res, next) {
+    const hacker = await Services.Hacker.findByAccountId(req.user.id);
+
+    if (!hacker) {
+        return next({
+            status: 404,
+            message: Constants.Error.Hacker,
+            data: {
+                id: req.user.id
+            }
+        });
+    }
+
+    // should be cleared by req.logout()
+    req.user.teamId = hacker.teamId;
+    next();
+}
+
 /**
  * @async
  * @function updateHackerTeam
@@ -171,9 +193,24 @@ function parseTeam(req, res, next) {
     return next();
 }
 
+/**
+ * @function parsePatch
+ * @param {body: {id: ObjectId}} req 
+ * @param {*} res 
+ * @param {(err?) => void} next 
+ * @return {void}
+ * @description Delete the req.body.id that was added by the validation of route parameter.
+ */
+function parsePatch(req, res, next) {
+    delete req.body.id;
+    return next();
+}
+
 module.exports = {
     parseTeam: parseTeam,
     ensureUniqueHackerId: Util.asyncMiddleware(ensureUniqueHackerId),
     ensureSpace: Util.asyncMiddleware(ensureSpace),
     updateHackerTeam: Util.asyncMiddleware(updateHackerTeam),
+    getTeamFromUser: Util.asyncMiddleware(getTeamFromUser),
+    parsePatch: parsePatch,
 };
