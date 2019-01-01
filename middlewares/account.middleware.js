@@ -83,10 +83,46 @@ async function updatePassword(req, res, next) {
     return next();
 }
 
-// TODO: fix when new permission system is created
-async function addDefaultHackerPermissions(req, res, next) {
-    // await Services.RoleBinding.createRoleBinding(req.);
+/**
+ * @async
+ * @function getById
+ * @param {{body: {id: string}}} req
+ * @param {*} res
+ * @description Retrieves an account's information from mongoId specified in req.body.id, and places it in req.body.account
+ */
+async function getById(req, res, next) {
+    const acc = await Services.Account.findById(req.body.id);
+
+    if (!acc) {
+        return res.status(404).json({
+            message: Constants.Error.ACCOUNT_404_MESSAGE,
+            data: {}
+        });
+    }
+
+    req.body.account = acc;
     return next();
+}
+
+/**
+ * @async
+ * @function getByEmail
+ * @param {{user: {email: string}}} req
+ * @param {*} res
+ * @description Gets an account by user email, and sets req.body.acc to the retrived account object if successful.
+ */
+async function getByEmail(req, res, next) {
+    const acc = await Services.Account.findByEmail(req.user.email);
+
+    if (!acc) {
+        return res.status(404).json({
+            message: Constants.Error.ACCOUNT_404_MESSAGE,
+            data: {}
+        });
+    }
+
+    req.body.account = acc;
+    next();
 }
 
 /**
@@ -172,8 +208,8 @@ async function inviteAccount(req, res, next) {
 module.exports = {
     parsePatch: parsePatch,
     parseAccount: parseAccount,
-    // untested
-    addDefaultHackerPermissions: Middleware.Util.asyncMiddleware(addDefaultHackerPermissions),
+    getByEmail: Middleware.Util.asyncMiddleware(getByEmail),
+    getById: Middleware.Util.asyncMiddleware(getById),
     // untested
     updatePassword: Middleware.Util.asyncMiddleware(updatePassword),
     addAccount: Middleware.Util.asyncMiddleware(addAccount),
