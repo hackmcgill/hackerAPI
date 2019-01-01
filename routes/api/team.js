@@ -50,8 +50,7 @@ module.exports = {
             // Validators
             Middleware.Validator.Team.newTeamValidator,
             Middleware.parseBody.middleware,
-
-            Middleware.Team.parseTeam,
+            Middleware.Team.parseNewTeam,
 
             Middleware.Team.createTeam,
             Controllers.Team.createdTeam

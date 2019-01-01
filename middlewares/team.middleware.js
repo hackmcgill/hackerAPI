@@ -69,10 +69,10 @@ async function createTeam(req, res, next) {
             message: Constants.Error.TEAM_CREATE_500_MESSAGE,
             data: {}
         });
-    } else {
-        req.body.team = team;
-        return next();
     }
+
+    req.body.team = team;
+    return next();
 }
 
 /**
@@ -214,6 +214,47 @@ function parseTeam(req, res, next) {
     return next();
 }
 
+async function parseNewTeam(req, res, next) {
+    const teamDetails = {
+        _id: mongoose.Types.ObjectId(),
+        name: req.body.name,
+        members: [],
+        devpostURL: req.body.devpostURL,
+        projectName: req.body.projectName
+    };
+
+    delete req.body.name;
+    delete req.body.members;
+    delete req.body.devpostURL;
+    delete req.body.projectName;
+
+    // hacker should exist because of authorization
+    const hacker = await Services.Hacker.findByAccountId(req.user.id);
+
+    if (!hacker) {
+        return next({
+            status: 404,
+            message: Constants.Error.HACKER_404_MESSAGE,
+            data: {
+                id: req.user.id
+            }
+        });
+    }
+
+    // hacker should not be in another team
+    if (hacker.teamId !== undefined) {
+        return next({
+            status: 409,
+            message: Constants.Error.TEAM_MEMBER_409_MESSAGE,
+        });
+    }
+
+    teamDetails.members.push(hacker._id);
+
+    req.body.teamDetails = teamDetails;
+    return next();
+}
+
 module.exports = {
     parseTeam: parseTeam,
     findById: Util.asyncMiddleware(findById),
@@ -221,4 +262,6 @@ module.exports = {
     ensureUniqueHackerId: Util.asyncMiddleware(ensureUniqueHackerId),
     ensureSpace: Util.asyncMiddleware(ensureSpace),
     updateHackerTeam: Util.asyncMiddleware(updateHackerTeam),
+    parseNewTeam: Util.asyncMiddleware(parseNewTeam),
+
 };

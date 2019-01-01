@@ -8,6 +8,11 @@ const logger = require("../../services/logger.service");
 
 const newTeam1 = {
     "name": "BronzeTeam",
+    "projectName": "YetAnotherProject"
+};
+
+const createdNewTeam1 = {
+    "name": "BronzeTeam",
     "members": [Util.Hacker.HackerB._id],
     "projectName": "YetAnotherProject"
 };
@@ -65,6 +70,7 @@ async function dropAll() {
 
 module.exports = {
     newTeam1: newTeam1,
+    createdNewTeam1: createdNewTeam1,
     Team1: Team1,
     Team2: Team2,
     Team3: Team3,
