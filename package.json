@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@google-cloud/logging-winston": "^0.9.0",
-    "@google-cloud/storage": "^2.3.4",
+    "@google-cloud/storage": "^2.3.0",
     "@sendgrid/mail": "^6.3.1",
     "bcrypt": "^3.0.0",
     "cookie-parser": "~1.4.3",
