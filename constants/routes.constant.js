@@ -150,6 +150,10 @@ const teamRoutes = {
         requestType: Constants.REQUEST_TYPES.POST,
         uri: "/api/team/",
     },
+    "join": {
+        requestType: Constants.REQUEST_TYPES.PATCH,
+        uri: "/api/team/join/",
+    },
 };
 
 const volunteerRoutes = {

@@ -14,7 +14,7 @@ const Middleware = {
     /* Insert all of ther middleware require statements here */
     parseBody: require("../../middlewares/parse-body.middleware"),
     Team: require("../../middlewares/team.middleware"),
-    Auth: require("../../middlewares/auth.middleware")
+    Auth: require("../../middlewares/auth.middleware"),
 };
 
 module.exports = {
@@ -55,6 +55,35 @@ module.exports = {
 
             Middleware.Team.createTeam,
             Controllers.Team.createdTeam
+        );
+
+        /**
+         * @api {patch} /team/join/ Allows a logged in hacker to join a team by name
+         * @apiName patchJoinTeam
+         * @apiGroup Team
+         * @apiVersion 1.1.1
+         * 
+         * @apiParam (body) {string} [teamName] Name of the team to join
+         * @apiSuccess {string} message Success message
+         * @apiSuccess {object} data {}
+         * @apiSuccessExample {object} Success-Response: 
+         *      {
+         *          "message": "Team join successful.", 
+         *          "data": {}
+         *      }
+         * @apiPermission Administrator
+         */
+        teamRouter.route("/join/").patch(
+            Middleware.Auth.ensureAuthenticated(),
+            Middleware.Auth.ensureAuthorized(),
+
+            Middleware.Validator.Team.joinTeamValidator,
+            // need to check that the team is not full
+            Middleware.Team.ensureSpace,
+
+            Middleware.Team.updateHackerTeam,
+
+            Controllers.Team.joinedTeam
         );
 
         /**

@@ -15,28 +15,6 @@ const Models = {
 };
 
 /**
- * Validates that field is a valid devpost URL
- * @param {"query" | "body" | "header" | "param"} fieldLocation the location where the field should be found 
- * @param {string} fieldname Name of the field that needs to be validated.
- * @param {boolean} optional Whether the field is optional or not.
- */
-function devpostValidator(fieldLocation, fieldname, optional = true) {
-    const devpostUrl = setProperValidationChainBuilder(fieldLocation, fieldname, "invalid web address");
-    // match optional https://, http://, www., then optional pre-devpost part, then devpost.com with different routes and params
-    if (optional) {
-        return devpostUrl.optional({
-                checkFalsy: true
-            })
-            .matches(Constants.DEVPOST_REGEX)
-            .withMessage("must be valid devpost url");
-    } else {
-        return devpostUrl.exists().withMessage("devpost url must exist")
-            .matches(Constants.DEVPOST_REGEX)
-            .withMessage("must be valid devpost url");
-    }
-}
-
-/**
  * Validates that field is a valid integer
  * @param {"query" | "body" | "header" | "param"} fieldLocation the location where the field should be found 
  * @param {string} fieldname Name of the field that needs to be validated.
@@ -129,14 +107,13 @@ function booleanValidator(fieldLocation, fieldname, optional = true, desire = nu
     }
 }
 
-// untested
 /**
  * Validates that field name is ascii only.
  * @param {"query" | "body" | "header" | "param"} fieldLocation the location where the field should be found 
  * @param {string} fieldname name of the field that needs to be validated.
  * @param {boolean} optional whether the field is optional or not.
  */
-function nameValidator(fieldLocation, fieldname, optional = true) {
+function asciiValidator(fieldLocation, fieldname, optional = true) {
     const name = setProperValidationChainBuilder(fieldLocation, fieldname, "invalid name");
     if (optional) {
         return name.optional({
@@ -147,63 +124,27 @@ function nameValidator(fieldLocation, fieldname, optional = true) {
     }
 }
 
-// untested
 /**
- * Validates that field pronoun is ascii only.
- * @param {"query" | "body" | "header" | "param"} fieldLocation the location where the field should be found 
- * @param {string} fieldname name of the field that needs to be validated.
- * @param {boolean} optional whether the field is optional or not.
- */
-function pronounValidator(fieldLocation, fieldname, optional = true) {
-    const pronoun = setProperValidationChainBuilder(fieldLocation, fieldname, "invalid pronoun");
-    if (optional) {
-        return pronoun.optional({
-            checkFalsy: true
-        }).isAscii().withMessage("must contain only ascii characters");
-    } else {
-        return pronoun.exists().withMessage("pronoun must exist").isAscii().withMessage("must contain only ascii characters");
-    }
-}
-
-/**
- * Validates that field is a valid URL
+ * Validates the field against a regex
  * @param {"query" | "body" | "header" | "param"} fieldLocation the location where the field should be found 
  * @param {string} fieldname Name of the field that needs to be validated.
  * @param {boolean} optional Whether the field is optional or not.
- * @description 
- * Matches against a regex that looks for optional http://, https://, http:, https:, and optional www.
- * Regex then looks for the domain, and then optional route, path, query parameters
+ * @param {regex} desire The regex to match against
+ * @description The default regex to match against accepts anything
  */
-function urlValidator(fieldLocation, fieldname, optional = true) {
-    const url = setProperValidationChainBuilder(fieldLocation, fieldname, "invalid name");
+function regexValidator(fieldLocation, fieldname, optional = true, desire = Constants.ANY_REGEX) {
+    const match = setProperValidationChainBuilder(fieldLocation, fieldname, "invalid name");
 
     if (optional) {
-        return url.optional({
+        return match.optional({
                 checkFalsy: true
             })
-            .matches(Constants.URL_REGEX)
+            .matches(desire)
             .withMessage("must be valid url");
     } else {
-        return url.exists().withMessage("url must exist")
-            .matches(Constants.URL_REGEX)
+        return match.exists().withMessage("url must exist")
+            .matches(desire)
             .withMessage("must be valid url");
-    }
-}
-
-/**
- * Validates that field must be email.
- * @param {"query" | "body" | "header" | "param"} fieldLocation the location where the field should be found 
- * @param {string} fieldname name of the field that needs to be validated.
- * @param {boolean} optional whether the field is optional or not.
- */
-function emailValidator(fieldLocation, fieldname, optional = true) {
-    const email = setProperValidationChainBuilder(fieldLocation, fieldname, "invalid email");
-    if (optional) {
-        return email.optional({
-            checkFalsy: true
-        }).matches(Constants.EMAIL_REGEX).withMessage("must be valid email");
-    } else {
-        return email.exists().withMessage("email must exist").matches(Constants.EMAIL_REGEX).withMessage("must be valid email");
     }
 }
 
@@ -655,20 +596,17 @@ function setProperValidationChainBuilder(fieldLocation, fieldName, errorString) 
 }
 
 module.exports = {
-    devpostValidator: devpostValidator,
+    regexValidator: regexValidator,
     integerValidator: integerValidator,
     mongoIdValidator: mongoIdValidator,
     mongoIdArrayValidator: mongoIdArrayValidator,
-    nameValidator: nameValidator,
-    pronounValidator: pronounValidator,
-    emailValidator: emailValidator,
+    asciiValidator: asciiValidator,
     alphaValidator: alphaValidator,
     alphaArrayValidator: alphaArrayValidator,
     passwordValidator: passwordValidator,
     booleanValidator: booleanValidator,
     applicationValidator: applicationValidator,
     jwtValidator: jwtValidator,
-    urlValidator: urlValidator,
     searchValidator: searchValidator,
     searchModelValidator: searchModelValidator,
     searchSortValidator: searchSortValidator,

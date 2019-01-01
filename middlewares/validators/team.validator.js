@@ -1,10 +1,15 @@
 "use strict";
 const VALIDATOR = require("./validator.helper");
+const Constants = require("../../constants/general.constant");
 
 module.exports = {
     newTeamValidator: [
-        VALIDATOR.nameValidator("body", "name", false),
-        VALIDATOR.devpostValidator("body", "devpostURL", true),
-        VALIDATOR.nameValidator("body", "projectName", false)
+        VALIDATOR.asciiValidator("body", "name", false),
+        VALIDATOR.regexValidator("body", "devpostURL", true, Constants.DEVPOST_REGEX),
+        VALIDATOR.asciiValidator("body", "projectName", false)
     ],
+
+    joinTeamValidator: [
+        VALIDATOR.asciiValidator("body", "teamName", false),
+    ]
 };
