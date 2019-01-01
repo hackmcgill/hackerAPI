@@ -9,54 +9,18 @@ const Constants = {
     Success: require("../constants/success.constant"),
 };
 
-
 /**
- * @async
- * @function getUserByEmail
- * @param {{user: {email: string}}} req
+ * @function showAccount
+ * @param {{body: {account: Object}}} req
  * @param {*} res
- * @return {JSON} Success or error status
- * @description Retrieves an account's information via email query.
+ * @return {JSON} Success status and account object
+ * @description Returns the JSON of account object located in req.body.account
  */
-async function getUserByEmail(req, res) {
-    const acc = await Services.Account.findByEmail(req.user.email);
-
-    if (acc) {
-        return res.status(200).json({
-            message: Constants.Success.ACCOUNT_GET_BY_EMAIL,
-            data: acc.toStrippedJSON()
-        });
-    } else {
-        // tentative error code
-        return res.status(404).json({
-            message: Constants.Error.ACCOUNT_404_MESSAGE,
-            data: {}
-        });
-    }
-}
-
-/**
- * @async
- * @function getUserById
- * @param {{body: {id: string}}} req
- * @param {*} res
- * @return {JSON} Success or error status
- * @description Retrieves an account's information via the account's mongoId, specified in req.params.id from route parameters. It is moved to req.body.id from req.params.id by validation.
- */
-async function getUserById(req, res) {
-    const acc = await Services.Account.findById(req.body.id);
-
-    if (acc) {
-        return res.status(200).json({
-            message: Constants.Success.ACCOUNT_GET_BY_ID,
-            data: acc.toStrippedJSON()
-        });
-    } else {
-        return res.status(404).json({
-            message: Constants.Error.ACCOUNT_404_MESSAGE,
-            data: {}
-        });
-    }
+function showAccount(req, res) {
+    return res.status(200).json({
+        message: Constants.Success.ACCOUNT_READ,
+        data: req.body.account.toStrippedJSON()
+    });
 }
 
 /**
@@ -101,11 +65,8 @@ function invitedAccount(req, res) {
 
 
 module.exports = {
-    getUserByEmail: Util.asyncMiddleware(getUserByEmail),
-    getUserById: Util.asyncMiddleware(getUserById),
-
-    // assumes all information in req.body
     addUser: addUser,
     updatedAccount: updatedAccount,
-    invitedAccount: invitedAccount
+    invitedAccount: invitedAccount,
+    showAccount: showAccount,
 };

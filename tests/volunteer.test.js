@@ -83,8 +83,8 @@ describe("POST create volunteer", function () {
                     res.body.message.should.equal(Constants.Success.VOLUNTEER_CREATE);
                     res.body.should.have.property("data");
 
-                    // deleting _id because that was generated, and not part of original data
-                    delete res.body.data._id;
+                    // deleting id because that was generated, and not part of original data
+                    delete res.body.data.id;
                     chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify(util.volunteer.newVolunteer1));
                     done();
                 });
