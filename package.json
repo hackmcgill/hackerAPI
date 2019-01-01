@@ -35,7 +35,7 @@
     "winston": "^2.4.2"
   },
   "devDependencies": {
-    "@types/express": "^4.16.0",
+    "@types/express": "^4.11.1",
     "@types/google-cloud__storage": "^1.7.1",
     "@types/mongodb": "^3.0.18",
     "@types/mongoose": "^5.0.13",
