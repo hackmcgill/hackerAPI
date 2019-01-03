@@ -113,11 +113,15 @@ module.exports = {
          * @apiErrorExample {object} Error-Response: 
          *      {"message": "Team not found", "data": {}}
          */
-        teamRouter.route("/:id").get(
-            Middleware.Validator.RouteParam.idValidator,
+        teamRouter.route("/").get(
+            Middleware.Auth.ensureAuthenticated(),
+            Middleware.Auth.ensureAuthorized(),
+
+            Middleware.Validator.Team.getTeamValidator,
             Middleware.parseBody.middleware,
 
             Middleware.Team.findById,
+            Middleware.Team.findMembersNames,
             Controllers.Team.showTeam
         );
 

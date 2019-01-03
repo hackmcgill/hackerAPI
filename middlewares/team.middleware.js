@@ -5,7 +5,8 @@ const mongoose = require("mongoose");
 const Services = {
     Logger: require("../services/logger.service"),
     Team: require("../services/team.service"),
-    Hacker: require("../services/hacker.service")
+    Hacker: require("../services/hacker.service"),
+    Account: require("../services/account.service"),
 };
 const Util = require("./util.middleware");
 const Constants = {
@@ -185,6 +186,43 @@ async function findById(req, res, next) {
     next();
 }
 
+async function findMembersNames(req, res, next) {
+    const team = req.body.team;
+
+    if (!team) {
+        return res.status(404).json({
+            message: Constants.Error.TEAM_404_MESSAGE,
+            data: {}
+        });
+    }
+
+    let teamMembers = [];
+
+    for (const memberId of team.members) {
+        const hacker = await Services.Hacker.findById(memberId);
+
+        if (!hacker) {
+            return res.status(404).json({
+                message: Constants.Error.TEAM_404_MESSAGE,
+                data: memberId
+            });
+        }
+        const acc = await Services.Account.findById(hacker.accountId);
+
+        if (!acc) {
+            return res.status(404).json({
+                message: Constants.Error.ACCOUNT_404_MESSAGE,
+                data: hacker.accountId,
+            });
+        }
+
+        teamMembers.push(acc);
+    }
+
+    req.body.teamMembers = teamMembers;
+    return next();
+}
+
 /**
  * @function parseTeam
  * @param {{body: {name: string, members: Object[], devpostURL: string, projectName: string}}} req
@@ -221,4 +259,5 @@ module.exports = {
     ensureUniqueHackerId: Util.asyncMiddleware(ensureUniqueHackerId),
     ensureSpace: Util.asyncMiddleware(ensureSpace),
     updateHackerTeam: Util.asyncMiddleware(updateHackerTeam),
+    findMembersNames: Util.asyncMiddleware(findMembersNames),
 };
