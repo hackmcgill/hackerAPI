@@ -139,10 +139,10 @@ describe("PATCH change team", function () {
                     teamName: "FullTeam",
                 })
                 .end(function (err, res) {
-                    res.should.have.status(422);
+                    res.should.have.status(409);
                     res.should.be.json;
                     res.body.should.have.property("message");
-                    res.body.message.should.equal(Constants.Error.TEAM_SIZE_422_MESSAGE);
+                    res.body.message.should.equal(Constants.Error.TEAM_SIZE_409_MESSAGE);
                     res.body.should.have.property("data");
 
                     done();

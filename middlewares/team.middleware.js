@@ -72,8 +72,8 @@ async function ensureSpace(req, res, next) {
         });
     } else if (teamSize >= Constants.General.MAX_TEAM_SIZE) {
         return next({
-            status: 422,
-            message: Constants.Error.TEAM_SIZE_422_MESSAGE,
+            status: 409,
+            message: Constants.Error.TEAM_SIZE_409_MESSAGE,
             data: teamSize,
         });
     }

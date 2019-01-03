@@ -12,11 +12,11 @@ const VOLUNTEER_ID_409_MESSAGE = "Conflict with volunteer accountId link";
 const HACKER_ID_409_MESSAGE = "Conflict with hacker accountId link";
 const TEAM_MEMBER_409_MESSAGE = "Conflict with team member being in another team";
 const HACKER_STATUS_409_MESSAGE = "Conflict with hacker status";
+const TEAM_SIZE_409_MESSAGE = "Team full";
 
 const TEAM_MEMBER_422_MESSAGE = "Duplicate team member in input";
 const VALIDATION_422_MESSAGE = "Validation failed";
 const ACCOUNT_DUPLICATE_422_MESSAGE = "Account already exists";
-const TEAM_SIZE_422_MESSAGE = "Team full";
 const ROLE_DUPLICATE_422_MESSAGE = "Role already exists";
 
 const ACCOUNT_TOKEN_401_MESSAGE = "Invalid token for account";
@@ -66,7 +66,7 @@ module.exports = {
     ACCOUNT_DUPLICATE_422_MESSAGE: ACCOUNT_DUPLICATE_422_MESSAGE,
     LOGIN_500_MESSAGE: LOGIN_500_MESSAGE,
     HACKER_STATUS_409_MESSAGE: HACKER_STATUS_409_MESSAGE,
-    TEAM_SIZE_422_MESSAGE: TEAM_SIZE_422_MESSAGE,
+    TEAM_SIZE_409_MESSAGE: TEAM_SIZE_409_MESSAGE,
     ROLE_DUPLICATE_422_MESSAGE: ROLE_DUPLICATE_422_MESSAGE,
     ROLE_CREATE_500_MESSAGE: ROLE_CREATE_500_MESSAGE,
 };
