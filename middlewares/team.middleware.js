@@ -186,6 +186,14 @@ async function findById(req, res, next) {
     next();
 }
 
+/**
+ * @async
+ * @function findMembersNames
+ * @param {{body: {team: Model}}} req 
+ * @param {*} res 
+ * @return {JSON} Success or error status
+ * @description Finds the names of the members of a team located in req.body.team.
+ */
 async function findMembersNames(req, res, next) {
     const team = req.body.team;
 
