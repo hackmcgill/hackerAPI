@@ -60,7 +60,6 @@ module.exports = {
             Middleware.Team.ensureUniqueHackerId,
 
             Controllers.Team.createTeam
-
         );
 
         /**
@@ -125,14 +124,18 @@ module.exports = {
         // option 3: / and only change the team that the user is logged into. This decreases admin access, and is different from rest of the patches
         teamRouter.route("/:hackerId").patch(
             Middleware.Auth.ensureAuthenticated(),
-            Middleware.Auth.ensureAuthorized(),
+
+            Middleware.Auth.ensureAuthorized([Services.Hacker.findById]),
 
             Middleware.Validator.Team.patchTeamValidator,
+            Middleware.Validator.RouteParam.hackeridValidator,
             Middleware.parseBody.middleware,
             Middleware.Team.parsePatch,
 
-            Middleware.Team.getTeamFromUser,
+            Middleware.Team.getByHackerId,
             Middleware.Team.updateTeam,
+
+            Controllers.Team.updatedTeam
         );
 
         apiRouter.use("/team", teamRouter);

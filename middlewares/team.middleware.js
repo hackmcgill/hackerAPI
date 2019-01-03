@@ -82,10 +82,37 @@ async function ensureSpace(req, res, next) {
 }
 
 async function updateTeam(req, res, next) {
-    const team = Services.Team.updateTeam
+    const team = await Services.Team.updateTeam(req.body.teamId, req.body.teamDetails);
+
+    if (!team) {
+        return next({
+            status: 404,
+            message: Constants.Error.TEAM_404_MESSAGE,
+            data: req.body.teamId
+        });
+    }
+
+    req.body.team = team;
+    return next();
 }
 
-async function getTeamFromUser(req, res, next) {
+async function getByHackerId(req, res, next) {
+    // might be in req.params.hackerId
+    const hacker = await Services.Hacker.findById(req.body.hackerId);
+
+    if (!hacker) {
+        return next({
+            status: 404,
+            message: Constants.Error.HACKER_404_MESSAGE,
+            data: req.body.hackerId
+        });
+    }
+
+    req.body.teamId = hacker.teamId;
+    next();
+}
+
+async function getByUser(req, res, next) {
     const hacker = await Services.Hacker.findByAccountId(req.user.id);
 
     if (!hacker) {
@@ -203,6 +230,10 @@ function parseTeam(req, res, next) {
  */
 function parsePatch(req, res, next) {
     delete req.body.id;
+    req.body.teamDetails = req.body;
+
+    req.body.hackerId = req.params.hackerId;
+
     return next();
 }
 
@@ -211,6 +242,8 @@ module.exports = {
     ensureUniqueHackerId: Util.asyncMiddleware(ensureUniqueHackerId),
     ensureSpace: Util.asyncMiddleware(ensureSpace),
     updateHackerTeam: Util.asyncMiddleware(updateHackerTeam),
-    getTeamFromUser: Util.asyncMiddleware(getTeamFromUser),
+    getByUser: Util.asyncMiddleware(getByUser),
+    updateTeam: Util.asyncMiddleware(updateTeam),
+    getByHackerId: Util.asyncMiddleware(getByHackerId),
     parsePatch: parsePatch,
 };

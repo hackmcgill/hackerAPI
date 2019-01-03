@@ -42,6 +42,16 @@ function createTeam(teamDetails) {
     return team.save();
 }
 
+function updateOne(id, teamDetails) {
+    const TAG = `[Team Service # updateOne]:`;
+
+    const query = {
+        _id: id
+    };
+
+    return Team.findOneAndUpdate(query, teamDetails, logger.updateCallbackFactory(TAG, "team"));
+}
+
 /**
  * @function findById
  * @param {ObjectId} id
@@ -189,5 +199,6 @@ module.exports = {
     getSize: getSize,
     removeMember: removeMember,
     removeTeam: removeTeam,
-    addMember: addMember
+    addMember: addMember,
+    updateOne: updateOne
 };

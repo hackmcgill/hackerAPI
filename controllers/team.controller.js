@@ -49,6 +49,13 @@ function joinedTeam(req, res) {
     });
 }
 
+function updatedTeam(req, res) {
+    return res.status(200).json({
+        message: Constants.Success.TEAM_UPDATE,
+        data: req.body.team.toJSON(),
+    });
+}
+
 /**
  * @async
  * @function createTeam
@@ -79,4 +86,5 @@ module.exports = {
     createTeam: Util.asyncMiddleware(createTeam),
     findById: Util.asyncMiddleware(findById),
     joinedTeam: joinedTeam,
+    updatedTeam: updatedTeam,
 };

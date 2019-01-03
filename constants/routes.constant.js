@@ -154,6 +154,14 @@ const teamRoutes = {
         requestType: Constants.REQUEST_TYPES.PATCH,
         uri: "/api/team/join/",
     },
+    "patchSelfById": {
+        requestType: Constants.REQUEST_TYPES.PATCH,
+        uri: "/api/team/" + Constants.ROLE_CATEGORIES.SELF
+    },
+    "patchAnyById": {
+        requestType: Constants.REQUEST_TYPES.PATCH,
+        uri: "/api/team/" + Constants.ROLE_CATEGORIES.ALL
+    }
 };
 
 const volunteerRoutes = {

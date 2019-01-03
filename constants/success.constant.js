@@ -34,6 +34,7 @@ const SPONSOR_CREATE = "Sponsor creation successful.";
 const TEAM_GET_BY_ID = "Team found by id.";
 const TEAM_CREATE = "Team creation successful.";
 const TEAM_JOIN = "Team join successful.";
+const TEAM_UPDATE = "Team update successful.";
 
 const VOLUNTEER_CREATE = "Volunteer creation successful.";
 
@@ -72,6 +73,7 @@ module.exports = {
     TEAM_GET_BY_ID: TEAM_GET_BY_ID,
     TEAM_CREATE: TEAM_CREATE,
     TEAM_JOIN: TEAM_JOIN,
+    TEAM_UPDATE: TEAM_UPDATE,
 
     VOLUNTEER_CREATE: VOLUNTEER_CREATE,
 };
