@@ -121,7 +121,7 @@ describe("GET hacker", function () {
                     res.should.have.status(200);
                     res.should.be.json;
                     res.body.should.have.property("message");
-                    res.body.message.should.equal(Constants.Success.HACKER_GET_BY_ID);
+                    res.body.message.should.equal(Constants.Success.HACKER_READ);
                     res.body.should.have.property("data");
 
                     let hacker = new Hacker(storedHacker1);
@@ -149,7 +149,7 @@ describe("GET hacker", function () {
                     res.should.have.status(200);
                     res.should.be.json;
                     res.body.should.have.property("message");
-                    res.body.message.should.equal(Constants.Success.HACKER_GET_BY_ID);
+                    res.body.message.should.equal(Constants.Success.HACKER_READ);
                     res.body.should.have.property("data");
 
                     let hacker = new Hacker(storedHacker1);

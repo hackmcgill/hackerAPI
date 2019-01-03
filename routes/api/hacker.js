@@ -400,7 +400,8 @@ module.exports = {
             Middleware.Validator.RouteParam.idValidator,
             Middleware.parseBody.middleware,
 
-            Controllers.Hacker.findById
+            Middleware.Hacker.findById,
+            Controllers.Hacker.showHacker
         );
 
         hackerRouter.route("/resume/:id")

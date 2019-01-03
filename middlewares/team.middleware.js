@@ -83,6 +83,29 @@ async function ensureSpace(req, res, next) {
 
 /**
  * @async
+ * @function createTeam
+ * @param {{body: {teamDetails: {_id: ObjectId, name: string, members: ObjectId[], devpostURL?: string, projectName: string}}}} req
+ * @param {*} res
+ * @description create a team from information in req.body.teamDetails.
+ */
+async function createTeam(req, res, next) {
+    const teamDetails = req.body.teamDetails;
+
+    const team = await Services.Team.createTeam(teamDetails);
+
+    if (!team) {
+        return res.status(500).json({
+            message: Constants.Error.TEAM_CREATE_500_MESSAGE,
+            data: {}
+        });
+    } else {
+        req.body.team = team;
+        return next();
+    }
+}
+
+/**
+ * @async
  * @function updateHackerTeam
  * @param {{body: {teamName: string}}} req
  * @param {JSON} res
@@ -138,7 +161,27 @@ async function updateHackerTeam(req, res, next) {
             data: hacker._id,
         });
     }
+}
 
+/**
+ * @async
+ * @function findById
+ * @param {{body: {id: ObjectId}}} req 
+ * @param {*} res 
+ * @return {JSON} Success or error status
+ * @description Finds a team by it's mongoId that's specified in req.param.id in route parameters. The id is moved to req.body.id from req.params.id by validation.
+ */
+async function findById(req, res, next) {
+    const team = await Services.Team.findById(req.body.id);
+
+    if (!team) {
+        return res.status(404).json({
+            message: Constants.Error.TEAM_404_MESSAGE,
+            data: {}
+        });
+    }
+
+    req.body.team = team;
     next();
 }
 
@@ -173,6 +216,8 @@ function parseTeam(req, res, next) {
 
 module.exports = {
     parseTeam: parseTeam,
+    findById: Util.asyncMiddleware(findById),
+    createTeam: Util.asyncMiddleware(createTeam),
     ensureUniqueHackerId: Util.asyncMiddleware(ensureUniqueHackerId),
     ensureSpace: Util.asyncMiddleware(ensureSpace),
     updateHackerTeam: Util.asyncMiddleware(updateHackerTeam),

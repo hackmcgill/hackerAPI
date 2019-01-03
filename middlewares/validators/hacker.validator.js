@@ -1,5 +1,6 @@
 "use strict";
 const VALIDATOR = require("./validator.helper");
+const Constants = require("../../constants/general.constant");
 
 module.exports = {
     newHackerValidator: [
@@ -30,10 +31,10 @@ module.exports = {
         VALIDATOR.booleanValidator("body", "needsBus", true)
     ],
     updateStatusValidator: [
-        VALIDATOR.hackerStatusValidator("body", "status", false)
+        VALIDATOR.enumValidator("body", "status", Constants.HACKER_STATUSES, false),
     ],
     checkInStatusValidator: [
-        VALIDATOR.hackerCheckInStatusValidator("body", "status", false)
+        VALIDATOR.enumValidator("body", "status", Constants.HACKER_STATUS_CHECKED_IN, false)
     ],
     uploadResumeValidator: [
         VALIDATOR.mongoIdValidator("param", "id", false)
