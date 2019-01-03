@@ -6,8 +6,9 @@ const Constants = require("../constants/general.constant");
 const TeamSchema = new mongoose.Schema({
     name: {
         type: String,
+        required: true,
         unique: true,
-        required: true
+        index: true,
     },
     members: {
         type: [{
@@ -21,6 +22,10 @@ const TeamSchema = new mongoose.Schema({
         default: undefined,
     },
     projectName: String
+});
+
+TeamSchema.index({
+    name: 1
 });
 
 function validateTeamSize(membersArr) {

@@ -73,6 +73,14 @@ async function createTeam(req, res, next) {
         });
     }
 
+    // const new_team = new Team(teamDetails);
+
+    // await new_team.save();
+
+    // const teams = await Team.find({
+    //     name: teamDetails.name
+    // });
+
     req.body.team = team;
     return next();
 }
@@ -218,7 +226,7 @@ function parseTeam(req, res, next) {
 
 async function parseNewTeam(req, res, next) {
     const teamDetails = {
-        _id: mongoose.Types.ObjectId(),
+        // _id: mongoose.Types.ObjectId(),
         name: req.body.name,
         members: [],
         devpostURL: req.body.devpostURL,
