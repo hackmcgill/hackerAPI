@@ -2126,7 +2126,7 @@ define({
               "group": "body",
               "type": "String",
               "optional": false,
-              "field": "name",
+              "field": "teamName",
               "description": "<p>Name of the team.</p>"
             },
             {
@@ -2146,7 +2146,7 @@ define({
             {
               "group": "body",
               "type": "String",
-              "optional": false,
+              "optional": true,
               "field": "projectName",
               "description": "<p>Name of the team.</p>"
             }
