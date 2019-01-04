@@ -43,10 +43,10 @@ const Teams = [
 
 function storeAll(attributes) {
     const teamDocs = [];
-    const teamNames = [];
+    const names = [];
     attributes.forEach((attribute) => {
         teamDocs.push(new Team(attribute));
-        teamNames.push(attribute.name);
+        names.push(attribute.name);
     });
 
     return Team.collection.insertMany(teamDocs);

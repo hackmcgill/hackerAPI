@@ -128,6 +128,27 @@ async function addMember(teamId, hackerId) {
 
 /**
  * @async
+ * @function removeTeamIfEmpty
+ * @param {ObjectId} teamId
+ * @return {DocumentQuery} Query evaluates to object that details the number of modified documents, or null.
+ * @description Removes the team if the team contains no members. Returns null if the team has one or more members, or if the team doesn't exist.
+ */
+async function removeTeamIfEmpty(teamId) {
+    const TAG = `[Team Services # removeTeam]`;
+
+    const team = await findById(teamId);
+
+    if (team.members.length === 0) {
+        return Team.deleteOne({
+            _id: teamId
+        });
+    }
+
+    return null;
+}
+
+/**
+ * @async
  * @function removeTeam
  * @param {ObjectId} teamId
  * @return {DocumentQuery} The document query will resolve to the number of objects removed, or null.
@@ -185,5 +206,6 @@ module.exports = {
     getSize: getSize,
     removeMember: removeMember,
     removeTeam: removeTeam,
-    addMember: addMember
+    addMember: addMember,
+    removeTeamIfEmpty: removeTeamIfEmpty,
 };

@@ -119,7 +119,7 @@ describe("PATCH change team", function () {
             .patch(`/api/team/join/`)
             .type("application/json")
             .send({
-                teamName: "BronzeTeam",
+                name: "BronzeTeam",
             })
             .end(function (err, res) {
                 res.should.have.status(401);
@@ -142,7 +142,7 @@ describe("PATCH change team", function () {
                 .patch(`/api/team/join/`)
                 .type("application/json")
                 .send({
-                    teamName: "BronzeTeam",
+                    name: "BronzeTeam",
                 })
                 .end(function (err, res) {
                     res.should.have.status(403);
@@ -166,7 +166,7 @@ describe("PATCH change team", function () {
                 .patch(`/api/team/join/`)
                 .type("application/json")
                 .send({
-                    teamName: "NonExistTeam",
+                    name: "NonExistTeam",
                 })
                 .end(function (err, res) {
                     res.should.have.status(404);
@@ -190,7 +190,7 @@ describe("PATCH change team", function () {
                 .patch(`/api/team/join/`)
                 .type("application/json")
                 .send({
-                    teamName: "FullTeam",
+                    name: "FullTeam",
                 })
                 .end(function (err, res) {
                     res.should.have.status(409);
@@ -214,7 +214,7 @@ describe("PATCH change team", function () {
                 .patch(`/api/team/join/`)
                 .type("application/json")
                 .send({
-                    teamName: "BronzeTeam",
+                    name: "BronzeTeam",
                 })
                 .end(function (err, res) {
                     res.should.have.status(200);
@@ -238,7 +238,7 @@ describe("PATCH change team", function () {
                 .patch(`/api/team/join/`)
                 .type("application/json")
                 .send({
-                    teamName: "SilverTeam",
+                    name: "SilverTeam",
                 })
                 .end(function (err, res) {
                     res.should.have.status(200);

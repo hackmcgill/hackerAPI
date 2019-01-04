@@ -13,6 +13,7 @@ const HACKER_ID_409_MESSAGE = "Conflict with hacker accountId link";
 const TEAM_MEMBER_409_MESSAGE = "Conflict with team member being in another team";
 const HACKER_STATUS_409_MESSAGE = "Conflict with hacker status";
 const TEAM_SIZE_409_MESSAGE = "Team full";
+const TEAM_JOIN_SAME_409_MESSAGE = "Hacker is already on receiving team";
 
 const TEAM_MEMBER_422_MESSAGE = "Duplicate team member in input";
 const VALIDATION_422_MESSAGE = "Validation failed";
@@ -69,4 +70,5 @@ module.exports = {
     TEAM_SIZE_409_MESSAGE: TEAM_SIZE_409_MESSAGE,
     ROLE_DUPLICATE_422_MESSAGE: ROLE_DUPLICATE_422_MESSAGE,
     ROLE_CREATE_500_MESSAGE: ROLE_CREATE_500_MESSAGE,
+    TEAM_JOIN_SAME_409_MESSAGE: TEAM_JOIN_SAME_409_MESSAGE,
 };
