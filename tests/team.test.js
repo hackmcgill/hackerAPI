@@ -81,6 +81,8 @@ describe("GET team", function () {
                     res.body.should.have.property("message");
                     res.body.message.should.equal(Constants.Success.TEAM_READ);
                     res.body.should.have.property("data");
+                    res.body.data.should.have.property("team");
+                    res.body.data.should.have.property("members");
 
                     done();
                 });
