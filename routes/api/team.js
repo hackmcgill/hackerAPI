@@ -13,7 +13,11 @@ const Middleware = {
     },
     /* Insert all of ther middleware require statements here */
     parseBody: require("../../middlewares/parse-body.middleware"),
-    Team: require("../../middlewares/team.middleware")
+    Team: require("../../middlewares/team.middleware"),
+    Auth: require("../../middlewares/auth.middleware"),
+};
+const Services = {
+    Hacker: require("../../services/hacker.service"),
 };
 
 module.exports = {
@@ -29,7 +33,7 @@ module.exports = {
          * @apiParam (body) {String} name Name of the team.
          * @apiParam (body) {MongoID[]} [members] Array of members in team.
          * @apiParam (body) {String} [devpostURL] Devpost link to hack. Once the link is sent, the hack will be considered to be submitted.
-         * @apiParam (body) {String} projectName Name of the team.
+         * @apiParam (body) {String} [projectName] Name of the team.
          * 
          * @apiSuccess {string} message Success message
          * @apiSuccess {object} data Team object
@@ -57,6 +61,35 @@ module.exports = {
 
             Middleware.Team.createTeam,
             Controllers.Team.createdTeam
+        );
+
+        /**
+         * @api {patch} /team/join/ Allows a logged in hacker to join a team by name
+         * @apiName patchJoinTeam
+         * @apiGroup Team
+         * @apiVersion 1.1.1
+         * 
+         * @apiParam (body) {string} [name] Name of the team to join
+         * @apiSuccess {string} message Success message
+         * @apiSuccess {object} data {}
+         * @apiSuccessExample {object} Success-Response: 
+         *      {
+         *          "message": "Team join successful.", 
+         *          "data": {}
+         *      }
+         * @apiPermission Administrator
+         */
+        teamRouter.route("/join/").patch(
+            Middleware.Auth.ensureAuthenticated(),
+            Middleware.Auth.ensureAuthorized(),
+
+            Middleware.Validator.Team.joinTeamValidator,
+            // need to check that the team is not full
+            Middleware.Team.ensureSpace,
+
+            Middleware.Team.updateHackerTeam,
+
+            Controllers.Team.joinedTeam
         );
 
         /**

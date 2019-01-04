@@ -12,6 +12,8 @@ const VOLUNTEER_ID_409_MESSAGE = "Conflict with volunteer accountId link";
 const HACKER_ID_409_MESSAGE = "Conflict with hacker accountId link";
 const TEAM_MEMBER_409_MESSAGE = "Conflict with team member being in another team";
 const HACKER_STATUS_409_MESSAGE = "Conflict with hacker status";
+const TEAM_SIZE_409_MESSAGE = "Team full";
+const TEAM_JOIN_SAME_409_MESSAGE = "Hacker is already on receiving team";
 
 const TEAM_MEMBER_422_MESSAGE = "Duplicate team member in input";
 const VALIDATION_422_MESSAGE = "Validation failed";
@@ -24,6 +26,7 @@ const AUTH_401_MESSAGE = "Invalid Authentication";
 const AUTH_403_MESSAGE = "Invalid Authorization";
 const ACCOUNT_403_MESSAGE = "Account not verified";
 
+const TEAM_UPDATE_500_MESSAGE = "Error while updating team";
 const HACKER_UPDATE_500_MESSAGE = "Error while updating hacker";
 const ACCOUNT_UPDATE_500_MESSAGE = "Error while updating account";
 const HACKER_CREATE_500_MESSAGE = "Error while creating hacker";
@@ -50,6 +53,7 @@ module.exports = {
     AUTH_401_MESSAGE: AUTH_401_MESSAGE,
     AUTH_403_MESSAGE: AUTH_403_MESSAGE,
     ACCOUNT_403_MESSAGE: ACCOUNT_403_MESSAGE,
+    TEAM_UPDATE_500_MESSAGE: TEAM_UPDATE_500_MESSAGE,
     HACKER_UPDATE_500_MESSAGE: HACKER_UPDATE_500_MESSAGE,
     HACKER_ID_409_MESSAGE: HACKER_ID_409_MESSAGE,
     ACCOUNT_UPDATE_500_MESSAGE: ACCOUNT_UPDATE_500_MESSAGE,
@@ -63,6 +67,8 @@ module.exports = {
     ACCOUNT_DUPLICATE_422_MESSAGE: ACCOUNT_DUPLICATE_422_MESSAGE,
     LOGIN_500_MESSAGE: LOGIN_500_MESSAGE,
     HACKER_STATUS_409_MESSAGE: HACKER_STATUS_409_MESSAGE,
+    TEAM_SIZE_409_MESSAGE: TEAM_SIZE_409_MESSAGE,
     ROLE_DUPLICATE_422_MESSAGE: ROLE_DUPLICATE_422_MESSAGE,
     ROLE_CREATE_500_MESSAGE: ROLE_CREATE_500_MESSAGE,
+    TEAM_JOIN_SAME_409_MESSAGE: TEAM_JOIN_SAME_409_MESSAGE,
 };
