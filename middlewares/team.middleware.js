@@ -161,6 +161,8 @@ async function updateHackerTeam(req, res, next) {
             data: hacker._id,
         });
     }
+
+    return next();
 }
 
 /**
