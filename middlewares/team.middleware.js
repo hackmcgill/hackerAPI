@@ -55,20 +55,22 @@ async function ensureUniqueHackerId(req, res, next) {
 /**
  * @async
  * @function ensureSpance
- * @param {{body: {teamName: string}}} req
+ * @param {{body: {name: string}}} req
  * @param {JSON} res
  * @param {(err?)=>void} next
  * @return {void}
  * @description Checks to see that team is not full.
  */
 async function ensureSpace(req, res, next) {
-    const teamSize = await Services.Team.getSize(req.body.teamName);
+    Services.Logger.info(req.body.name);
+    const teamSize = await Services.Team.getSize(req.body.name);
+    Services.Logger.info(teamSize);
 
     if (teamSize === -1) {
         return next({
             status: 404,
             message: Constants.Error.TEAM_404_MESSAGE,
-            data: req.body.teamName
+            data: req.body.name
         });
     } else if (teamSize >= Constants.General.MAX_TEAM_SIZE) {
         return next({
@@ -107,11 +109,11 @@ async function createTeam(req, res, next) {
 /**
  * @async
  * @function updateHackerTeam
- * @param {{body: {teamName: string}}} req
+ * @param {{body: {name: string}}} req
  * @param {JSON} res
  * @param {(err?)=>void} next
  * @return {void}
- * @description Adds the logged in user to the team specified by teamName.
+ * @description Adds the logged in user to the team specified by name.
  */
 async function updateHackerTeam(req, res, next) {
     const hacker = await Services.Hacker.findByAccountId(req.user.id);
@@ -125,8 +127,8 @@ async function updateHackerTeam(req, res, next) {
             }
         });
     }
-
-    const receivingTeam = await Services.Team.findByName(req.body.teamName);
+    Services.Logger.info(req.body.name);
+    const receivingTeam = await Services.Team.findByName(req.body.name);
     const previousTeam = await Services.Team.findTeamByHackerId(hacker._id);
 
 
@@ -134,7 +136,7 @@ async function updateHackerTeam(req, res, next) {
         return next({
             status: 404,
             message: Constants.Error.TEAM_404_MESSAGE,
-            data: req.body.teamName
+            data: req.body.name
         });
     }
 
