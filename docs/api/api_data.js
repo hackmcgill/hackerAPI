@@ -2167,7 +2167,7 @@ define({
             {
               "group": "body",
               "type": "String",
-              "optional": false,
+              "optional": true,
               "field": "projectName",
               "description": "<p>Name of the team.</p>"
             }
@@ -2298,6 +2298,57 @@ define({
       "groupTitle": "Team",
       "sampleRequest": [{
         "url": "https://api.mchacks.ca/api/team/:id"
+      }]
+    },
+    {
+      "type": "patch",
+      "url": "/team/join/",
+      "title": "Allows a logged in hacker to join a team by name",
+      "name": "patchJoinTeam",
+      "group": "Team",
+      "version": "1.1.1",
+      "parameter": {
+        "fields": {
+          "body": [{
+            "group": "body",
+            "type": "string",
+            "optional": true,
+            "field": "name",
+            "description": "<p>Name of the team to join</p>"
+          }]
+        }
+      },
+      "success": {
+        "fields": {
+          "Success 200": [{
+              "group": "Success 200",
+              "type": "string",
+              "optional": false,
+              "field": "message",
+              "description": "<p>Success message</p>"
+            },
+            {
+              "group": "Success 200",
+              "type": "object",
+              "optional": false,
+              "field": "data",
+              "description": "<p>{}</p>"
+            }
+          ]
+        },
+        "examples": [{
+          "title": "Success-Response: ",
+          "content": "{\n    \"message\": \"Team join successful.\", \n    \"data\": {}\n}",
+          "type": "object"
+        }]
+      },
+      "permission": [{
+        "name": "Administrator"
+      }],
+      "filename": "routes/api/team.js",
+      "groupTitle": "Team",
+      "sampleRequest": [{
+        "url": "https://api.mchacks.ca/api/team/join/"
       }]
     },
     {

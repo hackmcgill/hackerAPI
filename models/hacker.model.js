@@ -94,6 +94,10 @@ const HackerSchema = new mongoose.Schema({
     codeOfConduct: {
         type: Boolean,
         required: true
+    },
+    teamId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Team"
     }
 });
 

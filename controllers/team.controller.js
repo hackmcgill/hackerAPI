@@ -26,6 +26,20 @@ function showTeam(req, res) {
 }
 
 /**
+ * @function joinedTeam
+ * @param {*} req 
+ * @param {*} res 
+ * @return {JSON} Success status of joining team
+ * @description return success message of joining team
+ */
+function joinedTeam(req, res) {
+    return res.status(200).json({
+        message: Constants.Success.TEAM_JOIN,
+        data: {},
+    });
+}
+
+/**
  * @function createdTeam
  * @param {{body: {team: {_id: ObjectId, name: string, members: ObjectId[], devpostURL: string, projectName: string}}}} req
  * @param {*} res
@@ -40,6 +54,7 @@ function createdTeam(req, res) {
 }
 
 module.exports = {
+    joinedTeam: joinedTeam,
     createdTeam: createdTeam,
     showTeam: showTeam,
 };

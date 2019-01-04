@@ -4,11 +4,13 @@ const TAG = `[ TEAM.MIDDLEWARE.js ]`;
 const mongoose = require("mongoose");
 const Services = {
     Logger: require("../services/logger.service"),
-    Team: require("../services/team.service")
+    Team: require("../services/team.service"),
+    Hacker: require("../services/hacker.service")
 };
 const Util = require("./util.middleware");
 const Constants = {
     Error: require("../constants/error.constant"),
+    General: require("../constants/general.constant"),
 };
 
 /**
@@ -52,6 +54,37 @@ async function ensureUniqueHackerId(req, res, next) {
 
 /**
  * @async
+ * @function ensureSpance
+ * @param {{body: {name: string}}} req
+ * @param {JSON} res
+ * @param {(err?)=>void} next
+ * @return {void}
+ * @description Checks to see that team is not full.
+ */
+async function ensureSpace(req, res, next) {
+    Services.Logger.info(req.body.name);
+    const teamSize = await Services.Team.getSize(req.body.name);
+    Services.Logger.info(teamSize);
+
+    if (teamSize === -1) {
+        return next({
+            status: 404,
+            message: Constants.Error.TEAM_404_MESSAGE,
+            data: req.body.name
+        });
+    } else if (teamSize >= Constants.General.MAX_TEAM_SIZE) {
+        return next({
+            status: 409,
+            message: Constants.Error.TEAM_SIZE_409_MESSAGE,
+            data: teamSize,
+        });
+    }
+
+    return next();
+}
+
+/**
+ * @async
  * @function createTeam
  * @param {{body: {teamDetails: {_id: ObjectId, name: string, members: ObjectId[], devpostURL?: string, projectName: string}}}} req
  * @param {*} res
@@ -71,6 +104,70 @@ async function createTeam(req, res, next) {
         req.body.team = team;
         return next();
     }
+}
+
+/**
+ * @async
+ * @function updateHackerTeam
+ * @param {{body: {name: string}}} req
+ * @param {JSON} res
+ * @param {(err?)=>void} next
+ * @return {void}
+ * @description Adds the logged in user to the team specified by name.
+ */
+async function updateHackerTeam(req, res, next) {
+    const hacker = await Services.Hacker.findByAccountId(req.user.id);
+
+    if (!hacker) {
+        return next({
+            status: 404,
+            message: Constants.Error.HACKER_404_MESSAGE,
+            data: {
+                id: req.user.id
+            }
+        });
+    }
+
+    const receivingTeam = await Services.Team.findByName(req.body.name);
+
+    if (!receivingTeam) {
+        return next({
+            status: 404,
+            message: Constants.Error.TEAM_404_MESSAGE,
+            data: req.body.name
+        });
+    }
+
+    const previousTeamId = hacker.teamId;
+
+    if (previousTeamId == receivingTeam._id) {
+        return next({
+            status: 409,
+            message: Constants.Error.TEAM_JOIN_SAME_409_MESSAGE,
+            data: req.body.teamName
+        });
+    }
+
+    // remove hacker from previous team
+    if (previousTeamId != undefined) {
+        await Services.Team.removeMember(previousTeamId, hacker._id);
+        await Services.Team.removeTeamIfEmpty(previousTeamId);
+    }
+
+
+    // add hacker to the new team and change teamId of hacker
+    const update = await Services.Team.addMember(receivingTeam._id, hacker._id);
+
+    // Services.Hacker.updateOne should return a hacker object, as the hacker exists
+    if (!update) {
+        return next({
+            status: 500,
+            message: Constants.Error.TEAM_UPDATE_500_MESSAGE,
+            data: hacker._id,
+        });
+    }
+
+    return next();
 }
 
 /**
@@ -129,4 +226,6 @@ module.exports = {
     findById: Util.asyncMiddleware(findById),
     createTeam: Util.asyncMiddleware(createTeam),
     ensureUniqueHackerId: Util.asyncMiddleware(ensureUniqueHackerId),
+    ensureSpace: Util.asyncMiddleware(ensureSpace),
+    updateHackerTeam: Util.asyncMiddleware(updateHackerTeam),
 };
