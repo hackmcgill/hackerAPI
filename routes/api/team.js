@@ -100,7 +100,7 @@ module.exports = {
          * @apiParam (param) {ObjectId} id a team's unique mongoId
          * 
          * @apiSuccess {String} message Success message
-         * @apiSuccess {Object} data Sponsor object
+         * @apiSuccess {Object} data Team object
          * @apiSuccessExample {object} Success-Response: 
          *      {
                     "message": "Successfully retrieved team information", 
@@ -119,9 +119,27 @@ module.exports = {
             Controllers.Team.findById
         );
 
-        // option 1: /:id where id is the team, but this makes ensureAuthorized hard. How do we select the exact user from the team members?
-        // option 2: /:id where id is the hacker id, /team/<hackerid> seems weird. Unless we take it to mean change the team that hackerId is on
-        // option 3: / and only change the team that the user is logged into. This decreases admin access, and is different from rest of the patches
+        /**
+         * @api {patch} /team/:hackerId Update a team's information. The team is specified by the hacker belonging to it.
+         * @apiName patchTeam
+         * @apiGroup Team
+         * @apiVersion 0.0.8
+         * 
+         * @apiParam (param) {ObjectId} hackerId a hacker's unique Id
+         * 
+         * @apiSuccess {String} message Success message
+         * @apiSuccess {Object} data Team object
+         * @apiSuccessExample {object} Success-Response: 
+         *      {
+                    "message": "Team update successful.", 
+                    "data": {...}
+                }
+
+         * @apiError {String} message Error message
+         * @apiError {Object} data Query input that caused the error.
+         * @apiErrorExample {object} Error-Response: 
+         *      {"message": "Team not found", "data": {teamId}}
+         */
         teamRouter.route("/:hackerId").patch(
             Middleware.Auth.ensureAuthenticated(),
 

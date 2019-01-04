@@ -2239,7 +2239,7 @@ define({
               "type": "Object",
               "optional": false,
               "field": "data",
-              "description": "<p>Sponsor object</p>"
+              "description": "<p>Team object</p>"
             }
           ]
         },
@@ -2328,6 +2328,78 @@ define({
       "groupTitle": "Team",
       "sampleRequest": [{
         "url": "https://api.mchacks.ca/api/team/join/"
+      }]
+    },
+    {
+      "type": "patch",
+      "url": "/team/:hackerId",
+      "title": "Update a team's information. The team is specified by the hacker belonging to it.",
+      "name": "patchTeam",
+      "group": "Team",
+      "version": "0.0.8",
+      "parameter": {
+        "fields": {
+          "param": [{
+            "group": "param",
+            "type": "ObjectId",
+            "optional": false,
+            "field": "hackerId",
+            "description": "<p>a hacker's unique Id</p>"
+          }]
+        }
+      },
+      "success": {
+        "fields": {
+          "Success 200": [{
+              "group": "Success 200",
+              "type": "String",
+              "optional": false,
+              "field": "message",
+              "description": "<p>Success message</p>"
+            },
+            {
+              "group": "Success 200",
+              "type": "Object",
+              "optional": false,
+              "field": "data",
+              "description": "<p>Team object</p>"
+            }
+          ]
+        },
+        "examples": [{
+          "title": "Success-Response: ",
+          "content": "{\n               \"message\": \"Team update successful.\", \n               \"data\": {...}\n           }",
+          "type": "object"
+        }]
+      },
+      "error": {
+        "fields": {
+          "Error 4xx": [{
+              "group": "Error 4xx",
+              "type": "String",
+              "optional": false,
+              "field": "message",
+              "description": "<p>Error message</p>"
+            },
+            {
+              "group": "Error 4xx",
+              "type": "Object",
+              "optional": false,
+              "field": "data",
+              "description": "<p>Query input that caused the error.</p>"
+            }
+          ]
+        },
+        "examples": [{
+          "title": "Error-Response: ",
+          "content": "{\"message\": \"Team not found\", \"data\": {teamId}}",
+          "type": "object"
+        }]
+      },
+      "filename": "routes/api/team.js",
+      "groupTitle": "Team",
+      "sampleRequest": [{
+        "url": "https://api.mchacks.ca/api/team/:hackerId"
       }]
     },
     {
