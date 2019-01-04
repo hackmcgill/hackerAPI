@@ -1737,7 +1737,7 @@ define({
     {
       "type": "post",
       "url": "/api/role/",
-      "title": "create a new hacker",
+      "title": "create a new role",
       "name": "createRole",
       "group": "Role",
       "version": "1.1.1",
