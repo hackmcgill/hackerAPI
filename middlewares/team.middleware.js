@@ -127,8 +127,6 @@ async function updateHackerTeam(req, res, next) {
     }
 
     const receivingTeam = await Services.Team.findByName(req.body.teamName);
-    const previousTeam = await Services.Team.findTeamByHackerId(hacker._id);
-
 
     if (!receivingTeam) {
         return next({
@@ -138,17 +136,22 @@ async function updateHackerTeam(req, res, next) {
         });
     }
 
-    // means hacker is already in a team
-    if (previousTeam) {
-        // delete old team if old team only had that one hacker
-        if (previousTeam.members.length === 1) {
-            await Services.Team.removeTeam(previousTeam._id);
-        }
-        // remove hacker from old team
-        else {
-            await Services.Team.removeMember(previousTeam._id, hacker._id);
-        }
+    const previousTeamId = hacker.teamId;
+
+    if (previousTeamId == receivingTeam._id) {
+        return next({
+            status: 409,
+            message: Constants.Error.TEAM_JOIN_SAME_409_MESSAGE,
+            data: req.body.teamName
+        });
     }
+
+    // remove hacker from previous team
+    if (previousTeamId != undefined) {
+        await Services.Team.removeMember(previousTeamId, hacker._id);
+        await Services.Team.removeTeamIfEmpty(previousTeamId);
+    }
+
 
     // add hacker to the new team and change teamId of hacker
     const update = await Services.Team.addMember(receivingTeam._id, hacker._id);

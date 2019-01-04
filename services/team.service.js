@@ -126,6 +126,20 @@ async function addMember(teamId, hackerId) {
     });
 }
 
+async function removeTeamIfEmpty(teamId) {
+    const TAG = `[Team Services # removeTeam]`;
+
+    const team = await findById(teamId);
+
+    if (team.members.length === 0) {
+        return Team.deleteOne({
+            _id: teamId
+        });
+    }
+
+    return null;
+}
+
 /**
  * @async
  * @function removeTeam
@@ -185,5 +199,6 @@ module.exports = {
     getSize: getSize,
     removeMember: removeMember,
     removeTeam: removeTeam,
-    addMember: addMember
+    addMember: addMember,
+    removeTeamIfEmpty: removeTeamIfEmpty,
 };
