@@ -9,7 +9,7 @@ module.exports = {
         VALIDATOR.asciiValidator("body", "pronoun", false),
         VALIDATOR.regexValidator("body", "email", false, Constants.EMAIL_REGEX),
         VALIDATOR.alphaArrayValidator("body", "dietaryRestrictions", false),
-        VALIDATOR.shirtSizeValidator("body", "shirtSize", false),
+        VALIDATOR.enumValidator("body", "shirtSize", Constants.SHIRT_SIZES, false),
         VALIDATOR.passwordValidator("body", "password", false),
         VALIDATOR.jwtValidator("param", "token", process.env.JWT_CONFIRM_ACC_SECRET, true),
         VALIDATOR.dateValidator("body", "birthDate", false),
@@ -21,12 +21,12 @@ module.exports = {
         VALIDATOR.asciiValidator("body", "pronoun", true),
         VALIDATOR.regexValidator("body", "email", true, Constants.EMAIL_REGEX),
         VALIDATOR.alphaArrayValidator("body", "dietaryRestrictions", true),
-        VALIDATOR.shirtSizeValidator("body", "shirtSize", true),
+        VALIDATOR.enumValidator("body", "shirtSize", Constants.SHIRT_SIZES, true),
         VALIDATOR.dateValidator("body", "birthDate", true),
         VALIDATOR.phoneNumberValidator("body", "phoneNumber", true)
     ],
     inviteAccountValidator: [
         VALIDATOR.regexValidator("body", "email", false, Constants.EMAIL_REGEX),
-        VALIDATOR.accountTypeValidator("body", "accountType", false)
+        VALIDATOR.enumValidator("body", "accountType", Constants.EXTENDED_USER_TYPES, false)
     ]
 };

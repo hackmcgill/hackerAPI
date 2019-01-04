@@ -77,7 +77,7 @@ describe("GET user account", function () {
                     res.should.have.status(200);
                     res.should.be.json;
                     res.body.should.have.property("message");
-                    res.body.message.should.equal(Constants.Success.ACCOUNT_GET_BY_EMAIL);
+                    res.body.message.should.equal(Constants.Success.ACCOUNT_READ);
                     res.body.should.have.property("data");
                     res.body.data.should.be.a("object");
                     res.body.data.should.have.property("firstName");
@@ -107,7 +107,7 @@ describe("GET user account", function () {
                     res.should.have.status(200);
                     res.should.be.json;
                     res.body.should.have.property("message");
-                    res.body.message.should.equal(Constants.Success.ACCOUNT_GET_BY_ID);
+                    res.body.message.should.equal(Constants.Success.ACCOUNT_READ);
                     res.body.should.have.property("data");
 
                     // use acc.toStrippedJSON to deal with hidden passwords and convert _id to id
@@ -134,7 +134,7 @@ describe("GET user account", function () {
                     res.should.have.status(200);
                     res.should.be.json;
                     res.body.should.have.property("message");
-                    res.body.message.should.equal(Constants.Success.ACCOUNT_GET_BY_ID);
+                    res.body.message.should.equal(Constants.Success.ACCOUNT_READ);
                     res.body.should.have.property("data");
 
                     // use acc.toStrippedJSON to deal with hidden passwords and convert _id to id

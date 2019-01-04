@@ -33,7 +33,7 @@ module.exports = {
          * @apiParam (body) {String} name Name of the team.
          * @apiParam (body) {MongoID[]} [members] Array of members in team.
          * @apiParam (body) {String} [devpostURL] Devpost link to hack. Once the link is sent, the hack will be considered to be submitted.
-         * @apiParam (body) {String} projectName Name of the team.
+         * @apiParam (body) {String} [projectName] Name of the team.
          * 
          * @apiSuccess {string} message Success message
          * @apiSuccess {object} data Team object
@@ -59,7 +59,8 @@ module.exports = {
             // check that member is not already in a team
             Middleware.Team.ensureUniqueHackerId,
 
-            Controllers.Team.createTeam
+            Middleware.Team.createTeam,
+            Controllers.Team.createdTeam
         );
 
         /**
@@ -68,7 +69,7 @@ module.exports = {
          * @apiGroup Team
          * @apiVersion 1.1.1
          * 
-         * @apiParam (body) {string} [teamName] Name of the team to join
+         * @apiParam (body) {string} [name] Name of the team to join
          * @apiSuccess {string} message Success message
          * @apiSuccess {object} data {}
          * @apiSuccessExample {object} Success-Response: 
@@ -116,7 +117,8 @@ module.exports = {
             Middleware.Validator.RouteParam.idValidator,
             Middleware.parseBody.middleware,
 
-            Controllers.Team.findById
+            Middleware.Team.findById,
+            Controllers.Team.showTeam
         );
 
         /**

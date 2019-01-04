@@ -55,25 +55,27 @@ async function ensureUniqueHackerId(req, res, next) {
 /**
  * @async
  * @function ensureSpance
- * @param {{body: {teamName: string}}} req
+ * @param {{body: {name: string}}} req
  * @param {JSON} res
  * @param {(err?)=>void} next
  * @return {void}
  * @description Checks to see that team is not full.
  */
 async function ensureSpace(req, res, next) {
-    const teamSize = await Services.Team.getSize(req.body.teamName);
+    Services.Logger.info(req.body.name);
+    const teamSize = await Services.Team.getSize(req.body.name);
+    Services.Logger.info(teamSize);
 
     if (teamSize === -1) {
         return next({
             status: 404,
             message: Constants.Error.TEAM_404_MESSAGE,
-            data: req.body.teamName
+            data: req.body.name
         });
     } else if (teamSize >= Constants.General.MAX_TEAM_SIZE) {
         return next({
-            status: 422,
-            message: Constants.Error.TEAM_SIZE_422_MESSAGE,
+            status: 409,
+            message: Constants.Error.TEAM_SIZE_409_MESSAGE,
             data: teamSize,
         });
     }
@@ -132,12 +134,35 @@ async function getByUser(req, res, next) {
 
 /**
  * @async
+ * @function createTeam
+ * @param {{body: {teamDetails: {_id: ObjectId, name: string, members: ObjectId[], devpostURL?: string, projectName: string}}}} req
+ * @param {*} res
+ * @description create a team from information in req.body.teamDetails.
+ */
+async function createTeam(req, res, next) {
+    const teamDetails = req.body.teamDetails;
+
+    const team = await Services.Team.createTeam(teamDetails);
+
+    if (!team) {
+        return res.status(500).json({
+            message: Constants.Error.TEAM_CREATE_500_MESSAGE,
+            data: {}
+        });
+    } else {
+        req.body.team = team;
+        return next();
+    }
+}
+
+/**
+ * @async
  * @function updateHackerTeam
- * @param {{body: {teamName: string}}} req
+ * @param {{body: {name: string}}} req
  * @param {JSON} res
  * @param {(err?)=>void} next
  * @return {void}
- * @description Adds the logged in user to the team specified by teamName.
+ * @description Adds the logged in user to the team specified by name.
  */
 async function updateHackerTeam(req, res, next) {
     const hacker = await Services.Hacker.findByAccountId(req.user.id);
@@ -152,29 +177,32 @@ async function updateHackerTeam(req, res, next) {
         });
     }
 
-    const receivingTeam = await Services.Team.findByName(req.body.teamName);
-    const previousTeam = await Services.Team.findTeamByHackerId(hacker._id);
-
+    const receivingTeam = await Services.Team.findByName(req.body.name);
 
     if (!receivingTeam) {
         return next({
             status: 404,
             message: Constants.Error.TEAM_404_MESSAGE,
+            data: req.body.name
+        });
+    }
+
+    const previousTeamId = hacker.teamId;
+
+    if (previousTeamId == receivingTeam._id) {
+        return next({
+            status: 409,
+            message: Constants.Error.TEAM_JOIN_SAME_409_MESSAGE,
             data: req.body.teamName
         });
     }
 
-    // means hacker is already in a team
-    if (previousTeam) {
-        // delete old team if old team only had that one hacker
-        if (previousTeam.members.length === 1) {
-            await Services.Team.removeTeam(previousTeam._id);
-        }
-        // remove hacker from old team
-        else {
-            await Services.Team.removeMember(previousTeam._id, hacker._id);
-        }
+    // remove hacker from previous team
+    if (previousTeamId != undefined) {
+        await Services.Team.removeMember(previousTeamId, hacker._id);
+        await Services.Team.removeTeamIfEmpty(previousTeamId);
     }
+
 
     // add hacker to the new team and change teamId of hacker
     const update = await Services.Team.addMember(receivingTeam._id, hacker._id);
@@ -188,6 +216,28 @@ async function updateHackerTeam(req, res, next) {
         });
     }
 
+    return next();
+}
+
+/**
+ * @async
+ * @function findById
+ * @param {{body: {id: ObjectId}}} req 
+ * @param {*} res 
+ * @return {JSON} Success or error status
+ * @description Finds a team by it's mongoId that's specified in req.param.id in route parameters. The id is moved to req.body.id from req.params.id by validation.
+ */
+async function findById(req, res, next) {
+    const team = await Services.Team.findById(req.body.id);
+
+    if (!team) {
+        return res.status(404).json({
+            message: Constants.Error.TEAM_404_MESSAGE,
+            data: {}
+        });
+    }
+
+    req.body.team = team;
     next();
 }
 
@@ -239,6 +289,8 @@ function parsePatch(req, res, next) {
 
 module.exports = {
     parseTeam: parseTeam,
+    findById: Util.asyncMiddleware(findById),
+    createTeam: Util.asyncMiddleware(createTeam),
     ensureUniqueHackerId: Util.asyncMiddleware(ensureUniqueHackerId),
     ensureSpace: Util.asyncMiddleware(ensureSpace),
     updateHackerTeam: Util.asyncMiddleware(updateHackerTeam),

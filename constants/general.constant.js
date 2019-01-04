@@ -5,7 +5,8 @@ const HACKATHON_NAME = "McHacks";
 // constants kept in alphabetical order
 // matches optional http://, https://, http:, https:, and optional www., and then matches for devpost.com and further parameters
 const DEVPOST_REGEX = /^(http(s)?:(\/\/)?)?(www\.)?(([-a-zA-Z0-9@:%._\+~#=]{2,256}\.)?devpost\.com)\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$/;
-const EMAIL_REGEX = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+// from https://emailregex.com
+const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 const HACKER_STATUS_NONE = "None";
 const HACKER_STATUS_APPLIED = "Applied";
 const HACKER_STATUS_ACCEPTED = "Accepted";

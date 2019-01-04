@@ -28,7 +28,7 @@ describe("GET team", function () {
                 res.should.have.status(200);
                 res.should.be.json;
                 res.body.should.have.property("message");
-                res.body.message.should.equal(Constants.Success.TEAM_GET_BY_ID);
+                res.body.message.should.equal(Constants.Success.TEAM_READ);
                 res.body.should.have.property("data");
 
                 let team = new Team(util.team.Team1);
@@ -52,8 +52,10 @@ describe("POST create team", function () {
                 res.body.should.have.property("data");
 
                 // deleting _id because that was generated, and not part of original data
-                delete res.body.data._id;
-                chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify(util.team.newTeam1));
+                const team = (new Team(util.team.newTeam1)).toJSON();
+                delete res.body.data.id;
+                delete team.id;
+                chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify(team));
                 done();
             });
     });
@@ -65,7 +67,7 @@ describe("PATCH join team", function () {
             .patch(`/api/team/join/`)
             .type("application/json")
             .send({
-                teamName: "BronzeTeam",
+                name: "BronzeTeam",
             })
             .end(function (err, res) {
                 res.should.have.status(401);
@@ -88,7 +90,7 @@ describe("PATCH join team", function () {
                 .patch(`/api/team/join/`)
                 .type("application/json")
                 .send({
-                    teamName: "BronzeTeam",
+                    name: "BronzeTeam",
                 })
                 .end(function (err, res) {
                     res.should.have.status(403);
@@ -112,7 +114,7 @@ describe("PATCH join team", function () {
                 .patch(`/api/team/join/`)
                 .type("application/json")
                 .send({
-                    teamName: "NonExistTeam",
+                    name: "NonExistTeam",
                 })
                 .end(function (err, res) {
                     res.should.have.status(404);
@@ -136,13 +138,13 @@ describe("PATCH join team", function () {
                 .patch(`/api/team/join/`)
                 .type("application/json")
                 .send({
-                    teamName: "FullTeam",
+                    name: "FullTeam",
                 })
                 .end(function (err, res) {
-                    res.should.have.status(422);
+                    res.should.have.status(409);
                     res.should.be.json;
                     res.body.should.have.property("message");
-                    res.body.message.should.equal(Constants.Error.TEAM_SIZE_422_MESSAGE);
+                    res.body.message.should.equal(Constants.Error.TEAM_SIZE_409_MESSAGE);
                     res.body.should.have.property("data");
 
                     done();
@@ -160,7 +162,7 @@ describe("PATCH join team", function () {
                 .patch(`/api/team/join/`)
                 .type("application/json")
                 .send({
-                    teamName: "BronzeTeam",
+                    name: "BronzeTeam",
                 })
                 .end(function (err, res) {
                     res.should.have.status(200);
@@ -184,7 +186,7 @@ describe("PATCH join team", function () {
                 .patch(`/api/team/join/`)
                 .type("application/json")
                 .send({
-                    teamName: "SilverTeam",
+                    name: "SilverTeam",
                 })
                 .end(function (err, res) {
                     res.should.have.status(200);

@@ -158,6 +158,27 @@ async function validateConfirmedStatus(req, res, next) {
 }
 
 /**
+ * @async
+ * @function findById
+ * @param {{body: {id: ObjectId}}} req
+ * @param {*} res
+ * @description Retrieves a hacker's information via req.body.id, moving result to req.body.hacker if succesful.
+ */
+async function findById(req, res, next) {
+    const hacker = await Services.Hacker.findById(req.body.id);
+
+    if (!hacker) {
+        return res.status(404).json({
+            message: Constants.Error.HACKER_404_MESSAGE,
+            data: {}
+        });
+    }
+
+    req.body.hacker = hacker;
+    next();
+}
+
+/**
  * Verifies that the current signed in user is linked to the hacker passed in via req.body.id
  * @param {{body: {id: ObjectId}}} req 
  * @param {*} res 
@@ -490,4 +511,5 @@ module.exports = {
     createHacker: Middleware.Util.asyncMiddleware(createHacker),
     findSelf: Middleware.Util.asyncMiddleware(findSelf),
     getStats: Middleware.Util.asyncMiddleware(getStats),
+    findById: Middleware.Util.asyncMiddleware(findById),
 };
