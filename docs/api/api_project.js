@@ -12,8 +12,5 @@ define({
         "time": "2019-01-04T20:56:25.977Z",
         "url": "http://apidocjs.com",
         "version": "0.17.7"
-        "time": "2019-01-04T16:52:33.543Z",
-        "url": "http://apidocjs.com",
-        "version": "0.17.6"
     }
 });
