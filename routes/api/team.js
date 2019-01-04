@@ -30,7 +30,7 @@ module.exports = {
          * @apiGroup Team
          * @apiVersion 0.0.8
          * 
-         * @apiParam (body) {String} teamName Name of the team.
+         * @apiParam (body) {String} name Name of the team.
          * @apiParam (body) {MongoID[]} [members] Array of members in team.
          * @apiParam (body) {String} [devpostURL] Devpost link to hack. Once the link is sent, the hack will be considered to be submitted.
          * @apiParam (body) {String} [projectName] Name of the team.
@@ -69,7 +69,7 @@ module.exports = {
          * @apiGroup Team
          * @apiVersion 1.1.1
          * 
-         * @apiParam (body) {string} [teamName] Name of the team to join
+         * @apiParam (body) {string} [name] Name of the team to join
          * @apiSuccess {string} message Success message
          * @apiSuccess {object} data {}
          * @apiSuccessExample {object} Success-Response: 
