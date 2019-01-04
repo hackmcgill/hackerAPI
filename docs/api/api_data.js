@@ -1425,6 +1425,27 @@ define({
             },
             {
               "group": "body",
+              "type": "String[]",
+              "optional": true,
+              "field": "ethnicity",
+              "description": "<p>the ethnicities of the hacker</p>"
+            },
+            {
+              "group": "body",
+              "type": "String",
+              "optional": true,
+              "field": "major",
+              "description": "<p>the major of the hacker</p>"
+            },
+            {
+              "group": "body",
+              "type": "Number",
+              "optional": true,
+              "field": "graduationYear",
+              "description": "<p>the graduation year of the hacker</p>"
+            },
+            {
+              "group": "body",
               "type": "Json",
               "optional": true,
               "field": "application",
