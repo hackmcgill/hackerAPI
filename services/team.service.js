@@ -126,6 +126,13 @@ async function addMember(teamId, hackerId) {
     });
 }
 
+/**
+ * @async
+ * @function removeTeamIfEmpty
+ * @param {ObjectId} teamId
+ * @return {DocumentQuery} Query evaluates to object that details the number of modified documents, or null.
+ * @description Removes the team if the team contains no members. Returns null if the team has one or more members, or if the team doesn't exist.
+ */
 async function removeTeamIfEmpty(teamId) {
     const TAG = `[Team Services # removeTeam]`;
 
