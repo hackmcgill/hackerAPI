@@ -21,13 +21,15 @@ module.exports = {
         VALIDATOR.booleanValidator("body", "confirm", false),
     ],
 
-    // untested
     updateHackerValidator: [
         VALIDATOR.nameValidator("body", "school", true),
         VALIDATOR.nameValidator("body", "degree", true),
         VALIDATOR.nameValidator("body", "gender", true),
+        VALIDATOR.booleanValidator("body", "needsBus", true),
         VALIDATOR.applicationValidator("body", "application", true),
-        VALIDATOR.booleanValidator("body", "needsBus", true)
+        VALIDATOR.alphaArrayValidator("body", "ethnicity", true),
+        VALIDATOR.nameValidator("body", "major", true),
+        VALIDATOR.integerValidator("body", "graduationYear", true, 2019, 2030),
     ],
     updateStatusValidator: [
         VALIDATOR.enumValidator("body", "status", Constants.HACKER_STATUSES, false),
