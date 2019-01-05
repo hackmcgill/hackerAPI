@@ -171,142 +171,142 @@ describe("POST create team", function () {
     });
 });
 
-// describe("PATCH change team", function () {
-//     it("should FAIL to join a hacker to a team due to lack of authentication", function (done) {
-//         chai.request(server.app)
-//             .patch(`/api/team/join/`)
-//             .type("application/json")
-//             .send({
-//                 teamName: "BronzeTeam",
-//             })
-//             .end(function (err, res) {
-//                 res.should.have.status(401);
-//                 res.should.be.json;
-//                 res.body.should.have.property("message");
-//                 res.body.message.should.equal(Constants.Error.AUTH_401_MESSAGE);
-//                 res.body.should.have.property("data");
+describe("PATCH change team", function () {
+    it("should FAIL to join a hacker to a team due to lack of authentication", function (done) {
+        chai.request(server.app)
+            .patch(`/api/team/join/`)
+            .type("application/json")
+            .send({
+                teamName: "BronzeTeam",
+            })
+            .end(function (err, res) {
+                res.should.have.status(401);
+                res.should.be.json;
+                res.body.should.have.property("message");
+                res.body.message.should.equal(Constants.Error.AUTH_401_MESSAGE);
+                res.body.should.have.property("data");
 
-//                 done();
-//             });
-//     });
+                done();
+            });
+    });
 
-//     it("should FAIL to join a volunteer to a team.", function (done) {
-//         util.auth.login(agent, util.account.Account5, (error) => {
-//             if (error) {
-//                 agent.close();
-//                 return done(error);
-//             }
-//             return agent
-//                 .patch(`/api/team/join/`)
-//                 .type("application/json")
-//                 .send({
-//                     teamName: "BronzeTeam",
-//                 })
-//                 .end(function (err, res) {
-//                     res.should.have.status(403);
-//                     res.should.be.json;
-//                     res.body.should.have.property("message");
-//                     res.body.message.should.equal(Constants.Error.AUTH_403_MESSAGE);
-//                     res.body.should.have.property("data");
+    it("should FAIL to join a volunteer to a team.", function (done) {
+        util.auth.login(agent, util.account.Account5, (error) => {
+            if (error) {
+                agent.close();
+                return done(error);
+            }
+            return agent
+                .patch(`/api/team/join/`)
+                .type("application/json")
+                .send({
+                    teamName: "BronzeTeam",
+                })
+                .end(function (err, res) {
+                    res.should.have.status(403);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal(Constants.Error.AUTH_403_MESSAGE);
+                    res.body.should.have.property("data");
 
-//                     done();
-//                 });
-//         });
-//     });
+                    done();
+                });
+        });
+    });
 
-//     it("should FAIL to join a hacker to a team that doesn't exist.", function (done) {
-//         util.auth.login(agent, util.account.Account1, (error) => {
-//             if (error) {
-//                 agent.close();
-//                 return done(error);
-//             }
-//             return agent
-//                 .patch(`/api/team/join/`)
-//                 .type("application/json")
-//                 .send({
-//                     teamName: "NonExistTeam",
-//                 })
-//                 .end(function (err, res) {
-//                     res.should.have.status(404);
-//                     res.should.be.json;
-//                     res.body.should.have.property("message");
-//                     res.body.message.should.equal(Constants.Error.TEAM_404_MESSAGE);
-//                     res.body.should.have.property("data");
+    it("should FAIL to join a hacker to a team that doesn't exist.", function (done) {
+        util.auth.login(agent, util.account.Account1, (error) => {
+            if (error) {
+                agent.close();
+                return done(error);
+            }
+            return agent
+                .patch(`/api/team/join/`)
+                .type("application/json")
+                .send({
+                    teamName: "NonExistTeam",
+                })
+                .end(function (err, res) {
+                    res.should.have.status(404);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal(Constants.Error.TEAM_404_MESSAGE);
+                    res.body.should.have.property("data");
 
-//                     done();
-//                 });
-//         });
-//     });
+                    done();
+                });
+        });
+    });
 
-//     it("should FAIL to join a hacker to a team that is full.", function (done) {
-//         util.auth.login(agent, util.account.Account1, (error) => {
-//             if (error) {
-//                 agent.close();
-//                 return done(error);
-//             }
-//             return agent
-//                 .patch(`/api/team/join/`)
-//                 .type("application/json")
-//                 .send({
-//                     teamName: "FullTeam",
-//                 })
-//                 .end(function (err, res) {
-//                     res.should.have.status(422);
-//                     res.should.be.json;
-//                     res.body.should.have.property("message");
-//                     res.body.message.should.equal(Constants.Error.TEAM_SIZE_422_MESSAGE);
-//                     res.body.should.have.property("data");
+    it("should FAIL to join a hacker to a team that is full.", function (done) {
+        util.auth.login(agent, util.account.Account1, (error) => {
+            if (error) {
+                agent.close();
+                return done(error);
+            }
+            return agent
+                .patch(`/api/team/join/`)
+                .type("application/json")
+                .send({
+                    teamName: "FullTeam",
+                })
+                .end(function (err, res) {
+                    res.should.have.status(422);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal(Constants.Error.TEAM_SIZE_422_MESSAGE);
+                    res.body.should.have.property("data");
 
-//                     done();
-//                 });
-//         });
-//     });
+                    done();
+                });
+        });
+    });
 
-//     it("should SUCCEED and join a hacker without a team to a team.", function (done) {
-//         util.auth.login(agent, util.account.Account2, (error) => {
-//             if (error) {
-//                 agent.close();
-//                 return done(error);
-//             }
-//             return agent
-//                 .patch(`/api/team/join/`)
-//                 .type("application/json")
-//                 .send({
-//                     teamName: "BronzeTeam",
-//                 })
-//                 .end(function (err, res) {
-//                     res.should.have.status(200);
-//                     res.should.be.json;
-//                     res.body.should.have.property("message");
-//                     res.body.message.should.equal(Constants.Success.TEAM_JOIN);
-//                     res.body.should.have.property("data");
+    it("should SUCCEED and join a hacker without a team to a team.", function (done) {
+        util.auth.login(agent, util.account.Account2, (error) => {
+            if (error) {
+                agent.close();
+                return done(error);
+            }
+            return agent
+                .patch(`/api/team/join/`)
+                .type("application/json")
+                .send({
+                    teamName: "BronzeTeam",
+                })
+                .end(function (err, res) {
+                    res.should.have.status(200);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal(Constants.Success.TEAM_JOIN);
+                    res.body.should.have.property("data");
 
-//                     done();
-//                 });
-//         });
-//     });
+                    done();
+                });
+        });
+    });
 
-//     it("should SUCCEED and join a hacker on a team to aother team.", function (done) {
-//         util.auth.login(agent, util.account.Account1, (error) => {
-//             if (error) {
-//                 agent.close();
-//                 return done(error);
-//             }
-//             return agent
-//                 .patch(`/api/team/join/`)
-//                 .type("application/json")
-//                 .send({
-//                     teamName: "SilverTeam",
-//                 })
-//                 .end(function (err, res) {
-//                     res.should.have.status(200);
-//                     res.should.be.json;
-//                     res.body.should.have.property("message");
-//                     res.body.message.should.equal(Constants.Success.TEAM_JOIN);
-//                     res.body.should.have.property("data");
+    it("should SUCCEED and join a hacker on a team to aother team.", function (done) {
+        util.auth.login(agent, util.account.Account1, (error) => {
+            if (error) {
+                agent.close();
+                return done(error);
+            }
+            return agent
+                .patch(`/api/team/join/`)
+                .type("application/json")
+                .send({
+                    teamName: "SilverTeam",
+                })
+                .end(function (err, res) {
+                    res.should.have.status(200);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal(Constants.Success.TEAM_JOIN);
+                    res.body.should.have.property("data");
 
-//                     done();
-//                 });
-//         });
-//     });
-// });
+                    done();
+                });
+        });
+    });
+});
