@@ -2136,7 +2136,7 @@
   {
     "type": "post",
     "url": "/team/",
-    "title": "create a new team",
+    "title": "create a new team consisting of only the logged in user",
     "name": "createTeam",
     "group": "Team",
     "version": "0.0.8",
@@ -2148,13 +2148,6 @@
             "optional": false,
             "field": "name",
             "description": "<p>Name of the team.</p>"
-          },
-          {
-            "group": "body",
-            "type": "MongoID[]",
-            "optional": true,
-            "field": "members",
-            "description": "<p>Array of members in team.</p>"
           },
           {
             "group": "body",
