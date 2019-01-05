@@ -76,16 +76,8 @@ module.exports = {
 
     TEAM_GET_BY_ID: TEAM_GET_BY_ID,
     TEAM_CREATE: TEAM_CREATE,
-    <<
-    << << < HEAD
-    TEAM_READ: TEAM_READ,
-    TEAM_JOIN: TEAM_JOIN,
-    ===
-    === =
     TEAM_JOIN: TEAM_JOIN,
     TEAM_READ: TEAM_READ,
-    >>>
-    >>> > develop
 
     VOLUNTEER_CREATE: VOLUNTEER_CREATE,
 };
