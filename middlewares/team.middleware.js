@@ -71,6 +71,19 @@ async function createTeam(req, res, next) {
         });
     }
 
+    for (const hackerId of teamDetails.members) {
+        const hacker = await Services.Hacker.updateOne(hackerId, {
+            teamId: team._id
+        });
+
+        if (!hacker) {
+            return res.status(500).json({
+                message: Constants.Error.HACKER_UPDATE_500_MESSAGE,
+                data: {}
+            });
+        }
+    }
+
     req.body.team = team;
     return next();
 }
@@ -267,7 +280,7 @@ function parseTeam(req, res, next) {
 
 async function parseNewTeam(req, res, next) {
     const teamDetails = {
-        // _id: mongoose.Types.ObjectId(),
+        _id: mongoose.Types.ObjectId(),
         name: req.body.name,
         members: [],
         devpostURL: req.body.devpostURL,

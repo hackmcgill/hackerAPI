@@ -35,12 +35,7 @@ async function createTeam(teamDetails) {
 
     const team = new Team(teamDetails);
 
-    await Team.init();
-
-    delete teamDetails._id;
-
-    // return team.save();
-    return Team.create(teamDetails);
+    return team.save();
 }
 
 /**
