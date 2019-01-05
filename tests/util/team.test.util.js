@@ -23,7 +23,7 @@ const createdNewTeam1 = {
 };
 
 const Team1 = {
-    // "_id": mongoose.Types.ObjectId(),
+    "_id": mongoose.Types.ObjectId.createFromTime(101),
     "name": "BronzeTeam",
     "members": [Util.Hacker.HackerA._id],
     "devpostURL": "justanother.devpost.com",
@@ -31,7 +31,7 @@ const Team1 = {
 };
 
 const Team2 = {
-    // "_id": mongoose.Types.ObjectId(),
+    "_id": mongoose.Types.ObjectId(),
     "name": "SilverTeam",
     "members": [Util.Hacker.HackerC._id],
     "devpostURL": "watwatwat.devpost.com",
@@ -39,7 +39,7 @@ const Team2 = {
 };
 
 const Team3 = {
-    // "_id": mongoose.Types.ObjectId(),
+    "_id": mongoose.Types.ObjectId(),
     "name": "FullTeam",
     "members": [Util.Hacker.HackerD._id, Util.Hacker.HackerE._id, Util.Hacker.HackerF._id, Util.Hacker.HackerG._id]
 };

@@ -11,6 +11,7 @@ const SPONSOR_ID_409_MESSAGE = "Conflict with sponsor accountId link";
 const VOLUNTEER_ID_409_MESSAGE = "Conflict with volunteer accountId link";
 const HACKER_ID_409_MESSAGE = "Conflict with hacker accountId link";
 const TEAM_MEMBER_409_MESSAGE = "Conflict with team member being in another team";
+const TEAM_NAME_409_MESSAGE = "Conflict with team name already in use";
 const HACKER_STATUS_409_MESSAGE = "Conflict with hacker status";
 
 const TEAM_MEMBER_422_MESSAGE = "Duplicate team member in input";
@@ -69,4 +70,5 @@ module.exports = {
     TEAM_SIZE_422_MESSAGE: TEAM_SIZE_422_MESSAGE,
     ROLE_DUPLICATE_422_MESSAGE: ROLE_DUPLICATE_422_MESSAGE,
     ROLE_CREATE_500_MESSAGE: ROLE_CREATE_500_MESSAGE,
+    TEAM_NAME_409_MESSAGE: TEAM_NAME_409_MESSAGE,
 };

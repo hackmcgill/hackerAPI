@@ -52,6 +52,8 @@ module.exports = {
             Middleware.parseBody.middleware,
             Middleware.Team.parseNewTeam,
 
+            Middleware.Team.ensureFreeTeamName,
+
             Middleware.Team.createTeam,
             Controllers.Team.createdTeam
         );

@@ -62,8 +62,6 @@ async function ensureUniqueHackerId(req, res, next) {
 async function createTeam(req, res, next) {
     const teamDetails = req.body.teamDetails;
 
-    const prevTeam = await Services.Team.findByName(teamDetails.name);
-
     const team = await Services.Team.createTeam(teamDetails);
 
     if (!team) {
@@ -73,20 +71,12 @@ async function createTeam(req, res, next) {
         });
     }
 
-    // const new_team = new Team(teamDetails);
-
-    // await new_team.save();
-
-    // const teams = await Team.find({
-    //     name: teamDetails.name
-    // });
-
     req.body.team = team;
     return next();
 }
 
 /**
- * @function ensureSpance
+ * @function ensureSpace
  * @param {{body: {teamName: string}}} req
  * @param {JSON} res
  * @param {(err?)=>void} next
@@ -107,6 +97,30 @@ async function ensureSpace(req, res, next) {
             status: 422,
             message: Constants.Error.TEAM_SIZE_422_MESSAGE,
             data: teamSize,
+        });
+    }
+
+    return next();
+}
+
+/**
+ * @function ensureFreeTeamName
+ * @param {{body: {teamName: string}}} req
+ * @param {JSON} res
+ * @param {(err?)=>void} next
+ * @return {void}
+ * @description Checks to see that the team name is not in use.
+ */
+async function ensureFreeTeamName(req, res, next) {
+    const teamDetails = req.body.teamDetails;
+
+    const team = await Services.Team.findByName(teamDetails.name);
+
+    if (team) {
+        return next({
+            status: 409,
+            message: Constants.Error.TEAM_NAME_409_MESSAGE,
+            data: teamDetails.name
         });
     }
 
@@ -273,5 +287,5 @@ module.exports = {
     ensureSpace: Util.asyncMiddleware(ensureSpace),
     updateHackerTeam: Util.asyncMiddleware(updateHackerTeam),
     parseNewTeam: Util.asyncMiddleware(parseNewTeam),
-
+    ensureFreeTeamName: Util.asyncMiddleware(ensureFreeTeamName),
 };

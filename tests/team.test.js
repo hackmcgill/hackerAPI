@@ -110,9 +110,34 @@ describe("POST create team", function () {
                 .type("application/json")
                 .send(util.team.duplicateTeamName1)
                 .end(function (err, res) {
-                    res.should.have.status(422);
+                    res.should.have.status(409);
                     res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal(Constants.Error.TEAM_NAME_409_MESSAGE);
+                    res.body.should.have.property("data");
+                    res.body.data.should.equal(util.team.duplicateTeamName1.name);
 
+                    done();
+                });
+        });
+    });
+
+    it("should Fail to create a new team due to hacker already being in a team", function (done) {
+        util.auth.login(agent, util.account.Account1, (error) => {
+            if (error) {
+                agent.close();
+                return done(error);
+            }
+            return agent
+                .post(`/api/team/`)
+                .type("application/json")
+                .send(util.team.newTeam1)
+                .end(function (err, res) {
+                    res.should.have.status(409);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal(Constants.Error.TEAM_MEMBER_409_MESSAGE);
+                    res.body.should.have.property("data");
                     done();
                 });
         });
