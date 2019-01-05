@@ -1425,6 +1425,27 @@ define({
             },
             {
               "group": "body",
+              "type": "String[]",
+              "optional": true,
+              "field": "ethnicity",
+              "description": "<p>the ethnicities of the hacker</p>"
+            },
+            {
+              "group": "body",
+              "type": "String",
+              "optional": true,
+              "field": "major",
+              "description": "<p>the major of the hacker</p>"
+            },
+            {
+              "group": "body",
+              "type": "Number",
+              "optional": true,
+              "field": "graduationYear",
+              "description": "<p>the graduation year of the hacker</p>"
+            },
+            {
+              "group": "body",
               "type": "Json",
               "optional": true,
               "field": "application",
@@ -2146,7 +2167,7 @@ define({
             {
               "group": "body",
               "type": "String",
-              "optional": false,
+              "optional": true,
               "field": "projectName",
               "description": "<p>Name of the team.</p>"
             }
@@ -2292,7 +2313,7 @@ define({
             "group": "body",
             "type": "string",
             "optional": true,
-            "field": "teamName",
+            "field": "name",
             "description": "<p>Name of the team to join</p>"
           }]
         }

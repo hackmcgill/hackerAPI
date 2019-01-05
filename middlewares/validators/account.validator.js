@@ -26,7 +26,7 @@ module.exports = {
         VALIDATOR.phoneNumberValidator("body", "phoneNumber", true)
     ],
     inviteAccountValidator: [
-        VALIDATOR.enumValidator("body", "accountType", Constants.EXTENDED_USER_TYPES, false),
         VALIDATOR.regexValidator("body", "email", false, Constants.EMAIL_REGEX),
+        VALIDATOR.enumValidator("body", "accountType", Constants.EXTENDED_USER_TYPES, false)
     ]
 };

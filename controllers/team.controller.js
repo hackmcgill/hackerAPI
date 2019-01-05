@@ -40,7 +40,6 @@ function joinedTeam(req, res) {
 }
 
 /**
- * @async
  * @function createdTeam
  * @param {{body: {team: {_id: ObjectId, name: string, members: ObjectId[], devpostURL: string, projectName: string}}}} req
  * @param {*} res
@@ -55,7 +54,7 @@ function createdTeam(req, res) {
 }
 
 module.exports = {
+    joinedTeam: joinedTeam,
     createdTeam: createdTeam,
     showTeam: showTeam,
-    joinedTeam: joinedTeam,
 };
