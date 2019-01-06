@@ -98,7 +98,7 @@ module.exports = {
          * @apiGroup Team
          * @apiVersion 0.0.8
          * 
-        * @apiParam (body) {MongoId} MongoId of the team
+        * @apiParam (param) {ObjectId} id MongoId of the team
          * 
          * @apiSuccess {String} message Success message
          * @apiSuccess {Object} data Sponsor object
