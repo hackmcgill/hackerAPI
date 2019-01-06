@@ -195,14 +195,21 @@ async function findById(req, res, next) {
 
 /**
  * @async
- * @function findMembersNames
- * @param {{body: {team: Model}}} req 
+ * @function populateMemberAccountsById
+ * @param {{body: {id: ObjectId}}} req 
  * @param {*} res 
  * @return {JSON} Success or error status
- * @description Finds the names of the members of a team located in req.body.team.
+ * @description 
+ * Find the team by id and populates the accounts of the members.
+ * The team information is stored in req.body.team, and the member information is stored in req.body.teamMembers
  */
-async function findMembersNames(req, res, next) {
-    const team = req.body.team;
+async function populateMemberAccountsById(req, res, next) {
+    const team = await Services.Team.findById(req.body.id).populate({
+        path: "members",
+        populate: {
+            path: "accountId"
+        }
+    });
 
     if (!team) {
         return res.status(404).json({
@@ -213,27 +220,11 @@ async function findMembersNames(req, res, next) {
 
     let teamMembers = [];
 
-    for (const memberId of team.members) {
-        const hacker = await Services.Hacker.findById(memberId);
-
-        if (!hacker) {
-            return res.status(404).json({
-                message: Constants.Error.TEAM_404_MESSAGE,
-                data: memberId
-            });
-        }
-        const acc = await Services.Account.findById(hacker.accountId);
-
-        if (!acc) {
-            return res.status(404).json({
-                message: Constants.Error.ACCOUNT_404_MESSAGE,
-                data: hacker.accountId,
-            });
-        }
-
-        teamMembers.push(acc);
+    for (const member of team.members) {
+        teamMembers.push(member.accountId);
     }
 
+    req.body.team = team;
     req.body.teamMembers = teamMembers;
     return next();
 }
@@ -274,5 +265,5 @@ module.exports = {
     ensureUniqueHackerId: Util.asyncMiddleware(ensureUniqueHackerId),
     ensureSpace: Util.asyncMiddleware(ensureSpace),
     updateHackerTeam: Util.asyncMiddleware(updateHackerTeam),
-    findMembersNames: Util.asyncMiddleware(findMembersNames),
+    populateMemberAccountsById: Util.asyncMiddleware(populateMemberAccountsById),
 };

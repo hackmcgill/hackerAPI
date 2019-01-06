@@ -120,8 +120,7 @@ module.exports = {
             Middleware.Validator.Team.getTeamValidator,
             Middleware.parseBody.middleware,
 
-            Middleware.Team.findById,
-            Middleware.Team.findMembersNames,
+            Middleware.Team.populateMemberAccountsById,
             Controllers.Team.showTeam
         );
 
