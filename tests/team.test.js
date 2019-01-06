@@ -23,11 +23,7 @@ const agent = chai.request.agent(server.app);
 describe("GET team", function () {
     it("should FAIL to list a team's information due to lack of authentication", function (done) {
         chai.request(server.app)
-            .get(`/api/team/`)
-            .type("application/json")
-            .send({
-                id: util.team.Team3._id
-            })
+            .get(`/api/team/${util.team.Team3._id}`)
             .end(function (err, res) {
                 res.should.have.status(401);
                 res.should.be.json;
@@ -46,11 +42,7 @@ describe("GET team", function () {
                 return done(error);
             }
             return agent
-                .get(`/api/team/`)
-                .type("application/json")
-                .send({
-                    id: util.team.newTeam1._id
-                })
+                .get(`/api/team/${util.team.newTeam1._id}`)
                 .end(function (err, res) {
                     res.should.have.status(404);
                     res.should.be.json;
@@ -70,11 +62,7 @@ describe("GET team", function () {
                 return done(error);
             }
             return agent
-                .get(`/api/team/`)
-                .type("application/json")
-                .send({
-                    id: util.team.Team3._id
-                })
+                .get(`/api/team/${util.team.Team3._id}`)
                 .end(function (err, res) {
                     res.should.have.status(200);
                     res.should.be.json;

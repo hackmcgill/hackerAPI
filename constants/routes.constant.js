@@ -140,7 +140,7 @@ const sponsorRoutes = {
 const teamRoutes = {
     "get": {
         requestType: Constants.REQUEST_TYPES.GET,
-        uri: "/api/team/"
+        uri: "/api/team/" + Constants.ROLE_CATEGORIES.ALL,
     },
     "post": {
         requestType: Constants.REQUEST_TYPES.POST,

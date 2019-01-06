@@ -14,8 +14,4 @@ module.exports = {
     joinTeamValidator: [
         VALIDATOR.asciiValidator("body", "name", false),
     ],
-
-    getTeamValidator: [
-        VALIDATOR.mongoIdValidator("body", "id", false),
-    ]
 };

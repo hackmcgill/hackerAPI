@@ -113,11 +113,19 @@ module.exports = {
          * @apiErrorExample {object} Error-Response: 
          *      {"message": "Team not found", "data": {}}
          */
-        teamRouter.route("/").get(
+        teamRouter.route("/:id").get(
             Middleware.Auth.ensureAuthenticated(),
-            Middleware.Auth.ensureAuthorized(),
+            // get is available for all teams, or no teams. No authorization is done on the :id parameter.
+            // However, a function is needed, so the identity function is put here. In reality, the route
+            // is /api/team/:all, so the id is not checked. The returned object places the id inside accountId
+            // to be consistent with other findById functions
+            Middleware.Auth.ensureAuthorized([(id) => {
+                return {
+                    accountId: id
+                };
+            }]),
 
-            Middleware.Validator.Team.getTeamValidator,
+            Middleware.Validator.RouteParam.idValidator,
             Middleware.parseBody.middleware,
 
             Middleware.Team.populateMemberAccountsById,
