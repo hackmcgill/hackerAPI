@@ -56,7 +56,8 @@ module.exports = {
             Middleware.Auth.ensureAuthenticated(),
             Middleware.Auth.ensureAuthorized(),
 
-            Controllers.Account.getUserByEmail
+            Middleware.Account.getByEmail,
+            Controllers.Account.showAccount
         );
 
         /**
@@ -294,7 +295,8 @@ module.exports = {
             Middleware.Validator.RouteParam.idValidator,
             Middleware.parseBody.middleware,
 
-            Controllers.Account.getUserById
+            Middleware.Account.getById,
+            Controllers.Account.showAccount
         );
 
         apiRouter.use("/account", accountRouter);

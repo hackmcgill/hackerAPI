@@ -39,6 +39,8 @@ const hackerRole = {
         Constants.Routes.hackerRoutes.patchSelfById,
         Constants.Routes.hackerRoutes.patchSelfConfirmationById,
         Constants.Routes.hackerRoutes.getSelf,
+
+        Constants.Routes.teamRoutes.join,
     ]
 };
 

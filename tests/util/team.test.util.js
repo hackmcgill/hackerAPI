@@ -19,16 +19,33 @@ const Team1 = {
     "devpostURL": "justanother.devpost.com",
     "projectName": "YetAnotherProject"
 };
+
+const Team2 = {
+    "_id": mongoose.Types.ObjectId(),
+    "name": "SilverTeam",
+    "members": [Util.Hacker.HackerC._id],
+    "devpostURL": "watwatwat.devpost.com",
+    "projectName": "WatWatWat",
+};
+
+const Team3 = {
+    "_id": mongoose.Types.ObjectId(),
+    "name": "FullTeam",
+    "members": [Util.Hacker.HackerD._id, Util.Hacker.HackerE._id, Util.Hacker.HackerF._id, Util.Hacker.HackerG._id]
+};
+
 const Teams = [
     Team1,
+    Team2,
+    Team3
 ];
 
 function storeAll(attributes) {
     const teamDocs = [];
-    const teamNames = [];
+    const names = [];
     attributes.forEach((attribute) => {
         teamDocs.push(new Team(attribute));
-        teamNames.push(attribute.name);
+        names.push(attribute.name);
     });
 
     return Team.collection.insertMany(teamDocs);
@@ -49,6 +66,8 @@ async function dropAll() {
 module.exports = {
     newTeam1: newTeam1,
     Team1: Team1,
+    Team2: Team2,
+    Team3: Team3,
     Teams: Teams,
     storeAll: storeAll,
     dropAll: dropAll,

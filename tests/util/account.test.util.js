@@ -164,6 +164,63 @@ const Hacker3 = {
     "phoneNumber": 1000000004,
 };
 
+const Hacker4 = {
+    "_id": mongoose.Types.ObjectId(),
+    "firstName": "abcd",
+    "lastName": "defg",
+    "pronoun": "They/Them",
+    "email": "abc.def.hacker4@blahblah.com",
+    "password": "probsShouldBeHashed2",
+    "dietaryRestrictions": ["vegetarian"],
+    "shirtSize": "M",
+    "confirmed": true,
+    "accountType": Constants.HACKER,
+    "birthDate": "1990-01-04",
+    "phoneNumber": 1000000004,
+};
+const Hacker5 = {
+    "_id": mongoose.Types.ObjectId(),
+    "firstName": "abcd",
+    "lastName": "defg",
+    "pronoun": "They/Them",
+    "email": "abc.def.hacker5@blahblah.com",
+    "password": "probsShouldBeHashed2",
+    "dietaryRestrictions": ["vegetarian"],
+    "shirtSize": "M",
+    "confirmed": true,
+    "accountType": Constants.HACKER,
+    "birthDate": "1990-01-04",
+    "phoneNumber": 1000000004,
+};
+const Hacker6 = {
+    "_id": mongoose.Types.ObjectId(),
+    "firstName": "abcd",
+    "lastName": "defg",
+    "pronoun": "They/Them",
+    "email": "abc.def.hacker6@blahblah.com",
+    "password": "probsShouldBeHashed2",
+    "dietaryRestrictions": ["vegetarian"],
+    "shirtSize": "M",
+    "confirmed": true,
+    "accountType": Constants.HACKER,
+    "birthDate": "1990-01-04",
+    "phoneNumber": 1000000004,
+};
+const Hacker7 = {
+    "_id": mongoose.Types.ObjectId(),
+    "firstName": "abcd",
+    "lastName": "defg",
+    "pronoun": "They/Them",
+    "email": "abc.def.hacker7@blahblah.com",
+    "password": "probsShouldBeHashed2",
+    "dietaryRestrictions": ["vegetarian"],
+    "shirtSize": "M",
+    "confirmed": true,
+    "accountType": Constants.HACKER,
+    "birthDate": "1990-01-04",
+    "phoneNumber": 1000000004,
+};
+
 const customAccounts = [
     Admin1,
     Account1,
@@ -172,6 +229,10 @@ const customAccounts = [
     Account4,
     Account5,
     Hacker3,
+    Hacker4,
+    Hacker5,
+    Hacker6,
+    Hacker7,
     NonConfirmedAccount1,
     NonConfirmedAccount2
 ];
@@ -197,6 +258,10 @@ module.exports = {
     Account4: Account4,
     Account5: Account5,
     Hacker3: Hacker3,
+    Hacker4: Hacker4,
+    Hacker5: Hacker5,
+    Hacker6: Hacker6,
+    Hacker7: Hacker7,
     customAccounts: customAccounts,
     generatedAccounts: generatedAccounts,
     allAccounts: allAccounts,

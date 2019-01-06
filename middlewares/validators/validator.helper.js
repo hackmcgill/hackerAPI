@@ -15,28 +15,6 @@ const Models = {
 };
 
 /**
- * Validates that field is a valid devpost URL
- * @param {"query" | "body" | "header" | "param"} fieldLocation the location where the field should be found 
- * @param {string} fieldname Name of the field that needs to be validated.
- * @param {boolean} optional Whether the field is optional or not.
- */
-function devpostValidator(fieldLocation, fieldname, optional = true) {
-    const devpostUrl = setProperValidationChainBuilder(fieldLocation, fieldname, "invalid web address");
-    // match optional https://, http://, www., then optional pre-devpost part, then devpost.com with different routes and params
-    if (optional) {
-        return devpostUrl.optional({
-                checkFalsy: true
-            })
-            .matches(Constants.DEVPOST_REGEX)
-            .withMessage("must be valid devpost url");
-    } else {
-        return devpostUrl.exists().withMessage("devpost url must exist")
-            .matches(Constants.DEVPOST_REGEX)
-            .withMessage("must be valid devpost url");
-    }
-}
-
-/**
  * Validates that field is a valid integer
  * @param {"query" | "body" | "header" | "param"} fieldLocation the location where the field should be found 
  * @param {string} fieldname Name of the field that needs to be validated.
@@ -129,14 +107,13 @@ function booleanValidator(fieldLocation, fieldname, optional = true, desire = nu
     }
 }
 
-// untested
 /**
  * Validates that field name is ascii only.
  * @param {"query" | "body" | "header" | "param"} fieldLocation the location where the field should be found 
  * @param {string} fieldname name of the field that needs to be validated.
  * @param {boolean} optional whether the field is optional or not.
  */
-function nameValidator(fieldLocation, fieldname, optional = true) {
+function asciiValidator(fieldLocation, fieldname, optional = true) {
     const name = setProperValidationChainBuilder(fieldLocation, fieldname, "invalid name");
     if (optional) {
         return name.optional({
@@ -147,63 +124,27 @@ function nameValidator(fieldLocation, fieldname, optional = true) {
     }
 }
 
-// untested
 /**
- * Validates that field pronoun is ascii only.
- * @param {"query" | "body" | "header" | "param"} fieldLocation the location where the field should be found 
- * @param {string} fieldname name of the field that needs to be validated.
- * @param {boolean} optional whether the field is optional or not.
- */
-function pronounValidator(fieldLocation, fieldname, optional = true) {
-    const pronoun = setProperValidationChainBuilder(fieldLocation, fieldname, "invalid pronoun");
-    if (optional) {
-        return pronoun.optional({
-            checkFalsy: true
-        }).isAscii().withMessage("must contain only ascii characters");
-    } else {
-        return pronoun.exists().withMessage("pronoun must exist").isAscii().withMessage("must contain only ascii characters");
-    }
-}
-
-/**
- * Validates that field is a valid URL
+ * Validates the field against a regex
  * @param {"query" | "body" | "header" | "param"} fieldLocation the location where the field should be found 
  * @param {string} fieldname Name of the field that needs to be validated.
  * @param {boolean} optional Whether the field is optional or not.
- * @description 
- * Matches against a regex that looks for optional http://, https://, http:, https:, and optional www.
- * Regex then looks for the domain, and then optional route, path, query parameters
+ * @param {regex} desire The regex to match against
+ * @description The default regex to match against accepts anything
  */
-function urlValidator(fieldLocation, fieldname, optional = true) {
-    const url = setProperValidationChainBuilder(fieldLocation, fieldname, "invalid name");
+function regexValidator(fieldLocation, fieldname, optional = true, desire = Constants.ANY_REGEX) {
+    const match = setProperValidationChainBuilder(fieldLocation, fieldname, "invalid name");
 
     if (optional) {
-        return url.optional({
+        return match.optional({
                 checkFalsy: true
             })
-            .matches(Constants.URL_REGEX)
+            .matches(desire)
             .withMessage("must be valid url");
     } else {
-        return url.exists().withMessage("url must exist")
-            .matches(Constants.URL_REGEX)
+        return match.exists().withMessage("url must exist")
+            .matches(desire)
             .withMessage("must be valid url");
-    }
-}
-
-/**
- * Validates that field must be email.
- * @param {"query" | "body" | "header" | "param"} fieldLocation the location where the field should be found 
- * @param {string} fieldname name of the field that needs to be validated.
- * @param {boolean} optional whether the field is optional or not.
- */
-function emailValidator(fieldLocation, fieldname, optional = true) {
-    const email = setProperValidationChainBuilder(fieldLocation, fieldname, "invalid email");
-    if (optional) {
-        return email.optional({
-            checkFalsy: true
-        }).matches(Constants.EMAIL_REGEX).withMessage("must be valid email");
-    } else {
-        return email.exists().withMessage("email must exist").matches(Constants.EMAIL_REGEX).withMessage("must be valid email");
     }
 }
 
@@ -257,25 +198,6 @@ function alphaArrayValidationHelper(value) {
 }
 
 /**
- * Validates that field must be one of the shirt size enums.
- * @param {"query" | "body" | "header" | "param"} fieldLocation the location where the field should be found 
- * @param {string} fieldname name of the field that needs to be validated.
- * @param {boolean} optional whether the field is optional or not.
- */
-function shirtSizeValidator(fieldLocation, fieldname, optional = true) {
-    const size = setProperValidationChainBuilder(fieldLocation, fieldname, "invalid shirt size");
-    const shirtSizes = ["XS", "S", "M", "L", "XL", "XXL"];
-
-    if (optional) {
-        return size.optional({
-            checkFalsy: true
-        }).isIn(shirtSizes).withMessage(`Must be one of ${shirtSizes.join(",")}`);
-    } else {
-        return size.exists().withMessage("shirt size must exist").isIn(shirtSizes).withMessage(`must be one of ${shirtSizes.join(",")}`);
-    }
-}
-
-/**
  * Validates that field must be at least 6 characters long. 
  * TODO: impose better restrictions.
  * @param {"query" | "body" | "header" | "param"} fieldLocation the location where the field should be found 
@@ -297,35 +219,6 @@ function passwordValidator(fieldLocation, fieldname, optional = true) {
     }
 }
 
-/**
- * Validates that field must be one of the status enums.
- * @param {"query" | "body" | "header" | "param"} fieldLocation the location where the field should be found 
- * @param {string} fieldname name of the field that needs to be validated.
- * @param {boolean} optional whether the field is optional or not.
- */
-function hackerStatusValidator(fieldLocation, fieldname, optional = true) {
-    const status = setProperValidationChainBuilder(fieldLocation, fieldname, "invalid status");
-
-    if (optional) {
-        return status.optional({
-            checkFalsy: true
-        }).isIn(Constants.HACKER_STATUSES).withMessage(`Status must be in ${Constants.HACKER_STATUSES}`);
-    } else {
-        return status.exists().withMessage(`Status must be in ${Constants.HACKER_STATUSES}`);
-    }
-}
-
-function hackerCheckInStatusValidator(fieldLocation, fieldname, optional = true) {
-    const status = setProperValidationChainBuilder(fieldLocation, fieldname, "invalid status");
-
-    if (optional) {
-        return status.optional({
-            checkFalsy: true
-        }).isIn(Constants.HACKER_STATUS_CHECKED_IN).withMessage(`Status must be ${Constants.HACKER_STATUS_CHECKED_IN}`);
-    } else {
-        return status.exists().withMessage(`Status must be ${Constants.HACKER_STATUS_CHECKED_IN}`);
-    }
-}
 
 /**
  * Validates that field must be a valid application.
@@ -589,22 +482,88 @@ function phoneNumberValidator(fieldLocation, fieldname, optional = true) {
 }
 
 /**
- * Validates that field must be a valid account type
+ * Validates that field must be an array of routes
  * @param {"query" | "body" | "header" | "param"} fieldLocation the location where the field should be found 
  * @param {string} fieldname name of the field that needs to be validated.
  * @param {boolean} optional whether the field is optional or not.
  */
-function accountTypeValidator(fieldLocation, fieldname, optional = true) {
-    const accountType = setProperValidationChainBuilder(fieldLocation, fieldname, "Invalid account type");
+function routesValidator(fieldLocation, fieldname, optional = true) {
+    const routes = setProperValidationChainBuilder(fieldLocation, fieldname, "Invalid routes");
+
     if (optional) {
-        return accountType.optional({
-            checkFalsy: true
-        }).isIn(Constants.EXTENDED_USER_TYPES);
+        return routes
+            .optional({
+                checkFalsy: true
+            })
+            .custom(routesArrayValidationHelper).withMessage("The value must be a route");
     } else {
-        return accountType.exists()
-            .withMessage("Account type must be provided")
-            .isIn(Constants.EXTENDED_USER_TYPES);
+        return routes
+            .exists()
+            .withMessage("The route must exist.")
+            .custom(routesArrayValidationHelper).withMessage("The value must be a route");
     }
+}
+
+/**
+ * Returns true if value an array of routes
+ * @param {*} routes value to check against
+ */
+function routesArrayValidationHelper(routes) {
+    if (!Array.isArray(routes)) {
+        return false;
+    }
+    for (const route of routes) {
+        if (route.uri === null || typeof route.uri !== "string") {
+            return false;
+        }
+        if (route.requestType === null || !checkEnum(route.requestType, Constants.REQUEST_TYPES)) {
+            return false;
+        }
+    }
+    return true;
+}
+
+/**
+ * Validates that field must be a value within the enum passed in through parameter 'enums'
+ * @param {"query" | "body" | "header" | "param"} fieldLocation The location where the field should be found.
+ * @param {string} fieldname The name of the field that needs to be validated.
+ * @param {Object} enums The enum object that the field must be part of. 
+ * @param {boolean} optional Whether the field is optional or not.
+ */
+function enumValidator(fieldLocation, fieldname, enums, optional = true) {
+    const enumValue = setProperValidationChainBuilder(fieldLocation, fieldname, "Invalid enums");
+
+    if (optional) {
+        return enumValue
+            .optional({
+                checkFalsy: true
+            })
+            .custom((val) => {
+                return checkEnum(val, enums);
+            }).withMessage("The value must be part of the enum");
+    } else {
+        return enumValue
+            .exists()
+            .withMessage("The value being checked agains the enums must exist.")
+            .custom((val) => {
+                return checkEnum(val, enums);
+            }).withMessage("The value must be part of the enum");
+    }
+}
+
+/**
+ * Checks that 'value' is part of 'enums'. 'enums' should be an enum dict.
+ * @param {*} value Should be of the same type as the values of the enum
+ * @param {Object} enums An object that represents an enum. They keys are the keys of the enum, and the values are the enum values. 
+ * @return {boolean} Returns true if the value is part of the enum, false otherwise.
+ */
+function checkEnum(value, enums) {
+    for (var enumKey in enums) {
+        if (value === enums[enumKey]) {
+            return true;
+        }
+    }
+    return false;
 }
 
 /**
@@ -637,27 +596,22 @@ function setProperValidationChainBuilder(fieldLocation, fieldName, errorString) 
 }
 
 module.exports = {
-    devpostValidator: devpostValidator,
+    regexValidator: regexValidator,
     integerValidator: integerValidator,
     mongoIdValidator: mongoIdValidator,
     mongoIdArrayValidator: mongoIdArrayValidator,
-    nameValidator: nameValidator,
-    pronounValidator: pronounValidator,
-    emailValidator: emailValidator,
+    asciiValidator: asciiValidator,
     alphaValidator: alphaValidator,
     alphaArrayValidator: alphaArrayValidator,
-    shirtSizeValidator: shirtSizeValidator,
     passwordValidator: passwordValidator,
-    hackerStatusValidator: hackerStatusValidator,
     booleanValidator: booleanValidator,
     applicationValidator: applicationValidator,
     jwtValidator: jwtValidator,
-    urlValidator: urlValidator,
     searchValidator: searchValidator,
     searchModelValidator: searchModelValidator,
     searchSortValidator: searchSortValidator,
     phoneNumberValidator: phoneNumberValidator,
     dateValidator: dateValidator,
-    hackerCheckInStatusValidator: hackerCheckInStatusValidator,
-    accountTypeValidator: accountTypeValidator
+    enumValidator: enumValidator,
+    routesValidator: routesValidator,
 };

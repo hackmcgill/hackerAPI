@@ -179,6 +179,22 @@
                 "${workspaceFolder}/tests/auth.test.js"
             ],
             "internalConsoleOptions": "openOnSessionStart"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Mocha Tests - Role",
+            "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
+            "args": [
+                "-u",
+                "tdd",
+                "--timeout",
+                "999999",
+                "--colors",
+                "${workspaceFolder}/tests/setup.spec.js",
+                "${workspaceFolder}/tests/role.test.js"
+            ],
+            "internalConsoleOptions": "openOnSessionStart"
         }
     ]
 }
