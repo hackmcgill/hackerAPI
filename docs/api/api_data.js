@@ -2230,19 +2230,19 @@ define({
     },
     {
       "type": "get",
-      "url": "/team/",
+      "url": "/team/:id",
       "title": "get a team's information",
       "name": "getTeam",
       "group": "Team",
       "version": "0.0.8",
       "parameter": {
         "fields": {
-          "body": [{
-            "group": "body",
-            "type": "MongoId",
+          "param": [{
+            "group": "param",
+            "type": "ObjectId",
             "optional": false,
-            "field": "MongoId",
-            "description": "<p>of the team</p>"
+            "field": "id",
+            "description": "<p>MongoId of the team</p>"
           }]
         }
       },
@@ -2297,7 +2297,7 @@ define({
       "filename": "routes/api/team.js",
       "groupTitle": "Team",
       "sampleRequest": [{
-        "url": "https://api.mchacks.ca/api/team/"
+        "url": "https://api.mchacks.ca/api/team/:id"
       }]
     },
     {

@@ -93,12 +93,12 @@ module.exports = {
         );
 
         /**
-         * @api {get} /team/ get a team's information
+         * @api {get} /team/:id get a team's information
          * @apiName getTeam
          * @apiGroup Team
          * @apiVersion 0.0.8
          * 
-        * @apiParam (param) {ObjectId} id MongoId of the team
+         * @apiParam (param) {ObjectId} id MongoId of the team
          * 
          * @apiSuccess {String} message Success message
          * @apiSuccess {Object} data Sponsor object

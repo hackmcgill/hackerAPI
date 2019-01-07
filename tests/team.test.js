@@ -70,7 +70,16 @@ describe("GET team", function () {
                     res.body.message.should.equal(Constants.Success.TEAM_READ);
                     res.body.should.have.property("data");
                     res.body.data.should.have.property("team");
+                    res.body.data.team.name.should.equal("FullTeam");
                     res.body.data.should.have.property("members");
+                    res.body.data.members[0].firstName.should.equal("abcd");
+                    res.body.data.members[0].lastName.should.equal("defg4");
+                    res.body.data.members[1].firstName.should.equal("abcd");
+                    res.body.data.members[1].lastName.should.equal("defg5");
+                    res.body.data.members[2].firstName.should.equal("abcd");
+                    res.body.data.members[2].lastName.should.equal("defg6");
+                    res.body.data.members[3].firstName.should.equal("abcd");
+                    res.body.data.members[3].lastName.should.equal("defg7");
 
                     done();
                 });
