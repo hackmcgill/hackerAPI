@@ -280,9 +280,18 @@ function parseTeam(req, res, next) {
  */
 function parsePatch(req, res, next) {
     delete req.body.id;
-    req.body.teamDetails = req.body;
 
-    req.body.hackerId = req.params.hackerId;
+    let teamDetails = {};
+
+    for (const val in req.body) {
+        if (val === "hackerId") {
+            continue;
+        } else {
+            teamDetails[val] = req.body[val];
+        }
+    }
+
+    req.body.teamDetails = teamDetails;
 
     return next();
 }
