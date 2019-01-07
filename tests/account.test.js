@@ -545,3 +545,54 @@ describe("POST invite account", function () {
         });
     });
 });
+
+describe("GET invites", function () {
+    it("Should FAIL to get all invites due to Authentication", function (done) {
+        chai.request(server.app)
+            .get("/api/account/invite")
+            .end(function (err, res) {
+                res.should.have.status(401);
+                res.body.should.have.property("message");
+                res.body.message.should.equal(Constants.Error.AUTH_401_MESSAGE);
+                done();
+            });
+    });
+    it("Should FAIL to get all invites due to Authorization", function (done) {
+        util.auth.login(agent, storedAccount1, (error) => {
+            if (error) {
+                agent.close();
+                return done(error);
+            }
+            return agent
+                .get("/api/account/invite")
+                .end(function (err, res) {
+                    res.should.have.status(403);
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal(Constants.Error.AUTH_403_MESSAGE);
+                    done();
+                });
+        });
+    });
+    it("Should SUCCEED to get all invites", function (done) {
+        util.auth.login(agent, Admin1, (error) => {
+            if (error) {
+                agent.close();
+                return done(error);
+            }
+            return agent
+                .get("/api/account/invite")
+                .end(function (err, res) {
+                    if (err) {
+                        return done(err);
+                    }
+                    res.should.have.status(200);
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal(Constants.Success.ACCOUNT_GET_INVITES);
+                    res.body.should.have.property("data");
+                    res.body.data.should.have.property("invites");
+                    res.body.data.invites.length.should.equal(util.accountConfirmation.AccountConfirmationTokens.length);
+                    done();
+                });
+        });
+    });
+});
