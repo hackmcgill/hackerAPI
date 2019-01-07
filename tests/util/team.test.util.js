@@ -12,6 +12,7 @@ const duplicateTeamName1 = {
 };
 
 const newTeam1 = {
+    "_id": mongoose.Types.ObjectId(),
     "name": "BronzeTeam1",
     "projectName": "YetAnotherProject"
 };
