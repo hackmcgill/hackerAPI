@@ -134,11 +134,7 @@ const sponsorRoutes = {
 };
 
 const teamRoutes = {
-    "getSelfById": {
-        requestType: Constants.REQUEST_TYPES.GET,
-        uri: "/api/team/" + Constants.ROLE_CATEGORIES.SELF,
-    },
-    "getAnyById": {
+    "get": {
         requestType: Constants.REQUEST_TYPES.GET,
         uri: "/api/team/" + Constants.ROLE_CATEGORIES.ALL,
     },

@@ -5,7 +5,8 @@ const mongoose = require("mongoose");
 const Services = {
     Logger: require("../services/logger.service"),
     Team: require("../services/team.service"),
-    Hacker: require("../services/hacker.service")
+    Hacker: require("../services/hacker.service"),
+    Account: require("../services/account.service"),
 };
 const Util = require("./util.middleware");
 const Constants = {
@@ -250,6 +251,42 @@ async function findById(req, res, next) {
 }
 
 /**
+ * @async
+ * @function populateMemberAccountsById
+ * @param {{body: {id: ObjectId}}} req 
+ * @param {*} res 
+ * @return {JSON} Success or error status
+ * @description 
+ * Find the team by id and populates the accounts of the members.
+ * The team information is stored in req.body.team, and the member information is stored in req.body.teamMembers
+ */
+async function populateMemberAccountsById(req, res, next) {
+    const team = await Services.Team.findById(req.body.id).populate({
+        path: "members",
+        populate: {
+            path: "accountId"
+        }
+    });
+
+    if (!team) {
+        return res.status(404).json({
+            message: Constants.Error.TEAM_404_MESSAGE,
+            data: {}
+        });
+    }
+
+    let teamMembers = [];
+
+    for (const member of team.members) {
+        teamMembers.push(member.accountId);
+    }
+
+    req.body.team = team;
+    req.body.teamMembers = teamMembers;
+    return next();
+}
+
+/**
  * @function parseTeam
  * @param {{body: {name: string, members: Object[], devpostURL: string, projectName: string}}} req
  * @param {*} res
@@ -328,4 +365,5 @@ module.exports = {
     updateHackerTeam: Util.asyncMiddleware(updateHackerTeam),
     parseNewTeam: Util.asyncMiddleware(parseNewTeam),
     ensureFreeTeamName: Util.asyncMiddleware(ensureFreeTeamName),
+    populateMemberAccountsById: Util.asyncMiddleware(populateMemberAccountsById),
 };

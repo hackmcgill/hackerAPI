@@ -1779,7 +1779,7 @@ define({
     {
       "type": "post",
       "url": "/api/role/",
-      "title": "create a new hacker",
+      "title": "create a new role",
       "name": "createRole",
       "group": "Role",
       "version": "1.1.1",
@@ -2256,7 +2256,7 @@ define({
             "type": "ObjectId",
             "optional": false,
             "field": "id",
-            "description": "<p>a team's unique mongoId</p>"
+            "description": "<p>MongoId of the team</p>"
           }]
         }
       },
