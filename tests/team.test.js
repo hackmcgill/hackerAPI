@@ -88,25 +88,135 @@ describe("GET team", function () {
 });
 
 describe("POST create team", function () {
-    it("should SUCCEED and create a new team", function (done) {
+    it("should FAIL to create a new team due to lack of authentication", function (done) {
         chai.request(server.app)
             .post(`/api/team/`)
             .type("application/json")
             .send(util.team.newTeam1)
             .end(function (err, res) {
-                res.should.have.status(200);
+                res.should.have.status(401);
                 res.should.be.json;
                 res.body.should.have.property("message");
-                res.body.message.should.equal(Constants.Success.TEAM_CREATE);
+                res.body.message.should.equal(Constants.Error.AUTH_401_MESSAGE);
                 res.body.should.have.property("data");
 
-                // deleting _id because that was generated, and not part of original data
-                const team = (new Team(util.team.newTeam1)).toJSON();
-                delete res.body.data.id;
-                delete team.id;
-                chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify(team));
                 done();
             });
+    });
+
+    it("should FAIL to create a new team due to lack of authorization", function (done) {
+        util.auth.login(agent, util.account.Account3, (error) => {
+            if (error) {
+                agent.close();
+                return done(error);
+            }
+            return agent
+                .post(`/api/team/`)
+                .type("application/json")
+                .send(util.team.newTeam1)
+                .end(function (err, res) {
+                    res.should.have.status(403);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal(Constants.Error.AUTH_403_MESSAGE);
+                    res.body.should.have.property("data");
+
+                    done();
+                });
+        });
+    });
+
+    it("should FAIL to create a new team due to logged in user not being a hacker", function (done) {
+        util.auth.login(agent, util.account.Admin1, (error) => {
+            if (error) {
+                agent.close();
+                return done(error);
+            }
+            return agent
+                .post(`/api/team/`)
+                .type("application/json")
+                .send(util.team.newTeam1)
+                .end(function (err, res) {
+                    res.should.have.status(404);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal(Constants.Error.HACKER_404_MESSAGE);
+                    res.body.should.have.property("data");
+
+                    done();
+                });
+        });
+    });
+
+    it("should FAIL to create a new team due to duplicate team name", function (done) {
+        util.auth.login(agent, util.account.Account2, (error) => {
+            if (error) {
+                agent.close();
+                return done(error);
+            }
+            return agent
+                .post(`/api/team/`)
+                .type("application/json")
+                .send(util.team.duplicateTeamName1)
+                .end(function (err, res) {
+                    res.should.have.status(409);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal(Constants.Error.TEAM_NAME_409_MESSAGE);
+                    res.body.should.have.property("data");
+                    res.body.data.should.equal(util.team.duplicateTeamName1.name);
+
+                    done();
+                });
+        });
+    });
+
+    it("should Fail to create a new team due to hacker already being in a team", function (done) {
+        util.auth.login(agent, util.account.Account1, (error) => {
+            if (error) {
+                agent.close();
+                return done(error);
+            }
+            return agent
+                .post(`/api/team/`)
+                .type("application/json")
+                .send(util.team.newTeam1)
+                .end(function (err, res) {
+                    res.should.have.status(409);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal(Constants.Error.TEAM_MEMBER_409_MESSAGE);
+                    res.body.should.have.property("data");
+                    done();
+                });
+        });
+    });
+
+    it("should SUCCEED and create a new team", function (done) {
+        util.auth.login(agent, util.account.Account2, (error) => {
+            if (error) {
+                agent.close();
+                return done(error);
+            }
+            return agent
+                .post(`/api/team/`)
+                .type("application/json")
+                .send(util.team.newTeam1)
+                .end(function (err, res) {
+                    res.should.have.status(200);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal(Constants.Success.TEAM_CREATE);
+                    res.body.should.have.property("data");
+
+                    // deleting _id because that was generated, and not part of original data
+                    const team = (new Team(util.team.createdNewTeam1)).toJSON();
+                    delete res.body.data.id;
+                    delete team.id;
+                    chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify(team));
+                    done();
+                });
+        });
     });
 });
 

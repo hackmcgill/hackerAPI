@@ -6,8 +6,8 @@ const Constants = require("../constants/general.constant");
 const TeamSchema = new mongoose.Schema({
     name: {
         type: String,
+        required: true,
         unique: true,
-        required: true
     },
     members: {
         type: [{

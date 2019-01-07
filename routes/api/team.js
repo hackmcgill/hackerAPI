@@ -16,22 +16,18 @@ const Middleware = {
     Team: require("../../middlewares/team.middleware"),
     Auth: require("../../middlewares/auth.middleware"),
 };
-const Services = {
-    Hacker: require("../../services/hacker.service"),
-};
 
 module.exports = {
     activate: function (apiRouter) {
         const teamRouter = new express.Router();
 
         /**
-         * @api {post} /team/ create a new team
+         * @api {post} /team/ create a new team consisting of only the logged in user
          * @apiName createTeam
          * @apiGroup Team
          * @apiVersion 0.0.8
          * 
          * @apiParam (body) {String} name Name of the team.
-         * @apiParam (body) {MongoID[]} [members] Array of members in team.
          * @apiParam (body) {String} [devpostURL] Devpost link to hack. Once the link is sent, the hack will be considered to be submitted.
          * @apiParam (body) {String} [projectName] Name of the team.
          * 
@@ -49,15 +45,14 @@ module.exports = {
          *      {"message": "Error while creating team", "data": {}}
          */
         teamRouter.route("/").post(
+            Middleware.Auth.ensureAuthenticated(),
+            Middleware.Auth.ensureAuthorized(),
             // Validators
             Middleware.Validator.Team.newTeamValidator,
-
             Middleware.parseBody.middleware,
+            Middleware.Team.parseNewTeam,
 
-            Middleware.Team.parseTeam,
-
-            // check that member is not already in a team
-            Middleware.Team.ensureUniqueHackerId,
+            Middleware.Team.ensureFreeTeamName,
 
             Middleware.Team.createTeam,
             Controllers.Team.createdTeam

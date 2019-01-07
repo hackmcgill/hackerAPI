@@ -155,6 +155,7 @@ const HackerA = {
     "major": "EE",
     "graduationYear": 2019,
     "codeOfConduct": true,
+    "teamId": mongoose.Types.ObjectId.createFromTime(101),
 };
 const HackerB = {
     "_id": mongoose.Types.ObjectId(),
