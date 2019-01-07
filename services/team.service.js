@@ -8,10 +8,6 @@ const Middleware = {
     Util: require("../middlewares/util.middleware"),
 };
 
-function updateTeam(teamId) {
-
-}
-
 /**
  * @function findTeamByHackerId
  * @param {ObjectId} hackerId objectID of the hacker
@@ -41,6 +37,14 @@ function createTeam(teamDetails) {
 
     return team.save();
 }
+
+/**
+ * @function updateOne
+ * @param {ObjectId} id
+ * @param {{name?: string, devpostURL?: string, projectName?: string}} teamDetails
+ * @return {DocumentQuery} The document query will resolve to team or null.
+ * @description Update a team specified by its mongoId with information specified by teamDetails.
+ */
 
 function updateOne(id, teamDetails) {
     const TAG = `[Team Service # updateOne]:`;

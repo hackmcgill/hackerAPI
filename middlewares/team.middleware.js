@@ -12,6 +12,7 @@ const Constants = {
     Error: require("../constants/error.constant"),
     General: require("../constants/general.constant"),
 };
+const Team = require("../models/team.model");
 
 /**
  * @async
@@ -84,7 +85,7 @@ async function ensureSpace(req, res, next) {
 }
 
 async function updateTeam(req, res, next) {
-    const team = await Services.Team.updateTeam(req.body.teamId, req.body.teamDetails);
+    const team = await Services.Team.updateOne(req.body.team._id, req.body.teamDetails);
 
     if (!team) {
         return next({
@@ -110,7 +111,17 @@ async function getByHackerId(req, res, next) {
         });
     }
 
-    req.body.teamId = hacker.teamId;
+    const team = await Services.Team.findById(hacker.teamId);
+
+    if (!team) {
+        return next({
+            status: 404,
+            message: Constants.Error.TEAM_404_MESSAGE,
+            data: hacker.teamId,
+        });
+    }
+
+    req.body.team = team;
     next();
 }
 
@@ -276,7 +287,9 @@ function parseTeam(req, res, next) {
  * @param {*} res 
  * @param {(err?) => void} next 
  * @return {void}
- * @description Delete the req.body.id that was added by the validation of route parameter.
+ * @description 
+ *      Delete the req.body.id that was added by the validation of route parameter.
+ *      Move attributes belonging to the team schema to req.body.teamDetails.
  */
 function parsePatch(req, res, next) {
     delete req.body.id;
@@ -284,10 +297,10 @@ function parsePatch(req, res, next) {
     let teamDetails = {};
 
     for (const val in req.body) {
-        if (val === "hackerId") {
-            continue;
-        } else {
+        // use .hasOwnProperty instead of 'in' to get rid of inherited properties such as 'should'
+        if (Team.schema.paths.hasOwnProperty(val)) {
             teamDetails[val] = req.body[val];
+            delete req.body[val];
         }
     }
 
