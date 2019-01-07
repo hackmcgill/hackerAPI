@@ -19,9 +19,27 @@ const Constants = {
  * @description Returns the JSON of team object located in req.body.team
  */
 function showTeam(req, res) {
+    const teamData = req.body.team.toJSON();
+    delete teamData.members;
+
+    const memberNames = [];
+    for (const member of req.body.teamMembers) {
+        const strippedMemberJSON = member.toStrippedJSON();
+
+        const memberName = {
+            "firstName": strippedMemberJSON.firstName,
+            "lastName": strippedMemberJSON.lastName,
+        };
+
+        memberNames.push(memberName);
+    }
+
     return res.status(200).json({
         message: Constants.Success.TEAM_READ,
-        data: req.body.team.toJSON()
+        data: {
+            team: teamData,
+            members: memberNames,
+        }
     });
 }
 

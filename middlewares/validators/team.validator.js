@@ -13,5 +13,5 @@ module.exports = {
 
     joinTeamValidator: [
         VALIDATOR.asciiValidator("body", "name", false),
-    ]
+    ],
 };

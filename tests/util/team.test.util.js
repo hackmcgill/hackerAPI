@@ -7,6 +7,7 @@ const mongoose = require("mongoose");
 const logger = require("../../services/logger.service");
 
 const newTeam1 = {
+    "_id": mongoose.Types.ObjectId(),
     "name": "BronzeTeam",
     "members": [Util.Hacker.HackerB._id],
     "projectName": "YetAnotherProject"

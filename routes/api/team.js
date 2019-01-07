@@ -98,7 +98,7 @@ module.exports = {
          * @apiGroup Team
          * @apiVersion 0.0.8
          * 
-         * @apiParam (param) {ObjectId} id a team's unique mongoId
+         * @apiParam (param) {ObjectId} id MongoId of the team
          * 
          * @apiSuccess {String} message Success message
          * @apiSuccess {Object} data Sponsor object
@@ -114,10 +114,21 @@ module.exports = {
          *      {"message": "Team not found", "data": {}}
          */
         teamRouter.route("/:id").get(
+            Middleware.Auth.ensureAuthenticated(),
+            // get is available for all teams, or no teams. No authorization is done on the :id parameter.
+            // However, a function is needed, so the identity function is put here. In reality, the route
+            // is /api/team/:all, so the id is not checked. The returned object places the id inside accountId
+            // to be consistent with other findById functions
+            Middleware.Auth.ensureAuthorized([(id) => {
+                return {
+                    accountId: id
+                };
+            }]),
+
             Middleware.Validator.RouteParam.idValidator,
             Middleware.parseBody.middleware,
 
-            Middleware.Team.findById,
+            Middleware.Team.populateMemberAccountsById,
             Controllers.Team.showTeam
         );
 
