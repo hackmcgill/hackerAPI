@@ -22,10 +22,6 @@ const TeamSchema = new mongoose.Schema({
     projectName: String
 });
 
-TeamSchema.index({
-    name: 1
-});
-
 function validateTeamSize(membersArr) {
     return membersArr.length <= Constants.MAX_TEAM_SIZE;
 }
