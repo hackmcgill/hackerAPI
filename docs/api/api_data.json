@@ -1361,6 +1361,25 @@
     "name": "getHackerStats",
     "group": "Hacker",
     "version": "0.0.9",
+    "parameter": {
+      "fields": {
+        "query": [{
+            "group": "query",
+            "type": "String",
+            "optional": false,
+            "field": "model",
+            "description": "<p>the model to be searched (Only hacker supported)</p>"
+          },
+          {
+            "group": "query",
+            "type": "Array",
+            "optional": false,
+            "field": "q",
+            "description": "<p>the query to be executed. For more information on how to format this, please see https://docs.mchacks.ca/architecture/</p>"
+          }
+        ]
+      }
+    },
     "success": {
       "fields": {
         "Success 200": [{

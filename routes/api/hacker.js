@@ -174,6 +174,10 @@ module.exports = {
          * @apiName getHackerStats
          * @apiGroup Hacker
          * @apiVersion 0.0.9
+         * 
+         * @apiParam (query) {String} model the model to be searched (Only hacker supported)
+         * @apiParam (query) {Array} q the query to be executed. For more information on how to format this, please see https://docs.mchacks.ca/architecture/
+         * 
          * @apiSuccess {string} message Success message
          * @apiSuccess {object} data Hacker object
          * @apiSuccessExample {object} Success-Response: 
