@@ -88,6 +88,52 @@ async function validateConfirmedStatus(req, res, next) {
 }
 
 /**
+ * @async
+ * @function findById
+ * @param {{body: {id: ObjectId}}} req
+ * @param {*} res
+ * @return {JSON} Success or error status
+ * @description Retrieves a sponsor by req.body.id, placing it in req.body.sponsor if successful.
+ */
+async function findById(req, res, next) {
+    const sponsor = await Services.Sponsor.findById(req.body.id);
+
+    if (!sponsor) {
+        return res.status(404).json({
+            message: Constants.Error.SPONSOR_404_MESSAGE,
+            data: {}
+        });
+    }
+
+    req.body.sponsor = sponsor;
+    next();
+}
+
+/**
+ * @async
+ * @function createSponsor
+ * @param {{body: {sponsorDetails: {_id: ObjectId, accountId: ObjectId, tier: number, company: string, contractURL: string, nominees: ObjectId[]}}}} req
+ * @param {*} res
+ * @description Create a sponsor from information in req.body.sponsorDetails, place it in req.body.sponsor.
+ */
+async function createSponsor(req, res, next) {
+    const sponsorDetails = req.body.sponsorDetails;
+
+    const sponsor = await Services.Sponsor.createSponsor(sponsorDetails);
+
+    if (!!sponsor) {
+        req.body.sponsor = sponsor;
+        return next();
+    } else {
+        return next({
+            status: 500,
+            message: Constants.Error.SPONSOR_CREATE_500_MESSAGE,
+            data: {}
+        });
+    }
+}
+
+/**
  * Checks that there are no other sponsor with the same account id as the one passed into req.body.accountId
  * @param {{body:{accountId: ObjectId}}} req 
  * @param {*} res 
@@ -111,6 +157,8 @@ async function checkDuplicateAccountLinks(req, res, next) {
 module.exports = {
     parsePatch: parsePatch,
     parseSponsor: parseSponsor,
+    findById: Middleware.Util.asyncMiddleware(findById),
+    createSponsor: Middleware.Util.asyncMiddleware(createSponsor),
     checkDuplicateAccountLinks: Middleware.Util.asyncMiddleware(checkDuplicateAccountLinks),
     validateConfirmedStatus: Middleware.Util.asyncMiddleware(validateConfirmedStatus),
 };

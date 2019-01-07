@@ -1446,6 +1446,27 @@ define({
             },
             {
               "group": "body",
+              "type": "String[]",
+              "optional": true,
+              "field": "ethnicity",
+              "description": "<p>the ethnicities of the hacker</p>"
+            },
+            {
+              "group": "body",
+              "type": "String",
+              "optional": true,
+              "field": "major",
+              "description": "<p>the major of the hacker</p>"
+            },
+            {
+              "group": "body",
+              "type": "Number",
+              "optional": true,
+              "field": "graduationYear",
+              "description": "<p>the graduation year of the hacker</p>"
+            },
+            {
+              "group": "body",
               "type": "Json",
               "optional": true,
               "field": "application",
@@ -1753,6 +1774,91 @@ define({
       "groupTitle": "Index",
       "sampleRequest": [{
         "url": "https://api.mchacks.ca/api/"
+      }]
+    },
+    {
+      "type": "post",
+      "url": "/api/role/",
+      "title": "create a new hacker",
+      "name": "createRole",
+      "group": "Role",
+      "version": "1.1.1",
+      "parameter": {
+        "fields": {
+          "body": [{
+              "group": "body",
+              "type": "String",
+              "optional": false,
+              "field": "name",
+              "description": "<p>Name of the route</p>"
+            },
+            {
+              "group": "body",
+              "type": "Route[]",
+              "optional": false,
+              "field": "routes",
+              "description": "<p>The routes that this role gives access to</p>"
+            }
+          ]
+        },
+        "examples": [{
+          "title": "application: ",
+          "content": "{\n               \"name\": \"routename\",\n               \"routes\": [\n                   {\n                       uri: \"/api/hacker/\"\n                       requestType: \"POST\"\n                   }\n               ]\n}",
+          "type": "Json"
+        }]
+      },
+      "success": {
+        "fields": {
+          "Success 200": [{
+              "group": "Success 200",
+              "type": "string",
+              "optional": false,
+              "field": "message",
+              "description": "<p>Success message</p>"
+            },
+            {
+              "group": "Success 200",
+              "type": "object",
+              "optional": false,
+              "field": "data",
+              "description": "<p>Role object</p>"
+            }
+          ]
+        },
+        "examples": [{
+          "title": "Success-Response: ",
+          "content": "{\n    \"message\": \"Role creation successful\", \n    \"data\": {\n                   \"name\": \"routename\",\n                   \"routes\": [\n                       {\n                           uri: \"/api/hacker/\"\n                           requestType: \"POST\"\n                       }\n                   ]\n    }\n}",
+          "type": "object"
+        }]
+      },
+      "error": {
+        "fields": {
+          "Error 4xx": [{
+              "group": "Error 4xx",
+              "type": "string",
+              "optional": false,
+              "field": "message",
+              "description": "<p>Error message</p>"
+            },
+            {
+              "group": "Error 4xx",
+              "type": "object",
+              "optional": false,
+              "field": "data",
+              "description": "<p>empty</p>"
+            }
+          ]
+        },
+        "examples": [{
+          "title": "Error-Response: ",
+          "content": "{\"message\": \"Error while creating role\", \"data\": {}}",
+          "type": "object"
+        }]
+      },
+      "filename": "routes/api/role.js",
+      "groupTitle": "Role",
+      "sampleRequest": [{
+        "url": "https://api.mchacks.ca/api/api/role/"
       }]
     },
     {
@@ -2082,7 +2188,7 @@ define({
             {
               "group": "body",
               "type": "String",
-              "optional": false,
+              "optional": true,
               "field": "projectName",
               "description": "<p>Name of the team.</p>"
             }
@@ -2213,6 +2319,57 @@ define({
       "groupTitle": "Team",
       "sampleRequest": [{
         "url": "https://api.mchacks.ca/api/team/:id"
+      }]
+    },
+    {
+      "type": "patch",
+      "url": "/team/join/",
+      "title": "Allows a logged in hacker to join a team by name",
+      "name": "patchJoinTeam",
+      "group": "Team",
+      "version": "1.1.1",
+      "parameter": {
+        "fields": {
+          "body": [{
+            "group": "body",
+            "type": "string",
+            "optional": true,
+            "field": "name",
+            "description": "<p>Name of the team to join</p>"
+          }]
+        }
+      },
+      "success": {
+        "fields": {
+          "Success 200": [{
+              "group": "Success 200",
+              "type": "string",
+              "optional": false,
+              "field": "message",
+              "description": "<p>Success message</p>"
+            },
+            {
+              "group": "Success 200",
+              "type": "object",
+              "optional": false,
+              "field": "data",
+              "description": "<p>{}</p>"
+            }
+          ]
+        },
+        "examples": [{
+          "title": "Success-Response: ",
+          "content": "{\n    \"message\": \"Team join successful.\", \n    \"data\": {}\n}",
+          "type": "object"
+        }]
+      },
+      "permission": [{
+        "name": "Administrator"
+      }],
+      "filename": "routes/api/team.js",
+      "groupTitle": "Team",
+      "sampleRequest": [{
+        "url": "https://api.mchacks.ca/api/team/join/"
       }]
     },
     {

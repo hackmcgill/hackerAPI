@@ -58,7 +58,7 @@ const accountRoutes = {
 const hackerRoutes = {
     "getSelf": {
         requestType: Constants.REQUEST_TYPES.GET,
-        uri: "/api/hacker/self/"
+        uri: "/api/hacker/self/",
     },
     "getSelfById": {
         requestType: Constants.REQUEST_TYPES.GET,
@@ -146,6 +146,10 @@ const teamRoutes = {
         requestType: Constants.REQUEST_TYPES.POST,
         uri: "/api/team/",
     },
+    "join": {
+        requestType: Constants.REQUEST_TYPES.PATCH,
+        uri: "/api/team/join/",
+    },
 };
 
 const volunteerRoutes = {
@@ -153,6 +157,13 @@ const volunteerRoutes = {
         requestType: Constants.REQUEST_TYPES.POST,
         uri: "/api/volunteer/",
     },
+};
+
+const roleRoutes = {
+    "post": {
+        requestType: Constants.REQUEST_TYPES.POST,
+        uri: "/api/role/",
+    }
 };
 
 const searchRoutes = {
@@ -185,6 +196,7 @@ const allRoutes = {
     "Sponsor": sponsorRoutes,
     "Team": teamRoutes,
     "Volunteer": volunteerRoutes,
+    "Role": roleRoutes,
     "Search": searchRoutes,
     "Staff": staffRoutes,
 };
@@ -222,6 +234,7 @@ module.exports = {
     sponsorRoutes: sponsorRoutes,
     teamRoutes: teamRoutes,
     volunteerRoutes: volunteerRoutes,
+    roleRoutes: roleRoutes,
     searchRoutes: searchRoutes,
     staffRoutes: staffRoutes,
     allRoutes: allRoutes,

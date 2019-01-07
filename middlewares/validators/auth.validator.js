@@ -1,9 +1,10 @@
 "use strict";
 const VALIDATOR = require("./validator.helper");
+const Constants = require("../../constants/general.constant");
 
 module.exports = {
     ForgotPasswordValidator: [
-        VALIDATOR.emailValidator("body", "email", false)
+        VALIDATOR.regexValidator("body", "email", false, Constants.EMAIL_REGEX)
     ],
     ChangePasswordValidator: [
         VALIDATOR.passwordValidator("body", "oldPassword", false),

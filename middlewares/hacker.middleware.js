@@ -6,7 +6,7 @@ const Services = {
     Hacker: require("../services/hacker.service"),
     Storage: require("../services/storage.service"),
     Email: require("../services/email.service"),
-    Account: require("../services/account.service")
+    Account: require("../services/account.service"),
 };
 const Middleware = {
     Util: require("./util.middleware")
@@ -53,6 +53,8 @@ function parseHacker(req, res, next) {
         major: req.body.major,
         graduationYear: req.body.graduationYear,
         codeOfConduct: req.body.codeOfConduct,
+
+        teamId: req.body.teamId,
     };
     req.body.token = req.body.authorization;
 
@@ -67,6 +69,7 @@ function parseHacker(req, res, next) {
     delete req.body.major;
     delete req.body.graduationYear;
     delete req.body.codeOfConduct;
+    delete req.body.teamId;
 
     req.body.hackerDetails = hackerDetails;
 
@@ -152,6 +155,27 @@ async function validateConfirmedStatus(req, res, next) {
     } else {
         return next();
     }
+}
+
+/**
+ * @async
+ * @function findById
+ * @param {{body: {id: ObjectId}}} req
+ * @param {*} res
+ * @description Retrieves a hacker's information via req.body.id, moving result to req.body.hacker if succesful.
+ */
+async function findById(req, res, next) {
+    const hacker = await Services.Hacker.findById(req.body.id);
+
+    if (!hacker) {
+        return res.status(404).json({
+            message: Constants.Error.HACKER_404_MESSAGE,
+            data: {}
+        });
+    }
+
+    req.body.hacker = hacker;
+    next();
 }
 
 /**
@@ -486,5 +510,6 @@ module.exports = {
     parseConfirmation: parseConfirmation,
     createHacker: Middleware.Util.asyncMiddleware(createHacker),
     findSelf: Middleware.Util.asyncMiddleware(findSelf),
-    getStats: Middleware.Util.asyncMiddleware(getStats)
+    getStats: Middleware.Util.asyncMiddleware(getStats),
+    findById: Middleware.Util.asyncMiddleware(findById),
 };
