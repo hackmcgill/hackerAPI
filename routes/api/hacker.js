@@ -13,7 +13,8 @@ const Middleware = {
     parseBody: require("../../middlewares/parse-body.middleware"),
     Util: require("../../middlewares/util.middleware"),
     Hacker: require("../../middlewares/hacker.middleware"),
-    Auth: require("../../middlewares/auth.middleware")
+    Auth: require("../../middlewares/auth.middleware"),
+    Search: require("../../middlewares/search.middleware")
 };
 const Services = {
     Hacker: require("../../services/hacker.service"),
@@ -201,6 +202,11 @@ module.exports = {
         hackerRouter.route("/stats").get(
             Middleware.Auth.ensureAuthenticated(),
             Middleware.Auth.ensureAuthorized(),
+            Middleware.Validator.Hacker.statsValidator,
+            Middleware.parseBody.middleware,
+            Middleware.Search.setExpandTrue,
+            Middleware.Search.parseQuery,
+            Middleware.Search.executeQuery,
             Middleware.Hacker.getStats,
             Controllers.Hacker.gotStats
         );
