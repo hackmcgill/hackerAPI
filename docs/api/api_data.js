@@ -206,6 +206,27 @@ define({
       }]
     },
     {
+      "type": "get",
+      "url": "/account/invite",
+      "title": "Get all of the invites.",
+      "name": "getAllInvites",
+      "group": "Account",
+      "version": "0.0.8",
+      "description": "<p>Get all of the invites that currently exist in the database.</p>",
+      "success": {
+        "examples": [{
+          "title": "Success-Response: ",
+          "content": "{\n               \"message\": \"Invite retrieval successful.\", \n               \"data\": [{\n                   \"email\":\"abc@def.com\",\n                   \"accountType\":\"Hacker\"\n               }]\n           }",
+          "type": "object"
+        }]
+      },
+      "filename": "routes/api/account.js",
+      "groupTitle": "Account",
+      "sampleRequest": [{
+        "url": "https://api.mchacks.ca/api/account/invite"
+      }]
+    },
+    {
       "type": "post",
       "url": "/account/invite",
       "title": "invites a user to create an account with the specified accountType",
@@ -1777,7 +1798,7 @@ define({
     {
       "type": "post",
       "url": "/api/role/",
-      "title": "create a new hacker",
+      "title": "create a new role",
       "name": "createRole",
       "group": "Role",
       "version": "1.1.1",
@@ -2156,7 +2177,7 @@ define({
     {
       "type": "post",
       "url": "/team/",
-      "title": "create a new team",
+      "title": "create a new team consisting of only the logged in user",
       "name": "createTeam",
       "group": "Team",
       "version": "0.0.8",
@@ -2168,13 +2189,6 @@ define({
               "optional": false,
               "field": "name",
               "description": "<p>Name of the team.</p>"
-            },
-            {
-              "group": "body",
-              "type": "MongoID[]",
-              "optional": true,
-              "field": "members",
-              "description": "<p>Array of members in team.</p>"
             },
             {
               "group": "body",
@@ -2261,7 +2275,7 @@ define({
             "type": "ObjectId",
             "optional": false,
             "field": "id",
-            "description": "<p>a team's unique mongoId</p>"
+            "description": "<p>MongoId of the team</p>"
           }]
         }
       },

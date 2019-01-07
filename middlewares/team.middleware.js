@@ -5,7 +5,8 @@ const mongoose = require("mongoose");
 const Services = {
     Logger: require("../services/logger.service"),
     Team: require("../services/team.service"),
-    Hacker: require("../services/hacker.service")
+    Hacker: require("../services/hacker.service"),
+    Account: require("../services/account.service"),
 };
 const Util = require("./util.middleware");
 const Constants = {
@@ -54,7 +55,42 @@ async function ensureUniqueHackerId(req, res, next) {
 
 /**
  * @async
- * @function ensureSpance
+ * @function createTeam
+ * @param {{body: {teamDetails: {_id: ObjectId, name: string, members: ObjectId[], devpostURL?: string, projectName: string}}}} req
+ * @param {*} res
+ * @description create a team from information in req.body.teamDetails.
+ */
+async function createTeam(req, res, next) {
+    const teamDetails = req.body.teamDetails;
+
+    const team = await Services.Team.createTeam(teamDetails);
+
+    if (!team) {
+        return res.status(500).json({
+            message: Constants.Error.TEAM_CREATE_500_MESSAGE,
+            data: {}
+        });
+    }
+
+    for (const hackerId of teamDetails.members) {
+        const hacker = await Services.Hacker.updateOne(hackerId, {
+            teamId: team._id
+        });
+
+        if (!hacker) {
+            return res.status(500).json({
+                message: Constants.Error.HACKER_UPDATE_500_MESSAGE,
+                data: {}
+            });
+        }
+    }
+
+    req.body.team = team;
+    return next();
+}
+
+/**
+ * @function ensureSpace
  * @param {{body: {name: string}}} req
  * @param {JSON} res
  * @param {(err?)=>void} next
@@ -84,26 +120,49 @@ async function ensureSpace(req, res, next) {
 }
 
 /**
- * @async
- * @function createTeam
- * @param {{body: {teamDetails: {_id: ObjectId, name: string, members: ObjectId[], devpostURL?: string, projectName: string}}}} req
- * @param {*} res
- * @description create a team from information in req.body.teamDetails.
+ * @function ensureFreeTeamName
+ * @param {{body: {teamDetails: {name: String}}}} req
+ * @param {JSON} res
+ * @param {(err?)=>void} next
+ * @return {void}
+ * @description Checks to see that the team name is not in use.
  */
-async function createTeam(req, res, next) {
+async function ensureFreeTeamName(req, res, next) {
     const teamDetails = req.body.teamDetails;
 
-    const team = await Services.Team.createTeam(teamDetails);
+    const team = await Services.Team.findByName(teamDetails.name);
+
+    if (team) {
+        return next({
+            status: 409,
+            message: Constants.Error.TEAM_NAME_409_MESSAGE,
+            data: teamDetails.name
+        });
+    }
+
+    return next();
+}
+
+/**
+ * @async
+ * @function findById
+ * @param {{body: {id: ObjectId}}} req 
+ * @param {*} res 
+ * @return {JSON} Success or error status
+ * @description Finds a team by it's mongoId that's specified in req.param.id in route parameters. The id is moved to req.body.id from req.params.id by validation.
+ */
+async function findById(req, res, next) {
+    const team = await Services.Team.findById(req.body.id);
 
     if (!team) {
-        return res.status(500).json({
-            message: Constants.Error.TEAM_CREATE_500_MESSAGE,
+        return res.status(404).json({
+            message: Constants.Error.TEAM_404_MESSAGE,
             data: {}
         });
-    } else {
-        req.body.team = team;
-        return next();
     }
+
+    req.body.team = team;
+    return next();
 }
 
 /**
@@ -144,7 +203,7 @@ async function updateHackerTeam(req, res, next) {
         return next({
             status: 409,
             message: Constants.Error.TEAM_JOIN_SAME_409_MESSAGE,
-            data: req.body.teamName
+            data: req.body.name
         });
     }
 
@@ -153,7 +212,6 @@ async function updateHackerTeam(req, res, next) {
         await Services.Team.removeMember(previousTeamId, hacker._id);
         await Services.Team.removeTeamIfEmpty(previousTeamId);
     }
-
 
     // add hacker to the new team and change teamId of hacker
     const update = await Services.Team.addMember(receivingTeam._id, hacker._id);
@@ -193,6 +251,42 @@ async function findById(req, res, next) {
 }
 
 /**
+ * @async
+ * @function populateMemberAccountsById
+ * @param {{body: {id: ObjectId}}} req 
+ * @param {*} res 
+ * @return {JSON} Success or error status
+ * @description 
+ * Find the team by id and populates the accounts of the members.
+ * The team information is stored in req.body.team, and the member information is stored in req.body.teamMembers
+ */
+async function populateMemberAccountsById(req, res, next) {
+    const team = await Services.Team.findById(req.body.id).populate({
+        path: "members",
+        populate: {
+            path: "accountId"
+        }
+    });
+
+    if (!team) {
+        return res.status(404).json({
+            message: Constants.Error.TEAM_404_MESSAGE,
+            data: {}
+        });
+    }
+
+    let teamMembers = [];
+
+    for (const member of team.members) {
+        teamMembers.push(member.accountId);
+    }
+
+    req.body.team = team;
+    req.body.teamMembers = teamMembers;
+    return next();
+}
+
+/**
  * @function parseTeam
  * @param {{body: {name: string, members: Object[], devpostURL: string, projectName: string}}} req
  * @param {*} res
@@ -221,6 +315,47 @@ function parseTeam(req, res, next) {
     return next();
 }
 
+async function parseNewTeam(req, res, next) {
+    const teamDetails = {
+        _id: mongoose.Types.ObjectId(),
+        name: req.body.name,
+        members: [],
+        devpostURL: req.body.devpostURL,
+        projectName: req.body.projectName
+    };
+
+    delete req.body.name;
+    delete req.body.members;
+    delete req.body.devpostURL;
+    delete req.body.projectName;
+
+    // hacker should exist because of authorization
+    const hacker = await Services.Hacker.findByAccountId(req.user.id);
+
+    if (!hacker) {
+        return next({
+            status: 404,
+            message: Constants.Error.HACKER_404_MESSAGE,
+            data: {
+                id: req.user.id
+            }
+        });
+    }
+
+    // hacker should not be in another team
+    if (hacker.teamId !== undefined) {
+        return next({
+            status: 409,
+            message: Constants.Error.TEAM_MEMBER_409_MESSAGE,
+        });
+    }
+
+    teamDetails.members.push(hacker._id);
+
+    req.body.teamDetails = teamDetails;
+    return next();
+}
+
 module.exports = {
     parseTeam: parseTeam,
     findById: Util.asyncMiddleware(findById),
@@ -228,4 +363,7 @@ module.exports = {
     ensureUniqueHackerId: Util.asyncMiddleware(ensureUniqueHackerId),
     ensureSpace: Util.asyncMiddleware(ensureSpace),
     updateHackerTeam: Util.asyncMiddleware(updateHackerTeam),
+    parseNewTeam: Util.asyncMiddleware(parseNewTeam),
+    ensureFreeTeamName: Util.asyncMiddleware(ensureFreeTeamName),
+    populateMemberAccountsById: Util.asyncMiddleware(populateMemberAccountsById),
 };

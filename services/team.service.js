@@ -30,7 +30,7 @@ function findTeamByHackerId(hackerId) {
  * @return {Promise<Team>} The promise will resolve to a team object if save was successful.
  * @description Adds a new team to database.
  */
-function createTeam(teamDetails) {
+async function createTeam(teamDetails) {
     const TAG = `[Team Service # createTeam]:`;
 
     const team = new Team(teamDetails);

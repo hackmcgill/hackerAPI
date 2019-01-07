@@ -18,7 +18,7 @@ module.exports = {
         const roleRouter = express.Router();
 
         /**
-         * @api {post} /api/role/ create a new hacker
+         * @api {post} /api/role/ create a new role
          * @apiName createRole
          * @apiGroup Role
          * @apiVersion 1.1.1
