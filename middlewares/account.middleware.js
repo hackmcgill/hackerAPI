@@ -202,12 +202,24 @@ async function inviteAccount(req, res, next) {
             message: Constants.Error.EMAIL_500_MESSAGE,
         });
     }
-
+}
+/**
+ * Gets all of the invites in the database and adds it to req.body.
+ * @param {{}} req 
+ * @param {*} res 
+ * @param {(err?)=>void} next 
+ */
+async function getInvites(req, res, next) {
+    const invites = await Services.AccountConfirmation.find({});
+    req.body.invites = invites;
+    next();
 }
 
 module.exports = {
     parsePatch: parsePatch,
     parseAccount: parseAccount,
+    // untested
+    getInvites: Middleware.Util.asyncMiddleware(getInvites),
     getByEmail: Middleware.Util.asyncMiddleware(getByEmail),
     getById: Middleware.Util.asyncMiddleware(getById),
     // untested

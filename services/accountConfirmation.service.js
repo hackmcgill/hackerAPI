@@ -33,6 +33,17 @@ function findById(id) {
 }
 
 /**
+ * @function find 
+ * @param {*} query the query to search the database by.
+ * @return {DocumentQuery<any[]>} The document query will resolve to either account confirmations or null.
+ * @description Finds an account by query.
+ */
+function find(query) {
+    const TAG = `[ AccountConfirmation Service # find ]`;
+    return AccountConfirmation.find(query, logger.queryCallbackFactory(TAG, "AccountConfirmation", query));
+}
+
+/**
  * Creates Account Confirmation document in the database
  * @param {String} type the type of user which to create the token for
  * @param {String} email
@@ -158,6 +169,7 @@ function generateAccountInvitationEmail(address, receiverEmail, type, token) {
     return mailData;
 }
 module.exports = {
+    find: find,
     findById: findById,
     findByAccountId: findByAccountId,
     create: create,

@@ -9,8 +9,19 @@ const Team = require("../../models/team.model");
 const mongoose = require("mongoose");
 const logger = require("../../services/logger.service");
 
+const duplicateTeamName1 = {
+    "name": "SilverTeam",
+    "projectName": "AProject"
+};
+
 const newTeam1 = {
-    "name": "BronzeTeam",
+    "_id": mongoose.Types.ObjectId(),
+    "name": "BronzeTeam1",
+    "projectName": "YetAnotherProject"
+};
+
+const createdNewTeam1 = {
+    "name": "BronzeTeam1",
     "members": [Util.Hacker.HackerB._id],
     "projectName": "YetAnotherProject"
 };
@@ -68,6 +79,8 @@ async function dropAll() {
 
 module.exports = {
     newTeam1: newTeam1,
+    createdNewTeam1: createdNewTeam1,
+    duplicateTeamName1: duplicateTeamName1,
     Team1: Team1,
     Team2: Team2,
     Team3: Team3,

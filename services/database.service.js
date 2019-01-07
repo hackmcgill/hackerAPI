@@ -12,26 +12,26 @@ const env = require("./env.service");
 
 // DATABASE SERVICE
 function getAddressFromEnvironment() {
-return (env.isDevelopment()) ? 
-    process.env.DB_ADDRESS_DEV: 
-    (env.isProduction()) ? 
-        process.env.DB_ADDRESS_DEPLOY: 
+    return (env.isDevelopment()) ?
+        process.env.DB_ADDRESS_DEV :
+        (env.isProduction()) ?
+        process.env.DB_ADDRESS_DEPLOY :
         process.env.DB_ADDRESS_TEST;
 }
 
 function getUserFromEnvironment() {
-    return (env.isDevelopment()) ? 
-        process.env.DB_USER_DEV:
-        (env.isProduction()) ? 
-            process.env.DB_USER_DEPLOY:
-            process.env.DB_USER_TEST;
+    return (env.isDevelopment()) ?
+        process.env.DB_USER_DEV :
+        (env.isProduction()) ?
+        process.env.DB_USER_DEPLOY :
+        process.env.DB_USER_TEST;
 }
 
 function getPassFromEnvironment() {
-    return (process.env.NODE_ENV === "development") ? 
-        process.env.DB_PASS_DEV:
+    return (process.env.NODE_ENV === "development") ?
+        process.env.DB_PASS_DEV :
         (process.env.NODE_ENV === "deployment") ?
-        process.env.DB_PASS_DEPLOY:
+        process.env.DB_PASS_DEPLOY :
         process.env.DB_PASS_TEST;
 }
 
@@ -44,12 +44,15 @@ module.exports = {
         const address = getAddressFromEnvironment();
         const url = (!!user && !!pass) ? `mongodb://${user}:${pass}@${address}` : `mongodb://${address}`;
         logger.info(`${TAG} Connecting to db on ${url}`);
-        mongoose.connect(url).then(function () {
+        mongoose.connect(url, {
+            useNewUrlParser: true,
+            useCreateIndex: true
+        }).then(function () {
             logger.info(`${TAG} Connected to database on ${url}`);
-            if(app) {
+            if (app) {
                 app.emit("event:connected to db");
             }
-            if(callback) {
+            if (callback) {
                 callback();
             }
         }, function (error) {

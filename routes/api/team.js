@@ -25,13 +25,12 @@ module.exports = {
         const teamRouter = new express.Router();
 
         /**
-         * @api {post} /team/ create a new team
+         * @api {post} /team/ create a new team consisting of only the logged in user
          * @apiName createTeam
          * @apiGroup Team
          * @apiVersion 0.0.8
          * 
          * @apiParam (body) {String} name Name of the team.
-         * @apiParam (body) {MongoID[]} [members] Array of members in team.
          * @apiParam (body) {String} [devpostURL] Devpost link to hack. Once the link is sent, the hack will be considered to be submitted.
          * @apiParam (body) {String} [projectName] Name of the team.
          * 
@@ -49,15 +48,14 @@ module.exports = {
          *      {"message": "Error while creating team", "data": {}}
          */
         teamRouter.route("/").post(
+            Middleware.Auth.ensureAuthenticated(),
+            Middleware.Auth.ensureAuthorized(),
             // Validators
             Middleware.Validator.Team.newTeamValidator,
-
             Middleware.parseBody.middleware,
+            Middleware.Team.parseNewTeam,
 
-            Middleware.Team.parseTeam,
-
-            // check that member is not already in a team
-            Middleware.Team.ensureUniqueHackerId,
+            Middleware.Team.ensureFreeTeamName,
 
             Middleware.Team.createTeam,
             Controllers.Team.createdTeam
@@ -98,7 +96,7 @@ module.exports = {
          * @apiGroup Team
          * @apiVersion 0.0.8
          * 
-         * @apiParam (param) {ObjectId} id a team's unique mongoId
+         * @apiParam (param) {ObjectId} id MongoId of the team
          * 
          * @apiSuccess {String} message Success message
          * @apiSuccess {Object} data Team object
@@ -114,10 +112,21 @@ module.exports = {
          *      {"message": "Team not found", "data": {}}
          */
         teamRouter.route("/:id").get(
+            Middleware.Auth.ensureAuthenticated(),
+            // get is available for all teams, or no teams. No authorization is done on the :id parameter.
+            // However, a function is needed, so the identity function is put here. In reality, the route
+            // is /api/team/:all, so the id is not checked. The returned object places the id inside accountId
+            // to be consistent with other findById functions
+            Middleware.Auth.ensureAuthorized([(id) => {
+                return {
+                    accountId: id
+                };
+            }]),
+
             Middleware.Validator.RouteParam.idValidator,
             Middleware.parseBody.middleware,
 
-            Middleware.Team.findById,
+            Middleware.Team.populateMemberAccountsById,
             Controllers.Team.showTeam
         );
 

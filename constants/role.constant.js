@@ -42,6 +42,8 @@ const hackerRole = {
 
         Constants.Routes.teamRoutes.join,
         Constants.Routes.teamRoutes.patchSelfById,
+        Constants.Routes.teamRoutes.post,
+        Constants.Routes.teamRoutes.get
     ]
 };
 
@@ -53,6 +55,8 @@ const volunteerRole = {
 
         Constants.Routes.hackerRoutes.patchAnyCheckInById,
         Constants.Routes.hackerRoutes.patchSelfCheckInById,
+
+        Constants.Routes.teamRoutes.get
     ]
 };
 

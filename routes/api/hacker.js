@@ -279,6 +279,9 @@ module.exports = {
          * @apiParam (body) {String} [school] Name of the school the hacker goes to
          * @apiParam (body) {String} [gender] Gender of the hacker
          * @apiParam (body) {Boolean} [needsBus] Whether the hacker requires a bus for transportation
+         * @apiParam (body) {String[]} [ethnicity] the ethnicities of the hacker
+         * @apiParam (body) {String} [major] the major of the hacker
+         * @apiParam (body) {Number} [graduationYear] the graduation year of the hacker
          * @apiParam (body) {Json} [application] The hacker's application
          * @apiParamExample {Json} application: 
          *      {

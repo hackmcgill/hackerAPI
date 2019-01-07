@@ -63,9 +63,18 @@ function invitedAccount(req, res) {
     });
 }
 
+function gotInvites(req, res) {
+    return res.status(200).json({
+        message: Constants.Success.ACCOUNT_GET_INVITES,
+        data: {
+            invites: req.body.invites
+        }
+    });
+}
 
 module.exports = {
     addUser: addUser,
+    gotInvites: gotInvites,
     updatedAccount: updatedAccount,
     invitedAccount: invitedAccount,
     showAccount: showAccount,
