@@ -72,7 +72,6 @@ module.exports = {
          *          "message": "Team join successful.", 
          *          "data": {}
          *      }
-         * @apiPermission Administrator
          */
         teamRouter.route("/join/").patch(
             Middleware.Auth.ensureAuthenticated(),
@@ -85,6 +84,27 @@ module.exports = {
             Middleware.Team.updateHackerTeam,
 
             Controllers.Team.joinedTeam
+        );
+
+        /**
+         * @api {patch} /team/leave/ Allows a logged in hacker to leave current team
+         * @apiName deleteSelfFromTeam
+         * @apiGroup Team
+         * @apiVersion 1.1.1
+         * 
+         * @apiSuccess {string} message Success message
+         * @apiSuccess {object} data {}
+         * @apiSuccessExample {object} Success-Response: 
+         *      {
+         *          "message": "Removal from team successful.", 
+         *          "data": {}
+         *      }
+         */
+        teamRouter.route("/leave").patch(
+            Middleware.Auth.ensureAuthenticated(),
+            Middleware.Auth.ensureAuthorized(),
+            Middleware.Team.deleteHackerFromTeam,
+            Controllers.Team.deletedFromTeam
         );
 
         /**

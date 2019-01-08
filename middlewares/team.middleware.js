@@ -167,6 +167,32 @@ async function findById(req, res, next) {
 
 /**
  * @async
+ * @function deleteHackerFromTeam
+ * @param {{user: {id: ObjectId}} req 
+ * @param {*} res 
+ * @return {JSON} Success or error status
+ * @description Removes the hacker from the team under teamId. If hacker is not part of a team, it does nothing.
+ */
+async function deleteHackerFromTeam(req, res, next) {
+    const hacker = await Services.Hacker.findByAccountId(req.user.id);
+
+    if (!hacker) {
+        return next({
+            status: 404,
+            message: Constants.Error.HACKER_404_MESSAGE,
+            data: {
+                id: req.user.id
+            }
+        });
+    }
+    if (hacker.teamId) {
+        await Services.Team.removeMember(hacker.teamId, hacker._id);
+    }
+    next();
+}
+
+/**
+ * @async
  * @function updateHackerTeam
  * @param {{body: {name: string}}} req
  * @param {JSON} res
@@ -261,6 +287,7 @@ async function findById(req, res, next) {
  * The team information is stored in req.body.team, and the member information is stored in req.body.teamMembers
  */
 async function populateMemberAccountsById(req, res, next) {
+    console.log(req.body.id);
     const team = await Services.Team.findById(req.body.id).populate({
         path: "members",
         populate: {
@@ -366,4 +393,5 @@ module.exports = {
     parseNewTeam: Util.asyncMiddleware(parseNewTeam),
     ensureFreeTeamName: Util.asyncMiddleware(ensureFreeTeamName),
     populateMemberAccountsById: Util.asyncMiddleware(populateMemberAccountsById),
+    deleteHackerFromTeam: Util.asyncMiddleware(deleteHackerFromTeam),
 };

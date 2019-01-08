@@ -71,8 +71,24 @@ function createdTeam(req, res) {
     });
 }
 
+/**
+ * @function createdTeam
+ * @param {*} req
+ * @param {*} res
+ * @return {JSON} Success status
+ * @description return success message of removing self from team.
+ */
+
+function deletedFromTeam(req, res) {
+    return res.status(200).json({
+        message: Constants.Success.TEAM_DELETE_HACKER,
+        data: {},
+    });
+}
+
 module.exports = {
     joinedTeam: joinedTeam,
     createdTeam: createdTeam,
     showTeam: showTeam,
+    deletedFromTeam: deletedFromTeam,
 };
