@@ -2,6 +2,9 @@
 const Util = {
     Account: require("./account.test.util"),
 };
+const Constants = {
+    MongoId: require("../../constants/testMongoId.constant"),
+};
 
 const mongoose = require("mongoose");
 const Hacker = require("../../models/hacker.model");
@@ -131,7 +134,7 @@ const newHacker2 = {
 };
 
 const HackerA = {
-    "_id": mongoose.Types.ObjectId(),
+    "_id": Constants.MongoId.hackerAId,
     "accountId": Util.Account.Account1._id,
     "status": "Confirmed",
     "school": "University of Blah",
@@ -155,10 +158,10 @@ const HackerA = {
     "major": "EE",
     "graduationYear": 2019,
     "codeOfConduct": true,
-    "teamId": mongoose.Types.ObjectId.createFromTime(101),
+    "teamId": Constants.MongoId.team1Id,
 };
 const HackerB = {
-    "_id": mongoose.Types.ObjectId(),
+    "_id": Constants.MongoId.hackerBId,
     "accountId": Util.Account.Account2._id,
     "status": "Accepted",
     "school": "University of Blah1",
@@ -185,7 +188,7 @@ const HackerB = {
 };
 
 const HackerC = {
-    "_id": mongoose.Types.ObjectId(),
+    "_id": Constants.MongoId.hackerCId,
     "accountId": Util.Account.Hacker3._id,
     "status": "Waitlisted",
     "school": "University of Blah1",
@@ -209,10 +212,11 @@ const HackerC = {
     "major": "EE",
     "graduationYear": 2019,
     "codeOfConduct": true,
+    "teamId": Constants.MongoId.team2Id,
 };
 
 const HackerD = {
-    "_id": mongoose.Types.ObjectId(),
+    "_id": Constants.MongoId.hackerDId,
     "accountId": Util.Account.Hacker4._id,
     "status": "Waitlisted",
     "school": "University of Blah1",
@@ -236,10 +240,11 @@ const HackerD = {
     "major": "EE",
     "graduationYear": 2019,
     "codeOfConduct": true,
+    "teamId": Constants.MongoId.team3Id,
 };
 
 const HackerE = {
-    "_id": mongoose.Types.ObjectId(),
+    "_id": Constants.MongoId.hackerEId,
     "accountId": Util.Account.Hacker5._id,
     "status": "Waitlisted",
     "school": "University of Blah1",
@@ -263,10 +268,11 @@ const HackerE = {
     "major": "EE",
     "graduationYear": 2019,
     "codeOfConduct": true,
+    "teamId": Constants.MongoId.team3Id,
 };
 
 const HackerF = {
-    "_id": mongoose.Types.ObjectId(),
+    "_id": Constants.MongoId.hackerFId,
     "accountId": Util.Account.Hacker6._id,
     "status": "Waitlisted",
     "school": "University of Blah1",
@@ -290,10 +296,11 @@ const HackerF = {
     "major": "EE",
     "graduationYear": 2019,
     "codeOfConduct": true,
+    "teamId": Constants.MongoId.team3Id,
 };
 
 const HackerG = {
-    "_id": mongoose.Types.ObjectId(),
+    "_id": Constants.MongoId.hackerGId,
     "accountId": Util.Account.Hacker7._id,
     "status": "Waitlisted",
     "school": "University of Blah1",
@@ -317,6 +324,7 @@ const HackerG = {
     "major": "EE",
     "graduationYear": 2019,
     "codeOfConduct": true,
+    "teamId": Constants.MongoId.team3Id,
 };
 
 const Hackers = [
