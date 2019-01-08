@@ -87,11 +87,11 @@ async function removeMember(teamId, hackerId) {
         return null;
     }
 
-    return Team.update({
+    return Team.findOneAndUpdate({
         _id: teamId
     }, {
         $pull: {
-            members: [hackerId]
+            members: hackerId
         }
     });
 }

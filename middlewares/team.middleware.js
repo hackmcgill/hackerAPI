@@ -187,8 +187,9 @@ async function deleteHackerFromTeam(req, res, next) {
     }
     const oldTeamId = hacker.teamId;
     if (oldTeamId) {
-        await Services.Team.removeMember(oldTeamId, hacker._id);
-        await Services.Team.removeTeamIfEmpty(oldTeamId);
+        const result1 = await Services.Team.removeMember(oldTeamId, hacker._id);
+        const result2 = await Services.Team.removeTeamIfEmpty(oldTeamId);
+        console.log(result1, result2);
     }
     next();
 }
@@ -372,7 +373,7 @@ async function parseNewTeam(req, res, next) {
     }
 
     // hacker should not be in another team
-    if (hacker.teamId !== undefined) {
+    if (hacker.teamId !== undefined && hacker.teamId !== null) {
         return next({
             status: 409,
             message: Constants.Error.TEAM_MEMBER_409_MESSAGE,
