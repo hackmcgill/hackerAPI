@@ -472,8 +472,9 @@ describe("PATCH change team info", function () {
                     done();
                 });
         });
+    });
 
-     it("should FAIL to leave a team due to invalid authentication.", function (done) {
+    it("should FAIL to leave a team due to invalid authentication.", function (done) {
         chai.request(server.app)
             .patch(`/api/team/leave/`)
             .type("application/json")
