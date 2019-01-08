@@ -42,7 +42,8 @@ const hackerRole = {
 
         Constants.Routes.teamRoutes.join,
         Constants.Routes.teamRoutes.post,
-        Constants.Routes.teamRoutes.get
+        Constants.Routes.teamRoutes.get,
+        Constants.Routes.teamRoutes.leave
     ]
 };
 
