@@ -750,6 +750,22 @@ describe("POST add a hacker resume", function () {
 });
 
 describe("GET Hacker stats", function () {
+    it("It should FAIL and get hacker stats (invalid validation)", function (done) {
+        //this takes a lot of time for some reason
+        util.auth.login(agent, Admin1, (error) => {
+            if (error) {
+                return done(error);
+            }
+            return agent
+                .get(`/api/hacker/stats`)
+                .end(function (err, res) {
+                    res.should.have.status(422);
+                    res.should.have.property("body");
+                    res.body.should.have.property("message");
+                    done();
+                });
+        });
+    });
     it("It should SUCCEED and get hacker stats", function (done) {
         //this takes a lot of time for some reason
         util.auth.login(agent, Admin1, (error) => {
@@ -758,6 +774,10 @@ describe("GET Hacker stats", function () {
             }
             return agent
                 .get(`/api/hacker/stats`)
+                .query({
+                    model: "hacker",
+                    q: JSON.stringify([])
+                })
                 .end(function (err, res) {
                     res.should.have.status(200);
                     res.should.have.property("body");

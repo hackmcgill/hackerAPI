@@ -487,7 +487,7 @@ async function findSelf(req, res, next) {
 }
 
 async function getStats(req, res, next) {
-    const stats = await Services.Hacker.getStats();
+    const stats = await Services.Hacker.getStats(req.body.results);
     req.body.stats = stats;
     next();
 }
