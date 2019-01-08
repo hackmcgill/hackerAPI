@@ -58,6 +58,20 @@ function joinedTeam(req, res) {
 }
 
 /**
+ * @function updatedTeam
+ * @param {{body: {team: {_id: ObjectId, name: string, members: ObjectId[], devpostURL: string, projectName: string}}}} req
+ * @param {*} res
+ * @return {JSON} Success status
+ * @description Display team information and update success status
+ */
+function updatedTeam(req, res) {
+    return res.status(200).json({
+        message: Constants.Success.TEAM_UPDATE,
+        data: req.body.team.toJSON(),
+    });
+}
+
+/**
  * @function createdTeam
  * @param {{body: {team: {_id: ObjectId, name: string, members: ObjectId[], devpostURL: string, projectName: string}}}} req
  * @param {*} res
@@ -88,6 +102,7 @@ function leftTeam(req, res) {
 
 module.exports = {
     joinedTeam: joinedTeam,
+    updatedTeam: updatedTeam,
     createdTeam: createdTeam,
     showTeam: showTeam,
     leftTeam: leftTeam,

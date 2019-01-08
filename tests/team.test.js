@@ -220,7 +220,7 @@ describe("POST create team", function () {
     });
 });
 
-describe("PATCH change team", function () {
+describe("PATCH join team", function () {
     it("should FAIL to join a hacker to a team due to lack of authentication", function (done) {
         chai.request(server.app)
             .patch(`/api/team/join/`)
@@ -358,6 +358,75 @@ describe("PATCH change team", function () {
                 });
         });
     });
+});
+
+describe("PATCH change team info", function () {
+    it("should FAIL to change a hacker's team information due to invalid authentication", function (done) {
+        chai.request(server.app)
+            .patch(`/api/team/${util.hacker.HackerF._id}`)
+            .type("application/json")
+            .send({
+                name: "BronzeTeamASDF",
+            })
+            .end(function (err, res) {
+                res.should.have.status(401);
+                res.should.be.json;
+                res.body.should.have.property("message");
+                res.body.message.should.equal(Constants.Error.AUTH_401_MESSAGE);
+                res.body.should.have.property("data");
+
+                done();
+            });
+    });
+
+    it("should FAIL for a hacker to change another team's information due to invalid authorization", function (done) {
+        util.auth.login(agent, util.account.Hacker4, (error) => {
+            if (error) {
+                agent.close();
+                return done(error);
+            }
+            return agent
+                .patch(`/api/team/${util.hacker.HackerA._id}`)
+                .type("application/json")
+                .send({
+                    name: "SuccessTeamASDF",
+                })
+                .end(function (err, res) {
+                    res.should.have.status(403);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal(Constants.Error.AUTH_403_MESSAGE);
+                    res.body.should.have.property("data");
+
+                    done();
+                });
+        });
+    });
+
+    it("should SUCCEED to change the hacker's team information", function (done) {
+        util.auth.login(agent, util.account.Hacker4, (error) => {
+            if (error) {
+                agent.close();
+                return done(error);
+            }
+            return agent
+                .patch(`/api/team/${util.hacker.HackerD._id}`)
+                .type("application/json")
+                .send({
+                    name: "SuccessTeamASDF",
+                })
+                .end(function (err, res) {
+                    res.should.have.status(200);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal(Constants.Success.TEAM_UPDATE);
+                    res.body.should.have.property("data");
+                    res.body.data.should.have.property("name");
+                    res.body.data.name.should.equal("SuccessTeamASDF");
+                    done();
+                });
+        });
+    });
 
     it("should SUCCEED and leave a team.", function (done) {
         util.auth.login(agent, util.account.Account1, (error) => {
@@ -378,6 +447,33 @@ describe("PATCH change team", function () {
                 });
         });
     });
+
+    it("should SUCCEED for an admin to change a team information", function (done) {
+        util.auth.login(agent, util.account.Admin1, (error) => {
+            if (error) {
+                agent.close();
+                return done(error);
+            }
+            return agent
+                .patch(`/api/team/${util.hacker.HackerD._id}`)
+                .type("application/json")
+                .send({
+                    name: "SuccessTeamASDF",
+                })
+                .end(function (err, res) {
+                    res.should.have.status(200);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal(Constants.Success.TEAM_UPDATE);
+                    res.body.should.have.property("data");
+                    res.body.data.should.have.property("name");
+                    res.body.data.name.should.equal("SuccessTeamASDF");
+
+                    done();
+                });
+        });
+    });
+
     it("should FAIL to leave a team due to invalid authentication.", function (done) {
         chai.request(server.app)
             .patch(`/api/team/leave/`)

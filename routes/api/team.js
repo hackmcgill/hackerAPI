@@ -16,6 +16,9 @@ const Middleware = {
     Team: require("../../middlewares/team.middleware"),
     Auth: require("../../middlewares/auth.middleware"),
 };
+const Services = {
+    Hacker: require("../../services/hacker.service"),
+};
 
 module.exports = {
     activate: function (apiRouter) {
@@ -116,7 +119,7 @@ module.exports = {
          * @apiParam (param) {ObjectId} id MongoId of the team
          * 
          * @apiSuccess {String} message Success message
-         * @apiSuccess {Object} data Sponsor object
+         * @apiSuccess {Object} data Team object
          * @apiSuccessExample {object} Success-Response: 
          *      {
                     "message": "Successfully retrieved team information", 
@@ -145,6 +148,50 @@ module.exports = {
 
             Middleware.Team.populateMemberAccountsById,
             Controllers.Team.showTeam
+        );
+
+        /**
+         * @api {patch} /team/:hackerId Update a team's information. The team is specified by the hacker belonging to it.
+         * @apiName patchTeam
+         * @apiGroup Team
+         * @apiVersion 0.0.8
+         * @apiDescription 
+         *      We use hackerId instead of teamId because authorization requires 
+         *      a one-to-one mapping from param id to accountId, but we are not able
+         *      to have that from teamId to accountId due to multiple members in a team.
+         *      Instead, we use hackerId, as there is a 1 to 1 link between hackerId to teamId,
+         *      and a 1 to 1 link between hackerId and accountId
+         * 
+         * 
+         * @apiParam (param) {ObjectId} hackerId a hacker's unique Id
+         * 
+         * @apiSuccess {String} message Success message
+         * @apiSuccess {Object} data Team object
+         * @apiSuccessExample {object} Success-Response: 
+         *      {
+                    "message": "Team update successful.", 
+                    "data": {...}
+                }
+
+         * @apiError {String} message Error message
+         * @apiError {Object} data Query input that caused the error.
+         * @apiErrorExample {object} Error-Response: 
+         *      {"message": "Team not found", "data": {teamId}}
+         */
+        teamRouter.route("/:hackerId").patch(
+            Middleware.Auth.ensureAuthenticated(),
+
+            Middleware.Auth.ensureAuthorized([Services.Hacker.findById]),
+
+            Middleware.Validator.Team.patchTeamValidator,
+            Middleware.Validator.RouteParam.hackeridValidator,
+            Middleware.parseBody.middleware,
+            Middleware.Team.parsePatch,
+
+            Middleware.Team.getTeamIdByHackerId,
+            Middleware.Team.updateTeam,
+
+            Controllers.Team.updatedTeam
         );
 
         apiRouter.use("/team", teamRouter);

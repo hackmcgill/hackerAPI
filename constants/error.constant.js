@@ -27,6 +27,7 @@ const AUTH_401_MESSAGE = "Invalid Authentication";
 const AUTH_403_MESSAGE = "Invalid Authorization";
 const ACCOUNT_403_MESSAGE = "Account not verified";
 
+const TEAM_READ_500_MESSAGE = "Error while retrieving team";
 const TEAM_UPDATE_500_MESSAGE = "Error while updating team";
 const HACKER_UPDATE_500_MESSAGE = "Error while updating hacker";
 const ACCOUNT_UPDATE_500_MESSAGE = "Error while updating account";
@@ -73,4 +74,5 @@ module.exports = {
     ROLE_CREATE_500_MESSAGE: ROLE_CREATE_500_MESSAGE,
     TEAM_NAME_409_MESSAGE: TEAM_NAME_409_MESSAGE,
     TEAM_JOIN_SAME_409_MESSAGE: TEAM_JOIN_SAME_409_MESSAGE,
+    TEAM_READ_500_MESSAGE: TEAM_READ_500_MESSAGE,
 };

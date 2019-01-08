@@ -39,6 +39,24 @@ async function createTeam(teamDetails) {
 }
 
 /**
+ * @function updateOne
+ * @param {ObjectId} id
+ * @param {{name?: string, devpostURL?: string, projectName?: string}} teamDetails
+ * @return {DocumentQuery} The document query will resolve to team or null.
+ * @description Update a team specified by its mongoId with information specified by teamDetails.
+ */
+
+function updateOne(id, teamDetails) {
+    const TAG = `[Team Service # updateOne]:`;
+
+    const query = {
+        _id: id
+    };
+
+    return Team.findOneAndUpdate(query, teamDetails, logger.updateCallbackFactory(TAG, "team"));
+}
+
+/**
  * @function findById
  * @param {ObjectId} id
  * @return {DocumentQuery} The document query will either resolve to a team or null.
@@ -207,5 +225,6 @@ module.exports = {
     removeMember: removeMember,
     removeTeam: removeTeam,
     addMember: addMember,
+    updateOne: updateOne,
     removeTeamIfEmpty: removeTeamIfEmpty,
 };

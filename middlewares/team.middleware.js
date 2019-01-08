@@ -13,6 +13,7 @@ const Constants = {
     Error: require("../constants/error.constant"),
     General: require("../constants/general.constant"),
 };
+const Team = require("../models/team.model");
 
 /**
  * @async
@@ -117,6 +118,110 @@ async function ensureSpace(req, res, next) {
     }
 
     return next();
+}
+
+/**
+ * @function updateTeam
+ * @param {{body: {teamId: ObjectId, teamDetails: {name?: string, devpostURL?:string, projectName?:string}}}} req
+ * @param {JSON} res
+ * @param {(err?)=>void} next
+ * @return {void}
+ * @description Updates a team specified by teamId with information specified by teamDetails.
+ */
+async function updateTeam(req, res, next) {
+    const team = await Services.Team.updateOne(req.body.teamId, req.body.teamDetails);
+
+    if (!team) {
+        return next({
+            status: 500,
+            message: Constants.Error.TEAM_UPDATE_500_MESSAGE,
+            data: req.body.teamId
+        });
+    }
+
+    req.body.team = team;
+    return next();
+}
+
+/**
+ * @function getTeamIdByHackerId
+ * @param {{body: {hackerId: ObjectId}}} req
+ * @param {JSON} res
+ * @param {(err?)=>void} next
+ * @return {void}
+ * @description Places teamId specified by hackerId into req.body
+ */
+async function getTeamIdByHackerId(req, res, next) {
+    const hacker = await Services.Hacker.findById(req.body.hackerId);
+
+    if (!hacker) {
+        return next({
+            status: 404,
+            message: Constants.Error.HACKER_404_MESSAGE,
+            data: req.body.hackerId
+        });
+    }
+
+    req.body.teamId = hacker.teamId;
+    next();
+}
+
+/**
+ * @function getByHackerId
+ * @param {{body: {hackerId: ObjectId}}} req
+ * @param {JSON} res
+ * @param {(err?)=>void} next
+ * @return {void}
+ * @description Gets team specified by hackerId and places it within req.body
+ */
+async function getByHackerId(req, res, next) {
+    const hacker = await Services.Hacker.findById(req.body.hackerId);
+
+    if (!hacker) {
+        return next({
+            status: 404,
+            message: Constants.Error.HACKER_404_MESSAGE,
+            data: req.body.hackerId
+        });
+    }
+
+    const team = await Services.Team.findById(hacker.teamId);
+
+    if (!team) {
+        return next({
+            status: 500,
+            message: Constants.Error.TEAM_READ_500_MESSAGE,
+            data: hacker.teamId,
+        });
+    }
+
+    req.body.team = team;
+    next();
+}
+
+/**
+ * @function getTeamIdByUser
+ * @param {{user: {id: ObjectId}}} req
+ * @param {JSON} res
+ * @param {(err?)=>void} next
+ * @return {void}
+ * @description gets teamId specified by the user account, and places it in req.body.teamId.
+ */
+async function getTeamIdByUser(req, res, next) {
+    const hacker = await Services.Hacker.findByAccountId(req.user.id);
+
+    if (!hacker) {
+        return next({
+            status: 404,
+            message: Constants.Error.Hacker,
+            data: {
+                id: req.user.id
+            }
+        });
+    }
+
+    req.body.teamId = hacker.teamId;
+    next();
 }
 
 /**
@@ -343,6 +448,34 @@ function parseTeam(req, res, next) {
     return next();
 }
 
+/**
+ * @function parsePatch
+ * @param {body: {id: ObjectId}} req 
+ * @param {*} res 
+ * @param {(err?) => void} next 
+ * @return {void}
+ * @description 
+ *      Delete the req.body.id that was added by the validation of route parameter.
+ *      Move attributes belonging to the team schema to req.body.teamDetails.
+ */
+function parsePatch(req, res, next) {
+    delete req.body.id;
+
+    let teamDetails = {};
+
+    for (const val in req.body) {
+        // use .hasOwnProperty instead of 'in' to get rid of inherited properties such as 'should'
+        if (Team.schema.paths.hasOwnProperty(val)) {
+            teamDetails[val] = req.body[val];
+            delete req.body[val];
+        }
+    }
+
+    req.body.teamDetails = teamDetails;
+
+    next();
+}
+
 async function parseNewTeam(req, res, next) {
     const teamDetails = {
         _id: mongoose.Types.ObjectId(),
@@ -391,8 +524,13 @@ module.exports = {
     ensureUniqueHackerId: Util.asyncMiddleware(ensureUniqueHackerId),
     ensureSpace: Util.asyncMiddleware(ensureSpace),
     updateHackerTeam: Util.asyncMiddleware(updateHackerTeam),
+    getTeamIdByUser: Util.asyncMiddleware(getTeamIdByUser),
+    updateTeam: Util.asyncMiddleware(updateTeam),
+    getByHackerId: Util.asyncMiddleware(getByHackerId),
+    parsePatch: parsePatch,
     parseNewTeam: Util.asyncMiddleware(parseNewTeam),
     ensureFreeTeamName: Util.asyncMiddleware(ensureFreeTeamName),
     populateMemberAccountsById: Util.asyncMiddleware(populateMemberAccountsById),
+    getTeamIdByHackerId: Util.asyncMiddleware(getTeamIdByHackerId),
     deleteUserFromTeam: Util.asyncMiddleware(deleteUserFromTeam),
 };
