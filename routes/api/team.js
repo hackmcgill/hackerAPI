@@ -104,7 +104,7 @@ module.exports = {
             Middleware.Auth.ensureAuthenticated(),
             Middleware.Auth.ensureAuthorized(),
             Middleware.Team.deleteHackerFromTeam,
-            Controllers.Team.deletedFromTeam
+            Controllers.Team.leftTeam
         );
 
         /**

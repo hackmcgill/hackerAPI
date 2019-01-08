@@ -187,9 +187,8 @@ async function deleteHackerFromTeam(req, res, next) {
     }
     const oldTeamId = hacker.teamId;
     if (oldTeamId) {
-        const result1 = await Services.Team.removeMember(oldTeamId, hacker._id);
-        const result2 = await Services.Team.removeTeamIfEmpty(oldTeamId);
-        console.log(result1, result2);
+        await Services.Team.removeMember(oldTeamId, hacker._id);
+        await Services.Team.removeTeamIfEmpty(oldTeamId);
     }
     next();
 }

@@ -72,14 +72,14 @@ function createdTeam(req, res) {
 }
 
 /**
- * @function createdTeam
+ * @function leftTeam
  * @param {*} req
  * @param {*} res
  * @return {JSON} Success status
  * @description return success message of removing self from team.
  */
 
-function deletedFromTeam(req, res) {
+function leftTeam(req, res) {
     return res.status(200).json({
         message: Constants.Success.TEAM_HACKER_LEAVE,
         data: {},
@@ -90,5 +90,5 @@ module.exports = {
     joinedTeam: joinedTeam,
     createdTeam: createdTeam,
     showTeam: showTeam,
-    deletedFromTeam: deletedFromTeam,
+    leftTeam: leftTeam,
 };
