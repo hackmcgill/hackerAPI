@@ -423,7 +423,26 @@ describe("PATCH change team info", function () {
                     res.body.should.have.property("data");
                     res.body.data.should.have.property("name");
                     res.body.data.name.should.equal("SuccessTeamASDF");
+                    done();
+                });
+        });
+    });
 
+    it("should SUCCEED and leave a team.", function (done) {
+        util.auth.login(agent, util.account.Account1, (error) => {
+            if (error) {
+                agent.close();
+                return done(error);
+            }
+            return agent
+                .patch(`/api/team/leave/`)
+                .type("application/json")
+                .end(function (err, res) {
+                    res.should.have.status(200);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal(Constants.Success.TEAM_HACKER_LEAVE);
+                    res.body.should.have.property("data");
                     done();
                 });
         });
@@ -453,5 +472,19 @@ describe("PATCH change team info", function () {
                     done();
                 });
         });
+
+     it("should FAIL to leave a team due to invalid authentication.", function (done) {
+        chai.request(server.app)
+            .patch(`/api/team/leave/`)
+            .type("application/json")
+            .end(function (err, res) {
+                res.should.have.status(401);
+                res.should.be.json;
+                res.body.should.have.property("message");
+                res.body.message.should.equal(Constants.Error.AUTH_401_MESSAGE);
+                res.body.should.have.property("data");
+
+                done();
+            });
     });
 });

@@ -39,6 +39,7 @@ const TEAM_CREATE = "Team creation successful.";
 const TEAM_JOIN = "Team join successful.";
 const TEAM_UPDATE = "Team update successful.";
 const TEAM_READ = "Team retrieval successful.";
+const TEAM_HACKER_LEAVE = "Removal from team successful.";
 
 const VOLUNTEER_CREATE = "Volunteer creation successful.";
 
@@ -81,6 +82,7 @@ module.exports = {
     TEAM_JOIN: TEAM_JOIN,
     TEAM_UPDATE: TEAM_UPDATE,
     TEAM_READ: TEAM_READ,
+    TEAM_HACKER_LEAVE: TEAM_HACKER_LEAVE,
 
     VOLUNTEER_CREATE: VOLUNTEER_CREATE,
 };

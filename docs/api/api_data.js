@@ -2262,6 +2262,43 @@ define({
       }]
     },
     {
+      "type": "patch",
+      "url": "/team/leave/",
+      "title": "Allows a logged in hacker to leave current team",
+      "name": "deleteSelfFromTeam",
+      "group": "Team",
+      "version": "1.1.1",
+      "success": {
+        "fields": {
+          "Success 200": [{
+              "group": "Success 200",
+              "type": "string",
+              "optional": false,
+              "field": "message",
+              "description": "<p>Success message</p>"
+            },
+            {
+              "group": "Success 200",
+              "type": "object",
+              "optional": false,
+              "field": "data",
+              "description": "<p>{}</p>"
+            }
+          ]
+        },
+        "examples": [{
+          "title": "Success-Response: ",
+          "content": "{\n    \"message\": \"Removal from team successful.\", \n    \"data\": {}\n}",
+          "type": "object"
+        }]
+      },
+      "filename": "routes/api/team.js",
+      "groupTitle": "Team",
+      "sampleRequest": [{
+        "url": "https://api.mchacks.ca/api/team/leave/"
+      }]
+    },
+    {
       "type": "get",
       "url": "/team/:id",
       "title": "get a team's information",
@@ -2375,9 +2412,6 @@ define({
           "type": "object"
         }]
       },
-      "permission": [{
-        "name": "Administrator"
-      }],
       "filename": "routes/api/team.js",
       "groupTitle": "Team",
       "sampleRequest": [{
