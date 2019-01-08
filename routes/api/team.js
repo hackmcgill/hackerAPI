@@ -135,6 +135,13 @@ module.exports = {
          * @apiName patchTeam
          * @apiGroup Team
          * @apiVersion 0.0.8
+         * @apiDescription 
+         *      We use hackerId instead of teamId because authorization requires 
+         *      a one-to-one mapping from param id to accountId, but we are not able
+         *      to have that from teamId to accountId due to multiple members in a team.
+         *      Instead, we use hackerId, as there is a 1 to 1 link between hackerId to teamId,
+         *      and a 1 to 1 link between hackerId and accountId
+         * 
          * 
          * @apiParam (param) {ObjectId} hackerId a hacker's unique Id
          * 

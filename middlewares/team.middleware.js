@@ -133,8 +133,8 @@ async function updateTeam(req, res, next) {
 
     if (!team) {
         return next({
-            status: 404,
-            message: Constants.Error.TEAM_404_MESSAGE,
+            status: 500,
+            message: Constants.Error.TEAM_UPDATE_500_MESSAGE,
             data: req.body.teamId
         });
     }
@@ -189,8 +189,8 @@ async function getByHackerId(req, res, next) {
 
     if (!team) {
         return next({
-            status: 404,
-            message: Constants.Error.TEAM_404_MESSAGE,
+            status: 500,
+            message: Constants.Error.TEAM_READ_500_MESSAGE,
             data: hacker.teamId,
         });
     }
