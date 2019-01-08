@@ -81,7 +81,7 @@ function createdTeam(req, res) {
 
 function deletedFromTeam(req, res) {
     return res.status(200).json({
-        message: Constants.Success.TEAM_DELETE_HACKER,
+        message: Constants.Success.TEAM_HACKER_LEAVE,
         data: {},
     });
 }
