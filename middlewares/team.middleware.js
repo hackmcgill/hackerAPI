@@ -120,8 +120,16 @@ async function ensureSpace(req, res, next) {
     return next();
 }
 
+/**
+ * @function updateTeam
+ * @param {{body: {teamId: ObjectId, teamDetails: {name?: string, devpostURL?:string, projectName?:string}}}} req
+ * @param {JSON} res
+ * @param {(err?)=>void} next
+ * @return {void}
+ * @description Updates a team specified by teamId with information specified by teamDetails.
+ */
 async function updateTeam(req, res, next) {
-    const team = await Services.Team.updateOne(req.body.team._id, req.body.teamDetails);
+    const team = await Services.Team.updateOne(req.body.teamId, req.body.teamDetails);
 
     if (!team) {
         return next({
@@ -135,8 +143,38 @@ async function updateTeam(req, res, next) {
     return next();
 }
 
+/**
+ * @function getTeamIdByHackerId
+ * @param {{body: {hackerId: ObjectId}}} req
+ * @param {JSON} res
+ * @param {(err?)=>void} next
+ * @return {void}
+ * @description Places teamId specified by hackerId into req.body
+ */
+async function getTeamIdByHackerId(req, res, next) {
+    const hacker = await Services.Hacker.findById(req.body.hackerId);
+
+    if (!hacker) {
+        return next({
+            status: 404,
+            message: Constants.Error.HACKER_404_MESSAGE,
+            data: req.body.hackerId
+        });
+    }
+
+    req.body.teamId = hacker.teamId;
+    next();
+}
+
+/**
+ * @function getByHackerId
+ * @param {{body: {hackerId: ObjectId}}} req
+ * @param {JSON} res
+ * @param {(err?)=>void} next
+ * @return {void}
+ * @description Gets team specified by hackerId and places it within req.body
+ */
 async function getByHackerId(req, res, next) {
-    // might be in req.params.hackerId
     const hacker = await Services.Hacker.findById(req.body.hackerId);
 
     if (!hacker) {
@@ -161,7 +199,15 @@ async function getByHackerId(req, res, next) {
     next();
 }
 
-async function getByUser(req, res, next) {
+/**
+ * @function getTeamIdByUser
+ * @param {{user: {id: ObjectId}}} req
+ * @param {JSON} res
+ * @param {(err?)=>void} next
+ * @return {void}
+ * @description gets teamId specified by the user account, and places it in req.body.teamId.
+ */
+async function getTeamIdByUser(req, res, next) {
     const hacker = await Services.Hacker.findByAccountId(req.user.id);
 
     if (!hacker) {
@@ -174,8 +220,7 @@ async function getByUser(req, res, next) {
         });
     }
 
-    // should be cleared by req.logout()
-    req.user.teamId = hacker.teamId;
+    req.body.teamId = hacker.teamId;
     next();
 }
 
@@ -451,11 +496,12 @@ module.exports = {
     ensureUniqueHackerId: Util.asyncMiddleware(ensureUniqueHackerId),
     ensureSpace: Util.asyncMiddleware(ensureSpace),
     updateHackerTeam: Util.asyncMiddleware(updateHackerTeam),
-    getByUser: Util.asyncMiddleware(getByUser),
+    getTeamIdByUser: Util.asyncMiddleware(getTeamIdByUser),
     updateTeam: Util.asyncMiddleware(updateTeam),
     getByHackerId: Util.asyncMiddleware(getByHackerId),
     parsePatch: parsePatch,
     parseNewTeam: Util.asyncMiddleware(parseNewTeam),
     ensureFreeTeamName: Util.asyncMiddleware(ensureFreeTeamName),
     populateMemberAccountsById: Util.asyncMiddleware(populateMemberAccountsById),
+    getTeamIdByHackerId: Util.asyncMiddleware(getTeamIdByHackerId),
 };

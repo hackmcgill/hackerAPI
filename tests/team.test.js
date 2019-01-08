@@ -361,7 +361,7 @@ describe("PATCH join team", function () {
 });
 
 describe("PATCH change team info", function () {
-    it("should FAIL to change a hacker's team information", function (done) {
+    it("should FAIL to change a hacker's team information due to invalid authentication", function (done) {
         chai.request(server.app)
             .patch(`/api/team/${util.hacker.HackerF._id}`)
             .type("application/json")
@@ -379,7 +379,7 @@ describe("PATCH change team info", function () {
             });
     });
 
-    it("should FAIL for a hacker to change another team's information", function (done) {
+    it("should FAIL for a hacker to change another team's information due to invalid authorization", function (done) {
         util.auth.login(agent, util.account.Hacker4, (error) => {
             if (error) {
                 agent.close();

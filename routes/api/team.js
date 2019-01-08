@@ -161,7 +161,7 @@ module.exports = {
             Middleware.parseBody.middleware,
             Middleware.Team.parsePatch,
 
-            Middleware.Team.getByHackerId,
+            Middleware.Team.getTeamIdByHackerId,
             Middleware.Team.updateTeam,
 
             Controllers.Team.updatedTeam
