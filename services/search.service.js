@@ -65,10 +65,9 @@ function executeQuery(model, queryArray, page, limit, sort, sort_by, shouldExpan
     } else if (sort == "asc") {
         query.sort(sort_by);
     }
-    return query.lean()
-        .limit(limit)
+    return query.limit(limit)
         .skip(limit * page)
-        .exec()
+        .exec();
 }
 
 module.exports = {

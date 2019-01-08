@@ -44,4 +44,8 @@ module.exports = {
     downloadResumeValidator: [
         VALIDATOR.mongoIdValidator("param", "id", false)
     ],
+    statsValidator: [
+        VALIDATOR.searchModelValidator("query", "model", false),
+        VALIDATOR.searchValidator("query", "q")
+    ]
 };

@@ -26,7 +26,7 @@ function parseQuery(req, res, next) {
     }
     //Default limit
     if (!req.body.hasOwnProperty("limit")) {
-        req.body.limit = 25;
+        req.body.limit = 10000;
     } else {
         req.body.limit = parseInt(req.body.limit);
     }
@@ -62,8 +62,14 @@ async function executeQuery(req, res, next) {
     return next();
 }
 
+function setExpandTrue(req, res, next) {
+    req.body.expand = true;
+    next();
+}
+
 
 module.exports = {
     parseQuery: parseQuery,
-    executeQuery: Middleware.Util.asyncMiddleware(executeQuery)
+    executeQuery: Middleware.Util.asyncMiddleware(executeQuery),
+    setExpandTrue: setExpandTrue,
 };
