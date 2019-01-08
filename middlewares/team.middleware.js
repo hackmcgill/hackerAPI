@@ -289,7 +289,6 @@ async function findById(req, res, next) {
  * The team information is stored in req.body.team, and the member information is stored in req.body.teamMembers
  */
 async function populateMemberAccountsById(req, res, next) {
-    console.log(req.body.id);
     const team = await Services.Team.findById(req.body.id).populate({
         path: "members",
         populate: {
