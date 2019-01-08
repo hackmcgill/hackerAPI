@@ -146,6 +146,10 @@ const teamRoutes = {
         requestType: Constants.REQUEST_TYPES.PATCH,
         uri: "/api/team/join/",
     },
+    "leave": {
+        requestType: Constants.REQUEST_TYPES.PATCH,
+        uri: "/api/team/leave/",
+    },
 };
 
 const volunteerRoutes = {
