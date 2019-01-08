@@ -103,7 +103,7 @@ module.exports = {
         teamRouter.route("/leave").patch(
             Middleware.Auth.ensureAuthenticated(),
             Middleware.Auth.ensureAuthorized(),
-            Middleware.Team.deleteHackerFromTeam,
+            Middleware.Team.deleteUserFromTeam,
             Controllers.Team.leftTeam
         );
 

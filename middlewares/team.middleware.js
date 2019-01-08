@@ -167,13 +167,13 @@ async function findById(req, res, next) {
 
 /**
  * @async
- * @function deleteHackerFromTeam
+ * @function deleteUserFromTeam
  * @param {{user: {id: ObjectId}} req 
  * @param {*} res 
  * @return {JSON} Success or error status
- * @description Removes the hacker from the team under teamId. If hacker is not part of a team, it does nothing.
+ * @description Removes the hacker associated with req.user.id from the team under teamId. If hacker is not part of a team, it does nothing.
  */
-async function deleteHackerFromTeam(req, res, next) {
+async function deleteUserFromTeam(req, res, next) {
     const hacker = await Services.Hacker.findByAccountId(req.user.id);
 
     if (!hacker) {
@@ -394,5 +394,5 @@ module.exports = {
     parseNewTeam: Util.asyncMiddleware(parseNewTeam),
     ensureFreeTeamName: Util.asyncMiddleware(ensureFreeTeamName),
     populateMemberAccountsById: Util.asyncMiddleware(populateMemberAccountsById),
-    deleteHackerFromTeam: Util.asyncMiddleware(deleteHackerFromTeam),
+    deleteUserFromTeam: Util.asyncMiddleware(deleteUserFromTeam),
 };
