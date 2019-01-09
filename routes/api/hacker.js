@@ -13,7 +13,8 @@ const Middleware = {
     parseBody: require("../../middlewares/parse-body.middleware"),
     Util: require("../../middlewares/util.middleware"),
     Hacker: require("../../middlewares/hacker.middleware"),
-    Auth: require("../../middlewares/auth.middleware")
+    Auth: require("../../middlewares/auth.middleware"),
+    Search: require("../../middlewares/search.middleware")
 };
 const Services = {
     Hacker: require("../../services/hacker.service"),
@@ -173,6 +174,10 @@ module.exports = {
          * @apiName getHackerStats
          * @apiGroup Hacker
          * @apiVersion 0.0.9
+         * 
+         * @apiParam (query) {String} model the model to be searched (Only hacker supported)
+         * @apiParam (query) {Array} q the query to be executed. For more information on how to format this, please see https://docs.mchacks.ca/architecture/
+         * 
          * @apiSuccess {string} message Success message
          * @apiSuccess {object} data Hacker object
          * @apiSuccessExample {object} Success-Response: 
@@ -201,6 +206,11 @@ module.exports = {
         hackerRouter.route("/stats").get(
             Middleware.Auth.ensureAuthenticated(),
             Middleware.Auth.ensureAuthorized(),
+            Middleware.Validator.Hacker.statsValidator,
+            Middleware.parseBody.middleware,
+            Middleware.Search.setExpandTrue,
+            Middleware.Search.parseQuery,
+            Middleware.Search.executeQuery,
             Middleware.Hacker.getStats,
             Controllers.Hacker.gotStats
         );
@@ -279,6 +289,9 @@ module.exports = {
          * @apiParam (body) {String} [school] Name of the school the hacker goes to
          * @apiParam (body) {String} [gender] Gender of the hacker
          * @apiParam (body) {Boolean} [needsBus] Whether the hacker requires a bus for transportation
+         * @apiParam (body) {String[]} [ethnicity] the ethnicities of the hacker
+         * @apiParam (body) {String} [major] the major of the hacker
+         * @apiParam (body) {Number} [graduationYear] the graduation year of the hacker
          * @apiParam (body) {Json} [application] The hacker's application
          * @apiParamExample {Json} application: 
          *      {
@@ -400,7 +413,8 @@ module.exports = {
             Middleware.Validator.RouteParam.idValidator,
             Middleware.parseBody.middleware,
 
-            Controllers.Hacker.findById
+            Middleware.Hacker.findById,
+            Controllers.Hacker.showHacker
         );
 
         hackerRouter.route("/resume/:id")

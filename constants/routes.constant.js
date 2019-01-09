@@ -10,10 +10,6 @@ const authRoutes = {
         requestType: Constants.REQUEST_TYPES.POST,
         uri: "/api/auth/logout"
     },
-    "invite": {
-        requestType: Constants.REQUEST_TYPES.POST,
-        uri: "/api/auth/invite"
-    },
     "getSelfRoleBindindings": {
         requestType: Constants.REQUEST_TYPES.GET,
         uri: "/api/auth/rolebindings/" + Constants.ROLE_CATEGORIES.SELF
@@ -62,7 +58,7 @@ const accountRoutes = {
 const hackerRoutes = {
     "getSelf": {
         requestType: Constants.REQUEST_TYPES.GET,
-        uri: "/api/hacker/self/"
+        uri: "/api/hacker/self/",
     },
     "getSelfById": {
         requestType: Constants.REQUEST_TYPES.GET,
@@ -138,17 +134,29 @@ const sponsorRoutes = {
 };
 
 const teamRoutes = {
-    "getSelfById": {
-        requestType: Constants.REQUEST_TYPES.GET,
-        uri: "/api/team/" + Constants.ROLE_CATEGORIES.SELF,
-    },
-    "getAnyById": {
+    "get": {
         requestType: Constants.REQUEST_TYPES.GET,
         uri: "/api/team/" + Constants.ROLE_CATEGORIES.ALL,
     },
     "post": {
         requestType: Constants.REQUEST_TYPES.POST,
         uri: "/api/team/",
+    },
+    "join": {
+        requestType: Constants.REQUEST_TYPES.PATCH,
+        uri: "/api/team/join/",
+    },
+    "patchSelfById": {
+        requestType: Constants.REQUEST_TYPES.PATCH,
+        uri: "/api/team/" + Constants.ROLE_CATEGORIES.SELF
+    },
+    "patchAnyById": {
+        requestType: Constants.REQUEST_TYPES.PATCH,
+        uri: "/api/team/" + Constants.ROLE_CATEGORIES.ALL
+    },
+    "leave": {
+        requestType: Constants.REQUEST_TYPES.PATCH,
+        uri: "/api/team/leave/",
     },
 };
 
@@ -157,6 +165,13 @@ const volunteerRoutes = {
         requestType: Constants.REQUEST_TYPES.POST,
         uri: "/api/volunteer/",
     },
+};
+
+const roleRoutes = {
+    "post": {
+        requestType: Constants.REQUEST_TYPES.POST,
+        uri: "/api/role/",
+    }
 };
 
 const searchRoutes = {
@@ -170,7 +185,16 @@ const staffRoutes = {
     "hackerStats": {
         requestType: Constants.REQUEST_TYPES.GET,
         uri: "/api/hacker/stats",
-    }
+    },
+    "postInvite": {
+        requestType: Constants.REQUEST_TYPES.POST,
+        uri: "/api/account/invite"
+    },
+    "getInvite": {
+        requestType: Constants.REQUEST_TYPES.GET,
+        uri: "/api/account/invite"
+    },
+
 }
 
 const allRoutes = {
@@ -180,6 +204,7 @@ const allRoutes = {
     "Sponsor": sponsorRoutes,
     "Team": teamRoutes,
     "Volunteer": volunteerRoutes,
+    "Role": roleRoutes,
     "Search": searchRoutes,
     "Staff": staffRoutes,
 };
@@ -217,6 +242,7 @@ module.exports = {
     sponsorRoutes: sponsorRoutes,
     teamRoutes: teamRoutes,
     volunteerRoutes: volunteerRoutes,
+    roleRoutes: roleRoutes,
     searchRoutes: searchRoutes,
     staffRoutes: staffRoutes,
     allRoutes: allRoutes,

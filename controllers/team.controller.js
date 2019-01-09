@@ -12,56 +12,98 @@ const Constants = {
 };
 
 /**
- * @async
- * @function findById
- * @param {{body: {id: ObjectId}}} req 
- * @param {*} res 
- * @return {JSON} Success or error status
- * @description Finds a team by it's mongoId that's specified in req.param.id in route parameters. The id is moved to req.body.id from req.params.id by validation.
+ * @function showTeam
+ * @param {{body: {team: Object}}} req
+ * @param {*} res
+ * @return {JSON} Success status and team object
+ * @description Returns the JSON of team object located in req.body.team
  */
-async function findById(req, res) {
-    const team = await Services.Team.findById(req.body.id);
+function showTeam(req, res) {
+    const teamData = req.body.team.toJSON();
+    delete teamData.members;
 
-    if (team) {
-        return res.status(200).json({
-            message: Constants.Success.TEAM_GET_BY_ID,
-            data: team.toJSON()
-        });
-    } else {
-        return res.status(404).json({
-            message: Constants.Error.TEAM_404_MESSAGE,
-            data: {}
-        });
+    const memberNames = [];
+    for (const member of req.body.teamMembers) {
+        const strippedMemberJSON = member.toStrippedJSON();
+
+        const memberName = {
+            "firstName": strippedMemberJSON.firstName,
+            "lastName": strippedMemberJSON.lastName,
+        };
+
+        memberNames.push(memberName);
     }
+
+    return res.status(200).json({
+        message: Constants.Success.TEAM_READ,
+        data: {
+            team: teamData,
+            members: memberNames,
+        }
+    });
 }
 
 /**
- * @async
- * @function createTeam
- * @param {{body: {teamDetails: {_id: ObjectId, name: string, members: ObjectId[], devpostURL: string, projectName: string}}}} req
+ * @function joinedTeam
+ * @param {*} req 
+ * @param {*} res 
+ * @return {JSON} Success status of joining team
+ * @description return success message of joining team
+ */
+function joinedTeam(req, res) {
+    return res.status(200).json({
+        message: Constants.Success.TEAM_JOIN,
+        data: {},
+    });
+}
+
+/**
+ * @function updatedTeam
+ * @param {{body: {team: {_id: ObjectId, name: string, members: ObjectId[], devpostURL: string, projectName: string}}}} req
+ * @param {*} res
+ * @return {JSON} Success status
+ * @description Display team information and update success status
+ */
+function updatedTeam(req, res) {
+    return res.status(200).json({
+        message: Constants.Success.TEAM_UPDATE,
+        data: req.body.team.toJSON(),
+    });
+}
+
+/**
+ * @function createdTeam
+ * @param {{body: {team: {_id: ObjectId, name: string, members: ObjectId[], devpostURL: string, projectName: string}}}} req
  * @param {*} res
  * @return {JSON} Success or error status
- * @description create a team from information in req.body.teamDetails
+ * @description Display team information and creation success status.
  */
-async function createTeam(req, res) {
-    const teamDetails = req.body.teamDetails;
+function createdTeam(req, res) {
+    return res.status(200).json({
+        message: Constants.Success.TEAM_CREATE,
+        data: req.body.team,
+    });
+}
 
-    const success = await Services.Team.createTeam(teamDetails);
+/**
+ * @function leftTeam
+ * @param {*} req
+ * @param {*} res
+ * @return {JSON} Success status
+ * @description return success message of removing self from team.
+ */
 
-    if (success) {
-        return res.status(200).json({
-            message: Constants.Success.TEAM_CREATE,
-            data: teamDetails
-        });
-    } else {
-        return res.status(500).json({
-            message: Constants.Error.TEAM_CREATE_500_MESSAGE,
-            data: {}
-        });
-    }
+function leftTeam(req, res) {
+    return res.status(200).json({
+        message: Constants.Success.TEAM_HACKER_LEAVE,
+        data: {},
+    });
 }
 
 module.exports = {
-    createTeam: Util.asyncMiddleware(createTeam),
-    findById: Util.asyncMiddleware(findById),
+    joinedTeam: joinedTeam,
+    updatedTeam: updatedTeam,
+    createdTeam: createdTeam,
+    showTeam: showTeam,
+    leftTeam: leftTeam,
 };

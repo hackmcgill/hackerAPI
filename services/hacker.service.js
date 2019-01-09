@@ -22,7 +22,7 @@ function createHacker(hackerDetails) {
 /**
  * @function updateOne
  * @param {ObjectId} id
- * @param {{_id?: ObjectId, accountId?: ObjectId, school?: string, gender?: string, needsBus?: boolean, application?: {Object}}} hackerDetails
+ * @param {{_id?: ObjectId, accountId?: ObjectId, school?: string, gender?: string, needsBus?: boolean, application?: {Object}, teamId?: ObjectId}} hackerDetails
  * @return {DocumentQuery} The document query will resolve to hacker or null.
  * @description Update an account specified by its mongoId with information specified by hackerDetails.
  */
@@ -81,8 +81,8 @@ function findByAccountId(accountId) {
     return Hacker.findOne(query, logger.updateCallbackFactory(TAG, "hacker"));
 }
 
-async function getStats() {
-    const TAG = `[ hacker Service # getHackerStats ]`;
+async function getStatsAllHackersCached() {
+    const TAG = `[ hacker Service # getStatsAll ]`;
     if (cache.get(Constants.CACHE_KEY_STATS) !== null) {
         logger.info(`${TAG} Getting cached stats`);
         return cache.get(Constants.CACHE_KEY_STATS);
@@ -90,6 +90,12 @@ async function getStats() {
     const allHackers = await Hacker.find({}, logger.updateCallbackFactory(TAG, "hacker")).populate({
         path: "accountId",
     });
+    cache.put(Constants.CACHE_KEY_STATS, stats, Constants.CACHE_TIMEOUT_STATS); //set a time-out of 5 minutes
+    return getStats(allHackers);
+}
+
+function getStats(hackers) {
+    const TAG = `[ hacker Service # getStats ]`;
     const stats = {
         total: 0,
         status: {},
@@ -106,7 +112,7 @@ async function getStats() {
         age: {}
     };
 
-    allHackers.forEach((hacker) => {
+    hackers.forEach((hacker) => {
         if (!hacker.accountId) {
             // user is no longer with us for some reason :(
             return;
@@ -133,7 +139,6 @@ async function getStats() {
         const age = hacker.accountId.getAge();
         stats.age[age] = (stats.age[age]) ? stats.age[age] + 1 : 1;
     });
-    cache.put(Constants.CACHE_KEY_STATS, stats, Constants.CACHE_TIMEOUT_STATS); //set a time-out of 5 minutes
     return stats;
 }
 
@@ -144,5 +149,6 @@ module.exports = {
     updateOne: updateOne,
     findIds: findIds,
     findByAccountId: findByAccountId,
-    getStats: getStats
+    getStats: getStats,
+    getStatsAllHackersCached: getStatsAllHackersCached,
 };
