@@ -87,7 +87,7 @@ function generateToken(accountConfirmationId, accountId = null) {
  * @returns {string} the string, of form: [http|https]://{domain}/{model}/create?token={token}
  */
 function generateCreateAccountTokenLink(httpOrHttps, domain, type, token) {
-    const link = `${httpOrHttps}://${domain}/${type}/create?token=${token}`;
+    const link = `${httpOrHttps}://${domain}/account/create?token=${token}&accountType=${type}`;
     return link;
 }
 
