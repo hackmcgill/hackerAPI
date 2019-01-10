@@ -423,6 +423,12 @@ function createRoleBindings(roleName = undefined) {
     });
 }
 
+/**
+ * Adds a rolebinding between the user and the role with the name stored in 'accountType'. 
+ * @param {{user: {id: ObjectId, accountType: string}}} req 
+ * @param {*} res 
+ * @param {(err?) => void} next 
+ */
 async function addAccountTypeRoleBinding(req, res, next) {
     await Services.RoleBinding.createRoleBindingByRoleName(req.user.id, req.user.accountType);
     return next();

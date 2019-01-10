@@ -71,7 +71,14 @@ define({
               "field": "phoneNumber",
               "description": "<p>the user's phone number, represented as a string.</p>"
             }
-          ]
+          ],
+          "header": [{
+            "group": "header",
+            "type": "JWT",
+            "optional": true,
+            "field": "token",
+            "description": "<p>the user's invite token.</p>"
+          }]
         },
         "examples": [{
           "title": "Request-Example:",
@@ -2425,6 +2432,7 @@ define({
       "name": "patchTeam",
       "group": "Team",
       "version": "0.0.8",
+      "description": "<p>We use hackerId instead of teamId because authorization requires a one-to-one mapping from param id to accountId, but we are not able to have that from teamId to accountId due to multiple members in a team. Instead, we use hackerId, as there is a 1 to 1 link between hackerId to teamId, and a 1 to 1 link between hackerId and accountId</p>",
       "parameter": {
         "fields": {
           "param": [{
