@@ -423,6 +423,11 @@ function createRoleBindings(roleName = undefined) {
     });
 }
 
+async function addAccountTypeRoleBinding(req, res, next) {
+    await Services.RoleBinding.createRoleBindingByRoleName(req.user.id, req.user.accountType);
+    return next();
+}
+
 /**
  * Middleware to retrieve all the roles in the database
  * @param {*} req 
@@ -450,6 +455,7 @@ module.exports = {
     getAccountTypeFromConfirmationToken: Middleware.Util.asyncMiddleware(getAccountTypeFromConfirmationToken),
     validateConfirmationTokenWithoutAccount: Middleware.Util.asyncMiddleware(validateConfirmationTokenWithoutAccount),
     createRoleBindings: createRoleBindings,
+    addAccountTypeRoleBinding: Middleware.Util.asyncMiddleware(addAccountTypeRoleBinding),
     addCreationRoleBindings: Middleware.Util.asyncMiddleware(addCreationRoleBindings),
     resendConfirmAccountEmail: Middleware.Util.asyncMiddleware(resendConfirmAccountEmail),
     retrieveRoleBindings: Middleware.Util.asyncMiddleware(retrieveRoleBindings),
