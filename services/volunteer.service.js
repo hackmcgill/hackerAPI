@@ -40,7 +40,7 @@ function findByAccountId(accountId) {
         accountId: accountId
     };
 
-    return Volunteer.findOne(query, logger.updateCallbackFactory(TAG, "hacker"));
+    return Volunteer.findOne(query, logger.updateCallbackFactory(TAG, "volunteer"));
 }
 
 module.exports = {
