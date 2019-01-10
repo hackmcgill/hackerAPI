@@ -169,6 +169,14 @@ const teamRoutes = {
 };
 
 const volunteerRoutes = {
+    "getSelfById": {
+        requestType: Constants.REQUEST_TYPES.GET,
+        uri: "/api/volunteer/" + Constants.ROLE_CATEGORIES.SELF,
+    },
+    "getAnyById": {
+        requestType: Constants.REQUEST_TYPES.GET,
+        uri: "/api/volunteer/" + Constants.ROLE_CATEGORIES.ALL,
+    },
     "post": {
         requestType: Constants.REQUEST_TYPES.POST,
         uri: "/api/volunteer/",

@@ -10,21 +10,35 @@ const Constants = {
 }
 
 /**
- * @async
  * @function createdVolunteer
  * @param {{body: {volunteer: {_id: ObjectId, accountId: ObjectId}}}} req
  * @param {*} res
- * @return {JSON} Success or error status
+ * @return {JSON} Success status
  * @description Show the success message and the created volunteer
  */
-async function createdVolunteer(req, res) {
-
+function createdVolunteer(req, res) {
     return res.status(200).json({
         message: Constants.Success.VOLUNTEER_CREATE,
         data: req.body.volunteer
     });
 }
 
+/**
+ * @function showVolunteer
+ * @param {{body: {volunteer: {_id: ObjectId, accountId: ObjectId}}}} req
+ * @param {*} res
+ * @return {JSON} Success status
+ * @description Show the success message and retrieved volunteer
+ */
+function showVolunteer(req, res) {
+    return res.status(200).json({
+        message: Constants.Success.VOLUNTEER_GET_BY_ID,
+        data: req.body.volunteer.toJSON()
+    });
+}
+
+
 module.exports = {
     createdVolunteer: createdVolunteer,
+    showVolunteer: showVolunteer,
 };
