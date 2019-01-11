@@ -41,6 +41,7 @@ const TEAM_UPDATE = "Team update successful.";
 const TEAM_READ = "Team retrieval successful.";
 const TEAM_HACKER_LEAVE = "Removal from team successful.";
 
+const VOLUNTEER_GET_BY_ID = "Volunteer found by id";
 const VOLUNTEER_CREATE = "Volunteer creation successful.";
 
 module.exports = {
@@ -84,5 +85,6 @@ module.exports = {
     TEAM_READ: TEAM_READ,
     TEAM_HACKER_LEAVE: TEAM_HACKER_LEAVE,
 
+    VOLUNTEER_GET_BY_ID: VOLUNTEER_GET_BY_ID,
     VOLUNTEER_CREATE: VOLUNTEER_CREATE,
 };

@@ -2569,6 +2569,78 @@ define({
       "sampleRequest": [{
         "url": "https://api.mchacks.ca/api/volunteer/"
       }]
+    },
+    {
+      "type": "get",
+      "url": "/volunteer/:id",
+      "title": "get a volunteer's information",
+      "name": "getVolunteer",
+      "group": "Volunteer",
+      "version": "1.3.0",
+      "parameter": {
+        "fields": {
+          "param": [{
+            "group": "param",
+            "type": "ObjectId",
+            "optional": false,
+            "field": "id",
+            "description": "<p>a volunteer's unique mongoID</p>"
+          }]
+        }
+      },
+      "success": {
+        "fields": {
+          "Success 200": [{
+              "group": "Success 200",
+              "type": "String",
+              "optional": false,
+              "field": "message",
+              "description": "<p>Success message</p>"
+            },
+            {
+              "group": "Success 200",
+              "type": "Object",
+              "optional": false,
+              "field": "data",
+              "description": "<p>Volunteer object</p>"
+            }
+          ]
+        },
+        "examples": [{
+          "title": "Success-Response: ",
+          "content": "{\n               \"message\": \"Successfully retrieved volunteer information\", \n               \"data\": {...}\n           }",
+          "type": "object"
+        }]
+      },
+      "error": {
+        "fields": {
+          "Error 4xx": [{
+              "group": "Error 4xx",
+              "type": "String",
+              "optional": false,
+              "field": "message",
+              "description": "<p>Error message</p>"
+            },
+            {
+              "group": "Error 4xx",
+              "type": "Object",
+              "optional": false,
+              "field": "data",
+              "description": "<p>empty</p>"
+            }
+          ]
+        },
+        "examples": [{
+          "title": "Error-Response: ",
+          "content": "{\"message\": \"Volunteer not found\", \"data\": {}}",
+          "type": "object"
+        }]
+      },
+      "filename": "routes/api/volunteer.js",
+      "groupTitle": "Volunteer",
+      "sampleRequest": [{
+        "url": "https://api.mchacks.ca/api/volunteer/:id"
+      }]
     }
   ]
 });

@@ -52,6 +52,7 @@ const volunteerRole = {
     "_id": mongoose.Types.ObjectId.createFromTime(3),
     "name": Constants.General.VOLUNTEER,
     "routes": [
+        Constants.Routes.volunteerRoutes.getSelfById,
         Constants.Routes.volunteerRoutes.post,
 
         Constants.Routes.hackerRoutes.patchAnyCheckInById,
