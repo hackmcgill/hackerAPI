@@ -7,6 +7,7 @@ const agent = chai.request.agent(server.app);
 const should = chai.should();
 const Volunteer = require("../models/volunteer.model");
 const Constants = {
+    Success: require("../constants/success.constant"),
     Error: require("../constants/error.constant"),
 };
 
@@ -24,6 +25,115 @@ const newVolunteer = util.volunteer.newVolunteer1;
 const duplicateVolunteer = util.volunteer.duplicateVolunteer1;
 
 const hackerAccount = util.account.Account1;
+
+describe("GET volunteer", function () {
+    it("should FAIL to get volunteer due to lack of authentication", function (done) {
+        chai.request(server.app)
+            .get(`/api/volunteer/${util.volunteer.Volunteer1._id}`)
+            .end(function (err, res) {
+                res.should.have.status(401);
+                res.should.be.json;
+                res.body.should.have.property("message");
+                res.body.message.should.equal(Constants.Error.AUTH_401_MESSAGE);
+                res.body.should.have.property("data");
+
+                done();
+            });
+    });
+
+    it("should Fail to GET volunteer due inappropriate authorization", function (done) {
+        util.auth.login(agent, util.account.Hacker5, (error) => {
+            if (error) {
+                agent.close();
+                return done(error);
+            }
+            return agent
+                .get(`/api/volunteer/${util.volunteer.Volunteer1._id}`)
+                .end(function (err, res) {
+                    res.should.have.status(403);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal(Constants.Error.AUTH_403_MESSAGE);
+                    res.body.should.have.property("data");
+
+                    done();
+                });
+        });
+    });
+
+    it("should Fail to GET volunteer due to non existant volunteer id", function (done) {
+        util.auth.login(agent, util.account.Admin1, (error) => {
+            if (error) {
+                agent.close();
+                return done(error);
+            }
+            return agent
+                .get(`/api/volunteer/${util.account.Admin1._id}`)
+                .end(function (err, res) {
+                    res.should.have.status(404);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal(Constants.Error.VOLUNTEER_404_MESSAGE);
+                    res.body.should.have.property("data");
+
+                    done();
+                });
+        });
+    });
+
+    // success case
+    it("should GET volunteer info by id with admin credentials", function (done) {
+        util.auth.login(agent, util.account.Admin1, (error) => {
+            if (error) {
+                agent.close();
+                return done(error);
+            }
+            return agent
+                .get(`/api/volunteer/${util.volunteer.Volunteer1._id}`)
+                .end(function (err, res) {
+                    if (err) {
+                        return done(err);
+                    }
+                    res.should.have.status(200);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal(Constants.Success.VOLUNTEER_GET_BY_ID);
+                    res.body.should.have.property("data");
+
+                    let volunteer = new Volunteer(util.volunteer.Volunteer1);
+                    chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify(volunteer.toJSON()));
+                    done();
+                });
+        });
+    });
+
+    // success case
+    it("should GET the user's volunteer info by id", function (done) {
+        util.auth.login(agent, util.account.Account4, (error) => {
+            if (error) {
+                agent.close();
+                return done(error);
+            }
+            return agent
+                .get(`/api/volunteer/${util.volunteer.Volunteer1._id}`)
+                .end(function (err, res) {
+                    if (err) {
+                        return done(err);
+                    }
+                    res.should.have.status(200);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal(Constants.Success.VOLUNTEER_GET_BY_ID);
+                    res.body.should.have.property("data");
+
+                    let volunteer = new Volunteer(util.volunteer.Volunteer1);
+                    chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify(volunteer.toJSON()));
+                    done();
+                });
+        });
+    });
+
+});
 
 describe("POST create volunteer", function () {
     it("should fail to create a new volunteer due to lack of authentication", function (done) {
@@ -79,11 +189,11 @@ describe("POST create volunteer", function () {
                     res.should.have.status(200);
                     res.should.be.json;
                     res.body.should.have.property("message");
-                    res.body.message.should.equal("Volunteer creation successful");
+                    res.body.message.should.equal(Constants.Success.VOLUNTEER_CREATE);
                     res.body.should.have.property("data");
 
-                    // deleting _id because that was generated, and not part of original data
-                    delete res.body.data._id;
+                    // deleting id because that was generated, and not part of original data
+                    delete res.body.data.id;
                     chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify(util.volunteer.newVolunteer1));
                     done();
                 });

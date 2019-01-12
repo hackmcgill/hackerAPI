@@ -21,7 +21,7 @@ const RoleSchema = new mongoose.Schema({
         },
         requestType: {
             type: String,
-            enum: Object.entries(Constants.REQUEST_TYPES)
+            enum: Object.values(Constants.REQUEST_TYPES)
         },
     }]
 });

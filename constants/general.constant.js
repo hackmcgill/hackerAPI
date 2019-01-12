@@ -5,7 +5,8 @@ const HACKATHON_NAME = "McHacks";
 // constants kept in alphabetical order
 // matches optional http://, https://, http:, https:, and optional www., and then matches for devpost.com and further parameters
 const DEVPOST_REGEX = /^(http(s)?:(\/\/)?)?(www\.)?(([-a-zA-Z0-9@:%._\+~#=]{2,256}\.)?devpost\.com)\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$/;
-const EMAIL_REGEX = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+// from https://emailregex.com
+const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 const HACKER_STATUS_NONE = "None";
 const HACKER_STATUS_APPLIED = "Applied";
 const HACKER_STATUS_ACCEPTED = "Accepted";
@@ -63,6 +64,9 @@ const EXTENDED_USER_TYPES = [HACKER, VOLUNTEER, STAFF, SPONSOR_T1, SPONSOR_T2, S
 // matches optional http://, https://, http:, https:, and optional www.
 // matches the domain, and then optional route, path, query parameters
 const URL_REGEX = /^(http(s)?:(\/\/)?)?(www\.)?([-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6})\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$/;
+const ANY_REGEX = /^.+$/;
+
+const MAX_TEAM_SIZE = 4;
 
 const EMAIL_SUBJECTS = {};
 EMAIL_SUBJECTS[HACKER_STATUS_NONE] = `Application for ${HACKATHON_NAME} incomplete`;
@@ -80,10 +84,14 @@ CREATE_ACC_EMAIL_SUBJECTS[SPONSOR] = `You've been invited to create a sponsor ac
 CREATE_ACC_EMAIL_SUBJECTS[VOLUNTEER] = `You've been invited to create a volunteer account for ${HACKATHON_NAME}`;
 CREATE_ACC_EMAIL_SUBJECTS[STAFF] = `You've been invited to create a staff account for ${HACKATHON_NAME}`;
 
+const CACHE_TIMEOUT_STATS = 5 * 60 * 1000;
+const CACHE_KEY_STATS = "hackerStats";
+
 module.exports = {
     HACKATHON_NAME: HACKATHON_NAME,
     DEVPOST_REGEX: DEVPOST_REGEX,
     EMAIL_REGEX: EMAIL_REGEX,
+    ANY_REGEX: ANY_REGEX,
     HACKER_STATUS_NONE: HACKER_STATUS_NONE,
     HACKER_STATUS_APPLIED: HACKER_STATUS_APPLIED,
     HACKER_STATUS_ACCEPTED: HACKER_STATUS_ACCEPTED,
@@ -112,5 +120,8 @@ module.exports = {
     SPONSOR_T4: SPONSOR_T4,
     SPONSOR_T5: SPONSOR_T5,
     ROLE_CATEGORIES: ROLE_CATEGORIES,
-    POST_ROLES: POST_ROLES
+    POST_ROLES: POST_ROLES,
+    CACHE_TIMEOUT_STATS: CACHE_TIMEOUT_STATS,
+    CACHE_KEY_STATS: CACHE_KEY_STATS,
+    MAX_TEAM_SIZE: MAX_TEAM_SIZE
 };

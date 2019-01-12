@@ -1,12 +1,13 @@
 "use strict";
 const mongoose = require("mongoose");
-const MAX_TEAM_SIZE = 4;
+const Constants = require("../constants/general.constant");
+
 //describes the data type
 const TeamSchema = new mongoose.Schema({
     name: {
         type: String,
+        required: true,
         unique: true,
-        required: true
     },
     members: {
         type: [{
@@ -23,7 +24,7 @@ const TeamSchema = new mongoose.Schema({
 });
 
 function validateTeamSize(membersArr) {
-    return membersArr.length <= MAX_TEAM_SIZE;
+    return membersArr.length <= Constants.MAX_TEAM_SIZE;
 }
 
 TeamSchema.methods.toJSON = function () {

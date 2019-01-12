@@ -28,6 +28,7 @@ const teamRouter = require("./routes/api/team");
 const sponsorRouter = require("./routes/api/sponsor");
 const searchRouter = require("./routes/api/search");
 const volunteerRouter = require("./routes/api/volunteer");
+const roleRouter = require("./routes/api/role");
 
 const app = express();
 Services.db.connect(app);
@@ -42,7 +43,7 @@ if (!Services.env.isProduction()) {
 } else {
     // TODO: change this when necessary
     corsOptions = {
-        origin: [`https://${process.env.FRONTEND_ADDRESS_DEPLOY}`, `https://hackerapi.mchacks.ca`],
+        origin: [`https://${process.env.FRONTEND_ADDRESS_DEPLOY}`, `https://docs.mchacks.ca`],
         credentials: true
     };
 }
@@ -83,6 +84,8 @@ volunteerRouter.activate(apiRouter);
 Services.log.info("Volunteer router activated");
 searchRouter.activate(apiRouter);
 Services.log.info("Search router activated");
+roleRouter.activate(apiRouter);
+Services.log.info("Role router activated");
 
 apiRouter.use("/", indexRouter);
 app.use("/", indexRouter);

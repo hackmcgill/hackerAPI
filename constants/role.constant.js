@@ -6,7 +6,7 @@ const Constants = {
 const mongoose = require("mongoose");
 
 const accountRole = {
-    "_id": mongoose.Types.ObjectId(0),
+    "_id": mongoose.Types.ObjectId("00000000e285ec4f6ec7e5c2"),
     "name": "account",
     "routes": [
         Constants.Routes.authRoutes.login,
@@ -35,10 +35,17 @@ const hackerRole = {
 
         Constants.Routes.hackerRoutes.post,
         Constants.Routes.hackerRoutes.getSelfById,
+        Constants.Routes.hackerRoutes.getSelfByEmail,
         Constants.Routes.hackerRoutes.getSelfResumeById,
         Constants.Routes.hackerRoutes.patchSelfById,
         Constants.Routes.hackerRoutes.patchSelfConfirmationById,
         Constants.Routes.hackerRoutes.getSelf,
+
+        Constants.Routes.teamRoutes.join,
+        Constants.Routes.teamRoutes.patchSelfById,
+        Constants.Routes.teamRoutes.post,
+        Constants.Routes.teamRoutes.get,
+        Constants.Routes.teamRoutes.leave
     ]
 };
 
@@ -46,10 +53,13 @@ const volunteerRole = {
     "_id": mongoose.Types.ObjectId.createFromTime(3),
     "name": Constants.General.VOLUNTEER,
     "routes": [
+        Constants.Routes.volunteerRoutes.getSelfById,
         Constants.Routes.volunteerRoutes.post,
 
         Constants.Routes.hackerRoutes.patchAnyCheckInById,
         Constants.Routes.hackerRoutes.patchSelfCheckInById,
+
+        Constants.Routes.teamRoutes.get
     ]
 };
 

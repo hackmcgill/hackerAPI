@@ -6,70 +6,34 @@ const Services = {
 const Util = require("../middlewares/util.middleware");
 const Constants = {
     Error: require("../constants/error.constant"),
+    Success: require("../constants/success.constant"),
 };
 
-
 /**
- * @async
- * @function getUserByEmail
- * @param {{user: {email: string}}} req
+ * @function showAccount
+ * @param {{body: {account: Object}}} req
  * @param {*} res
- * @return {JSON} Success or error status
- * @description Retrieves an account's information via email query.
+ * @return {JSON} Success status and account object
+ * @description Returns the JSON of account object located in req.body.account
  */
-async function getUserByEmail(req, res) {
-    const acc = await Services.Account.findByEmail(req.user.email);
-
-    if (acc) {
-        return res.status(200).json({
-            message: "Account found by user email",
-            data: acc.toStrippedJSON()
-        });
-    } else {
-        // tentative error code
-        return res.status(404).json({
-            message: Constants.Error.ACCOUNT_404_MESSAGE,
-            data: {}
-        });
-    }
+function showAccount(req, res) {
+    return res.status(200).json({
+        message: Constants.Success.ACCOUNT_READ,
+        data: req.body.account.toStrippedJSON()
+    });
 }
 
 /**
- * @async
- * @function getUserById
- * @param {{body: {id: string}}} req
- * @param {*} res
- * @return {JSON} Success or error status
- * @description Retrieves an account's information via the account's mongoId, specified in req.params.id from route parameters. It is moved to req.body.id from req.params.id by validation.
- */
-async function getUserById(req, res) {
-    const acc = await Services.Account.findById(req.body.id);
-
-    if (acc) {
-        return res.status(200).json({
-            message: "Account found by user id",
-            data: acc.toStrippedJSON()
-        });
-    } else {
-        return res.status(404).json({
-            message: Constants.Error.ACCOUNT_404_MESSAGE,
-            data: {}
-        });
-    }
-}
-
-/**
- * @async
  * @function addUser
  * @param {{body: {accountDetails: {_id: ObjectId, firstName: string, lastName: string, email: string, password: string, dietaryRestrictions: string, shirtSize: string}}}} req
  * @param {*} res
  * @return {JSON} Success or error status
  * @description Adds a user from information in req.body.accountDetails
  */
-async function addUser(req, res) {
+function addUser(req, res) {
     const acc = req.body.account;
     return res.status(200).json({
-        message: "Account creation successful",
+        message: Constants.Success.ACCOUNT_CREATE,
         data: acc.toStrippedJSON()
     });
 }
@@ -87,25 +51,31 @@ async function addUser(req, res) {
  */
 function updatedAccount(req, res) {
     return res.status(200).json({
-        message: "Changed account information",
+        message: Constants.Success.ACCOUNT_UPDATE,
         data: req.body
     });
 }
 
 function invitedAccount(req, res) {
     return res.status(200).json({
-        message: "Successfully invited user",
+        message: Constants.Success.ACCOUNT_INVITE,
         data: {}
     });
 }
 
+function gotInvites(req, res) {
+    return res.status(200).json({
+        message: Constants.Success.ACCOUNT_GET_INVITES,
+        data: {
+            invites: req.body.invites
+        }
+    });
+}
 
 module.exports = {
-    getUserByEmail: Util.asyncMiddleware(getUserByEmail),
-    getUserById: Util.asyncMiddleware(getUserById),
-
-    // assumes all information in req.body
-    addUser: Util.asyncMiddleware(addUser),
+    addUser: addUser,
+    gotInvites: gotInvites,
     updatedAccount: updatedAccount,
-    invitedAccount: invitedAccount
+    invitedAccount: invitedAccount,
+    showAccount: showAccount,
 };

@@ -7,7 +7,8 @@ const Controllers = {
 const Middleware = {
     Validator: {
         /* Insert the require statement to the validator file here */
-        Volunteer: require("../../middlewares/validators/volunteer.validator")
+        Volunteer: require("../../middlewares/validators/volunteer.validator"),
+        RouteParam: require("../../middlewares/validators/routeParam.validator"),
     },
     /* Insert all of ther middleware require statements here */
     parseBody: require("../../middlewares/parse-body.middleware"),
@@ -23,6 +24,38 @@ const CONSTANTS = require("../../constants/general.constant");
 module.exports = {
     activate: function (apiRouter) {
         const volunteerRouter = express.Router();
+
+        /**
+         * @api {get} /volunteer/:id get a volunteer's information
+         * @apiName getVolunteer
+         * @apiGroup Volunteer
+         * @apiVersion 1.3.0
+         * 
+         * @apiParam (param) {ObjectId} id a volunteer's unique mongoID
+         * 
+         * @apiSuccess {String} message Success message
+         * @apiSuccess {Object} data Volunteer object
+         * @apiSuccessExample {object} Success-Response: 
+         *      {
+                    "message": "Successfully retrieved volunteer information", 
+                    "data": {...}
+                }
+
+         * @apiError {String} message Error message
+         * @apiError {Object} data empty
+         * @apiErrorExample {object} Error-Response: 
+         *      {"message": "Volunteer not found", "data": {}}
+         */
+        volunteerRouter.route("/:id").get(
+            Middleware.Auth.ensureAuthenticated(),
+            Middleware.Auth.ensureAuthorized([Services.Volunteer.findById]),
+
+            Middleware.Validator.RouteParam.idValidator,
+            Middleware.parseBody.middleware,
+
+            Middleware.Volunteer.findById,
+            Controllers.Volunteer.showVolunteer
+        );
 
         /**
          * @api {post} /volunteer/ create a new volunteer
@@ -62,7 +95,8 @@ module.exports = {
 
             Middleware.Auth.createRoleBindings(CONSTANTS.VOLUNTEER),
 
-            Controllers.Volunteer.createVolunteer
+            Middleware.Volunteer.createVolunteer,
+            Controllers.Volunteer.createdVolunteer
         );
 
         apiRouter.use("/volunteer", volunteerRouter);

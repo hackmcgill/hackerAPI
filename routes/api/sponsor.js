@@ -53,7 +53,8 @@ module.exports = {
             Middleware.Validator.RouteParam.idValidator,
             Middleware.parseBody.middleware,
 
-            Controllers.Sponsor.findById
+            Middleware.Sponsor.findById,
+            Controllers.Sponsor.showSponsor
         );
 
         /**
@@ -99,7 +100,8 @@ module.exports = {
 
             Middleware.Auth.createRoleBindings(CONSTANTS.SPONSOR),
 
-            Controllers.Sponsor.createSponsor
+            Middleware.Sponsor.createSponsor,
+            Controllers.Sponsor.createdSponsor
         );
 
         apiRouter.use("/sponsor", sponsorRouter);

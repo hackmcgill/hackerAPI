@@ -1,36 +1,8 @@
 "use strict";
-const Services = {
-    Hacker: require("../services/hacker.service"),
-    Logger: require("../services/logger.service"),
-};
-const Util = require("../middlewares/util.middleware");
 const Constants = {
+    Success: require("../constants/success.constant"),
     Error: require("../constants/error.constant"),
 };
-
-/**
- * @async
- * @function findById
- * @param {{body: {id: ObjectId}}} req
- * @param {*} res
- * @return {JSON} Success or error status
- * @description Retrieves a hacker's information via it's mongoId specified in req.params.id. The id is moved to req.body.id from req.params.id by validation.
- */
-async function findById(req, res) {
-    const hacker = await Services.Hacker.findById(req.body.id);
-
-    if (hacker) {
-        return res.status(200).json({
-            message: "Successfully retrieved hacker information",
-            data: hacker.toJSON()
-        });
-    } else {
-        return res.status(404).json({
-            message: Constants.Error.HACKER_404_MESSAGE,
-            data: {}
-        });
-    }
-}
 
 /**
  * @function showHacker
@@ -41,7 +13,7 @@ async function findById(req, res) {
  */
 function showHacker(req, res) {
     return res.status(200).json({
-        message: "Hacker retrieval successful",
+        message: Constants.Success.HACKER_READ,
         data: req.body.hacker.toJSON()
     });
 }
@@ -55,7 +27,7 @@ function showHacker(req, res) {
  */
 function createdHacker(req, res) {
     return res.status(200).json({
-        message: "Hacker creation successful",
+        message: Constants.Success.HACKER_CREATE,
         data: req.body.hacker.toJSON()
     });
 }
@@ -73,14 +45,14 @@ function createdHacker(req, res) {
  */
 function updatedHacker(req, res) {
     return res.status(200).json({
-        message: "Changed hacker information",
+        message: Constants.Success.HACKER_UPDATE,
         data: req.body
     });
 }
 
 function uploadedResume(req, res) {
     return res.status(200).json({
-        message: "Uploaded resume",
+        message: Constants.Success.RESUME_UPLOAD,
         data: {
             filename: req.body.gcfilename
         }
@@ -89,7 +61,7 @@ function uploadedResume(req, res) {
 
 function downloadedResume(req, res) {
     return res.status(200).json({
-        message: "Downloaded resume",
+        message: Constants.Success.RESUME_DOWNLOAD,
         data: {
             id: req.body.id,
             resume: req.body.resume
@@ -97,11 +69,21 @@ function downloadedResume(req, res) {
     });
 }
 
+function gotStats(req, res) {
+    return res.status(200).json({
+        message: "Retrieved stats",
+        data: {
+            stats: req.body.stats,
+        }
+    });
+
+}
+
 module.exports = {
     updatedHacker: updatedHacker,
-    findById: Util.asyncMiddleware(findById),
     createdHacker: createdHacker,
     uploadedResume: uploadedResume,
     downloadedResume: downloadedResume,
     showHacker: showHacker,
+    gotStats: gotStats,
 };

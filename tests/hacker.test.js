@@ -9,6 +9,7 @@ const Hacker = require("../models/hacker.model");
 const fs = require("fs");
 const path = require("path");
 const Constants = {
+    Success: require("../constants/success.constant"),
     General: require("../constants/general.constant"),
     Error: require("../constants/error.constant"),
 };
@@ -36,6 +37,9 @@ const storedAccount2 = util.account.Account2;
 const storedHacker2 = util.hacker.HackerB;
 
 const newHacker1 = util.hacker.newHacker1;
+// badConductHacker1 is the same as newHacker1, even linking to the same account
+// the difference is that badConductHacker1 does not accept the code of conducts
+const badConductHacker1 = util.hacker.badCodeOfConductHacker1;
 const newHackerAccount1 = util.account.allAccounts[13];
 
 const newHacker2 = util.hacker.newHacker2;
@@ -71,7 +75,7 @@ describe("GET hacker", function () {
                     res.should.have.status(200);
                     res.should.be.json;
                     res.body.should.have.property("message");
-                    res.body.message.should.equal("Hacker retrieval successful");
+                    res.body.message.should.equal(Constants.Success.HACKER_READ);
                     res.body.should.have.property("data");
 
                     let hacker = new Hacker(storedHacker1);
@@ -117,7 +121,7 @@ describe("GET hacker", function () {
                     res.should.have.status(200);
                     res.should.be.json;
                     res.body.should.have.property("message");
-                    res.body.message.should.equal("Successfully retrieved hacker information");
+                    res.body.message.should.equal(Constants.Success.HACKER_READ);
                     res.body.should.have.property("data");
 
                     let hacker = new Hacker(storedHacker1);
@@ -145,7 +149,7 @@ describe("GET hacker", function () {
                     res.should.have.status(200);
                     res.should.be.json;
                     res.body.should.have.property("message");
-                    res.body.message.should.equal("Successfully retrieved hacker information");
+                    res.body.message.should.equal(Constants.Success.HACKER_READ);
                     res.body.should.have.property("data");
 
                     let hacker = new Hacker(storedHacker1);
@@ -205,6 +209,88 @@ describe("GET hacker", function () {
                 });
         });
     });
+
+    // succeed on admin case
+    it("should list a hacker's information using admin power on /api/hacker/email/:email GET", function (done) {
+        util.auth.login(agent, Admin1, (error) => {
+            if (error) {
+                agent.close();
+                return done(error);
+            }
+            return agent
+                .get(`/api/hacker/email/${storedAccount1.email}`)
+                // does not have password because of to stripped json
+                .end(function (err, res) {
+                    if (err) {
+                        return done(err);
+                    }
+                    res.should.have.status(200);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal(Constants.Success.HACKER_READ);
+                    res.body.should.have.property("data");
+
+                    let hacker = new Hacker(storedHacker1);
+                    chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify(hacker.toJSON()));
+
+                    done();
+                });
+        });
+    });
+
+    // succeed on :self case
+    it("should list the user's hacker information on /api/hacker/email/:email GET", function (done) {
+        util.auth.login(agent, storedAccount1, (error) => {
+            if (error) {
+                agent.close();
+                return done(error);
+            }
+            return agent
+                .get(`/api/hacker/email/${storedAccount1.email}`)
+                // does not have password because of to stripped json
+                .end(function (err, res) {
+                    if (err) {
+                        return done(err);
+                    }
+                    res.should.have.status(200);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal(Constants.Success.HACKER_READ);
+                    res.body.should.have.property("data");
+
+                    let hacker = new Hacker(storedHacker1);
+
+                    chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify(hacker.toJSON()));
+
+                    done();
+                });
+        });
+    });
+
+    // fail due to lack of authorization
+    it("should fail to list a hacker information due to lack of authorization on /api/hacker/email/:id GET", function (done) {
+        util.auth.login(agent, storedAccount2, (error) => {
+            if (error) {
+                agent.close();
+                return done(error);
+            }
+            return agent
+                .get(`/api/hacker/email/${storedAccount1.email}`)
+                // does not have password because of to stripped json
+                .end(function (err, res) {
+                    if (err) {
+                        return done(err);
+                    }
+                    res.should.have.status(403);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal(Constants.Error.AUTH_403_MESSAGE);
+                    res.body.should.have.property("data");
+
+                    done();
+                });
+        });
+    });
 });
 
 describe("POST create hacker", function () {
@@ -240,7 +326,7 @@ describe("POST create hacker", function () {
                     res.should.have.status(200);
                     res.should.be.json;
                     res.body.should.have.property("message");
-                    res.body.message.should.equal("Hacker creation successful");
+                    res.body.message.should.equal(Constants.Success.HACKER_CREATE);
                     res.body.should.have.property("data");
 
                     // create JSON version of model
@@ -272,7 +358,7 @@ describe("POST create hacker", function () {
                     res.should.have.status(200);
                     res.should.be.json;
                     res.body.should.have.property("message");
-                    res.body.message.should.equal("Hacker creation successful");
+                    res.body.message.should.equal(Constants.Success.HACKER_CREATE);
                     res.body.should.have.property("data");
 
                     // create JSON version of model
@@ -283,6 +369,30 @@ describe("POST create hacker", function () {
                     delete res.body.data.id;
                     delete hacker.id;
                     chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify(hacker));
+                    done();
+                });
+        });
+    });
+
+    // should fail due to 'false' on code of conduct
+    it("should FAIL if the new hacker does not accept code of conduct", function (done) {
+        util.auth.login(agent, newHackerAccount1, (error) => {
+            if (error) {
+                agent.close();
+                return done(error);
+            }
+            return agent
+                .post(`/api/hacker/`)
+                .type("application/json")
+                .send(badConductHacker1)
+                .end(function (err, res) {
+                    res.should.have.status(422);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal("Validation failed");
+                    res.body.should.have.property("data");
+                    res.body.data.should.have.property("codeOfConduct");
+                    res.body.data.codeOfConduct.msg.should.equal("Must be equal to true");
                     done();
                 });
         });
@@ -385,7 +495,7 @@ describe("PATCH update one hacker", function () {
                     res.should.have.status(200);
                     res.should.be.json;
                     res.body.should.have.property("message");
-                    res.body.message.should.equal("Changed hacker information");
+                    res.body.message.should.equal(Constants.Success.HACKER_UPDATE);
                     res.body.should.have.property("data");
                     chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify({
                         gender: "Other"
@@ -411,7 +521,7 @@ describe("PATCH update one hacker", function () {
                     res.should.have.status(200);
                     res.should.be.json;
                     res.body.should.have.property("message");
-                    res.body.message.should.equal("Changed hacker information");
+                    res.body.message.should.equal(Constants.Success.HACKER_UPDATE);
                     res.body.should.have.property("data");
                     chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify({
                         status: "Accepted"
@@ -461,7 +571,7 @@ describe("PATCH update one hacker", function () {
                     res.should.have.status(200);
                     res.should.be.json;
                     res.body.should.have.property("message");
-                    res.body.message.should.equal("Changed hacker information");
+                    res.body.message.should.equal(Constants.Success.HACKER_UPDATE);
                     res.body.should.have.property("data");
                     chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify({
                         status: "Checked-in"
@@ -512,7 +622,7 @@ describe("PATCH update one hacker", function () {
                     res.should.have.status(200);
                     res.should.be.json;
                     res.body.should.have.property("message");
-                    res.body.message.should.equal("Changed hacker information");
+                    res.body.message.should.equal(Constants.Success.HACKER_UPDATE);
                     res.body.should.have.property("data");
                     chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify({
                         gender: "Other"
@@ -591,7 +701,7 @@ describe("PATCH update one hacker", function () {
                     res.should.have.status(200);
                     res.should.be.json;
                     res.body.should.have.property("message");
-                    res.body.message.should.equal("Changed hacker information");
+                    res.body.message.should.equal(Constants.Success.HACKER_UPDATE);
                     res.body.should.have.property("data");
                     chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify({
                         status: Constants.General.HACKER_STATUS_CONFIRMED
@@ -622,7 +732,7 @@ describe("PATCH update one hacker", function () {
                     res.should.have.status(200);
                     res.should.be.json;
                     res.body.should.have.property("message");
-                    res.body.message.should.equal("Changed hacker information");
+                    res.body.message.should.equal(Constants.Success.HACKER_UPDATE);
                     res.body.should.have.property("data");
                     chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify({
                         status: Constants.General.HACKER_STATUS_ACCEPTED
@@ -706,7 +816,7 @@ describe("POST add a hacker resume", function () {
                     res.should.have.status(200);
                     res.should.have.property("body");
                     res.body.should.have.property("message");
-                    res.body.message.should.equal("Uploaded resume");
+                    res.body.message.should.equal(Constants.Success.RESUME_UPLOAD);
                     res.body.should.have.property("data");
                     res.body.data.should.have.property("filename");
                     StorageService.download(res.body.data.filename).then((value) => {
@@ -718,5 +828,90 @@ describe("POST add a hacker resume", function () {
                     });
                 });
         });
+    });
+});
+
+describe("GET Hacker stats", function () {
+    it("It should FAIL and get hacker stats (invalid validation)", function (done) {
+        //this takes a lot of time for some reason
+        util.auth.login(agent, Admin1, (error) => {
+            if (error) {
+                return done(error);
+            }
+            return agent
+                .get(`/api/hacker/stats`)
+                .end(function (err, res) {
+                    res.should.have.status(422);
+                    res.should.have.property("body");
+                    res.body.should.have.property("message");
+                    done();
+                });
+        });
+    });
+    it("It should SUCCEED and get hacker stats", function (done) {
+        //this takes a lot of time for some reason
+        util.auth.login(agent, Admin1, (error) => {
+            if (error) {
+                return done(error);
+            }
+            return agent
+                .get(`/api/hacker/stats`)
+                .query({
+                    model: "hacker",
+                    q: JSON.stringify([])
+                })
+                .end(function (err, res) {
+                    res.should.have.status(200);
+                    res.should.have.property("body");
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal("Retrieved stats");
+                    res.body.should.have.property("data");
+                    res.body.data.should.have.property("stats");
+                    res.body.data.stats.should.have.property("total");
+                    res.body.data.stats.should.have.property("status");
+                    res.body.data.stats.should.have.property("school");
+                    res.body.data.stats.should.have.property("degree");
+                    res.body.data.stats.should.have.property("gender");
+                    res.body.data.stats.should.have.property("needsBus");
+                    res.body.data.stats.should.have.property("ethnicity");
+                    res.body.data.stats.should.have.property("jobInterest");
+                    res.body.data.stats.should.have.property("major");
+                    res.body.data.stats.should.have.property("graduationYear");
+                    res.body.data.stats.should.have.property("dietaryRestrictions");
+                    res.body.data.stats.should.have.property("shirtSize");
+                    res.body.data.stats.should.have.property("age");
+                    done();
+                });
+        });
+    });
+    it("It should FAIL and get hacker stats due to invalid Authorization", function (done) {
+        //this takes a lot of time for some reason
+        util.auth.login(agent, storedAccount1, (error) => {
+            if (error) {
+                return done(error);
+            }
+            return agent
+                .get(`/api/hacker/stats`)
+                .end(function (err, res) {
+                    res.should.have.status(403);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal(Constants.Error.AUTH_403_MESSAGE);
+                    res.body.should.have.property("data");
+                    done();
+                });
+        });
+    });
+    it("It should FAIL and get hacker stats due to invalid Authentication", function (done) {
+        //this takes a lot of time for some reason
+        chai.request(server.app)
+            .get(`/api/hacker/stats`)
+            .end(function (err, res) {
+                res.should.have.status(401);
+                res.should.be.json;
+                res.body.should.have.property("message");
+                res.body.message.should.equal(Constants.Error.AUTH_401_MESSAGE);
+                done();
+            });
     });
 });

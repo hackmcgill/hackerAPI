@@ -13,10 +13,12 @@ const Middleware = {
     parseBody: require("../../middlewares/parse-body.middleware"),
     Util: require("../../middlewares/util.middleware"),
     Hacker: require("../../middlewares/hacker.middleware"),
-    Auth: require("../../middlewares/auth.middleware")
+    Auth: require("../../middlewares/auth.middleware"),
+    Search: require("../../middlewares/search.middleware")
 };
 const Services = {
     Hacker: require("../../services/hacker.service"),
+    Account: require("../../services/account.service"),
 }
 const CONSTANTS = require("../../constants/general.constant");
 
@@ -166,6 +168,54 @@ module.exports = {
             Middleware.Hacker.sendAppliedStatusEmail,
             Controllers.Hacker.createdHacker
         );
+
+        /**
+         * @api {get} /hacker/stats
+         * Gets the stats of all of the hackers who have applied.
+         * @apiName getHackerStats
+         * @apiGroup Hacker
+         * @apiVersion 0.0.9
+         * 
+         * @apiParam (query) {String} model the model to be searched (Only hacker supported)
+         * @apiParam (query) {Array} q the query to be executed. For more information on how to format this, please see https://docs.mchacks.ca/architecture/
+         * 
+         * @apiSuccess {string} message Success message
+         * @apiSuccess {object} data Hacker object
+         * @apiSuccessExample {object} Success-Response: 
+         *      {
+         *          "message": "Retrieved stats",
+         *          "data": {
+         *              "stats" : {
+         *                  "total": 10,
+                            "status": { "Applied": 10 },
+                            "school": { "McGill University": 3, "Harvard University": 7 },
+                            degree: { "Undergraduate": 10 },
+                            gender: { "Male": 1, "Female": 9 },
+                            needsBus: { "true": 7, "false": 3 },
+                            ethnicity: { "White": 10, },
+                            jobInterest: { "Internship": 10 },
+                            major: { "Computer Science": 10 },
+                            graduationYear: { "2019": 10 },
+                            dietaryRestrictions: { "None": 10 },
+                            shirtSize: { "M": 3, "XL": 7 },
+                            age: { "22": 10 }
+                        }
+         *          }
+         *      }
+         * 
+         */
+        hackerRouter.route("/stats").get(
+            Middleware.Auth.ensureAuthenticated(),
+            Middleware.Auth.ensureAuthorized(),
+            Middleware.Validator.Hacker.statsValidator,
+            Middleware.parseBody.middleware,
+            Middleware.Search.setExpandTrue,
+            Middleware.Search.parseQuery,
+            Middleware.Search.executeQuery,
+            Middleware.Hacker.getStats,
+            Controllers.Hacker.gotStats
+        );
+
         /**
          * @api {patch} /hacker/status/:id update a hacker's status
          * @apiName patchHackerStatus
@@ -240,6 +290,9 @@ module.exports = {
          * @apiParam (body) {String} [school] Name of the school the hacker goes to
          * @apiParam (body) {String} [gender] Gender of the hacker
          * @apiParam (body) {Boolean} [needsBus] Whether the hacker requires a bus for transportation
+         * @apiParam (body) {String[]} [ethnicity] the ethnicities of the hacker
+         * @apiParam (body) {String} [major] the major of the hacker
+         * @apiParam (body) {Number} [graduationYear] the graduation year of the hacker
          * @apiParam (body) {Json} [application] The hacker's application
          * @apiParamExample {Json} application: 
          *      {
@@ -317,7 +370,7 @@ module.exports = {
          * @apiParam (param) {String} id a hacker's unique mongoID
          * 
          * @apiSuccess {String} message Success message
-         * @apiSuccess {Object} data Sponsor object
+         * @apiSuccess {Object} data Hacker object
          * @apiSuccessExample {object} Success-Response: 
          *      {
                     "message": "Successfully retrieved hacker information", 
@@ -361,7 +414,65 @@ module.exports = {
             Middleware.Validator.RouteParam.idValidator,
             Middleware.parseBody.middleware,
 
-            Controllers.Hacker.findById
+            Middleware.Hacker.findById,
+            Controllers.Hacker.showHacker
+        );
+
+        /**
+         * @api {get} /hacker/email/:email get a hacker's information
+         * @apiName getHacker
+         * @apiGroup Hacker
+         * @apiVersion 0.0.8
+         * 
+         * @apiParam (param) {String} email a hacker's unique email
+         * 
+         * @apiSuccess {String} message Success message
+         * @apiSuccess {Object} data Hacker object
+         * @apiSuccessExample {object} Success-Response: 
+         *      {
+                    "message": "Successfully retrieved hacker information", 
+                    "data": {
+                        "id":"5bff4d736f86be0a41badb91",
+                        "application":{
+                            "portfolioURL":{
+                                "resume":"resumes/1543458163426-5bff4d736f86be0a41badb91",
+                                "github":"https://github.com/abcd",
+                                "dropler":"https://dribbble.com/abcd",
+                                "personal":"https://www.hi.com/",
+                                "linkedIn":"https://linkedin.com/in/abcd",
+                                "other":"https://github.com/hackmcgill/hackerAPI/issues/168"
+                            },
+                            "jobInterest":"Internship",
+                            "skills":["Javascript","Typescript"],
+                            "comments":"hi!",
+                            "essay":"Pls accept me"
+                        },
+                        "status":"Applied",
+                        "ethnicity":["White or Caucasian"," Asian or Pacific Islander"],
+                        "accountId":"5bff2a35e533b0f6562b4998",
+                        "school":"McPherson College",
+                        "gender":"Female",
+                        "needsBus":false,
+                        "major":"Accounting",
+                        "graduationYear":2019,
+                        "codeOfConduct":true,
+                    }
+                }
+
+         * @apiError {String} message Error message
+         * @apiError {Object} data empty
+         * @apiErrorExample {object} Error-Response: 
+         *      {"message": "Hacker not found", "data": {}}
+         */
+        hackerRouter.route("/email/:email").get(
+            Middleware.Auth.ensureAuthenticated(),
+            Middleware.Auth.ensureAuthorized([Services.Account.findByEmail]),
+
+            Middleware.Validator.RouteParam.emailValidator,
+            Middleware.parseBody.middleware,
+
+            Middleware.Hacker.findByEmail,
+            Controllers.Hacker.showHacker
         );
 
         hackerRouter.route("/resume/:id")
