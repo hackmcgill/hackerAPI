@@ -5,6 +5,9 @@ const logger = require("./logger.service");
 const cache = require("memory-cache");
 
 const Constants = require("../constants/general.constant");
+
+const QRCode = require("qrcode");
+
 /**
  * @function createHacker
  * @param {{_id: ObjectId, accountId: ObjectId, school: string, gender: string, needsBus: boolean, application: {Object}}} hackerDetails
@@ -94,6 +97,14 @@ async function getStatsAllHackersCached() {
     return getStats(allHackers);
 }
 
+
+async function generateHackerQRCode(hacker) {
+    const response = await QRCode.toString(hacker.id, {
+        type: "svg"
+    });
+    return response;
+}
+
 function getStats(hackers) {
     const TAG = `[ hacker Service # getStats ]`;
     const stats = {
@@ -151,4 +162,5 @@ module.exports = {
     findByAccountId: findByAccountId,
     getStats: getStats,
     getStatsAllHackersCached: getStatsAllHackersCached,
+    generateHackerQRCode: generateHackerQRCode,
 };

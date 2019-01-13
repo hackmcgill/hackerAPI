@@ -309,6 +309,26 @@ async function sendAppliedStatusEmail(req, res, next) {
 }
 
 /**
+ * Sends an email telling the user that they have applied. This is used exclusively when we POST a hacker.
+ * @param {{body: {hacker: {accountId: string}}}} req 
+ * @param {*} res 
+ * @param {(err?:*)=>void} next 
+ */
+async function sendTicketEmail(req, res, next) {
+    const hacker = req.body.hacker;
+    const ticketSVG = await Services.Hacker.generateHackerQRCode(hacker._id);
+    const account = await Services.Account.findById(hacker.accountId);
+    if (!account || !ticketSVG) {
+        return next({
+            status: 500,
+            message: Constants.Error.GENERIC_500_MESSAGE,
+            error: {}
+        });
+    }
+    Services.Email.sendTicketEmail(account.firstName, account.email, ticketSVG, next);
+}
+
+/**
  * If the current hacker's status is Constants.HACKER_STATUS_NONE, and the hacker's application is completed,
  * then it will change the status of the hacker to Constants.General.HACKER_STATUS_APPLIED, and then email the hacker to 
  * confirm that they applied.
@@ -520,6 +540,7 @@ module.exports = {
     ensureAccountLinkedToHacker: ensureAccountLinkedToHacker,
     uploadResume: Middleware.Util.asyncMiddleware(uploadResume),
     downloadResume: Middleware.Util.asyncMiddleware(downloadResume),
+    sendTicketEmail: Middleware.Util.asyncMiddleware(sendTicketEmail),
     sendStatusUpdateEmail: Middleware.Util.asyncMiddleware(sendStatusUpdateEmail),
     sendAppliedStatusEmail: Middleware.Util.asyncMiddleware(sendAppliedStatusEmail),
     updateHacker: Middleware.Util.asyncMiddleware(updateHacker),

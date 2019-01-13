@@ -52,6 +52,28 @@ class EmailService {
         });
     }
 
+    sendTicketEmail(firstName, recipient, ticketSVG, callback) {
+        const handlebarsPath = path.join(__dirname, `../assets/email/statusEmail/Ticket.hbs`);
+        const mailData = {
+            to: recipient,
+            from: process.env.NO_REPLY_EMAIL,
+            subject: Constants.EMAIL_SUBJECTS[status],
+            html: this.renderEmail(handlebarsPath, {
+                firstName: firstName,
+                ticketSVG: ticketSVG
+            })
+        };
+        this.send(mailData).then(
+            (response) => {
+                if (response[0].statusCode >= 200 && response[0].statusCode < 300) {
+                    callback();
+                } else {
+                    callback(response[0]);
+                }
+            }, callback);
+
+    }
+
     sendStatusUpdate(firstName, recipient, status, callback) {
         const handlebarsPath = path.join(__dirname, `../assets/email/statusEmail/${status}.hbs`);
         const mailData = {
