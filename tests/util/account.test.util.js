@@ -5,6 +5,198 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const logger = require("../../services/logger.service");
 
+let counters = {
+    emailCounter: 0,
+};
+
+function incrementCounters() {
+    for (const key in counters) {
+        if (counters.hasOwnProperty(key)) {
+            counters[key] = counters[key] + 1;
+        }
+    }
+}
+
+function extractAccountInfo(acc) {
+    let accDetails = {};
+
+    for (const val in acc) {
+        // use .hasOwnProperty instead of 'in' to get rid of inherited properties such as 'should'
+        if (Account.schema.paths.hasOwnProperty(val)) {
+            accDetails[val] = acc[val];
+        }
+    }
+
+    return accDetails;
+}
+
+function generateRandomValue(atr) {
+    switch (atr) {
+        case "_id":
+            return mongoose.Types.ObjectId();
+        case "firstName":
+            // generates a random string between length 5 and 10 of random characters from a-z
+            return Math.random().toString(36).replace(/[^a-z]+/g, "").substr(0, Math.floor(Math.random() * 6 + 5));
+        case "lastName":
+            return Math.random().toString(36).replace(/[^a-z]+/g, "").substr(0, Math.floor(Math.random() * 6 + 5));
+        case "pronoun":
+            // generate random string between length 2 and 4
+            return Math.random().toString(36).replace(/[^a-z]+/g, "").substr(0, Math.floor(Math.random() * 3 + 2));
+        case "email":
+            const email = `abc.def${counters.emailCounter}@blahblah.com`;
+            return email;
+        case "password":
+            return Math.random().toString(36).substr(0, 10);
+        case "dietaryRestrictions":
+            return Constants.SAMPLE_DIET_RESTRICTIONS[Math.floor(Math.random() * Constants.SAMPLE_DIET_RESTRICTIONS.length)];
+        case "shirtSize":
+            return Constants.SHIRT_SIZES[Math.floor(Math.random() * Constants.SHIRT_SIZES.length)];
+        case "confirmed":
+            // return false, because if an account is confirmed there should be a document of that account type, 
+            // which this does not create
+            return Math.random() < 0.5;
+        case "accountType":
+            return Constants.EXTENDED_USER_TYPES[Math.floor(Math.random() * Constants.EXTENDED_USER_TYPES.length)];
+        case "birthDate":
+            return new Date();
+        case "phoneNumber":
+            return Math.floor(Math.random() * 10000000000);
+    }
+}
+
+function createAccount(acc = {}) {
+    incrementCounters();
+
+    const extractedAcc = extractAccountInfo(acc);
+
+    for (const atr in Account.schema.paths) {
+        if (!Account.schema.paths.hasOwnProperty(atr)) {
+            continue;
+        }
+
+        // if this value has been passed in, continue
+        if (extractedAcc[atr] !== undefined) {
+            continue;
+        }
+
+        extractedAcc[atr] = generateRandomValue(atr);
+    }
+
+    return extractedAcc;
+}
+
+function createNAccounts(n, acc = {}) {
+    let accounts = []
+    for (let i = 0; i < n; i++) {
+        accounts.push(createAccount(acc));
+    }
+
+    return accounts;
+}
+
+let hackerAccounts = {
+    new: createNAccounts(10, {
+        "accountType": Constants.HACKER
+    }),
+    stored: {
+        team: createNAccounts(10, {
+            "accountType": Constants.HACKER
+        }),
+        noTeam: createNAccounts(10, {
+            "accountType": Constants.HACKER
+        }),
+    },
+    invalid: createNAccounts(10, {
+        "accountType": Constants.HACKER
+    })
+};
+
+let volunteerAccounts = {
+    new: createNAccounts(5, {
+        "accountType": Constants.VOLUNTEER
+    }),
+    stored: createNAccounts(5, {
+        "accountType": Constants.VOLUNTEER
+    }),
+    invalid: createNAccounts(5, {
+        "accountType": Constants.VOLUNTEER
+    }),
+};
+
+let staffAccounts = {
+    stored: createNAccounts(5, {
+        "accountType": Constants.STAFF
+    })
+};
+
+let sponsorT1Accounts = {
+    new: createNAccounts(5, {
+        "accountType": Constants.SPONSOR_T1
+    }),
+    stored: createNAccounts(5, {
+        "accountType": Constants.SPONSOR_T1
+    }),
+    invalid: createNAccounts(5, {
+        "accountType": Constants.SPONSOR_T1
+    })
+};
+
+let sponsorT2Accounts = {
+    new: createNAccounts(5, {
+        "accountType": Constants.SPONSOR_T2
+    }),
+    stored: createNAccounts(5, {
+        "accountType": Constants.SPONSOR_T2
+    }),
+    invalid: createNAccounts(5, {
+        "accountType": Constants.SPONSOR_T2
+    })
+};
+
+let sponsorT3Accounts = {
+    new: createNAccounts(5, {
+        "accountType": Constants.SPONSOR_T3
+    }),
+    stored: createNAccounts(5, {
+        "accountType": Constants.SPONSOR_T3
+    }),
+    invalid: createNAccounts(5, {
+        "accountType": Constants.SPONSOR_T3
+    })
+};
+
+let sponsorT4Accounts = {
+    new: createNAccounts(5, {
+        "accountType": Constants.SPONSOR_T4
+    }),
+    stored: createNAccounts(5, {
+        "accountType": Constants.SPONSOR_T4
+    }),
+    invalid: createNAccounts(5, {
+        "accountType": Constants.SPONSOR_T4
+    })
+};
+
+let sponsorT5Accounts = {
+    new: createNAccounts(5, {
+        "accountType": Constants.SPONSOR_T5
+    }),
+    stored: createNAccounts(5, {
+        "accountType": Constants.SPONSOR_T5
+    }),
+    invalid: createNAccounts(5, {
+        "accountType": Constants.SPONSOR_T5
+    })
+};
+
+let unlinkedAccounts = {
+    new: [createAccount({
+        "accountType": Constants.HACKER
+    })],
+    invalid: [createAccount()]
+};
+
+
 const newAccount1 = {
     "_id": mongoose.Types.ObjectId(),
     "firstName": "NEW",
@@ -18,32 +210,7 @@ const newAccount1 = {
     "birthDate": "1997-12-30",
     "phoneNumber": 1234567890,
 };
-const nonAccount1 = {
-    "_id": mongoose.Types.ObjectId(),
-    "firstName": "non",
-    "lastName": "Account",
-    "pronoun": "She/Her",
-    "email": "notexist@blahblah.com",
-    "password": "12345789",
-    "dietaryRestrictions": ["none"],
-    "shirtSize": "S",
-    "birthDate": "1990-01-01",
-    "phoneNumber": 1000000001,
-};
-const Admin1 = {
-    "_id": mongoose.Types.ObjectId(),
-    "firstName": "Admin1",
-    "lastName": "Admin1",
-    "pronoun": "Ze/Hir",
-    "email": "Admin1@blahblah.com",
-    "password": "Admin1",
-    "dietaryRestrictions": ["none"],
-    "shirtSize": "S",
-    "confirmed": true,
-    "accountType": Constants.STAFF,
-    "birthDate": "1990-01-02",
-    "phoneNumber": 1000000002,
-};
+
 // hacker
 const Account1 = {
     "_id": mongoose.Types.ObjectId(),
@@ -221,37 +388,20 @@ const Hacker7 = {
     "phoneNumber": 1000000004,
 };
 
-const customAccounts = [
-    Admin1,
-    Account1,
-    Account2,
-    Account3,
-    Account4,
-    Account5,
-    Hacker3,
-    Hacker4,
-    Hacker5,
-    Hacker6,
-    Hacker7,
-    NonConfirmedAccount1,
-    NonConfirmedAccount2
-];
-
-const generatedAccounts = generateAccounts(20);
-// 1-5 Are for admins
-// 6-10 Are for hackers (6 and 7 are new)
-// 11-15 Are for sponsors
-// 16-20 Are for volunteers
-
-
-const allAccounts = customAccounts.concat(generatedAccounts);
-
 module.exports = {
-    nonAccount1: nonAccount1,
+    hackerAccounts: hackerAccounts,
+    volunteerAccounts: volunteerAccounts,
+    staffAccounts: staffAccounts,
+    sponsorT1Accounts: sponsorT1Accounts,
+    sponsorT2Accounts: sponsorT2Accounts,
+    sponsorT3Accounts: sponsorT3Accounts,
+    sponsorT4Accounts: sponsorT4Accounts,
+    sponsorT5Accounts: sponsorT5Accounts,
+
+
     newAccount1: newAccount1,
     NonConfirmedAccount1: NonConfirmedAccount1,
     NonConfirmedAccount2: NonConfirmedAccount2,
-    Admin1: Admin1,
     Account1: Account1,
     Account2: Account2,
     Account3: Account3,
@@ -262,53 +412,11 @@ module.exports = {
     Hacker5: Hacker5,
     Hacker6: Hacker6,
     Hacker7: Hacker7,
-    customAccounts: customAccounts,
-    generatedAccounts: generatedAccounts,
-    allAccounts: allAccounts,
+
     storeAll: storeAll,
     dropAll: dropAll,
     equals: equals
 };
-
-function generateRandomShirtSize() {
-    return Constants.SHIRT_SIZES[Math.floor(Math.random() * Constants.SHIRT_SIZES.length)];
-}
-
-function generateAccounts(n) {
-    let accounts = [];
-    for (let i = 0; i < n; i++) {
-        let birthMonth = Math.floor(Math.random() * 12) + 1;
-        let birthDay = Math.floor(Math.random() * 28) + 1;
-        let phoneNumber = Math.floor(Math.random() * 10000000000);
-
-        let acc = {
-            "_id": mongoose.Types.ObjectId(),
-            "firstName": "first" + String(i),
-            "lastName": "last" + String(i),
-            "pronoun": "They/" + String(i),
-            "email": "test" + String(i) + "@blahblah.com",
-            "password": "probsShouldBeHashed" + String(i),
-            "dietaryRestrictions": [],
-            "shirtSize": generateRandomShirtSize(),
-            "confirmed": true,
-            "birthDate": `1980-${birthMonth}-${birthDay}`,
-            "phoneNumber": phoneNumber,
-        };
-
-        if (i < n / 4) {
-            acc.accountType = Constants.STAFF;
-        } else if (i >= n / 4 && i < (n / 4) * 2) {
-            acc.accountType = Constants.HACKER;
-        } else if (i >= (n / 4) * 2 && i < (n / 4) * 3) {
-            acc.accountType = Constants.SPONSOR;
-        } else {
-            acc.accountType = Constants.VOLUNTEER;
-        }
-
-        accounts.push(acc);
-    }
-    return accounts;
-}
 
 function encryptPassword(user) {
     let encryptedUser = JSON.parse(JSON.stringify(user));
@@ -339,6 +447,8 @@ async function dropAll() {
         }
     }
 }
+
+// Try deleting this and see if anything fucks up
 
 /**
  * Compare two accounts
