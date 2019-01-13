@@ -58,7 +58,7 @@ const badCodeOfConductHacker1 = {
 
 const duplicateAccountLinkHacker1 = {
     "_id": mongoose.Types.ObjectId(),
-    "accountId": Util.Account.Account1._id,
+    "accountId": Util.Account.hackerAccounts.stored.team[0],
     "status": "Applied",
     "school": "University of Blah",
     "degree": "Undergraduate",
@@ -135,7 +135,7 @@ const newHacker2 = {
 
 const HackerA = {
     "_id": Constants.MongoId.hackerAId,
-    "accountId": Util.Account.Account1._id,
+    "accountId": Util.Account.hackerAccounts.stored.team[0],
     "status": "Confirmed",
     "school": "University of Blah",
     "degree": "Masters",
@@ -353,9 +353,6 @@ module.exports = {
     Hackers: Hackers,
     storeAll: storeAll,
     dropAll: dropAll
-};
-
-function storeAll(attributes) {
     const hackerDocs = [];
     const hackerIds = [];
     for (var i = 0; i < attributes.length; i++) {

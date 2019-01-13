@@ -18,6 +18,11 @@ const util = {
     account: require("./util/account.test.util"),
 };
 
+const Admin0 = util.account.staffAccounts[0];
+const HackerAccount0 = util.account.hackerAccounts.stored.team[0];
+
+
+
 // associated account
 let storedAccount = util.account.Account3;
 // configure sponsor data to be the same as output from query
@@ -29,13 +34,9 @@ delete storedSponsor._id;
 let duplicateAccount = util.account.Account3;
 let duplicateSponsor = util.sponsor.duplicateAccountLinkSponsor1;
 
-let authorizationFailAccount = util.account.Account1;
-
 const newSponsor = util.sponsor.newSponsor1;
 const newSponsorAccount = util.account.Account5;
 
-const Admin1 = util.account.Admin1;
-const hackerAccount1 = util.account.Account1;
 
 describe("GET user sponsor", function () {
     it("should fail list a sponsor's information due to authentication from /api/sponsor/:id GET", function (done) {
@@ -54,7 +55,7 @@ describe("GET user sponsor", function () {
 
     // admin success
     it("should succeed to list a sponsor's info using admin power on /api/sponsor/:id GET", function (done) {
-        util.auth.login(agent, Admin1, (error) => {
+        util.auth.login(agent, Admin0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);
@@ -106,7 +107,7 @@ describe("GET user sponsor", function () {
 
     // failure due to lack of auth
     it("should fail to list a user's sponsor info due to lack of authorization /api/sponsor/:id GET", function (done) {
-        util.auth.login(agent, authorizationFailAccount, (error) => {
+        util.auth.login(agent, HackerAccount0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);
@@ -130,7 +131,7 @@ describe("GET user sponsor", function () {
 
     // failure due to lack of this sponsor
     it("should fail to list non existant info on /api/sponsor/:id GET", function (done) {
-        util.auth.login(agent, Admin1, (error) => {
+        util.auth.login(agent, Admin0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);
@@ -220,7 +221,7 @@ describe("POST create sponsor", function () {
 
     // unauthorized case
     it("should FAIL to create a new sponsor", function (done) {
-        util.auth.login(agent, hackerAccount1, (error) => {
+        util.auth.login(agent, HackerAccount0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);

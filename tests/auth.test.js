@@ -24,11 +24,11 @@ const constants = {
 const roles = require("../constants/role.constant");
 
 // hacker role binding
-const storedAccount1 = util.account.Account1;
+const teamHackerAccount0 = util.account.hackerAccounts.stored.team[0];
 
 describe("GET roles", function () {
     it("should list all roles GET", function (done) {
-        util.auth.login(agent, storedAccount1, (error) => {
+        util.auth.login(agent, teamHackerAccount0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);

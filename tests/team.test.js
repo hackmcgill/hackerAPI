@@ -20,6 +20,9 @@ const Constants = {
 
 const agent = chai.request.agent(server.app);
 
+const Admin0 = util.account.staffAccounts[0];
+const Hacker0 = util.account.hackerAccounts.stored.team[0];
+
 describe("GET team", function () {
     it("should FAIL to list a team's information due to lack of authentication", function (done) {
         chai.request(server.app)
@@ -127,7 +130,7 @@ describe("POST create team", function () {
     });
 
     it("should FAIL to create a new team due to logged in user not being a hacker", function (done) {
-        util.auth.login(agent, util.account.Admin1, (error) => {
+        util.auth.login(agent, Admin0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);
@@ -172,7 +175,7 @@ describe("POST create team", function () {
     });
 
     it("should Fail to create a new team due to hacker already being in a team", function (done) {
-        util.auth.login(agent, util.account.Account1, (error) => {
+        util.auth.login(agent, Hacker0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);
@@ -264,7 +267,7 @@ describe("PATCH join team", function () {
     });
 
     it("should FAIL to join a hacker to a team that doesn't exist.", function (done) {
-        util.auth.login(agent, util.account.Account1, (error) => {
+        util.auth.login(agent, Hacker0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);
@@ -288,7 +291,7 @@ describe("PATCH join team", function () {
     });
 
     it("should FAIL to join a hacker to a team that is full.", function (done) {
-        util.auth.login(agent, util.account.Account1, (error) => {
+        util.auth.login(agent, Hacker0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);
@@ -336,7 +339,7 @@ describe("PATCH join team", function () {
     });
 
     it("should SUCCEED and join a hacker on a team to aother team.", function (done) {
-        util.auth.login(agent, util.account.Account1, (error) => {
+        util.auth.login(agent, Hacker0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);
@@ -429,7 +432,7 @@ describe("PATCH change team info", function () {
     });
 
     it("should SUCCEED and leave a team.", function (done) {
-        util.auth.login(agent, util.account.Account1, (error) => {
+        util.auth.login(agent, Hacker0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);
@@ -449,7 +452,7 @@ describe("PATCH change team info", function () {
     });
 
     it("should SUCCEED for an admin to change a team information", function (done) {
-        util.auth.login(agent, util.account.Admin1, (error) => {
+        util.auth.login(agent, Admin0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);

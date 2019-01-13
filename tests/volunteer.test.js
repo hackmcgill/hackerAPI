@@ -17,14 +17,15 @@ const util = {
     auth: require("./util/auth.test.util")
 };
 
-const Admin1 = util.account.Admin1;
+const Admin0 = util.account.Admin0;
+const Hacker0 = util.account.hackerAccounts.stored.team[0];
+
+
 const adminVolunteer = util.volunteer.adminVolunteer1;
 
 const newVolunteerAccount = util.account.generatedAccounts[15];
 const newVolunteer = util.volunteer.newVolunteer1;
 const duplicateVolunteer = util.volunteer.duplicateVolunteer1;
-
-const hackerAccount = util.account.Account1;
 
 describe("GET volunteer", function () {
     it("should FAIL to get volunteer due to lack of authentication", function (done) {
@@ -62,13 +63,13 @@ describe("GET volunteer", function () {
     });
 
     it("should Fail to GET volunteer due to non existant volunteer id", function (done) {
-        util.auth.login(agent, util.account.Admin1, (error) => {
+        util.auth.login(agent, Admin0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);
             }
             return agent
-                .get(`/api/volunteer/${util.account.Admin1._id}`)
+                .get(`/api/volunteer/${Admin0._id}`)
                 .end(function (err, res) {
                     res.should.have.status(404);
                     res.should.be.json;
@@ -83,7 +84,7 @@ describe("GET volunteer", function () {
 
     // success case
     it("should GET volunteer info by id with admin credentials", function (done) {
-        util.auth.login(agent, util.account.Admin1, (error) => {
+        util.auth.login(agent, Admin0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);
@@ -153,7 +154,7 @@ describe("POST create volunteer", function () {
 
     // fail on admin case
     it("fail to create a volunteer when the logged in account is not a volunteer /api/volunteer POST", function (done) {
-        util.auth.login(agent, Admin1, (error) => {
+        util.auth.login(agent, Admin0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);
@@ -225,7 +226,7 @@ describe("POST create volunteer", function () {
 
     // fail on non-volunteer type account trying to create volunteer
     it("should fail to create a volunteer due to authorization /api/volunteer POST", function (done) {
-        util.auth.login(agent, hackerAccount, (error) => {
+        util.auth.login(agent, Hacker0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);

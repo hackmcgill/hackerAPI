@@ -76,12 +76,22 @@ const RoleBindingNewVolunteer1 = {
     roles: [Constants.Role.accountRole._id, Constants.Role.allRolesObject["postVolunteer"]],
 };
 
-const RoleBindingAdmin1 = {
-    accountId: Util.Account.Admin1._id,
+const RoleBindingAdmin0 = {
+    accountId: Util.Account.staffAccounts[0],
     roles: [Constants.Role.adminRole._id],
 };
 
+// function setUpAccountRoleBinding???(???) {
+//     /* 
+//     TODO
+//     */
+// }
+
+
 const RoleBindings = [
+    RoleBindingAdmin0,
+
+
     RoleBinding1,
     RoleBinding2,
     RoleBinding3,
@@ -96,7 +106,7 @@ const RoleBindings = [
     RoleBindingSponsor2,
     RoleBindingVolunteer1,
     RoleBindingNewVolunteer1,
-    RoleBindingAdmin1,
+
     RoleBindingHacker3,
 ];
 

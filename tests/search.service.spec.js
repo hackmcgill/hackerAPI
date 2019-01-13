@@ -38,7 +38,8 @@ const badQuery = [{
     value: "passowrd"
 }];
 
-const Admin1 = util.account.Admin1;
+const Admin0 = util.account.staffAccounts[0];
+
 const HackerA = util.account.Account2;
 
 describe("Searching for hackers", function () {
@@ -87,7 +88,7 @@ describe("Searching for hackers", function () {
         });
     });
     it("Should return all female hackers", function (done) {
-        util.auth.login(agent, Admin1, (error) => {
+        util.auth.login(agent, Admin0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);
@@ -107,7 +108,7 @@ describe("Searching for hackers", function () {
         });
     });
     it("Should return an error as hackers don't have password stored", function (done) {
-        util.auth.login(agent, Admin1, (error) => {
+        util.auth.login(agent, Admin0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);
@@ -126,7 +127,7 @@ describe("Searching for hackers", function () {
     });
 
     it("Should return an error as staff aren't searchable", function (done) {
-        util.auth.login(agent, Admin1, (error) => {
+        util.auth.login(agent, Admin0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);
@@ -145,7 +146,7 @@ describe("Searching for hackers", function () {
         });
     });
     it("Should throw an error because model is not lowercase", function (done) {
-        util.auth.login(agent, Admin1, (error) => {
+        util.auth.login(agent, Admin0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);
@@ -164,7 +165,7 @@ describe("Searching for hackers", function () {
         });
     });
     it("Should throw an error because out of a fake model", function (done) {
-        util.auth.login(agent, Admin1, (error) => {
+        util.auth.login(agent, Admin0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);
@@ -183,7 +184,7 @@ describe("Searching for hackers", function () {
         });
     });
     it("Should only return 1 hacker (page size)", function (done) {
-        util.auth.login(agent, Admin1, (error) => {
+        util.auth.login(agent, Admin0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);
@@ -203,7 +204,7 @@ describe("Searching for hackers", function () {
         });
     });
     it("Should only return 1 hacker (pagination)", function (done) {
-        util.auth.login(agent, Admin1, (error) => {
+        util.auth.login(agent, Admin0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);
@@ -225,7 +226,7 @@ describe("Searching for hackers", function () {
         });
     });
     it("Should throw an error because out of bounds (page size)", function (done) {
-        util.auth.login(agent, Admin1, (error) => {
+        util.auth.login(agent, Admin0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);
@@ -244,7 +245,7 @@ describe("Searching for hackers", function () {
         });
     });
     it("Should throw an error because out of bounds (pagination)", function (done) {
-        util.auth.login(agent, Admin1, (error) => {
+        util.auth.login(agent, Admin0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);
@@ -265,7 +266,7 @@ describe("Searching for hackers", function () {
     });
 
     it("Should expand the accountId when expand is set to true", function (done) {
-        util.auth.login(agent, Admin1, (error) => {
+        util.auth.login(agent, Admin0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);

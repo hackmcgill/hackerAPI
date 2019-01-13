@@ -22,13 +22,15 @@ const util = {
 };
 const StorageService = require("../services/storage.service");
 
-const Admin1 = util.account.Admin1;
+const Admin0 = util.account.Admin0;
+const teamHackerAccount0 = util.account.hackerAccounts.stored.team[0];
+
+
 const Volunteer1 = util.account.Account4;
 
 // storedAccount1 and storedHacker1 are linked together, and have hacker priviledges
 // newHackerDuplicateAccountLink1 is also linked with Account1
 // storedHacker1 has status confirmed
-const storedAccount1 = util.account.Account1;
 const storedHacker1 = util.hacker.HackerA;
 const newHackerDuplicateAccountLink1 = util.hacker.duplicateAccountLinkHacker1;
 
@@ -61,7 +63,7 @@ describe("GET hacker", function () {
 
     // success case
     it("should list the user's hacker info on /api/hacker/self GET", function (done) {
-        util.auth.login(agent, storedAccount1, (error) => {
+        util.auth.login(agent, teamHackerAccount0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);
@@ -87,7 +89,7 @@ describe("GET hacker", function () {
 
     // fail case due to wrong account type
     it("should fail to list the hacker info of an admin due to wrong account type /api/account/self GET", function (done) {
-        util.auth.login(agent, Admin1, (error) => {
+        util.auth.login(agent, Admin0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);
@@ -106,7 +108,7 @@ describe("GET hacker", function () {
 
     // succeed on admin case
     it("should list a hacker's information using admin power on /api/hacker/:id GET", function (done) {
-        util.auth.login(agent, Admin1, (error) => {
+        util.auth.login(agent, Admin0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);
@@ -134,7 +136,7 @@ describe("GET hacker", function () {
 
     // succeed on :self case
     it("should list the user's hacker information on /api/hacker/:id GET", function (done) {
-        util.auth.login(agent, storedAccount1, (error) => {
+        util.auth.login(agent, teamHackerAccount0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);
@@ -188,7 +190,7 @@ describe("GET hacker", function () {
 
     // fail due to lack of hacker
     it("should fail to list an invalid hacker /api/hacker/:id GET", function (done) {
-        util.auth.login(agent, Admin1, (error) => {
+        util.auth.login(agent, Admin0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);
@@ -231,7 +233,7 @@ describe("POST create hacker", function () {
 
     // succeed on admin case
     it("should SUCCEED and create a new hacker (with an account that has been confirmed) using admin credentials", function (done) {
-        util.auth.login(agent, Admin1, (error) => {
+        util.auth.login(agent, Admin0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);
@@ -318,7 +320,7 @@ describe("POST create hacker", function () {
 
     // fail on unconfirmed account, using admin
     it("should FAIL to create a new hacker if the account hasn't been confirmed", function (done) {
-        util.auth.login(agent, Admin1, (error) => {
+        util.auth.login(agent, Admin0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);
@@ -339,7 +341,7 @@ describe("POST create hacker", function () {
 
     // fail due to duplicate accountId
     it("should FAIL to create new hacker due to duplicate account link", function (done) {
-        util.auth.login(agent, Admin1, (error) => {
+        util.auth.login(agent, Admin0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);
@@ -360,7 +362,7 @@ describe("POST create hacker", function () {
 
     // fail on invalid input
     it("should FAIL to create new hacker due to invalid input", function (done) {
-        util.auth.login(agent, Admin1, (error) => {
+        util.auth.login(agent, Admin0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);
@@ -398,7 +400,7 @@ describe("PATCH update one hacker", function () {
 
     // should succeed on admin case
     it("should SUCCEED and update a hacker using admin power", function (done) {
-        util.auth.login(agent, Admin1, (error) => {
+        util.auth.login(agent, Admin0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);
@@ -424,7 +426,7 @@ describe("PATCH update one hacker", function () {
     });
 
     it("should SUCCEED and update a hacker STATUS as an Admin", function (done) {
-        util.auth.login(agent, Admin1, (error) => {
+        util.auth.login(agent, Admin0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);
@@ -450,7 +452,7 @@ describe("PATCH update one hacker", function () {
     });
 
     it("should FAIL and NOT update a hacker STATUS as a Hacker", function (done) {
-        util.auth.login(agent, storedAccount1, (error) => {
+        util.auth.login(agent, teamHackerAccount0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);
@@ -501,7 +503,7 @@ describe("PATCH update one hacker", function () {
 
     // hacker should fail to checkin hacker
     it("should FAIL to check in hacker as a hacker", function (done) {
-        util.auth.login(agent, storedAccount1, (error) => {
+        util.auth.login(agent, teamHackerAccount0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);
@@ -577,7 +579,7 @@ describe("PATCH update one hacker", function () {
 
     // fail due to lack of hacker
     it("should fail to change an invalid hacker's info", function (done) {
-        util.auth.login(agent, Admin1, (error) => {
+        util.auth.login(agent, Admin0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);
@@ -632,7 +634,7 @@ describe("PATCH update one hacker", function () {
 
     // Succeed and change confirmed to accepted
     it("should succeed for hacker to update their own status from confirmed to accepted", function (done) {
-        util.auth.login(agent, storedAccount1, (error) => {
+        util.auth.login(agent, teamHackerAccount0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);
@@ -752,7 +754,7 @@ describe("POST add a hacker resume", function () {
 describe("GET Hacker stats", function () {
     it("It should FAIL and get hacker stats (invalid validation)", function (done) {
         //this takes a lot of time for some reason
-        util.auth.login(agent, Admin1, (error) => {
+        util.auth.login(agent, Admin0, (error) => {
             if (error) {
                 return done(error);
             }
@@ -768,7 +770,7 @@ describe("GET Hacker stats", function () {
     });
     it("It should SUCCEED and get hacker stats", function (done) {
         //this takes a lot of time for some reason
-        util.auth.login(agent, Admin1, (error) => {
+        util.auth.login(agent, Admin0, (error) => {
             if (error) {
                 return done(error);
             }
@@ -804,7 +806,7 @@ describe("GET Hacker stats", function () {
     });
     it("It should FAIL and get hacker stats due to invalid Authorization", function (done) {
         //this takes a lot of time for some reason
-        util.auth.login(agent, storedAccount1, (error) => {
+        util.auth.login(agent, teamHackerAccount0, (error) => {
             if (error) {
                 return done(error);
             }
