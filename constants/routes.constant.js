@@ -68,6 +68,14 @@ const hackerRoutes = {
         requestType: Constants.REQUEST_TYPES.GET,
         uri: "/api/hacker/" + Constants.ROLE_CATEGORIES.ALL,
     },
+    "getSelfByEmail": {
+        requestType: Constants.REQUEST_TYPES.GET,
+        uri: "/api/hacker/email/" + Constants.ROLE_CATEGORIES.SELF,
+    },
+    "getAnyByEmail": {
+        requestType: Constants.REQUEST_TYPES.GET,
+        uri: "/api/hacker/email/" + Constants.ROLE_CATEGORIES.ALL,
+    },
     "getSelfResumeById": {
         requestType: Constants.REQUEST_TYPES.GET,
         uri: "/api/hacker/resume/" + Constants.ROLE_CATEGORIES.SELF,
@@ -161,6 +169,14 @@ const teamRoutes = {
 };
 
 const volunteerRoutes = {
+    "getSelfById": {
+        requestType: Constants.REQUEST_TYPES.GET,
+        uri: "/api/volunteer/" + Constants.ROLE_CATEGORIES.SELF,
+    },
+    "getAnyById": {
+        requestType: Constants.REQUEST_TYPES.GET,
+        uri: "/api/volunteer/" + Constants.ROLE_CATEGORIES.ALL,
+    },
     "post": {
         requestType: Constants.REQUEST_TYPES.POST,
         uri: "/api/volunteer/",

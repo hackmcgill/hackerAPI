@@ -178,6 +178,27 @@ async function findById(req, res, next) {
     next();
 }
 
+async function findByEmail(req, res, next) {
+    const account = await Services.Account.findByEmail(req.body.email);
+    if (!account) {
+        return next({
+            status: 404,
+            message: Constants.Error.ACCOUNT_404_MESSAGE,
+            error: {}
+        });
+    }
+    const hacker = await Services.Hacker.findByAccountId(account._id);
+    if (!hacker) {
+        return res.status(404).json({
+            message: Constants.Error.HACKER_404_MESSAGE,
+            data: {}
+        });
+    }
+
+    req.body.hacker = hacker;
+    next();
+}
+
 /**
  * Verifies that the current signed in user is linked to the hacker passed in via req.body.id
  * @param {{body: {id: ObjectId}}} req 
@@ -512,4 +533,5 @@ module.exports = {
     findSelf: Middleware.Util.asyncMiddleware(findSelf),
     getStats: Middleware.Util.asyncMiddleware(getStats),
     findById: Middleware.Util.asyncMiddleware(findById),
+    findByEmail: Middleware.Util.asyncMiddleware(findByEmail),
 };
