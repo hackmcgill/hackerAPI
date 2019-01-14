@@ -14,7 +14,7 @@ const logger = require("../../services/logger.service");
 
 const ResetPasswordToken1 = {
     "_id": mongoose.Types.ObjectId(),
-    "accountId": Util.Account.hackerAccounts.stored.team[0]
+    "accountId": Util.Account.hackerAccounts.stored.team[0]._id
 };
 
 const ResetToken = Services.resetPassword.generateToken(ResetPasswordToken1._id, ResetPasswordToken1.accountId);

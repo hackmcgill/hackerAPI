@@ -48,7 +48,7 @@ function generateRandomValue(atr) {
         case "password":
             return Math.random().toString(36).substr(0, 10);
         case "dietaryRestrictions":
-            return Constants.SAMPLE_DIET_RESTRICTIONS[Math.floor(Math.random() * Constants.SAMPLE_DIET_RESTRICTIONS.length)];
+            return [Constants.SAMPLE_DIET_RESTRICTIONS[Math.floor(Math.random() * Constants.SAMPLE_DIET_RESTRICTIONS.length)]];
         case "shirtSize":
             return Constants.SHIRT_SIZES[Math.floor(Math.random() * Constants.SHIRT_SIZES.length)];
         case "confirmed":
@@ -96,11 +96,12 @@ function createNAccounts(n, acc = {}) {
 
 let hackerAccounts = {
     new: createNAccounts(10, {
-        "accountType": Constants.HACKER
+        "accountType": Constants.HACKER,
     }),
     stored: {
         team: createNAccounts(10, {
-            "accountType": Constants.HACKER
+            "accountType": Constants.HACKER,
+            "confirmed": true,
         }),
         noTeam: createNAccounts(10, {
             "accountType": Constants.HACKER
@@ -131,7 +132,8 @@ let staffAccounts = {
 
 let sponsorT1Accounts = {
     new: createNAccounts(5, {
-        "accountType": Constants.SPONSOR_T1
+        "accountType": Constants.SPONSOR_T1,
+        "confirmed": false,
     }),
     stored: createNAccounts(5, {
         "accountType": Constants.SPONSOR_T1
@@ -206,7 +208,7 @@ const waitlistedHacker0 = {
     "firstName": "abcd",
     "lastName": "defg3",
     "pronoun": "They/Them",
-    "email": "abc.def7@blahblah.com",
+    "email": "waitlisted1@blahblah.com",
     "password": "probsShouldBeHashed2",
     "dietaryRestrictions": ["vegetarian"],
     "shirtSize": "M",
@@ -222,7 +224,7 @@ const NonConfirmedAccount1 = {
     "firstName": "LMAO",
     "lastName": "ROFL",
     "pronoun": "Ey/Em",
-    "email": "abc.def6@blahblah.com",
+    "email": "notconfirmed1@blahblah.com",
     "password": "probsShouldBeHashed5",
     "dietaryRestrictions": ["something1", "something2"],
     "shirtSize": "XXL",
@@ -246,7 +248,8 @@ const NonConfirmedAccount2 = {
 
 const NonConfirmedAccount3 = createAccount({
     "confirmed": false,
-    "accountType": Constants.HACKER
+    "accountType": Constants.HACKER,
+    "email": "notconfirmed3@blahblah.com"
 });
 
 const extraAccounts = [waitlistedHacker0, NonConfirmedAccount1, NonConfirmedAccount2, NonConfirmedAccount3];

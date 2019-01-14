@@ -16,9 +16,9 @@ const logger = require("../../services/logger.service");
 
 const HackerConfirmation = {
     "_id": mongoose.Types.ObjectId(),
-    "accountId": Util.Account.hackerAccounts.stored.noTeam[0],
+    "accountId": Util.Account.NonConfirmedAccount1._id,
     "accountType": Constants.HACKER,
-    "email": Util.Account.hackerAccounts.stored.noTeam[0].email
+    "email": Util.Account.NonConfirmedAccount1.email
 };
 
 const HackerConfirmation2 = {

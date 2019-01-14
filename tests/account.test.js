@@ -28,13 +28,13 @@ const resetToken = util.reset.ResetToken;
 const Admin0 = util.account.staffAccounts.stored[0];
 const teamHackerAccount0 = util.account.hackerAccounts.stored.team[0];
 
-
-
-
 //This account has a confirmation token in the db
-const storedAccount2 = util.account.NonConfirmedAccount1;
+const storedAccount1 = util.account.NonConfirmedAccount1;
+const storedAccount2 = util.account.NonConfirmedAccount2;
+
 //This account does not have a confirmation token in the DB
-const storedAccount3 = util.account.NonConfirmedAccount2;
+const storedAccount3 = util.account.NonConfirmedAccount3;
+
 // admin role binding
 
 const newAccount0 = util.account.unlinkedAccounts.new[0];
@@ -183,7 +183,7 @@ describe("POST create account", function () {
         chai.request(server.app)
             .post(`/api/account/`)
             .type("application/json")
-            .send(teamHackerAccount0)
+            .send(newAccount0)
             .end(function (err, res) {
                 res.should.have.status(200);
                 res.should.be.json;
@@ -191,7 +191,7 @@ describe("POST create account", function () {
                 res.body.message.should.equal(Constants.Success.ACCOUNT_CREATE);
 
                 // use acc.toStrippedJSON to deal with hidden passwords and convert _id to id
-                const acc = (new Account(teamHackerAccount0)).toStrippedJSON();
+                const acc = (new Account(newAccount0)).toStrippedJSON();
                 // delete id as those are generated
                 delete acc.id;
                 delete res.body.data.id;
@@ -470,7 +470,7 @@ describe("GET retrieve permissions", function () {
 
 describe("GET resend confirmation email", function () {
     it("should SUCCEED and resend the confirmation email", function (done) {
-        util.auth.login(agent, storedAccount3, (error) => {
+        util.auth.login(agent, storedAccount1, (error) => {
             if (error) {
                 agent.close();
                 return done(error);
@@ -506,7 +506,7 @@ describe("GET resend confirmation email", function () {
         });
     });
     it("should FAIL as account confirmation token does not exist", function (done) {
-        util.auth.login(agent, storedAccount2, (error) => {
+        util.auth.login(agent, storedAccount3, (error) => {
             if (error) {
                 agent.close();
                 return done(error);
