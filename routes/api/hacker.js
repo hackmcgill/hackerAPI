@@ -18,6 +18,7 @@ const Middleware = {
 };
 const Services = {
     Hacker: require("../../services/hacker.service"),
+    Account: require("../../services/account.service"),
 }
 const CONSTANTS = require("../../constants/general.constant");
 
@@ -369,7 +370,7 @@ module.exports = {
          * @apiParam (param) {String} id a hacker's unique mongoID
          * 
          * @apiSuccess {String} message Success message
-         * @apiSuccess {Object} data Sponsor object
+         * @apiSuccess {Object} data Hacker object
          * @apiSuccessExample {object} Success-Response: 
          *      {
                     "message": "Successfully retrieved hacker information", 
@@ -414,6 +415,63 @@ module.exports = {
             Middleware.parseBody.middleware,
 
             Middleware.Hacker.findById,
+            Controllers.Hacker.showHacker
+        );
+
+        /**
+         * @api {get} /hacker/email/:email get a hacker's information
+         * @apiName getHacker
+         * @apiGroup Hacker
+         * @apiVersion 0.0.8
+         * 
+         * @apiParam (param) {String} email a hacker's unique email
+         * 
+         * @apiSuccess {String} message Success message
+         * @apiSuccess {Object} data Hacker object
+         * @apiSuccessExample {object} Success-Response: 
+         *      {
+                    "message": "Successfully retrieved hacker information", 
+                    "data": {
+                        "id":"5bff4d736f86be0a41badb91",
+                        "application":{
+                            "portfolioURL":{
+                                "resume":"resumes/1543458163426-5bff4d736f86be0a41badb91",
+                                "github":"https://github.com/abcd",
+                                "dropler":"https://dribbble.com/abcd",
+                                "personal":"https://www.hi.com/",
+                                "linkedIn":"https://linkedin.com/in/abcd",
+                                "other":"https://github.com/hackmcgill/hackerAPI/issues/168"
+                            },
+                            "jobInterest":"Internship",
+                            "skills":["Javascript","Typescript"],
+                            "comments":"hi!",
+                            "essay":"Pls accept me"
+                        },
+                        "status":"Applied",
+                        "ethnicity":["White or Caucasian"," Asian or Pacific Islander"],
+                        "accountId":"5bff2a35e533b0f6562b4998",
+                        "school":"McPherson College",
+                        "gender":"Female",
+                        "needsBus":false,
+                        "major":"Accounting",
+                        "graduationYear":2019,
+                        "codeOfConduct":true,
+                    }
+                }
+
+         * @apiError {String} message Error message
+         * @apiError {Object} data empty
+         * @apiErrorExample {object} Error-Response: 
+         *      {"message": "Hacker not found", "data": {}}
+         */
+        hackerRouter.route("/email/:email").get(
+            Middleware.Auth.ensureAuthenticated(),
+            Middleware.Auth.ensureAuthorized([Services.Account.findByEmail]),
+
+            Middleware.Validator.RouteParam.emailValidator,
+            Middleware.parseBody.middleware,
+
+            Middleware.Hacker.findByEmail,
             Controllers.Hacker.showHacker
         );
 
