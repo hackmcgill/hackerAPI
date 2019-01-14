@@ -12,7 +12,7 @@ const logger = require("../../services/logger.service");
 
 const TeamHacker0 = {
     "_id": Constants.MongoId.hackerAId,
-    "accountId": Util.Account.hackerAccounts.stored.team[0],
+    "accountId": Util.Account.hackerAccounts.stored.team[0]._id,
     "status": "Confirmed",
     "school": "University of Blah",
     "degree": "Masters",
@@ -59,7 +59,7 @@ const TeamHacker1 = {
         "jobInterest": "Internship",
         "skills": ["CSS", "HTML", "JS"],
     },
-    "ethnicity": "European",
+    "ethnicity": ["European"],
     "major": "EE",
     "graduationYear": 2019,
     "codeOfConduct": true,
@@ -87,7 +87,7 @@ const TeamHacker2 = {
         "jobInterest": "Internship",
         "skills": ["CSS", "HTML", "JS"],
     },
-    "ethnicity": "European",
+    "ethnicity": ["European"],
     "major": "EE",
     "graduationYear": 2019,
     "codeOfConduct": true,
@@ -115,7 +115,7 @@ const TeamHacker3 = {
         "jobInterest": "Internship",
         "skills": ["CSS", "HTML", "JS"],
     },
-    "ethnicity": "European",
+    "ethnicity": ["European"],
     "major": "EE",
     "graduationYear": 2019,
     "codeOfConduct": true,
@@ -143,7 +143,7 @@ const TeamHacker4 = {
         "jobInterest": "Internship",
         "skills": ["CSS", "HTML", "JS"],
     },
-    "ethnicity": "European",
+    "ethnicity": ["European"],
     "major": "EE",
     "graduationYear": 2019,
     "codeOfConduct": true,
@@ -275,7 +275,7 @@ const invalidHacker1 = {
 
 const duplicateAccountLinkHacker0 = {
     "_id": mongoose.Types.ObjectId(),
-    "accountId": Util.Account.hackerAccounts.stored.team[0],
+    "accountId": Util.Account.hackerAccounts.stored.team[0]._id,
     "status": "Applied",
     "school": "University of Blah",
     "degree": "Undergraduate",
@@ -321,7 +321,7 @@ const waitlistedHacker0 = {
         "jobInterest": "Internship",
         "skills": ["CSS", "HTML", "JS"],
     },
-    "ethnicity": "European",
+    "ethnicity": ["European"],
     "major": "EE",
     "graduationYear": 2019,
     "codeOfConduct": true,
@@ -349,7 +349,7 @@ const unconfirmedAccountHacker0 = {
         "jobInterest": "Internship",
         "skills": ["CSS", "HTML", "JS"],
     },
-    "ethnicity": "European",
+    "ethnicity": ["European"],
     "major": "EE",
     "graduationYear": 2019,
     "codeOfConduct": true,
@@ -363,9 +363,6 @@ const Hackers = [
     TeamHacker4,
 
     NoTeamHacker0,
-
-    invalidHacker0,
-    invalidHacker1,
 
     duplicateAccountLinkHacker0,
     waitlistedHacker0

@@ -97,6 +97,7 @@ function createNAccounts(n, acc = {}) {
 let hackerAccounts = {
     new: createNAccounts(10, {
         "accountType": Constants.HACKER,
+        "confirmed": true,
     }),
     stored: {
         team: createNAccounts(10, {
@@ -104,7 +105,8 @@ let hackerAccounts = {
             "confirmed": true,
         }),
         noTeam: createNAccounts(10, {
-            "accountType": Constants.HACKER
+            "accountType": Constants.HACKER,
+            "confirmed": true,
         }),
     },
     invalid: createNAccounts(10, {
@@ -114,10 +116,12 @@ let hackerAccounts = {
 
 let volunteerAccounts = {
     new: createNAccounts(5, {
-        "accountType": Constants.VOLUNTEER
+        "accountType": Constants.VOLUNTEER,
+        "confirmed": true,
     }),
     stored: createNAccounts(5, {
-        "accountType": Constants.VOLUNTEER
+        "accountType": Constants.VOLUNTEER,
+        "confirmed": true,
     }),
     invalid: createNAccounts(5, {
         "accountType": Constants.VOLUNTEER
@@ -126,7 +130,8 @@ let volunteerAccounts = {
 
 let staffAccounts = {
     stored: createNAccounts(5, {
-        "accountType": Constants.STAFF
+        "accountType": Constants.STAFF,
+        "confirmed": true,
     })
 };
 
@@ -136,7 +141,8 @@ let sponsorT1Accounts = {
         "confirmed": false,
     }),
     stored: createNAccounts(5, {
-        "accountType": Constants.SPONSOR_T1
+        "accountType": Constants.SPONSOR_T1,
+        "confirmed": true,
     }),
     invalid: createNAccounts(5, {
         "accountType": Constants.SPONSOR_T1
@@ -145,10 +151,12 @@ let sponsorT1Accounts = {
 
 let sponsorT2Accounts = {
     new: createNAccounts(5, {
-        "accountType": Constants.SPONSOR_T2
+        "accountType": Constants.SPONSOR_T2,
+        "confirmed": true,
     }),
     stored: createNAccounts(5, {
-        "accountType": Constants.SPONSOR_T2
+        "accountType": Constants.SPONSOR_T2,
+        "confirmed": true,
     }),
     invalid: createNAccounts(5, {
         "accountType": Constants.SPONSOR_T2
@@ -157,10 +165,12 @@ let sponsorT2Accounts = {
 
 let sponsorT3Accounts = {
     new: createNAccounts(5, {
-        "accountType": Constants.SPONSOR_T3
+        "accountType": Constants.SPONSOR_T3,
+        "confirmed": true,
     }),
     stored: createNAccounts(5, {
-        "accountType": Constants.SPONSOR_T3
+        "accountType": Constants.SPONSOR_T3,
+        "confirmed": true,
     }),
     invalid: createNAccounts(5, {
         "accountType": Constants.SPONSOR_T3
@@ -169,10 +179,12 @@ let sponsorT3Accounts = {
 
 let sponsorT4Accounts = {
     new: createNAccounts(5, {
-        "accountType": Constants.SPONSOR_T4
+        "accountType": Constants.SPONSOR_T4,
+        "confirmed": true,
     }),
     stored: createNAccounts(5, {
-        "accountType": Constants.SPONSOR_T4
+        "accountType": Constants.SPONSOR_T4,
+        "confirmed": true,
     }),
     invalid: createNAccounts(5, {
         "accountType": Constants.SPONSOR_T4
@@ -181,10 +193,12 @@ let sponsorT4Accounts = {
 
 let sponsorT5Accounts = {
     new: createNAccounts(5, {
-        "accountType": Constants.SPONSOR_T5
+        "accountType": Constants.SPONSOR_T5,
+        "confirmed": true,
     }),
     stored: createNAccounts(5, {
-        "accountType": Constants.SPONSOR_T5
+        "accountType": Constants.SPONSOR_T5,
+        "confirmed": true,
     }),
     invalid: createNAccounts(5, {
         "accountType": Constants.SPONSOR_T5

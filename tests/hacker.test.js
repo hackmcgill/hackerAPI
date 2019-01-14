@@ -41,171 +41,171 @@ const duplicateAccountLinkHacker0 = util.hacker.duplicateAccountLinkHacker0;
 
 const invalidHacker1 = util.hacker.invalidHacker1;
 
-describe("GET hacker", function () {
-    // fail on authentication
-    it("should fail to list a hacker's information on /api/hacker/:id GET due to authentication", function (done) {
-        chai.request(server.app)
-            .get(`/api/hacker/` + TeamHacker0._id)
-            .end(function (err, res) {
-                res.should.have.status(401);
-                res.should.be.json;
-                res.body.should.have.property("message");
-                res.body.message.should.equal(Constants.Error.AUTH_401_MESSAGE);
-                done();
-            });
-    });
+// describe("GET hacker", function () {
+//     // fail on authentication
+//     it("should fail to list a hacker's information on /api/hacker/:id GET due to authentication", function (done) {
+//         chai.request(server.app)
+//             .get(`/api/hacker/` + TeamHacker0._id)
+//             .end(function (err, res) {
+//                 res.should.have.status(401);
+//                 res.should.be.json;
+//                 res.body.should.have.property("message");
+//                 res.body.message.should.equal(Constants.Error.AUTH_401_MESSAGE);
+//                 done();
+//             });
+//     });
 
-    // success case
-    it("should list the user's hacker info on /api/hacker/self GET", function (done) {
-        util.auth.login(agent, teamHackerAccount0, (error) => {
-            if (error) {
-                agent.close();
-                return done(error);
-            }
-            return agent
-                .get("/api/hacker/self")
-                .end(function (err, res) {
-                    if (err) {
-                        return done(err);
-                    }
-                    res.should.have.status(200);
-                    res.should.be.json;
-                    res.body.should.have.property("message");
-                    res.body.message.should.equal(Constants.Success.HACKER_READ);
-                    res.body.should.have.property("data");
+//     // success case
+//     it("should list the user's hacker info on /api/hacker/self GET", function (done) {
+//         util.auth.login(agent, teamHackerAccount0, (error) => {
+//             if (error) {
+//                 agent.close();
+//                 return done(error);
+//             }
+//             return agent
+//                 .get("/api/hacker/self")
+//                 .end(function (err, res) {
+//                     if (err) {
+//                         return done(err);
+//                     }
+//                     res.should.have.status(200);
+//                     res.should.be.json;
+//                     res.body.should.have.property("message");
+//                     res.body.message.should.equal(Constants.Success.HACKER_READ);
+//                     res.body.should.have.property("data");
 
-                    let hacker = new Hacker(TeamHacker0);
-                    chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify(hacker.toJSON()));
-                    done();
-                });
-        });
-    });
+//                     let hacker = new Hacker(TeamHacker0);
+//                     chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify(hacker.toJSON()));
+//                     done();
+//                 });
+//         });
+//     });
 
-    // fail case due to wrong account type
-    it("should fail to list the hacker info of an admin due to wrong account type /api/account/self GET", function (done) {
-        util.auth.login(agent, Admin0, (error) => {
-            if (error) {
-                agent.close();
-                return done(error);
-            }
-            return agent
-                .get("/api/hacker/self")
-                .end(function (err, res) {
-                    res.should.have.status(409);
-                    res.should.be.json;
-                    res.body.should.have.property("message");
-                    res.body.message.should.equal(Constants.Error.ACCOUNT_TYPE_409_MESSAGE);
-                    done();
-                });
-        });
-    });
+//     // fail case due to wrong account type
+//     it("should fail to list the hacker info of an admin due to wrong account type /api/account/self GET", function (done) {
+//         util.auth.login(agent, Admin0, (error) => {
+//             if (error) {
+//                 agent.close();
+//                 return done(error);
+//             }
+//             return agent
+//                 .get("/api/hacker/self")
+//                 .end(function (err, res) {
+//                     res.should.have.status(409);
+//                     res.should.be.json;
+//                     res.body.should.have.property("message");
+//                     res.body.message.should.equal(Constants.Error.ACCOUNT_TYPE_409_MESSAGE);
+//                     done();
+//                 });
+//         });
+//     });
 
-    // succeed on admin case
-    it("should list a hacker's information using admin power on /api/hacker/:id GET", function (done) {
-        util.auth.login(agent, Admin0, (error) => {
-            if (error) {
-                agent.close();
-                return done(error);
-            }
-            return agent
-                .get(`/api/hacker/${TeamHacker0._id}`)
-                // does not have password because of to stripped json
-                .end(function (err, res) {
-                    if (err) {
-                        return done(err);
-                    }
-                    res.should.have.status(200);
-                    res.should.be.json;
-                    res.body.should.have.property("message");
-                    res.body.message.should.equal(Constants.Success.HACKER_READ);
-                    res.body.should.have.property("data");
+//     // succeed on admin case
+//     it("should list a hacker's information using admin power on /api/hacker/:id GET", function (done) {
+//         util.auth.login(agent, Admin0, (error) => {
+//             if (error) {
+//                 agent.close();
+//                 return done(error);
+//             }
+//             return agent
+//                 .get(`/api/hacker/${TeamHacker0._id}`)
+//                 // does not have password because of to stripped json
+//                 .end(function (err, res) {
+//                     if (err) {
+//                         return done(err);
+//                     }
+//                     res.should.have.status(200);
+//                     res.should.be.json;
+//                     res.body.should.have.property("message");
+//                     res.body.message.should.equal(Constants.Success.HACKER_READ);
+//                     res.body.should.have.property("data");
 
-                    let hacker = new Hacker(TeamHacker0);
-                    chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify(hacker.toJSON()));
+//                     let hacker = new Hacker(TeamHacker0);
+//                     chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify(hacker.toJSON()));
 
-                    done();
-                });
-        });
-    });
+//                     done();
+//                 });
+//         });
+//     });
 
-    // succeed on :self case
-    it("should list the user's hacker information on /api/hacker/:id GET", function (done) {
-        util.auth.login(agent, teamHackerAccount0, (error) => {
-            if (error) {
-                agent.close();
-                return done(error);
-            }
-            return agent
-                .get(`/api/hacker/${TeamHacker0._id}`)
-                // does not have password because of to stripped json
-                .end(function (err, res) {
-                    if (err) {
-                        return done(err);
-                    }
-                    res.should.have.status(200);
-                    res.should.be.json;
-                    res.body.should.have.property("message");
-                    res.body.message.should.equal(Constants.Success.HACKER_READ);
-                    res.body.should.have.property("data");
+//     // succeed on :self case
+//     it("should list the user's hacker information on /api/hacker/:id GET", function (done) {
+//         util.auth.login(agent, teamHackerAccount0, (error) => {
+//             if (error) {
+//                 agent.close();
+//                 return done(error);
+//             }
+//             return agent
+//                 .get(`/api/hacker/${TeamHacker0._id}`)
+//                 // does not have password because of to stripped json
+//                 .end(function (err, res) {
+//                     if (err) {
+//                         return done(err);
+//                     }
+//                     res.should.have.status(200);
+//                     res.should.be.json;
+//                     res.body.should.have.property("message");
+//                     res.body.message.should.equal(Constants.Success.HACKER_READ);
+//                     res.body.should.have.property("data");
 
-                    let hacker = new Hacker(TeamHacker0);
+//                     let hacker = new Hacker(TeamHacker0);
 
-                    chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify(hacker.toJSON()));
+//                     chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify(hacker.toJSON()));
 
-                    done();
-                });
-        });
-    });
+//                     done();
+//                 });
+//         });
+//     });
 
-    // fail due to lack of authorization
-    it("should fail to list a hacker information due to lack of authorization on /api/hacker/:id GET", function (done) {
-        util.auth.login(agent, noTeamHackerAccount0, (error) => {
-            if (error) {
-                agent.close();
-                return done(error);
-            }
-            return agent
-                .get(`/api/hacker/${TeamHacker0._id}`)
-                // does not have password because of to stripped json
-                .end(function (err, res) {
-                    if (err) {
-                        return done(err);
-                    }
-                    res.should.have.status(403);
-                    res.should.be.json;
-                    res.body.should.have.property("message");
-                    res.body.message.should.equal(Constants.Error.AUTH_403_MESSAGE);
-                    res.body.should.have.property("data");
+//     // fail due to lack of authorization
+//     it("should fail to list a hacker information due to lack of authorization on /api/hacker/:id GET", function (done) {
+//         util.auth.login(agent, noTeamHackerAccount0, (error) => {
+//             if (error) {
+//                 agent.close();
+//                 return done(error);
+//             }
+//             return agent
+//                 .get(`/api/hacker/${TeamHacker0._id}`)
+//                 // does not have password because of to stripped json
+//                 .end(function (err, res) {
+//                     if (err) {
+//                         return done(err);
+//                     }
+//                     res.should.have.status(403);
+//                     res.should.be.json;
+//                     res.body.should.have.property("message");
+//                     res.body.message.should.equal(Constants.Error.AUTH_403_MESSAGE);
+//                     res.body.should.have.property("data");
 
-                    done();
-                });
-        });
-    });
+//                     done();
+//                 });
+//         });
+//     });
 
-    // fail due to lack of hacker
-    it("should fail to list an invalid hacker /api/hacker/:id GET", function (done) {
-        util.auth.login(agent, Admin0, (error) => {
-            if (error) {
-                agent.close();
-                return done(error);
-            }
-            return agent
-                .get(`/api/hacker/${invalidHacker1._id}`)
-                .end(function (err, res) {
-                    if (err) {
-                        return done(err);
-                    }
-                    res.should.have.status(404);
-                    res.should.be.json;
-                    res.body.should.have.property("message");
-                    res.body.message.should.equal(Constants.Error.HACKER_404_MESSAGE);
-                    res.body.should.have.property("data");
+//     // fail due to lack of hacker
+//     it("should fail to list an invalid hacker /api/hacker/:id GET", function (done) {
+//         util.auth.login(agent, Admin0, (error) => {
+//             if (error) {
+//                 agent.close();
+//                 return done(error);
+//             }
+//             return agent
+//                 .get(`/api/hacker/${invalidHacker1._id}`)
+//                 .end(function (err, res) {
+//                     if (err) {
+//                         return done(err);
+//                     }
+//                     res.should.have.status(404);
+//                     res.should.be.json;
+//                     res.body.should.have.property("message");
+//                     res.body.message.should.equal(Constants.Error.HACKER_404_MESSAGE);
+//                     res.body.should.have.property("data");
 
-                    done();
-                });
-        });
-    });
-});
+//                     done();
+//                 });
+//         });
+//     });
+// });
 
 describe("POST create hacker", function () {
     // fail on authentication
@@ -267,7 +267,7 @@ describe("POST create hacker", function () {
             return agent
                 .post(`/api/hacker/`)
                 .type("application/json")
-                .send(newHacker1)
+                .send(newHacker0)
                 .end(function (err, res) {
                     res.should.have.status(200);
                     res.should.be.json;
@@ -554,7 +554,7 @@ describe("PATCH update one hacker", function () {
                 return done(error);
             }
             return agent
-                .patch(`/api/hacker/${noTeamHacker0._id}`)
+                .patch(`/api/hacker/${TeamHacker0._id}`)
                 .type("application/json")
                 .send({
                     gender: "Other"
@@ -665,7 +665,7 @@ describe("PATCH update one hacker", function () {
                 return done(error);
             }
             return agent
-                .patch(`/api/hacker/confirmation/${util.hacker.HackerC._id}`)
+                .patch(`/api/hacker/confirmation/${util.hacker.waitlistedHacker0._id}`)
                 .type("application/json")
                 .send({
                     confirm: true

@@ -9,7 +9,7 @@ const Constants = {
 };
 const logger = require("../../services/logger.service");
 
-function createRoleBinding(accountId, accountType, specificRoles = []) {
+function createRoleBinding(accountId, accountType = null, specificRoles = []) {
     let roleBinding = {
         accountId: accountId,
         roles: [Constants.Role.accountRole]
@@ -92,6 +92,20 @@ const SponsorT3RB = createRoleBindings(Util.Account.sponsorT3Accounts.stored);
 const SponsorT4RB = createRoleBindings(Util.Account.sponsorT4Accounts.stored);
 const SponsorT5RB = createRoleBindings(Util.Account.sponsorT5Accounts.stored);
 
+const newHackerRB = createRoleBindings(Util.Account.hackerAccounts.new);
+const newVolunteerRB = createRoleBindings(Util.Account.volunteerAccounts.new);
+const newSponsorT1RB = createRoleBindings(Util.Account.sponsorT1Accounts.new);
+const newSponsorT2RB = createRoleBindings(Util.Account.sponsorT2Accounts.new);
+const newSponsorT3RB = createRoleBindings(Util.Account.sponsorT3Accounts.new);
+const newSponsorT4RB = createRoleBindings(Util.Account.sponsorT4Accounts.new);
+const newSponsorT5RB = createRoleBindings(Util.Account.sponsorT5Accounts.new);
+
+const unconfirmedAccountRB = [
+    createRoleBinding(Util.Account.NonConfirmedAccount1._id),
+    createRoleBinding(Util.Account.NonConfirmedAccount2._id),
+    createRoleBinding(Util.Account.NonConfirmedAccount3._id),
+];
+
 module.exports = {
     TeamHackerRB: TeamHackerRB,
     NoTeamHackerRB: NoTeamHackerRB,
@@ -102,6 +116,16 @@ module.exports = {
     SponsorT3RB: SponsorT3RB,
     SponsorT4RB: SponsorT4RB,
     SponsorT5RB: SponsorT5RB,
+
+    newHackerRB: newHackerRB,
+    newVolunteerRB: newVolunteerRB,
+    newSponsorT1RB: newSponsorT1RB,
+    newSponsorT2RB: newSponsorT2RB,
+    newSponsorT3RB: newSponsorT3RB,
+    newSponsorT4RB: newSponsorT4RB,
+    newSponsorT5RB: newSponsorT5RB,
+
+    unconfirmedAccountRB: unconfirmedAccountRB,
 
     storeAll: storeAll,
     dropAll: dropAll,

@@ -64,6 +64,14 @@ async function storeAll() {
     await Util.Account.storeAll(Util.Account.sponsorT5Accounts.stored);
     await Util.Account.storeAll(Util.Account.unlinkedAccounts.stored);
 
+    await Util.Account.storeAll(Util.Account.hackerAccounts.new);
+    await Util.Account.storeAll(Util.Account.volunteerAccounts.new);
+    await Util.Account.storeAll(Util.Account.sponsorT1Accounts.new);
+    await Util.Account.storeAll(Util.Account.sponsorT2Accounts.new);
+    await Util.Account.storeAll(Util.Account.sponsorT3Accounts.new);
+    await Util.Account.storeAll(Util.Account.sponsorT4Accounts.new);
+    await Util.Account.storeAll(Util.Account.sponsorT5Accounts.new);
+
     await Util.Account.storeAll(Util.Account.extraAccounts);
 
     await Util.Hacker.storeAll(Util.Hacker.Hackers);
@@ -85,6 +93,16 @@ async function storeAll() {
     await Util.RoleBinding.storeAll(Util.RoleBinding.SponsorT3RB);
     await Util.RoleBinding.storeAll(Util.RoleBinding.SponsorT4RB);
     await Util.RoleBinding.storeAll(Util.RoleBinding.SponsorT5RB);
+
+    await Util.RoleBinding.storeAll(Util.RoleBinding.newHackerRB);
+    await Util.RoleBinding.storeAll(Util.RoleBinding.newVolunteerRB);
+    await Util.RoleBinding.storeAll(Util.RoleBinding.newSponsorT1RB);
+    await Util.RoleBinding.storeAll(Util.RoleBinding.newSponsorT2RB);
+    await Util.RoleBinding.storeAll(Util.RoleBinding.newSponsorT3RB);
+    await Util.RoleBinding.storeAll(Util.RoleBinding.newSponsorT4RB);
+    await Util.RoleBinding.storeAll(Util.RoleBinding.newSponsorT5RB);
+
+    await Util.RoleBinding.storeAll(Util.RoleBinding.unconfirmedAccountRB);
 }
 
 async function dropAll() {
