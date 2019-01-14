@@ -6,12 +6,12 @@ const Staff = require("../../models/staff.model");
 const mongoose = require("mongoose");
 const logger = require("../../services/logger.service");
 
-const Staff1 = {
+const Staff0 = {
     "_id": mongoose.Types.ObjectId(),
-    "accountId": Util.Account.Account4._id
+    "accountId": Util.Account.staffAccounts.stored[0];
 };
 const Staffs = [
-    Staff1,
+    Staff0,
 ];
 
 function storeAll(attributes) {

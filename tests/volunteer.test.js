@@ -18,7 +18,8 @@ const util = {
 };
 
 const Admin0 = util.account.Admin0;
-const Hacker0 = util.account.hackerAccounts.stored.team[0];
+const HackerAccount0 = util.account.hackerAccounts.stored.team[0];
+const VolunteerAccount0 = util.account.volunteerAccounts.stored[0];
 
 
 const adminVolunteer = util.volunteer.adminVolunteer1;
@@ -30,7 +31,7 @@ const duplicateVolunteer = util.volunteer.duplicateVolunteer1;
 describe("GET volunteer", function () {
     it("should FAIL to get volunteer due to lack of authentication", function (done) {
         chai.request(server.app)
-            .get(`/api/volunteer/${util.volunteer.Volunteer1._id}`)
+            .get(`/api/volunteer/${util.volunteer.Volunteer0._id}`)
             .end(function (err, res) {
                 res.should.have.status(401);
                 res.should.be.json;
@@ -43,13 +44,13 @@ describe("GET volunteer", function () {
     });
 
     it("should Fail to GET volunteer due inappropriate authorization", function (done) {
-        util.auth.login(agent, util.account.Hacker5, (error) => {
+        util.auth.login(agent, util.account.hackerAccounts.stored.team[2], (error) => {
             if (error) {
                 agent.close();
                 return done(error);
             }
             return agent
-                .get(`/api/volunteer/${util.volunteer.Volunteer1._id}`)
+                .get(`/api/volunteer/${util.volunteer.Volunteer0._id}`)
                 .end(function (err, res) {
                     res.should.have.status(403);
                     res.should.be.json;
@@ -90,7 +91,7 @@ describe("GET volunteer", function () {
                 return done(error);
             }
             return agent
-                .get(`/api/volunteer/${util.volunteer.Volunteer1._id}`)
+                .get(`/api/volunteer/${util.volunteer.Volunteer0._id}`)
                 .end(function (err, res) {
                     if (err) {
                         return done(err);
@@ -101,7 +102,7 @@ describe("GET volunteer", function () {
                     res.body.message.should.equal(Constants.Success.VOLUNTEER_GET_BY_ID);
                     res.body.should.have.property("data");
 
-                    let volunteer = new Volunteer(util.volunteer.Volunteer1);
+                    let volunteer = new Volunteer(util.volunteer.Volunteer0);
                     chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify(volunteer.toJSON()));
                     done();
                 });
@@ -110,13 +111,13 @@ describe("GET volunteer", function () {
 
     // success case
     it("should GET the user's volunteer info by id", function (done) {
-        util.auth.login(agent, util.account.Account4, (error) => {
+        util.auth.login(agent, VolunteerAccount0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);
             }
             return agent
-                .get(`/api/volunteer/${util.volunteer.Volunteer1._id}`)
+                .get(`/api/volunteer/${util.volunteer.Volunteer0._id}`)
                 .end(function (err, res) {
                     if (err) {
                         return done(err);
@@ -127,7 +128,7 @@ describe("GET volunteer", function () {
                     res.body.message.should.equal(Constants.Success.VOLUNTEER_GET_BY_ID);
                     res.body.should.have.property("data");
 
-                    let volunteer = new Volunteer(util.volunteer.Volunteer1);
+                    let volunteer = new Volunteer(util.volunteer.Volunteer0);
                     chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify(volunteer.toJSON()));
                     done();
                 });

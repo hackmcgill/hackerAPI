@@ -37,7 +37,7 @@ const storedAccount2 = util.account.NonConfirmedAccount1;
 const storedAccount3 = util.account.NonConfirmedAccount2;
 // admin role binding
 
-const newAccount1 = util.account.newAccount1;
+const newAccount0 = util.account.unlinkedAccounts.new[0];
 
 
 describe("GET user account", function () {
@@ -536,7 +536,7 @@ describe("POST invite account", function () {
                 .post("/api/account/invite")
                 .type("application/json")
                 .send({
-                    email: newAccount1.email,
+                    email: newAccount0.email,
                     accountType: Constants.General.VOLUNTEER
                 })
                 // does not have password because of to stripped json

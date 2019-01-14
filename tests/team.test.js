@@ -21,7 +21,9 @@ const Constants = {
 const agent = chai.request.agent(server.app);
 
 const Admin0 = util.account.staffAccounts[0];
-const Hacker0 = util.account.hackerAccounts.stored.team[0];
+const teamHackerAccount0 = util.account.hackerAccounts.stored.team[0];
+const noTeamHackerAccount0 = util.account.hackerAccounts.stored.noTeam[0];
+const sponsorT1Account0 = util.account.sponsorT1Accounts.stored[0];
 
 describe("GET team", function () {
     it("should FAIL to list a team's information due to lack of authentication", function (done) {
@@ -39,7 +41,7 @@ describe("GET team", function () {
     });
 
     it("should Fail and list a team's information from /api/team/ GET due to non existant team id", function (done) {
-        util.auth.login(agent, util.account.Hacker4, (error) => {
+        util.auth.login(agent, util.account.hackerAccounts.stored.team[0], (error) => {
             if (error) {
                 agent.close();
                 return done(error);
@@ -59,7 +61,7 @@ describe("GET team", function () {
     });
 
     it("should SUCCEED and list a team's information from /api/team/ GET", function (done) {
-        util.auth.login(agent, util.account.Hacker3, (error) => {
+        util.auth.login(agent, util.account.waitlistedHacker0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);
@@ -108,7 +110,7 @@ describe("POST create team", function () {
     });
 
     it("should FAIL to create a new team due to lack of authorization", function (done) {
-        util.auth.login(agent, util.account.Account3, (error) => {
+        util.auth.login(agent, sponsorT1Account0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);
@@ -152,7 +154,7 @@ describe("POST create team", function () {
     });
 
     it("should FAIL to create a new team due to duplicate team name", function (done) {
-        util.auth.login(agent, util.account.Account2, (error) => {
+        util.auth.login(agent, noTeamHackerAccount0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);
@@ -175,7 +177,7 @@ describe("POST create team", function () {
     });
 
     it("should Fail to create a new team due to hacker already being in a team", function (done) {
-        util.auth.login(agent, Hacker0, (error) => {
+        util.auth.login(agent, teamHackerAccount0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);
@@ -196,7 +198,7 @@ describe("POST create team", function () {
     });
 
     it("should SUCCEED and create a new team", function (done) {
-        util.auth.login(agent, util.account.Account2, (error) => {
+        util.auth.login(agent, noTeamHackerAccount0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);
@@ -243,7 +245,7 @@ describe("PATCH join team", function () {
     });
 
     it("should FAIL to join a volunteer to a team.", function (done) {
-        util.auth.login(agent, util.account.Account5, (error) => {
+        util.auth.login(agent, util.account.volunteerAccounts.stored[0], (error) => {
             if (error) {
                 agent.close();
                 return done(error);
@@ -267,7 +269,7 @@ describe("PATCH join team", function () {
     });
 
     it("should FAIL to join a hacker to a team that doesn't exist.", function (done) {
-        util.auth.login(agent, Hacker0, (error) => {
+        util.auth.login(agent, teamHackerAccount0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);
@@ -291,7 +293,7 @@ describe("PATCH join team", function () {
     });
 
     it("should FAIL to join a hacker to a team that is full.", function (done) {
-        util.auth.login(agent, Hacker0, (error) => {
+        util.auth.login(agent, teamHackerAccount0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);
@@ -315,7 +317,7 @@ describe("PATCH join team", function () {
     });
 
     it("should SUCCEED and join a hacker without a team to a team.", function (done) {
-        util.auth.login(agent, util.account.Account2, (error) => {
+        util.auth.login(agent, noTeamHackerAccount0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);
@@ -339,7 +341,7 @@ describe("PATCH join team", function () {
     });
 
     it("should SUCCEED and join a hacker on a team to aother team.", function (done) {
-        util.auth.login(agent, Hacker0, (error) => {
+        util.auth.login(agent, teamHackerAccount0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);
@@ -383,7 +385,7 @@ describe("PATCH change team info", function () {
     });
 
     it("should FAIL for a hacker to change another team's information due to invalid authorization", function (done) {
-        util.auth.login(agent, util.account.Hacker4, (error) => {
+        util.auth.login(agent, util.account.hackerAccounts.stored.team[1], (error) => {
             if (error) {
                 agent.close();
                 return done(error);
@@ -406,8 +408,8 @@ describe("PATCH change team info", function () {
         });
     });
 
-    it("should SUCCEED to change the hacker's team information", function (done) {
-        util.auth.login(agent, util.account.Hacker4, (error) => {
+    it("should SUCCEED to change the hacker's team information (even though the hackers are different, the team is the same)", function (done) {
+        util.auth.login(agent, util.account.hackerAccounts.stored.team[1], (error) => {
             if (error) {
                 agent.close();
                 return done(error);
@@ -432,7 +434,7 @@ describe("PATCH change team info", function () {
     });
 
     it("should SUCCEED and leave a team.", function (done) {
-        util.auth.login(agent, Hacker0, (error) => {
+        util.auth.login(agent, teamHackerAccount0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);

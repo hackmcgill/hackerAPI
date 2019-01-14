@@ -193,46 +193,21 @@ let unlinkedAccounts = {
     new: [createAccount({
         "accountType": Constants.HACKER
     })],
-    invalid: [createAccount()]
+    invalid: [createAccount()],
+    stored: [createAccount({
+        "accountType": Constants.HACKER
+    }), createAccount({
+        "accountType": Constants.HACKER
+    })]
 };
 
 
-const newAccount1 = {
+const waitlistedHacker0 = {
     "_id": mongoose.Types.ObjectId(),
-    "firstName": "NEW",
-    "lastName": "Account",
-    "pronoun": "He/Him",
-    "email": "newexist@blahblah.com",
-    "password": "1234567890",
-    "dietaryRestrictions": ["none"],
-    "shirtSize": "S",
-    "accountType": Constants.HACKER,
-    "birthDate": "1997-12-30",
-    "phoneNumber": 1234567890,
-};
-
-// hacker
-const Account1 = {
-    "_id": mongoose.Types.ObjectId(),
-    "firstName": "ABC",
-    "lastName": "DEF",
-    "pronoun": "Ze/Zir",
-    "email": "abc.def1@blahblah.com",
-    "password": "probsShouldBeHashed1",
-    "dietaryRestrictions": ["none"],
-    "shirtSize": "S",
-    "confirmed": true,
-    "accountType": Constants.HACKER,
-    "birthDate": "1990-01-03",
-    "phoneNumber": 1000000003,
-};
-// hacker
-const Account2 = {
-    "_id": mongoose.Types.ObjectId(),
-    "firstName": "abc",
-    "lastName": "def",
+    "firstName": "abcd",
+    "lastName": "defg3",
     "pronoun": "They/Them",
-    "email": "abc.def2@blahblah.com",
+    "email": "abc.def7@blahblah.com",
     "password": "probsShouldBeHashed2",
     "dietaryRestrictions": ["vegetarian"],
     "shirtSize": "M",
@@ -240,51 +215,6 @@ const Account2 = {
     "accountType": Constants.HACKER,
     "birthDate": "1990-01-04",
     "phoneNumber": 1000000004,
-};
-// sponsor
-const Account3 = {
-    "_id": mongoose.Types.ObjectId(),
-    "firstName": "XYZ",
-    "lastName": "UST",
-    "pronoun": "Xey/Xem",
-    "email": "abc.def3@blahblah.com",
-    "password": "probsShouldBeHashed3",
-    "dietaryRestrictions": ["vegan"],
-    "shirtSize": "L",
-    "confirmed": true,
-    "birthDate": "1990-01-05",
-    "phoneNumber": 1000000005,
-    "accountType": Constants.SPONSOR_T1
-};
-// volunteer
-const Account4 = {
-    "_id": mongoose.Types.ObjectId(),
-    "firstName": "xyz",
-    "lastName": "ust",
-    "pronoun": "Sie/Hir",
-    "email": "abc.def4@blahblah.com",
-    "password": "probsShouldBeHashed4",
-    "dietaryRestrictions": ["vegetarian", "lactose intolerant"],
-    "shirtSize": "XL",
-    "confirmed": true,
-    "accountType": Constants.VOLUNTEER,
-    "birthDate": "1980-01-30",
-    "phoneNumber": 1000000006,
-};
-// sponsor
-const Account5 = {
-    "_id": mongoose.Types.ObjectId(),
-    "firstName": "LMAO",
-    "lastName": "ROFL",
-    "pronoun": "It/It",
-    "email": "abc.def0@blahblah.com",
-    "password": "probsShouldBeHashed5",
-    "dietaryRestrictions": ["something1", "something2"],
-    "shirtSize": "XXL",
-    "confirmed": true,
-    "accountType": Constants.SPONSOR_T2,
-    "birthDate": "1980-06-30",
-    "phoneNumber": 1000000236
 };
 
 // non confirmed account for hacker
@@ -315,79 +245,6 @@ const NonConfirmedAccount2 = {
     "accountType": Constants.HACKER,
 };
 
-// hacker waitlisted
-const Hacker3 = {
-    "_id": mongoose.Types.ObjectId(),
-    "firstName": "abcd",
-    "lastName": "defg3",
-    "pronoun": "They/Them",
-    "email": "abc.def7@blahblah.com",
-    "password": "probsShouldBeHashed2",
-    "dietaryRestrictions": ["vegetarian"],
-    "shirtSize": "M",
-    "confirmed": true,
-    "accountType": Constants.HACKER,
-    "birthDate": "1990-01-04",
-    "phoneNumber": 1000000004,
-};
-
-const Hacker4 = {
-    "_id": mongoose.Types.ObjectId(),
-    "firstName": "abcd",
-    "lastName": "defg4",
-    "pronoun": "They/Them",
-    "email": "abc.def.hacker4@blahblah.com",
-    "password": "probsShouldBeHashed2",
-    "dietaryRestrictions": ["vegetarian"],
-    "shirtSize": "M",
-    "confirmed": true,
-    "accountType": Constants.HACKER,
-    "birthDate": "1990-01-04",
-    "phoneNumber": 1000000004,
-};
-const Hacker5 = {
-    "_id": mongoose.Types.ObjectId(),
-    "firstName": "abcd",
-    "lastName": "defg5",
-    "pronoun": "They/Them",
-    "email": "abc.def.hacker5@blahblah.com",
-    "password": "probsShouldBeHashed2",
-    "dietaryRestrictions": ["vegetarian"],
-    "shirtSize": "M",
-    "confirmed": true,
-    "accountType": Constants.HACKER,
-    "birthDate": "1990-01-04",
-    "phoneNumber": 1000000004,
-};
-const Hacker6 = {
-    "_id": mongoose.Types.ObjectId(),
-    "firstName": "abcd",
-    "lastName": "defg6",
-    "pronoun": "They/Them",
-    "email": "abc.def.hacker6@blahblah.com",
-    "password": "probsShouldBeHashed2",
-    "dietaryRestrictions": ["vegetarian"],
-    "shirtSize": "M",
-    "confirmed": true,
-    "accountType": Constants.HACKER,
-    "birthDate": "1990-01-04",
-    "phoneNumber": 1000000004,
-};
-const Hacker7 = {
-    "_id": mongoose.Types.ObjectId(),
-    "firstName": "abcd",
-    "lastName": "defg7",
-    "pronoun": "They/Them",
-    "email": "abc.def.hacker7@blahblah.com",
-    "password": "probsShouldBeHashed2",
-    "dietaryRestrictions": ["vegetarian"],
-    "shirtSize": "M",
-    "confirmed": true,
-    "accountType": Constants.HACKER,
-    "birthDate": "1990-01-04",
-    "phoneNumber": 1000000004,
-};
-
 module.exports = {
     hackerAccounts: hackerAccounts,
     volunteerAccounts: volunteerAccounts,
@@ -397,21 +254,11 @@ module.exports = {
     sponsorT3Accounts: sponsorT3Accounts,
     sponsorT4Accounts: sponsorT4Accounts,
     sponsorT5Accounts: sponsorT5Accounts,
+    unlinkedAccounts: unlinkedAccounts,
 
-
-    newAccount1: newAccount1,
+    waitlistedHacker0: waitlistedHacker0,
     NonConfirmedAccount1: NonConfirmedAccount1,
     NonConfirmedAccount2: NonConfirmedAccount2,
-    Account1: Account1,
-    Account2: Account2,
-    Account3: Account3,
-    Account4: Account4,
-    Account5: Account5,
-    Hacker3: Hacker3,
-    Hacker4: Hacker4,
-    Hacker5: Hacker5,
-    Hacker6: Hacker6,
-    Hacker7: Hacker7,
 
     storeAll: storeAll,
     dropAll: dropAll,

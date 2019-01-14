@@ -11,19 +11,19 @@ const newVolunteer1 = {
 };
 
 const duplicateVolunteer1 = {
-    "accountId": Util.Account.Account4._id
+    "accountId": Util.Account.volunteerAccounts.stored[0]._id
 };
 
 const adminVolunteer1 = {
     "accountId": Util.Account.Admin1._id
 };
 
-const Volunteer1 = {
+const Volunteer0 = {
     "_id": mongoose.Types.ObjectId(),
-    "accountId": Util.Account.Account4._id
+    "accountId": Util.Account.volunteerAccounts.stored[0]._id
 };
 const Volunteers = [
-    Volunteer1,
+    Volunteer0,
 ];
 
 function storeAll(attributes) {

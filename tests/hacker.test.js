@@ -22,11 +22,11 @@ const util = {
 };
 const StorageService = require("../services/storage.service");
 
-const Admin0 = util.account.Admin0;
+const Admin0 = util.account.staffAccounts.stored[0];
 const teamHackerAccount0 = util.account.hackerAccounts.stored.team[0];
-
-
-const Volunteer1 = util.account.Account4;
+// linked with hackerB - fix later
+const noTeamHackerAccount0 = util.account.hackerAccounts.stored.noTeam[0];
+const volunteerAccount0 = util.account.volunteerAccounts.stored[0];
 
 // storedAccount1 and storedHacker1 are linked together, and have hacker priviledges
 // newHackerDuplicateAccountLink1 is also linked with Account1
@@ -34,8 +34,6 @@ const Volunteer1 = util.account.Account4;
 const storedHacker1 = util.hacker.HackerA;
 const newHackerDuplicateAccountLink1 = util.hacker.duplicateAccountLinkHacker1;
 
-// storedAccount2 and storedHacker2 are linked together, and have hacker priviledges
-const storedAccount2 = util.account.Account2;
 const storedHacker2 = util.hacker.HackerB;
 
 const newHacker1 = util.hacker.newHacker1;
@@ -165,7 +163,7 @@ describe("GET hacker", function () {
 
     // fail due to lack of authorization
     it("should fail to list a hacker information due to lack of authorization on /api/hacker/:id GET", function (done) {
-        util.auth.login(agent, storedAccount2, (error) => {
+        util.auth.login(agent, noTeamHackerAccount0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);
@@ -476,7 +474,7 @@ describe("PATCH update one hacker", function () {
 
     // volunteer should successfully checkin hacker
     it("should SUCCEED and check in hacker as a volunteer", function (done) {
-        util.auth.login(agent, Volunteer1, (error) => {
+        util.auth.login(agent, volunteerAccount0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);
@@ -527,7 +525,7 @@ describe("PATCH update one hacker", function () {
 
     // should succeed on hacker case
     it("should SUCCEED and update the user's hacker info", function (done) {
-        util.auth.login(agent, storedAccount2, (error) => {
+        util.auth.login(agent, noTeamHackerAccount0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);
@@ -554,7 +552,7 @@ describe("PATCH update one hacker", function () {
 
     // should fail due to authorization
     it("should Fail to update hacker info due to lack of authorization", function (done) {
-        util.auth.login(agent, storedAccount2, (error) => {
+        util.auth.login(agent, noTeamHackerAccount0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);
@@ -603,7 +601,7 @@ describe("PATCH update one hacker", function () {
 
     // Succeed and change accepted to confirm
     it("should succeed for hacker to update their own status from accepted to confirmed", function (done) {
-        util.auth.login(agent, storedAccount2, (error) => {
+        util.auth.login(agent, noTeamHackerAccount0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);
@@ -665,7 +663,7 @@ describe("PATCH update one hacker", function () {
 
     // fail for a hacker that's not accepted
     it("should fail to update hacker status when hacker status is not accepted or confirmed", function (done) {
-        util.auth.login(agent, util.account.Hacker3, (error) => {
+        util.auth.login(agent, util.account.waitlistedHacker0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);
@@ -693,7 +691,7 @@ describe("PATCH update one hacker", function () {
 
     // fail for a hacker that's not accepted
     it("should fail for hacker trying to confirm someone else", function (done) {
-        util.auth.login(agent, util.account.Hacker3, (error) => {
+        util.auth.login(agent, util.account.waitlistedHacker0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);

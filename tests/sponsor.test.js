@@ -20,28 +20,19 @@ const util = {
 
 const Admin0 = util.account.staffAccounts[0];
 const HackerAccount0 = util.account.hackerAccounts.stored.team[0];
+const T1SponsorAccount0 = util.account.sponsorT1Accounts.stored[0];
+const newT2SponsorAccount0 = util.account.sponsorT2Accounts.new[0];
+const T1Sponsor0 = util.sponsor.T1Sponsor0;
+const newT2Sponsor0 = util.sponsor.newT2Sponsor0;
 
 
-
-// associated account
-let storedAccount = util.account.Account3;
-// configure sponsor data to be the same as output from query
-// stringify and parse for deep copy
-let storedSponsor = JSON.parse(JSON.stringify(util.sponsor.Sponsor1));
-storedSponsor.id = storedSponsor._id;
-delete storedSponsor._id;
-
-let duplicateAccount = util.account.Account3;
 let duplicateSponsor = util.sponsor.duplicateAccountLinkSponsor1;
-
-const newSponsor = util.sponsor.newSponsor1;
-const newSponsorAccount = util.account.Account5;
 
 
 describe("GET user sponsor", function () {
     it("should fail list a sponsor's information due to authentication from /api/sponsor/:id GET", function (done) {
         chai.request(server.app)
-            .get(`/api/sponsor/` + util.sponsor.Sponsor1._id)
+            .get(`/api/sponsor/` + T1Sponsor0._id)
             // does not have password because of to stripped json
             .end(function (err, res) {
                 res.should.have.status(401);
@@ -61,7 +52,7 @@ describe("GET user sponsor", function () {
                 return done(error);
             }
             return agent
-                .get(`/api/sponsor/${util.sponsor.Sponsor1._id}`)
+                .get(`/api/sponsor/${T1Sponsor0._id}`)
                 .end(function (err, res) {
                     if (err) {
                         return done(err);
@@ -73,7 +64,7 @@ describe("GET user sponsor", function () {
                     res.body.should.have.property("data");
                     res.body.data.should.be.a("object");
 
-                    chai.expect(res.body.data).to.deep.equal(storedSponsor);
+                    chai.expect(res.body.data).to.deep.equal(sponsorT1Account0);
                     done();
                 });
         });
@@ -81,13 +72,13 @@ describe("GET user sponsor", function () {
 
     // regular user access success
     it("should succeed to list a user's sponsor info on /api/sponsor/:id GET", function (done) {
-        util.auth.login(agent, storedAccount, (error) => {
+        util.auth.login(agent, sponsorT1Account0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);
             }
             return agent
-                .get(`/api/sponsor/${util.sponsor.Sponsor1._id}`)
+                .get(`/api/sponsor/${util.sponsor.T1Sponsor0._id}`)
                 .end(function (err, res) {
                     if (err) {
                         return done(err);
@@ -99,7 +90,7 @@ describe("GET user sponsor", function () {
                     res.body.should.have.property("data");
                     res.body.data.should.be.a("object");
 
-                    chai.expect(res.body.data).to.deep.equal(storedSponsor);
+                    chai.expect(res.body.data).to.deep.equal(T1SponsorAccount0);
                     done();
                 });
         });
@@ -200,7 +191,7 @@ describe("POST create sponsor", function () {
 
     // fail case - duplicate accountId
     it("should fail to create a sponsor due to duplicate accountId", function (done) {
-        util.auth.login(agent, duplicateAccount, (error) => {
+        util.auth.login(agent, sponsorT1Account0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);

@@ -40,7 +40,7 @@ const badQuery = [{
 
 const Admin0 = util.account.staffAccounts[0];
 
-const HackerA = util.account.Account2;
+const noTeamHackerAccount0 = util.account.hackerAccounts.stored.noTeam[0];
 
 describe("Searching for hackers", function () {
     it("Should FAIL to search due to invalid authentication", function (done) {
@@ -68,7 +68,7 @@ describe("Searching for hackers", function () {
     });
 
     it("Should FAIL to search due to invalid authorization", function (done) {
-        util.auth.login(agent, HackerA, (error) => {
+        util.auth.login(agent, noTeamHackerAccount0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);
