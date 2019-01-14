@@ -4,39 +4,60 @@ const Util = {
     Account: require("./account.test.util"),
 };
 const Constants = {
-    Role: require("../../constants/role.constant")
+    Role: require("../../constants/role.constant"),
+    General: require("../../constants/general.constant")
 };
 const logger = require("../../services/logger.service");
 
-// function setUpAccountRoleBinding???(???) {
-//     /* 
-//     TODO
-//     */
-// }
+function createRoleBinding(accountId, accountType, specificRoles = []) {
+    let roleBinding = {
+        accountId: accountId,
+        roles: [Constants.Role.accountRole]
+    };
 
+    switch (accountType) {
+        case Constants.General.HACKER:
+            roleBinding.roles.push(Constants.Role.hackerRole);
+            break;
+        case Constants.General.VOLUNTEER:
+            roleBinding.roles.push(Constants.Role.volunteerRole);
+            break;
+        case Constants.General.STAFF:
+            roleBinding.roles.push(Constants.Role.adminRole);
+            break;
+        case Constants.General.SPONSOR_T1:
+            roleBinding.roles.push(Constants.Role.sponsorT1Role);
+            break;
+        case Constants.General.SPONSOR_T2:
+            roleBinding.roles.push(Constants.Role.sponsorT2Role);
+            break;
+        case Constants.General.SPONSOR_T3:
+            roleBinding.roles.push(Constants.Role.sponsorT3Role);
+            break;
+        case Constants.General.SPONSOR_T4:
+            roleBinding.roles.push(Constants.Role.sponsorT4Role);
+            break;
+        case Constants.General.SPONSOR_T5:
+            roleBinding.roles.push(Constants.Role.sponsorT5Role);
+            break;
+    }
 
-const RoleBindings = [
-    RoleBindingAdmin0,
+    for (const role of specificRoles) {
+        roleBinding.roles.push(role);
+    }
 
+    return roleBinding;
+}
 
-    RoleBinding1,
-    RoleBinding2,
-    RoleBinding3,
-    RoleBinding4,
-    RoleBinding5,
-    RoleBinding6,
-    RoleBinding7,
-    RoleBindingHacker1,
-    RoleBindingHacker2,
-    RoleBindingNewHacker1,
-    RoleBindingSponsor1,
-    RoleBindingSponsor2,
-    RoleBindingVolunteer1,
-    RoleBindingNewVolunteer1,
+function createRoleBindings(accounts) {
+    let roleBindings = [];
 
-    RoleBindingHacker3,
-];
+    for (const account of accounts) {
+        roleBindings.push(createRoleBinding(account._id, account.accountType));
+    }
 
+    return roleBindings;
+}
 
 function storeAll(attributes) {
     const roleBindingDocs = [];
@@ -61,16 +82,27 @@ async function dropAll() {
     }
 }
 
+const TeamHackerRB = createRoleBindings(Util.Account.hackerAccounts.stored.team);
+const NoTeamHackerRB = createRoleBindings(Util.Account.hackerAccounts.stored.noTeam);
+const VolunteerRB = createRoleBindings(Util.Account.volunteerAccounts.stored);
+const StaffRB = createRoleBindings(Util.Account.staffAccounts.stored);
+const SponsorT1RB = createRoleBindings(Util.Account.sponsorT1Accounts.stored);
+const SponsorT2RB = createRoleBindings(Util.Account.sponsorT2Accounts.stored);
+const SponsorT3RB = createRoleBindings(Util.Account.sponsorT3Accounts.stored);
+const SponsorT4RB = createRoleBindings(Util.Account.sponsorT4Accounts.stored);
+const SponsorT5RB = createRoleBindings(Util.Account.sponsorT5Accounts.stored);
+
 module.exports = {
-    RoleBinding1: RoleBinding1,
-    RoleBinding2: RoleBinding2,
-    RoleBinding3: RoleBinding3,
-    RoleBinding4: RoleBinding4,
-    RoleBinding5: RoleBinding5,
-    RoleBinding6: RoleBinding6,
-    RoleBinding7: RoleBinding7,
-    RoleBindings: RoleBindings,
-    RoleBindingHacker3: RoleBindingHacker3,
+    TeamHackerRB: TeamHackerRB,
+    NoTeamHackerRB: NoTeamHackerRB,
+    VolunteerRB: VolunteerRB,
+    StaffRB: StaffRB,
+    SponsorT1RB: SponsorT1RB,
+    SponsorT2RB: SponsorT2RB,
+    SponsorT3RB: SponsorT3RB,
+    SponsorT4RB: SponsorT4RB,
+    SponsorT5RB: SponsorT5RB,
+
     storeAll: storeAll,
     dropAll: dropAll,
 };

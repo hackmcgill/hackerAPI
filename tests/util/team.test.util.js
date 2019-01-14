@@ -22,14 +22,14 @@ const newTeam1 = {
 
 const createdNewTeam1 = {
     "name": "BronzeTeam1",
-    "members": [Util.Hacker.HackerB._id],
+    "members": [Util.Hacker.NoTeamHacker0._id],
     "projectName": "YetAnotherProject"
 };
 
 const Team1 = {
     "_id": Constants.MongoId.team1Id,
     "name": "BronzeTeam",
-    "members": [Util.Hacker.HackerA._id],
+    "members": [Util.Hacker.TeamHacker0._id],
     "devpostURL": "justanother.devpost.com",
     "projectName": "YetAnotherProject"
 };
@@ -37,7 +37,7 @@ const Team1 = {
 const Team2 = {
     "_id": Constants.MongoId.team2Id,
     "name": "SilverTeam",
-    "members": [Util.Hacker.HackerC._id],
+    "members": [Util.Hacker.waitlistedHacker0._id],
     "devpostURL": "watwatwat.devpost.com",
     "projectName": "WatWatWat",
 };
@@ -45,7 +45,7 @@ const Team2 = {
 const Team3 = {
     "_id": Constants.MongoId.team3Id,
     "name": "FullTeam",
-    "members": [Util.Hacker.HackerD._id, Util.Hacker.HackerE._id, Util.Hacker.HackerF._id, Util.Hacker.HackerG._id]
+    "members": [Util.Hacker.TeamHacker1._id, Util.Hacker.TeamHacker2._id, Util.Hacker.TeamHacker3._id, Util.Hacker.TeamHacker4._id]
 };
 
 const Teams = [

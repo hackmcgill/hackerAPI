@@ -53,7 +53,19 @@ afterEach(function (done) {
     });
 });
 async function storeAll() {
-    await Util.Account.storeAll(Util.Account.allAccounts);
+    await Util.Account.storeAll(Util.Account.hackerAccounts.stored.team);
+    await Util.Account.storeAll(Util.Account.hackerAccounts.stored.noTeam);
+    await Util.Account.storeAll(Util.Account.volunteerAccounts.stored);
+    await Util.Account.storeAll(Util.Account.staffAccounts.stored);
+    await Util.Account.storeAll(Util.Account.sponsorT1Accounts.stored);
+    await Util.Account.storeAll(Util.Account.sponsorT2Accounts.stored);
+    await Util.Account.storeAll(Util.Account.sponsorT3Accounts.stored);
+    await Util.Account.storeAll(Util.Account.sponsorT4Accounts.stored);
+    await Util.Account.storeAll(Util.Account.sponsorT5Accounts.stored);
+    await Util.Account.storeAll(Util.Account.unlinkedAccounts.stored);
+
+    await Util.Account.storeAll(Util.Account.extraAccounts);
+
     await Util.Hacker.storeAll(Util.Hacker.Hackers);
     await Util.Sponsor.storeAll(Util.Sponsor.Sponsors);
     await Util.Team.storeAll(Util.Team.Teams);
@@ -63,7 +75,16 @@ async function storeAll() {
     await Util.Bus.storeAll(Util.Bus.Busses);
     await Util.Volunteer.storeAll(Util.Volunteer.Volunteers);
     await Util.Role.storeAll(Constants.Role.allRolesArray);
-    await Util.RoleBinding.storeAll(Util.RoleBinding.RoleBindings);
+
+    await Util.RoleBinding.storeAll(Util.RoleBinding.TeamHackerRB);
+    await Util.RoleBinding.storeAll(Util.RoleBinding.NoTeamHackerRB);
+    await Util.RoleBinding.storeAll(Util.RoleBinding.VolunteerRB);
+    await Util.RoleBinding.storeAll(Util.RoleBinding.StaffRB);
+    await Util.RoleBinding.storeAll(Util.RoleBinding.SponsorT1RB);
+    await Util.RoleBinding.storeAll(Util.RoleBinding.SponsorT2RB);
+    await Util.RoleBinding.storeAll(Util.RoleBinding.SponsorT3RB);
+    await Util.RoleBinding.storeAll(Util.RoleBinding.SponsorT4RB);
+    await Util.RoleBinding.storeAll(Util.RoleBinding.SponsorT5RB);
 }
 
 async function dropAll() {

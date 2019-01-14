@@ -23,33 +23,29 @@ const util = {
 const StorageService = require("../services/storage.service");
 
 const Admin0 = util.account.staffAccounts.stored[0];
-const teamHackerAccount0 = util.account.hackerAccounts.stored.team[0];
-// linked with hackerB - fix later
-const noTeamHackerAccount0 = util.account.hackerAccounts.stored.noTeam[0];
+
 const volunteerAccount0 = util.account.volunteerAccounts.stored[0];
 
-// storedAccount1 and storedHacker1 are linked together, and have hacker priviledges
-// newHackerDuplicateAccountLink1 is also linked with Account1
-// storedHacker1 has status confirmed
-const storedHacker1 = util.hacker.HackerA;
-const newHackerDuplicateAccountLink1 = util.hacker.duplicateAccountLinkHacker1;
-
-const storedHacker2 = util.hacker.HackerB;
+const newHackerAccount0 = util.account.hackerAccounts.new[0];
+const newHacker0 = util.hacker.newHacker0;
+const invalidHacker0 = util.hacker.invalidHacker0;
 
 const newHacker1 = util.hacker.newHacker1;
-// badConductHacker1 is the same as newHacker1, even linking to the same account
-// the difference is that badConductHacker1 does not accept the code of conducts
-const badConductHacker1 = util.hacker.badCodeOfConductHacker1;
-const newHackerAccount1 = util.account.allAccounts[13];
 
-const newHacker2 = util.hacker.newHacker2;
+const noTeamHackerAccount0 = util.account.hackerAccounts.stored.noTeam[0];
+const noTeamHacker0 = util.hacker.NoTeamHacker0;
+
+const teamHackerAccount0 = util.account.hackerAccounts.stored.team[0];
+const TeamHacker0 = util.hacker.TeamHacker0;
+const duplicateAccountLinkHacker0 = util.hacker.duplicateAccountLinkHacker0;
+
 const invalidHacker1 = util.hacker.invalidHacker1;
 
 describe("GET hacker", function () {
     // fail on authentication
     it("should fail to list a hacker's information on /api/hacker/:id GET due to authentication", function (done) {
         chai.request(server.app)
-            .get(`/api/hacker/` + storedHacker1._id)
+            .get(`/api/hacker/` + TeamHacker0._id)
             .end(function (err, res) {
                 res.should.have.status(401);
                 res.should.be.json;
@@ -78,7 +74,7 @@ describe("GET hacker", function () {
                     res.body.message.should.equal(Constants.Success.HACKER_READ);
                     res.body.should.have.property("data");
 
-                    let hacker = new Hacker(storedHacker1);
+                    let hacker = new Hacker(TeamHacker0);
                     chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify(hacker.toJSON()));
                     done();
                 });
@@ -112,7 +108,7 @@ describe("GET hacker", function () {
                 return done(error);
             }
             return agent
-                .get(`/api/hacker/${storedHacker1._id}`)
+                .get(`/api/hacker/${TeamHacker0._id}`)
                 // does not have password because of to stripped json
                 .end(function (err, res) {
                     if (err) {
@@ -124,7 +120,7 @@ describe("GET hacker", function () {
                     res.body.message.should.equal(Constants.Success.HACKER_READ);
                     res.body.should.have.property("data");
 
-                    let hacker = new Hacker(storedHacker1);
+                    let hacker = new Hacker(TeamHacker0);
                     chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify(hacker.toJSON()));
 
                     done();
@@ -140,7 +136,7 @@ describe("GET hacker", function () {
                 return done(error);
             }
             return agent
-                .get(`/api/hacker/${storedHacker1._id}`)
+                .get(`/api/hacker/${TeamHacker0._id}`)
                 // does not have password because of to stripped json
                 .end(function (err, res) {
                     if (err) {
@@ -152,7 +148,7 @@ describe("GET hacker", function () {
                     res.body.message.should.equal(Constants.Success.HACKER_READ);
                     res.body.should.have.property("data");
 
-                    let hacker = new Hacker(storedHacker1);
+                    let hacker = new Hacker(TeamHacker0);
 
                     chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify(hacker.toJSON()));
 
@@ -169,7 +165,7 @@ describe("GET hacker", function () {
                 return done(error);
             }
             return agent
-                .get(`/api/hacker/${storedHacker1._id}`)
+                .get(`/api/hacker/${TeamHacker0._id}`)
                 // does not have password because of to stripped json
                 .end(function (err, res) {
                     if (err) {
@@ -239,7 +235,7 @@ describe("POST create hacker", function () {
             return agent
                 .post(`/api/hacker/`)
                 .type("application/json")
-                .send(newHacker1)
+                .send(newHacker0)
                 .end(function (err, res) {
                     res.should.have.status(200);
                     res.should.be.json;
@@ -250,7 +246,7 @@ describe("POST create hacker", function () {
                     // create JSON version of model
                     // delete id as they will be different between model objects
                     // update status to be applied on the comparator hacker object
-                    const hacker = (new Hacker(newHacker1)).toJSON();
+                    const hacker = (new Hacker(newHacker0)).toJSON();
                     hacker.status = Constants.General.HACKER_STATUS_APPLIED;
                     delete res.body.data.id;
                     delete hacker.id;
@@ -263,7 +259,7 @@ describe("POST create hacker", function () {
 
     // succeed on user case
     it("should SUCCEED and create a new hacker for user (with an account that has been confirmed)", function (done) {
-        util.auth.login(agent, newHackerAccount1, (error) => {
+        util.auth.login(agent, newHackerAccount0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);
@@ -282,7 +278,7 @@ describe("POST create hacker", function () {
                     // create JSON version of model
                     // delete id as they will be different between model objects
                     // update status to be applied on the comparator hacker object
-                    const hacker = (new Hacker(newHacker1)).toJSON();
+                    const hacker = (new Hacker(newHacker0)).toJSON();
                     hacker.status = Constants.General.HACKER_STATUS_APPLIED;
                     delete res.body.data.id;
                     delete hacker.id;
@@ -294,7 +290,7 @@ describe("POST create hacker", function () {
 
     // should fail due to 'false' on code of conduct
     it("should FAIL if the new hacker does not accept code of conduct", function (done) {
-        util.auth.login(agent, newHackerAccount1, (error) => {
+        util.auth.login(agent, newHacker0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);
@@ -302,7 +298,7 @@ describe("POST create hacker", function () {
             return agent
                 .post(`/api/hacker/`)
                 .type("application/json")
-                .send(badConductHacker1)
+                .send(invalidHacker0)
                 .end(function (err, res) {
                     res.should.have.status(422);
                     res.should.be.json;
@@ -326,7 +322,7 @@ describe("POST create hacker", function () {
             return agent
                 .post(`/api/hacker/`)
                 .type("application/json")
-                .send(newHacker2)
+                .send(util.hacker.unconfirmedAccountHacker0)
                 .end(function (err, res) {
                     res.should.be.json;
                     res.body.should.have.property("message");
@@ -347,7 +343,7 @@ describe("POST create hacker", function () {
             return agent
                 .post(`/api/hacker/`)
                 .type("application/json")
-                .send(newHackerDuplicateAccountLink1)
+                .send(duplicateAccountLinkHacker0)
                 .end(function (err, res) {
                     res.should.have.status(409);
                     res.body.should.have.property("message");
@@ -382,7 +378,7 @@ describe("PATCH update one hacker", function () {
     // fail on authentication
     it("should fail to update a hacker on /api/hacker/:id GET due to authentication", function (done) {
         chai.request(server.app)
-            .patch(`/api/hacker/${storedHacker1._id}`)
+            .patch(`/api/hacker/${TeamHacker0._id}`)
             .type("application/json")
             .send({
                 gender: "Other"
@@ -404,7 +400,7 @@ describe("PATCH update one hacker", function () {
                 return done(error);
             }
             return agent
-                .patch(`/api/hacker/${storedHacker1._id}`)
+                .patch(`/api/hacker/${TeamHacker0._id}`)
                 .type("application/json")
                 .send({
                     gender: "Other"
@@ -430,7 +426,7 @@ describe("PATCH update one hacker", function () {
                 return done(error);
             }
             return agent
-                .patch(`/api/hacker/status/${storedHacker1._id}`)
+                .patch(`/api/hacker/status/${TeamHacker0._id}`)
                 .type("application/json")
                 .send({
                     status: "Accepted"
@@ -456,7 +452,7 @@ describe("PATCH update one hacker", function () {
                 return done(error);
             }
             return agent
-                .patch(`/api/hacker/status/${storedHacker1._id}`)
+                .patch(`/api/hacker/status/${TeamHacker0._id}`)
                 .type("application/json")
                 .send({
                     status: "Accepted"
@@ -480,7 +476,7 @@ describe("PATCH update one hacker", function () {
                 return done(error);
             }
             return agent
-                .patch(`/api/hacker/checkin/${storedHacker1._id}`)
+                .patch(`/api/hacker/checkin/${TeamHacker0._id}`)
                 .type("application/json")
                 .send({
                     status: "Checked-in"
@@ -507,7 +503,7 @@ describe("PATCH update one hacker", function () {
                 return done(error);
             }
             return agent
-                .patch(`/api/hacker/checkin/${storedHacker1._id}`)
+                .patch(`/api/hacker/checkin/${TeamHacker0._id}`)
                 .type("application/json")
                 .send({
                     status: "Checked-in"
@@ -531,7 +527,7 @@ describe("PATCH update one hacker", function () {
                 return done(error);
             }
             return agent
-                .patch(`/api/hacker/${storedHacker2._id}`)
+                .patch(`/api/hacker/${noTeamHacker0._id}`)
                 .type("application/json")
                 .send({
                     gender: "Other"
@@ -558,7 +554,7 @@ describe("PATCH update one hacker", function () {
                 return done(error);
             }
             return agent
-                .patch(`/api/hacker/${storedHacker1._id}`)
+                .patch(`/api/hacker/${noTeamHacker0._id}`)
                 .type("application/json")
                 .send({
                     gender: "Other"
@@ -607,7 +603,7 @@ describe("PATCH update one hacker", function () {
                 return done(error);
             }
             return agent
-                .patch(`/api/hacker/confirmation/${storedHacker2._id}`)
+                .patch(`/api/hacker/confirmation/${noTeamHacker0._id}`)
                 .type("application/json")
                 .send({
                     confirm: true
@@ -638,7 +634,7 @@ describe("PATCH update one hacker", function () {
                 return done(error);
             }
             return agent
-                .patch(`/api/hacker/confirmation/${storedHacker1._id}`)
+                .patch(`/api/hacker/confirmation/${noTeamHacker0._id}`)
                 .type("application/json")
                 .send({
                     confirm: false
@@ -697,7 +693,7 @@ describe("PATCH update one hacker", function () {
                 return done(error);
             }
             return agent
-                .patch(`/api/hacker/confirmation/${storedHacker1._id}`)
+                .patch(`/api/hacker/confirmation/${noTeamHacker0._id}`)
                 .type("application/json")
                 .send({
                     confirm: true
@@ -720,12 +716,12 @@ describe("PATCH update one hacker", function () {
 describe("POST add a hacker resume", function () {
     it("It should SUCCEED and upload a resume for a hacker", function (done) {
         //this takes a lot of time for some reason
-        util.auth.login(agent, storedHacker1, (error) => {
+        util.auth.login(agent, noTeamHacker0, (error) => {
             if (error) {
                 return done(error);
             }
             return agent
-                .post(`/api/hacker/resume/${storedHacker1._id}`)
+                .post(`/api/hacker/resume/${noTeamHacker0._id}`)
                 .type("multipart/form-data")
                 .attach("resume", fs.createReadStream(path.join(__dirname, "testResume.pdf")), {
                     contentType: "application/pdf"

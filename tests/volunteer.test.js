@@ -19,19 +19,22 @@ const util = {
 
 const Admin0 = util.account.Admin0;
 const HackerAccount0 = util.account.hackerAccounts.stored.team[0];
+
 const VolunteerAccount0 = util.account.volunteerAccounts.stored[0];
+const Volunteer0 = util.volunteer.Volunteer0;
 
-
-const adminVolunteer = util.volunteer.adminVolunteer1;
-
-const newVolunteerAccount = util.account.generatedAccounts[15];
-const newVolunteer = util.volunteer.newVolunteer1;
+const newVolunteerAccount0 = util.account.volunteerAccounts.new[0];
+const newVolunteer0 = util.volunteer.newVolunteer0;
 const duplicateVolunteer = util.volunteer.duplicateVolunteer1;
+
+const invalidVolunteer0 = util.volunteer.invalidVolunteer0;
+
+
 
 describe("GET volunteer", function () {
     it("should FAIL to get volunteer due to lack of authentication", function (done) {
         chai.request(server.app)
-            .get(`/api/volunteer/${util.volunteer.Volunteer0._id}`)
+            .get(`/api/volunteer/${Volunteer0._id}`)
             .end(function (err, res) {
                 res.should.have.status(401);
                 res.should.be.json;
@@ -44,7 +47,7 @@ describe("GET volunteer", function () {
     });
 
     it("should Fail to GET volunteer due inappropriate authorization", function (done) {
-        util.auth.login(agent, util.account.hackerAccounts.stored.team[2], (error) => {
+        util.auth.login(agent, HackerAccount0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);
@@ -91,7 +94,7 @@ describe("GET volunteer", function () {
                 return done(error);
             }
             return agent
-                .get(`/api/volunteer/${util.volunteer.Volunteer0._id}`)
+                .get(`/api/volunteer/${Volunteer0._id}`)
                 .end(function (err, res) {
                     if (err) {
                         return done(err);
@@ -142,7 +145,7 @@ describe("POST create volunteer", function () {
         chai.request(server.app)
             .post(`/api/volunteer`)
             .type("application/json")
-            .send(util.volunteer.newVolunteer1)
+            .send(util.volunteer.newVolunteer0)
             .end(function (err, res) {
                 res.should.have.status(401);
                 res.should.be.json;
@@ -163,7 +166,7 @@ describe("POST create volunteer", function () {
             return agent
                 .post(`/api/volunteer`)
                 .type("application/json")
-                .send(adminVolunteer)
+                .send(invalidVolunteer0)
                 .end(function (err, res) {
                     res.should.have.status(409);
                     res.should.be.json;
@@ -178,7 +181,7 @@ describe("POST create volunteer", function () {
 
     // succeed on user case
     it("should create a volunteer for the user /api/volunteer POST", function (done) {
-        util.auth.login(agent, newVolunteerAccount, (error) => {
+        util.auth.login(agent, newVolunteerAccount0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);
@@ -186,7 +189,7 @@ describe("POST create volunteer", function () {
             return agent
                 .post(`/api/volunteer`)
                 .type("application/json")
-                .send(newVolunteer)
+                .send(newVolunteer0)
                 .end(function (err, res) {
                     res.should.have.status(200);
                     res.should.be.json;
@@ -196,7 +199,7 @@ describe("POST create volunteer", function () {
 
                     // deleting id because that was generated, and not part of original data
                     delete res.body.data.id;
-                    chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify(util.volunteer.newVolunteer1));
+                    chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify(newVolunteer0));
                     done();
                 });
         });
@@ -204,7 +207,7 @@ describe("POST create volunteer", function () {
 
     // fail due to duplicate accountId
     it("should create a volunteer for the user /api/volunteer POST", function (done) {
-        util.auth.login(agent, newVolunteerAccount, (error) => {
+        util.auth.login(agent, newVolunteerAccount0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);
@@ -227,7 +230,7 @@ describe("POST create volunteer", function () {
 
     // fail on non-volunteer type account trying to create volunteer
     it("should fail to create a volunteer due to authorization /api/volunteer POST", function (done) {
-        util.auth.login(agent, Hacker0, (error) => {
+        util.auth.login(agent, HackerAccount0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);

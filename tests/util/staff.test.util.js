@@ -8,7 +8,7 @@ const logger = require("../../services/logger.service");
 
 const Staff0 = {
     "_id": mongoose.Types.ObjectId(),
-    "accountId": Util.Account.staffAccounts.stored[0];
+    "accountId": Util.Account.staffAccounts.stored[0],
 };
 const Staffs = [
     Staff0,
@@ -38,7 +38,7 @@ async function dropAll() {
 }
 
 module.exports = {
-    Staff1: Staff1,
+    Staff0: Staff0,
     Staffs: Staffs,
     storeAll: storeAll,
     dropAll: dropAll,

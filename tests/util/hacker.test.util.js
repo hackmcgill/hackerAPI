@@ -328,6 +328,33 @@ const waitlistedHacker0 = {
     "teamId": Constants.MongoId.team2Id,
 };
 
+const unconfirmedAccountHacker0 = {
+    "_id": Constants.MongoId.hackerCId,
+    "accountId": Util.Account.NonConfirmedAccount3._id,
+    "status": "Waitlisted",
+    "school": "University of Blah1",
+    "degree": "Masters",
+    "gender": "Female",
+    "needsBus": false,
+    "application": {
+        "portfolioURL": {
+            //gcloud bucket link
+            "resume": "www.gcloud.com/myResume123",
+            "github": "www.github.com/Personasdf",
+            "dropler": undefined,
+            "personal": undefined,
+            "linkedIn": undefined,
+            "other": undefined
+        },
+        "jobInterest": "Internship",
+        "skills": ["CSS", "HTML", "JS"],
+    },
+    "ethnicity": "European",
+    "major": "EE",
+    "graduationYear": 2019,
+    "codeOfConduct": true,
+}
+
 const Hackers = [
     TeamHacker0,
     TeamHacker1,
@@ -361,6 +388,7 @@ module.exports = {
 
     duplicateAccountLinkHacker0: duplicateAccountLinkHacker0,
     waitlistedHacker0: waitlistedHacker0,
+    unconfirmedAccountHacker0: unconfirmedAccountHacker0,
 
     Hackers: Hackers,
     storeAll: storeAll,

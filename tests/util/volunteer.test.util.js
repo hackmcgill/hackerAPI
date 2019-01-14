@@ -6,22 +6,24 @@ const mongoose = require("mongoose");
 const Volunteer = require("../../models/volunteer.model");
 const logger = require("../../services/logger.service");
 
-const newVolunteer1 = {
-    "accountId": Util.Account.generatedAccounts[15]._id
+const newVolunteer0 = {
+    "accountId": Util.Account.volunteerAccounts.new[0]._id
 };
 
 const duplicateVolunteer1 = {
     "accountId": Util.Account.volunteerAccounts.stored[0]._id
 };
 
-const adminVolunteer1 = {
-    "accountId": Util.Account.Admin1._id
-};
-
 const Volunteer0 = {
     "_id": mongoose.Types.ObjectId(),
     "accountId": Util.Account.volunteerAccounts.stored[0]._id
 };
+
+const invalidVolunteer0 = {
+    "_id": mongoose.Types.ObjectId(),
+    "accountId": Util.Account.staffAccounts.stored[0]._id
+};
+
 const Volunteers = [
     Volunteer0,
 ];
@@ -51,9 +53,10 @@ async function dropAll() {
 
 module.exports = {
     duplicateVolunteer1: duplicateVolunteer1,
-    adminVolunteer1: adminVolunteer1,
-    newVolunteer1: newVolunteer1,
-    Volunteer1: Volunteer1,
+    newVolunteer0: newVolunteer0,
+    Volunteer0: Volunteer0,
+    invalidVolunteer0: invalidVolunteer0,
+
     Volunteers: Volunteers,
     storeAll: storeAll,
     dropAll: dropAll,

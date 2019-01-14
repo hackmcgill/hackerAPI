@@ -25,7 +25,7 @@ const confirmationToken = util.accountConfirmation.ConfirmationToken;
 const fakeToken = util.accountConfirmation.FakeToken;
 const resetToken = util.reset.ResetToken;
 // accounts
-const Admin0 = util.account.staffAccounts[0];
+const Admin0 = util.account.staffAccounts.stored[0];
 const teamHackerAccount0 = util.account.hackerAccounts.stored.team[0];
 
 

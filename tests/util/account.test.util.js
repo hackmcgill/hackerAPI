@@ -86,7 +86,7 @@ function createAccount(acc = {}) {
 }
 
 function createNAccounts(n, acc = {}) {
-    let accounts = []
+    let accounts = [];
     for (let i = 0; i < n; i++) {
         accounts.push(createAccount(acc));
     }
@@ -201,7 +201,6 @@ let unlinkedAccounts = {
     })]
 };
 
-
 const waitlistedHacker0 = {
     "_id": mongoose.Types.ObjectId(),
     "firstName": "abcd",
@@ -245,6 +244,13 @@ const NonConfirmedAccount2 = {
     "accountType": Constants.HACKER,
 };
 
+const NonConfirmedAccount3 = createAccount({
+    "confirmed": false,
+    "accountType": Constants.HACKER
+});
+
+const extraAccounts = [waitlistedHacker0, NonConfirmedAccount1, NonConfirmedAccount2, NonConfirmedAccount3];
+
 module.exports = {
     hackerAccounts: hackerAccounts,
     volunteerAccounts: volunteerAccounts,
@@ -259,10 +265,13 @@ module.exports = {
     waitlistedHacker0: waitlistedHacker0,
     NonConfirmedAccount1: NonConfirmedAccount1,
     NonConfirmedAccount2: NonConfirmedAccount2,
+    NonConfirmedAccount3: NonConfirmedAccount3,
+
+    extraAccounts: extraAccounts,
 
     storeAll: storeAll,
     dropAll: dropAll,
-    equals: equals
+    equals: equals,
 };
 
 function encryptPassword(user) {
@@ -312,5 +321,5 @@ function equals(acc1, acc2) {
     const email = (acc1.email === acc2.email);
     const dietaryRestrictions = (acc1.dietaryRestrictions.join(",") === acc2.dietaryRestrictions.join(","));
     const shirtSize = (acc1.shirtSize === acc2.shirtSize);
-    return [id, firstName, lastName, email, dietaryRestrictions, shirtSize];
+    return [id, firstName, lastName, email, dietaryRestrictions, shirtSize, pronoun];
 }

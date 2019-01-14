@@ -13,7 +13,7 @@ const T1Sponsor0 = {
     "tier": 1,
     "company": "Best company NA",
     "contractURL": "https://linkto.con",
-    "nominees": [Util.Hacker.HackerA._id],
+    "nominees": [Util.Hacker.TeamHacker0._id],
 };
 
 const newT2Sponsor0 = {
@@ -22,7 +22,7 @@ const newT2Sponsor0 = {
     "tier": 2,
     "company": "Best company EU",
     "contractURL": "https://linktocontract2.con",
-    "nominees": [Util.Hacker.HackerB._id]
+    "nominees": [Util.Hacker.NoTeamHacker0._id]
 };
 
 const duplicateAccountLinkSponsor1 = {
@@ -31,11 +31,11 @@ const duplicateAccountLinkSponsor1 = {
     "tier": 3,
     "company": "Best company NA1",
     "contractURL": "https://linkto1.con",
-    "nominees": [Util.Hacker.HackerA._id],
+    "nominees": [Util.Hacker.TeamHacker0._id],
 };
 
 const Sponsors = [
-    Sponsor0,
+    T1Sponsor0,
 ];
 
 function storeAll(attributes) {
@@ -65,10 +65,7 @@ module.exports = {
     T1Sponsor0: T1Sponsor0,
     newT2Sponsor0: newT2Sponsor0,
 
-
     duplicateAccountLinkSponsor1: duplicateAccountLinkSponsor1,
-
-
 
     Sponsors: Sponsors,
     storeAll: storeAll,
