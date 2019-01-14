@@ -1249,78 +1249,6 @@
   },
   {
     "type": "get",
-    "url": "/hacker/email/:email",
-    "title": "get a hacker's information",
-    "name": "getHacker",
-    "group": "Hacker",
-    "version": "0.0.8",
-    "parameter": {
-      "fields": {
-        "param": [{
-          "group": "param",
-          "type": "String",
-          "optional": false,
-          "field": "email",
-          "description": "<p>a hacker's unique email</p>"
-        }]
-      }
-    },
-    "success": {
-      "fields": {
-        "Success 200": [{
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "message",
-            "description": "<p>Success message</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "Object",
-            "optional": false,
-            "field": "data",
-            "description": "<p>Hacker object</p>"
-          }
-        ]
-      },
-      "examples": [{
-        "title": "Success-Response: ",
-        "content": "{\n               \"message\": \"Successfully retrieved hacker information\", \n               \"data\": {\n                   \"id\":\"5bff4d736f86be0a41badb91\",\n                   \"application\":{\n                       \"portfolioURL\":{\n                           \"resume\":\"resumes/1543458163426-5bff4d736f86be0a41badb91\",\n                           \"github\":\"https://github.com/abcd\",\n                           \"dropler\":\"https://dribbble.com/abcd\",\n                           \"personal\":\"https://www.hi.com/\",\n                           \"linkedIn\":\"https://linkedin.com/in/abcd\",\n                           \"other\":\"https://github.com/hackmcgill/hackerAPI/issues/168\"\n                       },\n                       \"jobInterest\":\"Internship\",\n                       \"skills\":[\"Javascript\",\"Typescript\"],\n                       \"comments\":\"hi!\",\n                       \"essay\":\"Pls accept me\"\n                   },\n                   \"status\":\"Applied\",\n                   \"ethnicity\":[\"White or Caucasian\",\" Asian or Pacific Islander\"],\n                   \"accountId\":\"5bff2a35e533b0f6562b4998\",\n                   \"school\":\"McPherson College\",\n                   \"gender\":\"Female\",\n                   \"needsBus\":false,\n                   \"major\":\"Accounting\",\n                   \"graduationYear\":2019,\n                   \"codeOfConduct\":true,\n               }\n           }",
-        "type": "object"
-      }]
-    },
-    "error": {
-      "fields": {
-        "Error 4xx": [{
-            "group": "Error 4xx",
-            "type": "String",
-            "optional": false,
-            "field": "message",
-            "description": "<p>Error message</p>"
-          },
-          {
-            "group": "Error 4xx",
-            "type": "Object",
-            "optional": false,
-            "field": "data",
-            "description": "<p>empty</p>"
-          }
-        ]
-      },
-      "examples": [{
-        "title": "Error-Response: ",
-        "content": "{\"message\": \"Hacker not found\", \"data\": {}}",
-        "type": "object"
-      }]
-    },
-    "filename": "routes/api/hacker.js",
-    "groupTitle": "Hacker",
-    "sampleRequest": [{
-      "url": "https://api.mchacks.ca/api/hacker/email/:email"
-    }]
-  },
-  {
-    "type": "get",
     "url": "/hacker/:id",
     "title": "get a hacker's information",
     "name": "getHacker",
@@ -1389,6 +1317,78 @@
     "groupTitle": "Hacker",
     "sampleRequest": [{
       "url": "https://api.mchacks.ca/api/hacker/:id"
+    }]
+  },
+  {
+    "type": "get",
+    "url": "/hacker/email/:email",
+    "title": "get a hacker's information",
+    "name": "getHacker",
+    "group": "Hacker",
+    "version": "0.0.8",
+    "parameter": {
+      "fields": {
+        "param": [{
+          "group": "param",
+          "type": "String",
+          "optional": false,
+          "field": "email",
+          "description": "<p>a hacker's unique email</p>"
+        }]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [{
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>Success message</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>Hacker object</p>"
+          }
+        ]
+      },
+      "examples": [{
+        "title": "Success-Response: ",
+        "content": "{\n               \"message\": \"Successfully retrieved hacker information\", \n               \"data\": {\n                   \"id\":\"5bff4d736f86be0a41badb91\",\n                   \"application\":{\n                       \"portfolioURL\":{\n                           \"resume\":\"resumes/1543458163426-5bff4d736f86be0a41badb91\",\n                           \"github\":\"https://github.com/abcd\",\n                           \"dropler\":\"https://dribbble.com/abcd\",\n                           \"personal\":\"https://www.hi.com/\",\n                           \"linkedIn\":\"https://linkedin.com/in/abcd\",\n                           \"other\":\"https://github.com/hackmcgill/hackerAPI/issues/168\"\n                       },\n                       \"jobInterest\":\"Internship\",\n                       \"skills\":[\"Javascript\",\"Typescript\"],\n                       \"comments\":\"hi!\",\n                       \"essay\":\"Pls accept me\"\n                   },\n                   \"status\":\"Applied\",\n                   \"ethnicity\":[\"White or Caucasian\",\" Asian or Pacific Islander\"],\n                   \"accountId\":\"5bff2a35e533b0f6562b4998\",\n                   \"school\":\"McPherson College\",\n                   \"gender\":\"Female\",\n                   \"needsBus\":false,\n                   \"major\":\"Accounting\",\n                   \"graduationYear\":2019,\n                   \"codeOfConduct\":true,\n               }\n           }",
+        "type": "object"
+      }]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [{
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>Error message</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>empty</p>"
+          }
+        ]
+      },
+      "examples": [{
+        "title": "Error-Response: ",
+        "content": "{\"message\": \"Hacker not found\", \"data\": {}}",
+        "type": "object"
+      }]
+    },
+    "filename": "routes/api/hacker.js",
+    "groupTitle": "Hacker",
+    "sampleRequest": [{
+      "url": "https://api.mchacks.ca/api/hacker/email/:email"
     }]
   },
   {
@@ -1627,7 +1627,7 @@
   {
     "type": "patch",
     "url": "/hacker/confirmation/:id",
-    "title": "Allows confirmation of hacker attendence if they are accepted. Also allows change from 'confirmed' back to 'accepted'",
+    "title": "Allows confirmation of hacker attendence if they are accepted. Also allows change from 'confirmed' to 'cancelled'.",
     "name": "patchHackerConfirmed",
     "group": "Hacker",
     "version": "0.0.9",
@@ -1638,7 +1638,7 @@
           "type": "string",
           "optional": true,
           "field": "status",
-          "description": "<p>The new status of the hacker. &quot;Accepted&quot; or &quot;Confirmed&quot;</p>"
+          "description": "<p>The new status of the hacker. &quot;Accepted&quot;, &quot;Confirmed&quot;, or &quot;Cancelled&quot;</p>"
         }]
       }
     },
