@@ -17,7 +17,7 @@ const util = {
     auth: require("./util/auth.test.util")
 };
 
-const Admin0 = util.account.Admin0;
+const Admin0 = util.account.staffAccounts.stored[0];
 const HackerAccount0 = util.account.hackerAccounts.stored.team[0];
 
 const VolunteerAccount0 = util.account.volunteerAccounts.stored[0];
