@@ -71,7 +71,14 @@ define({
               "field": "phoneNumber",
               "description": "<p>the user's phone number, represented as a string.</p>"
             }
-          ]
+          ],
+          "header": [{
+            "group": "header",
+            "type": "JWT",
+            "optional": true,
+            "field": "token",
+            "description": "<p>the user's invite token.</p>"
+          }]
         },
         "examples": [{
           "title": "Request-Example:",

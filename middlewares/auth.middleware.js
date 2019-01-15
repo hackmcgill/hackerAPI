@@ -424,6 +424,17 @@ function createRoleBindings(roleName = undefined) {
 }
 
 /**
+ * Adds a rolebinding between the user and the role with the name stored in 'accountType'. 
+ * @param {{user: {id: ObjectId, accountType: string}}} req 
+ * @param {*} res 
+ * @param {(err?) => void} next 
+ */
+async function addAccountTypeRoleBinding(req, res, next) {
+    await Services.RoleBinding.createRoleBindingByRoleName(req.user.id, req.user.accountType);
+    return next();
+}
+
+/**
  * Middleware to retrieve all the roles in the database
  * @param {*} req 
  * @param {*} res 
@@ -450,6 +461,7 @@ module.exports = {
     getAccountTypeFromConfirmationToken: Middleware.Util.asyncMiddleware(getAccountTypeFromConfirmationToken),
     validateConfirmationTokenWithoutAccount: Middleware.Util.asyncMiddleware(validateConfirmationTokenWithoutAccount),
     createRoleBindings: createRoleBindings,
+    addAccountTypeRoleBinding: Middleware.Util.asyncMiddleware(addAccountTypeRoleBinding),
     addCreationRoleBindings: Middleware.Util.asyncMiddleware(addCreationRoleBindings),
     resendConfirmAccountEmail: Middleware.Util.asyncMiddleware(resendConfirmAccountEmail),
     retrieveRoleBindings: Middleware.Util.asyncMiddleware(retrieveRoleBindings),
