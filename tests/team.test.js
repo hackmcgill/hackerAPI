@@ -20,7 +20,7 @@ const Constants = {
 
 const agent = chai.request.agent(server.app);
 
-const Admin0 = util.account.staffAccounts[0];
+const Admin0 = util.account.staffAccounts.stored[0];
 const teamHackerAccount0 = util.account.hackerAccounts.stored.team[0];
 const noTeamHackerAccount0 = util.account.hackerAccounts.stored.noTeam[0];
 const sponsorT1Account0 = util.account.sponsorT1Accounts.stored[0];
@@ -77,14 +77,14 @@ describe("GET team", function () {
                     res.body.data.should.have.property("team");
                     res.body.data.team.name.should.equal("FullTeam");
                     res.body.data.should.have.property("members");
-                    res.body.data.members[0].firstName.should.equal("abcd");
-                    res.body.data.members[0].lastName.should.equal("defg4");
-                    res.body.data.members[1].firstName.should.equal("abcd");
-                    res.body.data.members[1].lastName.should.equal("defg5");
-                    res.body.data.members[2].firstName.should.equal("abcd");
-                    res.body.data.members[2].lastName.should.equal("defg6");
-                    res.body.data.members[3].firstName.should.equal("abcd");
-                    res.body.data.members[3].lastName.should.equal("defg7");
+                    res.body.data.members[0].firstName.should.equal(util.account.hackerAccounts.stored.team[1].firstName);
+                    res.body.data.members[0].lastName.should.equal(util.account.hackerAccounts.stored.team[1].lastName);
+                    res.body.data.members[1].firstName.should.equal(util.account.hackerAccounts.stored.team[2].firstName);
+                    res.body.data.members[1].lastName.should.equal(util.account.hackerAccounts.stored.team[2].lastName);
+                    res.body.data.members[2].firstName.should.equal(util.account.hackerAccounts.stored.team[3].firstName);
+                    res.body.data.members[2].lastName.should.equal(util.account.hackerAccounts.stored.team[3].lastName);
+                    res.body.data.members[3].firstName.should.equal(util.account.hackerAccounts.stored.team[4].firstName);
+                    res.body.data.members[3].lastName.should.equal(util.account.hackerAccounts.stored.team[4].lastName);
 
                     done();
                 });
@@ -368,7 +368,7 @@ describe("PATCH join team", function () {
 describe("PATCH change team info", function () {
     it("should FAIL to change a hacker's team information due to invalid authentication", function (done) {
         chai.request(server.app)
-            .patch(`/api/team/${util.hacker.HackerF._id}`)
+            .patch(`/api/team/${util.hacker.TeamHacker4._id}`)
             .type("application/json")
             .send({
                 name: "BronzeTeamASDF",
@@ -391,7 +391,7 @@ describe("PATCH change team info", function () {
                 return done(error);
             }
             return agent
-                .patch(`/api/team/${util.hacker.HackerA._id}`)
+                .patch(`/api/team/${util.hacker.TeamHacker0._id}`)
                 .type("application/json")
                 .send({
                     name: "SuccessTeamASDF",
@@ -408,14 +408,14 @@ describe("PATCH change team info", function () {
         });
     });
 
-    it("should SUCCEED to change the hacker's team information (even though the hackers are different, the team is the same)", function (done) {
+    it("should SUCCEED to change the hacker's team information", function (done) {
         util.auth.login(agent, util.account.hackerAccounts.stored.team[1], (error) => {
             if (error) {
                 agent.close();
                 return done(error);
             }
             return agent
-                .patch(`/api/team/${util.hacker.HackerD._id}`)
+                .patch(`/api/team/${util.hacker.TeamHacker1._id}`)
                 .type("application/json")
                 .send({
                     name: "SuccessTeamASDF",
@@ -460,7 +460,7 @@ describe("PATCH change team info", function () {
                 return done(error);
             }
             return agent
-                .patch(`/api/team/${util.hacker.HackerD._id}`)
+                .patch(`/api/team/${util.hacker.TeamHacker3._id}`)
                 .type("application/json")
                 .send({
                     name: "SuccessTeamASDF",

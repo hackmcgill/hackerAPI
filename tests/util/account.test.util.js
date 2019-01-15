@@ -207,7 +207,8 @@ let sponsorT5Accounts = {
 
 let unlinkedAccounts = {
     new: [createAccount({
-        "accountType": Constants.HACKER
+        "accountType": Constants.HACKER,
+        "confirmed": false,
     })],
     invalid: [createAccount()],
     stored: [createAccount({
@@ -297,7 +298,7 @@ function encryptPassword(user) {
     return encryptedUser;
 }
 
-function storeAll(attributes) {
+function store(attributes) {
     const acctDocs = [];
     const acctNames = [];
     for (var i = 0; i < attributes.length; i++) {
@@ -307,6 +308,29 @@ function storeAll(attributes) {
     }
 
     return Account.collection.insertMany(acctDocs);
+}
+
+async function storeAll() {
+    await store(hackerAccounts.stored.team);
+    await store(hackerAccounts.stored.noTeam);
+    await store(volunteerAccounts.stored);
+    await store(staffAccounts.stored);
+    await store(sponsorT1Accounts.stored);
+    await store(sponsorT2Accounts.stored);
+    await store(sponsorT3Accounts.stored);
+    await store(sponsorT4Accounts.stored);
+    await store(sponsorT5Accounts.stored);
+    await store(unlinkedAccounts.stored);
+
+    await store(hackerAccounts.new);
+    await store(volunteerAccounts.new);
+    await store(sponsorT1Accounts.new);
+    await store(sponsorT2Accounts.new);
+    await store(sponsorT3Accounts.new);
+    await store(sponsorT4Accounts.new);
+    await store(sponsorT5Accounts.new);
+
+    await store(extraAccounts);
 }
 
 async function dropAll() {

@@ -23,7 +23,7 @@ const ResetPasswords = [
     ResetPasswordToken1
 ];
 
-function storeAll(attributes) {
+function store(attributes) {
     const resetPasswordDocs = [];
     const resetPasswordIds = [];
     for (var i = 0; i < attributes.length; i++) {
@@ -31,6 +31,10 @@ function storeAll(attributes) {
         resetPasswordIds.push(attributes[i]._id);
     }
     return ResetPassword.collection.insertMany(resetPasswordDocs);
+}
+
+async function storeAll() {
+    await store(ResetPasswords);
 }
 
 async function dropAll() {

@@ -56,7 +56,7 @@ const AccountConfirmationTokens = [
     HackerConfirmation4
 ];
 
-function storeAll(attributes) {
+function store(attributes) {
     const accountConfirmationDocs = [];
     const accountConfirmationIds = [];
     for (var i = 0; i < attributes.length; i++) {
@@ -64,6 +64,10 @@ function storeAll(attributes) {
         accountConfirmationIds.push(attributes[i]._id);
     }
     return AccountConfirmationToken.collection.insertMany(accountConfirmationDocs);
+}
+
+async function storeAll() {
+    await store(AccountConfirmationTokens);
 }
 
 async function dropAll() {

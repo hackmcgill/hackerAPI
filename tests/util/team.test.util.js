@@ -54,7 +54,7 @@ const Teams = [
     Team3
 ];
 
-function storeAll(attributes) {
+function store(attributes) {
     const teamDocs = [];
     const names = [];
     attributes.forEach((attribute) => {
@@ -63,6 +63,10 @@ function storeAll(attributes) {
     });
 
     return Team.collection.insertMany(teamDocs);
+}
+
+async function storeAll() {
+    await store(Teams);
 }
 
 async function dropAll() {

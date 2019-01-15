@@ -28,7 +28,7 @@ const Volunteers = [
     Volunteer0,
 ];
 
-function storeAll(attributes) {
+function store(attributes) {
     const volunteerDocs = [];
     const volunteerIds = [];
     attributes.forEach((attribute) => {
@@ -37,6 +37,10 @@ function storeAll(attributes) {
     });
 
     return Volunteer.collection.insertMany(volunteerDocs);
+}
+
+async function storeAll() {
+    await store(Volunteers);
 }
 
 async function dropAll() {

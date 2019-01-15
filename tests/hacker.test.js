@@ -634,7 +634,7 @@ describe("PATCH update one hacker", function () {
                 return done(error);
             }
             return agent
-                .patch(`/api/hacker/confirmation/${noTeamHacker0._id}`)
+                .patch(`/api/hacker/confirmation/${TeamHacker0._id}`)
                 .type("application/json")
                 .send({
                     confirm: false

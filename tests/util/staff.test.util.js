@@ -14,7 +14,7 @@ const Staffs = [
     Staff0,
 ];
 
-function storeAll(attributes) {
+function store(attributes) {
     const staffDocs = [];
     const staffIds = [];
     attributes.forEach((attribute) => {
@@ -23,6 +23,10 @@ function storeAll(attributes) {
     });
 
     return Staff.collection.insertMany(staffDocs);
+}
+
+async function storeAll() {
+    await store(Staffs);
 }
 
 async function dropAll() {

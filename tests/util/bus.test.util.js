@@ -28,7 +28,7 @@ module.exports = {
     dropAll: dropAll
 };
 
-function storeAll(attributes) {
+function store(attributes) {
     const busDocs = [];
     const busZips = [];
     for (var i = 0; i < attributes.length; i++) {
@@ -37,6 +37,10 @@ function storeAll(attributes) {
     }
 
     return Bus.collection.insertMany(busDocs);
+}
+
+async function storeAll() {
+    await store(Busses);
 }
 
 async function dropAll() {

@@ -353,7 +353,7 @@ const unconfirmedAccountHacker0 = {
     "major": "EE",
     "graduationYear": 2019,
     "codeOfConduct": true,
-}
+};
 
 const Hackers = [
     TeamHacker0,
@@ -392,7 +392,7 @@ module.exports = {
     dropAll: dropAll
 };
 
-function storeAll(attributes) {
+function store(attributes) {
     const hackerDocs = [];
     const hackerIds = [];
     for (var i = 0; i < attributes.length; i++) {
@@ -401,6 +401,10 @@ function storeAll(attributes) {
     }
 
     return Hacker.collection.insertMany(hackerDocs);
+}
+
+async function storeAll() {
+    await store(Hackers);
 }
 
 async function dropAll() {

@@ -38,7 +38,7 @@ const badQuery = [{
     value: "passowrd"
 }];
 
-const Admin0 = util.account.staffAccounts[0];
+const Admin0 = util.account.staffAccounts.stored[0];
 
 const noTeamHackerAccount0 = util.account.hackerAccounts.stored.noTeam[0];
 
@@ -164,7 +164,7 @@ describe("Searching for hackers", function () {
                 });
         });
     });
-    it("Should throw an error because out of a fake model", function (done) {
+    it("Should throw an error because of a fake model", function (done) {
         util.auth.login(agent, Admin0, (error) => {
             if (error) {
                 agent.close();

@@ -15,9 +15,6 @@ const Util = {
     AccountConfirmation: require("./util/accountConfirmation.test.util"),
     ResetPassword: require("./util/resetPassword.test.util.js")
 };
-const Constants = {
-    Role: require("../constants/role.constant"),
-};
 const logger = require("../services/logger.service");
 
 //make sure that we are connected to the database
@@ -53,56 +50,17 @@ afterEach(function (done) {
     });
 });
 async function storeAll() {
-    await Util.Account.storeAll(Util.Account.hackerAccounts.stored.team);
-    await Util.Account.storeAll(Util.Account.hackerAccounts.stored.noTeam);
-    await Util.Account.storeAll(Util.Account.volunteerAccounts.stored);
-    await Util.Account.storeAll(Util.Account.staffAccounts.stored);
-    await Util.Account.storeAll(Util.Account.sponsorT1Accounts.stored);
-    await Util.Account.storeAll(Util.Account.sponsorT2Accounts.stored);
-    await Util.Account.storeAll(Util.Account.sponsorT3Accounts.stored);
-    await Util.Account.storeAll(Util.Account.sponsorT4Accounts.stored);
-    await Util.Account.storeAll(Util.Account.sponsorT5Accounts.stored);
-    await Util.Account.storeAll(Util.Account.unlinkedAccounts.stored);
-
-    await Util.Account.storeAll(Util.Account.hackerAccounts.new);
-    await Util.Account.storeAll(Util.Account.volunteerAccounts.new);
-    await Util.Account.storeAll(Util.Account.sponsorT1Accounts.new);
-    await Util.Account.storeAll(Util.Account.sponsorT2Accounts.new);
-    await Util.Account.storeAll(Util.Account.sponsorT3Accounts.new);
-    await Util.Account.storeAll(Util.Account.sponsorT4Accounts.new);
-    await Util.Account.storeAll(Util.Account.sponsorT5Accounts.new);
-
-    await Util.Account.storeAll(Util.Account.extraAccounts);
-
-    await Util.Hacker.storeAll(Util.Hacker.Hackers);
-    await Util.Sponsor.storeAll(Util.Sponsor.Sponsors);
-    await Util.Team.storeAll(Util.Team.Teams);
-    await Util.Staff.storeAll(Util.Staff.Staffs);
-    await Util.AccountConfirmation.storeAll(Util.AccountConfirmation.AccountConfirmationTokens);
-    await Util.ResetPassword.storeAll(Util.ResetPassword.ResetPasswords);
-    await Util.Bus.storeAll(Util.Bus.Busses);
-    await Util.Volunteer.storeAll(Util.Volunteer.Volunteers);
-    await Util.Role.storeAll(Constants.Role.allRolesArray);
-
-    await Util.RoleBinding.storeAll(Util.RoleBinding.TeamHackerRB);
-    await Util.RoleBinding.storeAll(Util.RoleBinding.NoTeamHackerRB);
-    await Util.RoleBinding.storeAll(Util.RoleBinding.VolunteerRB);
-    await Util.RoleBinding.storeAll(Util.RoleBinding.StaffRB);
-    await Util.RoleBinding.storeAll(Util.RoleBinding.SponsorT1RB);
-    await Util.RoleBinding.storeAll(Util.RoleBinding.SponsorT2RB);
-    await Util.RoleBinding.storeAll(Util.RoleBinding.SponsorT3RB);
-    await Util.RoleBinding.storeAll(Util.RoleBinding.SponsorT4RB);
-    await Util.RoleBinding.storeAll(Util.RoleBinding.SponsorT5RB);
-
-    await Util.RoleBinding.storeAll(Util.RoleBinding.newHackerRB);
-    await Util.RoleBinding.storeAll(Util.RoleBinding.newVolunteerRB);
-    await Util.RoleBinding.storeAll(Util.RoleBinding.newSponsorT1RB);
-    await Util.RoleBinding.storeAll(Util.RoleBinding.newSponsorT2RB);
-    await Util.RoleBinding.storeAll(Util.RoleBinding.newSponsorT3RB);
-    await Util.RoleBinding.storeAll(Util.RoleBinding.newSponsorT4RB);
-    await Util.RoleBinding.storeAll(Util.RoleBinding.newSponsorT5RB);
-
-    await Util.RoleBinding.storeAll(Util.RoleBinding.unconfirmedAccountRB);
+    await Util.Account.storeAll();
+    await Util.Hacker.storeAll();
+    await Util.Sponsor.storeAll();
+    await Util.Team.storeAll();
+    await Util.Staff.storeAll();
+    await Util.AccountConfirmation.storeAll();
+    await Util.ResetPassword.storeAll();
+    await Util.Bus.storeAll();
+    await Util.Volunteer.storeAll();
+    await Util.Role.storeAll();
+    await Util.RoleBinding.storeAll();
 }
 
 async function dropAll() {

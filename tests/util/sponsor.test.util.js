@@ -38,7 +38,7 @@ const Sponsors = [
     T1Sponsor0,
 ];
 
-function storeAll(attributes) {
+function store(attributes) {
     const sponsorDocs = [];
     const sponsorComps = [];
     attributes.forEach((attribute) => {
@@ -47,6 +47,10 @@ function storeAll(attributes) {
     });
 
     return Sponsor.collection.insertMany(sponsorDocs);
+}
+
+async function storeAll() {
+    await store(Sponsors);
 }
 
 async function dropAll() {

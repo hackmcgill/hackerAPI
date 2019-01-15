@@ -1,6 +1,9 @@
 "use strict";
 const Role = require("../../models/role.model");
-const Constants = require("../../constants/general.constant");
+const Constants = {
+    General: require("../../constants/general.constant"),
+    Role: require("../../constants/role.constant"),
+}
 const Routes = require("../../constants/routes.constant");
 const mongoose = require("mongoose");
 const logger = require("../../services/logger.service");
@@ -20,7 +23,7 @@ const duplicateRole1 = {
     ]
 };
 
-function storeAll(attributes) {
+function store(attributes) {
     const roleDocs = [];
     const roleNames = [];
     attributes.forEach((attribute) => {
@@ -29,6 +32,10 @@ function storeAll(attributes) {
     });
 
     return Role.collection.insertMany(roleDocs);
+}
+
+async function storeAll() {
+    await store(Constants.Role.allRolesArray);
 }
 
 async function dropAll() {

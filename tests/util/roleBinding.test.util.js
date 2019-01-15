@@ -59,29 +59,6 @@ function createRoleBindings(accounts) {
     return roleBindings;
 }
 
-function storeAll(attributes) {
-    const roleBindingDocs = [];
-    const roleBindingNames = [];
-    attributes.forEach((attribute) => {
-        roleBindingDocs.push(new RoleBinding(attribute));
-        roleBindingNames.push(attribute.name);
-    });
-
-    return RoleBinding.collection.insertMany(roleBindingDocs);
-}
-
-async function dropAll() {
-    try {
-        await RoleBinding.collection.drop();
-    } catch (e) {
-        if (e.code === 26) {
-            logger.info("namespace %s not found", RoleBinding.collection.name);
-        } else {
-            throw e;
-        }
-    }
-}
-
 const TeamHackerRB = createRoleBindings(Util.Account.hackerAccounts.stored.team);
 const NoTeamHackerRB = createRoleBindings(Util.Account.hackerAccounts.stored.noTeam);
 const VolunteerRB = createRoleBindings(Util.Account.volunteerAccounts.stored);
@@ -100,11 +77,57 @@ const newSponsorT3RB = createRoleBindings(Util.Account.sponsorT3Accounts.new);
 const newSponsorT4RB = createRoleBindings(Util.Account.sponsorT4Accounts.new);
 const newSponsorT5RB = createRoleBindings(Util.Account.sponsorT5Accounts.new);
 
-const unconfirmedAccountRB = [
+const extraAccounts = [
     createRoleBinding(Util.Account.NonConfirmedAccount1._id),
     createRoleBinding(Util.Account.NonConfirmedAccount2._id),
     createRoleBinding(Util.Account.NonConfirmedAccount3._id),
+    createRoleBinding(Util.Account.waitlistedHacker0._id, Constants.General.HACKER),
 ];
+
+function store(attributes) {
+    const roleBindingDocs = [];
+    const roleBindingNames = [];
+    attributes.forEach((attribute) => {
+        roleBindingDocs.push(new RoleBinding(attribute));
+        roleBindingNames.push(attribute.name);
+    });
+
+    return RoleBinding.collection.insertMany(roleBindingDocs);
+}
+
+async function storeAll() {
+    await store(TeamHackerRB);
+    await store(NoTeamHackerRB);
+    await store(VolunteerRB);
+    await store(StaffRB);
+    await store(SponsorT1RB);
+    await store(SponsorT2RB);
+    await store(SponsorT3RB);
+    await store(SponsorT4RB);
+    await store(SponsorT5RB);
+
+    await store(newHackerRB);
+    await store(newVolunteerRB);
+    await store(newSponsorT1RB);
+    await store(newSponsorT2RB);
+    await store(newSponsorT3RB);
+    await store(newSponsorT4RB);
+    await store(newSponsorT5RB);
+
+    await store(extraAccounts);
+}
+
+async function dropAll() {
+    try {
+        await RoleBinding.collection.drop();
+    } catch (e) {
+        if (e.code === 26) {
+            logger.info("namespace %s not found", RoleBinding.collection.name);
+        } else {
+            throw e;
+        }
+    }
+}
 
 module.exports = {
     TeamHackerRB: TeamHackerRB,
@@ -125,7 +148,7 @@ module.exports = {
     newSponsorT4RB: newSponsorT4RB,
     newSponsorT5RB: newSponsorT5RB,
 
-    unconfirmedAccountRB: unconfirmedAccountRB,
+    extraAccounts: extraAccounts,
 
     storeAll: storeAll,
     dropAll: dropAll,

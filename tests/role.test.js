@@ -18,7 +18,7 @@ const Constants = {
     Success: require("../constants/success.constant"),
 };
 
-const Admin0 = util.account.staffAccounts[0];
+const Admin0 = util.account.staffAccounts.stored[0];
 const Hacker0 = util.account.hackerAccounts.stored.team[0];
 
 describe("POST create role", function () {
