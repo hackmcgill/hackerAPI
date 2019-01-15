@@ -205,6 +205,88 @@ describe("GET hacker", function () {
                 });
         });
     });
+
+    // succeed on admin case
+    it("should list a hacker's information using admin power on /api/hacker/email/:email GET", function (done) {
+        util.auth.login(agent, Admin1, (error) => {
+            if (error) {
+                agent.close();
+                return done(error);
+            }
+            return agent
+                .get(`/api/hacker/email/${storedAccount1.email}`)
+                // does not have password because of to stripped json
+                .end(function (err, res) {
+                    if (err) {
+                        return done(err);
+                    }
+                    res.should.have.status(200);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal(Constants.Success.HACKER_READ);
+                    res.body.should.have.property("data");
+
+                    let hacker = new Hacker(storedHacker1);
+                    chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify(hacker.toJSON()));
+
+                    done();
+                });
+        });
+    });
+
+    // succeed on :self case
+    it("should list the user's hacker information on /api/hacker/email/:email GET", function (done) {
+        util.auth.login(agent, storedAccount1, (error) => {
+            if (error) {
+                agent.close();
+                return done(error);
+            }
+            return agent
+                .get(`/api/hacker/email/${storedAccount1.email}`)
+                // does not have password because of to stripped json
+                .end(function (err, res) {
+                    if (err) {
+                        return done(err);
+                    }
+                    res.should.have.status(200);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal(Constants.Success.HACKER_READ);
+                    res.body.should.have.property("data");
+
+                    let hacker = new Hacker(storedHacker1);
+
+                    chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify(hacker.toJSON()));
+
+                    done();
+                });
+        });
+    });
+
+    // fail due to lack of authorization
+    it("should fail to list a hacker information due to lack of authorization on /api/hacker/email/:id GET", function (done) {
+        util.auth.login(agent, storedAccount2, (error) => {
+            if (error) {
+                agent.close();
+                return done(error);
+            }
+            return agent
+                .get(`/api/hacker/email/${storedAccount1.email}`)
+                // does not have password because of to stripped json
+                .end(function (err, res) {
+                    if (err) {
+                        return done(err);
+                    }
+                    res.should.have.status(403);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal(Constants.Error.AUTH_403_MESSAGE);
+                    res.body.should.have.property("data");
+
+                    done();
+                });
+        });
+    });
 });
 
 describe("POST create hacker", function () {
