@@ -208,13 +208,13 @@ describe("GET hacker", function () {
 
     // succeed on admin case
     it("should list a hacker's information using admin power on /api/hacker/email/:email GET", function (done) {
-        util.auth.login(agent, Admin1, (error) => {
+        util.auth.login(agent, Admin0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);
             }
             return agent
-                .get(`/api/hacker/email/${storedAccount1.email}`)
+                .get(`/api/hacker/email/${teamHackerAccount0.email}`)
                 // does not have password because of to stripped json
                 .end(function (err, res) {
                     if (err) {
@@ -226,7 +226,7 @@ describe("GET hacker", function () {
                     res.body.message.should.equal(Constants.Success.HACKER_READ);
                     res.body.should.have.property("data");
 
-                    let hacker = new Hacker(storedHacker1);
+                    let hacker = new Hacker(TeamHacker0);
                     chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify(hacker.toJSON()));
 
                     done();
@@ -236,13 +236,13 @@ describe("GET hacker", function () {
 
     // succeed on :self case
     it("should list the user's hacker information on /api/hacker/email/:email GET", function (done) {
-        util.auth.login(agent, storedAccount1, (error) => {
+        util.auth.login(agent, teamHackerAccount0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);
             }
             return agent
-                .get(`/api/hacker/email/${storedAccount1.email}`)
+                .get(`/api/hacker/email/${teamHackerAccount0.email}`)
                 // does not have password because of to stripped json
                 .end(function (err, res) {
                     if (err) {
@@ -254,7 +254,7 @@ describe("GET hacker", function () {
                     res.body.message.should.equal(Constants.Success.HACKER_READ);
                     res.body.should.have.property("data");
 
-                    let hacker = new Hacker(storedHacker1);
+                    let hacker = new Hacker(TeamHacker0);
 
                     chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify(hacker.toJSON()));
 
@@ -265,13 +265,13 @@ describe("GET hacker", function () {
 
     // fail due to lack of authorization
     it("should fail to list a hacker information due to lack of authorization on /api/hacker/email/:id GET", function (done) {
-        util.auth.login(agent, storedAccount2, (error) => {
+        util.auth.login(agent, teamHackerAccount0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);
             }
             return agent
-                .get(`/api/hacker/email/${storedAccount1.email}`)
+                .get(`/api/hacker/email/${teamHackerAccount0.email}`)
                 // does not have password because of to stripped json
                 .end(function (err, res) {
                     if (err) {
