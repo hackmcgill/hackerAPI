@@ -265,7 +265,7 @@ describe("GET hacker", function () {
 
     // fail due to lack of authorization
     it("should fail to list a hacker information due to lack of authorization on /api/hacker/email/:id GET", function (done) {
-        util.auth.login(agent, teamHackerAccount0, (error) => {
+        util.auth.login(agent, noTeamHackerAccount0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);
