@@ -20,6 +20,11 @@ const Constants = {
 
 const agent = chai.request.agent(server.app);
 
+const Admin0 = util.account.staffAccounts.stored[0];
+const teamHackerAccount0 = util.account.hackerAccounts.stored.team[0];
+const noTeamHackerAccount0 = util.account.hackerAccounts.stored.noTeam[0];
+const sponsorT1Account0 = util.account.sponsorT1Accounts.stored[0];
+
 describe("GET team", function () {
     it("should FAIL to list a team's information due to lack of authentication", function (done) {
         chai.request(server.app)
@@ -36,7 +41,7 @@ describe("GET team", function () {
     });
 
     it("should Fail and list a team's information from /api/team/ GET due to non existant team id", function (done) {
-        util.auth.login(agent, util.account.Hacker4, (error) => {
+        util.auth.login(agent, util.account.hackerAccounts.stored.team[0], (error) => {
             if (error) {
                 agent.close();
                 return done(error);
@@ -56,7 +61,7 @@ describe("GET team", function () {
     });
 
     it("should SUCCEED and list a team's information from /api/team/ GET", function (done) {
-        util.auth.login(agent, util.account.Hacker3, (error) => {
+        util.auth.login(agent, util.account.waitlistedHacker0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);
@@ -72,14 +77,14 @@ describe("GET team", function () {
                     res.body.data.should.have.property("team");
                     res.body.data.team.name.should.equal("FullTeam");
                     res.body.data.should.have.property("members");
-                    res.body.data.members[0].firstName.should.equal("abcd");
-                    res.body.data.members[0].lastName.should.equal("defg4");
-                    res.body.data.members[1].firstName.should.equal("abcd");
-                    res.body.data.members[1].lastName.should.equal("defg5");
-                    res.body.data.members[2].firstName.should.equal("abcd");
-                    res.body.data.members[2].lastName.should.equal("defg6");
-                    res.body.data.members[3].firstName.should.equal("abcd");
-                    res.body.data.members[3].lastName.should.equal("defg7");
+                    res.body.data.members[0].firstName.should.equal(util.account.hackerAccounts.stored.team[1].firstName);
+                    res.body.data.members[0].lastName.should.equal(util.account.hackerAccounts.stored.team[1].lastName);
+                    res.body.data.members[1].firstName.should.equal(util.account.hackerAccounts.stored.team[2].firstName);
+                    res.body.data.members[1].lastName.should.equal(util.account.hackerAccounts.stored.team[2].lastName);
+                    res.body.data.members[2].firstName.should.equal(util.account.hackerAccounts.stored.team[3].firstName);
+                    res.body.data.members[2].lastName.should.equal(util.account.hackerAccounts.stored.team[3].lastName);
+                    res.body.data.members[3].firstName.should.equal(util.account.hackerAccounts.stored.team[4].firstName);
+                    res.body.data.members[3].lastName.should.equal(util.account.hackerAccounts.stored.team[4].lastName);
 
                     done();
                 });
@@ -105,7 +110,7 @@ describe("POST create team", function () {
     });
 
     it("should FAIL to create a new team due to lack of authorization", function (done) {
-        util.auth.login(agent, util.account.Account3, (error) => {
+        util.auth.login(agent, sponsorT1Account0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);
@@ -127,7 +132,7 @@ describe("POST create team", function () {
     });
 
     it("should FAIL to create a new team due to logged in user not being a hacker", function (done) {
-        util.auth.login(agent, util.account.Admin1, (error) => {
+        util.auth.login(agent, Admin0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);
@@ -149,7 +154,7 @@ describe("POST create team", function () {
     });
 
     it("should FAIL to create a new team due to duplicate team name", function (done) {
-        util.auth.login(agent, util.account.Account2, (error) => {
+        util.auth.login(agent, noTeamHackerAccount0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);
@@ -172,7 +177,7 @@ describe("POST create team", function () {
     });
 
     it("should Fail to create a new team due to hacker already being in a team", function (done) {
-        util.auth.login(agent, util.account.Account1, (error) => {
+        util.auth.login(agent, teamHackerAccount0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);
@@ -193,7 +198,7 @@ describe("POST create team", function () {
     });
 
     it("should SUCCEED and create a new team", function (done) {
-        util.auth.login(agent, util.account.Account2, (error) => {
+        util.auth.login(agent, noTeamHackerAccount0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);
@@ -240,7 +245,7 @@ describe("PATCH join team", function () {
     });
 
     it("should FAIL to join a volunteer to a team.", function (done) {
-        util.auth.login(agent, util.account.Account5, (error) => {
+        util.auth.login(agent, util.account.volunteerAccounts.stored[0], (error) => {
             if (error) {
                 agent.close();
                 return done(error);
@@ -264,7 +269,7 @@ describe("PATCH join team", function () {
     });
 
     it("should FAIL to join a hacker to a team that doesn't exist.", function (done) {
-        util.auth.login(agent, util.account.Account1, (error) => {
+        util.auth.login(agent, teamHackerAccount0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);
@@ -288,7 +293,7 @@ describe("PATCH join team", function () {
     });
 
     it("should FAIL to join a hacker to a team that is full.", function (done) {
-        util.auth.login(agent, util.account.Account1, (error) => {
+        util.auth.login(agent, teamHackerAccount0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);
@@ -312,7 +317,7 @@ describe("PATCH join team", function () {
     });
 
     it("should SUCCEED and join a hacker without a team to a team.", function (done) {
-        util.auth.login(agent, util.account.Account2, (error) => {
+        util.auth.login(agent, noTeamHackerAccount0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);
@@ -336,7 +341,7 @@ describe("PATCH join team", function () {
     });
 
     it("should SUCCEED and join a hacker on a team to aother team.", function (done) {
-        util.auth.login(agent, util.account.Account1, (error) => {
+        util.auth.login(agent, teamHackerAccount0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);
@@ -363,7 +368,7 @@ describe("PATCH join team", function () {
 describe("PATCH change team info", function () {
     it("should FAIL to change a hacker's team information due to invalid authentication", function (done) {
         chai.request(server.app)
-            .patch(`/api/team/${util.hacker.HackerF._id}`)
+            .patch(`/api/team/${util.hacker.TeamHacker4._id}`)
             .type("application/json")
             .send({
                 name: "BronzeTeamASDF",
@@ -380,13 +385,13 @@ describe("PATCH change team info", function () {
     });
 
     it("should FAIL for a hacker to change another team's information due to invalid authorization", function (done) {
-        util.auth.login(agent, util.account.Hacker4, (error) => {
+        util.auth.login(agent, util.account.hackerAccounts.stored.team[1], (error) => {
             if (error) {
                 agent.close();
                 return done(error);
             }
             return agent
-                .patch(`/api/team/${util.hacker.HackerA._id}`)
+                .patch(`/api/team/${util.hacker.TeamHacker0._id}`)
                 .type("application/json")
                 .send({
                     name: "SuccessTeamASDF",
@@ -404,13 +409,13 @@ describe("PATCH change team info", function () {
     });
 
     it("should SUCCEED to change the hacker's team information", function (done) {
-        util.auth.login(agent, util.account.Hacker4, (error) => {
+        util.auth.login(agent, util.account.hackerAccounts.stored.team[1], (error) => {
             if (error) {
                 agent.close();
                 return done(error);
             }
             return agent
-                .patch(`/api/team/${util.hacker.HackerD._id}`)
+                .patch(`/api/team/${util.hacker.TeamHacker1._id}`)
                 .type("application/json")
                 .send({
                     name: "SuccessTeamASDF",
@@ -429,7 +434,7 @@ describe("PATCH change team info", function () {
     });
 
     it("should SUCCEED and leave a team.", function (done) {
-        util.auth.login(agent, util.account.Account1, (error) => {
+        util.auth.login(agent, teamHackerAccount0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);
@@ -449,13 +454,13 @@ describe("PATCH change team info", function () {
     });
 
     it("should SUCCEED for an admin to change a team information", function (done) {
-        util.auth.login(agent, util.account.Admin1, (error) => {
+        util.auth.login(agent, Admin0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);
             }
             return agent
-                .patch(`/api/team/${util.hacker.HackerD._id}`)
+                .patch(`/api/team/${util.hacker.TeamHacker3._id}`)
                 .type("application/json")
                 .send({
                     name: "SuccessTeamASDF",

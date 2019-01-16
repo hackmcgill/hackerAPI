@@ -7,36 +7,38 @@ const Sponsor = require("../../models/sponsor.model");
 const mongoose = require("mongoose");
 const logger = require("../../services/logger.service");
 
-const newSponsor1 = {
+const T1Sponsor0 = {
+    "_id": mongoose.Types.ObjectId(),
+    "accountId": Util.Account.sponsorT1Accounts.stored[0]._id,
+    "tier": 1,
+    "company": "Best company NA",
+    "contractURL": "https://linkto.con",
+    "nominees": [Util.Hacker.TeamHacker0._id],
+};
+
+const newT2Sponsor0 = {
     // no _id as that will be generated
-    "accountId": Util.Account.Account5._id,
-    "tier": 5,
+    "accountId": Util.Account.sponsorT2Accounts.new[0]._id,
+    "tier": 2,
     "company": "Best company EU",
     "contractURL": "https://linktocontract2.con",
-    "nominees": [Util.Hacker.HackerB._id]
+    "nominees": [Util.Hacker.NoTeamHacker0._id]
 };
+
 const duplicateAccountLinkSponsor1 = {
     "_id": mongoose.Types.ObjectId(),
-    "accountId": Util.Account.Account3._id,
+    "accountId": Util.Account.sponsorT1Accounts.stored[0]._id,
     "tier": 3,
     "company": "Best company NA1",
     "contractURL": "https://linkto1.con",
-    "nominees": [Util.Hacker.HackerA._id],
+    "nominees": [Util.Hacker.TeamHacker0._id],
 };
 
-const Sponsor1 = {
-    "_id": mongoose.Types.ObjectId(),
-    "accountId": Util.Account.Account3._id,
-    "tier": 3,
-    "company": "Best company NA",
-    "contractURL": "https://linkto.con",
-    "nominees": [Util.Hacker.HackerA._id],
-};
 const Sponsors = [
-    Sponsor1,
+    T1Sponsor0,
 ];
 
-function storeAll(attributes) {
+function store(attributes) {
     const sponsorDocs = [];
     const sponsorComps = [];
     attributes.forEach((attribute) => {
@@ -45,6 +47,10 @@ function storeAll(attributes) {
     });
 
     return Sponsor.collection.insertMany(sponsorDocs);
+}
+
+async function storeAll() {
+    await store(Sponsors);
 }
 
 async function dropAll() {
@@ -60,9 +66,11 @@ async function dropAll() {
 }
 
 module.exports = {
-    newSponsor1: newSponsor1,
+    T1Sponsor0: T1Sponsor0,
+    newT2Sponsor0: newT2Sponsor0,
+
     duplicateAccountLinkSponsor1: duplicateAccountLinkSponsor1,
-    Sponsor1: Sponsor1,
+
     Sponsors: Sponsors,
     storeAll: storeAll,
     dropAll: dropAll,

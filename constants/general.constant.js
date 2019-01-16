@@ -24,6 +24,23 @@ const HACKER_STATUSES = [
     HACKER_STATUS_CHECKED_IN
 ];
 
+const SAMPLE_DIET_RESTRICTIONS = [
+    "None",
+    "Vegan",
+    "Vegetarian",
+    "Keto",
+    "Gluten free",
+    "Pescetarian",
+    "Peanut allergy",
+    "Milk allergy",
+    "Egg allergy",
+    "Allergy",
+    "No beef",
+    "No porc",
+    "No fish",
+    "No shellfish"
+];
+
 const HACKER = "Hacker";
 const VOLUNTEER = "Volunteer";
 const STAFF = "Staff";
@@ -123,5 +140,6 @@ module.exports = {
     POST_ROLES: POST_ROLES,
     CACHE_TIMEOUT_STATS: CACHE_TIMEOUT_STATS,
     CACHE_KEY_STATS: CACHE_KEY_STATS,
-    MAX_TEAM_SIZE: MAX_TEAM_SIZE
+    MAX_TEAM_SIZE: MAX_TEAM_SIZE,
+    SAMPLE_DIET_RESTRICTIONS: SAMPLE_DIET_RESTRICTIONS,
 };
