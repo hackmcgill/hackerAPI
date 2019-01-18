@@ -42,6 +42,29 @@ describe("GET user's sponsor info", function () {
             });
     });
 
+    it("should FAIL to list a sponsor's info due to authorization /api/sponsor/self GET", function (done) {
+        util.auth.login(agent, HackerAccount0, (error) => {
+            if (error) {
+                agent.close();
+                return done(error);
+            }
+            return agent
+                .get(`/api/sponsor/self`)
+                .end(function (err, res) {
+                    if (err) {
+                        return done(err);
+                    }
+                    res.should.have.status(403);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal(Constants.Error.AUTH_403_MESSAGE);
+                    res.body.should.have.property("data");
+
+                    done();
+                });
+        });
+    });
+
     it("should FAIL to list a sponsor's info due to wrong account type on /api/sponsor/self GET", function (done) {
         util.auth.login(agent, Admin0, (error) => {
             if (error) {
