@@ -127,6 +127,10 @@ const hackerRoutes = {
 };
 
 const sponsorRoutes = {
+    "getSelf": {
+        requestType: Constants.REQUEST_TYPES.GET,
+        uri: "/api/sponsor/self/",
+    },
     "getSelfById": {
         requestType: Constants.REQUEST_TYPES.GET,
         uri: "/api/sponsor/" + Constants.ROLE_CATEGORIES.SELF,

@@ -27,8 +27,95 @@ const newT2Sponsor0 = util.sponsor.newT2Sponsor0;
 
 let duplicateSponsor = util.sponsor.duplicateAccountLinkSponsor1;
 
+describe("GET user's sponsor info", function () {
+    it("should fail list a sponsor's information due to authentication from /api/sponsor/self GET", function (done) {
+        chai.request(server.app)
+            .get(`/api/sponsor/self`)
+            // does not have password because of to stripped json
+            .end(function (err, res) {
+                res.should.have.status(401);
+                res.should.be.json;
+                res.body.should.have.property("message");
+                res.body.message.should.equal(Constants.Error.AUTH_401_MESSAGE);
 
-describe("GET user sponsor", function () {
+                done();
+            });
+    });
+
+    it("should FAIL to list a sponsor's info due to wrong account type on /api/sponsor/self GET", function (done) {
+        util.auth.login(agent, Admin0, (error) => {
+            if (error) {
+                agent.close();
+                return done(error);
+            }
+            return agent
+                .get(`/api/sponsor/self`)
+                .end(function (err, res) {
+                    if (err) {
+                        return done(err);
+                    }
+                    res.should.have.status(409);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal(Constants.Error.ACCOUNT_TYPE_409_MESSAGE);
+                    res.body.should.have.property("data");
+
+                    done();
+                });
+        });
+    });
+
+    it("should FAIL to list a sponsor's info due to lack of sponsor on /api/sponsor/self GET", function (done) {
+        util.auth.login(agent, newT2SponsorAccount0, (error) => {
+            if (error) {
+                agent.close();
+                return done(error);
+            }
+            return agent
+                .get(`/api/sponsor/self`)
+                .end(function (err, res) {
+                    if (err) {
+                        return done(err);
+                    }
+                    res.should.have.status(404);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal(Constants.Error.SPONSOR_404_MESSAGE);
+                    res.body.should.have.property("data");
+
+                    done();
+                });
+        });
+    });
+
+    it("should SUCCEED to list user's sponsor info /api/sponsor/self GET", function (done) {
+        util.auth.login(agent, T1SponsorAccount0, (error) => {
+            if (error) {
+                agent.close();
+                return done(error);
+            }
+            return agent
+                .get(`/api/sponsor/self`)
+                .end(function (err, res) {
+                    if (err) {
+                        return done(err);
+                    }
+                    res.should.have.status(200);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal(Constants.Success.SPONSOR_READ);
+                    res.body.should.have.property("data");
+                    res.body.data.should.be.a("object");
+
+                    let sponsor = new Sponsor(T1Sponsor0);
+                    chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify(sponsor.toJSON()));
+                    done();
+                });
+        });
+    });
+});
+
+describe("GET sponsor by id", function () {
     it("should fail list a sponsor's information due to authentication from /api/sponsor/:id GET", function (done) {
         chai.request(server.app)
             .get(`/api/sponsor/` + T1Sponsor0._id)
