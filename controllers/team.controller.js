@@ -20,7 +20,6 @@ const Constants = {
  */
 function showTeam(req, res) {
     const teamData = req.body.team.toJSON();
-    delete teamData.members;
 
     const memberNames = [];
     for (const member of req.body.teamMembers) {
