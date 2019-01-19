@@ -36,13 +36,21 @@ module.exports = {
          * @apiSuccessExample {object} Success-Response: 
          *      {
                     "message": "Successfully retrieved sponsor information", 
-                    "data": {...}
+                    "data": {
+                        "id": "5bff4d736f86be0a41badb91",
+                        "accountId": "5bff4d736f86be0a41badb99",
+                        "tier": 3,
+                        "company": "companyName",
+                        "contractURL": "https://www.contractHere.com",
+                        "nominees": ["5bff4d736f86be0a41badb93","5bff4d736f86be0a41badb94"]
+                    }
                 }
 
          * @apiError {String} message Error message
          * @apiError {Object} data empty
          * @apiErrorExample {object} Error-Response: 
          *      {"message": "Sponsor not found", "data": {}}
+         * @apiPermission: Sponsor
          */
         sponsorRouter.route("/self").get(
             Middleware.Auth.ensureAuthenticated(),

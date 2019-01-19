@@ -95,10 +95,11 @@ async function validateConfirmedStatus(req, res, next) {
  */
 async function findSelf(req, res, next) {
     if (!Constants.General.SPONSOR_TIERS.includes(req.user.accountType)) {
-        return res.status(409).json({
+        return next({
+            status: 409,
             message: Constants.Error.ACCOUNT_TYPE_409_MESSAGE,
-            data: {
-                id: req.user.id,
+            error: {
+                id: req.user.id
             }
         });
     }
@@ -109,10 +110,11 @@ async function findSelf(req, res, next) {
         req.body.sponsor = sponsor;
         return next();
     } else {
-        return res.status(404).json({
+        return next({
+            status: 404,
             message: Constants.Error.SPONSOR_404_MESSAGE,
-            data: {
-                id: req.user.id,
+            error: {
+                id: req.user.id
             }
         });
     }
