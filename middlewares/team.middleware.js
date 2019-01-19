@@ -397,7 +397,7 @@ async function populateMemberAccountsById(req, res, next) {
     const team = await Services.Team.findById(req.body.id).populate({
         path: "members",
         populate: {
-            path: "accountId _id"
+            path: "accountId"
         }
     });
 
