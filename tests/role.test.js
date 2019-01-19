@@ -18,6 +18,9 @@ const Constants = {
     Success: require("../constants/success.constant"),
 };
 
+const Admin0 = util.account.staffAccounts.stored[0];
+const Hacker0 = util.account.hackerAccounts.stored.team[0];
+
 describe("POST create role", function () {
     it("should Fail to create a role because staff is not logged in", function (done) {
         chai.request(server.app)
@@ -36,7 +39,7 @@ describe("POST create role", function () {
 
     // should succeed on logged in admin
     it("should SUCCEED and add new role", function (done) {
-        util.auth.login(agent, util.account.Admin1, (error) => {
+        util.auth.login(agent, Admin0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);
@@ -74,7 +77,7 @@ describe("POST create role", function () {
 
     // should fail due to lack of authorization
     it("should Fail to add new role due to lack of authorization", function (done) {
-        util.auth.login(agent, util.account.Account1, (error) => {
+        util.auth.login(agent, Hacker0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);
@@ -95,7 +98,7 @@ describe("POST create role", function () {
 
     // should succeed despite duplicate routes
     it("should Suceed to add new role despite to duplicate routes", function (done) {
-        util.auth.login(agent, util.account.Admin1, (error) => {
+        util.auth.login(agent, Admin0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);

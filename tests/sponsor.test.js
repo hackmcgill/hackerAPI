@@ -18,29 +18,20 @@ const util = {
     account: require("./util/account.test.util"),
 };
 
-// associated account
-let storedAccount = util.account.Account3;
-// configure sponsor data to be the same as output from query
-// stringify and parse for deep copy
-let storedSponsor = JSON.parse(JSON.stringify(util.sponsor.Sponsor1));
-storedSponsor.id = storedSponsor._id;
-delete storedSponsor._id;
+const Admin0 = util.account.staffAccounts.stored[0];
+const HackerAccount0 = util.account.hackerAccounts.stored.team[0];
+const T1SponsorAccount0 = util.account.sponsorT1Accounts.stored[0];
+const newT2SponsorAccount0 = util.account.sponsorT2Accounts.new[0];
+const T1Sponsor0 = util.sponsor.T1Sponsor0;
+const newT2Sponsor0 = util.sponsor.newT2Sponsor0;
 
-let duplicateAccount = util.account.Account3;
 let duplicateSponsor = util.sponsor.duplicateAccountLinkSponsor1;
 
-let authorizationFailAccount = util.account.Account1;
-
-const newSponsor = util.sponsor.newSponsor1;
-const newSponsorAccount = util.account.Account5;
-
-const Admin1 = util.account.Admin1;
-const hackerAccount1 = util.account.Account1;
 
 describe("GET user sponsor", function () {
     it("should fail list a sponsor's information due to authentication from /api/sponsor/:id GET", function (done) {
         chai.request(server.app)
-            .get(`/api/sponsor/` + util.sponsor.Sponsor1._id)
+            .get(`/api/sponsor/` + T1Sponsor0._id)
             // does not have password because of to stripped json
             .end(function (err, res) {
                 res.should.have.status(401);
@@ -54,13 +45,13 @@ describe("GET user sponsor", function () {
 
     // admin success
     it("should succeed to list a sponsor's info using admin power on /api/sponsor/:id GET", function (done) {
-        util.auth.login(agent, Admin1, (error) => {
+        util.auth.login(agent, Admin0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);
             }
             return agent
-                .get(`/api/sponsor/${util.sponsor.Sponsor1._id}`)
+                .get(`/api/sponsor/${T1Sponsor0._id}`)
                 .end(function (err, res) {
                     if (err) {
                         return done(err);
@@ -72,7 +63,8 @@ describe("GET user sponsor", function () {
                     res.body.should.have.property("data");
                     res.body.data.should.be.a("object");
 
-                    chai.expect(res.body.data).to.deep.equal(storedSponsor);
+                    let sponsor = new Sponsor(T1Sponsor0);
+                    chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify(sponsor.toJSON()));
                     done();
                 });
         });
@@ -80,13 +72,13 @@ describe("GET user sponsor", function () {
 
     // regular user access success
     it("should succeed to list a user's sponsor info on /api/sponsor/:id GET", function (done) {
-        util.auth.login(agent, storedAccount, (error) => {
+        util.auth.login(agent, T1SponsorAccount0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);
             }
             return agent
-                .get(`/api/sponsor/${util.sponsor.Sponsor1._id}`)
+                .get(`/api/sponsor/${util.sponsor.T1Sponsor0._id}`)
                 .end(function (err, res) {
                     if (err) {
                         return done(err);
@@ -98,7 +90,8 @@ describe("GET user sponsor", function () {
                     res.body.should.have.property("data");
                     res.body.data.should.be.a("object");
 
-                    chai.expect(res.body.data).to.deep.equal(storedSponsor);
+                    let sponsor = new Sponsor(T1Sponsor0);
+                    chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify(sponsor.toJSON()));
                     done();
                 });
         });
@@ -106,13 +99,13 @@ describe("GET user sponsor", function () {
 
     // failure due to lack of auth
     it("should fail to list a user's sponsor info due to lack of authorization /api/sponsor/:id GET", function (done) {
-        util.auth.login(agent, authorizationFailAccount, (error) => {
+        util.auth.login(agent, HackerAccount0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);
             }
             return agent
-                .get(`/api/sponsor/${util.sponsor.Sponsor1._id}`)
+                .get(`/api/sponsor/${util.sponsor.T1Sponsor0._id}`)
                 .end(function (err, res) {
                     if (err) {
                         return done(err);
@@ -130,7 +123,7 @@ describe("GET user sponsor", function () {
 
     // failure due to lack of this sponsor
     it("should fail to list non existant info on /api/sponsor/:id GET", function (done) {
-        util.auth.login(agent, Admin1, (error) => {
+        util.auth.login(agent, Admin0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);
@@ -171,7 +164,7 @@ describe("POST create sponsor", function () {
 
     // success case with self caes - there is no admin case
     it("should SUCCEED and create a new sponsor", function (done) {
-        util.auth.login(agent, newSponsorAccount, (error) => {
+        util.auth.login(agent, newT2SponsorAccount0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);
@@ -179,7 +172,7 @@ describe("POST create sponsor", function () {
             return agent
                 .post(`/api/sponsor/`)
                 .type("application/json")
-                .send(newSponsor)
+                .send(newT2Sponsor0)
                 .end(function (err, res) {
                     res.should.have.status(200);
                     res.should.be.json;
@@ -188,7 +181,7 @@ describe("POST create sponsor", function () {
                     res.body.should.have.property("data");
 
                     // deleting id because that was generated, and not part of original data
-                    const sponsor = (new Sponsor(newSponsor)).toJSON();
+                    const sponsor = (new Sponsor(newT2Sponsor0)).toJSON();
                     delete res.body.data.id;
                     delete sponsor.id;
                     chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify(sponsor));
@@ -199,7 +192,7 @@ describe("POST create sponsor", function () {
 
     // fail case - duplicate accountId
     it("should fail to create a sponsor due to duplicate accountId", function (done) {
-        util.auth.login(agent, duplicateAccount, (error) => {
+        util.auth.login(agent, T1SponsorAccount0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);
@@ -220,7 +213,7 @@ describe("POST create sponsor", function () {
 
     // unauthorized case
     it("should FAIL to create a new sponsor", function (done) {
-        util.auth.login(agent, hackerAccount1, (error) => {
+        util.auth.login(agent, HackerAccount0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);
@@ -228,7 +221,7 @@ describe("POST create sponsor", function () {
             return agent
                 .post(`/api/sponsor/`)
                 .type("application/json")
-                .send(newSponsor)
+                .send(newT2Sponsor0)
                 .end(function (err, res) {
                     res.should.have.status(403);
                     res.should.be.json;
