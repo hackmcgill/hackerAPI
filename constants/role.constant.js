@@ -69,6 +69,7 @@ const sponsorT1Role = {
     "routes": [
         Constants.Routes.sponsorRoutes.post,
         Constants.Routes.sponsorRoutes.getSelfById,
+        Constants.Routes.sponsorRoutes.getSelf,
     ]
 };
 
@@ -78,6 +79,7 @@ const sponsorT2Role = {
     "routes": [
         Constants.Routes.sponsorRoutes.post,
         Constants.Routes.sponsorRoutes.getSelfById,
+        Constants.Routes.sponsorRoutes.getSelf,
     ]
 };
 
@@ -87,6 +89,7 @@ const sponsorT3Role = {
     "routes": [
         Constants.Routes.sponsorRoutes.post,
         Constants.Routes.sponsorRoutes.getSelfById,
+        Constants.Routes.sponsorRoutes.getSelf,
     ]
 };
 
@@ -96,6 +99,7 @@ const sponsorT4Role = {
     "routes": [
         Constants.Routes.sponsorRoutes.post,
         Constants.Routes.sponsorRoutes.getSelfById,
+        Constants.Routes.sponsorRoutes.getSelf,
     ]
 };
 
@@ -105,6 +109,7 @@ const sponsorT5Role = {
     "routes": [
         Constants.Routes.sponsorRoutes.post,
         Constants.Routes.sponsorRoutes.getSelfById,
+        Constants.Routes.sponsorRoutes.getSelf,
     ]
 };
 

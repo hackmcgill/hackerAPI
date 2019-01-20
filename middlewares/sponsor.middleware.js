@@ -88,6 +88,39 @@ async function validateConfirmedStatus(req, res, next) {
 }
 
 /**
+ * Finds the sponsor information of the logged in user
+ * @param {{user: {id: string, accountType: string}}} req 
+ * @param {*} res 
+ * @param {(err?)=>void} next 
+ */
+async function findSelf(req, res, next) {
+    if (!Constants.General.SPONSOR_TIERS.includes(req.user.accountType)) {
+        return next({
+            status: 409,
+            message: Constants.Error.ACCOUNT_TYPE_409_MESSAGE,
+            error: {
+                id: req.user.id
+            }
+        });
+    }
+
+    const sponsor = await Services.Sponsor.findByAccountId(req.user.id);
+
+    if (!!sponsor) {
+        req.body.sponsor = sponsor;
+        return next();
+    } else {
+        return next({
+            status: 404,
+            message: Constants.Error.SPONSOR_404_MESSAGE,
+            error: {
+                id: req.user.id
+            }
+        });
+    }
+}
+
+/**
  * @async
  * @function findById
  * @param {{body: {id: ObjectId}}} req
@@ -157,6 +190,7 @@ async function checkDuplicateAccountLinks(req, res, next) {
 module.exports = {
     parsePatch: parsePatch,
     parseSponsor: parseSponsor,
+    findSelf: Middleware.Util.asyncMiddleware(findSelf),
     findById: Middleware.Util.asyncMiddleware(findById),
     createSponsor: Middleware.Util.asyncMiddleware(createSponsor),
     checkDuplicateAccountLinks: Middleware.Util.asyncMiddleware(checkDuplicateAccountLinks),

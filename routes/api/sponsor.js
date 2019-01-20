@@ -26,6 +26,41 @@ module.exports = {
         const sponsorRouter = new express.Router();
 
         /**
+         * @api {get} /sponsor/self get information about logged in sponsor
+         * @apiName self
+         * @apiGroup Hacker
+         * @apiVersion 1.4.1
+         * 
+         * @apiSuccess {String} message Success message
+         * @apiSuccess {Object} data Sponsor object
+         * @apiSuccessExample {object} Success-Response: 
+         *      {
+                    "message": "Successfully retrieved sponsor information", 
+                    "data": {
+                        "id": "5bff4d736f86be0a41badb91",
+                        "accountId": "5bff4d736f86be0a41badb99",
+                        "tier": 3,
+                        "company": "companyName",
+                        "contractURL": "https://www.contractHere.com",
+                        "nominees": ["5bff4d736f86be0a41badb93","5bff4d736f86be0a41badb94"]
+                    }
+                }
+
+         * @apiError {String} message Error message
+         * @apiError {Object} data empty
+         * @apiErrorExample {object} Error-Response: 
+         *      {"message": "Sponsor not found", "data": {}}
+         * @apiPermission: Sponsor
+         */
+        sponsorRouter.route("/self").get(
+            Middleware.Auth.ensureAuthenticated(),
+            Middleware.Auth.ensureAuthorized(),
+
+            Middleware.Sponsor.findSelf,
+            Controllers.Sponsor.showSponsor
+        );
+
+        /**
          * @api {get} /sponsor/:id get a sponsor's information
          * @apiName getSponsor
          * @apiGroup Sponsor
