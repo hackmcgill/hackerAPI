@@ -1799,6 +1799,67 @@ define({
     },
     {
       "type": "get",
+      "url": "/sponsor/self",
+      "title": "get information about logged in sponsor",
+      "name": "self",
+      "group": "Hacker",
+      "version": "1.4.1",
+      "success": {
+        "fields": {
+          "Success 200": [{
+              "group": "Success 200",
+              "type": "String",
+              "optional": false,
+              "field": "message",
+              "description": "<p>Success message</p>"
+            },
+            {
+              "group": "Success 200",
+              "type": "Object",
+              "optional": false,
+              "field": "data",
+              "description": "<p>Sponsor object</p>"
+            }
+          ]
+        },
+        "examples": [{
+          "title": "Success-Response: ",
+          "content": "{\n               \"message\": \"Successfully retrieved sponsor information\", \n               \"data\": {...}\n           }",
+          "type": "object"
+        }]
+      },
+      "error": {
+        "fields": {
+          "Error 4xx": [{
+              "group": "Error 4xx",
+              "type": "String",
+              "optional": false,
+              "field": "message",
+              "description": "<p>Error message</p>"
+            },
+            {
+              "group": "Error 4xx",
+              "type": "Object",
+              "optional": false,
+              "field": "data",
+              "description": "<p>empty</p>"
+            }
+          ]
+        },
+        "examples": [{
+          "title": "Error-Response: ",
+          "content": "{\"message\": \"Sponsor not found\", \"data\": {}}",
+          "type": "object"
+        }]
+      },
+      "filename": "routes/api/sponsor.js",
+      "groupTitle": "Hacker",
+      "sampleRequest": [{
+        "url": "https://api.mchacks.ca/api/sponsor/self"
+      }]
+    },
+    {
+      "type": "get",
       "url": "/hacker/self",
       "title": "get information about own hacker",
       "name": "self",

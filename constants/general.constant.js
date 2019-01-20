@@ -69,7 +69,11 @@ const REQUEST_TYPES = {
 //Define names of the roles specifically associated with permission to create an account
 const POST_ROLES = {};
 POST_ROLES[HACKER] = "postHacker";
-POST_ROLES[SPONSOR] = "postSponsor";
+POST_ROLES[SPONSOR_T1] = "postSponsor";
+POST_ROLES[SPONSOR_T2] = "postSponsor";
+POST_ROLES[SPONSOR_T3] = "postSponsor";
+POST_ROLES[SPONSOR_T4] = "postSponsor";
+POST_ROLES[SPONSOR_T5] = "postSponsor";
 POST_ROLES[VOLUNTEER] = "postVolunteer";
 POST_ROLES[STAFF] = "postStaff";
 
