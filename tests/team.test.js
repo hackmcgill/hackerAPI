@@ -77,10 +77,10 @@ describe("GET team", function () {
                     res.body.data.should.have.property("team");
                     res.body.data.team.name.should.equal("FullTeam");
                     res.body.data.team.should.have.property("members");
-                    res.body.data.team.members[0].should.equal(util.account.hackerAccounts.stored.team[1]._id);
-                    res.body.data.team.members[1].should.equal(util.account.hackerAccounts.stored.team[2]._id);
-                    res.body.data.team.members[2].should.equal(util.account.hackerAccounts.stored.team[3]._id);
-                    res.body.data.team.members[3].should.equal(util.account.hackerAccounts.stored.team[4]._id);
+                    res.body.data.team.members[0].should.equal(util.account.hackerAccounts.stored.team[1]._id.toString());
+                    res.body.data.team.members[1].should.equal(util.account.hackerAccounts.stored.team[2]._id.toString());
+                    res.body.data.team.members[2].should.equal(util.account.hackerAccounts.stored.team[3]._id.toString());
+                    res.body.data.team.members[3].should.equal(util.account.hackerAccounts.stored.team[4]._id.toString());
 
                     res.body.data.should.have.property("members");
                     res.body.data.members[0].firstName.should.equal(util.account.hackerAccounts.stored.team[1].firstName);
