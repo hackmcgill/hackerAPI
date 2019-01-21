@@ -11,6 +11,7 @@ const Constants = {
     General: require("../constants/general.constant"),
     Error: require("../constants/error.constant"),
 };
+const Sponsor = require("../models/sponsor.model");
 
 /**
  * @function parsePatch
@@ -18,10 +19,21 @@ const Constants = {
  * @param {*} res 
  * @param {(err?) => void} next 
  * @return {void}
- * @description Delete the req.body.id that was added by the validation of route parameter.
+ * @description Put relevent sponsor attributes into sponsorDetails
  */
 function parsePatch(req, res, next) {
-    delete req.body.id;
+    let sponsorDetails = {};
+
+    for (const val in req.body) {
+        // use .hasOwnProperty instead of 'in' to get rid of inherited properties such as 'should'
+        if (Sponsor.schema.paths.hasOwnProperty(val)) {
+            sponsorDetails[val] = req.body[val];
+            delete req.body[val];
+        }
+    }
+
+    req.body.sponsorDetails = sponsorDetails;
+
     return next();
 }
 
@@ -167,6 +179,31 @@ async function createSponsor(req, res, next) {
 }
 
 /**
+ * @async
+ * @function updateSponsor
+ * @param {{body: {id: ObjectId, sponsorDetails: {company?: string, contractURL?: string, nominees?: ObjectId[]}}}}  req 
+ * @param {*} res 
+ * @param {(err?)=>void} next 
+ * @description Updates a sponsor specified by req.body.id with information specified in req.body.sponsorDetails.
+ */
+async function updateSponsor(req, res, next) {
+    const sponsorDetails = req.body.sponsorDetails;
+
+    const sponsor = await Services.Sponsor.updateOne(req.body.id, sponsorDetails);
+
+    if (!!sponsor) {
+        req.body.sponsor = sponsor;
+        return next();
+    } else {
+        return next({
+            status: 500,
+            message: Constants.Error.SPONSOR_UPDATE_500_MESSAGE,
+            data: {}
+        });
+    }
+}
+
+/**
  * Checks that there are no other sponsor with the same account id as the one passed into req.body.accountId
  * @param {{body:{accountId: ObjectId}}} req 
  * @param {*} res 
@@ -195,4 +232,5 @@ module.exports = {
     createSponsor: Middleware.Util.asyncMiddleware(createSponsor),
     checkDuplicateAccountLinks: Middleware.Util.asyncMiddleware(checkDuplicateAccountLinks),
     validateConfirmedStatus: Middleware.Util.asyncMiddleware(validateConfirmedStatus),
+    updateSponsor: Middleware.Util.asyncMiddleware(updateSponsor),
 };

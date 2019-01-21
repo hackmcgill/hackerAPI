@@ -14,4 +14,10 @@ module.exports = {
         VALIDATOR.regexValidator("body", "contractURL", false, Constants.URL_REGEX),
         VALIDATOR.mongoIdArrayValidator("body", "nominees", true),
     ],
+
+    updateSponsorValidator: [
+        VALIDATOR.asciiValidator("body", "company", true),
+        VALIDATOR.regexValidator("body", "contractURL", true, Constants.URL_REGEX),
+        VALIDATOR.mongoIdArrayValidator("body", "nominees", true),
+    ],
 };
