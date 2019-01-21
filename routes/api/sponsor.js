@@ -73,7 +73,14 @@ module.exports = {
          * @apiSuccessExample {object} Success-Response: 
          *      {
                     "message": "Successfully retrieved sponsor information", 
-                    "data": {...}
+                    "data": {
+                        "id": "5bff4d736f86be0a41badb91",
+                        "accountId": "5bff4d736f86be0a41badb99",
+                        "tier": 3,
+                        "company": "companyName",
+                        "contractURL": "https://www.contractHere.com",
+                        "nominees": ["5bff4d736f86be0a41badb93","5bff4d736f86be0a41badb94"]
+                    }
                 }
 
          * @apiError {String} message Error message
@@ -137,6 +144,44 @@ module.exports = {
 
             Middleware.Sponsor.createSponsor,
             Controllers.Sponsor.createdSponsor
+        );
+
+        /**
+         * @api {patch} /sponsor/ update a sponsor
+         * @apiName patchSponsor
+         * @apiGroup Sponsor
+         * @apiVersion 1.3.0
+         * 
+         * @apiParam (param) {ObjectId} id ObjectID of the sponsor
+         * @apiParam (body) {String} company Name of the company.
+         * @apiParam (body) {String} contractURL URL link to the contract with the company.
+         * @apiParam (body) {ObjectId[]} nominees Array of accounts that the company wish to nominate as hackers.
+         * 
+         * @apiSuccess {String} message Success message
+         * @apiSuccess {Object} data Sponsor object
+         * @apiSuccessExample {object} Success-Response: 
+         *      {
+                    "message": "Sponsor update successful", 
+                    "data": {...}
+                }
+
+         * @apiError {String} message Error message
+         * @apiError {Object} data empty
+         * @apiErrorExample {object} Error-Response: 
+         *      {"message": "Error while updating sponsor", "data": {}}
+         */
+        sponsorRouter.route("/:id").patch(
+            Middleware.Auth.ensureAuthenticated(),
+            Middleware.Auth.ensureAuthorized([Services.Sponsor.findById]),
+
+            Middleware.Validator.RouteParam.idValidator,
+            Middleware.Validator.Sponsor.updateSponsorValidator,
+
+            Middleware.parseBody.middleware,
+            Middleware.Sponsor.parsePatch,
+
+            Middleware.Sponsor.updateSponsor,
+            Controllers.Sponsor.updatedSponsor
         );
 
         apiRouter.use("/sponsor", sponsorRouter);
