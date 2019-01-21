@@ -1823,13 +1823,7 @@
       },
       "examples": [{
         "title": "Success-Response: ",
-        <<
-        << << < HEAD "content": "{\n               \"message\": \"Successfully retrieved sponsor information\", \n               \"data\": {\n                   \"id\": \"5bff4d736f86be0a41badb91\",\n                   \"accountId\": \"5bff4d736f86be0a41badb99\",\n                   \"tier\": 3,\n                   \"company\": \"companyName\",\n                   \"contractURL\": \"https://www.contractHere.com\",\n                   \"nominees\": [\"5bff4d736f86be0a41badb93\",\"5bff4d736f86be0a41badb94\"]\n               }\n           }",
-        ===
-        === =
-        "content": "{\n               \"message\": \"Successfully retrieved sponsor information\", \n               \"data\": {...}\n           }",
-        >>>
-        >>> > develop "type": "object"
+        "content": "{\n               \"message\": \"Successfully retrieved sponsor information\", \n               \"data\": {\n                   \"id\": \"5bff4d736f86be0a41badb91\",\n                   \"accountId\": \"5bff4d736f86be0a41badb99\",\n                   \"tier\": 3,\n                   \"company\": \"companyName\",\n                   \"contractURL\": \"https://www.contractHere.com\",\n                   \"nominees\": [\"5bff4d736f86be0a41badb93\",\"5bff4d736f86be0a41badb94\"]\n               }\n           }"
       }]
     },
     "error": {
