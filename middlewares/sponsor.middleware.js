@@ -19,7 +19,7 @@ const Sponsor = require("../models/sponsor.model");
  * @param {*} res 
  * @param {(err?) => void} next 
  * @return {void}
- * @description Delete the req.body.id that was added by the validation of route parameter, and put in sponsorDetails
+ * @description Put relevent sponsor attributes into sponsorDetails
  */
 function parsePatch(req, res, next) {
     let sponsorDetails = {};
