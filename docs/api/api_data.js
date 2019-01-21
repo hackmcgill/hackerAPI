@@ -1824,7 +1824,7 @@ define({
         },
         "examples": [{
           "title": "Success-Response: ",
-          "content": "{\n               \"message\": \"Successfully retrieved sponsor information\", \n               \"data\": {...}\n           }",
+          "content": "{\n               \"message\": \"Successfully retrieved sponsor information\", \n               \"data\": {\n                   \"id\": \"5bff4d736f86be0a41badb91\",\n                   \"accountId\": \"5bff4d736f86be0a41badb99\",\n                   \"tier\": 3,\n                   \"company\": \"companyName\",\n                   \"contractURL\": \"https://www.contractHere.com\",\n                   \"nominees\": [\"5bff4d736f86be0a41badb93\",\"5bff4d736f86be0a41badb94\"]\n               }\n           }",
           "type": "object"
         }]
       },
@@ -1852,6 +1852,9 @@ define({
           "type": "object"
         }]
       },
+      "permission": [{
+        "name": ": Sponsor"
+      }],
       "filename": "routes/api/sponsor.js",
       "groupTitle": "Hacker",
       "sampleRequest": [{
@@ -2312,6 +2315,100 @@ define({
       "groupTitle": "Sponsor",
       "sampleRequest": [{
         "url": "https://api.mchacks.ca/api/sponsor/:id"
+      }]
+    },
+    {
+      "type": "patch",
+      "url": "/sponsor/",
+      "title": "update a sponsor",
+      "name": "patchSponsor",
+      "group": "Sponsor",
+      "version": "1.3.0",
+      "parameter": {
+        "fields": {
+          "param": [{
+            "group": "param",
+            "type": "ObjectId",
+            "optional": false,
+            "field": "id",
+            "description": "<p>ObjectID of the sponsor</p>"
+          }],
+          "body": [{
+              "group": "body",
+              "type": "String",
+              "optional": false,
+              "field": "company",
+              "description": "<p>Name of the company.</p>"
+            },
+            {
+              "group": "body",
+              "type": "String",
+              "optional": false,
+              "field": "contractURL",
+              "description": "<p>URL link to the contract with the company.</p>"
+            },
+            {
+              "group": "body",
+              "type": "ObjectId[]",
+              "optional": false,
+              "field": "nominees",
+              "description": "<p>Array of accounts that the company wish to nominate as hackers.</p>"
+            }
+          ]
+        }
+      },
+      "success": {
+        "fields": {
+          "Success 200": [{
+              "group": "Success 200",
+              "type": "String",
+              "optional": false,
+              "field": "message",
+              "description": "<p>Success message</p>"
+            },
+            {
+              "group": "Success 200",
+              "type": "Object",
+              "optional": false,
+              "field": "data",
+              "description": "<p>Sponsor object</p>"
+            }
+          ]
+        },
+        "examples": [{
+          "title": "Success-Response: ",
+          "content": "{\n               \"message\": \"Sponsor update successful\", \n               \"data\": {...}\n           }",
+          "type": "object"
+        }]
+      },
+      "error": {
+        "fields": {
+          "Error 4xx": [{
+              "group": "Error 4xx",
+              "type": "String",
+              "optional": false,
+              "field": "message",
+              "description": "<p>Error message</p>"
+            },
+            {
+              "group": "Error 4xx",
+              "type": "Object",
+              "optional": false,
+              "field": "data",
+              "description": "<p>empty</p>"
+            }
+          ]
+        },
+        "examples": [{
+          "title": "Error-Response: ",
+          "content": "{\"message\": \"Error while updating sponsor\", \"data\": {}}",
+          "type": "object"
+        }]
+      },
+      "filename": "routes/api/sponsor.js",
+      "groupTitle": "Sponsor",
+      "sampleRequest": [{
+        "url": "https://api.mchacks.ca/api/sponsor/"
       }]
     },
     {
