@@ -344,3 +344,96 @@ describe("POST create sponsor", function () {
         });
     });
 });
+
+describe("PATCH update sponsor", function () {
+    it("should fail to update a sponsor due to lack of authentication", function (done) {
+        chai.request(server.app)
+            .patch(`/api/sponsor/${T1Sponsor0._id}/`)
+            .type("application/json")
+            .send({
+                company: "NewCompanyName"
+            })
+            .end(function (err, res) {
+                res.should.have.status(401);
+                res.should.be.json;
+                res.body.should.have.property("message");
+                res.body.message.should.equal(Constants.Error.AUTH_401_MESSAGE);
+
+                done();
+            });
+    });
+
+    it("should FAIL to update a sponsor due to authorization", function (done) {
+        util.auth.login(agent, newT2SponsorAccount0, (error) => {
+            if (error) {
+                agent.close();
+                return done(error);
+            }
+            return agent
+                .patch(`/api/sponsor/${T1Sponsor0._id}/`)
+                .type("application/json")
+                .send({
+                    company: "NewCompanyName"
+                })
+                .end(function (err, res) {
+                    res.should.have.status(403);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal(Constants.Error.AUTH_403_MESSAGE);
+
+                    done();
+                });
+        });
+    });
+
+    it("should FAIL to update a sponsor due wrong id", function (done) {
+        util.auth.login(agent, Admin0, (error) => {
+            if (error) {
+                agent.close();
+                return done(error);
+            }
+            return agent
+                .patch(`/api/sponsor/${Admin0._id}/`)
+                .type("application/json")
+                .send({
+                    company: "NewCompanyName"
+                })
+                .end(function (err, res) {
+                    res.should.have.status(500);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal(Constants.Error.SPONSOR_UPDATE_500_MESSAGE);
+
+                    done();
+                });
+        });
+    });
+
+    // success case with self caes - there is no admin case
+    it("should SUCCEED and update a sponsor", function (done) {
+        util.auth.login(agent, T1SponsorAccount0, (error) => {
+            if (error) {
+                agent.close();
+                return done(error);
+            }
+            return agent
+                .patch(`/api/sponsor/${T1Sponsor0._id}/`)
+                .type("application/json")
+                .send({
+                    company: "NewCompanyName"
+                })
+                .end(function (err, res) {
+                    res.should.have.status(200);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal(Constants.Success.SPONSOR_UPDATE);
+                    res.body.should.have.property("data");
+
+                    res.body.data.should.have.property("company");
+                    res.body.data.company.should.equal("NewCompanyName");
+
+                    done();
+                });
+        });
+    });
+});
