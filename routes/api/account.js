@@ -75,6 +75,7 @@ module.exports = {
          * @apiParam (body) {String} password The password of the account.
          * @apiParam (body) {String} birthDate a Date parsable string.
          * @apiParam (body) {Number} phoneNumber the user's phone number, represented as a string.
+         * @apiParam (header) {JWT} [token] the user's invite token.
          * 
          * @apiParamExample {json} Request-Example:
          *      { 

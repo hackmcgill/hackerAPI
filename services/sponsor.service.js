@@ -32,6 +32,25 @@ function createSponsor(sponsorDetails) {
 }
 
 /**
+ * @function updateOne
+ * @param {ObjectId} id 
+ * @param {{company?: string, contractURL?: string, nominees?: ObjectId[]}} sponsorDetails 
+ * @return {Promise<Sponsor>} The promise will resolve to a sponsor object if update was successful.
+ * @description Updates a sponsor by id with information in sponsorDetails. Return the updated sponsor
+ */
+function updateOne(id, sponsorDetails) {
+    const TAG = `[Sponsor Service # updateOne]:`;
+
+    const query = {
+        _id: id
+    };
+
+    return Sponsor.findOneAndUpdate(query, sponsorDetails, {
+        new: true
+    });
+}
+
+/**
  * @function findByAccountId
  * @param {ObjectId} accountId
  * @return {DocumentQuery} A sponsor document queried by accountId
@@ -50,4 +69,5 @@ module.exports = {
     findByAccountId: findByAccountId,
     findById: findById,
     createSponsor: createSponsor,
+    updateOne: updateOne,
 };

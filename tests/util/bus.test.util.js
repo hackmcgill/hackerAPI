@@ -15,7 +15,7 @@ const Bus1 = {
         "addr2": "addr2-1"
     },
     "capacity": 10,
-    "hackers": [Util.Hacker.HackerA._id]
+    "hackers": [Util.Hacker.TeamHacker0._id]
 };
 const Busses = [
     Bus1,
@@ -28,7 +28,7 @@ module.exports = {
     dropAll: dropAll
 };
 
-function storeAll(attributes) {
+function store(attributes) {
     const busDocs = [];
     const busZips = [];
     for (var i = 0; i < attributes.length; i++) {
@@ -37,6 +37,10 @@ function storeAll(attributes) {
     }
 
     return Bus.collection.insertMany(busDocs);
+}
+
+async function storeAll() {
+    await store(Busses);
 }
 
 async function dropAll() {

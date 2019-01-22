@@ -19,19 +19,26 @@ const util = {
     accountConfirmation: require("./util/accountConfirmation.test.util"),
     reset: require("./util/resetPassword.test.util")
 };
-// hacker role binding
-const storedAccount1 = util.account.Account1;
-//This account has a confirmation token in the db
-const storedAccount2 = util.account.NonConfirmedAccount1;
-//This account does not have a confirmation token in the DB
-const storedAccount3 = util.account.NonConfirmedAccount2;
-// admin role binding
-const Admin1 = util.account.Admin1;
-const newAccount1 = util.account.newAccount1;
 const agent = chai.request.agent(server.app);
+// tokens
 const confirmationToken = util.accountConfirmation.ConfirmationToken;
 const fakeToken = util.accountConfirmation.FakeToken;
 const resetToken = util.reset.ResetToken;
+// accounts
+const Admin0 = util.account.staffAccounts.stored[0];
+const teamHackerAccount0 = util.account.hackerAccounts.stored.team[0];
+
+//This account has a confirmation token in the db
+const storedAccount1 = util.account.NonConfirmedAccount1;
+const storedAccount2 = util.account.NonConfirmedAccount2;
+
+//This account does not have a confirmation token in the DB
+const storedAccount3 = util.account.NonConfirmedAccount3;
+
+// admin role binding
+
+const newAccount0 = util.account.unlinkedAccounts.new[0];
+
 
 describe("GET user account", function () {
     // fail on authentication
@@ -50,7 +57,7 @@ describe("GET user account", function () {
     // fail due to invalid login
     it("should fail due to invalid password", function (done) {
         agent.post("/api/auth/login").type("application/json").send({
-            email: Admin1.email,
+            email: Admin0.email,
             password: "FakePassword"
         }).end((err, res) => {
             res.should.have.status(401);
@@ -62,7 +69,7 @@ describe("GET user account", function () {
 
     // success case
     it("should list the user's account on /api/account/self GET", function (done) {
-        util.auth.login(agent, Admin1, (error) => {
+        util.auth.login(agent, Admin0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);
@@ -92,13 +99,13 @@ describe("GET user account", function () {
 
     // success case - admin case
     it("should list another account specified by id using admin priviledge on /api/account/:id/ GET", function (done) {
-        util.auth.login(agent, Admin1, (error) => {
+        util.auth.login(agent, Admin0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);
             }
             return agent
-                .get(`/api/account/${storedAccount1._id}`)
+                .get(`/api/account/${teamHackerAccount0._id}`)
                 // does not have password because of to stripped json
                 .end(function (err, res) {
                     if (err) {
@@ -111,7 +118,7 @@ describe("GET user account", function () {
                     res.body.should.have.property("data");
 
                     // use acc.toStrippedJSON to deal with hidden passwords and convert _id to id
-                    const acc = new Account(storedAccount1);
+                    const acc = new Account(teamHackerAccount0);
                     chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify(acc.toStrippedJSON()));
                     done();
                 });
@@ -119,13 +126,13 @@ describe("GET user account", function () {
     });
     // success case - user case
     it("should list an account specified by id on /api/account/:id/ GET", function (done) {
-        util.auth.login(agent, storedAccount1, (error) => {
+        util.auth.login(agent, teamHackerAccount0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);
             }
             return agent
-                .get(`/api/account/${storedAccount1._id}`)
+                .get(`/api/account/${teamHackerAccount0._id}`)
                 // does not have password because of to stripped json
                 .end(function (err, res) {
                     if (err) {
@@ -138,7 +145,7 @@ describe("GET user account", function () {
                     res.body.should.have.property("data");
 
                     // use acc.toStrippedJSON to deal with hidden passwords and convert _id to id
-                    const acc = new Account(storedAccount1);
+                    const acc = new Account(teamHackerAccount0);
                     chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify(acc.toStrippedJSON()));
                     done();
                 });
@@ -147,13 +154,13 @@ describe("GET user account", function () {
 
     // // fail case on authorization
     it("should fail to list an account specified by id on /api/account/:id/ GET due to lack of authorization", function (done) {
-        util.auth.login(agent, storedAccount1, (error) => {
+        util.auth.login(agent, teamHackerAccount0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);
             }
             return agent
-                .get(`/api/account/${Admin1._id}`)
+                .get(`/api/account/${Admin0._id}`)
                 // does not have password because of to stripped json
                 .end(function (err, res) {
                     if (err) {
@@ -176,7 +183,7 @@ describe("POST create account", function () {
         chai.request(server.app)
             .post(`/api/account/`)
             .type("application/json")
-            .send(newAccount1)
+            .send(newAccount0)
             .end(function (err, res) {
                 res.should.have.status(200);
                 res.should.be.json;
@@ -184,7 +191,7 @@ describe("POST create account", function () {
                 res.body.message.should.equal(Constants.Success.ACCOUNT_CREATE);
 
                 // use acc.toStrippedJSON to deal with hidden passwords and convert _id to id
-                const acc = (new Account(newAccount1)).toStrippedJSON();
+                const acc = (new Account(newAccount0)).toStrippedJSON();
                 // delete id as those are generated
                 delete acc.id;
                 delete res.body.data.id;
@@ -197,7 +204,7 @@ describe("POST create account", function () {
         chai.request(server.app)
             .post(`/api/account/`)
             .type("application/json")
-            .send(storedAccount1)
+            .send(teamHackerAccount0)
             .end(function (err, res) {
                 res.should.have.status(422);
                 done();
@@ -243,13 +250,13 @@ describe("POST confirm account", function () {
 
 describe("PATCH update account", function () {
     const updatedInfo = {
-        "_id": storedAccount1._id,
+        "_id": teamHackerAccount0._id,
         "firstName": "new",
         "lastName": "name"
     };
 
     const failUpdatedInfo = {
-        "_id": Admin1._id,
+        "_id": Admin0._id,
         "firstName": "fail",
         "lastName": "fail"
     };
@@ -269,7 +276,7 @@ describe("PATCH update account", function () {
 
     // succeed on :all case
     it("should SUCCEED and use admin to update another account", function (done) {
-        util.auth.login(agent, Admin1, (error) => {
+        util.auth.login(agent, Admin0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);
@@ -294,7 +301,7 @@ describe("PATCH update account", function () {
 
     // succeed on :self case
     it("should SUCCEED and update the user's own account", function (done) {
-        util.auth.login(agent, storedAccount1, (error) => {
+        util.auth.login(agent, teamHackerAccount0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);
@@ -319,7 +326,7 @@ describe("PATCH update account", function () {
 
     // fail due to lack of authorization
     it("should Fail to update an account due to lack of authorization", function (done) {
-        util.auth.login(agent, storedAccount1, (error) => {
+        util.auth.login(agent, teamHackerAccount0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);
@@ -362,7 +369,7 @@ describe("POST reset password", function () {
 
 describe("PATCH change password for logged in user", function () {
     const successChangePassword = {
-        "oldPassword": Admin1.password,
+        "oldPassword": Admin0.password,
         "newPassword": "password12345"
     };
     const failChangePassword = {
@@ -385,7 +392,7 @@ describe("PATCH change password for logged in user", function () {
     });
     // success case
     it("should change the logged in user's password to a new password", function (done) {
-        util.auth.login(agent, Admin1, (error) => {
+        util.auth.login(agent, Admin0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);
@@ -405,7 +412,7 @@ describe("PATCH change password for logged in user", function () {
     });
     // fail case because old password in incorrect
     it("should fail to change the logged in user's password to a new password because old password is incorrect", function (done) {
-        util.auth.login(agent, Admin1, (error) => {
+        util.auth.login(agent, Admin0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);
@@ -427,13 +434,13 @@ describe("PATCH change password for logged in user", function () {
 
 describe("GET retrieve permissions", function () {
     it("should SUCCEED and retrieve the rolebindings for the user", function (done) {
-        util.auth.login(agent, storedAccount1, (error) => {
+        util.auth.login(agent, teamHackerAccount0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);
             }
             agent
-                .get("/api/auth/rolebindings/" + storedAccount1._id)
+                .get("/api/auth/rolebindings/" + teamHackerAccount0._id)
                 .type("application/json")
                 .end(function (err, res) {
                     res.should.have.status(200);
@@ -443,14 +450,14 @@ describe("GET retrieve permissions", function () {
                     res.body.data.should.be.a("object");
                     res.body.data.should.have.property("roles");
                     res.body.data.should.have.property("accountId");
-                    res.body.data.accountId.should.equal(storedAccount1._id.toHexString());
+                    res.body.data.accountId.should.equal(teamHackerAccount0._id.toHexString());
                     done();
                 });
         });
     });
     it("should FAIL to retrieve the rolebindings as the account is not authenticated", function (done) {
         chai.request(server.app)
-            .get("/api/auth/rolebindings/" + storedAccount1._id)
+            .get("/api/auth/rolebindings/" + teamHackerAccount0._id)
             .type("application/json")
             .end(function (err, res) {
                 res.should.have.status(401);
@@ -463,7 +470,7 @@ describe("GET retrieve permissions", function () {
 
 describe("GET resend confirmation email", function () {
     it("should SUCCEED and resend the confirmation email", function (done) {
-        util.auth.login(agent, storedAccount3, (error) => {
+        util.auth.login(agent, storedAccount1, (error) => {
             if (error) {
                 agent.close();
                 return done(error);
@@ -481,7 +488,7 @@ describe("GET resend confirmation email", function () {
         });
     });
     it("should FAIL as the account is already confirmed", function (done) {
-        util.auth.login(agent, storedAccount1, (error) => {
+        util.auth.login(agent, teamHackerAccount0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);
@@ -499,7 +506,7 @@ describe("GET resend confirmation email", function () {
         });
     });
     it("should FAIL as account confirmation token does not exist", function (done) {
-        util.auth.login(agent, storedAccount2, (error) => {
+        util.auth.login(agent, storedAccount3, (error) => {
             if (error) {
                 agent.close();
                 return done(error);
@@ -520,7 +527,7 @@ describe("GET resend confirmation email", function () {
 
 describe("POST invite account", function () {
     it("Should succeed to invite a user to create an account", function (done) {
-        util.auth.login(agent, Admin1, (error) => {
+        util.auth.login(agent, Admin0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);
@@ -529,7 +536,7 @@ describe("POST invite account", function () {
                 .post("/api/account/invite")
                 .type("application/json")
                 .send({
-                    email: newAccount1.email,
+                    email: newAccount0.email,
                     accountType: Constants.General.VOLUNTEER
                 })
                 // does not have password because of to stripped json
@@ -558,7 +565,7 @@ describe("GET invites", function () {
             });
     });
     it("Should FAIL to get all invites due to Authorization", function (done) {
-        util.auth.login(agent, storedAccount1, (error) => {
+        util.auth.login(agent, teamHackerAccount0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);
@@ -574,7 +581,7 @@ describe("GET invites", function () {
         });
     });
     it("Should SUCCEED to get all invites", function (done) {
-        util.auth.login(agent, Admin1, (error) => {
+        util.auth.login(agent, Admin0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);

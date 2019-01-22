@@ -29,10 +29,6 @@ const hackerRole = {
     "_id": mongoose.Types.ObjectId.createFromTime(2),
     "name": Constants.General.HACKER,
     "routes": [
-        Constants.Routes.accountRoutes.getSelf,
-        Constants.Routes.accountRoutes.getSelfById,
-        Constants.Routes.accountRoutes.patchSelfById,
-
         Constants.Routes.hackerRoutes.post,
         Constants.Routes.hackerRoutes.getSelfById,
         Constants.Routes.hackerRoutes.getSelfByEmail,
@@ -69,6 +65,8 @@ const sponsorT1Role = {
     "routes": [
         Constants.Routes.sponsorRoutes.post,
         Constants.Routes.sponsorRoutes.getSelfById,
+        Constants.Routes.sponsorRoutes.getSelf,
+        Constants.Routes.sponsorRoutes.patchSelfById,
     ]
 };
 
@@ -78,6 +76,8 @@ const sponsorT2Role = {
     "routes": [
         Constants.Routes.sponsorRoutes.post,
         Constants.Routes.sponsorRoutes.getSelfById,
+        Constants.Routes.sponsorRoutes.getSelf,
+        Constants.Routes.sponsorRoutes.patchSelfById,
     ]
 };
 
@@ -87,6 +87,8 @@ const sponsorT3Role = {
     "routes": [
         Constants.Routes.sponsorRoutes.post,
         Constants.Routes.sponsorRoutes.getSelfById,
+        Constants.Routes.sponsorRoutes.getSelf,
+        Constants.Routes.sponsorRoutes.patchSelfById,
     ]
 };
 
@@ -96,6 +98,8 @@ const sponsorT4Role = {
     "routes": [
         Constants.Routes.sponsorRoutes.post,
         Constants.Routes.sponsorRoutes.getSelfById,
+        Constants.Routes.sponsorRoutes.getSelf,
+        Constants.Routes.sponsorRoutes.patchSelfById,
     ]
 };
 
@@ -105,6 +109,8 @@ const sponsorT5Role = {
     "routes": [
         Constants.Routes.sponsorRoutes.post,
         Constants.Routes.sponsorRoutes.getSelfById,
+        Constants.Routes.sponsorRoutes.getSelf,
+        Constants.Routes.sponsorRoutes.patchSelfById,
     ]
 };
 
