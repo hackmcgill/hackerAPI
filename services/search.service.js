@@ -17,10 +17,12 @@ function executeQuery(model, queryArray, page, limit, sort, sort_by, shouldExpan
     var query;
     switch (model.toLowerCase()) {
         case "hacker":
-            query = (shouldExpand) ? Hacker.find().populate({
+            query = (shouldExpand) ? Hacker.find().populate([{
                 path: "accountId",
                 select: " -password"
-            }) : Hacker.find();
+            }, {
+                path: "teamId"
+            }]) : Hacker.find();
             break;
         default:
             return [];
