@@ -127,6 +127,10 @@ const hackerRoutes = {
 };
 
 const sponsorRoutes = {
+    "getSelf": {
+        requestType: Constants.REQUEST_TYPES.GET,
+        uri: "/api/sponsor/self/",
+    },
     "getSelfById": {
         requestType: Constants.REQUEST_TYPES.GET,
         uri: "/api/sponsor/" + Constants.ROLE_CATEGORIES.SELF,
@@ -139,6 +143,14 @@ const sponsorRoutes = {
         requestType: Constants.REQUEST_TYPES.POST,
         uri: "/api/sponsor/",
     },
+    "patchSelfById": {
+        requestType: Constants.REQUEST_TYPES.PATCH,
+        uri: "/api/sponsor/" + Constants.ROLE_CATEGORIES.SELF,
+    },
+    "patchAnyById": {
+        requestType: Constants.REQUEST_TYPES.PATCH,
+        uri: "/api/sponsor/" + Constants.ROLE_CATEGORIES.ALL,
+    }
 };
 
 const teamRoutes = {

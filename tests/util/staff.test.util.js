@@ -6,15 +6,15 @@ const Staff = require("../../models/staff.model");
 const mongoose = require("mongoose");
 const logger = require("../../services/logger.service");
 
-const Staff1 = {
+const Staff0 = {
     "_id": mongoose.Types.ObjectId(),
-    "accountId": Util.Account.Account4._id
+    "accountId": Util.Account.staffAccounts.stored[0],
 };
 const Staffs = [
-    Staff1,
+    Staff0,
 ];
 
-function storeAll(attributes) {
+function store(attributes) {
     const staffDocs = [];
     const staffIds = [];
     attributes.forEach((attribute) => {
@@ -23,6 +23,10 @@ function storeAll(attributes) {
     });
 
     return Staff.collection.insertMany(staffDocs);
+}
+
+async function storeAll() {
+    await store(Staffs);
 }
 
 async function dropAll() {
@@ -38,7 +42,7 @@ async function dropAll() {
 }
 
 module.exports = {
-    Staff1: Staff1,
+    Staff0: Staff0,
     Staffs: Staffs,
     storeAll: storeAll,
     dropAll: dropAll,

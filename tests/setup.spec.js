@@ -15,9 +15,6 @@ const Util = {
     AccountConfirmation: require("./util/accountConfirmation.test.util"),
     ResetPassword: require("./util/resetPassword.test.util.js")
 };
-const Constants = {
-    Role: require("../constants/role.constant"),
-};
 const logger = require("../services/logger.service");
 
 //make sure that we are connected to the database
@@ -53,17 +50,17 @@ afterEach(function (done) {
     });
 });
 async function storeAll() {
-    await Util.Account.storeAll(Util.Account.allAccounts);
-    await Util.Hacker.storeAll(Util.Hacker.Hackers);
-    await Util.Sponsor.storeAll(Util.Sponsor.Sponsors);
-    await Util.Team.storeAll(Util.Team.Teams);
-    await Util.Staff.storeAll(Util.Staff.Staffs);
-    await Util.AccountConfirmation.storeAll(Util.AccountConfirmation.AccountConfirmationTokens);
-    await Util.ResetPassword.storeAll(Util.ResetPassword.ResetPasswords);
-    await Util.Bus.storeAll(Util.Bus.Busses);
-    await Util.Volunteer.storeAll(Util.Volunteer.Volunteers);
-    await Util.Role.storeAll(Constants.Role.allRolesArray);
-    await Util.RoleBinding.storeAll(Util.RoleBinding.RoleBindings);
+    await Util.Account.storeAll();
+    await Util.Hacker.storeAll();
+    await Util.Sponsor.storeAll();
+    await Util.Team.storeAll();
+    await Util.Staff.storeAll();
+    await Util.AccountConfirmation.storeAll();
+    await Util.ResetPassword.storeAll();
+    await Util.Bus.storeAll();
+    await Util.Volunteer.storeAll();
+    await Util.Role.storeAll();
+    await Util.RoleBinding.storeAll();
 }
 
 async function dropAll() {

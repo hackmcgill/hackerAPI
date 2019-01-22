@@ -24,6 +24,23 @@ const HACKER_STATUSES = [
     HACKER_STATUS_CHECKED_IN
 ];
 
+const SAMPLE_DIET_RESTRICTIONS = [
+    "None",
+    "Vegan",
+    "Vegetarian",
+    "Keto",
+    "Gluten free",
+    "Pescetarian",
+    "Peanut allergy",
+    "Milk allergy",
+    "Egg allergy",
+    "Allergy",
+    "No beef",
+    "No porc",
+    "No fish",
+    "No shellfish"
+];
+
 const HACKER = "Hacker";
 const VOLUNTEER = "Volunteer";
 const STAFF = "Staff";
@@ -52,7 +69,11 @@ const REQUEST_TYPES = {
 //Define names of the roles specifically associated with permission to create an account
 const POST_ROLES = {};
 POST_ROLES[HACKER] = "postHacker";
-POST_ROLES[SPONSOR] = "postSponsor";
+POST_ROLES[SPONSOR_T1] = "postSponsor";
+POST_ROLES[SPONSOR_T2] = "postSponsor";
+POST_ROLES[SPONSOR_T3] = "postSponsor";
+POST_ROLES[SPONSOR_T4] = "postSponsor";
+POST_ROLES[SPONSOR_T5] = "postSponsor";
 POST_ROLES[VOLUNTEER] = "postVolunteer";
 POST_ROLES[STAFF] = "postStaff";
 
@@ -123,5 +144,6 @@ module.exports = {
     POST_ROLES: POST_ROLES,
     CACHE_TIMEOUT_STATS: CACHE_TIMEOUT_STATS,
     CACHE_KEY_STATS: CACHE_KEY_STATS,
-    MAX_TEAM_SIZE: MAX_TEAM_SIZE
+    MAX_TEAM_SIZE: MAX_TEAM_SIZE,
+    SAMPLE_DIET_RESTRICTIONS: SAMPLE_DIET_RESTRICTIONS,
 };

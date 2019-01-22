@@ -24,15 +24,29 @@ function showSponsor(req, res) {
 }
 
 /**
- * @function createdHacker
+ * @function createdSponsor
  * @param {{body: {sponsor: {_id: ObjectId, accountId: ObjectId, tier: number, company: string, contractURL: string, nominees: ObjectId[]}}}} req
  * @param {*} res
  * @return {JSON} Success status
  * @description returns success message
  */
-async function createdSponsor(req, res) {
+function createdSponsor(req, res) {
     return res.status(200).json({
         message: Constants.Success.SPONSOR_CREATE,
+        data: req.body.sponsor.toJSON()
+    });
+}
+
+/**
+ * @function updatedSponsor
+ * @param {{body: {sponsor: {_id: ObjectId, accountId: ObjectId, tier: number, company: string, contractURL: string, nominees: ObjectId[]}}}} req
+ * @param {*} res
+ * @return {JSON} Success status
+ * @description returns success message
+ */
+function updatedSponsor(req, res) {
+    return res.status(200).json({
+        message: Constants.Success.SPONSOR_UPDATE,
         data: req.body.sponsor.toJSON()
     });
 }
@@ -40,4 +54,5 @@ async function createdSponsor(req, res) {
 module.exports = {
     createdSponsor: createdSponsor,
     showSponsor: showSponsor,
+    updatedSponsor: updatedSponsor,
 };
