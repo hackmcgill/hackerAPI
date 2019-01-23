@@ -585,6 +585,19 @@ module.exports = {
             Middleware.Hacker.sendStatusUpdateEmail,
             Controllers.Hacker.updatedHacker
         );
+
+        hackerRouter.route("/email/weekOf/:id").post(
+            Middleware.Auth.ensureAuthenticated(),
+            Middleware.Auth.ensureAuthorized([Services.Hacker.findById]),
+
+            Middleware.Validator.RouteParam.idValidator,
+            Middleware.parseBody.middleware,
+            Middleware.Hacker.findById,
+            Middleware.Hacker.checkStatus([CONSTANTS.HACKER_STATUS_CONFIRMED,CONSTANTS.HACKER_STATUS_CHECKED_IN]),
+            Middleware.Hacker.sendTicketEmail,
+            Controllers.Hacker.sentWeekOfEmail
+        )
+
         apiRouter.use("/hacker", hackerRouter);
     }
 };

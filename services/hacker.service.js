@@ -98,12 +98,16 @@ async function getStatsAllHackersCached() {
 }
 
 
-async function generateHackerQRCode(hacker) {
-    const response = await QRCode.toString(hacker.id, {
-        type: "svg"
-    });
+async function generateQRCode(str) {
+    const response = await QRCode.toDataURL(str, { scale: 10 });
     return response;
 }
+
+function generateHackerViewLink(httpOrHttps, domain, id) {
+    const link = `${httpOrHttps}://${domain}/hacker/view/${id}`;
+    return link;
+}
+
 
 function getStats(hackers) {
     const TAG = `[ hacker Service # getStats ]`;
@@ -162,5 +166,6 @@ module.exports = {
     findByAccountId: findByAccountId,
     getStats: getStats,
     getStatsAllHackersCached: getStatsAllHackersCached,
-    generateHackerQRCode: generateHackerQRCode,
+    generateQRCode: generateQRCode,
+    generateHackerViewLink: generateHackerViewLink,
 };

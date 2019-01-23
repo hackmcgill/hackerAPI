@@ -53,15 +53,16 @@ class EmailService {
     }
 
     sendTicketEmail(firstName, recipient, ticketSVG, callback) {
-        const handlebarsPath = path.join(__dirname, `../assets/email/statusEmail/Ticket.hbs`);
+        const handlebarsPath = path.join(__dirname, `../assets/email/Ticket.hbs`);
+        const html = this.renderEmail(handlebarsPath, {
+            firstName: firstName,
+            svg: ticketSVG
+        });
         const mailData = {
             to: recipient,
             from: process.env.NO_REPLY_EMAIL,
-            subject: Constants.EMAIL_SUBJECTS[status],
-            html: this.renderEmail(handlebarsPath, {
-                firstName: firstName,
-                ticketSVG: ticketSVG
-            })
+            subject: Constants.EMAIL_SUBJECTS[Constants.WEEK_OF],
+            html: html
         };
         this.send(mailData).then(
             (response) => {

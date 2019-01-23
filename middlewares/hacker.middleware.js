@@ -7,6 +7,7 @@ const Services = {
     Storage: require("../services/storage.service"),
     Email: require("../services/email.service"),
     Account: require("../services/account.service"),
+    Env: require("../services/env.service"),
 };
 const Middleware = {
     Util: require("./util.middleware")
@@ -316,7 +317,10 @@ async function sendAppliedStatusEmail(req, res, next) {
  */
 async function sendTicketEmail(req, res, next) {
     const hacker = req.body.hacker;
-    const ticketSVG = await Services.Hacker.generateHackerQRCode(hacker._id);
+    const address = Services.Env.isProduction() ? process.env.FRONTEND_ADDRESS_DEPLOY : process.env.FRONTEND_ADDRESS_DEV;
+    const httpOrHttps = (address.includes("localhost")) ? "http" : "https";
+    const singleHackerViewLink = Services.Hacker.generateHackerViewLink(httpOrHttps, address, hacker._id.toString());
+    const ticketSVG = await Services.Hacker.generateQRCode(singleHackerViewLink);
     const account = await Services.Account.findById(hacker.accountId);
     if (!account || !ticketSVG) {
         return next({
