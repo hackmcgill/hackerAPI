@@ -24,8 +24,6 @@ function findById(id) {
  * @description Adds a new sponsor to database.
  */
 function createSponsor(sponsorDetails) {
-    const TAG = `[Sponsor Service # createSponsor]:`;
-
     const sponsor = new Sponsor(sponsorDetails);
 
     return sponsor.save();
@@ -39,8 +37,6 @@ function createSponsor(sponsorDetails) {
  * @description Updates a sponsor by id with information in sponsorDetails. Return the updated sponsor
  */
 function updateOne(id, sponsorDetails) {
-    const TAG = `[Sponsor Service # updateOne]:`;
-
     const query = {
         _id: id
     };

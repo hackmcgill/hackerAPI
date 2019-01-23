@@ -176,4 +176,4 @@ module.exports = {
     generateToken: generateToken,
     generateAccountConfirmationEmail: generateAccountConfirmationEmail,
     generateAccountInvitationEmail: generateAccountInvitationEmail
-}
+};

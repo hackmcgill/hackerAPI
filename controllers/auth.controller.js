@@ -44,12 +44,12 @@ module.exports = {
         return res.status(200).json({
             message: Success.AUTH_SEND_CONFIRMATION_EMAIL,
             data: {}
-        })
+        });
     },
     retrievedRoles: function (req, res) {
         return res.status(200).json({
             message: Success.AUTH_GET_ROLES,
             data: req.roles
-        })
+        });
     }
 };

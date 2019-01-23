@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 "use strict";
 const Constants = {
     Role: require("../constants/role.constant")

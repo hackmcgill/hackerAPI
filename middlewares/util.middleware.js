@@ -1,5 +1,5 @@
 "use strict";
-const multer = require('multer');
+const multer = require("multer");
 //Set up multer middleware
 const m = multer({
     storage: multer.memoryStorage(),

@@ -3,9 +3,8 @@ const chai = require("chai");
 const chaiHttp = require("chai-http");
 chai.use(chaiHttp);
 const server = require("../app");
-const logger = require("../services/logger.service");
-const Account = require("../models/account.model");
-const should = chai.should();
+
+chai.should();
 
 const agent = chai.request.agent(server.app);
 
@@ -19,7 +18,7 @@ const util = {
 
 const constants = {
     success: require("../constants/success.constant"),
-}
+};
 
 const roles = require("../constants/role.constant");
 
@@ -46,17 +45,17 @@ describe("GET roles", function () {
                     res.body.should.have.property("data");
                     res.body.data.should.be.a("Array");
 
-                    let rolenames = []
+                    let rolenames = [];
                     roles.allRolesArray.forEach(element => {
-                        rolenames.push(element.name)
+                        rolenames.push(element.name);
                     });
 
-                    let retrievedRoleNames = []
+                    let retrievedRoleNames = [];
                     res.body.data.forEach(element => {
-                        retrievedRoleNames.push(element.name)
+                        retrievedRoleNames.push(element.name);
                     });
 
-                    rolenames.should.have.members(retrievedRoleNames)
+                    rolenames.should.have.members(retrievedRoleNames);
                     done();
                 });
         });

@@ -15,7 +15,6 @@ const Util = {
     AccountConfirmation: require("./util/accountConfirmation.test.util"),
     ResetPassword: require("./util/resetPassword.test.util.js")
 };
-const logger = require("../services/logger.service");
 
 //make sure that we are connected to the database
 before(function (done) {

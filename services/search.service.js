@@ -1,6 +1,5 @@
 "use strict";
 const Hacker = require("../models/hacker.model");
-const logger = require("./logger.service");
 
 /**
  * @function executeQuery

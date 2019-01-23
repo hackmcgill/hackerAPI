@@ -5,7 +5,7 @@ chai.use(chaiHttp);
 const server = require("../app");
 const agent = chai.request.agent(server.app);
 const Sponsor = require("../models/sponsor.model");
-const should = chai.should();
+chai.should();
 const mongoose = require("mongoose");
 const Constants = {
     Success: require("../constants/success.constant"),

@@ -27,6 +27,6 @@ AccountConfirmationSchema.methods.toJSON = function () {
     resetObj.id = resetObj._id;
     delete resetObj._id;
     return resetObj;
-}
+};
 
 module.exports = mongoose.model("AccountConfirmationToken", AccountConfirmationSchema);

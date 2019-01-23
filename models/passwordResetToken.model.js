@@ -2,9 +2,9 @@
 const mongoose = require("mongoose");
 const passwordResetSchema = new mongoose.Schema({
     accountId: {
-        type:mongoose.Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         required: true,
-        ref:"Account"
+        ref: "Account"
     },
     created: {
         type: Date,
@@ -18,6 +18,6 @@ passwordResetSchema.methods.toJSON = function () {
     resetObj.id = resetObj._id;
     delete resetObj._id;
     return resetObj;
-}
+};
 
 module.exports = mongoose.model("PasswordResetToken", passwordResetSchema);

@@ -19,7 +19,6 @@ const Middleware = {
 const Services = {
     Sponsor: require("../../services/sponsor.service"),
 };
-const CONSTANTS = require("../../constants/general.constant");
 
 module.exports = {
     activate: function (apiRouter) {

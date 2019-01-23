@@ -1,6 +1,6 @@
 "use strict";
 // Imports the Google Cloud client library
-const GStorage = require('@google-cloud/storage');
+const GStorage = require("@google-cloud/storage");
 const Logger = require("./logger.service");
 class StorageService {
     constructor() {

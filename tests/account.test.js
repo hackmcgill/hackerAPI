@@ -3,9 +3,8 @@ const chai = require("chai");
 const chaiHttp = require("chai-http");
 chai.use(chaiHttp);
 const server = require("../app");
-const logger = require("../services/logger.service");
 const Account = require("../models/account.model");
-const should = chai.should();
+chai.should();
 const Constants = {
     Error: require("../constants/error.constant"),
     General: require("../constants/general.constant"),
@@ -30,7 +29,6 @@ const teamHackerAccount0 = util.account.hackerAccounts.stored.team[0];
 
 //This account has a confirmation token in the db
 const storedAccount1 = util.account.NonConfirmedAccount1;
-const storedAccount2 = util.account.NonConfirmedAccount2;
 
 //This account does not have a confirmation token in the DB
 const storedAccount3 = util.account.NonConfirmedAccount3;

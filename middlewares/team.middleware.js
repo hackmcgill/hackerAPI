@@ -1,6 +1,5 @@
 "use strict";
 
-const TAG = `[ TEAM.MIDDLEWARE.js ]`;
 const mongoose = require("mongoose");
 const Services = {
     Logger: require("../services/logger.service"),
@@ -29,7 +28,7 @@ async function ensureUniqueHackerId(req, res, next) {
 
     for (const member of req.body.teamDetails.members) {
         // check to see if a member is entered twice in the application
-        if (!!idSet[member]) {
+        if (idSet[member]) {
             return next({
                 status: 422,
                 message: Constants.Error.TEAM_MEMBER_422_MESSAGE,
@@ -42,7 +41,7 @@ async function ensureUniqueHackerId(req, res, next) {
         // check to see if member is part of a another team
         const team = await Services.Team.findTeamByHackerId(member);
 
-        if (!!team) {
+        if (team) {
             return next({
                 status: 409,
                 message: Constants.Error.TEAM_MEMBER_409_MESSAGE,
@@ -359,28 +358,6 @@ async function updateHackerTeam(req, res, next) {
     }
 
     return next();
-}
-
-/**
- * @async
- * @function findById
- * @param {{body: {id: ObjectId}}} req 
- * @param {*} res 
- * @return {JSON} Success or error status
- * @description Finds a team by it's mongoId that's specified in req.param.id in route parameters. The id is moved to req.body.id from req.params.id by validation.
- */
-async function findById(req, res, next) {
-    const team = await Services.Team.findById(req.body.id);
-
-    if (!team) {
-        return res.status(404).json({
-            message: Constants.Error.TEAM_404_MESSAGE,
-            data: {}
-        });
-    }
-
-    req.body.team = team;
-    next();
 }
 
 /**

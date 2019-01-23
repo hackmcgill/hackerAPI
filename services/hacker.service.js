@@ -12,8 +12,6 @@ const Constants = require("../constants/general.constant");
  * @description Adds a new hacker to database.
  */
 function createHacker(hackerDetails) {
-    const TAG = `[Hacker Service # createHacker]:`;
-
     const hacker = new Hacker(hackerDetails);
 
     return hacker.save();
@@ -90,12 +88,12 @@ async function getStatsAllHackersCached() {
     const allHackers = await Hacker.find({}, logger.updateCallbackFactory(TAG, "hacker")).populate({
         path: "accountId",
     });
+    const stats = await getStats(allHackers);
     cache.put(Constants.CACHE_KEY_STATS, stats, Constants.CACHE_TIMEOUT_STATS); //set a time-out of 5 minutes
-    return getStats(allHackers);
+    return stats;
 }
 
 function getStats(hackers) {
-    const TAG = `[ hacker Service # getStats ]`;
     const stats = {
         total: 0,
         status: {},

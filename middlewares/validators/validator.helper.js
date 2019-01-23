@@ -27,9 +27,8 @@ function integerValidator(fieldLocation, fieldname, optional = true, lowerBound 
 
     if (optional) {
         return value.optional({
-                checkFalsy: true
-            })
-            .isInt().withMessage(`${fieldname} must be an integer.`)
+            checkFalsy: true
+        }).isInt().withMessage(`${fieldname} must be an integer.`)
             .custom((value) => {
                 return value >= lowerBound && value <= upperBound;
             }).withMessage(`${fieldname} must be between ${lowerBound} and  ${upperBound}`);
@@ -71,9 +70,8 @@ function mongoIdArrayValidator(fieldLocation, fieldname, optional = true) {
 
     if (optional) {
         return arr.optional({
-                checkFalsy: true
-            })
-            .custom(isMongoIdArray).withMessage("Value must be an array of mongoIDs");
+            checkFalsy: true
+        }).custom(isMongoIdArray).withMessage("Value must be an array of mongoIDs");
     } else {
         return arr.exists()
             .custom(isMongoIdArray).withMessage("Value must be an array of mongoIDs");
@@ -137,9 +135,8 @@ function regexValidator(fieldLocation, fieldname, optional = true, desire = Cons
 
     if (optional) {
         return match.optional({
-                checkFalsy: true
-            })
-            .matches(desire)
+            checkFalsy: true
+        }).matches(desire)
             .withMessage("must be valid url");
     } else {
         return match.exists().withMessage("url must exist")
@@ -315,8 +312,8 @@ function jwtValidator(fieldLocation, fieldname, jwtSecret, optional = true) {
     const jwtValidationChain = setProperValidationChainBuilder(fieldLocation, fieldname, "Must be vali jwt");
     if (optional) {
         return jwtValidationChain.optional({
-                checkFalsy: true
-            })
+            checkFalsy: true
+        })
             .custom(value => {
                 const token = jwt.verify(value, jwtSecret);
                 if (typeof token !== "undefined") {
@@ -346,7 +343,7 @@ function searchModelValidator(fieldLocation, fieldName) {
     return paramChain.exists().withMessage("Model must be provided")
         .isLowercase().withMessage("Model must be lower case")
         .isAlpha().withMessage("must contain alphabet characters")
-        .isIn([Constants.HACKER.toLowerCase()])
+        .isIn([Constants.HACKER.toLowerCase()]);
 }
 
 /**==
@@ -363,7 +360,7 @@ function searchValidator(fieldLocation, fieldname) {
         }) => {
             //value is a serialized JSON
             value = JSON.parse(value);
-            let modelString = req.query.model
+            let modelString = req.query.model;
             //Supported models for searching
             let model;
             if (modelString === Constants.HACKER.toLowerCase()) {
@@ -404,20 +401,21 @@ function searchValidator(fieldLocation, fieldname) {
 }
 
 function searchSortValidator(fieldLocation, fieldName) {
-    const searchSort = setProperValidationChainBuilder(fieldLocation, fieldName, "Invalid sort criteria")
+    const searchSort = setProperValidationChainBuilder(fieldLocation, fieldName, "Invalid sort criteria");
     return searchSort.optional({
-            checkFalsy: true
-        })
+        checkFalsy: true
+    })
         .custom((value, {
             req
         }) => {
-            let modelString = req.query.model
+            let modelString = req.query.model;
+            let model;
             if (modelString.equals("hacker")) {
                 model = Models.Hacker;
             } else {
                 return false;
             }
-            if (!!model.searchableField(value)) {
+            if (model.searchableField(value)) {
                 let sortOrder = param("sort", "Sorting order not found");
                 if (!sortOrder.equals("asc") || !sortOrder.equals("desc")) {
                     return false;
@@ -426,7 +424,7 @@ function searchSortValidator(fieldLocation, fieldName) {
                 return false;
             }
             return true;
-        })
+        });
 }
 
 /**

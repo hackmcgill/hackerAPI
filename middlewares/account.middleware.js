@@ -1,6 +1,5 @@
 "use strict";
 
-const TAG = `[ ADDRESS.MIDDLEWARE.js ]`;
 const mongoose = require("mongoose");
 const Services = {
     RoleBinding: require("../services/roleBinding.service"),

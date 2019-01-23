@@ -4,9 +4,6 @@ const logger = require("./logger.service");
 const Services = {
     Hacker: require("../services/hacker.service"),
 };
-const Middleware = {
-    Util: require("../middlewares/util.middleware"),
-};
 
 /**
  * @function findTeamByHackerId
@@ -31,8 +28,6 @@ function findTeamByHackerId(hackerId) {
  * @description Adds a new team to database.
  */
 async function createTeam(teamDetails) {
-    const TAG = `[Team Service # createTeam]:`;
-
     const team = new Team(teamDetails);
 
     return team.save();
@@ -95,8 +90,6 @@ function findByName(name) {
  * @description Removes the hacker specified by hackerId from a team specified by teamId.
  */
 async function removeMember(teamId, hackerId) {
-    const TAG = `[Team Services # removeMember]:`;
-
     const hacker = await Services.Hacker.updateOne(hackerId, {
         teamId: null
     });
@@ -123,8 +116,6 @@ async function removeMember(teamId, hackerId) {
  * @description Add the hacker specified by hackerId to the team specified by teamId
  */
 async function addMember(teamId, hackerId) {
-    const TAG = `[Team Services # addMember]:`;
-
     const hacker = await Services.Hacker.updateOne(hackerId, {
         $set: {
             teamId: teamId,
@@ -152,8 +143,6 @@ async function addMember(teamId, hackerId) {
  * @description Removes the team if the team contains no members. Returns null if the team has one or more members, or if the team doesn't exist.
  */
 async function removeTeamIfEmpty(teamId) {
-    const TAG = `[Team Services # removeTeam]`;
-
     const team = await findById(teamId);
 
     if (team.members.length === 0) {
@@ -173,8 +162,6 @@ async function removeTeamIfEmpty(teamId) {
  * @description Delete the team specified by teamId. 
  */
 async function removeTeam(teamId) {
-    const TAG = `[Team Services # removeTeam]`;
-
     const team = await findById(teamId);
 
     for (const hackerId of team.members) {

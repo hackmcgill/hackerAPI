@@ -19,7 +19,7 @@ const Middleware = {
 const Services = {
     Hacker: require("../../services/hacker.service"),
     Account: require("../../services/account.service"),
-}
+};
 const CONSTANTS = require("../../constants/general.constant");
 
 module.exports = {

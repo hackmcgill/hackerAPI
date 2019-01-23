@@ -4,7 +4,7 @@ const Services = {
 };
 const Middleware = {
     Util: require("../middlewares/util.middleware")
-}
+};
 
 /**
  * @function parseQuery

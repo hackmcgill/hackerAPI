@@ -118,7 +118,7 @@ async function findSelf(req, res, next) {
 
     const sponsor = await Services.Sponsor.findByAccountId(req.user.id);
 
-    if (!!sponsor) {
+    if (sponsor) {
         req.body.sponsor = sponsor;
         return next();
     } else {
@@ -166,7 +166,7 @@ async function createSponsor(req, res, next) {
 
     const sponsor = await Services.Sponsor.createSponsor(sponsorDetails);
 
-    if (!!sponsor) {
+    if (sponsor) {
         req.body.sponsor = sponsor;
         return next();
     } else {
@@ -191,7 +191,7 @@ async function updateSponsor(req, res, next) {
 
     const sponsor = await Services.Sponsor.updateOne(req.body.id, sponsorDetails);
 
-    if (!!sponsor) {
+    if (sponsor) {
         req.body.sponsor = sponsor;
         return next();
     } else {

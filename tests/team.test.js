@@ -1,7 +1,7 @@
 "use strict";
 const chai = require("chai");
 const chaiHttp = require("chai-http");
-const should = chai.should();
+chai.should();
 chai.use(chaiHttp);
 const server = require("../app");
 const Team = require("../models/team.model");

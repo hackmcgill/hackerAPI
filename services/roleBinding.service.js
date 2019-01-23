@@ -15,7 +15,7 @@ async function createRoleBinding(accountId, roleId = undefined) {
     };
     const roleBindingModel = await getRoleBindingForAcct(accountId);
     if (!roleBindingModel) {
-        const roleArray = (!!roleId) ? [roleId] : [];
+        const roleArray = roleId ? [roleId] : [];
         const newRb = new RoleBinding({
             name: accountId + "_rolebinding",
             accountId: accountId,
@@ -36,9 +36,9 @@ async function createRoleBinding(accountId, roleId = undefined) {
  * @param {ObjectId} accountId the id of the account that you want to add a rolebinding to
  * @param {String} roleName the name of the role that you want to add
  */
-async function createRoleBindingByRoleName(accountId, roleName){
+async function createRoleBindingByRoleName(accountId, roleName) {
     const role = await RoleService.getRole(roleName);
-    if (!!role) {
+    if (role) {
         await createRoleBinding(accountId, role.id);
     }
 }

@@ -122,9 +122,9 @@ HackerSchema.methods.isApplicationComplete = function () {
  * @description return the type of the field(if it exists and is allowed to be searched on)
  */
 HackerSchema.statics.searchableField = function (field) {
-    const schemaField = HackerSchema.path(field)
+    const schemaField = HackerSchema.path(field);
     if (schemaField != undefined) {
-        return schemaField.instance
+        return schemaField.instance;
     } else {
         return null;
     }

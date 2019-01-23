@@ -6,9 +6,7 @@ chai.use(chaiHttp);
 const server = require("../app");
 
 const agent = chai.request.agent(server.app);
-const assert = require("chai").assert;
-const should = chai.should();
-const logger = require("../services/logger.service");
+chai.should();
 
 const Constants = {
     Error: require("../constants/error.constant"),

@@ -4,7 +4,7 @@ const chaiHttp = require("chai-http");
 chai.use(chaiHttp);
 const server = require("../app");
 const agent = chai.request.agent(server.app);
-const should = chai.should();
+chai.should();
 const Volunteer = require("../models/volunteer.model");
 const Constants = {
     Success: require("../constants/success.constant"),

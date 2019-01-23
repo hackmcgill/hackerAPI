@@ -1,9 +1,4 @@
 "use strict";
-const Services = {
-    Account: require("../services/account.service"),
-    Logger: require("../services/logger.service")
-};
-const Util = require("../middlewares/util.middleware");
 const Constants = {
     Error: require("../constants/error.constant"),
     Success: require("../constants/success.constant"),

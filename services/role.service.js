@@ -1,7 +1,6 @@
 "use strict";
 const Role = require("../models/role.model");
 const logger = require("./logger.service");
-const mongoose = require("mongoose");
 
 /**
  * @function createRole

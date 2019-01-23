@@ -3,9 +3,9 @@ const Role = require("../../models/role.model");
 const Constants = {
     General: require("../../constants/general.constant"),
     Role: require("../../constants/role.constant"),
-}
+};
 const Routes = require("../../constants/routes.constant");
-const mongoose = require("mongoose");
+
 const logger = require("../../services/logger.service");
 
 const newRole1 = {

@@ -50,7 +50,7 @@ describe("Email Service", function () {
             TEST: "TESTTEST",
             NOT_ESCAPED: "localhost:1337/reset?token=lala"
         });
-        assert.equal('<div>This is used for testing email service. DO NOT REMOVE.TESTTEST. <a href="localhost:1337/reset?token=lala">link</a></div>', rendered);
+        assert.equal(`<div>This is used for testing email service. DO NOT REMOVE.TESTTEST. <a href="localhost:1337/reset?token=lala">link</a></div>`, rendered);
         done();
     });
 });

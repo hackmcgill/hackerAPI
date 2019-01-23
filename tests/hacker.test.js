@@ -4,7 +4,6 @@ const chaiHttp = require("chai-http");
 chai.use(chaiHttp);
 const server = require("../app");
 const agent = chai.request.agent(server.app);
-const should = chai.should();
 const Hacker = require("../models/hacker.model");
 const fs = require("fs");
 const path = require("path");

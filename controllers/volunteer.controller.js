@@ -1,13 +1,8 @@
 "use strict";
-const Services = {
-    Volunteer: require("../services/volunteer.service"),
-    Logger: require("../services/logger.service")
-};
-const Util = require("../middlewares/util.middleware");
 const Constants = {
     Success: require("../constants/success.constant"),
     Error: require("../constants/error.constant"),
-}
+};
 
 /**
  * @function createdVolunteer

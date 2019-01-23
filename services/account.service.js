@@ -75,8 +75,6 @@ function findOne(query) {
  * @description Adds a new account to database.
  */
 function addOneAccount(accountDetails) {
-    const TAG = `[Account Service # addOneAccount ]:`;
-
     const account = new Account(accountDetails);
 
     return account.save();

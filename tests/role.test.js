@@ -5,7 +5,6 @@ chai.use(chaiHttp);
 const server = require("../app");
 const Role = require("../models/role.model");
 const agent = chai.request.agent(server.app);
-const should = chai.should();
 
 const util = {
     role: require("./util/role.test.util"),

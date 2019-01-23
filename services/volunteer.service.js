@@ -9,8 +9,6 @@ const logger = require("./logger.service");
  * @description Adds a new volunteer to database.
  */
 function createVolunteer(volunteerDetails) {
-    const TAG = `[Volunteer Service # createTeam]:`;
-
     const volunteer = new Volunteer(volunteerDetails);
 
     return volunteer.save();

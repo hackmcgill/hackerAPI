@@ -15,7 +15,7 @@ function login(agent, credentials, callback) {
         .send({
             email: credentials.email,
             password: credentials.password
-        }).end((err, res) => {
+        }).end((err) => {
             if (err) {
                 callback(err);
             } else {

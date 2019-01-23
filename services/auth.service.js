@@ -2,7 +2,6 @@
 const LocalStrategy = require("passport-local").Strategy;
 const Account = require("../services/account.service");
 const RoleBinding = require("../services/roleBinding.service");
-const logger = require("./logger.service");
 
 module.exports = {
     emailAndPassStrategy: new LocalStrategy({
@@ -12,7 +11,7 @@ module.exports = {
         email = email.toLowerCase();
         Account.getAccountIfValid(email, password).then(
             (account) => {
-                if (!!account) {
+                if (account) {
                     done(null, account);
                 } else {
                     done(null, false);
