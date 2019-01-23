@@ -16,9 +16,9 @@ const logger = require("../../services/logger.service");
 
 const HackerConfirmation = {
     "_id": mongoose.Types.ObjectId(),
-    "accountId": Util.Account.Account2._id,
+    "accountId": Util.Account.NonConfirmedAccount1._id,
     "accountType": Constants.HACKER,
-    "email": Util.Account.Account2.email
+    "email": Util.Account.NonConfirmedAccount1.email
 };
 
 const HackerConfirmation2 = {
@@ -30,7 +30,7 @@ const HackerConfirmation2 = {
 
 const HackerConfirmation3 = {
     "_id": mongoose.Types.ObjectId(),
-    "email": Util.Account.newAccount1.email
+    "email": Util.Account.unlinkedAccounts.new[0].email
 };
 
 const HackerConfirmation4 = {
@@ -42,7 +42,7 @@ const HackerConfirmation4 = {
 // Using a real ID which is stored but corresponds to another account
 const FakeHackerToken = {
     "_id": HackerConfirmation._id,
-    "accountId": Util.Account.Account3._id,
+    "accountId": Util.Account.sponsorT1Accounts.stored[0]._id,
     "accountType": Constants.HACKER
 };
 
@@ -56,7 +56,7 @@ const AccountConfirmationTokens = [
     HackerConfirmation4
 ];
 
-function storeAll(attributes) {
+function store(attributes) {
     const accountConfirmationDocs = [];
     const accountConfirmationIds = [];
     for (var i = 0; i < attributes.length; i++) {
@@ -64,6 +64,10 @@ function storeAll(attributes) {
         accountConfirmationIds.push(attributes[i]._id);
     }
     return AccountConfirmationToken.collection.insertMany(accountConfirmationDocs);
+}
+
+async function storeAll() {
+    await store(AccountConfirmationTokens);
 }
 
 async function dropAll() {

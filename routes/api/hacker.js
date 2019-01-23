@@ -550,12 +550,12 @@ module.exports = {
 
         /**
          * @api {patch} /hacker/confirmation/:id
-         * Allows confirmation of hacker attendence if they are accepted. Also allows change from 'confirmed' back to 'accepted'
+         * Allows confirmation of hacker attendence if they are accepted. Also allows change from 'confirmed' to 'cancelled'.
          * @apiName patchHackerConfirmed
          * @apiGroup Hacker
          * @apiVersion 0.0.9
          * 
-         * @apiParam (body) {string} [status] The new status of the hacker. "Accepted" or "Confirmed"
+         * @apiParam (body) {string} [status] The new status of the hacker. "Accepted", "Confirmed", or "Cancelled"
          * @apiSuccess {string} message Success message
          * @apiSuccess {object} data Hacker object
          * @apiSuccessExample {object} Success-Response: 
@@ -577,7 +577,7 @@ module.exports = {
             Middleware.parseBody.middleware,
             Middleware.Hacker.parsePatch,
 
-            Middleware.Hacker.checkStatus([CONSTANTS.HACKER_STATUS_ACCEPTED, CONSTANTS.HACKER_STATUS_CONFIRMED]),
+            Middleware.Hacker.checkStatus([CONSTANTS.HACKER_STATUS_ACCEPTED, CONSTANTS.HACKER_STATUS_CONFIRMED, CONSTANTS.HACKER_STATUS_CANCELLED]),
 
             Middleware.Hacker.parseConfirmation,
             Middleware.Hacker.updateHacker,

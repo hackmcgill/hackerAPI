@@ -34,6 +34,7 @@ const HACKER_UPDATE_500_MESSAGE = "Error while updating hacker";
 const ACCOUNT_UPDATE_500_MESSAGE = "Error while updating account";
 const HACKER_CREATE_500_MESSAGE = "Error while creating hacker";
 const SPONSOR_CREATE_500_MESSAGE = "Error while creating sponsor";
+const SPONSOR_UPDATE_500_MESSAGE = "Error while updating sponsor";
 const TEAM_CREATE_500_MESSAGE = "Error while creating team";
 const VOLUNTEER_CREATE_500_MESSAGE = "Error while creating volunteer";
 const EMAIL_500_MESSAGE = "Error while generating email";
@@ -77,4 +78,5 @@ module.exports = {
     TEAM_JOIN_SAME_409_MESSAGE: TEAM_JOIN_SAME_409_MESSAGE,
     TEAM_READ_500_MESSAGE: TEAM_READ_500_MESSAGE,
     VOLUNTEER_404_MESSAGE: VOLUNTEER_404_MESSAGE,
+    SPONSOR_UPDATE_500_MESSAGE: SPONSOR_UPDATE_500_MESSAGE,
 };

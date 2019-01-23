@@ -34,6 +34,7 @@ const SEARCH_NO_RESULTS = "Query search successful. No results found.";
 const SPONSOR_GET_BY_ID = "Sponsor found by id.";
 const SPONSOR_READ = "Sponsor retrieval successful.";
 const SPONSOR_CREATE = "Sponsor creation successful.";
+const SPONSOR_UPDATE = "Sponsor update successful.";
 
 const TEAM_GET_BY_ID = "Team found by id.";
 const TEAM_CREATE = "Team creation successful.";
@@ -80,6 +81,7 @@ module.exports = {
     SPONSOR_GET_BY_ID: SPONSOR_GET_BY_ID,
     SPONSOR_CREATE: SPONSOR_CREATE,
     SPONSOR_READ: SPONSOR_READ,
+    SPONSOR_UPDATE: SPONSOR_UPDATE,
 
     TEAM_GET_BY_ID: TEAM_GET_BY_ID,
     TEAM_CREATE: TEAM_CREATE,

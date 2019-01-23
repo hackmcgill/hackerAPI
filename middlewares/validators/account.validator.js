@@ -11,7 +11,7 @@ module.exports = {
         VALIDATOR.alphaArrayValidator("body", "dietaryRestrictions", false),
         VALIDATOR.enumValidator("body", "shirtSize", Constants.SHIRT_SIZES, false),
         VALIDATOR.passwordValidator("body", "password", false),
-        VALIDATOR.jwtValidator("param", "token", process.env.JWT_CONFIRM_ACC_SECRET, true),
+        VALIDATOR.jwtValidator("header", "token", process.env.JWT_CONFIRM_ACC_SECRET, true),
         VALIDATOR.dateValidator("body", "birthDate", false),
         VALIDATOR.phoneNumberValidator("body", "phoneNumber", false)
     ],
