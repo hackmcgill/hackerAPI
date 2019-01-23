@@ -97,17 +97,27 @@ async function getStatsAllHackersCached() {
     return getStats(allHackers);
 }
 
-
+/**
+ * Generate a QR code for the hacker.
+ * @param {string} str The string to be encoded in the QR code.
+ */
 async function generateQRCode(str) {
-    const response = await QRCode.toDataURL(str, { scale: 10 });
+    const response = await QRCode.toDataURL(str, {
+        scale: 3
+    });
     return response;
 }
 
+/**
+ * Generate the link for the single hacker view page on frontend.
+ * @param {string} httpOrHttps either HTTP or HTTPs
+ * @param {string} domain The domain of the frontend site
+ * @param {string} id The ID of the hacker to view
+ */
 function generateHackerViewLink(httpOrHttps, domain, id) {
     const link = `${httpOrHttps}://${domain}/hacker/view/${id}`;
     return link;
 }
-
 
 function getStats(hackers) {
     const TAG = `[ hacker Service # getStats ]`;

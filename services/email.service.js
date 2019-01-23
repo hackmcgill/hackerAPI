@@ -51,12 +51,18 @@ class EmailService {
             }
         });
     }
-
-    sendTicketEmail(firstName, recipient, ticketSVG, callback) {
+    /**
+     * Send email with ticket.
+     * @param {string} firstName the recipient's first name
+     * @param {string} recipient the recipient's email address
+     * @param {string} ticket the ticket image (must be base-64 string)
+     * @param {(err?)=>void} callback
+     */
+    sendTicketEmail(firstName, recipient, ticket, callback) {
         const handlebarsPath = path.join(__dirname, `../assets/email/Ticket.hbs`);
         const html = this.renderEmail(handlebarsPath, {
             firstName: firstName,
-            svg: ticketSVG
+            ticket: ticket
         });
         const mailData = {
             to: recipient,
