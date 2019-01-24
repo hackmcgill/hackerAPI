@@ -958,7 +958,7 @@ describe("POST send week-of email", function () {
                     res.body.should.have.property("message");
                     res.body.message.should.equal(Constants.Success.HACKER_SENT_WEEK_OF);
                     res.body.should.have.property("data");
-                    res.body.data.should.equal(JSON.stringify({}));
+                    res.body.data.should.equal({});
                     done();
                 });
         });
