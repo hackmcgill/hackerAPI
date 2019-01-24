@@ -951,7 +951,7 @@ describe("POST send week-of email", function () {
                 return done(error);
             }
             return agent
-                .post(`/api/hacker/email/weekOf/${noTeamHacker0._id}`)
+                .post(`/api/hacker/email/weekOf/${TeamHacker0._id}`)
                 .end(function (err, res) {
                     res.should.have.status(200);
                     res.should.be.json;
