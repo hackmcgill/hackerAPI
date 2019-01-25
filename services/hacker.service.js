@@ -115,7 +115,7 @@ async function generateQRCode(str) {
  * @param {string} id The ID of the hacker to view
  */
 function generateHackerViewLink(httpOrHttps, domain, id) {
-    const link = `${httpOrHttps}://${domain}/hacker/view/${id}`;
+    const link = `${httpOrHttps}://${domain}/application/view/${id}`;
     return link;
 }
 
