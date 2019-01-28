@@ -1869,6 +1869,58 @@
     }]
   },
   {
+    "type": "post",
+    "url": "/hacker/email/weekOf/:id",
+    "title": "",
+    "description": "<p>Sends a hacker the week-of email, along with the HackPass QR code to view their hacker profile (for checkin purposes). Hackers must be eitherconfirmed, or checked in.</p>",
+    "name": "postHackerSendWeekOfEmail",
+    "group": "Hacker",
+    "version": "0.0.9",
+    "parameter": {
+      "fields": {
+        "param": [{
+          "group": "param",
+          "type": "string",
+          "optional": true,
+          "field": "status",
+          "description": "<p>The hacker ID</p>"
+        }]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [{
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "message",
+            "description": "<p>Success message</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>empty</p>"
+          }
+        ]
+      },
+      "examples": [{
+        "title": "Success-Response: ",
+        "content": "{\n    \"message\": \"Hacker week-of email sent.\", \n    \"data\": {}\n}",
+        "type": "object"
+      }]
+    },
+    "permission": [{
+      "name": "Administrator"
+    }],
+    "filename": "routes/api/hacker.js",
+    "groupTitle": "Hacker",
+    "sampleRequest": [{
+      "url": "https://api.mchacks.ca/api/hacker/email/weekOf/:id"
+    }]
+  },
+  {
     "type": "get",
     "url": "/sponsor/self",
     "title": "get information about logged in sponsor",

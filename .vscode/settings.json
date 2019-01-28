@@ -5,5 +5,6 @@
         "this":false,
         "bad_property":false
     },
-    "search.usePCRE2": true
+    "search.usePCRE2": true,
+    "editor.formatOnSave": true
 }
