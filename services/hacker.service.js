@@ -103,7 +103,7 @@ async function getStatsAllHackersCached() {
  */
 async function generateQRCode(str) {
     const response = await QRCode.toDataURL(str, {
-        scale: 3
+        scale: 4
     });
     return response;
 }
