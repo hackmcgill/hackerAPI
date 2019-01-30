@@ -407,13 +407,14 @@ async function populateMemberAccountsById(req, res, next) {
             data: {}
         });
     }
-
+    let hackerIds = [];
     let teamMembers = [];
 
     for (const member of team.members) {
         teamMembers.push(member.accountId);
+        hackerIds.push(member._id);
     }
-
+    team.members = hackerIds;
     req.body.team = team;
     req.body.teamMembers = teamMembers;
     return next();

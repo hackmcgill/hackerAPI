@@ -124,6 +124,14 @@ const hackerRoutes = {
         requestType: Constants.REQUEST_TYPES.PATCH,
         uri: "/api/hacker/confirmation/" + Constants.ROLE_CATEGORIES.SELF,
     },
+    "postAnySendWeekOfEmail": {
+        requestType: Constants.REQUEST_TYPES.POST,
+        uri: "/api/hacker/email/weekOf/" + Constants.ROLE_CATEGORIES.ALL,
+    },
+    "postSelfSendWeekOfEmail": {
+        requestType: Constants.REQUEST_TYPES.POST,
+        uri: "/api/hacker/email/weekOf/" + Constants.ROLE_CATEGORIES.SELF,
+    },
 };
 
 const sponsorRoutes = {

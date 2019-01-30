@@ -79,6 +79,13 @@ function gotStats(req, res) {
 
 }
 
+function sentWeekOfEmail(req, res) {
+    return res.status(200).json({
+        message: Constants.Success.HACKER_SENT_WEEK_OF,
+        data: {}
+    });
+}
+
 module.exports = {
     updatedHacker: updatedHacker,
     createdHacker: createdHacker,
@@ -86,4 +93,5 @@ module.exports = {
     downloadedResume: downloadedResume,
     showHacker: showHacker,
     gotStats: gotStats,
+    sentWeekOfEmail: sentWeekOfEmail,
 };

@@ -5,6 +5,9 @@ const logger = require("./logger.service");
 const cache = require("memory-cache");
 
 const Constants = require("../constants/general.constant");
+
+const QRCode = require("qrcode");
+
 /**
  * @function createHacker
  * @param {{_id: ObjectId, accountId: ObjectId, school: string, gender: string, needsBus: boolean, application: {Object}}} hackerDetails
@@ -94,6 +97,28 @@ async function getStatsAllHackersCached() {
     return getStats(allHackers);
 }
 
+/**
+ * Generate a QR code for the hacker.
+ * @param {string} str The string to be encoded in the QR code.
+ */
+async function generateQRCode(str) {
+    const response = await QRCode.toDataURL(str, {
+        scale: 4
+    });
+    return response;
+}
+
+/**
+ * Generate the link for the single hacker view page on frontend.
+ * @param {string} httpOrHttps either HTTP or HTTPs
+ * @param {string} domain The domain of the frontend site
+ * @param {string} id The ID of the hacker to view
+ */
+function generateHackerViewLink(httpOrHttps, domain, id) {
+    const link = `${httpOrHttps}://${domain}/application/view/${id}`;
+    return link;
+}
+
 function getStats(hackers) {
     const TAG = `[ hacker Service # getStats ]`;
     const stats = {
@@ -151,4 +176,6 @@ module.exports = {
     findByAccountId: findByAccountId,
     getStats: getStats,
     getStatsAllHackersCached: getStatsAllHackersCached,
+    generateQRCode: generateQRCode,
+    generateHackerViewLink: generateHackerViewLink,
 };

@@ -122,8 +122,23 @@ module.exports = {
          * @apiSuccess {Object} data Team object
          * @apiSuccessExample {object} Success-Response: 
          *      {
-                    "message": "Successfully retrieved team information", 
-                    "data": {...}
+                    "message": "Team retrieval successful", 
+                    "data": {        
+                        "team": {
+                            "name":"foo",
+                            "members": [
+                                ObjectId('...')
+                            ],
+                            "devpostURL": "www.devpost.com/foo",
+                            "projectName": "fooey"
+                        },
+                        "members": [
+                            {
+                                "firstName": "John",
+                                "lastName": "Doe"
+                            }
+                        ],
+                    }
                 }
 
          * @apiError {String} message Error message
