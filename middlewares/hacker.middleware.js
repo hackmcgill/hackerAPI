@@ -315,7 +315,7 @@ async function sendAppliedStatusEmail(req, res, next) {
  * @param {*} res 
  * @param {(err?:*)=>void} next 
  */
-async function sendTicketEmail(req, res, next) {
+async function sendWeekOfEmail(req, res, next) {
     const hacker = req.body.hacker;
     const address = Services.Env.isProduction() ? process.env.FRONTEND_ADDRESS_DEPLOY : process.env.FRONTEND_ADDRESS_DEV;
     const httpOrHttps = (address.includes("localhost")) ? "http" : "https";
@@ -329,7 +329,26 @@ async function sendTicketEmail(req, res, next) {
             error: {}
         });
     }
-    Services.Email.sendTicketEmail(account.firstName, account.email, ticketSVG, next);
+    Services.Email.sendWeekOfEmail(account.firstName, account.email, ticketSVG, next);
+}
+
+/**
+ * Sends an email telling the user that they have applied. This is used exclusively when we POST a hacker.
+ * @param {{body: {hacker: {accountId: string}}}} req 
+ * @param {*} res 
+ * @param {(err?:*)=>void} next 
+ */
+async function sendDayOfEmail(req, res, next) {
+    const hacker = req.body.hacker;
+    const account = await Services.Account.findById(hacker.accountId);
+    if (!account) {
+        return next({
+            status: 500,
+            message: Constants.Error.GENERIC_500_MESSAGE,
+            error: {}
+        });
+    }
+    Services.Email.sendDayOfEmail(account.firstName, account.email, next);
 }
 
 /**
@@ -544,7 +563,8 @@ module.exports = {
     ensureAccountLinkedToHacker: ensureAccountLinkedToHacker,
     uploadResume: Middleware.Util.asyncMiddleware(uploadResume),
     downloadResume: Middleware.Util.asyncMiddleware(downloadResume),
-    sendTicketEmail: Middleware.Util.asyncMiddleware(sendTicketEmail),
+    sendWeekOfEmail: Middleware.Util.asyncMiddleware(sendWeekOfEmail),
+    sendDayOfEmail: Middleware.Util.asyncMiddleware(sendDayOfEmail),
     sendStatusUpdateEmail: Middleware.Util.asyncMiddleware(sendStatusUpdateEmail),
     sendAppliedStatusEmail: Middleware.Util.asyncMiddleware(sendAppliedStatusEmail),
     updateHacker: Middleware.Util.asyncMiddleware(updateHacker),

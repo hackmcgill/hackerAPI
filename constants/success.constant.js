@@ -22,6 +22,7 @@ const HACKER_READ = "Hacker retrieval successful.";
 const HACKER_CREATE = "Hacker creation successful.";
 const HACKER_UPDATE = "Hacker update successful.";
 const HACKER_SENT_WEEK_OF = "Hacker week-of email sent."
+const HACKER_SENT_DAY_OF = "Hacker day-of email sent."
 
 const RESUME_UPLOAD = "Resume upload successful.";
 const RESUME_DOWNLOAD = "Resume download successful.";
@@ -69,6 +70,7 @@ module.exports = {
     HACKER_UPDATE: HACKER_UPDATE,
 
     HACKER_SENT_WEEK_OF: HACKER_SENT_WEEK_OF,
+    HACKER_SENT_DAY_OF: HACKER_SENT_DAY_OF,
 
     RESUME_UPLOAD: RESUME_UPLOAD,
     RESUME_DOWNLOAD: RESUME_DOWNLOAD,
