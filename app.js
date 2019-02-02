@@ -61,7 +61,7 @@ app.use(cookieSession({
     name: "session",
     keys: [process.env.COOKIE_SECRET],
     // Cookie Options
-    maxAge: 60 * 60 * 1000 //Logged in for 1 hour
+    maxAge: 48 * 60 * 60 * 1000 //Logged in for 48 hours
 }));
 app.use(passport.initialize());
 app.use(passport.session()); //persistent login session
