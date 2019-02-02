@@ -963,3 +963,55 @@ describe("POST send week-of email", function () {
         });
     });
 });
+
+describe("POST send day-of email", function () {
+    it("It should FAIL to send the day-of email due to invalid Authentication", function (done) {
+        //this takes a lot of time for some reason
+        chai.request(server.app)
+            .post(`/api/hacker/email/dayOf/${noTeamHacker0._id}`)
+            .end(function (err, res) {
+                res.should.have.status(401);
+                res.should.be.json;
+                res.body.should.have.property("message");
+                res.body.message.should.equal(Constants.Error.AUTH_401_MESSAGE);
+                res.body.should.have.property("data");
+                done();
+            });
+    });
+    it("It should FAIL to send the day-of email due to invalid Authorization", function (done) {
+        //this takes a lot of time for some reason
+        util.auth.login(agent, noTeamHacker0, (error) => {
+            if (error) {
+                return done(error);
+            }
+            return agent
+                .post(`/api/hacker/email/dayOf/${noTeamHacker0._id}`)
+                .end(function (err, res) {
+                    res.should.have.status(403);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal(Constants.Error.AUTH_403_MESSAGE);
+                    res.body.should.have.property("data");
+                    done();
+                });
+        });
+    });
+    it("It should SUCCEED to send the day-of email", function (done) {
+        //this takes a lot of time for some reason
+        util.auth.login(agent, Admin0, (error) => {
+            if (error) {
+                return done(error);
+            }
+            return agent
+                .post(`/api/hacker/email/dayOf/${TeamHacker0._id}`)
+                .end(function (err, res) {
+                    res.should.have.status(200);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal(Constants.Success.HACKER_SENT_DAY_OF);
+                    res.body.should.have.property("data");
+                    done();
+                });
+        });
+    });
+});
