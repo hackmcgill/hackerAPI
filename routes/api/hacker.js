@@ -634,7 +634,7 @@ module.exports = {
          */
         hackerRouter.route("/email/dayOf/:id").post(
             Middleware.Auth.ensureAuthenticated(),
-            // Middleware.Auth.ensureAuthorized([Services.Hacker.findById]),
+            Middleware.Auth.ensureAuthorized([Services.Hacker.findById]),
 
             Middleware.Validator.RouteParam.idValidator,
             Middleware.parseBody.middleware,
