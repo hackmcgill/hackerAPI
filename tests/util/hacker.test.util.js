@@ -41,7 +41,7 @@ const TeamHacker0 = {
 const TeamHacker1 = {
     "_id": Constants.MongoId.hackerDId,
     "accountId": Util.Account.hackerAccounts.stored.team[1]._id,
-    "status": "Waitlisted",
+    "status": "Checked-in",
     "school": "University of Blah1",
     "degree": "Masters",
     "gender": "Female",

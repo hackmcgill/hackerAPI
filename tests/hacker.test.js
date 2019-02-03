@@ -37,6 +37,7 @@ const noTeamHacker0 = util.hacker.NoTeamHacker0;
 
 const teamHackerAccount0 = util.account.hackerAccounts.stored.team[0];
 const TeamHacker0 = util.hacker.TeamHacker0;
+const TeamHacker1 = util.hacker.TeamHacker1;
 const duplicateAccountLinkHacker0 = util.hacker.duplicateAccountLinkHacker0;
 
 const invalidHacker1 = util.hacker.invalidHacker1;
@@ -968,7 +969,7 @@ describe("POST send day-of email", function () {
     it("It should FAIL to send the day-of email due to invalid Authentication", function (done) {
         //this takes a lot of time for some reason
         chai.request(server.app)
-            .post(`/api/hacker/email/dayOf/${noTeamHacker0._id}`)
+            .post(`/api/hacker/email/dayOf/${TeamHacker1._id}`)
             .end(function (err, res) {
                 res.should.have.status(401);
                 res.should.be.json;
@@ -980,12 +981,12 @@ describe("POST send day-of email", function () {
     });
     it("It should FAIL to send the day-of email due to invalid Authorization", function (done) {
         //this takes a lot of time for some reason
-        util.auth.login(agent, noTeamHacker0, (error) => {
+        util.auth.login(agent, TeamHacker1, (error) => {
             if (error) {
                 return done(error);
             }
             return agent
-                .post(`/api/hacker/email/dayOf/${noTeamHacker0._id}`)
+                .post(`/api/hacker/email/dayOf/${TeamHacker1._id}`)
                 .end(function (err, res) {
                     res.should.have.status(403);
                     res.should.be.json;
@@ -1003,7 +1004,7 @@ describe("POST send day-of email", function () {
                 return done(error);
             }
             return agent
-                .post(`/api/hacker/email/dayOf/${TeamHacker0._id}`)
+                .post(`/api/hacker/email/dayOf/${TeamHacker1._id}`)
                 .end(function (err, res) {
                     res.should.have.status(200);
                     res.should.be.json;
