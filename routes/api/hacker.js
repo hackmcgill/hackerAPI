@@ -611,9 +611,38 @@ module.exports = {
             Middleware.parseBody.middleware,
             Middleware.Hacker.findById,
             Middleware.Hacker.checkStatus([CONSTANTS.HACKER_STATUS_CONFIRMED, CONSTANTS.HACKER_STATUS_CHECKED_IN]),
-            Middleware.Hacker.sendTicketEmail,
+            Middleware.Hacker.sendWeekOfEmail,
             Controllers.Hacker.sentWeekOfEmail
         )
+
+        /**
+         * @api {post} /hacker/email/weekOf/:id
+         * @apiDescription Sends a hacker the week-of email, along with the HackPass QR code to view their hacker profile (for checkin purposes). Hackers must be eitherconfirmed, or checked in.
+         * @apiName postHackerSendWeekOfEmail
+         * @apiGroup Hacker
+         * @apiVersion 0.0.9
+         * 
+         * @apiParam (param) {string} [status] The hacker ID
+         * @apiSuccess {string} message Success message
+         * @apiSuccess {object} data empty
+         * @apiSuccessExample {object} Success-Response: 
+         *      {
+         *          "message": "Hacker week-of email sent.", 
+         *          "data": {}
+         *      }
+         * @apiPermission Administrator
+         */
+        hackerRouter.route("/email/dayOf/:id").post(
+            Middleware.Auth.ensureAuthenticated(),
+            Middleware.Auth.ensureAuthorized([Services.Hacker.findById]),
+
+            Middleware.Validator.RouteParam.idValidator,
+            Middleware.parseBody.middleware,
+            Middleware.Hacker.findById,
+            Middleware.Hacker.checkStatus([CONSTANTS.HACKER_STATUS_CHECKED_IN]),
+            Middleware.Hacker.sendDayOfEmail,
+            Controllers.Hacker.sentDayOfEmail
+        );
 
         apiRouter.use("/hacker", hackerRouter);
     }

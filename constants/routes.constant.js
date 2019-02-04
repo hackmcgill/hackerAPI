@@ -132,6 +132,14 @@ const hackerRoutes = {
         requestType: Constants.REQUEST_TYPES.POST,
         uri: "/api/hacker/email/weekOf/" + Constants.ROLE_CATEGORIES.SELF,
     },
+    "postAnySendDayOfEmail": {
+        requestType: Constants.REQUEST_TYPES.POST,
+        uri: "/api/hacker/email/dayOf/" + Constants.ROLE_CATEGORIES.ALL,
+    },
+    "postSelfSendDayOfEmail": {
+        requestType: Constants.REQUEST_TYPES.POST,
+        uri: "/api/hacker/email/dayOf/" + Constants.ROLE_CATEGORIES.SELF,
+    },
 };
 
 const sponsorRoutes = {
