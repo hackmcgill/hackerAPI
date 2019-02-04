@@ -36,6 +36,7 @@ const noTeamHackerAccount0 = util.account.hackerAccounts.stored.noTeam[0];
 const noTeamHacker0 = util.hacker.NoTeamHacker0;
 
 const teamHackerAccount0 = util.account.hackerAccounts.stored.team[0];
+const teamHackerAccount1 = util.account.hackerAccounts.stored.team[1];
 const TeamHacker0 = util.hacker.TeamHacker0;
 const TeamHacker1 = util.hacker.TeamHacker1;
 const duplicateAccountLinkHacker0 = util.hacker.duplicateAccountLinkHacker0;
@@ -981,7 +982,7 @@ describe("POST send day-of email", function () {
     });
     it("It should FAIL to send the day-of email due to invalid Authorization", function (done) {
         //this takes a lot of time for some reason
-        util.auth.login(agent, TeamHacker1, (error) => {
+        util.auth.login(agent, teamHackerAccount1, (error) => {
             if (error) {
                 return done(error);
             }
