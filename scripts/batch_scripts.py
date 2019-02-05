@@ -7,6 +7,7 @@ import os
 import requests
 import subprocess
 from typing import Any, Callable, List
+import sys
 
 # Constants
 VALID_STATUSES = {
@@ -23,6 +24,14 @@ BATCH_ACTIONS = {
     '3': 'weekOf',
     '4': 'downloadResume'
 }
+LOG_VERBOSITIES = {
+    '0': 'None',
+    '1': 'Error',
+    '2': 'Warning',
+    '3': 'Info'
+}
+
+CHOSEN_VERBOSITY = 3
 
 
 API_URL = 'https://api.mchacks.ca'
@@ -31,10 +40,26 @@ API_URL = 'https://api.mchacks.ca'
 s = requests.Session()
 
 
+def _print(msg, msgType=3, index=None, total=None):
+    """
+    Wrapper around print function such that we only print to the granularity that the user wants.
+    Also, allow for formatting of sequential print statements ex: (10/114)
+    """
+    global CHOSEN_VERBOSITY
+    if msgType <= CHOSEN_VERBOSITY:
+        out_file = sys.stdout if msgType > 1 else sys.stderr
+        if index is None or total is None:
+            print('{0}: {1}'.format(
+                LOG_VERBOSITIES[str(msgType)], msg), file=out_file)
+        else:
+            print('({0}/{1}) {2}: {3}'.format(index, total,
+                                              LOG_VERBOSITIES[str(msgType)], msg), file=out_file)
+
+
 def requestUntilSuccess(
     string: str,
     invalid_msg: str = 'Invalid input',
-    validInput: Callable[[Any], bool] = lambda x: True,
+    validInput: Callable[[Any], bool] = lambda x: x is not None,
     transformInput: Callable[[str], Any] = lambda x: x
 ) -> str:
     """
@@ -55,13 +80,13 @@ def login(session=requests.Session()):
     Logs in a user to the inputted session, and returns the session.
     """
     global API_URL
-    print("Enter target API")
-    user_input = input('Target API (Default {0}): '.format(API_URL))
+    user_input = requestUntilSuccess(
+        'Enter Target API (Default {0}): '.format(API_URL))
     if user_input != '':
         API_URL = user_input
     # Get credentials
-    print("Enter credentials for", API_URL)
-    username = input("Email: ")
+    username = requestUntilSuccess(
+        'Enter credentials for {0}: '.format(API_URL))
     logged_in = False
 
     while not logged_in:
@@ -77,6 +102,20 @@ def login(session=requests.Session()):
             print('Logged in as {0}'.format(username))
             logged_in = True
     return session
+
+
+def chooseLogVerbosity():
+    global CHOSEN_VERBOSITY
+    verbosity_list = ['{0}: {1}\n'.format(k, v)
+                      for k, v in LOG_VERBOSITIES.items()]
+    chosen_verbosity = requestUntilSuccess(
+        'Input log verbosity (default {0}):\n{1}'.format(
+            CHOSEN_VERBOSITY, ''.join(verbosity_list)),
+        'Invalid verbosity',
+        lambda x: x == '' or x in LOG_VERBOSITIES.keys(),
+        lambda x: CHOSEN_VERBOSITY if x == '' else int(x)
+    )
+    CHOSEN_VERBOSITY = chosen_verbosity
 
 
 def loadIDs() -> List[str]:
@@ -99,8 +138,8 @@ def loadIDs() -> List[str]:
             if ObjectId.is_valid(r):
                 ids.append(r)
             else:
-                print(
-                    '({0}/{1}) Error: {2} is not a valid ObjectID'.format(index, len(rows), r))
+                _print('{2} is not a valid ObjectID'.format(
+                    r), 1, index, len(rows))
     # remove duplicates
     ids = list(set(ids))
     return ids
@@ -168,17 +207,17 @@ def updateStatus():
             r = s.patch('{0}/api/hacker/status/{1}'.format(API_URL, ID),
                         {"status": NEW_STATUS})
             if r.status_code != 200:
-                print(
-                    '({0}/{1}) ERROR cannot update status for {2}'.format(index, len(HACKER_IDs), ID))
+                _print('cannot update status for {0}'.format(
+                    ID), 1, index, len(HACKER_IDs))
             else:
-                print(
-                    '({0}/{1}) {2} {3}'.format(index, len(HACKER_IDs), NEW_STATUS, ID))
+                _print('{0} {1}'.format(
+                    NEW_STATUS, ID), 3, index, len(HACKER_IDs))
         elif hacker is not None:
-            print(
-                '({0}/{1}) ERROR invalid status for {2}'.format(index, len(HACKER_IDs), ID))
+            _print('invalid status for {0}'.format(
+                ID), 1, index, len(HACKER_IDs))
         else:
-            print(
-                '({0}/{1}) ERROR could not find {2}'.format(index, len(HACKER_IDs), ID))
+            _print('could not find {0}'.format(
+                ID), 1, index, len(HACKER_IDs))
 
 
 def sendDayOfEmail():
@@ -193,17 +232,17 @@ def sendDayOfEmail():
             r = s.post(
                 '{0}/api/hacker/email/dayOf/{1}'.format(API_URL, ID))
             if r.status_code != 200:
-                print(
-                    '({0}/{1}) ERROR cannot send email to {2}'.format(index, len(HACKER_IDs), ID))
+                _print('cannot send email to {0}'.format(
+                    ID), 1, index, len(HACKER_IDs))
             else:
-                print(
-                    '({0}/{1}) Sent email to {2}'.format(index, len(HACKER_IDs), ID))
+                _print('Sent email to {0}'.format(
+                    ID), 3, index, len(HACKER_IDs))
         elif hacker is not None:
-            print(
-                '({0}/{1}) ERROR invalid status for {2}'.format(index, len(HACKER_IDs), ID))
+            _print('Sent invalid status for {0}'.format(
+                ID), 1, index, len(HACKER_IDs))
         else:
-            print(
-                '({0}/{1}) ERROR could not find {2}'.format(index, len(HACKER_IDs), ID))
+            _print('Could not find {0}'.format(
+                ID), 1, index, len(HACKER_IDs))
 
 
 def sendWeekOfEmail():
@@ -218,17 +257,17 @@ def sendWeekOfEmail():
             r = s.post(
                 '{0}/api/hacker/email/weekOf/{1}'.format(API_URL, ID))
             if r.status_code != 200:
-                print(
-                    '({0}/{1}) ERROR cannot send email to {2}'.format(index, len(HACKER_IDs), ID))
+                _print('Cannot send email to {0}'.format(
+                    ID), 1, index, len(HACKER_IDs))
             else:
-                print(
-                    '({0}/{1}) Sent email to {2}'.format(index, len(HACKER_IDs), ID))
+                _print('Sent email to {0}'.format(
+                    ID), 3, index, len(HACKER_IDs))
         elif hacker is not None:
-            print(
-                '({0}/{1}) ERROR invalid status for {2}'.format(index, len(HACKER_IDs), ID))
+            _print('Invalid status for {0}'.format(
+                ID), 1, index, len(HACKER_IDs))
         else:
-            print(
-                '({0}/{1}) ERROR could not find {2}'.format(index, len(HACKER_IDs), ID))
+            _print('Could not find {0}'.format(
+                ID), 1, index, len(HACKER_IDs))
 
 
 def downloadResume():
@@ -245,26 +284,27 @@ def downloadResume():
             r = s.get(
                 '{0}/api/hacker/resume/{1}'.format(API_URL, ID))
             if r.status_code != 200:
-                print(
-                    '({0}/{1}) ERROR {2} does not have a resume (Status code {3})'.format(index, len(HACKER_IDs), ID, r.status_code))
+                _print('Could not find resume for {0}'.format(
+                    ID), 1, index, len(HACKER_IDs))
             else:
                 resume = json.loads(r.content)['data']['resume'][0]['data']
                 download_path = "{0}/{1}.pdf".format(DOWNLOAD_DIR, ID)
                 with open(download_path, "wb") as fh:
                     byte_data = bytearray(resume)
                     fh.write(byte_data)
-                print(
-                    '({0}/{1}) Downloaded resume from {2} to {3}'.format(index, len(HACKER_IDs), ID, download_path))
+                _print('Downloaded resume for {0} to {1}'.format(
+                    ID, download_path), 3, index, len(HACKER_IDs))
         elif hacker is not None:
-            print(
-                '({0}/{1}) ERROR invalid status for {2}'.format(index, len(HACKER_IDs), ID))
+            _print('invalid status for {0}'.format(
+                ID), 3, index, len(HACKER_IDs))
         else:
-            print(
-                '({0}/{1}) ERROR could not find {2}'.format(index, len(HACKER_IDs), ID))
+            _print('Could not find hacker {0}'.format(
+                ID), 1, index, len(HACKER_IDs))
 
 
 if __name__ == "__main__":
     # execute only if run as a script
+    chooseLogVerbosity()
     login(s)
     while True:
         BATCH_ACTION = batchAction()
