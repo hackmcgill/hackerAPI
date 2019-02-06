@@ -169,9 +169,9 @@ async function findById(req, res, next) {
     const hacker = await Services.Hacker.findById(req.body.id);
 
     if (!hacker) {
-        return res.status(404).json({
-            message: Constants.Error.HACKER_404_MESSAGE,
-            data: {}
+        return next({
+            status: 404,
+            message: Constants.Error.HACKER_404_MESSAGE
         });
     }
 
@@ -190,9 +190,10 @@ async function findByEmail(req, res, next) {
     }
     const hacker = await Services.Hacker.findByAccountId(account._id);
     if (!hacker) {
-        return res.status(404).json({
+        return next({
+            status: 404,
             message: Constants.Error.HACKER_404_MESSAGE,
-            data: {}
+            error: {}
         });
     }
 
@@ -527,9 +528,10 @@ async function checkDuplicateAccountLinks(req, res, next) {
  */
 async function findSelf(req, res, next) {
     if (req.user.accountType != Constants.General.HACKER) {
-        return res.status(409).json({
+        return next({
+            status: 409,
             message: Constants.Error.ACCOUNT_TYPE_409_MESSAGE,
-            data: {
+            error: {
                 id: req.user.id,
             }
         });
@@ -541,9 +543,10 @@ async function findSelf(req, res, next) {
         req.body.hacker = hacker;
         return next();
     } else {
-        return res.status(404).json({
+        return next({
+            status: 409,
             message: Constants.Error.HACKER_404_MESSAGE,
-            data: {
+            error: {
                 id: req.user.id,
             }
         });
