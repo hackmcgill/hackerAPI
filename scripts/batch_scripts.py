@@ -1,6 +1,7 @@
 #!/bin/bash/python3
 import base64
 from bson import ObjectId
+import csv
 import getpass
 import json
 import os
@@ -22,7 +23,8 @@ BATCH_ACTIONS = {
     '1': 'updateStatus',
     '2': 'dayOf',
     '3': 'weekOf',
-    '4': 'downloadResume'
+    '4': 'downloadResume',
+    '5': 'inviteUsers'
 }
 LOG_VERBOSITIES = {
     '0': 'None',
@@ -116,6 +118,36 @@ def chooseLogVerbosity():
         lambda x: CHOSEN_VERBOSITY if x == '' else int(x)
     )
     CHOSEN_VERBOSITY = chosen_verbosity
+
+
+def loadInvites() -> List[str]:
+    """
+    Load the list of invites provided by user inputted file path.
+    """
+    # Get information about batch actions
+    invite_file = requestUntilSuccess(
+        'Path to Invite CSV: ',
+        'Invalid file',
+        lambda x: x is not None and os.path.isfile(x) and os.access(x, os.R_OK)
+    )
+
+    invites = []
+    with open(invite_file, 'r') as csvfile:
+        reader = csv.DictReader(csvfile)
+        index = 1
+        for row in reader:
+            index = index + 1
+            email = row['email']
+            accountType = row['accountType']
+            if email is not None and accountType is not None:
+                invites.append({
+                    'email': email,
+                    'accountType': accountType
+                })
+            else:
+                _print('{2} is not a valid invite format'.format(
+                    row), 1, index, len(reader))
+    return invites
 
 
 def loadIDs() -> List[str]:
@@ -302,6 +334,20 @@ def downloadResume():
                 ID), 1, index, len(HACKER_IDs))
 
 
+def inviteUsers():
+    INVITES = loadInvites()
+    for index, invite in enumerate(INVITES):
+        index = index + 1
+        r = s.post(
+            '{0}/api/account/invite/'.format(API_URL), invite)
+        if r.status_code != 200:
+            _print('Could not invite {0}, {1}'.format(
+                invite['email'], invite['accountType']), 1, index, len(INVITES))
+        else:
+            _print('Invited {0}, {1}'.format(
+                invite['email'], invite['accountType']), 3, index, len(INVITES))
+
+
 if __name__ == "__main__":
     # execute only if run as a script
     chooseLogVerbosity()
@@ -316,4 +362,6 @@ if __name__ == "__main__":
             updateStatus()
         elif BATCH_ACTION == 'downloadResume':
             downloadResume()
+        elif BATCH_ACTION == 'inviteUsers':
+            inviteUsers()
         print('Finished {0}'.format(BATCH_ACTION))
