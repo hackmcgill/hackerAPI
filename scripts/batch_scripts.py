@@ -24,7 +24,8 @@ BATCH_ACTIONS = {
     '2': 'dayOf',
     '3': 'weekOf',
     '4': 'downloadResume',
-    '5': 'inviteUsers'
+    '5': 'inviteUsers',
+    '6': 'getHackers'
 }
 LOG_VERBOSITIES = {
     '0': 'None',
@@ -211,11 +212,11 @@ def batchAction() -> str:
 
 
 def getHacker(ID):
-    r1 = s.get('{0}/api/hacker/{1}'.format(API_URL, ID))
-    if r1.status_code != 200:
+    r = s.get('{0}/api/hacker/{1}'.format(API_URL, ID))
+    if r.status_code != 200:
         return None
     else:
-        hackerInfo = json.loads(r1.content)['data']
+        hackerInfo = json.loads(r.content)['data']
         return hackerInfo
 
 
@@ -224,6 +225,20 @@ def hasValidStatus(status, hackerInfo):
         return True
     else:
         return False
+
+
+def search(model: str = 'hacker', query=[], expand: bool = True):
+    q = json.dumps(query)
+    expand = 'true' if expand else 'false'
+    r = s.get(
+        '{0}/api/search?model={1}&q={2}&expand={3}'.format(API_URL, model, q, expand))
+    if r.status_code != 200:
+        _print('Could not perform search (Status code {0})'.format(
+            r.status_code), 1)
+        return []
+    else:
+        results = json.loads(r.content)['data']
+        return results
 
 
 def updateStatus():
@@ -348,20 +363,63 @@ def inviteUsers():
                 invite['email'], invite['accountType']), 3, index, len(INVITES))
 
 
+def getHackers():
+    CUR_STATUS = status('current')
+    DOWNLOAD_DIR = getDownloadDirectory()
+    results = search(
+        'hacker',
+        [{'param': 'status', 'operation': 'equals', 'value': CUR_STATUS}]
+    )
+    with open('{0}/hackerIDs_{1}.csv'.format(DOWNLOAD_DIR, CUR_STATUS), 'w') as out_file:
+        fieldnames = [
+            'id',
+            'First Name',
+            'Last Name',
+            'Email',
+            'School',
+            'Degree',
+            'Graduation Year',
+            'Job Interest',
+            'Github',
+            'LinkedIn'
+        ]
+        csv_writer = csv.DictWriter(out_file, fieldnames=fieldnames)
+        csv_writer.writeheader()
+        for result in results:
+            csv_writer.writerow({
+                'id': result['id'],
+                'First Name': result['accountId']['firstName'],
+                'Last Name': result['accountId']['lastName'],
+                'Email': result['accountId']['email'],
+                'School': result['school'],
+                'Degree': result['degree'],
+                'Graduation Year': result['graduationYear'],
+                'Job Interest': result['application']['jobInterest'],
+                'Github': result['application']['portfolioURL']['github'],
+                'LinkedIn': result['application']['portfolioURL']['linkedIn'],
+            })
+
+
 if __name__ == "__main__":
     # execute only if run as a script
     chooseLogVerbosity()
     login(s)
     while True:
         BATCH_ACTION = batchAction()
-        if BATCH_ACTION == 'weekOf':
-            sendWeekOfEmail()
-        elif BATCH_ACTION == 'dayOf':
-            sendDayOfEmail()
-        elif BATCH_ACTION == 'updateStatus':
-            updateStatus()
-        elif BATCH_ACTION == 'downloadResume':
-            downloadResume()
-        elif BATCH_ACTION == 'inviteUsers':
-            inviteUsers()
-        print('Finished {0}'.format(BATCH_ACTION))
+        try:
+            if BATCH_ACTION == 'weekOf':
+                sendWeekOfEmail()
+            elif BATCH_ACTION == 'dayOf':
+                sendDayOfEmail()
+            elif BATCH_ACTION == 'updateStatus':
+                updateStatus()
+            elif BATCH_ACTION == 'downloadResume':
+                downloadResume()
+            elif BATCH_ACTION == 'inviteUsers':
+                inviteUsers()
+            elif BATCH_ACTION == 'getHackers':
+                getHackers()
+            print('Finished {0}'.format(BATCH_ACTION))
+        except Exception as e:
+            _print('Failed to perform action {0}: {1}'.format(
+                BATCH_ACTION, e), 1)
