@@ -5,6 +5,7 @@ import csv
 import getpass
 import json
 import os
+import readline
 import requests
 import subprocess
 from typing import Any, Callable, List
