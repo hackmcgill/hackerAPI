@@ -6,6 +6,7 @@ const TEAM_404_MESSAGE = "Team not found";
 const RESUME_404_MESSAGE = "Resume not found";
 const SPONSOR_404_MESSAGE = "Sponsor not found";
 const VOLUNTEER_404_MESSAGE = "Volunteer not found";
+const SETTINGS_404_MESSAGE = "Settings not found";
 
 const ACCOUNT_TYPE_409_MESSAGE = "Wrong account type";
 const SPONSOR_ID_409_MESSAGE = "Conflict with sponsor accountId link";
