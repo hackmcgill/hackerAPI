@@ -20,13 +20,52 @@ module.exports = {
         const settingsRouter = express.Router();
 
         /**
+         * @api {get} /settings/ Get the settings for the current hackathon
+         * @apiName getSettings
+         * @apiGroup Settings
+         * @apiVersion 1.1.1
          * 
+         * @apiSuccess {string} message Success message
+         * @apiSuccess {object} data Settings Object
+         * @apiSuccessExample {object} Success-Response: 
+         *      {
+         *          "message": "Settings creation successful.", 
+         *          "data": {
+         *              "settings": {
+         *                  openTime: "Wed Feb 06 2019 00:00:00 GMT-0500 (GMT-05:00)",
+         *                  closeTime: "Sat Feb 01 2020 00:00:00 GMT-0500 (GMT-05:00)",
+         *                  confirmTime: "Sat Feb 20 2020 00:00:00 GMT-0500 (GMT-05:00)"
+         *              }
+         *          }
+         *      }
+         * @apiPermission public
          */
         settingsRouter.get('/',
             Middleware.Settings.getSettings,
             Controllers.Settings.createdSettings
         );
 
+        /**
+         * @api {patch} /settings/ Patch the settings for the current hackathon
+         * @apiName patchSettings
+         * @apiGroup Settings
+         * @apiVersion 1.1.1
+         * 
+         * @apiSuccess {string} message Success message
+         * @apiSuccess {object} data Settings Object
+         * @apiSuccessExample {object} Success-Response: 
+         *      {
+         *          "message": "Settings patch successful.", 
+         *          "data": {
+         *              "settings": {
+         *                  openTime: "Wed Feb 06 2019 00:00:00 GMT-0500 (GMT-05:00)",
+         *                  closeTime: "Sat Feb 01 2020 00:00:00 GMT-0500 (GMT-05:00)",
+         *                  confirmTime: "Sat Feb 20 2020 00:00:00 GMT-0500 (GMT-05:00)"
+         *              }
+         *          }
+         *      }
+         * @apiPermission Administrators
+         */
         settingsRouter.patch('/',
             Middleware.Auth.ensureAuthenticated,
             Middleware.Auth.ensureAuthorized([]),

@@ -1257,78 +1257,6 @@ define({
     },
     {
       "type": "get",
-      "url": "/hacker/email/:email",
-      "title": "get a hacker's information",
-      "name": "getHacker",
-      "group": "Hacker",
-      "version": "0.0.8",
-      "parameter": {
-        "fields": {
-          "param": [{
-            "group": "param",
-            "type": "String",
-            "optional": false,
-            "field": "email",
-            "description": "<p>a hacker's unique email</p>"
-          }]
-        }
-      },
-      "success": {
-        "fields": {
-          "Success 200": [{
-              "group": "Success 200",
-              "type": "String",
-              "optional": false,
-              "field": "message",
-              "description": "<p>Success message</p>"
-            },
-            {
-              "group": "Success 200",
-              "type": "Object",
-              "optional": false,
-              "field": "data",
-              "description": "<p>Hacker object</p>"
-            }
-          ]
-        },
-        "examples": [{
-          "title": "Success-Response: ",
-          "content": "{\n               \"message\": \"Successfully retrieved hacker information\", \n               \"data\": {\n                   \"id\":\"5bff4d736f86be0a41badb91\",\n                   \"application\":{\n                       \"portfolioURL\":{\n                           \"resume\":\"resumes/1543458163426-5bff4d736f86be0a41badb91\",\n                           \"github\":\"https://github.com/abcd\",\n                           \"dropler\":\"https://dribbble.com/abcd\",\n                           \"personal\":\"https://www.hi.com/\",\n                           \"linkedIn\":\"https://linkedin.com/in/abcd\",\n                           \"other\":\"https://github.com/hackmcgill/hackerAPI/issues/168\"\n                       },\n                       \"jobInterest\":\"Internship\",\n                       \"skills\":[\"Javascript\",\"Typescript\"],\n                       \"comments\":\"hi!\",\n                       \"essay\":\"Pls accept me\"\n                   },\n                   \"status\":\"Applied\",\n                   \"ethnicity\":[\"White or Caucasian\",\" Asian or Pacific Islander\"],\n                   \"accountId\":\"5bff2a35e533b0f6562b4998\",\n                   \"school\":\"McPherson College\",\n                   \"gender\":\"Female\",\n                   \"needsBus\":false,\n                   \"major\":\"Accounting\",\n                   \"graduationYear\":2019,\n                   \"codeOfConduct\":true,\n               }\n           }",
-          "type": "object"
-        }]
-      },
-      "error": {
-        "fields": {
-          "Error 4xx": [{
-              "group": "Error 4xx",
-              "type": "String",
-              "optional": false,
-              "field": "message",
-              "description": "<p>Error message</p>"
-            },
-            {
-              "group": "Error 4xx",
-              "type": "Object",
-              "optional": false,
-              "field": "data",
-              "description": "<p>empty</p>"
-            }
-          ]
-        },
-        "examples": [{
-          "title": "Error-Response: ",
-          "content": "{\"message\": \"Hacker not found\", \"data\": {}}",
-          "type": "object"
-        }]
-      },
-      "filename": "routes/api/hacker.js",
-      "groupTitle": "Hacker",
-      "sampleRequest": [{
-        "url": "https://api.mchacks.ca/api/hacker/email/:email"
-      }]
-    },
-    {
-      "type": "get",
       "url": "/hacker/:id",
       "title": "get a hacker's information",
       "name": "getHacker",
@@ -1397,6 +1325,78 @@ define({
       "groupTitle": "Hacker",
       "sampleRequest": [{
         "url": "https://api.mchacks.ca/api/hacker/:id"
+      }]
+    },
+    {
+      "type": "get",
+      "url": "/hacker/email/:email",
+      "title": "get a hacker's information",
+      "name": "getHacker",
+      "group": "Hacker",
+      "version": "0.0.8",
+      "parameter": {
+        "fields": {
+          "param": [{
+            "group": "param",
+            "type": "String",
+            "optional": false,
+            "field": "email",
+            "description": "<p>a hacker's unique email</p>"
+          }]
+        }
+      },
+      "success": {
+        "fields": {
+          "Success 200": [{
+              "group": "Success 200",
+              "type": "String",
+              "optional": false,
+              "field": "message",
+              "description": "<p>Success message</p>"
+            },
+            {
+              "group": "Success 200",
+              "type": "Object",
+              "optional": false,
+              "field": "data",
+              "description": "<p>Hacker object</p>"
+            }
+          ]
+        },
+        "examples": [{
+          "title": "Success-Response: ",
+          "content": "{\n               \"message\": \"Successfully retrieved hacker information\", \n               \"data\": {\n                   \"id\":\"5bff4d736f86be0a41badb91\",\n                   \"application\":{\n                       \"portfolioURL\":{\n                           \"resume\":\"resumes/1543458163426-5bff4d736f86be0a41badb91\",\n                           \"github\":\"https://github.com/abcd\",\n                           \"dropler\":\"https://dribbble.com/abcd\",\n                           \"personal\":\"https://www.hi.com/\",\n                           \"linkedIn\":\"https://linkedin.com/in/abcd\",\n                           \"other\":\"https://github.com/hackmcgill/hackerAPI/issues/168\"\n                       },\n                       \"jobInterest\":\"Internship\",\n                       \"skills\":[\"Javascript\",\"Typescript\"],\n                       \"comments\":\"hi!\",\n                       \"essay\":\"Pls accept me\"\n                   },\n                   \"status\":\"Applied\",\n                   \"ethnicity\":[\"White or Caucasian\",\" Asian or Pacific Islander\"],\n                   \"accountId\":\"5bff2a35e533b0f6562b4998\",\n                   \"school\":\"McPherson College\",\n                   \"gender\":\"Female\",\n                   \"needsBus\":false,\n                   \"major\":\"Accounting\",\n                   \"graduationYear\":2019,\n                   \"codeOfConduct\":true,\n               }\n           }",
+          "type": "object"
+        }]
+      },
+      "error": {
+        "fields": {
+          "Error 4xx": [{
+              "group": "Error 4xx",
+              "type": "String",
+              "optional": false,
+              "field": "message",
+              "description": "<p>Error message</p>"
+            },
+            {
+              "group": "Error 4xx",
+              "type": "Object",
+              "optional": false,
+              "field": "data",
+              "description": "<p>empty</p>"
+            }
+          ]
+        },
+        "examples": [{
+          "title": "Error-Response: ",
+          "content": "{\"message\": \"Hacker not found\", \"data\": {}}",
+          "type": "object"
+        }]
+      },
+      "filename": "routes/api/hacker.js",
+      "groupTitle": "Hacker",
+      "sampleRequest": [{
+        "url": "https://api.mchacks.ca/api/hacker/email/:email"
       }]
     },
     {
@@ -2246,6 +2246,86 @@ define({
       "groupTitle": "Search",
       "sampleRequest": [{
         "url": "https://api.mchacks.ca/api/search/"
+      }]
+    },
+    {
+      "type": "get",
+      "url": "/settings/",
+      "title": "Get the settings for the current hackathon",
+      "name": "getSettings",
+      "group": "Settings",
+      "version": "1.1.1",
+      "success": {
+        "fields": {
+          "Success 200": [{
+              "group": "Success 200",
+              "type": "string",
+              "optional": false,
+              "field": "message",
+              "description": "<p>Success message</p>"
+            },
+            {
+              "group": "Success 200",
+              "type": "object",
+              "optional": false,
+              "field": "data",
+              "description": "<p>Settings Object</p>"
+            }
+          ]
+        },
+        "examples": [{
+          "title": "Success-Response: ",
+          "content": "{\n    \"message\": \"Settings creation successful.\", \n    \"data\": {\n        \"settings\": {\n            openTime: \"Wed Feb 06 2019 00:00:00 GMT-0500 (GMT-05:00)\",\n            closeTime: \"Sat Feb 01 2020 00:00:00 GMT-0500 (GMT-05:00)\",\n            confirmTime: \"Sat Feb 20 2020 00:00:00 GMT-0500 (GMT-05:00)\"\n        }\n    }\n}",
+          "type": "object"
+        }]
+      },
+      "permission": [{
+        "name": "public"
+      }],
+      "filename": "routes/api/settings.js",
+      "groupTitle": "Settings",
+      "sampleRequest": [{
+        "url": "https://api.mchacks.ca/api/settings/"
+      }]
+    },
+    {
+      "type": "patch",
+      "url": "/settings/",
+      "title": "Patch the settings for the current hackathon",
+      "name": "patchSettings",
+      "group": "Settings",
+      "version": "1.1.1",
+      "success": {
+        "fields": {
+          "Success 200": [{
+              "group": "Success 200",
+              "type": "string",
+              "optional": false,
+              "field": "message",
+              "description": "<p>Success message</p>"
+            },
+            {
+              "group": "Success 200",
+              "type": "object",
+              "optional": false,
+              "field": "data",
+              "description": "<p>Settings Object</p>"
+            }
+          ]
+        },
+        "examples": [{
+          "title": "Success-Response: ",
+          "content": "{\n    \"message\": \"Settings patch successful.\", \n    \"data\": {\n        \"settings\": {\n            openTime: \"Wed Feb 06 2019 00:00:00 GMT-0500 (GMT-05:00)\",\n            closeTime: \"Sat Feb 01 2020 00:00:00 GMT-0500 (GMT-05:00)\",\n            confirmTime: \"Sat Feb 20 2020 00:00:00 GMT-0500 (GMT-05:00)\"\n        }\n    }\n}",
+          "type": "object"
+        }]
+      },
+      "permission": [{
+        "name": "Administrators"
+      }],
+      "filename": "routes/api/settings.js",
+      "groupTitle": "Settings",
+      "sampleRequest": [{
+        "url": "https://api.mchacks.ca/api/settings/"
       }]
     },
     {
