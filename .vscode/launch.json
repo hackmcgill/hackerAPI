@@ -160,7 +160,7 @@
                 "999999",
                 "--colors",
                 "${workspaceFolder}/tests/setup.spec.js",
-                "${workspaceFolder}/tests/settings.service.js"
+                "${workspaceFolder}/tests/settings.test.js"
             ],
             "internalConsoleOptions": "openOnSessionStart"
         },
