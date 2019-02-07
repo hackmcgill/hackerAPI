@@ -5,9 +5,9 @@ chai.use(chaiHttp);
 const server = require("../app");
 const agent = chai.request.agent(server.app);
 chai.should();
-const Util = {
-    Account: require("./util/account.test.util"),
-    Auth: require("./util/auth.test.util"),
+const util = {
+    account: require("./util/account.test.util"),
+    auth: require("./util/auth.test.util"),
 };
 
 const Constants = {
@@ -15,10 +15,8 @@ const Constants = {
     Error: require("../constants/error.constant"),
 };
 
-const invalidAccount = Util.Account.hackerAccounts.stored.noTeam[0];
-const Admin = Util.Account.staffAccounts.stored[0];
-
-const agent = chai.request.agent(server.app);
+const invalidAccount = util.account.hackerAccounts.stored.noTeam[0];
+const Admin = util.account.staffAccounts.stored[0];
 
 
 describe("GET settings", function () {
@@ -45,7 +43,7 @@ describe("PATCH settings", function () {
                 res.should.have.status(200);
                 res.should.be.json;
                 res.body.should.have.property("message");
-                res.body.message.should.equal(Constants.Success.SETTINGS_GET);
+                res.body.message.should.equal(Constants.Error.AUTH_401_MESSAGE);
                 done();
             });
     });
@@ -55,7 +53,8 @@ describe("PATCH settings", function () {
                 agent.close();
                 return done(error);
             }
-            return agent.patch(`/api/settings/`)
+            return agent
+                .patch(`/api/settings/`)
                 .type("application/json")
                 .send({
                     openTime: new Date().toString(),
@@ -78,7 +77,7 @@ describe("PATCH settings", function () {
                 agent.close();
                 return done(error);
             }
-            return agent.patch(`/api/settings/`)
+            return agent
                 .patch(`/api/settings/`)
                 .type("application/json")
                 .send({

@@ -8,7 +8,7 @@ const logger = require("./logger.service");
  * @return {Promise<Settings>} The promise will resolve to a Settings object if save was successful.
  * @description Adds a new setting to database.
  */
-function updateSettings(settingsDetails) {
+async function updateSettings(settingsDetails) {
     const TAG = "[Setting service # updateSettings]:";
     const existingSetting = await getSettings();
     if (existingSetting) {
