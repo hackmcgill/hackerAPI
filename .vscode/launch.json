@@ -151,6 +151,22 @@
         {
             "type": "node",
             "request": "launch",
+            "name": "Mocha Tests - Settings",
+            "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
+            "args": [
+                "-u",
+                "tdd",
+                "--timeout",
+                "999999",
+                "--colors",
+                "${workspaceFolder}/tests/setup.spec.js",
+                "${workspaceFolder}/tests/settings.service.js"
+            ],
+            "internalConsoleOptions": "openOnSessionStart"
+        },
+        {
+            "type": "node",
+            "request": "launch",
             "name": "Mocha Tests - Email",
             "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
             "args": [
