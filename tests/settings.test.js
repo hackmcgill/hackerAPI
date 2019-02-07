@@ -40,7 +40,7 @@ describe("PATCH settings", function () {
             .patch(`/api/settings/`)
             // does not have password because of to stripped json
             .end(function (err, res) {
-                res.should.have.status(200);
+                res.should.have.status(401);
                 res.should.be.json;
                 res.body.should.have.property("message");
                 res.body.message.should.equal(Constants.Error.AUTH_401_MESSAGE);
@@ -63,7 +63,7 @@ describe("PATCH settings", function () {
                 })
                 // does not have password because of to stripped json
                 .end(function (err, res) {
-                    res.should.have.status(401);
+                    res.should.have.status(403);
                     res.should.be.json;
                     res.body.should.have.property("message");
                     res.body.message.should.equal(Constants.Error.AUTH_403_MESSAGE);

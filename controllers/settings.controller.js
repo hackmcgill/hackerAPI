@@ -11,7 +11,7 @@ const Success = require("../constants/success.constant");
  */
 function gotSettings(req, res) {
     return res.status(200).json({
-        message: Success.SETTINGS_PATCH,
+        message: Success.SETTINGS_GET,
         data: req.body.settingsDetails.toJSON(),
     });
 }
@@ -25,8 +25,8 @@ function gotSettings(req, res) {
  */
 function patchedSettings(req, res) {
     return res.status(200).json({
-        message: Success.SETTINGS_CREATE,
-        data: req.body.settingsDetails.toJSON(),
+        message: Success.SETTINGS_PATCH,
+        data: req.body.settingsDetails,
     });
 }
 
