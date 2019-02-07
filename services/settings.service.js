@@ -5,7 +5,7 @@ const logger = require("./logger.service");
 /**
  * @function updateSettings
  * @param {{_id: ObjectId, openTime: Date, closeTime: Date, confirmTime: Date}} settingsDetails 
- * @return {Promise<Role>} The promise will resolve to a Settings object if save was successful.
+ * @return {Promise<Settings>} The promise will resolve to a Settings object if save was successful.
  * @description Adds a new setting to database.
  */
 function updateSettings(settingsDetails) {

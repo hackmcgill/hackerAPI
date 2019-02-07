@@ -19,6 +19,9 @@ module.exports = {
     activate: function (apiRouter) {
         const settingsRouter = express.Router();
 
+        /**
+         * 
+         */
         settingsRouter.get('/',
             Middleware.Settings.getSettings,
             Controllers.Settings.createdSettings
