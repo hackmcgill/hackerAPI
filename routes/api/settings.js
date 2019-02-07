@@ -71,10 +71,10 @@ module.exports = {
          * @apiPermission Administrators
          */
         settingsRouter.patch('/',
-            Middleware.Auth.ensureAuthenticated,
+            Middleware.Auth.ensureAuthenticated(),
             Middleware.Auth.ensureAuthorized([]),
             Middleware.Validator.Settings.createSettingsValidator,
-            Middleware.parseBody,
+            Middleware.parseBody.middleware,
             Middleware.Settings.parsePatch,
             Middleware.Settings.updateSettings,
             Controllers.Settings.patchedSettings
