@@ -1,4 +1,5 @@
 const Settings = require("../../models/settings.model");
+const logger = require("../../services/logger.service");
 
 const settingRegistrationNotYetOpen = {
     openTime: new Date(Date.now() + 100000000000),
@@ -28,14 +29,14 @@ const settingConfirmClosed = {
 
 async function storeAll() {
     const toStore = new Settings(settingRegistrationClosed);
-    Settings.collection.insert(toStore);
+    Settings.collection.insertOne(toStore);
 }
 async function dropAll() {
     try {
         await Settings.collection.drop();
     } catch (e) {
         if (e.code === 26) {
-            logger.info("namespace %s not found", Hacker.collection.name);
+            logger.info("namespace %s not found", Settings.collection.name);
         } else {
             throw e;
         }
