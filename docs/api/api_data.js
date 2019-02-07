@@ -2295,6 +2295,32 @@ define({
       "name": "patchSettings",
       "group": "Settings",
       "version": "1.1.1",
+      "parameter": {
+        "fields": {
+          "body": [{
+              "group": "body",
+              "type": "Date",
+              "optional": true,
+              "field": "openTime",
+              "description": "<p>The opening time for the hackathon.</p>"
+            },
+            {
+              "group": "body",
+              "type": "Date",
+              "optional": true,
+              "field": "closeTime",
+              "description": "<p>The closing time for the hackathon.</p>"
+            },
+            {
+              "group": "body",
+              "type": "Date",
+              "optional": true,
+              "field": "confirmTime",
+              "description": "<p>The deadline for confirmation for the hackathon.</p>"
+            }
+          ]
+        }
+      },
       "success": {
         "fields": {
           "Success 200": [{

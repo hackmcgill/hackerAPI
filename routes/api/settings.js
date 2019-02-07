@@ -51,6 +51,10 @@ module.exports = {
          * @apiGroup Settings
          * @apiVersion 1.1.1
          * 
+         * @apiParam (body) {Date} [openTime] The opening time for the hackathon.
+         * @apiParam (body) {Date} [closeTime] The closing time for the hackathon.
+         * @apiParam (body) {Date} [confirmTime] The deadline for confirmation for the hackathon.
+         * 
          * @apiSuccess {string} message Success message
          * @apiSuccess {object} data Settings Object
          * @apiSuccessExample {object} Success-Response: 
