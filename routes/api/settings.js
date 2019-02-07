@@ -42,7 +42,7 @@ module.exports = {
          */
         settingsRouter.get('/',
             Middleware.Settings.getSettings,
-            Controllers.Settings.createdSettings
+            Controllers.Settings.gotSettings
         );
 
         /**
@@ -77,7 +77,7 @@ module.exports = {
             Middleware.parseBody,
             Middleware.Settings.parsePatch,
             Middleware.Settings.updateSettings,
-            Controllers.Settings.createdSettings
+            Controllers.Settings.patchedSettings
         );
 
         apiRouter.use("/settings", settingsRouter);

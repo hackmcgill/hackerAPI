@@ -32,8 +32,8 @@ const ROLE_CREATE = "Role creation successful.";
 const SEARCH_QUERY = "Query search successful. Returning results.";
 const SEARCH_NO_RESULTS = "Query search successful. No results found.";
 
-const SETTINGS_CREATE = "Settings creation successful.";
-const SETTINGS_PATCH = "Settings patch successful.";
+const SETTINGS_UPDATE = "Settings update successful.";
+const SETTINGS_GET = "Settings get successful.";
 
 
 const SPONSOR_GET_BY_ID = "Sponsor found by id.";
@@ -84,7 +84,7 @@ module.exports = {
     SEARCH_QUERY: SEARCH_QUERY,
     SEARCH_NO_RESULTS: SEARCH_NO_RESULTS,
 
-    SETTINGS_CREATE: SETTINGS_CREATE,
+    SETTINGS_GET: SETTINGS_GET,
     SETTINGS_PATCH: SETTINGS_PATCH,
 
     SPONSOR_GET_BY_ID: SPONSOR_GET_BY_ID,
