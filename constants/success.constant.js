@@ -32,7 +32,7 @@ const ROLE_CREATE = "Role creation successful.";
 const SEARCH_QUERY = "Query search successful. Returning results.";
 const SEARCH_NO_RESULTS = "Query search successful. No results found.";
 
-const SETTINGS_UPDATE = "Settings update successful.";
+const SETTINGS_PATCH = "Settings update successful.";
 const SETTINGS_GET = "Settings get successful.";
 
 
