@@ -1167,7 +1167,7 @@ define({
             },
             {
               "group": "body",
-              "type": "String",
+              "type": "String[]",
               "optional": false,
               "field": "major",
               "description": "<p>the major of the hacker</p>"
@@ -1551,7 +1551,7 @@ define({
             },
             {
               "group": "body",
-              "type": "String",
+              "type": "String[]",
               "optional": true,
               "field": "major",
               "description": "<p>the major of the hacker</p>"
@@ -1992,7 +1992,7 @@ define({
         },
         "examples": [{
           "title": "Success-Response: ",
-          "content": "{\n               \"message\": \"Hacker found by logged in account id\", \n               \"data\": {\n                   \"id\":\"5bff4d736f86be0a41badb91\",\n                   \"application\":{\n                       \"portfolioURL\":{\n                           \"resume\":\"resumes/1543458163426-5bff4d736f86be0a41badb91\",\n                           \"github\":\"https://github.com/abcd\",\n                           \"dropler\":\"https://dribbble.com/abcd\",\n                           \"personal\":\"https://www.hi.com/\",\n                           \"linkedIn\":\"https://linkedin.com/in/abcd\",\n                           \"other\":\"https://github.com/hackmcgill/hackerAPI/issues/168\"\n                       },\n                       \"jobInterest\":\"Internship\",\n                       \"skills\":[\"Javascript\",\"Typescript\"],\n                       \"comments\":\"hi!\",\n                       \"essay\":\"Pls accept me\"\n                   },\n                   \"status\":\"Applied\",\n                   \"ethnicity\":[\"White or Caucasian\",\" Asian or Pacific Islander\"],\n                   \"accountId\":\"5bff2a35e533b0f6562b4998\",\n                   \"school\":\"McPherson College\",\n                   \"gender\":\"Female\",\n                   \"needsBus\":false,\n                   \"major\":\"Accounting\",\n                   \"graduationYear\":2019,\n                   \"codeOfConduct\":true,\n               }  \n           }",
+          "content": "{\n               \"message\": \"Hacker found by logged in account id\", \n               \"data\": {\n                   \"id\":\"5bff4d736f86be0a41badb91\",\n                   \"application\":{\n                       \"portfolioURL\":{\n                           \"resume\":\"resumes/1543458163426-5bff4d736f86be0a41badb91\",\n                           \"github\":\"https://github.com/abcd\",\n                           \"dropler\":\"https://dribbble.com/abcd\",\n                           \"personal\":\"https://www.hi.com/\",\n                           \"linkedIn\":\"https://linkedin.com/in/abcd\",\n                           \"other\":\"https://github.com/hackmcgill/hackerAPI/issues/168\"\n                       },\n                       \"jobInterest\":\"Internship\",\n                       \"skills\":[\"Javascript\",\"Typescript\"],\n                       \"comments\":\"hi!\",\n                       \"essay\":\"Pls accept me\"\n                   },\n                   \"status\":\"Applied\",\n                   \"ethnicity\":[\"White or Caucasian\",\" Asian or Pacific Islander\"],\n                   \"accountId\":\"5bff2a35e533b0f6562b4998\",\n                   \"school\":\"McPherson College\",\n                   \"gender\":\"Female\",\n                   \"needsBus\":false,\n                   \"major\":[\"Accounting\"],\n                   \"graduationYear\":2019,\n                   \"codeOfConduct\":true,\n               }  \n           }",
           "type": "object"
         }]
       },

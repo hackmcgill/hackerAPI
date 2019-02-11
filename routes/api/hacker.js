@@ -89,7 +89,7 @@ module.exports = {
          * @apiParam (body) {String} gender Gender of the hacker
          * @apiParam (body) {Boolean} needsBus Whether the hacker requires a bus for transportation
          * @apiParam (body) {String[]} ethnicity the ethnicities of the hacker
-         * @apiParam (body) {String} major the major of the hacker
+         * @apiParam (body) {String[]} major the major of the hacker
          * @apiParam (body) {Number} graduationYear the graduation year of the hacker
          * @apiParam (body) {Boolean} codeOfConduct acceptance of the code of conduct 
          * @apiParam (body) {Json} application The hacker's application. Resume and jobInterest fields are required.
@@ -291,7 +291,7 @@ module.exports = {
          * @apiParam (body) {String} [gender] Gender of the hacker
          * @apiParam (body) {Boolean} [needsBus] Whether the hacker requires a bus for transportation
          * @apiParam (body) {String[]} [ethnicity] the ethnicities of the hacker
-         * @apiParam (body) {String} [major] the major of the hacker
+         * @apiParam (body) {String[]} [major] the major of the hacker
          * @apiParam (body) {Number} [graduationYear] the graduation year of the hacker
          * @apiParam (body) {Json} [application] The hacker's application
          * @apiParamExample {Json} application: 
