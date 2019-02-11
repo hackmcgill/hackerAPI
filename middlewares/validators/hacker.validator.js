@@ -6,13 +6,13 @@ module.exports = {
     newHackerValidator: [
         // status will be added automatically
         VALIDATOR.mongoIdValidator("body", "accountId", false),
-        VALIDATOR.asciiValidator("body", "school", false),
-        VALIDATOR.asciiValidator("body", "degree", false),
-        VALIDATOR.asciiValidator("body", "gender", false),
+        VALIDATOR.stringValidator("body", "school", false),
+        VALIDATOR.stringValidator("body", "degree", false),
+        VALIDATOR.stringValidator("body", "gender", false),
         VALIDATOR.booleanValidator("body", "needsBus", false),
         VALIDATOR.applicationValidator("body", "application", false),
         VALIDATOR.alphaArrayValidator("body", "ethnicity", false),
-        VALIDATOR.asciiValidator("body", "major", false),
+        VALIDATOR.alphaArrayValidator("body", "major", false),
         VALIDATOR.integerValidator("body", "graduationYear", false, 2019, 2030),
         VALIDATOR.booleanValidator("body", "codeOfConduct", false, true),
         VALIDATOR.mongoIdValidator("body", "teamId", true)
@@ -23,13 +23,13 @@ module.exports = {
     ],
 
     updateHackerValidator: [
-        VALIDATOR.asciiValidator("body", "school", true),
-        VALIDATOR.asciiValidator("body", "degree", true),
-        VALIDATOR.asciiValidator("body", "gender", true),
+        VALIDATOR.stringValidator("body", "school", true),
+        VALIDATOR.stringValidator("body", "degree", true),
+        VALIDATOR.stringValidator("body", "gender", true),
         VALIDATOR.booleanValidator("body", "needsBus", true),
         VALIDATOR.applicationValidator("body", "application", true),
         VALIDATOR.alphaArrayValidator("body", "ethnicity", true),
-        VALIDATOR.asciiValidator("body", "major", true),
+        VALIDATOR.stringValidator("body", "major", true),
         VALIDATOR.integerValidator("body", "graduationYear", true, 2019, 2030),
     ],
     updateStatusValidator: [

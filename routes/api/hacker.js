@@ -59,7 +59,7 @@ module.exports = {
                         "school":"McPherson College",
                         "gender":"Female",
                         "needsBus":false,
-                        "major":"Accounting",
+                        "major":["Accounting"],
                         "graduationYear":2019,
                         "codeOfConduct":true,
                     }  
