@@ -29,7 +29,7 @@ module.exports = {
         VALIDATOR.booleanValidator("body", "needsBus", true),
         VALIDATOR.applicationValidator("body", "application", true),
         VALIDATOR.alphaArrayValidator("body", "ethnicity", true),
-        VALIDATOR.stringValidator("body", "major", true),
+        VALIDATOR.alphaArrayValidator("body", "major", true),
         VALIDATOR.integerValidator("body", "graduationYear", true, 2019, 2030),
     ],
     updateStatusValidator: [
