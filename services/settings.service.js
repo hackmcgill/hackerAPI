@@ -20,9 +20,9 @@ async function updateSettings(settingsDetails) {
 }
 
 /**
- * @function getRole
- * @description 
- * Returns the setting item
+ * @function getSettings
+ * @return {Promise<Settings>} The promise will resolve to a Settings object if retrieval was successful.
+ * @description Returns the setting item
  */
 function getSettings() {
     const TAG = "[Setting service # getSettings]:";
