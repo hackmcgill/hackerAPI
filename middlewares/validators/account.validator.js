@@ -4,9 +4,9 @@ const Constants = require("../../constants/general.constant");
 
 module.exports = {
     newAccountValidator: [
-        VALIDATOR.asciiValidator("body", "firstName", false),
-        VALIDATOR.asciiValidator("body", "lastName", false),
-        VALIDATOR.asciiValidator("body", "pronoun", false),
+        VALIDATOR.stringValidator("body", "firstName", false),
+        VALIDATOR.stringValidator("body", "lastName", false),
+        VALIDATOR.stringValidator("body", "pronoun", false),
         VALIDATOR.regexValidator("body", "email", false, Constants.EMAIL_REGEX),
         VALIDATOR.alphaArrayValidator("body", "dietaryRestrictions", false),
         VALIDATOR.enumValidator("body", "shirtSize", Constants.SHIRT_SIZES, false),
@@ -16,9 +16,9 @@ module.exports = {
         VALIDATOR.phoneNumberValidator("body", "phoneNumber", false)
     ],
     updateAccountValidator: [
-        VALIDATOR.asciiValidator("body", "firstName", true),
-        VALIDATOR.asciiValidator("body", "lastName", true),
-        VALIDATOR.asciiValidator("body", "pronoun", true),
+        VALIDATOR.stringValidator("body", "firstName", true),
+        VALIDATOR.stringValidator("body", "lastName", true),
+        VALIDATOR.stringValidator("body", "pronoun", true),
         VALIDATOR.regexValidator("body", "email", true, Constants.EMAIL_REGEX),
         VALIDATOR.alphaArrayValidator("body", "dietaryRestrictions", true),
         VALIDATOR.enumValidator("body", "shirtSize", Constants.SHIRT_SIZES, true),
