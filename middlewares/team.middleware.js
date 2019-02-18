@@ -67,7 +67,8 @@ async function createTeam(req, res, next) {
     const team = await Services.Team.createTeam(teamDetails);
 
     if (!team) {
-        return res.status(500).json({
+        return next({
+            status: 500,
             message: Constants.Error.TEAM_CREATE_500_MESSAGE,
             data: {}
         });
@@ -79,8 +80,9 @@ async function createTeam(req, res, next) {
         });
 
         if (!hacker) {
-            return res.status(500).json({
-                message: Constants.Error.HACKER_UPDATE_500_MESSAGE,
+            return next({
+                status: 500,
+                message: Constants.Error.TEAM_CREATE_500_MESSAGE,
                 data: {}
             });
         }
@@ -260,7 +262,8 @@ async function findById(req, res, next) {
     const team = await Services.Team.findById(req.body.id);
 
     if (!team) {
-        return res.status(404).json({
+        return next({
+            status: 404,
             message: Constants.Error.TEAM_404_MESSAGE,
             data: {}
         });
@@ -373,7 +376,8 @@ async function findById(req, res, next) {
     const team = await Services.Team.findById(req.body.id);
 
     if (!team) {
-        return res.status(404).json({
+        return next({
+            status: 404,
             message: Constants.Error.TEAM_404_MESSAGE,
             data: {}
         });
@@ -402,7 +406,8 @@ async function populateMemberAccountsById(req, res, next) {
     });
 
     if (!team) {
-        return res.status(404).json({
+        return next({
+            status: 404,
             message: Constants.Error.TEAM_404_MESSAGE,
             data: {}
         });
