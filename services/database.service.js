@@ -46,7 +46,8 @@ module.exports = {
         logger.info(`${TAG} Connecting to db on ${url}`);
         mongoose.connect(url, {
             useNewUrlParser: true,
-            useCreateIndex: true
+            useCreateIndex: true,
+            useFindAndModify: false
         }).then(function () {
             logger.info(`${TAG} Connected to database on ${url}`);
             if (app) {
