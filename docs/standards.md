@@ -16,7 +16,7 @@ The naming convention for all `.js` files (with the exception of routes) is as s
 
 ### Middleware files
 
-Middleware functions are chained together in a route to process a request in a modular way. Look at Express.js documentation for a better understanding.
+Middleware functions are chained together in a route to process a request in a modular way. Look at Express.js [documentation](https://expressjs.com/en/guide/using-middleware.html) for a better understanding.
 Below is an example middleware file:
 
 ```javascript
@@ -185,8 +185,9 @@ Things to take note of:
 * **`activate` function**: Every route file contains one exported function, called `activate`. This takes as input an `ExpressRouter`, to which we will attach the sub router to. We will also define all of the sub-routes in this function.
 * **Chaining middlewares in a route**: We chain middlewares together by placing them one after another as arguments to the http request of the route.
 * **Ordering of middleware**:
-  * The first middleware should always be the validator for the inputted data of a route. In this case, we have the validator for a new account.
-  * The next middleware should always be `Middleware.parseBody.middleware`. This middleware parses validated information, and places it inside of `req.body` if everything is properly validated. Else, it errors out.
+  * If input is expected, validation of that input should be done promptly. Therefore validators are generally the first middlewares. 
+    * The first middleware should be the validator for the inputted data of a route. In this case, we have the validator for a new account.
+    * The next middleware should be `Middleware.parseBody.middleware` to parse the validated information. This middleware also places the data inside of `req.body`. If validation fails, it fails the request. 
   * The following middlewares will depend on what type of route it is. In this case, we are creating a new item in our database, so we want to create a new `Account` object. This is what `Middleware.Account.parseAccount` does.
   * Finally, we want to interact with the database. This is done either in the `Controller` function, or in another `middleware` function.
   * the last middleware should always be a `Controller` (since we want to respond to the user of the api).
@@ -201,7 +202,41 @@ Things to take note of:
 
 ### Test files
 
-`TODO`
+#### Util files and Test Database Population
+
+##### Motivation
+
+We wanted to have a scalable way to create new entities that properly reference each other
+
+##### Util.js
+
+Account.util.js contains the test data for accounts. When an account is created, it is placeed within an object whose name references the type of account it will be (ex: Hacker, Sponsor, etc). The object has keys that further define the state of the account. The keys are: `new` for new accounts, `stored` for accounts that already exist, and `invalid` for invalid accounts. Additionally, there are 2 more keys inside `stored` for hacker accounts, which are `team` and `noTeam` for accounts linked to hackers that are on a team, or not on a team respectively.
+
+```javascript
+let hackerAccounts = {
+    new: createNAccounts(10, {
+        "accountType": Constants.HACKER,
+        "confirmed": true,
+    }),
+    stored: {
+        team: createNAccounts(10, {
+            "accountType": Constants.HACKER,
+            "confirmed": true,
+        }),
+        noTeam: createNAccounts(10, {
+            "accountType": Constants.HACKER,
+            "confirmed": true,
+        }),
+    },
+    invalid: createNAccounts(10, {
+        "accountType": Constants.HACKER
+    })
+};
+```
+
+In this example the `new` accounts are accounts that exist, but the hacker objects have not been created. The `stored.team` accounts are those linked to a hacker object that is in a team. The `stored.noTeam` accounts link to  a hacker that is not in a team. The `invalid` accounts are created accounts that are linked to a hacker object that does not fit with the Hacker schema. The invalid accounts are used to test fail cases. The value for each key is an array of account objects. 
+
+On the other end of the account-hacker link, [hacker.util.js](../tests/util/hacker.test.util.js) contains the hacker data in the form of hacker objects. These hacker objects have an `accountId` attribute which references an account's `_id`. The matching between the hacker object and the respective account object it needs to link to is also done by nomenclature. For example, a hacker on a team would be called `TeamHackerX` where X is a number. This hacker's account object would be within the array specified by `hackerAccounts.stored.team`. The specific account object is referenced by its index in the array. That index is the same as the value X in the name of the hacker object.
 
 ### Validation files
 
