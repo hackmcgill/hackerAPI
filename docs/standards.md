@@ -6,6 +6,22 @@ Build off of develop. If you are working on a feature, make the branch name `fea
 
 We use github issues to track tasks, and projects to organize them. If you are working on a new issue that is not being tracked, please create one and file it into the proper project.
 
+### Creating a PR
+
+Create the pull-request on the GitHub website. It should pre-populate with a pull request template. Fill out all of the relevant information, such as the issue number, and the checkboxes. Request at least one person to conduct a PR. All tests must pass before you can merge into `develop` or `master`.
+
+### Code Review
+
+During a code review, look for the following pieces of information:
+
+- Are the functions commented?
+- Do the variable names make sense, and are in `camelCase`?
+- Are the functions in the correct location?
+- Does the logic make sense?
+- Are there any unnecessary changes that should be removed?
+
+(Things to look for are not limited to the above).
+
 ## Javascript
 
 We follow ES6, and use jshint to tell us when we're not writing good code. We use async / await, which is not supported by jshint (yet).
