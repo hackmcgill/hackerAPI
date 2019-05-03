@@ -298,7 +298,40 @@ On the other end of the account-hacker link, [hacker.util.js](../tests/util/hack
 
 ### Validation files
 
-`TODO`
+Validation files are located in the `middlewares` directory under a subdirectory called `validators`. The filenames are `<X>.validator.js`. To be used in a route, a validator needs to be a list express validator functions. We have generic validator functions located in [validator.helper.js](../middlewares/validators/validator.helper.js). The goal is to have a generic validator function for each datatype, which can then be put in the list of validators as the situation requires. The generic validators may take several arguments, but generally require:
+  * Where the variable is located: `body`, `query`, `header`, or `param`. To validate a value located in `req.body`, one should use `body`
+  * The fieldname, such as `email` for `req.body.email`.
+  * A boolean detailing whether this value is optional. `false` means that the value is necessary.
+
+A validator example:
+```javascript
+"use strict";
+const VALIDATOR = require("./validator.helper");
+const Constants = require("../../constants/general.constant");
+
+module.exports = {
+    inviteAccountValidator: [
+        VALIDATOR.regexValidator("body", "email", false, Constants.EMAIL_REGEX),
+        VALIDATOR.enumValidator("body", "accountType", Constants.EXTENDED_USER_TYPES, false)
+    ]
+};
+```
+
+A route would use a validator in the following manner: 
+```javascript
+    accountRouter.route("/:id").patch(
+        ...
+        // validators
+        Middleware.Validator.RouteParam.idValidator,
+        Middleware.Validator.Account.updateAccountValidator,
+
+        Middleware.parseBody.middleware,
+        ...
+    );
+```
+
+`Middleware.parseBody.middleware` evaluates the validator functions, so it is generally placed right after the validators. If there is an error during validation, it will send a 422 error status to be handled. If all the validators pass, then it will move the validated values into req.body.
+
 
 ## Documentation of API
 
