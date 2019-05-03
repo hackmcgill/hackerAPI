@@ -250,11 +250,21 @@ More information on asynchronous functions can be found here (TODO: Link)
 
 ### Test files
 
+We use [Mocha](https://mochajs.org/) with [Chai](https://www.chaijs.com/) to test our routes and services. These test files are located in the `tests` folder, and are named `<X>.test.js` or `<X>.spec.js`. It is important to test both succcess and fail cases. For example, testing account retrieval may include scenarios of:
+  * Failure due to authentication
+  * Failure due to authorization
+  * Failure due to the account not existing
+  * Success case for a user
+  * Success case for an admin
+The code for this example can be found in [account.test.js](../tests/account.test.js).
+
+We repopulate the test server before each test to ensure consistency. [setup.spec.js](../tests/setup.spec.js) contains the code for that. The `storeAll` and `dropAll` functions call test util functions that store and drop specific collections. For example, `account.test.util.js` contains the code a `storeAll` function that inserts all the test account documents into the test database.
+
 #### Util files and Test Database Population
 
 ##### Motivation
 
-We wanted to have a scalable way to create new entities that properly reference each other
+We wanted to have a scalable way to create new entities that properly reference each other. The biggest challenge lies in creating enough accounts that can be properly referenced during specific tests. 
 
 ##### Util.js
 
