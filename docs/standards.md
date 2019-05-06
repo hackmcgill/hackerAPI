@@ -225,7 +225,7 @@ module.exports = {
 ```
 
 Things to take note of:
-* **async & await**: When the service call is to a mongoose model, they generally return a mongoose query. These can be handled as a promise, and Mongoose has further documentation on it here (TODO: Link). We handle then by using `await` on the service call. For example, a middleware function that uses `findById` would be: 
+* **async & await**: When the service call is to a mongoose model, they generally return a mongoose query. These can be handled as a promise, and Mongoose has further documentation on it [here](https://mongoosejs.com/docs/api.html). We handle then by using `await` on the service call. For example, a middleware function that uses `findById` would be: 
   ```javascript
     async function getById(req, res, next) {
         const acc = await Services.Account.findById(req.body.id);
@@ -245,7 +245,7 @@ It's important to:
   * Use `await` when calling the service function
   * Put `async` in the method head
   * Check the output of the service function call for any errors
-More information on asynchronous functions can be found here (TODO: Link)
+More information on asynchronous functions can be found [here](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function).
 * **queryCallbackFactory**: The query callback factory returns a function that uses winston to log the success or failure of the service call. The callback factory is used for mongoose service calls.
 
 ### Test files
