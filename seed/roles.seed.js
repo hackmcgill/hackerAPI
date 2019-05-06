@@ -14,7 +14,7 @@ if (envLoadResult.error) {
  * Drops all elements in Role
  */
 function dropAll() {
-    return Role.remove({});
+    return Role.deleteMany({});
 }
 
 /**

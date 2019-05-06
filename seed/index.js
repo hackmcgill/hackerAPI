@@ -9,21 +9,21 @@ const Seed = {
 
 const db = require("../services/database.service");
 //connect to db
-db.connect(undefined, onConnected);
+db.connect(undefined, () => {
+    onConnected().catch((reason) => {
+        console.error(reason);
+        process.exit(1);
+    }).then(() => {
+        process.exit(0);
+    });
+});
 
 //called when the db is connected
-function onConnected() {
-    dropAll().then(() => {
-        console.log("Finished dropping");
-        storeAll().then(() => {
-            console.log("Finished seeding");
-        }).catch((error) => {
-            console.log(error);
-        });
-    }, (err) => {
-        console.error(err);
-    });
-
+async function onConnected() {
+    await dropAll();
+    console.log("Finished dropping");
+    await storeAll();
+    console.log("Finished seeding");
 }
 
 async function dropAll() {

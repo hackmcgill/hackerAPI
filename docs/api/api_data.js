@@ -1167,7 +1167,7 @@ define({
             },
             {
               "group": "body",
-              "type": "String",
+              "type": "String[]",
               "optional": false,
               "field": "major",
               "description": "<p>the major of the hacker</p>"
@@ -1551,7 +1551,7 @@ define({
             },
             {
               "group": "body",
-              "type": "String",
+              "type": "String[]",
               "optional": true,
               "field": "major",
               "description": "<p>the major of the hacker</p>"
@@ -1850,6 +1850,58 @@ define({
       }]
     },
     {
+      "type": "post",
+      "url": "/hacker/email/weekOf/:id",
+      "title": "",
+      "description": "<p>Sends a hacker the week-of email, along with the HackPass QR code to view their hacker profile (for checkin purposes). Hackers must be eitherconfirmed, or checked in.</p>",
+      "name": "postHackerSendWeekOfEmail",
+      "group": "Hacker",
+      "version": "0.0.9",
+      "parameter": {
+        "fields": {
+          "param": [{
+            "group": "param",
+            "type": "string",
+            "optional": true,
+            "field": "status",
+            "description": "<p>The hacker ID</p>"
+          }]
+        }
+      },
+      "success": {
+        "fields": {
+          "Success 200": [{
+              "group": "Success 200",
+              "type": "string",
+              "optional": false,
+              "field": "message",
+              "description": "<p>Success message</p>"
+            },
+            {
+              "group": "Success 200",
+              "type": "object",
+              "optional": false,
+              "field": "data",
+              "description": "<p>empty</p>"
+            }
+          ]
+        },
+        "examples": [{
+          "title": "Success-Response: ",
+          "content": "{\n    \"message\": \"Hacker week-of email sent.\", \n    \"data\": {}\n}",
+          "type": "object"
+        }]
+      },
+      "permission": [{
+        "name": "Administrator"
+      }],
+      "filename": "routes/api/hacker.js",
+      "groupTitle": "Hacker",
+      "sampleRequest": [{
+        "url": "https://api.mchacks.ca/api/hacker/email/weekOf/:id"
+      }]
+    },
+    {
       "type": "get",
       "url": "/sponsor/self",
       "title": "get information about logged in sponsor",
@@ -1940,7 +1992,7 @@ define({
         },
         "examples": [{
           "title": "Success-Response: ",
-          "content": "{\n               \"message\": \"Hacker found by logged in account id\", \n               \"data\": {\n                   \"id\":\"5bff4d736f86be0a41badb91\",\n                   \"application\":{\n                       \"portfolioURL\":{\n                           \"resume\":\"resumes/1543458163426-5bff4d736f86be0a41badb91\",\n                           \"github\":\"https://github.com/abcd\",\n                           \"dropler\":\"https://dribbble.com/abcd\",\n                           \"personal\":\"https://www.hi.com/\",\n                           \"linkedIn\":\"https://linkedin.com/in/abcd\",\n                           \"other\":\"https://github.com/hackmcgill/hackerAPI/issues/168\"\n                       },\n                       \"jobInterest\":\"Internship\",\n                       \"skills\":[\"Javascript\",\"Typescript\"],\n                       \"comments\":\"hi!\",\n                       \"essay\":\"Pls accept me\"\n                   },\n                   \"status\":\"Applied\",\n                   \"ethnicity\":[\"White or Caucasian\",\" Asian or Pacific Islander\"],\n                   \"accountId\":\"5bff2a35e533b0f6562b4998\",\n                   \"school\":\"McPherson College\",\n                   \"gender\":\"Female\",\n                   \"needsBus\":false,\n                   \"major\":\"Accounting\",\n                   \"graduationYear\":2019,\n                   \"codeOfConduct\":true,\n               }  \n           }",
+          "content": "{\n               \"message\": \"Hacker found by logged in account id\", \n               \"data\": {\n                   \"id\":\"5bff4d736f86be0a41badb91\",\n                   \"application\":{\n                       \"portfolioURL\":{\n                           \"resume\":\"resumes/1543458163426-5bff4d736f86be0a41badb91\",\n                           \"github\":\"https://github.com/abcd\",\n                           \"dropler\":\"https://dribbble.com/abcd\",\n                           \"personal\":\"https://www.hi.com/\",\n                           \"linkedIn\":\"https://linkedin.com/in/abcd\",\n                           \"other\":\"https://github.com/hackmcgill/hackerAPI/issues/168\"\n                       },\n                       \"jobInterest\":\"Internship\",\n                       \"skills\":[\"Javascript\",\"Typescript\"],\n                       \"comments\":\"hi!\",\n                       \"essay\":\"Pls accept me\"\n                   },\n                   \"status\":\"Applied\",\n                   \"ethnicity\":[\"White or Caucasian\",\" Asian or Pacific Islander\"],\n                   \"accountId\":\"5bff2a35e533b0f6562b4998\",\n                   \"school\":\"McPherson College\",\n                   \"gender\":\"Female\",\n                   \"needsBus\":false,\n                   \"major\":[\"Accounting\"],\n                   \"graduationYear\":2019,\n                   \"codeOfConduct\":true,\n               }  \n           }",
           "type": "object"
         }]
       },
@@ -2194,6 +2246,112 @@ define({
       "groupTitle": "Search",
       "sampleRequest": [{
         "url": "https://api.mchacks.ca/api/search/"
+      }]
+    },
+    {
+      "type": "get",
+      "url": "/settings/",
+      "title": "Get the settings for the current hackathon",
+      "name": "getSettings",
+      "group": "Settings",
+      "version": "1.1.1",
+      "success": {
+        "fields": {
+          "Success 200": [{
+              "group": "Success 200",
+              "type": "string",
+              "optional": false,
+              "field": "message",
+              "description": "<p>Success message</p>"
+            },
+            {
+              "group": "Success 200",
+              "type": "object",
+              "optional": false,
+              "field": "data",
+              "description": "<p>Settings Object</p>"
+            }
+          ]
+        },
+        "examples": [{
+          "title": "Success-Response: ",
+          "content": "{\n    \"message\": \"Settings creation successful.\", \n    \"data\": {\n        \"settings\": {\n            openTime: \"Wed Feb 06 2019 00:00:00 GMT-0500 (GMT-05:00)\",\n            closeTime: \"Sat Feb 01 2020 00:00:00 GMT-0500 (GMT-05:00)\",\n            confirmTime: \"Sat Feb 20 2020 00:00:00 GMT-0500 (GMT-05:00)\"\n        }\n    }\n}",
+          "type": "object"
+        }]
+      },
+      "permission": [{
+        "name": "public"
+      }],
+      "filename": "routes/api/settings.js",
+      "groupTitle": "Settings",
+      "sampleRequest": [{
+        "url": "https://api.mchacks.ca/api/settings/"
+      }]
+    },
+    {
+      "type": "patch",
+      "url": "/settings/",
+      "title": "Patch the settings for the current hackathon",
+      "name": "patchSettings",
+      "group": "Settings",
+      "version": "1.1.1",
+      "parameter": {
+        "fields": {
+          "body": [{
+              "group": "body",
+              "type": "Date",
+              "optional": true,
+              "field": "openTime",
+              "description": "<p>The opening time for the hackathon.</p>"
+            },
+            {
+              "group": "body",
+              "type": "Date",
+              "optional": true,
+              "field": "closeTime",
+              "description": "<p>The closing time for the hackathon.</p>"
+            },
+            {
+              "group": "body",
+              "type": "Date",
+              "optional": true,
+              "field": "confirmTime",
+              "description": "<p>The deadline for confirmation for the hackathon.</p>"
+            }
+          ]
+        }
+      },
+      "success": {
+        "fields": {
+          "Success 200": [{
+              "group": "Success 200",
+              "type": "string",
+              "optional": false,
+              "field": "message",
+              "description": "<p>Success message</p>"
+            },
+            {
+              "group": "Success 200",
+              "type": "object",
+              "optional": false,
+              "field": "data",
+              "description": "<p>Settings Object</p>"
+            }
+          ]
+        },
+        "examples": [{
+          "title": "Success-Response: ",
+          "content": "{\n    \"message\": \"Settings patch successful.\", \n    \"data\": {\n        \"settings\": {\n            openTime: \"Wed Feb 06 2019 00:00:00 GMT-0500 (GMT-05:00)\",\n            closeTime: \"Sat Feb 01 2020 00:00:00 GMT-0500 (GMT-05:00)\",\n            confirmTime: \"Sat Feb 20 2020 00:00:00 GMT-0500 (GMT-05:00)\"\n        }\n    }\n}",
+          "type": "object"
+        }]
+      },
+      "permission": [{
+        "name": "Administrators"
+      }],
+      "filename": "routes/api/settings.js",
+      "groupTitle": "Settings",
+      "sampleRequest": [{
+        "url": "https://api.mchacks.ca/api/settings/"
       }]
     },
     {

@@ -132,6 +132,14 @@ const hackerRoutes = {
         requestType: Constants.REQUEST_TYPES.POST,
         uri: "/api/hacker/email/weekOf/" + Constants.ROLE_CATEGORIES.SELF,
     },
+    "postAnySendDayOfEmail": {
+        requestType: Constants.REQUEST_TYPES.POST,
+        uri: "/api/hacker/email/dayOf/" + Constants.ROLE_CATEGORIES.ALL,
+    },
+    "postSelfSendDayOfEmail": {
+        requestType: Constants.REQUEST_TYPES.POST,
+        uri: "/api/hacker/email/dayOf/" + Constants.ROLE_CATEGORIES.SELF,
+    },
 };
 
 const sponsorRoutes = {
@@ -233,6 +241,17 @@ const staffRoutes = {
 
 }
 
+const settingsRoutes = {
+    "getSettings": {
+        requestType: Constants.REQUEST_TYPES.GET,
+        uri: "/api/settings"
+    },
+    "patchSettings": {
+        requestType: Constants.REQUEST_TYPES.PATCH,
+        uri: "/api/settings"
+    },
+}
+
 const allRoutes = {
     "Auth": authRoutes,
     "Account": accountRoutes,
@@ -242,6 +261,7 @@ const allRoutes = {
     "Volunteer": volunteerRoutes,
     "Role": roleRoutes,
     "Search": searchRoutes,
+    "Settings": settingsRoutes,
     "Staff": staffRoutes,
 };
 
@@ -280,6 +300,7 @@ module.exports = {
     volunteerRoutes: volunteerRoutes,
     roleRoutes: roleRoutes,
     searchRoutes: searchRoutes,
+    settingsRoutes: settingsRoutes,
     staffRoutes: staffRoutes,
     allRoutes: allRoutes,
     listAllRoutes: listAllRoutes,
