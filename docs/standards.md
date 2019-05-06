@@ -198,7 +198,7 @@ Things to take note of:
 
 ### Services files
 
-Service files are contain functions that interact with external services. The most common service file interacts with mongoose models to find, create, update documents. Service files are found in the services folder, and are named `<X>.service.js`. Services files are generally called in middleware functions. Below is an example service file:
+Service files contain functions that interact with external services. The most common service file interacts with mongoose models to find, create, update documents. Service files are found in the services folder, and are named `<X>.service.js`. Service files are generally called in middleware functions. Below is an example service file:
 
 ```javascript
 "use strict";
@@ -244,7 +244,7 @@ Things to take note of:
 It's important to: 
   * Use `await` when calling the service function
   * Put `async` in the method head
-  * Check the output of the service function call for any errors
+  * Check the output of the service function call for any errors. In the code snippet we need to check for a scenario where the account is not found, which is a 404 error. A full list of the current error messages are in [error.constant.js](../constants/error.constant.js).
 More information on asynchronous functions can be found [here](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function).
 * **queryCallbackFactory**: The query callback factory returns a function that uses winston to log the success or failure of the service call. The callback factory is used for mongoose service calls.
 
@@ -264,7 +264,7 @@ We repopulate the test server before each test to ensure consistency. [setup.spe
 
 ##### Motivation
 
-We wanted to have a scalable way to create new entities that properly reference each other. The biggest challenge lies in creating enough accounts that can be properly referenced during specific tests. 
+We wanted to have a scalable way to create new entities that properly reference each other. The biggest challenge lied in creating enough accounts that can be properly referenced during specific tests. 
 
 ##### Util.js
 
@@ -298,7 +298,7 @@ On the other end of the account-hacker link, [hacker.util.js](../tests/util/hack
 
 ### Validation files
 
-Validation files are located in the `middlewares` directory under a subdirectory called `validators`. The filenames are `<X>.validator.js`. To be used in a route, a validator needs to be a list express validator functions. We have generic validator functions located in [validator.helper.js](../middlewares/validators/validator.helper.js). The goal is to have a generic validator function for each datatype, which can then be put in the list of validators as the situation requires. The generic validators may take several arguments, but generally require:
+These files validate inputs using [express-validator](https://express-validator.github.io/docs/). Validation files are located in the `middlewares` directory under a subdirectory called `validators`. The filenames are `<X>.validator.js`. To be used in a route, a validator needs to be a list express validator functions. We have generic validator functions located in [validator.helper.js](../middlewares/validators/validator.helper.js). The goal is to have a generic validator function for each datatype, which can then be put in the list of validators as the situation requires. The generic validators may take several arguments, but generally require:
   * Where the variable is located: `body`, `query`, `header`, or `param`. To validate a value located in `req.body`, one should use `body`
   * The fieldname, such as `email` for `req.body.email`.
   * A boolean detailing whether this value is optional. `false` means that the value is necessary.
@@ -310,10 +310,19 @@ const VALIDATOR = require("./validator.helper");
 const Constants = require("../../constants/general.constant");
 
 module.exports = {
-    inviteAccountValidator: [
-        VALIDATOR.regexValidator("body", "email", false, Constants.EMAIL_REGEX),
-        VALIDATOR.enumValidator("body", "accountType", Constants.EXTENDED_USER_TYPES, false)
-    ]
+    idValidator: [
+        VALIDATOR.mongoIdValidator("param", "id", false),
+    ],
+    updateAccountValidator: [
+        VALIDATOR.stringValidator("body", "firstName", true),
+        VALIDATOR.stringValidator("body", "lastName", true),
+        VALIDATOR.stringValidator("body", "pronoun", true),
+        VALIDATOR.regexValidator("body", "email", true, Constants.EMAIL_REGEX),
+        VALIDATOR.alphaArrayValidator("body", "dietaryRestrictions", true),
+        VALIDATOR.enumValidator("body", "shirtSize", Constants.SHIRT_SIZES, true),
+        VALIDATOR.dateValidator("body", "birthDate", true),
+        VALIDATOR.phoneNumberValidator("body", "phoneNumber", true)
+    ],
 };
 ```
 
@@ -330,7 +339,26 @@ A route would use a validator in the following manner:
     );
 ```
 
-`Middleware.parseBody.middleware` evaluates the validator functions, so it is generally placed right after the validators. If there is an error during validation, it will send a 422 error status to be handled. If all the validators pass, then it will move the validated values into req.body.
+`Middleware.parseBody.middleware` evaluates the validator functions, so it is generally placed right after the validators. If there is an error during validation, it will send a 422 error status to be handled. If all the validators pass, then it will move the validated values into req.body. If there a validator function was not found for a property in `req.body`, that property will be removed. For example, suppose `req.body` was originally:
+
+```javascript
+{
+  "A": "foo",
+  "B": true,
+  "C": { 
+    "bar": "baz" 
+  }
+}
+```
+
+and only `A` and `B` are validated. Then `req.body` after validation will be:
+
+```javascript
+{
+  "A": "foo",
+  "B": true
+}
+```
 
 
 ## Documentation of API
