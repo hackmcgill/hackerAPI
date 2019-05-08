@@ -303,7 +303,22 @@ These files validate inputs using [express-validator](https://express-validator.
   * The fieldname, such as `email` for `req.body.email`.
   * A boolean detailing whether this value is optional. `false` means that the value is necessary.
 
-A validator example:
+An example of a generic validator function:
+```javascript
+function stringValidator(fieldLocation, fieldname, optional = true) {
+    const name = setProperValidationChainBuilder(fieldLocation, fieldname, "invalid string");
+    if (optional) {
+        return name.optional({
+            checkFalsy: true
+        }).isString().withMessage("must be a string");
+    } else {
+        return name.exists().withMessage("name must exist").isString().withMessage("must be a string");
+    }
+}
+```
+It's important to note the use of `setProperValidationChainBuilder` to parse the input value from the appropriate input location. This is consistent across generic validators. It is also important to create a validator for situations where the input is optional.
+
+A validator example, using generic validator functions. 
 ```javascript
 "use strict";
 const VALIDATOR = require("./validator.helper");
