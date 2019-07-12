@@ -43,7 +43,7 @@
         "@types/multer": "^1.3.7",
         "apidoc": "^0.17.7",
         "chai": "^4.2.0",
-        "chai-http": "^4.2.1",
+        "chai-http": "^4.3.0",
         "jshint": "^2.10.2",
         "jslint": "^0.12.1",
         "mocha": "^6.1.4",
