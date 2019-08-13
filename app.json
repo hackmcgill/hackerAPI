@@ -1,0 +1,148 @@
+{
+    "name": "HackerAPI",
+    "decription": "API for hackathon registration and live-site. Made by HackMcGill.",
+    "keywords": [
+        "hackathon",
+        "node",
+        "javascript",
+        "hackmcgill",
+        "registration"
+    ],
+    "website": "https://mchacks.ca/",
+    "repository": "https://github.com/hackmcgill/hackerAPI",
+    "scripts": {
+       	"start": "NODE_ENV=deployment node ./bin/www.js",
+       	"debug": "DEBUG=hackboard:* NODE_ENV=deployment nodemon --ignore gcp_creds.json ./bin/www.js",
+       	"development": "DEBUG=hackboard:* NODE_ENV=development nodemon --ignore gcp_creds.json ./bin/www.js",
+       	"test": "DEBUG=hackboard:* NODE_ENV=test mocha --reporter spec tests/**.js --exit",
+    	"seed": "NODE_ENV=development node ./seed/index.js",
+     	"docs": "apidoc -i ./routes -o ./docs/api/"
+    },
+    "success_url": "/",
+	"env": {
+        "PORT": {
+			"description": "Port for API.",
+			"value": "3000",
+			"required": true
+		},
+		"ADDRESS": {
+			"description": "IP address for api, defaults to localhost",
+			"value": "localhost",
+			"required": true
+		},
+		"FRONTEND_ADDRESS_DEV": {
+          	"description": "IP address for development frontend, defaults to localhost:1337",
+			"value": "localhost:1337",
+			"required": true
+		},
+		"FRONTEND_ADDRESS_DEPLOY": {
+           	"description": "IP address for deployment frontend, defaults to app.mchacks.ca",
+			"value": "app.mchacks.ca",
+           	"required": true
+        },
+		"DB_ADDRESS_DEPLOY": {
+          	"description": "Address for deployment database. Must be set.",
+         	"required": true
+        },
+		"DB_USER_DEPLOY": {
+			"description": "Username for deployment database. Must be set.",
+			"required": true
+		},
+		"DB_PASS_DEPLOY": {
+            "description": "Password for deployment database. Must be set.",
+            "required": true
+        },
+		"DB_ADDRESS_DEV": {
+			"description": "Address for development database. Must be set.",
+			"required": true
+		},
+		"DB_USER_DEV": {
+			"description": "Username for development database. Must be set.",
+			"required": true
+		},
+		"DB_PASS_DEV": {
+			"description": "Password for development database. Must be set.",
+			"required": true
+		},
+		"DB_ADDRESS_TEST": {
+          	"description": "Address for test database. Must be set.",
+         	"required": true
+        },
+		"DB_USER_TEST": {
+			"description": "Username for test database. Must be set.",
+			"required": true
+		},
+		"DB_PASS_TEST": {
+            "description": "Password for test database. Must be set.",
+            "required": true
+        },
+		"COOKIE_SECRET": {
+			"description": "Secret key for cookies. Generated.",
+			"generator": "secret",
+			"required": true
+		},
+		"JWT_RESET_PWD_SECRET": {
+			"description": "Secret key for JWT reset pwd. Generated.",
+			"generator": "secret",
+			"required": true
+		},
+		"JWT_CONFIRM_ACC_SECRET": {
+			"description": "Secret key for JWT confirm acc. Generated.",
+			"generator": "secret",
+			"required": true
+		},
+		"SENDGRID_API_KEY": {
+			"description": "Sendgrid API key. Must be set.",
+			"required": true
+		},
+		"NO_REPLY_EMAIL": {
+			"description": "Email that you do not want replies for. Must be set.",
+			"required": true
+		},
+		"BUCKET_NAME": {
+			"description": "Storage bucket name. Must be set.",
+			"required": true
+		},
+		"TYPE": {
+			"description": "Type of account. defaults to service_account",
+			"value": "service_account",
+			"required": true
+		},
+		"PROJECT_ID": {
+			"description": "Project id. Must be set.",
+			"required": true
+		},
+		"PRIVATE_KEY_ID": {
+            "description": "Private key id. Must be set.",
+            "required": true
+        },
+		"PRIVATE_KEY": {
+            "description": "Private key. Must be set.",
+            "required": true
+        },
+		"CLIENT_EMAIL": {
+            "description": "Client email. Must be set.",
+            "required": true
+        },
+		"CLIENT_ID": {
+            "description": "Client ID. Must be set.",
+            "required": true
+        },
+		"AUTH_URI": {
+			"description": "AUTH URI. Must be set.",
+			"required": true
+		},
+		"TOKEN_URI": {
+			"description": "Token URI. Must be set.",
+			"required": true
+		},
+		"AUTH_PROVIDER_X509_CERT_URL": {
+			"description": "AUTH_PROVIDER_X509_CERT_URL. Must be set.",
+			"required": true
+		},
+		"CLIENT_X509_CERT_URL": {
+			"description": "CLIENT_X509_CERT_URL. Must be set.",
+			"required": true
+	    }
+    }
+}	

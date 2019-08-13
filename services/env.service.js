@@ -1,16 +1,8 @@
 "use strict";
-const dotenv = require("dotenv");
 const fs = require("fs");
 const path = require("path");
 const Logger = require("./logger.service");
 module.exports = {
-    load: function (path) {
-        const result = dotenv.config({
-            path: path
-        });
-        createGCPFile();
-        return result;
-    },
     isDevelopment: function () {
         return process.env.NODE_ENV === "development";
     },

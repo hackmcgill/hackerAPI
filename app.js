@@ -11,11 +11,6 @@ const Services = {
     env: require("./services/env.service")
 };
 
-const envLoadResult = Services.env.load(path.join(__dirname, "./.env"));
-if (envLoadResult.error) {
-    Services.log.error(envLoadResult.error);
-}
-
 const passport = require("passport");
 passport.use("emailAndPass", Services.auth.emailAndPassStrategy);
 
