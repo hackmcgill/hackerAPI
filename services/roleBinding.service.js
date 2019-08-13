@@ -24,7 +24,7 @@ async function createRoleBinding(accountId, roleId = undefined) {
         return newRb.save();
     } else {
         return RoleBinding.findByIdAndUpdate(roleBindingModel._id, {
-            $push: {
+            $addToSet: {
                 roles: roleId
             }
         }, logger.queryCallbackFactory(TAG, "roleBinding", query));
@@ -63,8 +63,8 @@ async function removeRoleBinding(accountId, roleId) {
  * @function getRoleBindingForAcct
  * @param {string} accountId The id of the account that you want the role bindings for.
  * @returns {Promise<RoleBinding>}
- * @description 
- * Gets the roleBinding for a given account. Populates the role array as well with the Roles. 
+ * @description
+ * Gets the roleBinding for a given account. Populates the role array as well with the Roles.
  */
 async function getRoleBindingForAcct(accountId) {
     const TAG = "[RoleBinding Service # getRoleBindings]:";
@@ -83,7 +83,7 @@ async function getRoleBindingForAcct(accountId) {
  * @async
  * @function getById
  * @param {ObjectId} id The rolebinding id
- * @description 
+ * @description
  * Returns the roleBinding specified by the id.
  */
 async function getById(id) {
