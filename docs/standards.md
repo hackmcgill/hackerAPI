@@ -207,6 +207,7 @@ Things to take note of:
   * Finally, we want to interact with the database. This is done either in the `Controller` function, or in another `middleware` function.
   * the last middleware should always be a `Controller` (since we want to respond to the user of the api).
 * **Connecting inputted route with the newly created route**: We finally connect the newly created router with the inputted router at the end of the `activate` function by writing:
+
     ```javascript
             apiRouter.use("/account", accountRouter);
     ```
@@ -222,6 +223,36 @@ Things to take note of:
 ### Validation files
 
 `TODO`
+
+## Batch Scripts
+
+There is a set of batch scripts written in [batch_scripts.py](../scripts/batch_scripts.py). The motivation for these scripts is to provide crucial functionality for the hackathon process that is lacking in the admin UX. The goal is to extend the functionality to provide a full-fledged CLI client so that we can interface with the API without using the admin dashboard.
+
+### How to Run
+
+This script expects python3, and will not work in python2. Before you run the script, make sure that you have installed the following library:
+
+* [bson](https://pypi.org/project/bson/): `pip install bson`
+
+Then, run the following command:
+```python3 batch_scripts.py```
+
+In order for the script to work with all of the actions, you must have a staff account. Otherwise, it's possible that you do not have the proper permission to execute all of the actions.
+
+### Existing Actions in the Script file
+
+There are 6 batch actions:
+
+1. `updateStatus`: Update the status of a set of hackers. The script asks for a file which contains the IDs of hackers to update, and also for a pre-requisite status that the hacker must be in order for the update to properly go through.
+2. `dayOf`: Send the day-of email to a set of hackers. The script asks for a file which contains the IDs of hackers to send the emails to, and also for a pre-requisite status that the hacker must be in order for the email to properly go through.
+3. `weekOf`: Send the week-of email to a set of hackers. The script asks for a file which contains the IDs of hackers  to send the emails to, and also for a pre-requisite status that the hacker must be in order for the email to properly go through.
+4. `downloadResume`: Download the resumes for a set of hackers. The script asks for a file which contains the IDs of hackers to download. and also for a pre-requisite status that the hacker must be in order to download the resume.
+5. `inviteUsers`: Invites a set of emails to create accounts. The script asks for a CSV file, which should be formatted in the following way:
+   | email       | accountType |
+   | ----------- | ----------- |
+   | foo@bar.com | Staff       |
+   | baz@bar.com | Sponsor     |
+6. `getHackers`: Downloads all of the hacker details whose status matches the inputted status. Places the hacker information into a CSV file in the inputted directory.
 
 ## Documentation of API
 
