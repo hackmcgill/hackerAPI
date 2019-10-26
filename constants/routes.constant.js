@@ -214,7 +214,11 @@ const searchRoutes = {
     "get": {
         requestType: Constants.REQUEST_TYPES.GET,
         uri: "/api/search/"
-    }
+    },
+    "bactchAction": {
+        requestType: Constants.REQUEST_TYPES.GET,
+        uri: "/api/search/action",
+    },
 };
 
 const staffRoutes = {

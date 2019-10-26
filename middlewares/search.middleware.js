@@ -15,7 +15,6 @@ const Middleware = {
  */
 function parseQuery(req, res, next) {
     let query = req.body.q;
-
     req.body.q = JSON.parse(query);
 
     //Default page
@@ -62,6 +61,29 @@ async function executeQuery(req, res, next) {
     return next();
 }
 
+/**
+ * 
+ * @param {} req 
+ * @param {*} res 
+ * @param {*} next
+ * 
+ * @returns 
+ */
+async function executeStatusAction(req, res, next) {
+    // NOW HAVE req.body.results as an array of "hackers potentially"
+    console.log("GETS IN EXECUTE STATUS ACTION BRO!")
+    req.body.results = await Services.Search.executeAction(req.body.model,
+        req.body.q,
+        req.body.page,
+        req.body.limit,
+        req.body.sort,
+        req.body.sort_by,
+        req.body.expand,
+        req.body.status
+    );
+    return next();
+}
+
 function setExpandTrue(req, res, next) {
     req.body.expand = true;
     next();
@@ -71,5 +93,6 @@ function setExpandTrue(req, res, next) {
 module.exports = {
     parseQuery: parseQuery,
     executeQuery: Middleware.Util.asyncMiddleware(executeQuery),
+    executeStatusAction: Middleware.Util.asyncMiddleware(executeStatusAction),
     setExpandTrue: setExpandTrue,
 };

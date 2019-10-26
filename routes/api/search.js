@@ -67,6 +67,56 @@ module.exports = {
             Controllers.Search.searchResults
         );
 
+        /**
+         * @api {get} /search/action execute an action on a specific query for any defined model
+         * @apiName search
+         * @apiGroup Search
+         * @apiVersion 0.0.8
+         *
+         * @apiParam (query) {String} model the model to be searched
+         * @apiParam (query) {Array} q the query to be executed. For more information on how to format this, please see https://docs.mchacks.ca/architecture/
+         * @apiParam (query) {String} model the model to be searched
+         * @apiParam (query) {String} sort either "asc" or "desc"
+         * @apiParam (query) {number} page the page number that you would like
+         * @apiParam (query) {number} limit the maximum number of results that you would like returned
+         * @apiParam (query) {any} sort_by any parameter you want to sort the results by
+         * @apiParam (query) {boolean} expand whether you want to expand sub documents within the results
+         * @apiParam (query) {String} action type of action either Status or Email
+         * @apiParam (query) {String} status new status or type of email
+         * 
+         * @apiSuccess {String} message Success message
+         * @apiSuccess {Object} data Results
+         * @apiSuccessExample {object} Success-Response:
+         *      {
+                    "message": "Successfully executed query, returning all results",
+                    "data": [
+                        {...}
+                    ]
+                }
+         *
+         * @apiSuccess {String} message Success message
+         * @apiSuccess {Object} data Empty object
+         * @apiSuccessExample {object} Success-Response:
+         *      {
+                    "message": "No results found.",
+                    "data": {}
+                }
+         *
+         * @apiError {String} message Error message
+         * @apiError {Object} data empty
+         * @apiErrorExample {object} Error-Response:
+         *      {"message": "Validation failed", "data": {}}
+         */
+        searchRouter.route("/action").get(
+            Middleware.Auth.ensureAuthenticated(),
+            Middleware.Auth.ensureAuthorized(),
+            Middleware.Validator.Search.searchActionValidator,
+            Middleware.parseBody.middleware,
+            Middleware.Search.parseQuery,
+            Middleware.Search.executeStatusAction,
+            Controllers.Search.searchResults
+        );
+
         apiRouter.use("/search", searchRouter);
     }
 };

@@ -23,6 +23,16 @@ const HACKER_STATUSES = [
     HACKER_STATUS_CANCELLED,
     HACKER_STATUS_CHECKED_IN
 ];
+const VALID_SEARCH_ACTIONS = [
+    "change_status",
+    "email",
+    "change_status_and_email"
+];
+
+const CORRESPONDING_STATUSES = {
+    "change_status": HACKER_STATUSES,
+    "email": ["Acceptance", "Waitlist", "Reminder"]
+}
 
 const SAMPLE_DIET_RESTRICTIONS = [
     "None",
@@ -151,4 +161,6 @@ module.exports = {
     MAX_TEAM_SIZE: MAX_TEAM_SIZE,
     WEEK_OF: WEEK_OF,
     SAMPLE_DIET_RESTRICTIONS: SAMPLE_DIET_RESTRICTIONS,
+    VALID_SEARCH_ACTIONS: VALID_SEARCH_ACTIONS,
+    CORRESPONDING_STATUSES: CORRESPONDING_STATUSES
 };
