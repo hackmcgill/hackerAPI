@@ -8,6 +8,7 @@ const Services = {
     Email: require("../services/email.service"),
     Account: require("../services/account.service"),
     Env: require("../services/env.service"),
+    ParsePatch: require("../services/parsePatch.service")
 };
 const Middleware = {
     Util: require("./util.middleware")
@@ -15,6 +16,9 @@ const Middleware = {
 const Constants = {
     General: require("../constants/general.constant"),
     Error: require("../constants/error.constant"),
+};
+const Model = {
+    Hacker: require("../models/hacker.model")
 };
 
 /**
@@ -26,7 +30,7 @@ const Constants = {
  * @description Delete the req.body.id that was added by the validation of route parameter.
  */
 function parsePatch(req, res, next) {
-    delete req.body.id;
+    Services.ParsePatch(Model.Hacker, "hackerDetails");
     return next();
 }
 
@@ -41,38 +45,10 @@ function parsePatch(req, res, next) {
  * Adds _id to hackerDetails.
  */
 function parseHacker(req, res, next) {
-    const hackerDetails = {
-        _id: mongoose.Types.ObjectId(),
-        accountId: req.body.accountId,
-        school: req.body.school,
-        degree: req.body.degree,
-        gender: req.body.gender,
-        needsBus: req.body.needsBus,
-        application: req.body.application,
 
-        ethnicity: req.body.ethnicity,
-        major: req.body.major,
-        graduationYear: req.body.graduationYear,
-        codeOfConduct: req.body.codeOfConduct,
-
-        teamId: req.body.teamId,
-    };
+    Services.ParsePatch(Model.Hacker, "hackerDetails");
+    req.body.Hacker._id = mongoose.Types.ObjectId();
     req.body.token = req.body.authorization;
-
-    delete req.body.accountId;
-    delete req.body.school;
-    delete req.body.degree;
-    delete req.body.gender;
-    delete req.body.needsBus;
-    delete req.body.application;
-    delete req.body.authorization;
-    delete req.body.ethnicity;
-    delete req.body.major;
-    delete req.body.graduationYear;
-    delete req.body.codeOfConduct;
-    delete req.body.teamId;
-
-    req.body.hackerDetails = hackerDetails;
 
     return next();
 }
