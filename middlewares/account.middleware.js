@@ -8,7 +8,8 @@ const Services = {
     Account: require("../services/account.service"),
     AccountConfirmation: require("../services/accountConfirmation.service"),
     Email: require("../services/email.service"),
-    Env: require("../services/env.service")
+    Env: require("../services/env.service"),
+    ParsePatch: require("../services/parsePatch.service")
 };
 
 const Middleware = {
@@ -16,7 +17,11 @@ const Middleware = {
 };
 
 const Constants = {
-    Error: require("../constants/error.constant"),
+    Error: require("../constants/error.constant")
+};
+
+const Model = {
+    Account: require("../models/account.model")
 };
 
 /**
@@ -28,7 +33,7 @@ const Constants = {
  * @description Delete the req.body.id that was added by the validation of route parameter.
  */
 function parsePatch(req, res, next) {
-    delete req.body.id;
+    Services.ParsePatch(Model.Account, "");
     return next();
 }
 
@@ -44,30 +49,10 @@ function parsePatch(req, res, next) {
  * Adds _id to accountDetails.
  */
 function parseAccount(req, res, next) {
-    const accountDetails = {
-        _id: mongoose.Types.ObjectId(),
-        firstName: req.body.firstName,
-        lastName: req.body.lastName,
-        pronoun: req.body.pronoun,
-        email: req.body.email,
-        password: Services.Account.hashPassword(req.body.password),
-        dietaryRestrictions: req.body.dietaryRestrictions,
-        shirtSize: req.body.shirtSize,
-        birthDate: req.body.birthDate,
-        phoneNumber: req.body.phoneNumber,
-    };
-
-    delete req.body.firstName;
-    delete req.body.lastName;
-    delete req.body.pronoun;
-    delete req.body.email;
-    delete req.body.password;
-    delete req.body.dietaryRestrictions;
-    delete req.body.shirtSize;
-    delete req.body.birthDate;
-    delete req.body.phoneNumber;
-
-    req.body.accountDetails = accountDetails;
+    const accountPassword = req.body.password;
+    Services.ParsePatch(Model.Account, "accountDetails");
+    req.body.accountDetails._id = mongoose.Types.ObjectId();
+    req.body.accountDetails.password = Services.Account.hashPassword(accountPassword);
 
     return next();
 }
