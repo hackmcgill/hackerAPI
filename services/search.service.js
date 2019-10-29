@@ -143,6 +143,21 @@ function executeAction(model, queryArray, page, limit, sort, sort_by, shouldExpa
     return query.limit(limit)
         .skip(limit * page).updateMany({ $set: { "status": new_status } })
         .exec();
+    //HERE CHECK IF EMAIL, and if so, then look @ status and see if its in the constants.
+    // IF SO then call the email service sendMany with all the emails of hackers from the query.
+    // NOT SURE IF WE SHOULD MAKE IT EXTENSIBLE, so have it where this gets passed a function, and function
+    // Is called with specific params selected from each hacker????
+
+
+
+    //Logic for 2nd option: 
+    /*
+        pass function to here & object of select params that the function takes.
+        execute find query, with callback of:
+            - function(err, arr) ... if no err then loop through each hacker in arr.
+            - for every hacker call the function passed in with each appropriate params req. (! must be given in order)
+
+    */
 }
 
 module.exports = {

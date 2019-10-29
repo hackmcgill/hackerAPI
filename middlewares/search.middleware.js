@@ -5,6 +5,7 @@ const Services = {
 const Middleware = {
     Util: require("../middlewares/util.middleware")
 }
+const Constants = require("../../constants/general.constant");
 
 /**
  * @function parseQuery
