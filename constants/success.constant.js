@@ -21,6 +21,7 @@ const HACKER_GET_BY_ID = "Hacker found by id.";
 const HACKER_READ = "Hacker retrieval successful.";
 const HACKER_CREATE = "Hacker creation successful.";
 const HACKER_UPDATE = "Hacker update successful.";
+const HACKER_UPDATE_EMAILS = "Hacker update emails sent."
 const HACKER_SENT_WEEK_OF = "Hacker week-of email sent."
 
 const RESUME_UPLOAD = "Resume upload successful.";
@@ -67,6 +68,7 @@ module.exports = {
     HACKER_READ: HACKER_READ,
     HACKER_CREATE: HACKER_CREATE,
     HACKER_UPDATE: HACKER_UPDATE,
+    HACKER_UPDATE_EMAILS: HACKER_UPDATE_EMAILS,
 
     HACKER_SENT_WEEK_OF: HACKER_SENT_WEEK_OF,
 

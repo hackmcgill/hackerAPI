@@ -11,7 +11,7 @@ module.exports = {
         VALIDATOR.booleanValidator("query", "expand", true),
         VALIDATOR.searchValidator("query", "q")
     ],
-    searchActionValidator: [
+    statusValidator: [
         VALIDATOR.searchModelValidator("query", "model", false),
         VALIDATOR.alphaValidator("query", "sort", true),
         VALIDATOR.integerValidator("query", "page", true, 0),
@@ -19,8 +19,16 @@ module.exports = {
         VALIDATOR.searchSortValidator("query", "sort_by"),
         VALIDATOR.booleanValidator("query", "expand", true),
         VALIDATOR.searchValidator("query", "q"),
-        /* ACTION VALIDATOR NEED TO MAKE WORK! */
-        VALIDATOR.actionValidator("query", "action"),
-        VALIDATOR.statusValidator("query", "status")
+        VALIDATOR.updateObjectValidator("query", "update")
     ],
+    emailValidator: [
+        VALIDATOR.searchModelValidator("query", "model", false),
+        VALIDATOR.alphaValidator("query", "sort", true),
+        VALIDATOR.integerValidator("query", "page", true, 0),
+        VALIDATOR.integerValidator("query", "limit", true, 0, 1000),
+        VALIDATOR.searchSortValidator("query", "sort_by"),
+        VALIDATOR.booleanValidator("query", "expand", true),
+        VALIDATOR.searchValidator("query", "q"),
+        VALIDATOR.statusValidator("query", "status")
+    ]
 };

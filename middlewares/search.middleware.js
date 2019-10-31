@@ -5,7 +5,6 @@ const Services = {
 const Middleware = {
     Util: require("../middlewares/util.middleware")
 }
-const Constants = require("../../constants/general.constant");
 
 /**
  * @function parseQuery
@@ -71,9 +70,28 @@ async function executeQuery(req, res, next) {
  * @returns 
  */
 async function executeStatusAction(req, res, next) {
-    // NOW HAVE req.body.results as an array of "hackers potentially"
-    console.log("GETS IN EXECUTE STATUS ACTION BRO!")
-    req.body.results = await Services.Search.executeAction(req.body.model,
+    req.body.results = await Services.Search.executeStatusAction(req.body.model,
+        req.body.q,
+        req.body.page,
+        req.body.limit,
+        req.body.sort,
+        req.body.sort_by,
+        req.body.expand,
+        req.body.update
+    );
+    return next();
+}
+
+/**
+ * 
+ * @param {} req 
+ * @param {*} res 
+ * @param {*} next
+ * 
+ * @returns 
+ */
+async function executeEmailAction(req, res, next) {
+    req.body.results = await Services.Search.executeEmailAction(req.body.model,
         req.body.q,
         req.body.page,
         req.body.limit,
@@ -95,5 +113,6 @@ module.exports = {
     parseQuery: parseQuery,
     executeQuery: Middleware.Util.asyncMiddleware(executeQuery),
     executeStatusAction: Middleware.Util.asyncMiddleware(executeStatusAction),
+    executeEmailAction: Middleware.Util.asyncMiddleware(executeEmailAction),
     setExpandTrue: setExpandTrue,
 };
