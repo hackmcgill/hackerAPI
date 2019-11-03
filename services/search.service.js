@@ -85,7 +85,7 @@ function createQuery(model, queryArray, page, limit, sort, sortBy, shouldExpand 
  */
 function executeQuery(model, queryArray, page, limit, sort, sortBy, shouldExpand = false) {
     var query = createQuery(model, queryArray, page, limit, sort, sortBy, shouldExpand);
-    return query.exec();
+    return query.exec('find');
 }
 
 
@@ -101,7 +101,7 @@ function executeQuery(model, queryArray, page, limit, sort, sortBy, shouldExpand
  * @returns {Promise<[Array]>}
  * @description Builds and executes a status update based on a subset of mongodb
  */
-function executeStatusAction(model, queryArray, page, limit, sort, sortBy, shouldExpand = false, update) {
+function executeStatusAction(model, queryArray, page, limit, sort, sortBy, update, shouldExpand = false) {
     var query = createQuery(model, queryArray, page, limit, sort, sortBy, shouldExpand);
     var update_obj = JSON.parse(update);
     return query.updateMany({ $set: update_obj }).exec();
@@ -120,29 +120,24 @@ function executeStatusAction(model, queryArray, page, limit, sort, sortBy, shoul
  * @returns {Promise<[Array]>}
  * @description Sends a status update email based on a subset of mongodb
  */
-function executeEmailAction(model, queryArray, page, limit, sort, sortBy, shouldExpand = false, status) {
+async function executeEmailAction(model, queryArray, page, limit, sort, sortBy, status, shouldExpand = false) {
     var query = createQuery(model, queryArray, page, limit, sort, sortBy, shouldExpand);
+    const hackers = await query.exec()
 
-    return query.exec().then(async (hackers) => {
-        console.log(hackers)
-        if (hackers) {
-            for (const hacker of hackers) {
-                const account = await AccountService.findById(hacker.accountId);
-                if (!account) {
-                    break;
-                }
-                let x = await EmailService.sendStatusUpdateAsync(account.firstName, account.email, status)
-                console.log(x);
-                if (x) {
-                    return "Email service failed."
-                }
+    if (hackers) {
+        for (const hacker of hackers) {
+            const account = await AccountService.findById(hacker.accountId);
+            if (!account) {
+                break;
             }
-        } else {
-            return "Email service failed."
+            let emailError = await EmailService.sendStatusUpdateAsync(account.firstName, account.email, status)
+            if (emailError) {
+                return "Email service failed."
+            }
         }
-    }).catch((err) => {
-        return err;
-    });
+    } else {
+        return "Email service failed."
+    }
 }
 
 module.exports = {

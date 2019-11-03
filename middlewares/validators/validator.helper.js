@@ -567,20 +567,20 @@ function actionValidator(fieldLocation, actionFieldName) {
 
 
 /**
- * Validates that action field is a valid action from constants passed, and checks if corresponding new status is valid.
+ * Validates that the field is a valid hacker update object, and checks if corresponding new status is valid.
  * @param {"query" | "body" | "header" | "param"} fieldLocation The location where the field should be found.
  * @param {string} actionFieldName The name of the action that needs to be performed.
  * @param {string} statusFieldName The name of the action that needs to be performed.
  */
-function updateObjectValidator(fieldLocation, actionFieldName) {
-    const updateObjectValue = setProperValidationChainBuilder(fieldLocation, actionFieldName, "Invalid update object string.");
+function updateHackerValidator(fieldLocation, fieldName) {
+    const hackerObjectValue = setProperValidationChainBuilder(fieldLocation, fieldName, "Invalid hacker update object string.");
 
-    return updateObjectValue.exists()
-        .withMessage("The update object string must exist.")
-        .custom(updateObjectValidatorHelper).withMessage("The value must be a valid update object.");
+    return hackerObjectValue.exists()
+        .withMessage("The hacker update object string must exist.")
+        .custom(updateHackerValidatorHelper).withMessage("The value must be a valid hacker update object.");
 }
 
-function updateObjectValidatorHelper(update) {
+function updateHackerValidatorHelper(update) {
     try {
         var updateObject = JSON.parse(update);
 
@@ -679,5 +679,5 @@ module.exports = {
     routesValidator: routesValidator,
     actionValidator: actionValidator,
     statusValidator: statusValidator,
-    updateObjectValidator: updateObjectValidator,
+    updateHackerValidator: updateHackerValidator,
 };

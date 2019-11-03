@@ -76,8 +76,8 @@ async function executeStatusAction(req, res, next) {
         req.body.limit,
         req.body.sort,
         req.body.sort_by,
-        req.body.expand,
-        req.body.update
+        req.body.update,
+        req.body.expand
     );
     return next();
 }
@@ -97,8 +97,8 @@ async function executeEmailAction(req, res, next) {
         req.body.limit,
         req.body.sort,
         req.body.sort_by,
-        req.body.expand,
-        req.body.status
+        req.body.status,
+        req.body.expand
     );
     return next();
 }

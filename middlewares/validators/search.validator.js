@@ -19,7 +19,7 @@ module.exports = {
         VALIDATOR.searchSortValidator("query", "sort_by"),
         VALIDATOR.booleanValidator("query", "expand", true),
         VALIDATOR.searchValidator("query", "q"),
-        VALIDATOR.updateObjectValidator("query", "update")
+        VALIDATOR.updateHackerValidator("query", "update")
     ],
     emailValidator: [
         VALIDATOR.searchModelValidator("query", "model", false),

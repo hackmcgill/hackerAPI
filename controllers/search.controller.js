@@ -25,7 +25,7 @@ async function searchResults(req, res) {
 async function emailResults(req, res) {
     let results = req.body.results;
     let message;
-    if (results == undefined) {
+    if (results === undefined) {
         message = Success.HACKER_UPDATE_EMAILS;
         results = {}
     } else {
