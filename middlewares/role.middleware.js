@@ -2,10 +2,15 @@
 const mongoose = require("mongoose");
 const Services = {
     Role: require("../services/role.service"),
+    ParsePatch: require("../services/parsePatch.service")
 };
 const Constants = {
     Error: require("../constants/error.constant"),
 };
+
+const Model = {
+    Role: require("../models/role.model")
+}
 
 /**
  * @function parseRole
@@ -18,17 +23,8 @@ const Constants = {
  * Adds _id to roleDetails.
  */
 function parseRole(req, res, next) {
-    const roleDetails = {
-        _id: mongoose.Types.ObjectId(),
-        name: req.body.name,
-        routes: req.body.routes,
-    };
-
-    delete req.body.name;
-    delete req.body.routes;
-
-    req.body.roleDetails = roleDetails;
-
+    Services.ParsePatch(Model.Role, "roleDetails")
+    req.body.Role._id = mongoose.Types.ObjectId();
     return next();
 }
 
