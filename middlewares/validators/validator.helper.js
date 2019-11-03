@@ -552,21 +552,6 @@ function enumValidator(fieldLocation, fieldname, enums, optional = true) {
 }
 
 /**
- * Validates that action field is a valid action from constants passed, and checks if corresponding new status is valid.
- * @param {"query" | "body" | "header" | "param"} fieldLocation The location where the field should be found.
- * @param {string} actionFieldName The name of the action that needs to be performed.
- * @param {string} statusFieldName The name of the action that needs to be performed.
- */
-function actionValidator(fieldLocation, actionFieldName) {
-    const actionValue = setProperValidationChainBuilder(fieldLocation, actionFieldName, "Invalid action.");
-
-    return actionValue.exists()
-        .withMessage("The action must exist.")
-        .custom(actionValidatorHelper).withMessage("The value must be a valid action.");
-}
-
-
-/**
  * Validates that the field is a valid hacker update object, and checks if corresponding new status is valid.
  * @param {"query" | "body" | "header" | "param"} fieldLocation The location where the field should be found.
  * @param {string} actionFieldName The name of the action that needs to be performed.
@@ -605,14 +590,6 @@ function statusValidator(fieldLocation, statusFieldName) {
         return Constants.HACKER_STATUSES.includes(val);
     }).withMessage("The value must be a proper status.")
 }
-
-function actionValidatorHelper(action) {
-    if (Constants.VALID_SEARCH_ACTIONS.includes(action)) {
-        return true;
-    }
-    return false;
-}
-
 
 /**
  * Checks that 'value' is part of 'enums'. 'enums' should be an enum dict.
@@ -677,7 +654,6 @@ module.exports = {
     dateValidator: dateValidator,
     enumValidator: enumValidator,
     routesValidator: routesValidator,
-    actionValidator: actionValidator,
     statusValidator: statusValidator,
     updateHackerValidator: updateHackerValidator,
 };
