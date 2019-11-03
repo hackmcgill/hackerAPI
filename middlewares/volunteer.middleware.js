@@ -6,11 +6,16 @@ const Middleware = {
 const Services = {
     Volunteer: require("../services/volunteer.service"),
     Account: require("../services/account.service"),
+    ParsePatch: require("../services/parsePatch.service")
 };
 const Constants = {
     General: require("../constants/general.constant"),
     Error: require("../constants/error.constant"),
 };
+
+const Model = {
+    Volunteer: require("../models/volunteer.model")
+}
 
 /**
  * @function parseVolunteer
@@ -23,15 +28,8 @@ const Constants = {
  * Adds _id to volunteerDetails.
  */
 function parseVolunteer(req, res, next) {
-    const volunteerDetails = {
-        _id: mongoose.Types.ObjectId(),
-        accountId: req.body.accountId,
-    };
-
-    delete req.body.accountId;
-
-    req.body.volunteerDetails = volunteerDetails;
-
+    Services.ParsePatch(Model.Volunteer, "volunteerDetails");
+    req.body.volunteerDetails._id = mongoose.Types.ObjectId()
     return next();
 }
 
