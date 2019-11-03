@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const Services = {
     Sponsor: require("../services/sponsor.service"),
     Account: require("../services/account.service"),
+    ParsePatch: require("../services/parsePatch.service")
 };
 const Middleware = {
     Util: require("./util.middleware")
@@ -11,7 +12,9 @@ const Constants = {
     General: require("../constants/general.constant"),
     Error: require("../constants/error.constant"),
 };
-const Sponsor = require("../models/sponsor.model");
+const Model = {
+    Sponsor: require("../models/sponsor.model")
+}
 
 /**
  * @function parsePatch
@@ -22,18 +25,7 @@ const Sponsor = require("../models/sponsor.model");
  * @description Put relevent sponsor attributes into sponsorDetails
  */
 function parsePatch(req, res, next) {
-    let sponsorDetails = {};
-
-    for (const val in req.body) {
-        // use .hasOwnProperty instead of 'in' to get rid of inherited properties such as 'should'
-        if (Sponsor.schema.paths.hasOwnProperty(val)) {
-            sponsorDetails[val] = req.body[val];
-            delete req.body[val];
-        }
-    }
-
-    req.body.sponsorDetails = sponsorDetails;
-
+    Services.parsePatch(Model.Sponsor, "sponsorDetails");
     return next();
 }
 
@@ -48,22 +40,8 @@ function parsePatch(req, res, next) {
  * Adds _id to sponsorDetails.
  */
 function parseSponsor(req, res, next) {
-    const sponsorDetails = {
-        _id: mongoose.Types.ObjectId(),
-        accountId: req.body.accountId,
-        tier: req.body.tier,
-        company: req.body.company,
-        contractURL: req.body.contractURL,
-        nominees: req.body.nominees,
-    };
-
-    delete req.body.tier;
-    delete req.body.company;
-    delete req.body.contractURL;
-    delete req.body.nominees;
-    delete req.body.accountId;
-
-    req.body.sponsorDetails = sponsorDetails;
+    Services.parsePatch(Model.Sponsor, "sponsorDetails")
+    req.body.Services._id = mongoose.Types.ObjectId()
 
     return next();
 }
