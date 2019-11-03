@@ -7,13 +7,16 @@ const Services = {
     Team: require("../services/team.service"),
     Hacker: require("../services/hacker.service"),
     Account: require("../services/account.service"),
+    ParsePatch: require("../services/parsePatch.service")
 };
 const Util = require("./util.middleware");
 const Constants = {
     Error: require("../constants/error.constant"),
     General: require("../constants/general.constant"),
 };
-const Team = require("../models/team.model");
+const Model = {
+    Team: require("../models/team.model")
+};
 
 /**
  * @async
@@ -436,20 +439,8 @@ async function populateMemberAccountsById(req, res, next) {
  * Adds _id to teamDetails.
  */
 function parseTeam(req, res, next) {
-    const teamDetails = {
-        _id: mongoose.Types.ObjectId(),
-        name: req.body.name,
-        members: req.body.members,
-        devpostURL: req.body.devpostURL,
-        projectName: req.body.projectName
-    };
-
-    delete req.body.name;
-    delete req.body.members;
-    delete req.body.devpostURL;
-    delete req.body.projectName;
-
-    req.body.teamDetails = teamDetails;
+    Services.parsePatch(Model.Team, "teamDetails");
+    req.body.teamDetails._id = mongoose.Types.ObjectId();
 
     return next();
 }
@@ -465,36 +456,14 @@ function parseTeam(req, res, next) {
  *      Move attributes belonging to the team schema to req.body.teamDetails.
  */
 function parsePatch(req, res, next) {
-    delete req.body.id;
-
-    let teamDetails = {};
-
-    for (const val in req.body) {
-        // use .hasOwnProperty instead of 'in' to get rid of inherited properties such as 'should'
-        if (Team.schema.paths.hasOwnProperty(val)) {
-            teamDetails[val] = req.body[val];
-            delete req.body[val];
-        }
-    }
-
-    req.body.teamDetails = teamDetails;
-
+    Services.parsePatch(Model.Team, "teamDetails");
     next();
 }
 
 async function parseNewTeam(req, res, next) {
-    const teamDetails = {
-        _id: mongoose.Types.ObjectId(),
-        name: req.body.name,
-        members: [],
-        devpostURL: req.body.devpostURL,
-        projectName: req.body.projectName
-    };
+    Services.parsePatch(Model.Team, "teamDetails");
+    req.body.teamDetails._id = mongoose.Types.ObjectId();
 
-    delete req.body.name;
-    delete req.body.members;
-    delete req.body.devpostURL;
-    delete req.body.projectName;
 
     // hacker should exist because of authorization
     const hacker = await Services.Hacker.findByAccountId(req.user.id);
@@ -517,9 +486,8 @@ async function parseNewTeam(req, res, next) {
         });
     }
 
-    teamDetails.members.push(hacker._id);
+    req.body.teamDetails.members.push(hacker._id);
 
-    req.body.teamDetails = teamDetails;
     return next();
 }
 
