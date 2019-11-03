@@ -1,6 +1,7 @@
 const Services = {
     Settings: require("../services/settings.service"),
     Account: require("../services/account.service"),
+    ParsePatch: require("../services/parsePatch.service")
 };
 const Middleware = {
     Util: require("./util.middleware")
@@ -8,7 +9,9 @@ const Middleware = {
 const Constants = {
     Error: require("../constants/error.constant"),
 };
-const Settings = require("../models/settings.model");
+const Model = {
+    Settings: require("../models/settings.model")
+}
 
 /**
  * @function parsePatch
@@ -19,17 +22,7 @@ const Settings = require("../models/settings.model");
  * @description Put relevent settings attributes into settingsDetails
  */
 function parsePatch(req, res, next) {
-    let settingsDetails = {};
-
-    for (const val in req.body) {
-        // use .hasOwnProperty instead of 'in' to get rid of inherited properties such as 'should'
-        if (Settings.schema.paths.hasOwnProperty(val)) {
-            settingsDetails[val] = req.body[val];
-            delete req.body[val];
-        }
-    }
-
-    req.body.settingsDetails = settingsDetails;
+    Services.parsePatch(Model.Settings, "settingDetails");
     return next();
 }
 
@@ -42,7 +35,7 @@ function parsePatch(req, res, next) {
  * @description Update settings object
  */
 async function updateSettings(req, res, next) {
-    const settings = await Services.Settings.updateSettings(req.body.settingsDetails);
+    const settings = await Services.Settings.updateSettings(req.body.setting);
     if (!settings) {
         return next({
             status: 500,
@@ -69,7 +62,7 @@ async function getSettings(req, res, next) {
             message: Constants.Error.SETTINGS_404_MESSAGE
         });
     } else {
-        req.body.settingsDetails = settings;
+        req.body.setting = settings;
         next();
     }
 }
