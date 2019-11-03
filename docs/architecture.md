@@ -97,7 +97,7 @@ hackerRouter.route("/").post(
 );
 ```
 
-To add `Authorization`, you will need to import the `Auth` module file, and then insert into the route definition, just like `Authentication`. However, if there are route parameters, you will need to also provide as arguments an array which contains the functions required to access the given parameters. There must be a one-to-one mapping between route parameters and function inputs. An example is below:
+To add `Authorization`, you will need to import the `Auth` module file, and then insert into the route definition, just like `Authentication`. However, if there are route parameters, you will need to also provide as arguments an array which contains the functions required to access the given parameters. The route parameters are typically some model id. The functions in the array need return an object that contains the user id either in `_id` or `accountId`. The method signature for the inputted functions must be: `(parameter) => {accountId:string} | {_id:string}`. There must be a one-to-one mapping between route parameters and function inputs. The order of route parameters and function inputs must be the same. The details of authorization is heavily commented in in `ensureAuthorized` at [auth.service.js](../services/auth.service.js). An example is below:
 
 ```javascript
 const Middleware = {
@@ -117,7 +117,7 @@ hackerRouter.route("/:id1/friend/:id2/").get(
 
 Here, we note that we pass in one function for `id1`, and one function for `id2`.
 
-The method signature for the inputted functions must be: `(parameter) => {accountId:string} | {_id:string}`.
+The `ensureAuthorized` middleware calls the `ensureAuthorized` service in [auth.service.js](../services/auth.service.js).
 
 ### Limitations
 

@@ -23,6 +23,7 @@ const HACKER_CREATE = "Hacker creation successful.";
 const HACKER_UPDATE = "Hacker update successful.";
 const HACKER_UPDATE_EMAILS = "Hacker update emails sent."
 const HACKER_SENT_WEEK_OF = "Hacker week-of email sent."
+const HACKER_SENT_DAY_OF = "Hacker day-of email sent."
 
 const RESUME_UPLOAD = "Resume upload successful.";
 const RESUME_DOWNLOAD = "Resume download successful.";
@@ -31,6 +32,10 @@ const ROLE_CREATE = "Role creation successful.";
 
 const SEARCH_QUERY = "Query search successful. Returning results.";
 const SEARCH_NO_RESULTS = "Query search successful. No results found.";
+
+const SETTINGS_PATCH = "Settings update successful.";
+const SETTINGS_GET = "Settings get successful.";
+
 
 const SPONSOR_GET_BY_ID = "Sponsor found by id.";
 const SPONSOR_READ = "Sponsor retrieval successful.";
@@ -71,6 +76,7 @@ module.exports = {
     HACKER_UPDATE_EMAILS: HACKER_UPDATE_EMAILS,
 
     HACKER_SENT_WEEK_OF: HACKER_SENT_WEEK_OF,
+    HACKER_SENT_DAY_OF: HACKER_SENT_DAY_OF,
 
     RESUME_UPLOAD: RESUME_UPLOAD,
     RESUME_DOWNLOAD: RESUME_DOWNLOAD,
@@ -79,6 +85,9 @@ module.exports = {
 
     SEARCH_QUERY: SEARCH_QUERY,
     SEARCH_NO_RESULTS: SEARCH_NO_RESULTS,
+
+    SETTINGS_GET: SETTINGS_GET,
+    SETTINGS_PATCH: SETTINGS_PATCH,
 
     SPONSOR_GET_BY_ID: SPONSOR_GET_BY_ID,
     SPONSOR_CREATE: SPONSOR_CREATE,

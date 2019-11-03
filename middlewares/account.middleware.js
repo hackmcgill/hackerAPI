@@ -94,9 +94,9 @@ async function getById(req, res, next) {
     const acc = await Services.Account.findById(req.body.id);
 
     if (!acc) {
-        return res.status(404).json({
-            message: Constants.Error.ACCOUNT_404_MESSAGE,
-            data: {}
+        return next({
+            status: 404,
+            message: Constants.Error.ACCOUNT_404_MESSAGE
         });
     }
 
@@ -115,9 +115,9 @@ async function getByEmail(req, res, next) {
     const acc = await Services.Account.findByEmail(req.user.email);
 
     if (!acc) {
-        return res.status(404).json({
-            message: Constants.Error.ACCOUNT_404_MESSAGE,
-            data: {}
+        return next({
+            status: 404,
+            message: Constants.Error.ACCOUNT_404_MESSAGE
         });
     }
 

@@ -4,18 +4,18 @@ const Constants = require("../../constants/general.constant");
 
 module.exports = {
     newTeamValidator: [
-        VALIDATOR.asciiValidator("body", "name", false),
+        VALIDATOR.stringValidator("body", "name", false),
         VALIDATOR.regexValidator("body", "devpostURL", true, Constants.DEVPOST_REGEX),
-        VALIDATOR.asciiValidator("body", "projectName", true)
+        VALIDATOR.stringValidator("body", "projectName", true)
     ],
 
     joinTeamValidator: [
-        VALIDATOR.asciiValidator("body", "name", false),
+        VALIDATOR.stringValidator("body", "name", false),
     ],
 
     patchTeamValidator: [
-        VALIDATOR.asciiValidator("body", "name", true),
+        VALIDATOR.stringValidator("body", "name", true),
         VALIDATOR.regexValidator("body", "devpostURL", true, Constants.DEVPOST_REGEX),
-        VALIDATOR.asciiValidator("body", "projectName", true)
+        VALIDATOR.stringValidator("body", "projectName", true)
     ],
 };

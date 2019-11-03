@@ -58,7 +58,7 @@ class EmailService {
      * @param {string} ticket the ticket image (must be base-64 string)
      * @param {(err?)=>void} callback
      */
-    sendTicketEmail(firstName, recipient, ticket, callback) {
+    sendWeekOfEmail(firstName, recipient, ticket, callback) {
         const handlebarsPath = path.join(__dirname, `../assets/email/Ticket.hbs`);
         const html = this.renderEmail(handlebarsPath, {
             firstName: firstName,
@@ -78,7 +78,32 @@ class EmailService {
                     callback(response[0]);
                 }
             }, callback);
-
+    }
+    /**
+     * Send email with ticket.
+     * @param {string} firstName the recipient's first name
+     * @param {string} recipient the recipient's email address
+     * @param {(err?)=>void} callback
+     */
+    sendDayOfEmail(firstName, recipient, callback) {
+        const handlebarsPath = path.join(__dirname, `../assets/email/Welcome.hbs`);
+        const html = this.renderEmail(handlebarsPath, {
+            firstName: firstName,
+        });
+        const mailData = {
+            to: recipient,
+            from: process.env.NO_REPLY_EMAIL,
+            subject: Constants.EMAIL_SUBJECTS[Constants.WEEK_OF],
+            html: html
+        };
+        this.send(mailData).then(
+            (response) => {
+                if (response[0].statusCode >= 200 && response[0].statusCode < 300) {
+                    callback();
+                } else {
+                    callback(response[0]);
+                }
+            }, callback);
     }
 
     sendStatusUpdate(firstName, recipient, status, callback) {

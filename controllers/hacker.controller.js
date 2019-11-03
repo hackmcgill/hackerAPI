@@ -86,6 +86,13 @@ function sentWeekOfEmail(req, res) {
     });
 }
 
+function sentDayOfEmail(req, res) {
+    return res.status(200).json({
+        message: Constants.Success.HACKER_SENT_DAY_OF,
+        data: {}
+    });
+}
+
 module.exports = {
     updatedHacker: updatedHacker,
     createdHacker: createdHacker,
@@ -94,4 +101,5 @@ module.exports = {
     showHacker: showHacker,
     gotStats: gotStats,
     sentWeekOfEmail: sentWeekOfEmail,
+    sentDayOfEmail: sentDayOfEmail
 };

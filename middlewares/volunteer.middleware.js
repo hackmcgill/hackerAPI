@@ -69,7 +69,8 @@ async function createVolunteer(req, res, next) {
     const volunteer = await Services.Volunteer.createVolunteer(volunteerDetails);
 
     if (!volunteer) {
-        return res.status(400).json({
+        return next({
+            status: 500,
             message: Constants.Error.VOLUNTEER_CREATE_500_MESSAGE,
             data: {}
         });

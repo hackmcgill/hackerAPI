@@ -125,6 +125,23 @@ function asciiValidator(fieldLocation, fieldname, optional = true) {
 }
 
 /**
+ * Validates that field name is string only.
+ * @param {"query" | "body" | "header" | "param"} fieldLocation the location where the field should be found 
+ * @param {string} fieldname name of the field that needs to be validated.
+ * @param {boolean} optional whether the field is optional or not.
+ */
+function stringValidator(fieldLocation, fieldname, optional = true) {
+    const name = setProperValidationChainBuilder(fieldLocation, fieldname, "invalid string");
+    if (optional) {
+        return name.optional({
+            checkFalsy: true
+        }).isString().withMessage("must be a string");
+    } else {
+        return name.exists().withMessage("name must exist").isString().withMessage("must be a string");
+    }
+}
+
+/**
  * Validates the field against a regex
  * @param {"query" | "body" | "header" | "param"} fieldLocation the location where the field should be found 
  * @param {string} fieldname Name of the field that needs to be validated.
@@ -655,5 +672,6 @@ module.exports = {
     enumValidator: enumValidator,
     routesValidator: routesValidator,
     statusValidator: statusValidator,
+    stringValidator: stringValidator,
     updateHackerValidator: updateHackerValidator,
 };
