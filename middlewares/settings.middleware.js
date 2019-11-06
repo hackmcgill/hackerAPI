@@ -35,7 +35,7 @@ function parsePatch(req, res, next) {
  * @description Update settings object
  */
 async function updateSettings(req, res, next) {
-    const settings = await Services.Settings.updateSettings(req.body.setting);
+    const settings = await Services.Settings.updateSettings(req.body.settingDetails);
     if (!settings) {
         return next({
             status: 500,
@@ -62,7 +62,7 @@ async function getSettings(req, res, next) {
             message: Constants.Error.SETTINGS_404_MESSAGE
         });
     } else {
-        req.body.setting = settings;
+        req.body.settingDetails = settings;
         next();
     }
 }

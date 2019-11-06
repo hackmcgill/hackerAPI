@@ -33,7 +33,7 @@ const Model = {
  * @description Delete the req.body.id that was added by the validation of route parameter.
  */
 function parsePatch(req, res, next) {
-    Services.ParsePatch(Model.Account, "");
+    delete req.body.id;
     return next();
 }
 
@@ -49,11 +49,17 @@ function parsePatch(req, res, next) {
  * Adds _id to accountDetails.
  */
 function parseAccount(req, res, next) {
-    const accountPassword = req.body.password;
-    Services.ParsePatch(Model.Account, "accountDetails");
-    req.body.accountDetails._id = mongoose.Types.ObjectId();
-    req.body.accountDetails.password = Services.Account.hashPassword(accountPassword);
+    let setAccountDetails = Services.ParsePatch.parsePatch(Model.Account, "accountDetails");
+    return setAccountDetails(req, res, next);
+}
 
+function addId(req, res, next) {
+    req.body.accountDetails._id = mongoose.Types.ObjectId();
+    return next();
+}
+
+function hashPassword(req, res, next) {
+    req.body.accountDetails.password = Services.Account.hashPassword(req.body.accountDetails.password);
     return next();
 }
 
@@ -203,6 +209,8 @@ async function getInvites(req, res, next) {
 module.exports = {
     parsePatch: parsePatch,
     parseAccount: parseAccount,
+    addId: addId,
+    hashPassword: hashPassword,
     // untested
     getInvites: Middleware.Util.asyncMiddleware(getInvites),
     getByEmail: Middleware.Util.asyncMiddleware(getByEmail),

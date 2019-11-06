@@ -126,6 +126,8 @@ module.exports = {
 
             // middlewares to parse body/organize body
             Middleware.Account.parseAccount,
+            Middleware.Account.addId,
+            Middleware.Account.hashPassword,
 
             // Parses account token if it exists
             Middleware.Auth.parseAccountConfirmationToken,
