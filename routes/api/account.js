@@ -21,7 +21,7 @@ const Services = {
 };
 
 module.exports = {
-    activate: function(apiRouter) {
+    activate: function (apiRouter) {
         const accountRouter = express.Router();
 
         /**
@@ -170,12 +170,12 @@ module.exports = {
             }
          */
         accountRouter.route("/invite").post(
-                Middleware.Auth.ensureAuthenticated(),
-                Middleware.Auth.ensureAuthorized(),
-                Middleware.Validator.Account.inviteAccountValidator,
-                Middleware.parseBody.middleware,
-                Middleware.Account.inviteAccount,
-                Controllers.Account.invitedAccount
+            Middleware.Auth.ensureAuthenticated(),
+            Middleware.Auth.ensureAuthorized(),
+            Middleware.Validator.Account.inviteAccountValidator,
+            Middleware.parseBody.middleware,
+            Middleware.Account.inviteAccount,
+            Controllers.Account.invitedAccount
         );
         /**
          * @api {get} /account/invite Get all of the invites.
@@ -193,11 +193,11 @@ module.exports = {
                 }
          */
         accountRouter.route("/invite").get(
-                Middleware.Auth.ensureAuthenticated(),
-                Middleware.Auth.ensureAuthorized(),
-                Middleware.parseBody.middleware,
-                Middleware.Account.getInvites,
-                Controllers.Account.gotInvites
+            Middleware.Auth.ensureAuthenticated(),
+            Middleware.Auth.ensureAuthorized(),
+            Middleware.parseBody.middleware,
+            Middleware.Account.getInvites,
+            Controllers.Account.gotInvites
         );
 
         /**
@@ -223,7 +223,7 @@ module.exports = {
          * @apiSuccess {object} data Account object
          * @apiSuccessExample {object} Success-Response: 
          *      {
-                    "message": "Changed account information", 
+                    "message": "Account update successful.", 
                     "data": {
                             "id": ObjectId("5bff8b9f3274cf001bc71048"),
                         	"firstName": "Theo",
@@ -253,6 +253,7 @@ module.exports = {
             Middleware.Account.parsePatch,
 
             Middleware.Account.updateAccount,
+            Middleware.Auth.sendConfirmAccountEmailMiddleware,
             // no parse account because will use req.body as information
             // because the number of fields will be variable
             Controllers.Account.updatedAccount

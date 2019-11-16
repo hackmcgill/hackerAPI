@@ -159,8 +159,16 @@ async function addAccount(req, res, next) {
  * @param {*} next 
  */
 async function updateAccount(req, res, next) {
-    const account = await Services.Account.updateOne(req.params.id, req.body);
-    if (account) {
+    var account = await Services.Account.findById(req.params.id)
+
+    // If we are changing the email, and there is a difference between the two, set back to unconfirmed status.
+    if (req.body.email && account.email != req.body.email) {
+        req.body.confirmed = false
+    }
+
+    req.body.account = await Services.Account.updateOne(req.params.id, req.body);
+
+    if (req.body.account) {
         return next();
     } else {
         return next({
