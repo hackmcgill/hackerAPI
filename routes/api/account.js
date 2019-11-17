@@ -137,7 +137,7 @@ module.exports = {
 
             // middleware to create a hacker token
             // and send a confirmation message
-            Middleware.Auth.sendConfirmAccountEmailMiddleware,
+            Middleware.Auth.sendConfirmAccountEmail,
             // should return status in this function
             Controllers.Account.addUser
         );
@@ -253,7 +253,7 @@ module.exports = {
             Middleware.Account.parsePatch,
 
             Middleware.Account.updateAccount,
-            Middleware.Auth.sendConfirmAccountEmailMiddleware,
+            Middleware.Auth.sendConfirmAccountEmail,
             // no parse account because will use req.body as information
             // because the number of fields will be variable
             Controllers.Account.updatedAccount
