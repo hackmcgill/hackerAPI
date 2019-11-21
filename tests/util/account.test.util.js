@@ -108,6 +108,10 @@ let hackerAccounts = {
             "accountType": Constants.HACKER,
             "confirmed": true,
         }),
+        unconfirmed: createNAccounts(5, {
+            "accountType": Constants.HACKER,
+            "confirmed": false,
+        }),
     },
     invalid: createNAccounts(10, {
         "accountType": Constants.HACKER
@@ -313,6 +317,7 @@ function store(attributes) {
 async function storeAll() {
     await store(hackerAccounts.stored.team);
     await store(hackerAccounts.stored.noTeam);
+    await store(hackerAccounts.stored.unconfirmed);
     await store(volunteerAccounts.stored);
     await store(staffAccounts.stored);
     await store(sponsorT1Accounts.stored);
