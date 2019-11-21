@@ -68,7 +68,8 @@ function parseAccount(req, res, next) {
     delete req.body.phoneNumber;
 
     req.body.accountDetails = accountDetails;
-
+    console.log(req.body.accountDetails)
+    console.log(req.body)
     return next();
 }
 

@@ -102,7 +102,7 @@ describe("Searching for hackers", function () {
                 .end(function (err, res) {
                     res.should.have.status(200);
                     res.body.should.have.property("data");
-                    res.body.data.should.have.length(6);
+                    res.body.data.should.have.length(7);
                     done();
                 });
         });
@@ -281,7 +281,7 @@ describe("Searching for hackers", function () {
                 .end(function (err, res) {
                     res.should.have.status(200);
                     res.body.should.have.property("data");
-                    res.body.data.should.have.length(6);
+                    res.body.data.should.have.length(7);
                     res.body.data[0].should.have.property("accountId");
                     res.body.data[0].accountId.should.have.property("email");
                     done();
