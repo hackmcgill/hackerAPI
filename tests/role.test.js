@@ -75,7 +75,7 @@ describe("POST create role", function () {
         });
     });
 
-    // should fail due to lack of authorization
+    // should FAIL due to lack of authorization
     it("should Fail to add new role due to lack of authorization", function (done) {
         util.auth.login(agent, Hacker0, (error) => {
             if (error) {

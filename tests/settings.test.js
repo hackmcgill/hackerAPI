@@ -35,7 +35,7 @@ describe("GET settings", function () {
 });
 
 describe("PATCH settings", function () {
-    it("should fail to update the settings due to lack of authentication", function (done) {
+    it("should FAIL to update the settings due to lack of authentication", function (done) {
         chai.request(server.app)
             .patch(`/api/settings/`)
             // does not have password because of to stripped json
@@ -47,7 +47,7 @@ describe("PATCH settings", function () {
                 done();
             });
     });
-    it("should fail to update the settings due to lack of authorization", function (done) {
+    it("should FAIL to update the settings due to lack of authorization", function (done) {
         util.auth.login(agent, invalidAccount, (error) => {
             if (error) {
                 agent.close();

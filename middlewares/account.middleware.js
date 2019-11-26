@@ -68,8 +68,6 @@ function parseAccount(req, res, next) {
     delete req.body.phoneNumber;
 
     req.body.accountDetails = accountDetails;
-    console.log(req.body.accountDetails)
-    console.log(req.body)
     return next();
 }
 
@@ -163,6 +161,7 @@ async function updateAccount(req, res, next) {
     var account = await Services.Account.findById(req.params.id)
 
     // If we are changing the email, and there is a difference between the two, set back to unconfirmed status.
+    // TODO: When pull request for parse patch refactor #546 hits, req.body.email will not be present.
     if (req.body.email && account.email != req.body.email) {
         req.body.confirmed = false
     }
