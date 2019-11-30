@@ -10,7 +10,7 @@ const QRCode = require("qrcode");
 
 /**
  * @function createHacker
- * @param {{_id: ObjectId, accountId: ObjectId, school: string, gender: string, needsBus: boolean, application: {Object}}} hackerDetails
+ * @param {{_id: ObjectId, accountId: ObjectId, application: {Object}}} hackerDetails
  * @return {Promise<Hacker>} The promise will resolve to a hacker object if save is successful.
  * @description Adds a new hacker to database.
  */
@@ -25,7 +25,7 @@ function createHacker(hackerDetails) {
 /**
  * @function updateOne
  * @param {ObjectId} id
- * @param {{_id?: ObjectId, accountId?: ObjectId, school?: string, gender?: string, needsBus?: boolean, application?: {Object}, teamId?: ObjectId}} hackerDetails
+ * @param {{_id?: ObjectId, accountId?: ObjectId, application?: {Object}, teamId?: ObjectId}} hackerDetails
  * @return {DocumentQuery} The document query will resolve to hacker or null.
  * @description Update an account specified by its mongoId with information specified by hackerDetails.
  */

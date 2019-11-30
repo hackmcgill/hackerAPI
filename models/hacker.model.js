@@ -1,5 +1,4 @@
 "use strict";
-
 const Constants = require("../constants/general.constant");
 const mongoose = require("mongoose");
 //describes the data type
@@ -45,8 +44,7 @@ const HackerSchema = new mongoose.Schema({
       URL: {
         //gcloud bucket link
         resume: {
-          type: String,
-          default: ""
+          type: String
         },
         github: {
           type: String
@@ -79,12 +77,14 @@ const HackerSchema = new mongoose.Schema({
       //"Why do you want to come to our hackathon?"
       question1: {
         type: String,
-        default: ""
+        default: "",
+        required: true
       },
       // "Some Q"
       question2: {
         type: String,
-        default: ""
+        default: "",
+        required: true
       }
     },
     other: {
@@ -97,9 +97,9 @@ const HackerSchema = new mongoose.Schema({
         ],
         required: true
       },
-      //no enum for this
       gender: {
-        type: String
+        type: String,
+        required: true
       },
       codeOfConduct_MLH: {
         type: Boolean,
@@ -133,6 +133,7 @@ HackerSchema.methods.toJSON = function() {
 };
 HackerSchema.methods.isApplicationComplete = function() {
   const hs = this.toObject();
+  console.log(hs);
   const portfolioDone = !!hs.application.general.URL.resume;
   const jobInterestDone = !!hs.application.general.jobInterest;
   const question1Done = !!hs.application.shortAnswer.question1;

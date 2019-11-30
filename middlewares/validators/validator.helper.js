@@ -389,6 +389,7 @@ function applicationValidator(fieldLocation, fieldname, optional = true) {
     gender: false,
     ethnicity: false,
     bus: false,
+    gender: false,
     graduationYear: false,
     codeOfConduct_MLH: false,
     codeOfConduct_MCHACKS: false,
@@ -440,6 +441,11 @@ function applicationValidator(fieldLocation, fieldname, optional = true) {
           "application.other.ethnicity",
           false
         );
+        hasValid.gender = stringValidator(
+          "body",
+          "application.other.gender",
+          false
+        );
         hasValid.graduationYear = integerValidator(
           "body",
           "application.general.graduationYear",
@@ -494,6 +500,7 @@ function applicationValidator(fieldLocation, fieldname, optional = true) {
           hasValid.fieldOfStudy &&
           hasValid.graduationYear &&
           hasValid.ethnicity &&
+          hasValid.gender &&
           hasValid.bus &&
           hasValid.codeOfConduct_MLH &&
           hasValid.codeOfConduct_MCHACKS &&
@@ -544,6 +551,11 @@ function applicationValidator(fieldLocation, fieldname, optional = true) {
           "application.other.ethnicity",
           false
         );
+        hasValid.gender = stringValidator(
+          "body",
+          "application.other.gender",
+          false
+        );
         hasValid.graduationYear = integerValidator(
           "body",
           "application.general.graduationYear",
@@ -598,6 +610,7 @@ function applicationValidator(fieldLocation, fieldname, optional = true) {
           hasValid.fieldOfStudy &&
           hasValid.graduationYear &&
           hasValid.ethnicity &&
+          hasValid.gender &&
           hasValid.bus &&
           hasValid.codeOfConduct_MLH &&
           hasValid.codeOfConduct_MCHACKS &&
