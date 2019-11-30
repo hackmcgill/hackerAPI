@@ -87,7 +87,6 @@ function findByAccountId(accountId) {
   const query = {
     accountId: accountId
   };
-  console.log(query);
 
   return Hacker.findOne(query, logger.updateCallbackFactory(TAG, "hacker"));
 }

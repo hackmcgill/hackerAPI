@@ -390,7 +390,8 @@ function applicationValidator(fieldLocation, fieldname, optional = true) {
     ethnicity: false,
     bus: false,
     graduationYear: false,
-    codeOfConduct: false,
+    codeOfConduct_MLH: false,
+    codeOfConduct_MCHACKS: false,
     github: false,
     dribbble: false,
     personal: false,
@@ -446,9 +447,14 @@ function applicationValidator(fieldLocation, fieldname, optional = true) {
           2019,
           2030
         );
-        hasValid.codeOfConduct = booleanValidator(
+        hasValid.codeOfConduct_MLH = booleanValidator(
           "body",
-          "application.accomodation.needsBus",
+          "application.other.codeOfConduct_MLH",
+          false
+        );
+        hasValid.codeOfConduct_MCHACKS = booleanValidator(
+          "body",
+          "appliction.other.codeOfConduct_MCHACKS",
           false
         );
         const jobInterests = Constants.JOB_INTERESTS;
@@ -489,7 +495,8 @@ function applicationValidator(fieldLocation, fieldname, optional = true) {
           hasValid.graduationYear &&
           hasValid.ethnicity &&
           hasValid.bus &&
-          hasValid.codeOfConduct &&
+          hasValid.codeOfConduct_MLH &&
+          hasValid.codeOfConduct_MCHACKS &&
           hasValid.github &&
           hasValid.dribbble &&
           hasValid.personal &&
@@ -544,9 +551,14 @@ function applicationValidator(fieldLocation, fieldname, optional = true) {
           2019,
           2030
         );
-        hasValid.codeOfConduct = booleanValidator(
+        hasValid.codeOfConduct_MLH = booleanValidator(
           "body",
-          "application.accomodation.needsBus",
+          "application.other.codeOfConduct_MLH",
+          false
+        );
+        hasValid.codeOfConduct_MCHACKS = booleanValidator(
+          "body",
+          "appliction.other.codeOfConduct_MCHACKS",
           false
         );
         const jobInterests = Constants.JOB_INTERESTS;
@@ -587,7 +599,8 @@ function applicationValidator(fieldLocation, fieldname, optional = true) {
           hasValid.graduationYear &&
           hasValid.ethnicity &&
           hasValid.bus &&
-          hasValid.codeOfConduct &&
+          hasValid.codeOfConduct_MLH &&
+          hasValid.codeOfConduct_MCHACKS &&
           hasValid.github &&
           hasValid.dribbble &&
           hasValid.personal &&

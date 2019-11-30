@@ -101,7 +101,11 @@ const HackerSchema = new mongoose.Schema({
       gender: {
         type: String
       },
-      codeOfConduct: {
+      codeOfConduct_MLH: {
+        type: Boolean,
+        required: true
+      },
+      codeOfConduct_MCHACKS: {
         type: Boolean,
         required: true
       }
