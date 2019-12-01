@@ -64,6 +64,7 @@ module.exports = {
             Middleware.Validator.Role.newRoleValidator,
             Middleware.parseBody.middleware,
             Middleware.Role.parseRole,
+            Middleware.Role.setId,
 
             Middleware.Role.createRole,
             Controllers.Role.createdRole

@@ -22,8 +22,8 @@ const Model = {
  * @description Put relevent settings attributes into settingsDetails
  */
 function parsePatch(req, res, next) {
-    Services.parsePatch(Model.Settings, "settingDetails");
-    return next();
+    let parseSettingDetails = Services.ParsePatch.parsePatch(Model.Settings, "settingDetails");
+    return parseSettingDetails(req, res, next);
 }
 
 /**

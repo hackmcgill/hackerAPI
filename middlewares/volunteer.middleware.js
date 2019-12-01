@@ -28,8 +28,12 @@ const Model = {
  * Adds _id to volunteerDetails.
  */
 function parseVolunteer(req, res, next) {
-    Services.ParsePatch(Model.Volunteer, "volunteerDetails");
-    req.body.volunteerDetails._id = mongoose.Types.ObjectId()
+    let parseVolunteerDetails = Services.ParsePatch.parsePatch(Model.Volunteer, "volunteerDetails");
+    return parseVolunteerDetails(req, res, next);
+}
+
+function addId(res, req, next) {
+    req.body.volunteerDetails._id = mongoose.Types.ObjectId();
     return next();
 }
 
@@ -134,6 +138,7 @@ async function findById(req, res, next) {
 
 module.exports = {
     parseVolunteer: parseVolunteer,
+    addId: addId,
     createVolunteer: Middleware.Util.asyncMiddleware(createVolunteer),
     checkDuplicateAccountLinks: Middleware.Util.asyncMiddleware(checkDuplicateAccountLinks),
     validateConfirmedStatus: Middleware.Util.asyncMiddleware(validateConfirmedStatus),

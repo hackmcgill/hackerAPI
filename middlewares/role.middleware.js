@@ -23,10 +23,17 @@ const Model = {
  * Adds _id to roleDetails.
  */
 function parseRole(req, res, next) {
-    Services.ParsePatch(Model.Role, "roleDetails")
-    req.body.Role._id = mongoose.Types.ObjectId();
-    return next();
+    let parseRoleDetails = Services.ParsePatch.parsePatch(Model.Role, "roleDetails");
+    return parseRoleDetails(req, res, next);
+
 }
+
+
+function setId(req, res, next) {
+    req.body.roleDetails._id = mongoose.Types.ObjectId();
+    return next()
+}
+
 
 /**
  * @function createRole
@@ -39,12 +46,11 @@ function parseRole(req, res, next) {
  */
 async function createRole(req, res, next) {
     const roleDetails = req.body.roleDetails;
-
     const role = await Services.Role.createRole(roleDetails);
-
     if (!!role) {
         delete req.body.roleDetails;
         req.body.role = role;
+        console.log(req.body.role);
         return next();
     } else {
         return next({
@@ -57,5 +63,6 @@ async function createRole(req, res, next) {
 
 module.exports = {
     parseRole: parseRole,
+    setId: setId,
     createRole: createRole,
 };

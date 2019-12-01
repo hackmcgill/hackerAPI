@@ -139,6 +139,7 @@ module.exports = {
             Middleware.Sponsor.checkDuplicateAccountLinks,
 
             Middleware.Sponsor.parseSponsor,
+            Middleware.Sponsor.addId,
 
             Middleware.Auth.addAccountTypeRoleBinding,
 

@@ -12,8 +12,8 @@ module.exports = {
     parsePatch: function (model, modelName) {
         return function (req, res, next) {
             let modelAttributes = {};
-            for (const val in req.body) {
-                if (model.schema.paths.hasOwnProperty(val)) {
+            for (let val in req.body) {
+                if (model.schema.obj.hasOwnProperty(val)) {
                     modelAttributes[val] = req.body[val];
                     delete req.body[val];
                 }

@@ -161,6 +161,8 @@ module.exports = {
             Middleware.Hacker.checkDuplicateAccountLinks,
 
             Middleware.Hacker.parseHacker,
+            Middleware.Hacker.addId,
+            Middleware.Hacker.setToken,
 
             Middleware.Hacker.addDefaultStatus,
             Middleware.Auth.createRoleBindings(CONSTANTS.HACKER),

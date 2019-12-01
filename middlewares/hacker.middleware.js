@@ -30,7 +30,7 @@ const Model = {
  * @description Delete the req.body.id that was added by the validation of route parameter.
  */
 function parsePatch(req, res, next) {
-    Services.ParsePatch(Model.Hacker, "hackerDetails");
+    delete req.body.id;
     return next();
 }
 
@@ -45,13 +45,22 @@ function parsePatch(req, res, next) {
  * Adds _id to hackerDetails.
  */
 function parseHacker(req, res, next) {
+    let parseHackerDetails = Services.ParsePatch.parsePatch(Model.Hacker, "hackerDetails");
+    return parseHackerDetails(req, res, next);
+}
 
-    Services.ParsePatch(Model.Hacker, "hackerDetails");
-    req.body.Hacker._id = mongoose.Types.ObjectId();
-    req.body.token = req.body.authorization;
 
+function addId(req, res, next) {
+    req.body.hackerDetails._id = mongoose.Types.ObjectId();
     return next();
 }
+
+function setToken(req, res, next) {
+    req.body.token = req.body.authorization;
+    delete req.body.authorization;
+    return next();
+}
+
 
 /**
  * @function parseCheckin
@@ -538,6 +547,8 @@ async function getStats(req, res, next) {
 module.exports = {
     parsePatch: parsePatch,
     parseHacker: parseHacker,
+    addId: addId,
+    setToken: setToken,
     addDefaultStatus: addDefaultStatus,
     ensureAccountLinkedToHacker: ensureAccountLinkedToHacker,
     uploadResume: Middleware.Util.asyncMiddleware(uploadResume),

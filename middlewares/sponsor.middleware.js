@@ -25,8 +25,8 @@ const Model = {
  * @description Put relevent sponsor attributes into sponsorDetails
  */
 function parsePatch(req, res, next) {
-    Services.parsePatch(Model.Sponsor, "sponsorDetails");
-    return next();
+    let parseSponsorDetails = Services.ParsePatch.parsePatch(Model.Sponsor, "sponsorDetails");
+    return parseSponsorDetails(req, res, next);
 }
 
 /**
@@ -40,11 +40,16 @@ function parsePatch(req, res, next) {
  * Adds _id to sponsorDetails.
  */
 function parseSponsor(req, res, next) {
-    Services.parsePatch(Model.Sponsor, "sponsorDetails")
-    req.body.Services._id = mongoose.Types.ObjectId()
+    let parseSponsorDetails = Services.ParsePatch.parsePatch(Model.Sponsor, "sponsorDetails")
+    return parseSponsorDetails(req, res, next);
+}
 
+
+function addId(req, res, next) {
+    req.body.sponsorDetails._id = mongoose.Types.ObjectId();
     return next();
 }
+
 
 /**
  * Verifies that account is confirmed and of proper type from the account ID passed in req.body.accountId
@@ -208,6 +213,7 @@ async function checkDuplicateAccountLinks(req, res, next) {
 module.exports = {
     parsePatch: parsePatch,
     parseSponsor: parseSponsor,
+    addId: addId,
     findSelf: Middleware.Util.asyncMiddleware(findSelf),
     findById: Middleware.Util.asyncMiddleware(findById),
     createSponsor: Middleware.Util.asyncMiddleware(createSponsor),
