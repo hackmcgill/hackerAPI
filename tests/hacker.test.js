@@ -415,7 +415,7 @@ describe("POST create hacker", function() {
         .type("application/json")
         .send(invalidHacker0)
         .end(function(err, res) {
-          console.log(res);
+          // console.log(res);
           res.should.have.status(422);
           res.should.be.json;
           res.body.should.have.property("message");

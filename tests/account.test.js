@@ -45,7 +45,6 @@ describe("GET user account", function() {
       .request(server.app)
       .get("/api/account/self")
       .end(function(err, res) {
-        console.log(res);
         res.should.have.status(401);
         res.should.be.json;
         res.body.should.have.property("message");
