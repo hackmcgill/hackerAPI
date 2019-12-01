@@ -140,7 +140,7 @@ function getStats(hackers) {
     needsBus: {},
     ethnicity: {},
     jobInterest: {},
-    major: {},
+    fieldOfStudy: {},
     graduationYear: {},
     dietaryRestrictions: {},
     shirtSize: {},
@@ -156,37 +156,44 @@ function getStats(hackers) {
     stats.status[hacker.status] = stats.status[hacker.status]
       ? stats.status[hacker.status] + 1
       : 1;
-    stats.school[hacker.school] = stats.school[hacker.school]
-      ? stats.school[hacker.school] + 1
+    stats.school[hacker.application.general.school] = stats.school[
+      hacker.application.general.school
+    ]
+      ? stats.school[hacker.application.general.school] + 1
       : 1;
-    stats.degree[hacker.degree] = stats.degree[hacker.degree]
-      ? stats.degree[hacker.degree] + 1
+    stats.degree[hacker.application.general.degree] = stats.degree[
+      hacker.application.general.degree
+    ]
+      ? stats.degree[hacker.application.general.degree] + 1
       : 1;
-    stats.gender[hacker.gender] = stats.gender[hacker.gender]
-      ? stats.gender[hacker.gender] + 1
+    stats.gender[hacker.application.other.gender] = stats.gender[
+      hacker.application.other.gender
+    ]
+      ? stats.gender[hacker.application.other.gender] + 1
       : 1;
-    stats.needsBus[hacker.needsBus] = stats.needsBus[hacker.needsBus]
-      ? stats.needsBus[hacker.needsBus] + 1
+    stats.needsBus[hacker.application.accomodation.needsBus] = stats.needsBus[
+      hacker.application.accomodation.needsBus
+    ]
+      ? stats.needsBus[hacker.application.accomodation.needsBus] + 1
       : 1;
 
-    for (const ethnicity of hacker.ethnicity) {
+    for (const ethnicity of hacker.application.other.ethnicity) {
       stats.ethnicity[ethnicity] = stats.ethnicity[ethnicity]
         ? stats.ethnicity[ethnicity] + 1
         : 1;
     }
 
-    stats.jobInterest[hacker.application.jobInterest] = stats.jobInterest[
-      hacker.application.jobInterest
-    ]
-      ? stats.jobInterest[hacker.application.jobInterest] + 1
+    stats.jobInterest[hacker.application.general.jobInterest] = stats
+      .jobInterest[hacker.application.general.jobInterest]
+      ? stats.jobInterest[hacker.application.general.jobInterest] + 1
       : 1;
-    stats.major[hacker.major] = stats.major[hacker.major]
-      ? stats.major[hacker.major] + 1
+    stats.fieldOfStudy[hacker.application.general.fieldOfStudy] = stats
+      .fieldOfStudy[hacker.application.general.fieldOfStudy]
+      ? stats.fieldOfStudy[hacker.application.general.fieldOfStudy] + 1
       : 1;
-    stats.graduationYear[hacker.graduationYear] = stats.graduationYear[
-      hacker.graduationYear
-    ]
-      ? stats.graduationYear[hacker.graduationYear] + 1
+    stats.graduationYear[hacker.application.general.graduationYear] = stats
+      .graduationYear[hacker.application.general.graduationYear]
+      ? stats.graduationYear[hacker.application.general.graduationYear] + 1
       : 1;
 
     for (const dietaryRestrictions of hacker.accountId.dietaryRestrictions) {

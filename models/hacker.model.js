@@ -111,7 +111,8 @@ const HackerSchema = new mongoose.Schema({
       }
     },
     accomodation: {
-      needsBus: Boolean
+      needsBus: Boolean,
+      default: false
     },
     team: {
       type: mongoose.Schema.Types.ObjectId,

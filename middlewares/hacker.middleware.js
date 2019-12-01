@@ -37,7 +37,7 @@ function parsePatch(req, res, next) {
  * @param {(err?)=>void} next
  * @return {void}
  * @description
- * Moves accountId, school, degree, gender, needsBus, application from req.body to req.body.hackerDetails.
+ * Moves accountId, application from req.body to req.body.hackerDetails.
  * Adds _id to hackerDetails.
  */
 function parseHacker(req, res, next) {
@@ -217,7 +217,7 @@ function ensureAccountLinkedToHacker(req, res, next) {
  * @param {(err?)=>void} next
  */
 async function uploadResume(req, res, next) {
-  const gcfilename = `resumes/${Date.now()}-${req.hacker.id}`;
+  const gcfilename = `resume/${Date.now()}-${req.hacker.id}`;
   await Services.Storage.upload(req.file, gcfilename);
   req.body.gcfilename = gcfilename;
   await Services.Hacker.updateOne(req.hacker.id, {
@@ -456,6 +456,7 @@ function checkStatus(statuses) {
  * @param {*} next
  */
 async function updateHacker(req, res, next) {
+  console.log("does it reach?");
   const hacker = await Services.Hacker.updateOne(req.params.id, req.body);
   if (hacker) {
     const acct = await Services.Account.findById(hacker.accountId);
