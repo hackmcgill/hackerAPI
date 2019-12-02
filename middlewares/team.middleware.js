@@ -428,20 +428,9 @@ async function populateMemberAccountsById(req, res, next) {
     return next();
 }
 
-/**
- * @function parseTeam
- * @param {{body: {name: string, members: Object[], devpostURL: string, projectName: string}}} req
- * @param {*} res
- * @param {(err?)=>void} next
- * @return {void}
- * @description 
- * Moves name, members, devpostURL, projectName from req.body to req.body.teamDetails. 
- * Adds _id to teamDetails.
- */
-function parseTeam(req, res, next) {
-    Services.parsePatch(Model.Team, "teamDetails");
-    req.body.teamDetails._id = mongoose.Types.ObjectId();
 
+function addId(req, res, next) {
+    req.body.teamDetails._id = mongoose.Types.ObjectId();
     return next();
 }
 
@@ -455,19 +444,16 @@ function parseTeam(req, res, next) {
  *      Delete the req.body.id that was added by the validation of route parameter.
  *      Move attributes belonging to the team schema to req.body.teamDetails.
  */
-function parsePatch(req, res, next) {
-    Services.parsePatch(Model.Team, "teamDetails");
-    next();
+async function parsePatch(req, res, next) {
+    delete req.body.id;
+    let parseTeamDetails = Services.ParsePatch.parsePatch(Model.Team, "teamDetails");
+    return parseTeamDetails(req, res, next);
 }
 
 async function parseNewTeam(req, res, next) {
-    Services.parsePatch(Model.Team, "teamDetails");
-    req.body.teamDetails._id = mongoose.Types.ObjectId();
-
-
     // hacker should exist because of authorization
     const hacker = await Services.Hacker.findByAccountId(req.user.id);
-
+    req.body.teamDetails.members = [];
     if (!hacker) {
         return next({
             status: 404,
@@ -492,7 +478,7 @@ async function parseNewTeam(req, res, next) {
 }
 
 module.exports = {
-    parseTeam: parseTeam,
+    addId: addId,
     findById: Util.asyncMiddleware(findById),
     createTeam: Util.asyncMiddleware(createTeam),
     ensureUniqueHackerId: Util.asyncMiddleware(ensureUniqueHackerId),

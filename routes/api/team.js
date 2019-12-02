@@ -53,6 +53,8 @@ module.exports = {
             // Validators
             Middleware.Validator.Team.newTeamValidator,
             Middleware.parseBody.middleware,
+            Middleware.Team.parsePatch,
+            Middleware.Team.addId,
             Middleware.Team.parseNewTeam,
 
             Middleware.Team.ensureFreeTeamName,
@@ -202,7 +204,7 @@ module.exports = {
             Middleware.Validator.RouteParam.hackeridValidator,
             Middleware.parseBody.middleware,
             Middleware.Team.parsePatch,
-
+            Middleware.Team.addId,
             Middleware.Team.getTeamIdByHackerId,
             Middleware.Team.updateTeam,
 
