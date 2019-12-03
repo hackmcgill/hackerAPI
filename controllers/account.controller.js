@@ -50,6 +50,7 @@ function addUser(req, res) {
  *      The id is moved to req.body.id from req.params.id by validation.
  */
 function updatedAccount(req, res) {
+    delete req.body.account;
     return res.status(200).json({
         message: Constants.Success.ACCOUNT_UPDATE,
         data: req.body

@@ -99,7 +99,7 @@ function parseCheckIn(req, res, next) {
  * @param {(err?)=>void} next
  * @return {void}
  * @description 
- * Changes req.body.status to confirmed or cancelled depending on whether req.body.confirm is true or false respectively.
+ * Changes req.body.status to confirmed or withdrawn depending on whether req.body.confirm is true or false respectively.
  * Deletes req.body.confirm afterwards
  */
 function parseConfirmation(req, res, next) {
@@ -108,7 +108,7 @@ function parseConfirmation(req, res, next) {
     if (confirm) {
         req.body.status = Constants.General.HACKER_STATUS_CONFIRMED;
     } else {
-        req.body.status = Constants.General.HACKER_STATUS_CANCELLED;
+        req.body.status = Constants.General.HACKER_STATUS_WITHDRAWN;
     }
 
     delete req.body.confirm;
@@ -129,13 +129,11 @@ function addDefaultStatus(req, res, next) {
 }
 
 /**
- * Verifies that account is confirmed and of proper type from the account ID passed in req.body.accountId
- * @param {{body: {accountId: ObjectId}}} req 
- * @param {*} res 
+ * Helper function that validates if account is confirmed and is of proper type
+ * @param account account object containing the information for an account 
  * @param {(err?) => void} next 
  */
-async function validateConfirmedStatus(req, res, next) {
-    const account = await Services.Account.findById(req.body.accountId);
+async function validateConfirmedStatus(account, next) {
     if (!account) {
         return next({
             status: 404,
@@ -156,6 +154,39 @@ async function validateConfirmedStatus(req, res, next) {
     } else {
         return next();
     }
+}
+
+/**
+ * Verifies that account is confirmed and of proper type from the account ID passed in req.body.accountId
+ * @param {{body: {accountId: ObjectId}}} req 
+ * @param {*} res 
+ * @param {(err?) => void} next 
+ */
+async function validateConfirmedStatusFromAccountId(req, res, next) {
+    const account = await Services.Account.findById(req.body.accountId);
+    return validateConfirmedStatus(account, next);
+}
+
+/**
+ * Verifies that account is confirmed and of proper type from the hacker ID passed in req.params.id
+ * @param {{params: {id: ObjectId}}} req 
+ * @param {*} res 
+ * @param {(err?) => void} next 
+ */
+async function validateConfirmedStatusFromHackerId(req, res, next) {
+    const hacker = await Services.Hacker.findById(req.params.id);
+    const account = await Services.Account.findById(hacker.accountId);
+    return validateConfirmedStatus(account, next);
+}
+
+/**
+ * Verifies that account is confirmed and of proper type from the account object passed in req.body.account
+ * @param {{body: {account: Object}}} req 
+ * @param {*} res 
+ * @param {(err?) => void} next 
+ */
+async function validateConfirmedStatusFromObject(req, res, next) {
+    return validateConfirmedStatus(req.body.account, next);
 }
 
 /**
@@ -527,7 +558,7 @@ async function checkDuplicateAccountLinks(req, res, next) {
  * @param {(err?)=>void} next 
  */
 async function findSelf(req, res, next) {
-    if (req.user.accountType != Constants.General.HACKER) {
+    if (req.user.accountType != Constants.General.HACKER || !req.user.confirmed) {
         return next({
             status: 409,
             message: Constants.Error.ACCOUNT_TYPE_409_MESSAGE,
@@ -571,7 +602,9 @@ module.exports = {
     sendStatusUpdateEmail: Middleware.Util.asyncMiddleware(sendStatusUpdateEmail),
     sendAppliedStatusEmail: Middleware.Util.asyncMiddleware(sendAppliedStatusEmail),
     updateHacker: Middleware.Util.asyncMiddleware(updateHacker),
-    validateConfirmedStatus: Middleware.Util.asyncMiddleware(validateConfirmedStatus),
+    validateConfirmedStatusFromAccountId: Middleware.Util.asyncMiddleware(validateConfirmedStatusFromAccountId),
+    validateConfirmedStatusFromHackerId: Middleware.Util.asyncMiddleware(validateConfirmedStatusFromHackerId),
+    validateConfirmedStatusFromObject: Middleware.Util.asyncMiddleware(validateConfirmedStatusFromObject),
     checkDuplicateAccountLinks: Middleware.Util.asyncMiddleware(checkDuplicateAccountLinks),
     updateStatusIfApplicationCompleted: Middleware.Util.asyncMiddleware(updateStatusIfApplicationCompleted),
     checkStatus: checkStatus,

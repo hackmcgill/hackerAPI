@@ -28,7 +28,7 @@ const newT2Sponsor0 = util.sponsor.newT2Sponsor0;
 let duplicateSponsor = util.sponsor.duplicateAccountLinkSponsor1;
 
 describe("GET user's sponsor info", function () {
-    it("should fail list a sponsor's information due to authentication from /api/sponsor/self GET", function (done) {
+    it("should FAIL list a sponsor's information due to authentication from /api/sponsor/self GET", function (done) {
         chai.request(server.app)
             .get(`/api/sponsor/self`)
             // does not have password because of to stripped json
@@ -139,7 +139,7 @@ describe("GET user's sponsor info", function () {
 });
 
 describe("GET sponsor by id", function () {
-    it("should fail list a sponsor's information due to authentication from /api/sponsor/:id GET", function (done) {
+    it("should FAIL list a sponsor's information due to authentication from /api/sponsor/:id GET", function (done) {
         chai.request(server.app)
             .get(`/api/sponsor/` + T1Sponsor0._id)
             // does not have password because of to stripped json
@@ -208,7 +208,7 @@ describe("GET sponsor by id", function () {
     });
 
     // failure due to lack of auth
-    it("should fail to list a user's sponsor info due to lack of authorization /api/sponsor/:id GET", function (done) {
+    it("should FAIL to list a user's sponsor info due to lack of authorization /api/sponsor/:id GET", function (done) {
         util.auth.login(agent, HackerAccount0, (error) => {
             if (error) {
                 agent.close();
@@ -232,7 +232,7 @@ describe("GET sponsor by id", function () {
     });
 
     // failure due to lack of this sponsor
-    it("should fail to list non existant info on /api/sponsor/:id GET", function (done) {
+    it("should FAIL to list non existant info on /api/sponsor/:id GET", function (done) {
         util.auth.login(agent, Admin0, (error) => {
             if (error) {
                 agent.close();
@@ -257,7 +257,7 @@ describe("GET sponsor by id", function () {
 });
 
 describe("POST create sponsor", function () {
-    it("should fail to create a new sponsor due to lack of authentication", function (done) {
+    it("should FAIL to create a new sponsor due to lack of authentication", function (done) {
         chai.request(server.app)
             .post(`/api/sponsor`)
             .type("application/json")
@@ -301,7 +301,7 @@ describe("POST create sponsor", function () {
     });
 
     // fail case - duplicate accountId
-    it("should fail to create a sponsor due to duplicate accountId", function (done) {
+    it("should FAIL to create a sponsor due to duplicate accountId", function (done) {
         util.auth.login(agent, T1SponsorAccount0, (error) => {
             if (error) {
                 agent.close();
@@ -346,7 +346,7 @@ describe("POST create sponsor", function () {
 });
 
 describe("PATCH update sponsor", function () {
-    it("should fail to update a sponsor due to lack of authentication", function (done) {
+    it("should FAIL to update a sponsor due to lack of authentication", function (done) {
         chai.request(server.app)
             .patch(`/api/sponsor/${T1Sponsor0._id}/`)
             .type("application/json")
