@@ -1,12 +1,12 @@
-"use strict";
+'use strict';
 const Services = {
-    Sponsor: require("../services/sponsor.service"),
-    Logger: require("../services/logger.service")
+  Sponsor: require('../services/sponsor.service'),
+  Logger: require('../services/logger.service'),
 };
-const Util = require("../middlewares/util.middleware");
+const Util = require('../middlewares/util.middleware');
 const Constants = {
-    Success: require("../constants/success.constant"),
-    Error: require("../constants/error.constant"),
+  Success: require('../constants/success.constant'),
+  Error: require('../constants/error.constant'),
 };
 
 /**
@@ -17,10 +17,10 @@ const Constants = {
  * @description Returns the JSON of sponsor object located in req.body.sponsor
  */
 function showSponsor(req, res) {
-    return res.status(200).json({
-        message: Constants.Success.SPONSOR_READ,
-        data: req.body.sponsor.toJSON()
-    });
+  return res.status(200).json({
+    message: Constants.Success.SPONSOR_READ,
+    data: req.body.sponsor.toJSON(),
+  });
 }
 
 /**
@@ -31,10 +31,10 @@ function showSponsor(req, res) {
  * @description returns success message
  */
 function createdSponsor(req, res) {
-    return res.status(200).json({
-        message: Constants.Success.SPONSOR_CREATE,
-        data: req.body.sponsor.toJSON()
-    });
+  return res.status(200).json({
+    message: Constants.Success.SPONSOR_CREATE,
+    data: req.body.sponsor.toJSON(),
+  });
 }
 
 /**
@@ -45,14 +45,14 @@ function createdSponsor(req, res) {
  * @description returns success message
  */
 function updatedSponsor(req, res) {
-    return res.status(200).json({
-        message: Constants.Success.SPONSOR_UPDATE,
-        data: req.body.sponsor.toJSON()
-    });
+  return res.status(200).json({
+    message: Constants.Success.SPONSOR_UPDATE,
+    data: req.body.sponsor.toJSON(),
+  });
 }
 
 module.exports = {
-    createdSponsor: createdSponsor,
-    showSponsor: showSponsor,
-    updatedSponsor: updatedSponsor,
+  createdSponsor: createdSponsor,
+  showSponsor: showSponsor,
+  updatedSponsor: updatedSponsor,
 };

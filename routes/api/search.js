@@ -1,25 +1,25 @@
-"use strict";
+'use strict';
 
-const express = require("express");
+const express = require('express');
 
 const Controllers = {
-    Search: require("../../controllers/search.controller")
+  Search: require('../../controllers/search.controller'),
 };
 
 const Middleware = {
-    Validator: {
-        Search: require("../../middlewares/validators/search.validator")
-    },
-    parseBody: require("../../middlewares/parse-body.middleware"),
-    Search: require("../../middlewares/search.middleware"),
-    Auth: require("../../middlewares/auth.middleware")
+  Validator: {
+    Search: require('../../middlewares/validators/search.validator'),
+  },
+  parseBody: require('../../middlewares/parse-body.middleware'),
+  Search: require('../../middlewares/search.middleware'),
+  Auth: require('../../middlewares/auth.middleware'),
 };
 
 module.exports = {
-    activate: function (apiRouter) {
-        const searchRouter = new express.Router();
+  activate: function(apiRouter) {
+    const searchRouter = new express.Router();
 
-        /**
+    /**
          * @api {get} /search/ provide a specific query for any defined model
          * @apiName search
          * @apiGroup Search
@@ -57,16 +57,18 @@ module.exports = {
          * @apiErrorExample {object} Error-Response:
          *      {"message": "Validation failed", "data": {}}
          */
-        searchRouter.route("/").get(
-            Middleware.Auth.ensureAuthenticated(),
-            Middleware.Auth.ensureAuthorized(),
-            Middleware.Validator.Search.searchQueryValidator,
-            Middleware.parseBody.middleware,
-            Middleware.Search.parseQuery,
-            Middleware.Search.executeQuery,
-            Controllers.Search.searchResults
-        );
+    searchRouter
+      .route('/')
+      .get(
+        Middleware.Auth.ensureAuthenticated(),
+        Middleware.Auth.ensureAuthorized(),
+        Middleware.Validator.Search.searchQueryValidator,
+        Middleware.parseBody.middleware,
+        Middleware.Search.parseQuery,
+        Middleware.Search.executeQuery,
+        Controllers.Search.searchResults
+      );
 
-        apiRouter.use("/search", searchRouter);
-    }
+    apiRouter.use('/search', searchRouter);
+  },
 };

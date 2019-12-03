@@ -1,14 +1,14 @@
-"use strict";
-const mongoose = require("mongoose");
+'use strict';
+const mongoose = require('mongoose');
 
 const Services = {
-    Team: require("../services/team.service"),
-    Logger: require("../services/logger.service")
+  Team: require('../services/team.service'),
+  Logger: require('../services/logger.service'),
 };
-const Util = require("../middlewares/util.middleware");
+const Util = require('../middlewares/util.middleware');
 const Constants = {
-    Success: require("../constants/success.constant"),
-    Error: require("../constants/error.constant"),
+  Success: require('../constants/success.constant'),
+  Error: require('../constants/error.constant'),
 };
 
 /**
@@ -19,41 +19,41 @@ const Constants = {
  * @description Returns the JSON of team object located in req.body.team
  */
 function showTeam(req, res) {
-    const teamData = req.body.team.toJSON();
+  const teamData = req.body.team.toJSON();
 
-    const memberNames = [];
-    for (const member of req.body.teamMembers) {
-        const strippedMemberJSON = member.toStrippedJSON();
+  const memberNames = [];
+  for (const member of req.body.teamMembers) {
+    const strippedMemberJSON = member.toStrippedJSON();
 
-        const memberName = {
-            "firstName": strippedMemberJSON.firstName,
-            "lastName": strippedMemberJSON.lastName,
-        };
+    const memberName = {
+      firstName: strippedMemberJSON.firstName,
+      lastName: strippedMemberJSON.lastName,
+    };
 
-        memberNames.push(memberName);
-    }
+    memberNames.push(memberName);
+  }
 
-    return res.status(200).json({
-        message: Constants.Success.TEAM_READ,
-        data: {
-            team: teamData,
-            members: memberNames,
-        }
-    });
+  return res.status(200).json({
+    message: Constants.Success.TEAM_READ,
+    data: {
+      team: teamData,
+      members: memberNames,
+    },
+  });
 }
 
 /**
  * @function joinedTeam
- * @param {*} req 
- * @param {*} res 
+ * @param {*} req
+ * @param {*} res
  * @return {JSON} Success status of joining team
  * @description return success message of joining team
  */
 function joinedTeam(req, res) {
-    return res.status(200).json({
-        message: Constants.Success.TEAM_JOIN,
-        data: {},
-    });
+  return res.status(200).json({
+    message: Constants.Success.TEAM_JOIN,
+    data: {},
+  });
 }
 
 /**
@@ -64,10 +64,10 @@ function joinedTeam(req, res) {
  * @description Display team information and update success status
  */
 function updatedTeam(req, res) {
-    return res.status(200).json({
-        message: Constants.Success.TEAM_UPDATE,
-        data: req.body.team.toJSON(),
-    });
+  return res.status(200).json({
+    message: Constants.Success.TEAM_UPDATE,
+    data: req.body.team.toJSON(),
+  });
 }
 
 /**
@@ -78,10 +78,10 @@ function updatedTeam(req, res) {
  * @description Display team information and creation success status.
  */
 function createdTeam(req, res) {
-    return res.status(200).json({
-        message: Constants.Success.TEAM_CREATE,
-        data: req.body.team,
-    });
+  return res.status(200).json({
+    message: Constants.Success.TEAM_CREATE,
+    data: req.body.team,
+  });
 }
 
 /**
@@ -93,16 +93,16 @@ function createdTeam(req, res) {
  */
 
 function leftTeam(req, res) {
-    return res.status(200).json({
-        message: Constants.Success.TEAM_HACKER_LEAVE,
-        data: {},
-    });
+  return res.status(200).json({
+    message: Constants.Success.TEAM_HACKER_LEAVE,
+    data: {},
+  });
 }
 
 module.exports = {
-    joinedTeam: joinedTeam,
-    updatedTeam: updatedTeam,
-    createdTeam: createdTeam,
-    showTeam: showTeam,
-    leftTeam: leftTeam,
+  joinedTeam: joinedTeam,
+  updatedTeam: updatedTeam,
+  createdTeam: createdTeam,
+  showTeam: showTeam,
+  leftTeam: leftTeam,
 };

@@ -1,6 +1,6 @@
-"use strict";
+'use strict';
 
-const Success = require("../constants/success.constant");
+const Success = require('../constants/success.constant');
 
 /**
  * @function createdRole
@@ -10,12 +10,12 @@ const Success = require("../constants/success.constant");
  * @description Returns the JSON of role object located in req.body.role
  */
 function createdRole(req, res) {
-    return res.status(200).json({
-        message: Success.ROLE_CREATE,
-        data: req.body.role.toJSON(),
-    });
+  return res.status(200).json({
+    message: Success.ROLE_CREATE,
+    data: req.body.role.toJSON(),
+  });
 }
 
 module.exports = {
-    createdRole: createdRole,
+  createdRole: createdRole,
 };
