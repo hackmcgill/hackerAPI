@@ -12,7 +12,6 @@ const HACKER_STATUS_APPLIED = "Applied";
 const HACKER_STATUS_ACCEPTED = "Accepted";
 const HACKER_STATUS_WAITLISTED = "Waitlisted";
 const HACKER_STATUS_DECLINED = "Declined";
-
 const HACKER_STATUS_CONFIRMED = "Confirmed";
 const HACKER_STATUS_WITHDRAWN = "Withdrawn";
 const HACKER_STATUS_CHECKED_IN = "Checked-in";

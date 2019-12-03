@@ -222,7 +222,7 @@ module.exports = {
          * @apiGroup Hacker
          * @apiVersion 0.0.9
          *
-         * @apiParam (body) {string} [status] Status of the hacker's application ("None"|"Applied"|"Waitlisted"|"Accepted"|"Declined"|"Confirmed"|"Withdrawn"|"Checked-in")
+         * @apiParam (body) {string} [status] Status of the hacker's application ("None"|"Applied"|"Accepted"|"Declined"|"Waitlisted"|"Confirmed"|"Withdrawn"|"Checked-in")
          * @apiSuccess {string} message Success message
          * @apiSuccess {object} data Hacker object
          * @apiSuccessExample {object} Success-Response:
