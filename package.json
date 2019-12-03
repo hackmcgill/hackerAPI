@@ -8,7 +8,9 @@
     "debug": "DEBUG=hackboard:* NODE_ENV=deployment nodemon --ignore gcp_creds.json ./bin/www.js",
     "test": "DEBUG=hackboard:* NODE_ENV=test mocha --reporter spec tests/**.js --exit",
     "seed": "NODE_ENV=development node ./seed/index.js",
-    "docs": "apidoc -i ./routes -o ./docs/api/"
+    "docs": "apidoc -i ./routes -o ./docs/api/",
+    "format": "prettier --write '**/*.js'",
+    "lint": "eslint --fix '**/*.js'"
   },
   "dependencies": {
     "@google-cloud/logging-winston": "^0.11.1",
