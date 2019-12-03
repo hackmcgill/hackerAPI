@@ -144,9 +144,12 @@ async function findById(req, res, next) {
     const sponsor = await Services.Sponsor.findById(req.body.id);
 
     if (!sponsor) {
-        return res.status(404).json({
+        return next({
+            status: 404,
             message: Constants.Error.SPONSOR_404_MESSAGE,
-            data: {}
+            error: {
+                id: req.user.id
+            }
         });
     }
 

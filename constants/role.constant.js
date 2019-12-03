@@ -15,7 +15,8 @@ const accountRole = {
         Constants.Routes.authRoutes.getSelfRoleBindindings,
         Constants.Routes.accountRoutes.getSelf,
         Constants.Routes.accountRoutes.getSelfById,
-        Constants.Routes.accountRoutes.patchSelfById
+        Constants.Routes.accountRoutes.patchSelfById,
+        Constants.Routes.settingsRoutes.getSettings,
     ]
 };
 

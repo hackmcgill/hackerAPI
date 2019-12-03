@@ -83,10 +83,10 @@ const HackerSchema = new mongoose.Schema({
         }],
         required: true
     },
-    major: {
+    major: [{
         type: String,
         required: true
-    },
+    }],
     graduationYear: {
         type: Number,
         required: true
