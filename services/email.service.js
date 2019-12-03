@@ -18,7 +18,7 @@ class EmailService {
      * @param {*} mailData 
      * @param {(err?)=>void} callback
      */
-    send(mailData, callback = () => {}) {
+    send(mailData, callback = () => { }) {
         if (env.isTest()) {
             //Silence all actual emails if we're testing
             mailData.mailSettings = {
@@ -41,7 +41,7 @@ class EmailService {
      * @param {*} mailData 
      * @param {(err?)=>void} callback
      */
-    sendMultiple(mailData, callback = () => {}) {
+    sendMultiple(mailData, callback = () => { }) {
         return client.sendMultiple(mailData, (error) => {
             if (error) {
                 logger.error(`${TAG} ` + JSON.stringify(error));
@@ -125,6 +125,27 @@ class EmailService {
                 }
             }, callback);
     }
+
+    async sendStatusUpdateAsync(firstName, recipient, status) {
+        const handlebarsPath = path.join(__dirname, `../assets/email/statusEmail/${status}.hbs`);
+        const mailData = {
+            to: recipient,
+            from: process.env.NO_REPLY_EMAIL,
+            subject: Constants.EMAIL_SUBJECTS[status],
+            html: this.renderEmail(handlebarsPath, {
+                firstName: firstName
+            })
+        };
+        return this.send(mailData).then(
+            (response) => {
+                if (response[0].statusCode >= 200 && response[0].statusCode < 300) {
+                    return undefined;
+                } else {
+                    return response[0];
+                }
+            });
+    }
+
     /**
      * Generates the HTML from the handlebars template file found at the given path.
      * @param {string} path the absolute path to the handlebars template file

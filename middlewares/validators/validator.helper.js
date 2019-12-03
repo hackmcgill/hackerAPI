@@ -27,8 +27,8 @@ function integerValidator(fieldLocation, fieldname, optional = true, lowerBound 
 
     if (optional) {
         return value.optional({
-                checkFalsy: true
-            })
+            checkFalsy: true
+        })
             .isInt().withMessage(`${fieldname} must be an integer.`)
             .custom((value) => {
                 return value >= lowerBound && value <= upperBound;
@@ -71,8 +71,8 @@ function mongoIdArrayValidator(fieldLocation, fieldname, optional = true) {
 
     if (optional) {
         return arr.optional({
-                checkFalsy: true
-            })
+            checkFalsy: true
+        })
             .custom(isMongoIdArray).withMessage("Value must be an array of mongoIDs");
     } else {
         return arr.exists()
@@ -154,8 +154,8 @@ function regexValidator(fieldLocation, fieldname, optional = true, desire = Cons
 
     if (optional) {
         return match.optional({
-                checkFalsy: true
-            })
+            checkFalsy: true
+        })
             .matches(desire)
             .withMessage("must be valid url");
     } else {
@@ -332,8 +332,8 @@ function jwtValidator(fieldLocation, fieldname, jwtSecret, optional = true) {
     const jwtValidationChain = setProperValidationChainBuilder(fieldLocation, fieldname, "Must be vali jwt");
     if (optional) {
         return jwtValidationChain.optional({
-                checkFalsy: true
-            })
+            checkFalsy: true
+        })
             .custom(value => {
                 const token = jwt.verify(value, jwtSecret);
                 if (typeof token !== "undefined") {
@@ -423,8 +423,8 @@ function searchValidator(fieldLocation, fieldname) {
 function searchSortValidator(fieldLocation, fieldName) {
     const searchSort = setProperValidationChainBuilder(fieldLocation, fieldName, "Invalid sort criteria")
     return searchSort.optional({
-            checkFalsy: true
-        })
+        checkFalsy: true
+    })
         .custom((value, {
             req
         }) => {
@@ -569,6 +569,46 @@ function enumValidator(fieldLocation, fieldname, enums, optional = true) {
 }
 
 /**
+ * Validates that the field is a valid hacker update object, and checks if corresponding new status is valid.
+ * @param {"query" | "body" | "header" | "param"} fieldLocation The location where the field should be found.
+ * @param {string} actionFieldName The name of the action that needs to be performed.
+ * @param {string} statusFieldName The name of the action that needs to be performed.
+ */
+function updateHackerValidator(fieldLocation, fieldName) {
+    const hackerObjectValue = setProperValidationChainBuilder(fieldLocation, fieldName, "Invalid hacker update object string.");
+
+    return hackerObjectValue.exists()
+        .withMessage("The hacker update object string must exist.")
+        .custom(updateHackerValidatorHelper).withMessage("The value must be a valid hacker update object.");
+}
+
+function updateHackerValidatorHelper(update) {
+    try {
+        var updateObject = JSON.parse(update);
+
+        if (updateObject && typeof updateObject === "object" && !("password" in updateObject)) {
+            for (var key in updateObject) {
+                var schemaPath = Models.Hacker.searchableField(key);
+                if (!schemaPath) return false;
+            }
+            return true;
+        }
+    }
+    catch (e) {
+        return false;
+    }
+}
+
+function statusValidator(fieldLocation, statusFieldName) {
+    const statusValue = setProperValidationChainBuilder(fieldLocation, statusFieldName, "Invalid status.");
+    return statusValue.exists().withMessage("The status must exist!").custom((val, {
+        req
+    }) => {
+        return Constants.HACKER_STATUSES.includes(val);
+    }).withMessage("The value must be a proper status.")
+}
+
+/**
  * Checks that 'value' is part of 'enums'. 'enums' should be an enum dict.
  * @param {*} value Should be of the same type as the values of the enum
  * @param {Object} enums An object that represents an enum. They keys are the keys of the enum, and the values are the enum values. 
@@ -631,5 +671,7 @@ module.exports = {
     dateValidator: dateValidator,
     enumValidator: enumValidator,
     routesValidator: routesValidator,
-    stringValidator: stringValidator
+    statusValidator: statusValidator,
+    stringValidator: stringValidator,
+    updateHackerValidator: updateHackerValidator,
 };

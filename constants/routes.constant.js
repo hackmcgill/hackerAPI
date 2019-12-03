@@ -222,7 +222,15 @@ const searchRoutes = {
     "get": {
         requestType: Constants.REQUEST_TYPES.GET,
         uri: "/api/search/"
-    }
+    },
+    "updateStatus": {
+        requestType: Constants.REQUEST_TYPES.GET,
+        uri: "/api/search/updateStatus",
+    },
+    "sendEmails": {
+        requestType: Constants.REQUEST_TYPES.GET,
+        uri: "/api/search/sendEmails",
+    },
 };
 
 const staffRoutes = {
