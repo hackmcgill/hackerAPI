@@ -431,7 +431,7 @@ function checkStatus(statuses) {
 
         let hacker = await Services.Hacker.findById(req.params.id);
 
-        if (!!hacker) {
+        if (hacker) {
             const status = hacker.status;
             // makes sure the hacker's status is in the accepted statuses list
             if (statuses.indexOf(status) === -1) {
@@ -518,7 +518,7 @@ async function createHacker(req, res, next) {
 
     const hacker = await Services.Hacker.createHacker(hackerDetails);
 
-    if (!!hacker) {
+    if (hacker) {
         req.body.hacker = hacker;
         return next();
     } else {
@@ -570,7 +570,7 @@ async function findSelf(req, res, next) {
 
     const hacker = await Services.Hacker.findByAccountId(req.user.id);
 
-    if (!!hacker) {
+    if (hacker) {
         req.body.hacker = hacker;
         return next();
     } else {

@@ -15,7 +15,7 @@ async function createRoleBinding(accountId, roleId = undefined) {
     };
     const roleBindingModel = await getRoleBindingForAcct(accountId);
     if (!roleBindingModel) {
-        const roleArray = (!!roleId) ? [roleId] : [];
+        const roleArray = (roleId) ? [roleId] : [];
         const newRb = new RoleBinding({
             name: accountId + "_rolebinding",
             accountId: accountId,
@@ -38,7 +38,7 @@ async function createRoleBinding(accountId, roleId = undefined) {
  */
 async function createRoleBindingByRoleName(accountId, roleName){
     const role = await RoleService.getRole(roleName);
-    if (!!role) {
+    if (role) {
         await createRoleBinding(accountId, role.id);
     }
 }

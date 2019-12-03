@@ -136,7 +136,7 @@ async function retrieveRoleBindings(req, res, next) {
 async function changePassword(req, res, next) {
     const acc = await Services.Account.getAccountIfValid(req.user.email, req.body.oldPassword);
     // user's old password is correct
-    if (!!acc) {
+    if (acc) {
         req.body.account = await Services.Account.updatePassword(req.user.id, req.body.newPassword);
         return next();
     } else {
@@ -282,7 +282,7 @@ function parseResetToken(req, res, next) {
  * @param {(err?)=>void} next 
  */
 function parseAccountConfirmationToken(req, res, next) {
-    if (!!req.body.token) {
+    if (req.body.token) {
         jwt.verify(req.body.token, process.env.JWT_CONFIRM_ACC_SECRET, function (err, decoded) {
             if (err) {
                 return next(err);
@@ -369,7 +369,7 @@ async function validateConfirmationToken(req, res, next) {
  * @param {*} next 
  */
 async function validateConfirmationTokenWithoutAccount(req, res, next) {
-    if (!!req.body.decodedToken) {
+    if (req.body.decodedToken) {
         const confirmationObj = await Services.AccountConfirmation.findById(req.body.decodedToken.accountConfirmationId);
         if (!confirmationObj.accountId) {
             req.body.accountDetails.confirmed = true;

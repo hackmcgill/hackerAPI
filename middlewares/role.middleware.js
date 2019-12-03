@@ -46,7 +46,7 @@ async function createRole(req, res, next) {
 
     const role = await Services.Role.createRole(roleDetails);
 
-    if (!!role) {
+    if (role) {
         delete req.body.roleDetails;
         req.body.role = role;
         return next();

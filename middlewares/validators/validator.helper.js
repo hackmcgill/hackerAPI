@@ -434,7 +434,7 @@ function searchSortValidator(fieldLocation, fieldName) {
             } else {
                 return false;
             }
-            if (!!model.searchableField(value)) {
+            if (model.searchableField(value)) {
                 let sortOrder = param("sort", "Sorting order not found");
                 if (!sortOrder.equals("asc") || !sortOrder.equals("desc")) {
                     return false;

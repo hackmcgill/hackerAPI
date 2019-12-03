@@ -12,7 +12,7 @@ module.exports = {
         email = email.toLowerCase();
         Account.getAccountIfValid(email, password).then(
             (account) => {
-                if (!!account) {
+                if (account) {
                     done(null, account);
                 } else {
                     done(null, false);
