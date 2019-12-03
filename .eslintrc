@@ -5,28 +5,9 @@
     "node": true,
     "mocha": true
   },
-  "extends": ["plugin:prettier/recommended"],
   "parserOptions": {
     "ecmaVersion": 2017,
     "sourceType": "module"
   },
-  "rules": {
-    "indent": [
-      "error",
-      4,
-      {
-        "SwitchCase": 1,
-        "ObjectExpression": 1
-      }
-    ],
-    "linebreak-style": ["error", "unix"],
-    "quotes": [
-      "error",
-      "single",
-      {
-        "allowTemplateLiterals": true
-      }
-    ],
-    "semi": ["error", "always"]
-  }
+  "extends": ["prettier", "plugin:prettier/recommended"]
 }
