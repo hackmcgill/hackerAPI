@@ -91,7 +91,7 @@ describe("GET user account", function () {
                     res.body.data.should.have.property("lastName");
                     res.body.data.should.have.property("email");
                     res.body.data.should.have.property("dietaryRestrictions");
-                    res.body.data.should.have.property("shirtSize");
+                    res.body.data.should.have.property("gender");
                     done();
                 });
         });
