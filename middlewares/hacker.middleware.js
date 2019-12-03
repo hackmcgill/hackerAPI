@@ -99,7 +99,7 @@ function parseCheckIn(req, res, next) {
  * @param {(err?)=>void} next
  * @return {void}
  * @description 
- * Changes req.body.status to confirmed or cancelled depending on whether req.body.confirm is true or false respectively.
+ * Changes req.body.status to confirmed or withdrawn depending on whether req.body.confirm is true or false respectively.
  * Deletes req.body.confirm afterwards
  */
 function parseConfirmation(req, res, next) {
@@ -108,7 +108,7 @@ function parseConfirmation(req, res, next) {
     if (confirm) {
         req.body.status = Constants.General.HACKER_STATUS_CONFIRMED;
     } else {
-        req.body.status = Constants.General.HACKER_STATUS_CANCELLED;
+        req.body.status = Constants.General.HACKER_STATUS_WITHDRAWN;
     }
 
     delete req.body.confirm;

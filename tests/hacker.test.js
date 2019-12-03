@@ -856,7 +856,7 @@ describe("PATCH update one hacker", function () {
                     res.body.message.should.equal(Constants.Success.HACKER_UPDATE);
                     res.body.should.have.property("data");
                     chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify({
-                        status: Constants.General.HACKER_STATUS_CANCELLED
+                        status: Constants.General.HACKER_STATUS_WITHDRAWN
                     }));
 
                     done();
