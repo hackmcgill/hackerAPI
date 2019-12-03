@@ -617,14 +617,10 @@ module.exports = {
 
             Middleware.parseBody.middleware,
             Middleware.Hacker.findById,
-<<<<<<< HEAD
             Middleware.Hacker.checkStatus([
                 CONSTANTS.HACKER_STATUS_CONFIRMED,
                 CONSTANTS.HACKER_STATUS_CHECKED_IN
             ]),
-=======
-            Middleware.Hacker.checkStatus([CONSTANTS.HACKER_STATUS_CONFIRMED, CONSTANTS.HACKER_STATUS_CHECKED_IN]),
->>>>>>> master
             Middleware.Hacker.sendWeekOfEmail,
             Controllers.Hacker.sentWeekOfEmail
         );
