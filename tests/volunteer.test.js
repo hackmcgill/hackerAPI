@@ -141,7 +141,7 @@ describe("GET volunteer", function () {
 });
 
 describe("POST create volunteer", function () {
-    it("should fail to create a new volunteer due to lack of authentication", function (done) {
+    it("should FAIL to create a new volunteer due to lack of authentication", function (done) {
         chai.request(server.app)
             .post(`/api/volunteer`)
             .type("application/json")
@@ -229,7 +229,7 @@ describe("POST create volunteer", function () {
     });
 
     // fail on non-volunteer type account trying to create volunteer
-    it("should fail to create a volunteer due to authorization /api/volunteer POST", function (done) {
+    it("should FAIL to create a volunteer due to authorization /api/volunteer POST", function (done) {
         util.auth.login(agent, HackerAccount0, (error) => {
             if (error) {
                 agent.close();

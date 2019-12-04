@@ -682,16 +682,28 @@ define({
               optional: false,
               field: "message",
               description: "<p>Success message</p>"
-            },
-            {
-              group: "Success 200",
-              type: "object",
-              optional: false,
-              field: "data",
-              description: "<p>empty</p>"
             }
           ]
         },
+        examples: [
+          {
+            title: "Error-Response: ",
+            content:
+              '{\n   "message": "Account already exists", \n    "data": {\n        "route": "/"\n    }\n}',
+            type: "object"
+          }
+        ],
+        filename: "routes/api/account.js",
+        groupTitle: "Account",
+        sampleRequest: [
+          {
+            group: "Success 200",
+            type: "object",
+            optional: false,
+            field: "data",
+            description: "<p>empty</p>"
+          }
+        ],
         examples: [
           {
             title: "Success-Response:",
@@ -904,7 +916,19 @@ define({
               optional: false,
               field: "message",
               description: "<p>Success message</p>"
-            },
+            }
+          ],
+          examples: [
+            {
+              title: "Error-Response:",
+              content:
+                '{\n                "message": "Invalid Authentication",\n                "data": {\n                    "route": "/invite"\n                }\n            }',
+              type: "object"
+            }
+          ],
+          filename: "routes/api/account.js",
+          groupTitle: "Account",
+          sampleRequest: [
             {
               group: "Success 200",
               type: "object",
@@ -1322,6 +1346,56 @@ define({
             },
             {
               group: "body",
+              type: "String",
+              optional: false,
+              field: "school",
+              description: "<p>Name of the school the hacker goes to</p>"
+            },
+            {
+              group: "body",
+              type: "String",
+              optional: false,
+              field: "gender",
+              description: "<p>Gender of the hacker</p>"
+            },
+            {
+              group: "body",
+              type: "Boolean",
+              optional: false,
+              field: "needsBus",
+              description:
+                "<p>Whether the hacker requires a bus for transportation</p>"
+            },
+            {
+              group: "body",
+              type: "String[]",
+              optional: false,
+              field: "ethnicity",
+              description: "<p>the ethnicities of the hacker</p>"
+            },
+            {
+              group: "body",
+              type: "String[]",
+              optional: false,
+              field: "major",
+              description: "<p>the major of the hacker</p>"
+            },
+            {
+              group: "body",
+              type: "Number",
+              optional: false,
+              field: "graduationYear",
+              description: "<p>the graduation year of the hacker</p>"
+            },
+            {
+              group: "body",
+              type: "Boolean",
+              optional: false,
+              field: "codeOfConduct",
+              description: "<p>acceptance of the code of conduct</p>"
+            },
+            {
+              group: "body",
               type: "Json",
               optional: false,
               field: "application",
@@ -1334,7 +1408,7 @@ define({
           {
             title: "application: ",
             content:
-              '{\n               "application":{\n                   "URL":{\n                       "resume":"resumes/1543458163426-5bff4d736f86be0a41badb91",\n                       "github":"https://github.com/abcd",\n                       "dropler":"https://dribbble.com/abcd",\n                       "personal":"https://www.hi.com/",\n                       "linkedIn":"https://linkedin.com/in/abcd",\n                       "other":"https://github.com/hackmcgill/hackerAPI/issues/168"\n                   },\n                   "jobInterest":"Internship",\n                   "skills":["Javascript","Typescript"],\n                   "comments":"hi!",\n                   "essay":"Pls accept me"\n}',
+              '{\n               "application":{\n                   "portfolioURL":{\n                       "resume":"resumes/1543458163426-5bff4d736f86be0a41badb91",\n                       "github":"https://github.com/abcd",\n                       "dropler":"https://dribbble.com/abcd",\n                       "personal":"https://www.hi.com/",\n                       "linkedIn":"https://linkedin.com/in/abcd",\n                       "other":"https://github.com/hackmcgill/hackerAPI/issues/168"\n                   },\n                   "jobInterest":"Internship",\n                   "skills":["Javascript","Typescript"],\n                   "comments":"hi!",\n                   "essay":"Pls accept me"\n}',
             type: "Json"
           }
         ]
@@ -1362,7 +1436,7 @@ define({
           {
             title: "Success-Response: ",
             content:
-              '{\n    "message": "Hacker creation successful", \n    "data": {\n                   "id":"5bff4d736f86be0a41badb91",\n                   "application":{\n                       "URL":{\n                           "resume":"resumes/1543458163426-5bff4d736f86be0a41badb91",\n                           "github":"https://github.com/abcd",\n                           "dropler":"https://dribbble.com/abcd",\n                           "personal":"https://www.hi.com/",\n                           "linkedIn":"https://linkedin.com/in/abcd",\n                           "other":"https://github.com/hackmcgill/hackerAPI/issues/168"\n                       },\n                       "jobInterest":"Internship",\n                       "skills":["Javascript","Typescript"],\n                       "comments":"hi!",\n                       "essay":"Pls accept me"\n                   },\n                   "status":"Applied",\n                   "ethnicity":["White or Caucasian"," Asian or Pacific Islander"],\n                   "accountId":"5bff2a35e533b0f6562b4998",\n                   "school":"McPherson College",\n                   "gender":"Female",\n                   "needsBus":false,\n                   "major":"Accounting",\n                   "graduationYear":2019,\n                   "codeOfConduct":true,\n    }\n}',
+              '{\n    "message": "Hacker creation successful", \n    "data": {\n                   "id":"5bff4d736f86be0a41badb91",\n                   "application":{\n                       "portfolioURL":{\n                           "resume":"resumes/1543458163426-5bff4d736f86be0a41badb91",\n                           "github":"https://github.com/abcd",\n                           "dropler":"https://dribbble.com/abcd",\n                           "personal":"https://www.hi.com/",\n                           "linkedIn":"https://linkedin.com/in/abcd",\n                           "other":"https://github.com/hackmcgill/hackerAPI/issues/168"\n                       },\n                       "jobInterest":"Internship",\n                       "skills":["Javascript","Typescript"],\n                       "comments":"hi!",\n                       "essay":"Pls accept me"\n                   },\n                   "status":"Applied",\n                   "ethnicity":["White or Caucasian"," Asian or Pacific Islander"],\n                   "accountId":"5bff2a35e533b0f6562b4998",\n                   "school":"McPherson College",\n                   "gender":"Female",\n                   "needsBus":false,\n                   "major":"Accounting",\n                   "graduationYear":2019,\n                   "codeOfConduct":true,\n    }\n}',
             type: "object"
           }
         ]
@@ -1445,7 +1519,7 @@ define({
           {
             title: "Success-Response: ",
             content:
-              '{\n               "message": "Successfully retrieved hacker information", \n               "data": {\n                   "id":"5bff4d736f86be0a41badb91",\n                   "application":{\n                       "URL":{\n                           "resume":"resumes/1543458163426-5bff4d736f86be0a41badb91",\n                           "github":"https://github.com/abcd",\n                           "dropler":"https://dribbble.com/abcd",\n                           "personal":"https://www.hi.com/",\n                           "linkedIn":"https://linkedin.com/in/abcd",\n                           "other":"https://github.com/hackmcgill/hackerAPI/issues/168"\n                       },\n                       "jobInterest":"Internship",\n                       "skills":["Javascript","Typescript"],\n                       "comments":"hi!",\n                       "essay":"Pls accept me"\n                   },\n                   "status":"Applied",\n                   "ethnicity":["White or Caucasian"," Asian or Pacific Islander"],\n                   "accountId":"5bff2a35e533b0f6562b4998",\n                   "school":"McPherson College",\n                   "gender":"Female",\n                   "needsBus":false,\n                   "major":"Accounting",\n                   "graduationYear":2019,\n                   "codeOfConduct":true,\n               }\n           }',
+              '{\n               "message": "Successfully retrieved hacker information", \n               "data": {\n                   "id":"5bff4d736f86be0a41badb91",\n                   "application":{\n                       "portfolioURL":{\n                           "resume":"resumes/1543458163426-5bff4d736f86be0a41badb91",\n                           "github":"https://github.com/abcd",\n                           "dropler":"https://dribbble.com/abcd",\n                           "personal":"https://www.hi.com/",\n                           "linkedIn":"https://linkedin.com/in/abcd",\n                           "other":"https://github.com/hackmcgill/hackerAPI/issues/168"\n                       },\n                       "jobInterest":"Internship",\n                       "skills":["Javascript","Typescript"],\n                       "comments":"hi!",\n                       "essay":"Pls accept me"\n                   },\n                   "status":"Applied",\n                   "ethnicity":["White or Caucasian"," Asian or Pacific Islander"],\n                   "accountId":"5bff2a35e533b0f6562b4998",\n                   "school":"McPherson College",\n                   "gender":"Female",\n                   "needsBus":false,\n                   "major":"Accounting",\n                   "graduationYear":2019,\n                   "codeOfConduct":true,\n               }\n           }',
             type: "object"
           }
         ]
@@ -1528,7 +1602,7 @@ define({
           {
             title: "Success-Response: ",
             content:
-              '{\n               "message": "Successfully retrieved hacker information", \n               "data": {\n                   "id":"5bff4d736f86be0a41badb91",\n                   "application":{\n                       "URL":{\n                           "resume":"resumes/1543458163426-5bff4d736f86be0a41badb91",\n                           "github":"https://github.com/abcd",\n                           "dropler":"https://dribbble.com/abcd",\n                           "personal":"https://www.hi.com/",\n                           "linkedIn":"https://linkedin.com/in/abcd",\n                           "other":"https://github.com/hackmcgill/hackerAPI/issues/168"\n                       },\n                       "jobInterest":"Internship",\n                       "skills":["Javascript","Typescript"],\n                       "comments":"hi!",\n                       "essay":"Pls accept me"\n                   },\n                   "status":"Applied",\n                   "ethnicity":["White or Caucasian"," Asian or Pacific Islander"],\n                   "accountId":"5bff2a35e533b0f6562b4998",\n                   "school":"McPherson College",\n                   "gender":"Female",\n                   "needsBus":false,\n                   "major":"Accounting",\n                   "graduationYear":2019,\n                   "codeOfConduct":true,\n               }\n           }',
+              '{\n               "message": "Successfully retrieved hacker information", \n               "data": {\n                   "id":"5bff4d736f86be0a41badb91",\n                   "application":{\n                       "portfolioURL":{\n                           "resume":"resumes/1543458163426-5bff4d736f86be0a41badb91",\n                           "github":"https://github.com/abcd",\n                           "dropler":"https://dribbble.com/abcd",\n                           "personal":"https://www.hi.com/",\n                           "linkedIn":"https://linkedin.com/in/abcd",\n                           "other":"https://github.com/hackmcgill/hackerAPI/issues/168"\n                       },\n                       "jobInterest":"Internship",\n                       "skills":["Javascript","Typescript"],\n                       "comments":"hi!",\n                       "essay":"Pls accept me"\n                   },\n                   "status":"Applied",\n                   "ethnicity":["White or Caucasian"," Asian or Pacific Islander"],\n                   "accountId":"5bff2a35e533b0f6562b4998",\n                   "school":"McPherson College",\n                   "gender":"Female",\n                   "needsBus":false,\n                   "major":"Accounting",\n                   "graduationYear":2019,\n                   "codeOfConduct":true,\n               }\n           }',
             type: "object"
           }
         ]
@@ -1772,7 +1846,7 @@ define({
           {
             title: "application: ",
             content:
-              '{\n               "URL":{\n                   "resume":"resumes/1543458163426-5bff4d736f86be0a41badb91",\n                   "github":"https://github.com/abcd",\n                   "dropler":"https://dribbble.com/abcd",\n                   "personal":"https://www.hi.com/",\n                   "linkedIn":"https://linkedin.com/in/abcd",\n                   "other":"https://github.com/hackmcgill/hackerAPI/issues/168"\n               },\n               "jobInterest":"Internship",\n               "skills":["Javascript","Typescript"],\n               "comments":"hi!",\n               "essay":"Pls accept me"\n           }',
+              '{\n               "portfolioURL":{\n                   "resume":"resumes/1543458163426-5bff4d736f86be0a41badb91",\n                   "github":"https://github.com/abcd",\n                   "dropler":"https://dribbble.com/abcd",\n                   "personal":"https://www.hi.com/",\n                   "linkedIn":"https://linkedin.com/in/abcd",\n                   "other":"https://github.com/hackmcgill/hackerAPI/issues/168"\n               },\n               "jobInterest":"Internship",\n               "skills":["Javascript","Typescript"],\n               "comments":"hi!",\n               "essay":"Pls accept me"\n           }',
             type: "Json"
           }
         ]
@@ -1800,7 +1874,7 @@ define({
           {
             title: "Success-Response: ",
             content:
-              '{\n    "message": "Changed hacker information", \n    "data": {\n                   "id":"5bff4d736f86be0a41badb91",\n                   "application":{\n                       "URL":{\n                           "resume":"resumes/1543458163426-5bff4d736f86be0a41badb91",\n                           "github":"https://github.com/abcd",\n                           "dropler":"https://dribbble.com/abcd",\n                           "personal":"https://www.hi.com/",\n                           "linkedIn":"https://linkedin.com/in/abcd",\n                           "other":"https://github.com/hackmcgill/hackerAPI/issues/168"\n                       },\n                       "jobInterest":"Internship",\n                       "skills":["Javascript","Typescript"],\n                       "comments":"hi!",\n                       "essay":"Pls accept me"\n                   },\n                   "status":"Applied",\n                   "ethnicity":["White or Caucasian"," Asian or Pacific Islander"],\n                   "accountId":"5bff2a35e533b0f6562b4998",\n                   "school":"McPherson College",\n                   "gender":"Female",\n                   "needsBus":false,\n                   "major":"Accounting",\n                   "graduationYear":2019,\n                   "codeOfConduct":true,\n}',
+              '{\n    "message": "Changed hacker information", \n    "data": {\n                   "id":"5bff4d736f86be0a41badb91",\n                   "application":{\n                       "portfolioURL":{\n                           "resume":"resumes/1543458163426-5bff4d736f86be0a41badb91",\n                           "github":"https://github.com/abcd",\n                           "dropler":"https://dribbble.com/abcd",\n                           "personal":"https://www.hi.com/",\n                           "linkedIn":"https://linkedin.com/in/abcd",\n                           "other":"https://github.com/hackmcgill/hackerAPI/issues/168"\n                       },\n                       "jobInterest":"Internship",\n                       "skills":["Javascript","Typescript"],\n                       "comments":"hi!",\n                       "essay":"Pls accept me"\n                   },\n                   "status":"Applied",\n                   "ethnicity":["White or Caucasian"," Asian or Pacific Islander"],\n                   "accountId":"5bff2a35e533b0f6562b4998",\n                   "school":"McPherson College",\n                   "gender":"Female",\n                   "needsBus":false,\n                   "major":"Accounting",\n                   "graduationYear":2019,\n                   "codeOfConduct":true,\n}',
             type: "object"
           }
         ]
@@ -1844,7 +1918,7 @@ define({
       type: "patch",
       url: "/hacker/confirmation/:id",
       title:
-        "Allows confirmation of hacker attendence if they are accepted. Also allows change from 'confirmed' to 'cancelled'.",
+        "Allows confirmation of hacker attendence if they are accepted. Also allows change from 'confirmed' to 'withdrawn'.",
       name: "patchHackerConfirmed",
       group: "Hacker",
       version: "0.0.9",
@@ -1857,7 +1931,7 @@ define({
               optional: true,
               field: "status",
               description:
-                "<p>The new status of the hacker. &quot;Accepted&quot;, &quot;Confirmed&quot;, or &quot;Cancelled&quot;</p>"
+                "<p>The new status of the hacker. &quot;Accepted&quot;, &quot;Confirmed&quot;, or &quot;Withdrawn&quot;</p>"
             }
           ]
         }
@@ -1922,7 +1996,7 @@ define({
               optional: true,
               field: "status",
               description:
-                "<p>Status of the hacker's application (&quot;None&quot;|&quot;Applied&quot;|&quot;Waitlisted&quot;|&quot;Confirmed&quot;|&quot;Cancelled&quot;|&quot;Checked-in&quot;)</p>"
+                "<p>Status of the hacker's application (&quot;None&quot;|&quot;Applied&quot;|&quot;Waitlisted&quot;|&quot;Declined&quot;|&quot;Confirmed&quot;|&quot;Withdrawn&quot;|&quot;Checked-in&quot;)</p>"
             }
           ]
         }
@@ -2273,7 +2347,7 @@ define({
           {
             title: "Success-Response: ",
             content:
-              '{\n               "message": "Hacker found by logged in account id", \n               "data": {\n                   "id":"5bff4d736f86be0a41badb91",\n                   "application":{\n                       "URL":{\n                           "resume":"resumes/1543458163426-5bff4d736f86be0a41badb91",\n                           "github":"https://github.com/abcd",\n                           "dropler":"https://dribbble.com/abcd",\n                           "personal":"https://www.hi.com/",\n                           "linkedIn":"https://linkedin.com/in/abcd",\n                           "other":"https://github.com/hackmcgill/hackerAPI/issues/168"\n                       },\n                       "jobInterest":"Internship",\n                       "skills":["Javascript","Typescript"],\n                       "comments":"hi!",\n                       "essay":"Pls accept me"\n                   },\n                   "status":"Applied",\n                   "ethnicity":["White or Caucasian"," Asian or Pacific Islander"],\n                   "accountId":"5bff2a35e533b0f6562b4998",\n                   "school":"McPherson College",\n                   "gender":"Female",\n                   "needsBus":false,\n                   "major":["Accounting"],\n                   "graduationYear":2019,\n                   "codeOfConduct":true,\n               }  \n           }',
+              '{\n               "message": "Hacker found by logged in account id", \n               "data": {\n                   "id":"5bff4d736f86be0a41badb91",\n                   "application":{\n                       "portfolioURL":{\n                           "resume":"resumes/1543458163426-5bff4d736f86be0a41badb91",\n                           "github":"https://github.com/abcd",\n                           "dropler":"https://dribbble.com/abcd",\n                           "personal":"https://www.hi.com/",\n                           "linkedIn":"https://linkedin.com/in/abcd",\n                           "other":"https://github.com/hackmcgill/hackerAPI/issues/168"\n                       },\n                       "jobInterest":"Internship",\n                       "skills":["Javascript","Typescript"],\n                       "comments":"hi!",\n                       "essay":"Pls accept me"\n                   },\n                   "status":"Applied",\n                   "ethnicity":["White or Caucasian"," Asian or Pacific Islander"],\n                   "accountId":"5bff2a35e533b0f6562b4998",\n                   "school":"McPherson College",\n                   "gender":"Female",\n                   "needsBus":false,\n                   "major":["Accounting"],\n                   "graduationYear":2019,\n                   "codeOfConduct":true,\n               }  \n           }',
             type: "object"
           }
         ]

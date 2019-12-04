@@ -16,9 +16,10 @@ VALID_STATUSES = {
     '1': 'Applied',
     '2': 'Accepted',
     '3': 'Waitlisted',
-    '4': 'Confirmed',
-    '5': 'Cancelled',
-    '6': 'Checked-in'
+    '4': 'Declined',
+    '5': 'Confirmed',
+    '6': 'Withdrawn',
+    '7': 'Checked-in'
 }
 BATCH_ACTIONS = {
     '1': 'updateStatus',

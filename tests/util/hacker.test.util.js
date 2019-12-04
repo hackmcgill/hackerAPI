@@ -500,6 +500,33 @@ const unconfirmedAccountHacker0 = {
   }
 };
 
+const unconfirmedAccountHacker1 = {
+  _id: Constants.MongoId.hackerHId,
+  accountId: Util.Account.hackerAccounts.stored.unconfirmed[0]._id,
+  status: "Accepted",
+  school: "University of Blah2",
+  degree: "Underggraduate",
+  gender: "Female",
+  needsBus: false,
+  application: {
+    portfolioURL: {
+      //gcloud bucket link
+      resume: "www.gcloud.com/myResume123",
+      github: "www.github.com/Personasdf",
+      dropler: undefined,
+      personal: undefined,
+      linkedIn: undefined,
+      other: undefined
+    },
+    jobInterest: "Internship",
+    skills: ["CSS", "HTML", "JS"]
+  },
+  ethnicity: ["European"],
+  major: ["EE"],
+  graduationYear: 2019,
+  codeOfConduct: true
+};
+
 const Hackers = [
   TeamHacker0,
   TeamHacker1,
@@ -508,6 +535,7 @@ const Hackers = [
   TeamHacker4,
 
   NoTeamHacker0,
+  unconfirmedAccountHacker1,
 
   duplicateAccountLinkHacker0,
   waitlistedHacker0
@@ -531,6 +559,7 @@ module.exports = {
   duplicateAccountLinkHacker0: duplicateAccountLinkHacker0,
   waitlistedHacker0: waitlistedHacker0,
   unconfirmedAccountHacker0: unconfirmedAccountHacker0,
+  unconfirmedAccountHacker1: unconfirmedAccountHacker1,
 
   Hackers: Hackers,
   storeAll: storeAll,

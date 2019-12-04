@@ -40,7 +40,7 @@ const newAccount0 = util.account.unlinkedAccounts.new[0];
 
 describe("GET user account", function() {
   // fail on authentication
-  it("should fail to list the user's account on /api/account/self GET due to authentication", function(done) {
+  it("should FAIL to list the user's account on /api/account/self GET due to authentication", function(done) {
     chai
       .request(server.app)
       .get("/api/account/self")
@@ -54,7 +54,7 @@ describe("GET user account", function() {
   });
 
   // fail due to invalid login
-  it("should fail due to invalid password", function(done) {
+  it("should FAIL due to invalid password", function(done) {
     agent
       .post("/api/auth/login")
       .type("application/json")
@@ -168,7 +168,7 @@ describe("GET user account", function() {
   });
 
   // // fail case on authorization
-  it("should fail to list an account specified by id on /api/account/:id/ GET due to lack of authorization", function(done) {
+  it("should FAIL to list an account specified by id on /api/account/:id/ GET due to lack of authorization", function(done) {
     util.auth.login(agent, teamHackerAccount0, error => {
       if (error) {
         agent.close();
@@ -288,7 +288,7 @@ describe("PATCH update account", function() {
   };
 
   // fail on authentication
-  it("should fail to update an account due to authentication", function(done) {
+  it("should FAIL to update an account due to authentication", function(done) {
     chai
       .request(server.app)
       .patch(`/api/account/${updatedInfo._id}`)
@@ -352,7 +352,7 @@ describe("PATCH update account", function() {
   });
 
   // fail due to lack of authorization
-  it("should Fail to update an account due to lack of authorization", function(done) {
+  it("should FAIL to update an account due to lack of authorization", function(done) {
     util.auth.login(agent, teamHackerAccount0, error => {
       if (error) {
         agent.close();
@@ -405,7 +405,7 @@ describe("PATCH change password for logged in user", function() {
     newPassword: "password12345"
   };
   // fail on authentication
-  it("should fail to change the user's password because they are not logged in", function(done) {
+  it("should FAIL to change the user's password because they are not logged in", function(done) {
     chai
       .request(server.app)
       .patch("/api/auth/password/change")
@@ -440,7 +440,7 @@ describe("PATCH change password for logged in user", function() {
     });
   });
   // fail case because old password in incorrect
-  it("should fail to change the logged in user's password to a new password because old password is incorrect", function(done) {
+  it("should FAIL to change the logged in user's password to a new password because old password is incorrect", function(done) {
     util.auth.login(agent, Admin0, error => {
       if (error) {
         agent.close();

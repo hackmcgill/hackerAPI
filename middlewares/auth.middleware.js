@@ -209,7 +209,7 @@ async function sendResetPasswordEmailMiddleware(req, res, next) {
  * @param {*} res
  * @param {(err?)=>void} next
  */
-async function sendConfirmAccountEmailMiddleware(req, res, next) {
+async function sendConfirmAccountEmail(req, res, next) {
   const account = req.body.account;
   if (account.confirmed) {
     return next();
@@ -533,8 +533,8 @@ module.exports = {
   parseResetToken: parseResetToken,
   validateResetToken: Middleware.Util.asyncMiddleware(validateResetToken),
   deleteResetToken: deleteResetToken,
-  sendConfirmAccountEmailMiddleware: Middleware.Util.asyncMiddleware(
-    sendConfirmAccountEmailMiddleware
+  sendConfirmAccountEmail: Middleware.Util.asyncMiddleware(
+    sendConfirmAccountEmail
   ),
   parseAccountConfirmationToken: parseAccountConfirmationToken,
   validateConfirmationToken: Middleware.Util.asyncMiddleware(

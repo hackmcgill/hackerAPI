@@ -1844,7 +1844,7 @@
   {
     "type": "patch",
     "url": "/hacker/confirmation/:id",
-    "title": "Allows confirmation of hacker attendence if they are accepted. Also allows change from 'confirmed' to 'cancelled'.",
+    "title": "Allows confirmation of hacker attendence if they are accepted. Also allows change from 'confirmed' to 'withdrawn'.",
     "name": "patchHackerConfirmed",
     "group": "Hacker",
     "version": "0.0.9",

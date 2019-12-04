@@ -40,11 +40,17 @@ const TeamHacker0 = util.hacker.TeamHacker0;
 const TeamHacker1 = util.hacker.TeamHacker1;
 const duplicateAccountLinkHacker0 = util.hacker.duplicateAccountLinkHacker0;
 
+const unconfirmedHackerAccount1 =
+  util.account.hackerAccounts.stored.unconfirmed[0];
+const unconfirmedHackerAccount0 = util.hacker.unconfirmedAccountHacker0;
+
+const unconfirmedHacker1 = util.hacker.unconfirmedAccountHacker1;
+
 const invalidHacker1 = util.hacker.invalidHacker1;
 
 describe("GET hacker", function() {
   // fail on authentication
-  it("should fail to list a hacker's information on /api/hacker/:id GET due to authentication", function(done) {
+  it("should FAIL to list a hacker's information on /api/hacker/:id GET due to authentication", function(done) {
     chai
       .request(server.app)
       .get(`/api/hacker/` + TeamHacker0._id)
@@ -85,7 +91,7 @@ describe("GET hacker", function() {
   });
 
   // fail case due to wrong account type
-  it("should fail to list the hacker info of an admin due to wrong account type /api/account/self GET", function(done) {
+  it("should FAIL to list the hacker info of an admin due to wrong account type /api/account/self GET", function(done) {
     util.auth.login(agent, Admin0, error => {
       if (error) {
         agent.close();
@@ -169,7 +175,7 @@ describe("GET hacker", function() {
   });
 
   // fail due to lack of authorization
-  it("should fail to list a hacker information due to lack of authorization on /api/hacker/:id GET", function(done) {
+  it("should FAIL to list a hacker information due to lack of authorization on /api/hacker/:id GET", function(done) {
     util.auth.login(agent, noTeamHackerAccount0, error => {
       if (error) {
         agent.close();
@@ -196,7 +202,7 @@ describe("GET hacker", function() {
   });
 
   // fail due to lack of hacker
-  it("should fail to list an invalid hacker /api/hacker/:id GET", function(done) {
+  it("should FAIL to list an invalid hacker /api/hacker/:id GET", function(done) {
     util.auth.login(agent, Admin0, error => {
       if (error) {
         agent.close();
@@ -287,7 +293,7 @@ describe("GET hacker", function() {
   });
 
   // fail due to lack of authorization
-  it("should fail to list a hacker information due to lack of authorization on /api/hacker/email/:id GET", function(done) {
+  it("should FAIL to list a hacker information due to lack of authorization on /api/hacker/email/:id GET", function(done) {
     util.auth.login(agent, noTeamHackerAccount0, error => {
       if (error) {
         agent.close();
@@ -316,7 +322,7 @@ describe("GET hacker", function() {
 
 describe("POST create hacker", function() {
   // fail on authentication
-  it("should fail to create a new hacker due to lack of authentication", function(done) {
+  it("should FAIL to create a new hacker due to lack of authentication", function(done) {
     chai
       .request(server.app)
       .post(`/api/hacker/`)
@@ -504,7 +510,7 @@ describe("POST create hacker", function() {
 
 describe("PATCH update one hacker", function() {
   // fail on authentication
-  it("should fail to update a hacker on /api/hacker/:id GET due to authentication", function(done) {
+  it("should FAIL to update a hacker on /api/hacker/:id GET due to authentication", function(done) {
     chai
       .request(server.app)
       .patch(`/api/hacker/${TeamHacker0._id}`)
@@ -805,7 +811,7 @@ describe("PATCH update one hacker", function() {
   });
 
   // fail for a hacker that's not accepted
-  it("should fail to update hacker status when hacker status is not accepted or confirmed", function(done) {
+  it("should FAIL to update hacker status when hacker status is not accepted or confirmed", function(done) {
     util.auth.login(agent, util.account.waitlistedHacker0, error => {
       if (error) {
         agent.close();
@@ -862,6 +868,7 @@ describe("PATCH update one hacker", function() {
     });
   });
 });
+
 describe("POST add a hacker resume", function() {
   it("It should SUCCEED and upload a resume for a hacker", function(done) {
     //this takes a lot of time for some reason
@@ -1035,6 +1042,25 @@ describe("POST send week-of email", function() {
         });
     });
   });
+
+  it("It should FAIL to send the week-of email due to unconfirmed email of hacker", function(done) {
+    //this takes a lot of time for some reason
+    util.auth.login(agent, Admin0, error => {
+      if (error) {
+        return done(error);
+      }
+      return agent
+        .post(`/api/hacker/email/weekOf/${unconfirmedHacker1._id}`)
+        .end(function(err, res) {
+          res.should.have.status(403);
+          res.should.be.json;
+          res.body.should.have.property("message");
+          res.body.message.should.equal(Constants.Error.ACCOUNT_403_MESSAGE);
+          res.body.should.have.property("data");
+          done();
+        });
+    });
+  });
 });
 
 describe("POST send day-of email", function() {
@@ -1083,6 +1109,25 @@ describe("POST send day-of email", function() {
           res.should.be.json;
           res.body.should.have.property("message");
           res.body.message.should.equal(Constants.Success.HACKER_SENT_DAY_OF);
+          res.body.should.have.property("data");
+          done();
+        });
+    });
+  });
+
+  it("It should FAIL to send the day-of email due to unconfirmed email of hacker", function(done) {
+    //this takes a lot of time for some reason
+    util.auth.login(agent, Admin0, error => {
+      if (error) {
+        return done(error);
+      }
+      return agent
+        .post(`/api/hacker/email/dayOf/${unconfirmedHacker1._id}`)
+        .end(function(err, res) {
+          res.should.have.status(403);
+          res.should.be.json;
+          res.body.should.have.property("message");
+          res.body.message.should.equal(Constants.Error.ACCOUNT_403_MESSAGE);
           res.body.should.have.property("data");
           done();
         });
