@@ -179,7 +179,6 @@ module.exports = {
     hackerRouter.route("/").post(
       Middleware.Auth.ensureAuthenticated(),
       Middleware.Auth.ensureAuthorized(),
-
       Middleware.Validator.Hacker.newHackerValidator,
 
       Middleware.parseBody.middleware,
@@ -194,6 +193,7 @@ module.exports = {
       Middleware.Auth.createRoleBindings(CONSTANTS.HACKER),
       Middleware.Hacker.createHacker,
       Middleware.Hacker.sendAppliedStatusEmail,
+
       Controllers.Hacker.createdHacker
     );
 

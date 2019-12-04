@@ -317,6 +317,7 @@ const newHacker1 = {
 
 // duplicate of newHack0, but with false for code of conduct
 const invalidHacker0 = {
+  _id: mongoose.Types.ObjectId(),
   accountId: Util.Account.hackerAccounts.invalid[0]._id,
   application: {
     general: {
@@ -343,6 +344,7 @@ const invalidHacker0 = {
     other: {
       gender: "Female",
       ethnicity: ["Caucasian"],
+      // must accept code of conduct to be valid
       codeOfConduct_MCHACKS: false,
       codeOfConduct_MLH: false
     },
@@ -504,27 +506,38 @@ const unconfirmedAccountHacker1 = {
   _id: Constants.MongoId.hackerHId,
   accountId: Util.Account.hackerAccounts.stored.unconfirmed[0]._id,
   status: "Accepted",
-  school: "University of Blah2",
-  degree: "Underggraduate",
-  gender: "Female",
-  needsBus: false,
   application: {
-    portfolioURL: {
-      //gcloud bucket link
-      resume: "www.gcloud.com/myResume123",
-      github: "www.github.com/Personasdf",
-      dropler: undefined,
-      personal: undefined,
-      linkedIn: undefined,
-      other: undefined
+    general: {
+      school: "University of Blah2",
+      degree: "Underggraduate",
+      fieldOfStudy: ["EE"],
+      graduationYear: 2019,
+      jobInterest: "Internship",
+      URL: {
+        //gcloud bucket link
+        resume: "www.gcloud.com/myResume123",
+        github: "www.github.com/Personasdf",
+        dropler: undefined,
+        personal: undefined,
+        linkedIn: undefined,
+        other: undefined
+      }
     },
-    jobInterest: "Internship",
-    skills: ["CSS", "HTML", "JS"]
-  },
-  ethnicity: ["European"],
-  major: ["EE"],
-  graduationYear: 2019,
-  codeOfConduct: true
+    shortAnswer: {
+      skills: ["CSS", "HTML", "JS"],
+      question1: "a",
+      question2: "a"
+    },
+    other: {
+      gender: "Female",
+      ethnicity: ["European"],
+      codeOfConduct_MCHACKS: true,
+      codeOfConduct_MLH: true
+    },
+    accomodation: {
+      needsBus: false
+    }
+  }
 };
 
 const Hackers = [
@@ -535,6 +548,8 @@ const Hackers = [
   TeamHacker4,
 
   NoTeamHacker0,
+
+  invalidHacker0,
   unconfirmedAccountHacker1,
 
   duplicateAccountLinkHacker0,

@@ -28,6 +28,7 @@ const volunteerAccount0 = util.account.volunteerAccounts.stored[0];
 
 const newHackerAccount0 = util.account.hackerAccounts.new[0];
 const newHacker0 = util.hacker.newHacker0;
+const invalidHackerAccount0 = util.account.hackerAccounts.invalid[0];
 const invalidHacker0 = util.hacker.invalidHacker0;
 const newHacker1 = util.hacker.newHacker1;
 
@@ -421,7 +422,7 @@ describe("POST create hacker", function() {
         .type("application/json")
         .send(invalidHacker0)
         .end(function(err, res) {
-          // console.log(res);
+          console.log(res.body);
           res.should.have.status(422);
           res.should.be.json;
           res.body.should.have.property("message");
@@ -801,7 +802,7 @@ describe("PATCH update one hacker", function() {
           chai.assert.equal(
             JSON.stringify(res.body.data),
             JSON.stringify({
-              status: Constants.General.HACKER_STATUS_CANCELLED
+              status: Constants.General.HACKER_STATUS_WITHDRAWN
             })
           );
 
