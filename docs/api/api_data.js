@@ -82,7 +82,7 @@ define({
       },
       "examples": [{
         "title": "Request-Example:",
-        "content": "{ \n               \"firstName\": \"Theo\",\n               \"lastName\":\"Klein\",\n               \"pronoun\":\"he/him\",\n               \"email\":\"theo@klein.com\",\n               \"password\":\"hunter2\",\n               \"dietaryRestrictions\":[\"Halal\"],\n               \"phoneNumber\":1234567890,\n               \"gender\":\"male\",\n               \"birthDate\":\"10/30/1997\"\n}",
+        "content": "{ \n               \"firstName\": \"Theo\",\n               \"lastName\":\"Klein\",\n               \"pronoun\":\"he/him\",\n               \"email\":\"theo@klein.com\",\n               \"password\":\"hunter2\",\n               \"dietaryRestrictions\":[\"Halal\"],\n               \"phoneNumber\":1234567890,\n               \"gender\":\"Male\",\n               \"birthDate\":\"10/30/1997\"\n}",
         "type": "json"
       }]
     },
@@ -106,7 +106,7 @@ define({
       },
       "examples": [{
         "title": "Success-Response: ",
-        "content": "{\n               \"message\": \"Account creation successful\", \n               \"data\": {\n                       \"id\": ObjectId(\"5bff8b9f3274cf001bc71048\"),\n                   \t\"firstName\": \"Theo\",\n                       \"lastName\":\"Klein\",\n                       \"pronoun\":\"he/him\",\n                       \"email\":\"theo@klein.com\",\n                       \"dietaryRestrictions\":[\"Halal\"],\n                       \"phoneNumber\":1234567890,\n                   \t\"gender\":\"male\",\n                       \"birthDate\":Date(\"10/30/1997\")\n               }\n           }",
+        "content": "{\n               \"message\": \"Account creation successful\", \n               \"data\": {\n                       \"id\": ObjectId(\"5bff8b9f3274cf001bc71048\"),\n                   \t\"firstName\": \"Theo\",\n                       \"lastName\":\"Klein\",\n                       \"pronoun\":\"he/him\",\n                       \"email\":\"theo@klein.com\",\n                       \"dietaryRestrictions\":[\"Halal\"],\n                       \"phoneNumber\":1234567890,\n                   \t\"gender\":\"Male\",\n                       \"birthDate\":Date(\"10/30/1997\")\n               }\n           }",
         "type": "object"
       }]
     },
@@ -178,7 +178,7 @@ define({
       },
       "examples": [{
         "title": "Success-Response: ",
-        "content": "{\n               \"message\": \"Account found by user id\", \n               \"data\": {\n                   \"id\": ObjectId(\"5bff8b9f3274cf001bc71048\"),\n                   \"firstName\": \"Theo\",\n                   \"lastName\":\"Klein\",\n                   \"pronoun\":\"he/him\",\n                   \"email\":\"theo@klein.com\",\n                   \"dietaryRestrictions\":[\"Halal\"],\n                   \"phoneNumber\":1234567890,\n                   \"gender\":\"male\",\n                   \"birthDate\":Date(\"10/30/1997\")\n               }\n           }",
+        "content": "{\n               \"message\": \"Account found by user id\", \n               \"data\": {\n                   \"id\": ObjectId(\"5bff8b9f3274cf001bc71048\"),\n                   \"firstName\": \"Theo\",\n                   \"lastName\":\"Klein\",\n                   \"pronoun\":\"he/him\",\n                   \"email\":\"theo@klein.com\",\n                   \"dietaryRestrictions\":[\"Halal\"],\n                   \"phoneNumber\":1234567890,\n                   \"gender\":\"Male\",\n                   \"birthDate\":Date(\"10/30/1997\")\n               }\n           }",
         "type": "object"
       }]
     },
@@ -341,7 +341,7 @@ define({
       },
       "examples": [{
         "title": "Success-Response: ",
-        "content": "{\n               \"message\": \"Account found by user email\", \n               \"data\": {\n                   \t\"id\": ObjectId(\"5bff8b9f3274cf001bc71048\"),\n                   \t\"firstName\": \"Theo\",\n                       \"lastName\":\"Klein\",\n                       \"pronoun\":\"he/him\",\n                       \"email\":\"theo@klein.com\",\n                       \"dietaryRestrictions\":[\"Halal\"],\n                       \"phoneNumber\":1234567890,\n                   \t\"gender\":\"male\",\n                       \"birthDate\":Date(\"10/30/1997\")\n               }\n           }",
+        "content": "{\n               \"message\": \"Account found by user email\", \n               \"data\": {\n                   \t\"id\": ObjectId(\"5bff8b9f3274cf001bc71048\"),\n                   \t\"firstName\": \"Theo\",\n                       \"lastName\":\"Klein\",\n                       \"pronoun\":\"he/him\",\n                       \"email\":\"theo@klein.com\",\n                       \"dietaryRestrictions\":[\"Halal\"],\n                       \"phoneNumber\":1234567890,\n                   \t\"gender\":\"Male\",\n                       \"birthDate\":Date(\"10/30/1997\")\n               }\n           }",
         "type": "object"
       }]
     },
@@ -468,7 +468,7 @@ define({
       },
       "examples": [{
         "title": "Success-Response: ",
-        "content": "{\n               \"message\": \"Changed account information\", \n               \"data\": {\n                       \"id\": ObjectId(\"5bff8b9f3274cf001bc71048\"),\n                   \t\"firstName\": \"Theo\",\n                       \"lastName\":\"Klein\",\n                       \"pronoun\":\"he/him\",\n                       \"email\":\"aFakeEmail@aol.com\",\n                       \"dietaryRestrictions\":[\"Halal\"],\n                       \"phoneNumber\":1234567890,\n                   \t\"gender\":\"male\",\n                       \"birthDate\":Date(\"10/30/1997\")\n               }\n           }",
+        "content": "{\n               \"message\": \"Changed account information\", \n               \"data\": {\n                       \"id\": ObjectId(\"5bff8b9f3274cf001bc71048\"),\n                   \t\"firstName\": \"Theo\",\n                       \"lastName\":\"Klein\",\n                       \"pronoun\":\"he/him\",\n                       \"email\":\"aFakeEmail@aol.com\",\n                       \"dietaryRestrictions\":[\"Halal\"],\n                       \"phoneNumber\":1234567890,\n                   \t\"gender\":\"Male\",\n                       \"birthDate\":Date(\"10/30/1997\")\n               }\n           }",
         "type": "object"
       }]
     },

@@ -43,7 +43,7 @@ module.exports = {
                             "email":"theo@klein.com",
                             "dietaryRestrictions":["Halal"],
                             "phoneNumber":1234567890,
-                        	"gender":"male",
+                        	"gender":"Male",
                             "birthDate":Date("10/30/1997")
                     }
                 }
@@ -86,7 +86,7 @@ module.exports = {
                     "password":"hunter2",
                     "dietaryRestrictions":["Halal"],
                     "phoneNumber":1234567890,
-                    "gender":"male",
+                    "gender":"Male",
                     "birthDate":"10/30/1997"
          *      }
          * 
@@ -103,7 +103,7 @@ module.exports = {
                             "email":"theo@klein.com",
                             "dietaryRestrictions":["Halal"],
                             "phoneNumber":1234567890,
-                        	"gender":"male",
+                        	"gender":"Male",
                             "birthDate":Date("10/30/1997")
                     }
                 }
@@ -280,7 +280,7 @@ module.exports = {
                         "email":"theo@klein.com",
                         "dietaryRestrictions":["Halal"],
                         "phoneNumber":1234567890,
-                        "gender":"male",
+                        "gender":"Male",
                         "birthDate":Date("10/30/1997")
                     }
                 }
