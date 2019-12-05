@@ -1,23 +1,23 @@
-'use strict';
+"use strict";
 
-const express = require('express');
+const express = require("express");
 const Controllers = {
-  Role: require('../../controllers/role.controller'),
+    Role: require("../../controllers/role.controller")
 };
 const Middleware = {
-  Auth: require('../../middlewares/auth.middleware'),
-  Validator: {
-    Role: require('../../middlewares/validators/role.validator'),
-  },
-  parseBody: require('../../middlewares/parse-body.middleware'),
-  Role: require('../../middlewares/role.middleware'),
+    Auth: require("../../middlewares/auth.middleware"),
+    Validator: {
+        Role: require("../../middlewares/validators/role.validator")
+    },
+    parseBody: require("../../middlewares/parse-body.middleware"),
+    Role: require("../../middlewares/role.middleware")
 };
 
 module.exports = {
-  activate: function(apiRouter) {
-    const roleRouter = express.Router();
+    activate: function(apiRouter) {
+        const roleRouter = express.Router();
 
-    /**
+        /**
          * @api {post} /api/role/ create a new role
          * @apiName createRole
          * @apiGroup Role
@@ -57,18 +57,18 @@ module.exports = {
          * @apiErrorExample {object} Error-Response: 
          *      {"message": "Error while creating role", "data": {}}
          */
-    roleRouter.route('/').post(
-      Middleware.Auth.ensureAuthenticated(),
-      Middleware.Auth.ensureAuthorized(),
+        roleRouter.route("/").post(
+            Middleware.Auth.ensureAuthenticated(),
+            Middleware.Auth.ensureAuthorized(),
 
-      Middleware.Validator.Role.newRoleValidator,
-      Middleware.parseBody.middleware,
-      Middleware.Role.parseRole,
+            Middleware.Validator.Role.newRoleValidator,
+            Middleware.parseBody.middleware,
+            Middleware.Role.parseRole,
 
-      Middleware.Role.createRole,
-      Controllers.Role.createdRole
-    );
+            Middleware.Role.createRole,
+            Controllers.Role.createdRole
+        );
 
-    apiRouter.use('/role', roleRouter);
-  },
+        apiRouter.use("/role", roleRouter);
+    }
 };

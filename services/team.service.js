@@ -1,11 +1,11 @@
-'use strict';
-const Team = require('../models/team.model');
-const logger = require('./logger.service');
+"use strict";
+const Team = require("../models/team.model");
+const logger = require("./logger.service");
 const Services = {
-  Hacker: require('../services/hacker.service'),
+    Hacker: require("../services/hacker.service")
 };
 const Middleware = {
-  Util: require('../middlewares/util.middleware'),
+    Util: require("../middlewares/util.middleware")
 };
 
 /**
@@ -15,13 +15,13 @@ const Middleware = {
  * @description Finds the team that the hacker belongs to, or undefined.
  */
 function findTeamByHackerId(hackerId) {
-  const TAG = `[Team Service # findTeamByHackerId]:`;
+    const TAG = `[Team Service # findTeamByHackerId]:`;
 
-  const query = {
-    members: hackerId,
-  };
+    const query = {
+        members: hackerId
+    };
 
-  return Team.findOne(query, logger.queryCallbackFactory(TAG, 'team', query));
+    return Team.findOne(query, logger.queryCallbackFactory(TAG, "team", query));
 }
 
 /**
@@ -31,11 +31,11 @@ function findTeamByHackerId(hackerId) {
  * @description Adds a new team to database.
  */
 async function createTeam(teamDetails) {
-  const TAG = `[Team Service # createTeam]:`;
+    const TAG = `[Team Service # createTeam]:`;
 
-  const team = new Team(teamDetails);
+    const team = new Team(teamDetails);
 
-  return team.save();
+    return team.save();
 }
 
 /**
@@ -47,17 +47,17 @@ async function createTeam(teamDetails) {
  */
 
 function updateOne(id, teamDetails) {
-  const TAG = `[Team Service # updateOne]:`;
+    const TAG = `[Team Service # updateOne]:`;
 
-  const query = {
-    _id: id,
-  };
+    const query = {
+        _id: id
+    };
 
-  return Team.findOneAndUpdate(
-    query,
-    teamDetails,
-    logger.updateCallbackFactory(TAG, 'team')
-  );
+    return Team.findOneAndUpdate(
+        query,
+        teamDetails,
+        logger.updateCallbackFactory(TAG, "team")
+    );
 }
 
 /**
@@ -67,11 +67,14 @@ function updateOne(id, teamDetails) {
  * @description Finds a team by its mongoID.
  */
 function findById(id) {
-  const TAG = `[Team Service # findById]:`;
-  const query = {
-    _id: id,
-  };
-  return Team.findById(query, logger.queryCallbackFactory(TAG, 'team', query));
+    const TAG = `[Team Service # findById]:`;
+    const query = {
+        _id: id
+    };
+    return Team.findById(
+        query,
+        logger.queryCallbackFactory(TAG, "team", query)
+    );
 }
 
 /**
@@ -81,13 +84,13 @@ function findById(id) {
  * @description Finds a team by its team name.
  */
 function findByName(name) {
-  const TAG = `[Team Services # findByName]:`;
+    const TAG = `[Team Services # findByName]:`;
 
-  const query = {
-    name: name,
-  };
+    const query = {
+        name: name
+    };
 
-  return Team.findOne(query, logger.queryCallbackFactory(TAG, 'team', query));
+    return Team.findOne(query, logger.queryCallbackFactory(TAG, "team", query));
 }
 
 /**
@@ -99,26 +102,26 @@ function findByName(name) {
  * @description Removes the hacker specified by hackerId from a team specified by teamId.
  */
 async function removeMember(teamId, hackerId) {
-  const TAG = `[Team Services # removeMember]:`;
+    const TAG = `[Team Services # removeMember]:`;
 
-  const hacker = await Services.Hacker.updateOne(hackerId, {
-    teamId: null,
-  });
+    const hacker = await Services.Hacker.updateOne(hackerId, {
+        teamId: null
+    });
 
-  if (!hacker) {
-    return null;
-  }
-
-  return Team.findOneAndUpdate(
-    {
-      _id: teamId,
-    },
-    {
-      $pull: {
-        members: hackerId,
-      },
+    if (!hacker) {
+        return null;
     }
-  );
+
+    return Team.findOneAndUpdate(
+        {
+            _id: teamId
+        },
+        {
+            $pull: {
+                members: hackerId
+            }
+        }
+    );
 }
 
 /**
@@ -130,28 +133,28 @@ async function removeMember(teamId, hackerId) {
  * @description Add the hacker specified by hackerId to the team specified by teamId
  */
 async function addMember(teamId, hackerId) {
-  const TAG = `[Team Services # addMember]:`;
+    const TAG = `[Team Services # addMember]:`;
 
-  const hacker = await Services.Hacker.updateOne(hackerId, {
-    $set: {
-      teamId: teamId,
-    },
-  });
+    const hacker = await Services.Hacker.updateOne(hackerId, {
+        $set: {
+            teamId: teamId
+        }
+    });
 
-  if (!hacker) {
-    return null;
-  }
-
-  return Team.update(
-    {
-      _id: teamId,
-    },
-    {
-      $push: {
-        members: [hackerId],
-      },
+    if (!hacker) {
+        return null;
     }
-  );
+
+    return Team.update(
+        {
+            _id: teamId
+        },
+        {
+            $push: {
+                members: [hackerId]
+            }
+        }
+    );
 }
 
 /**
@@ -162,17 +165,17 @@ async function addMember(teamId, hackerId) {
  * @description Removes the team if the team contains no members. Returns null if the team has one or more members, or if the team doesn't exist.
  */
 async function removeTeamIfEmpty(teamId) {
-  const TAG = `[Team Services # removeTeam]`;
+    const TAG = `[Team Services # removeTeam]`;
 
-  const team = await findById(teamId);
+    const team = await findById(teamId);
 
-  if (team.members.length === 0) {
-    return Team.deleteOne({
-      _id: teamId,
-    });
-  }
+    if (team.members.length === 0) {
+        return Team.deleteOne({
+            _id: teamId
+        });
+    }
 
-  return null;
+    return null;
 }
 
 /**
@@ -183,17 +186,17 @@ async function removeTeamIfEmpty(teamId) {
  * @description Delete the team specified by teamId.
  */
 async function removeTeam(teamId) {
-  const TAG = `[Team Services # removeTeam]`;
+    const TAG = `[Team Services # removeTeam]`;
 
-  const team = await findById(teamId);
+    const team = await findById(teamId);
 
-  for (const hackerId of team.members) {
-    await removeMember(teamId, hackerId);
-  }
+    for (const hackerId of team.members) {
+        await removeMember(teamId, hackerId);
+    }
 
-  return Team.deleteOne({
-    _id: teamId,
-  });
+    return Team.deleteOne({
+        _id: teamId
+    });
 }
 
 /**
@@ -204,13 +207,13 @@ async function removeTeam(teamId) {
  * @description Gets the number of current members of a team defined by name
  */
 async function getSize(name) {
-  const team = await findByName(name);
+    const team = await findByName(name);
 
-  if (!team) {
-    return -1;
-  } else {
-    return team.members.length;
-  }
+    if (!team) {
+        return -1;
+    } else {
+        return team.members.length;
+    }
 }
 
 /**
@@ -221,20 +224,20 @@ async function getSize(name) {
  * @description Checks whether a Team with the specified mongoID exists.
  */
 async function isTeamIdValid(id) {
-  const team = await findById(id);
-  return !!team;
+    const team = await findById(id);
+    return !!team;
 }
 
 module.exports = {
-  isTeamIdValid: isTeamIdValid,
-  createTeam: createTeam,
-  findTeamByHackerId: findTeamByHackerId,
-  findById: findById,
-  findByName: findByName,
-  getSize: getSize,
-  removeMember: removeMember,
-  removeTeam: removeTeam,
-  addMember: addMember,
-  updateOne: updateOne,
-  removeTeamIfEmpty: removeTeamIfEmpty,
+    isTeamIdValid: isTeamIdValid,
+    createTeam: createTeam,
+    findTeamByHackerId: findTeamByHackerId,
+    findById: findById,
+    findByName: findByName,
+    getSize: getSize,
+    removeMember: removeMember,
+    removeTeam: removeTeam,
+    addMember: addMember,
+    updateOne: updateOne,
+    removeTeamIfEmpty: removeTeamIfEmpty
 };

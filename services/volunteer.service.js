@@ -1,6 +1,6 @@
-'use strict';
-const Volunteer = require('../models/volunteer.model');
-const logger = require('./logger.service');
+"use strict";
+const Volunteer = require("../models/volunteer.model");
+const logger = require("./logger.service");
 
 /**
  * @function createVolunteer
@@ -9,11 +9,11 @@ const logger = require('./logger.service');
  * @description Adds a new volunteer to database.
  */
 function createVolunteer(volunteerDetails) {
-  const TAG = `[Volunteer Service # createTeam]:`;
+    const TAG = `[Volunteer Service # createTeam]:`;
 
-  const volunteer = new Volunteer(volunteerDetails);
+    const volunteer = new Volunteer(volunteerDetails);
 
-  return volunteer.save();
+    return volunteer.save();
 }
 
 /**
@@ -23,12 +23,12 @@ function createVolunteer(volunteerDetails) {
  * @description Finds an volunteer by the id, which is the mongoId.
  */
 function findById(id) {
-  const TAG = `[Volunteer Service # findById ]:`;
+    const TAG = `[Volunteer Service # findById ]:`;
 
-  return Volunteer.findById(
-    id,
-    logger.queryCallbackFactory(TAG, 'volunteer', id)
-  );
+    return Volunteer.findById(
+        id,
+        logger.queryCallbackFactory(TAG, "volunteer", id)
+    );
 }
 
 /**
@@ -37,20 +37,20 @@ function findById(id) {
  * @return {DocumentQuery} A volunteer document queried by accountId
  */
 function findByAccountId(accountId) {
-  const TAG = `[ Volunteer Service # findByAccountId ]:`;
+    const TAG = `[ Volunteer Service # findByAccountId ]:`;
 
-  const query = {
-    accountId: accountId,
-  };
+    const query = {
+        accountId: accountId
+    };
 
-  return Volunteer.findOne(
-    query,
-    logger.updateCallbackFactory(TAG, 'volunteer')
-  );
+    return Volunteer.findOne(
+        query,
+        logger.updateCallbackFactory(TAG, "volunteer")
+    );
 }
 
 module.exports = {
-  createVolunteer: createVolunteer,
-  findById: findById,
-  findByAccountId: findByAccountId,
+    createVolunteer: createVolunteer,
+    findById: findById,
+    findByAccountId: findByAccountId
 };

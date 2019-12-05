@@ -1,12 +1,12 @@
-'use strict';
+"use strict";
 const Services = {
-  Account: require('../services/account.service'),
-  Logger: require('../services/logger.service'),
+    Account: require("../services/account.service"),
+    Logger: require("../services/logger.service")
 };
-const Util = require('../middlewares/util.middleware');
+const Util = require("../middlewares/util.middleware");
 const Constants = {
-  Error: require('../constants/error.constant'),
-  Success: require('../constants/success.constant'),
+    Error: require("../constants/error.constant"),
+    Success: require("../constants/success.constant")
 };
 
 /**
@@ -17,10 +17,10 @@ const Constants = {
  * @description Returns the JSON of account object located in req.body.account
  */
 function showAccount(req, res) {
-  return res.status(200).json({
-    message: Constants.Success.ACCOUNT_READ,
-    data: req.body.account.toStrippedJSON(),
-  });
+    return res.status(200).json({
+        message: Constants.Success.ACCOUNT_READ,
+        data: req.body.account.toStrippedJSON()
+    });
 }
 
 /**
@@ -31,11 +31,11 @@ function showAccount(req, res) {
  * @description Adds a user from information in req.body.accountDetails
  */
 function addUser(req, res) {
-  const acc = req.body.account;
-  return res.status(200).json({
-    message: Constants.Success.ACCOUNT_CREATE,
-    data: acc.toStrippedJSON(),
-  });
+    const acc = req.body.account;
+    return res.status(200).json({
+        message: Constants.Success.ACCOUNT_CREATE,
+        data: acc.toStrippedJSON()
+    });
 }
 
 /**
@@ -49,33 +49,33 @@ function addUser(req, res) {
  *      The id is moved to req.body.id from req.params.id by validation.
  */
 function updatedAccount(req, res) {
-  delete req.body.account;
-  return res.status(200).json({
-    message: Constants.Success.ACCOUNT_UPDATE,
-    data: req.body,
-  });
+    delete req.body.account;
+    return res.status(200).json({
+        message: Constants.Success.ACCOUNT_UPDATE,
+        data: req.body
+    });
 }
 
 function invitedAccount(req, res) {
-  return res.status(200).json({
-    message: Constants.Success.ACCOUNT_INVITE,
-    data: {},
-  });
+    return res.status(200).json({
+        message: Constants.Success.ACCOUNT_INVITE,
+        data: {}
+    });
 }
 
 function gotInvites(req, res) {
-  return res.status(200).json({
-    message: Constants.Success.ACCOUNT_GET_INVITES,
-    data: {
-      invites: req.body.invites,
-    },
-  });
+    return res.status(200).json({
+        message: Constants.Success.ACCOUNT_GET_INVITES,
+        data: {
+            invites: req.body.invites
+        }
+    });
 }
 
 module.exports = {
-  addUser: addUser,
-  gotInvites: gotInvites,
-  updatedAccount: updatedAccount,
-  invitedAccount: invitedAccount,
-  showAccount: showAccount,
+    addUser: addUser,
+    gotInvites: gotInvites,
+    updatedAccount: updatedAccount,
+    invitedAccount: invitedAccount,
+    showAccount: showAccount
 };

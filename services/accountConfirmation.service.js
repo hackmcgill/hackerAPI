@@ -1,11 +1,11 @@
-'use strict';
-const logger = require('./logger.service');
-const AccountConfirmation = require('../models/accountConfirmationToken.model');
-const Constants = require('../constants/general.constant');
-const jwt = require('jsonwebtoken');
-const path = require('path');
+"use strict";
+const logger = require("./logger.service");
+const AccountConfirmation = require("../models/accountConfirmationToken.model");
+const Constants = require("../constants/general.constant");
+const jwt = require("jsonwebtoken");
+const path = require("path");
 const Services = {
-  Email: require('./email.service'),
+    Email: require("./email.service")
 };
 
 /**
@@ -15,13 +15,13 @@ const Services = {
  * @description Finds an account confirmation document by accountId.
  */
 function findByAccountId(accountId) {
-  const TAG = `[ AccountConfirmation Reset Service # findByAccountId ]`;
-  return AccountConfirmation.findOne(
-    {
-      accountId: accountId,
-    },
-    logger.queryCallbackFactory(TAG, 'AccountConfirmation', 'accountId')
-  );
+    const TAG = `[ AccountConfirmation Reset Service # findByAccountId ]`;
+    return AccountConfirmation.findOne(
+        {
+            accountId: accountId
+        },
+        logger.queryCallbackFactory(TAG, "AccountConfirmation", "accountId")
+    );
 }
 
 /**
@@ -31,11 +31,11 @@ function findByAccountId(accountId) {
  * @description Finds an account by mongoID.
  */
 function findById(id) {
-  const TAG = `[ AccountConfirmation Service # findById ]`;
-  return AccountConfirmation.findById(
-    id,
-    logger.queryCallbackFactory(TAG, 'AccountConfirmation', 'mongoId')
-  );
+    const TAG = `[ AccountConfirmation Service # findById ]`;
+    return AccountConfirmation.findById(
+        id,
+        logger.queryCallbackFactory(TAG, "AccountConfirmation", "mongoId")
+    );
 }
 
 /**
@@ -45,11 +45,11 @@ function findById(id) {
  * @description Finds an account by query.
  */
 function find(query) {
-  const TAG = `[ AccountConfirmation Service # find ]`;
-  return AccountConfirmation.find(
-    query,
-    logger.queryCallbackFactory(TAG, 'AccountConfirmation', query)
-  );
+    const TAG = `[ AccountConfirmation Service # find ]`;
+    return AccountConfirmation.find(
+        query,
+        logger.queryCallbackFactory(TAG, "AccountConfirmation", query)
+    );
 }
 
 /**
@@ -60,15 +60,15 @@ function find(query) {
  * @returns {Promise.<*>}
  */
 async function create(type, email, accountId) {
-  //Create new instance of account confirmation
-  const newAccountToken = AccountConfirmation({
-    accountType: type,
-    email: email,
-  });
-  if (accountId !== undefined) {
-    newAccountToken.accountId = accountId;
-  }
-  return newAccountToken.save();
+    //Create new instance of account confirmation
+    const newAccountToken = AccountConfirmation({
+        accountType: type,
+        email: email
+    });
+    if (accountId !== undefined) {
+        newAccountToken.accountId = accountId;
+    }
+    return newAccountToken.save();
 }
 
 /**
@@ -78,17 +78,17 @@ async function create(type, email, accountId) {
  * @returns {string} JWT Token containing accountId and accountConfirmationId
  */
 function generateToken(accountConfirmationId, accountId = null) {
-  const token = jwt.sign(
-    {
-      accountConfirmationId: accountConfirmationId,
-      accountId: accountId,
-    },
-    process.env.JWT_CONFIRM_ACC_SECRET,
-    {
-      expiresIn: '7 day',
-    }
-  );
-  return token;
+    const token = jwt.sign(
+        {
+            accountConfirmationId: accountConfirmationId,
+            accountId: accountId
+        },
+        process.env.JWT_CONFIRM_ACC_SECRET,
+        {
+            expiresIn: "7 day"
+        }
+    );
+    return token;
 }
 
 /**
@@ -100,8 +100,8 @@ function generateToken(accountConfirmationId, accountId = null) {
  * @returns {string} the string, of form: [http|https]://{domain}/{model}/create?token={token}
  */
 function generateCreateAccountTokenLink(httpOrHttps, domain, type, token) {
-  const link = `${httpOrHttps}://${domain}/account/create?token=${token}&accountType=${type}`;
-  return link;
+    const link = `${httpOrHttps}://${domain}/account/create?token=${token}&accountType=${type}`;
+    return link;
 }
 
 /**
@@ -113,8 +113,8 @@ function generateCreateAccountTokenLink(httpOrHttps, domain, type, token) {
  * @returns {string} the string, of form: [http|https]://{domain}/{model}/create?token={token}
  */
 function generateConfirmTokenLink(httpOrHttps, domain, token) {
-  const link = `${httpOrHttps}://${domain}/account/confirm?token=${token}`;
-  return link;
+    const link = `${httpOrHttps}://${domain}/account/confirm?token=${token}`;
+    return link;
 }
 /**
  * Generates the mailData for the account confirmation Email. This really only applies to
@@ -125,29 +125,29 @@ function generateConfirmTokenLink(httpOrHttps, domain, token) {
  * @param {string} token The account confirmation token
  */
 function generateAccountConfirmationEmail(address, receiverEmail, type, token) {
-  const httpOrHttps = address.includes('localhost') ? 'http' : 'https';
-  const tokenLink = generateConfirmTokenLink(httpOrHttps, address, token);
-  var emailSubject = '';
-  if (token === undefined || tokenLink === undefined) {
-    return undefined;
-  }
-  if (type === Constants.HACKER) {
-    emailSubject = Constants.CONFIRM_ACC_EMAIL_SUBJECT;
-  }
-  const handlebarPath = path.join(
-    __dirname,
-    `../assets/email/AccountConfirmation.hbs`
-  );
+    const httpOrHttps = address.includes("localhost") ? "http" : "https";
+    const tokenLink = generateConfirmTokenLink(httpOrHttps, address, token);
+    var emailSubject = "";
+    if (token === undefined || tokenLink === undefined) {
+        return undefined;
+    }
+    if (type === Constants.HACKER) {
+        emailSubject = Constants.CONFIRM_ACC_EMAIL_SUBJECT;
+    }
+    const handlebarPath = path.join(
+        __dirname,
+        `../assets/email/AccountConfirmation.hbs`
+    );
 
-  const mailData = {
-    from: process.env.NO_REPLY_EMAIL,
-    to: receiverEmail,
-    subject: emailSubject,
-    html: Services.Email.renderEmail(handlebarPath, {
-      link: tokenLink,
-    }),
-  };
-  return mailData;
+    const mailData = {
+        from: process.env.NO_REPLY_EMAIL,
+        to: receiverEmail,
+        subject: emailSubject,
+        html: Services.Email.renderEmail(handlebarPath, {
+            link: tokenLink
+        })
+    };
+    return mailData;
 }
 
 /*
@@ -158,46 +158,46 @@ function generateAccountConfirmationEmail(address, receiverEmail, type, token) {
  * @param {string} token The account confirmation token
  */
 function generateAccountInvitationEmail(address, receiverEmail, type, token) {
-  const httpOrHttps = address.includes('localhost') ? 'http' : 'https';
-  const tokenLink = generateCreateAccountTokenLink(
-    httpOrHttps,
-    address,
-    type,
-    token
-  );
-  var emailSubject = '';
-  if (token === undefined || tokenLink === undefined) {
-    return undefined;
-  }
-  if (type === Constants.HACKER) {
-    emailSubject = Constants.CREATE_ACC_EMAIL_SUBJECTS[Constants.HACKER];
-  } else if (type === Constants.VOLUNTEER) {
-    emailSubject = Constants.CREATE_ACC_EMAIL_SUBJECTS[Constants.VOLUNTEER];
-  } else if (Constants.SPONSOR_TIERS.includes(type)) {
-    emailSubject = Constants.CREATE_ACC_EMAIL_SUBJECTS[Constants.SPONSOR];
-  } else if (type === Constants.STAFF) {
-    emailSubject = Constants.CREATE_ACC_EMAIL_SUBJECTS[Constants.STAFF];
-  }
-  const handlebarPath = path.join(
-    __dirname,
-    `../assets/email/AccountInvitation.hbs`
-  );
-  const mailData = {
-    from: process.env.NO_REPLY_EMAIL,
-    to: receiverEmail,
-    subject: emailSubject,
-    html: Services.Email.renderEmail(handlebarPath, {
-      link: tokenLink,
-    }),
-  };
-  return mailData;
+    const httpOrHttps = address.includes("localhost") ? "http" : "https";
+    const tokenLink = generateCreateAccountTokenLink(
+        httpOrHttps,
+        address,
+        type,
+        token
+    );
+    var emailSubject = "";
+    if (token === undefined || tokenLink === undefined) {
+        return undefined;
+    }
+    if (type === Constants.HACKER) {
+        emailSubject = Constants.CREATE_ACC_EMAIL_SUBJECTS[Constants.HACKER];
+    } else if (type === Constants.VOLUNTEER) {
+        emailSubject = Constants.CREATE_ACC_EMAIL_SUBJECTS[Constants.VOLUNTEER];
+    } else if (Constants.SPONSOR_TIERS.includes(type)) {
+        emailSubject = Constants.CREATE_ACC_EMAIL_SUBJECTS[Constants.SPONSOR];
+    } else if (type === Constants.STAFF) {
+        emailSubject = Constants.CREATE_ACC_EMAIL_SUBJECTS[Constants.STAFF];
+    }
+    const handlebarPath = path.join(
+        __dirname,
+        `../assets/email/AccountInvitation.hbs`
+    );
+    const mailData = {
+        from: process.env.NO_REPLY_EMAIL,
+        to: receiverEmail,
+        subject: emailSubject,
+        html: Services.Email.renderEmail(handlebarPath, {
+            link: tokenLink
+        })
+    };
+    return mailData;
 }
 module.exports = {
-  find: find,
-  findById: findById,
-  findByAccountId: findByAccountId,
-  create: create,
-  generateToken: generateToken,
-  generateAccountConfirmationEmail: generateAccountConfirmationEmail,
-  generateAccountInvitationEmail: generateAccountInvitationEmail,
+    find: find,
+    findById: findById,
+    findByAccountId: findByAccountId,
+    create: create,
+    generateToken: generateToken,
+    generateAccountConfirmationEmail: generateAccountConfirmationEmail,
+    generateAccountInvitationEmail: generateAccountInvitationEmail
 };

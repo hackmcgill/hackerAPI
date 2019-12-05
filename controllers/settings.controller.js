@@ -1,6 +1,6 @@
-'use strict';
+"use strict";
 
-const Success = require('../constants/success.constant');
+const Success = require("../constants/success.constant");
 
 /**
  * @function gotSettings
@@ -10,10 +10,10 @@ const Success = require('../constants/success.constant');
  * @description Returns the JSON of settings object located in req.body.settingsDetails
  */
 function gotSettings(req, res) {
-  return res.status(200).json({
-    message: Success.SETTINGS_GET,
-    data: req.body.settingsDetails.toJSON(),
-  });
+    return res.status(200).json({
+        message: Success.SETTINGS_GET,
+        data: req.body.settingsDetails.toJSON()
+    });
 }
 
 /**
@@ -24,13 +24,13 @@ function gotSettings(req, res) {
  * @description Returns the JSON of settings object located in req.body.settingsDetails
  */
 function patchedSettings(req, res) {
-  return res.status(200).json({
-    message: Success.SETTINGS_PATCH,
-    data: req.body.settingsDetails,
-  });
+    return res.status(200).json({
+        message: Success.SETTINGS_PATCH,
+        data: req.body.settingsDetails
+    });
 }
 
 module.exports = {
-  gotSettings: gotSettings,
-  patchedSettings: patchedSettings,
+    gotSettings: gotSettings,
+    patchedSettings: patchedSettings
 };

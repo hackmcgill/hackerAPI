@@ -1,31 +1,31 @@
-'use strict';
+"use strict";
 
-const express = require('express');
+const express = require("express");
 
 const Controllers = {
-  Sponsor: require('../../controllers/sponsor.controller'),
+    Sponsor: require("../../controllers/sponsor.controller")
 };
 const Middleware = {
-  Validator: {
-    /* Insert the require statement to the validator file here */
-    Sponsor: require('../../middlewares/validators/sponsor.validator'),
-    RouteParam: require('../../middlewares/validators/routeParam.validator'),
-  },
-  /* Insert all of ther middleware require statements here */
-  parseBody: require('../../middlewares/parse-body.middleware'),
-  Sponsor: require('../../middlewares/sponsor.middleware'),
-  Auth: require('../../middlewares/auth.middleware'),
+    Validator: {
+        /* Insert the require statement to the validator file here */
+        Sponsor: require("../../middlewares/validators/sponsor.validator"),
+        RouteParam: require("../../middlewares/validators/routeParam.validator")
+    },
+    /* Insert all of ther middleware require statements here */
+    parseBody: require("../../middlewares/parse-body.middleware"),
+    Sponsor: require("../../middlewares/sponsor.middleware"),
+    Auth: require("../../middlewares/auth.middleware")
 };
 const Services = {
-  Sponsor: require('../../services/sponsor.service'),
+    Sponsor: require("../../services/sponsor.service")
 };
-const CONSTANTS = require('../../constants/general.constant');
+const CONSTANTS = require("../../constants/general.constant");
 
 module.exports = {
-  activate: function(apiRouter) {
-    const sponsorRouter = new express.Router();
+    activate: function(apiRouter) {
+        const sponsorRouter = new express.Router();
 
-    /**
+        /**
          * @api {get} /sponsor/self get information about logged in sponsor
          * @apiName self
          * @apiGroup Hacker
@@ -52,15 +52,15 @@ module.exports = {
          *      {"message": "Sponsor not found", "data": {}}
          * @apiPermission: Sponsor
          */
-    sponsorRouter.route('/self').get(
-      Middleware.Auth.ensureAuthenticated(),
-      Middleware.Auth.ensureAuthorized(),
+        sponsorRouter.route("/self").get(
+            Middleware.Auth.ensureAuthenticated(),
+            Middleware.Auth.ensureAuthorized(),
 
-      Middleware.Sponsor.findSelf,
-      Controllers.Sponsor.showSponsor
-    );
+            Middleware.Sponsor.findSelf,
+            Controllers.Sponsor.showSponsor
+        );
 
-    /**
+        /**
          * @api {get} /sponsor/:id get a sponsor's information
          * @apiName getSponsor
          * @apiGroup Sponsor
@@ -88,18 +88,18 @@ module.exports = {
          * @apiErrorExample {object} Error-Response: 
          *      {"message": "Sponsor not found", "data": {}}
          */
-    sponsorRouter.route('/:id').get(
-      Middleware.Validator.RouteParam.idValidator,
-      Middleware.Auth.ensureAuthenticated(),
-      Middleware.Auth.ensureAuthorized([Services.Sponsor.findById]),
+        sponsorRouter.route("/:id").get(
+            Middleware.Validator.RouteParam.idValidator,
+            Middleware.Auth.ensureAuthenticated(),
+            Middleware.Auth.ensureAuthorized([Services.Sponsor.findById]),
 
-      Middleware.parseBody.middleware,
+            Middleware.parseBody.middleware,
 
-      Middleware.Sponsor.findById,
-      Controllers.Sponsor.showSponsor
-    );
+            Middleware.Sponsor.findById,
+            Controllers.Sponsor.showSponsor
+        );
 
-    /**
+        /**
          * @api {post} /sponsor/ create a new sponsor
          * @apiName createSponsor
          * @apiGroup Sponsor
@@ -124,29 +124,29 @@ module.exports = {
          * @apiErrorExample {object} Error-Response: 
          *      {"message": "Error while creating sponsor", "data": {}}
          */
-    sponsorRouter.route('/').post(
-      Middleware.Auth.ensureAuthenticated(),
-      Middleware.Auth.ensureAuthorized(),
+        sponsorRouter.route("/").post(
+            Middleware.Auth.ensureAuthenticated(),
+            Middleware.Auth.ensureAuthorized(),
 
-      // validation
-      Middleware.Validator.Sponsor.newSponsorValidator,
+            // validation
+            Middleware.Validator.Sponsor.newSponsorValidator,
 
-      // parsing
-      Middleware.parseBody.middleware,
-      // middleware to ensure account is a sponsor type
-      Middleware.Sponsor.validateConfirmedStatus,
-      // middleware to ensure that there is not a duplicate sponsor with the same accountId
-      Middleware.Sponsor.checkDuplicateAccountLinks,
+            // parsing
+            Middleware.parseBody.middleware,
+            // middleware to ensure account is a sponsor type
+            Middleware.Sponsor.validateConfirmedStatus,
+            // middleware to ensure that there is not a duplicate sponsor with the same accountId
+            Middleware.Sponsor.checkDuplicateAccountLinks,
 
-      Middleware.Sponsor.parseSponsor,
+            Middleware.Sponsor.parseSponsor,
 
-      Middleware.Auth.addAccountTypeRoleBinding,
+            Middleware.Auth.addAccountTypeRoleBinding,
 
-      Middleware.Sponsor.createSponsor,
-      Controllers.Sponsor.createdSponsor
-    );
+            Middleware.Sponsor.createSponsor,
+            Controllers.Sponsor.createdSponsor
+        );
 
-    /**
+        /**
          * @api {patch} /sponsor/ update a sponsor
          * @apiName patchSponsor
          * @apiGroup Sponsor
@@ -170,20 +170,20 @@ module.exports = {
          * @apiErrorExample {object} Error-Response: 
          *      {"message": "Error while updating sponsor", "data": {}}
          */
-    sponsorRouter.route('/:id').patch(
-      Middleware.Validator.RouteParam.idValidator,
-      Middleware.Auth.ensureAuthenticated(),
-      Middleware.Auth.ensureAuthorized([Services.Sponsor.findById]),
+        sponsorRouter.route("/:id").patch(
+            Middleware.Validator.RouteParam.idValidator,
+            Middleware.Auth.ensureAuthenticated(),
+            Middleware.Auth.ensureAuthorized([Services.Sponsor.findById]),
 
-      Middleware.Validator.Sponsor.updateSponsorValidator,
+            Middleware.Validator.Sponsor.updateSponsorValidator,
 
-      Middleware.parseBody.middleware,
-      Middleware.Sponsor.parsePatch,
+            Middleware.parseBody.middleware,
+            Middleware.Sponsor.parsePatch,
 
-      Middleware.Sponsor.updateSponsor,
-      Controllers.Sponsor.updatedSponsor
-    );
+            Middleware.Sponsor.updateSponsor,
+            Controllers.Sponsor.updatedSponsor
+        );
 
-    apiRouter.use('/sponsor', sponsorRouter);
-  },
+        apiRouter.use("/sponsor", sponsorRouter);
+    }
 };

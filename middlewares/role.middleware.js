@@ -1,10 +1,10 @@
-'use strict';
-const mongoose = require('mongoose');
+"use strict";
+const mongoose = require("mongoose");
 const Services = {
-  Role: require('../services/role.service'),
+    Role: require("../services/role.service")
 };
 const Constants = {
-  Error: require('../constants/error.constant'),
+    Error: require("../constants/error.constant")
 };
 
 /**
@@ -18,18 +18,18 @@ const Constants = {
  * Adds _id to roleDetails.
  */
 function parseRole(req, res, next) {
-  const roleDetails = {
-    _id: mongoose.Types.ObjectId(),
-    name: req.body.name,
-    routes: req.body.routes,
-  };
+    const roleDetails = {
+        _id: mongoose.Types.ObjectId(),
+        name: req.body.name,
+        routes: req.body.routes
+    };
 
-  delete req.body.name;
-  delete req.body.routes;
+    delete req.body.name;
+    delete req.body.routes;
 
-  req.body.roleDetails = roleDetails;
+    req.body.roleDetails = roleDetails;
 
-  return next();
+    return next();
 }
 
 /**
@@ -42,24 +42,24 @@ function parseRole(req, res, next) {
  * Creates role document
  */
 async function createRole(req, res, next) {
-  const roleDetails = req.body.roleDetails;
+    const roleDetails = req.body.roleDetails;
 
-  const role = await Services.Role.createRole(roleDetails);
+    const role = await Services.Role.createRole(roleDetails);
 
-  if (role) {
-    delete req.body.roleDetails;
-    req.body.role = role;
-    return next();
-  } else {
-    return next({
-      status: 500,
-      message: Constants.Error.ROLE_CREATE_500_MESSAGE,
-      data: {},
-    });
-  }
+    if (role) {
+        delete req.body.roleDetails;
+        req.body.role = role;
+        return next();
+    } else {
+        return next({
+            status: 500,
+            message: Constants.Error.ROLE_CREATE_500_MESSAGE,
+            data: {}
+        });
+    }
 }
 
 module.exports = {
-  parseRole: parseRole,
-  createRole: createRole,
+    parseRole: parseRole,
+    createRole: createRole
 };

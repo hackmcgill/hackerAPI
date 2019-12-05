@@ -1,7 +1,7 @@
-'use strict';
-const Role = require('../models/role.model');
-const logger = require('./logger.service');
-const mongoose = require('mongoose');
+"use strict";
+const Role = require("../models/role.model");
+const logger = require("./logger.service");
+const mongoose = require("mongoose");
 
 /**
  * @function createRole
@@ -10,9 +10,9 @@ const mongoose = require('mongoose');
  * @description Adds a new role to database.
  */
 function createRole(roleDetails) {
-  const role = new Role(roleDetails);
+    const role = new Role(roleDetails);
 
-  return role.save();
+    return role.save();
 }
 
 /**
@@ -22,13 +22,13 @@ function createRole(roleDetails) {
  * Returns the role defined by the role name
  */
 function getRole(roleName) {
-  const TAG = '[Role Service # getRole]:';
-  const query = {
-    name: roleName,
-  };
-  //get the roleBinding for account
-  //Populate roles for roleBinding
-  return Role.findOne(query, logger.queryCallbackFactory(TAG, 'role', query));
+    const TAG = "[Role Service # getRole]:";
+    const query = {
+        name: roleName
+    };
+    //get the roleBinding for account
+    //Populate roles for roleBinding
+    return Role.findOne(query, logger.queryCallbackFactory(TAG, "role", query));
 }
 
 /**
@@ -38,13 +38,16 @@ function getRole(roleName) {
  * Returns the role specified by the id.
  */
 function getById(id) {
-  const TAG = '[Role Service # getById]:';
-  const query = {
-    _id: id,
-  };
-  //get the roleBinding for account
-  //Populate roles for roleBinding
-  return Role.findById(query, logger.queryCallbackFactory(TAG, 'role', query));
+    const TAG = "[Role Service # getById]:";
+    const query = {
+        _id: id
+    };
+    //get the roleBinding for account
+    //Populate roles for roleBinding
+    return Role.findById(
+        query,
+        logger.queryCallbackFactory(TAG, "role", query)
+    );
 }
 
 /**
@@ -53,13 +56,13 @@ function getById(id) {
  * Returns all the roles in the database
  */
 function getAll() {
-  const TAG = '[Role Service # getAll]:';
-  return Role.find({}, logger.queryCallbackFactory(TAG, 'role', {}));
+    const TAG = "[Role Service # getAll]:";
+    return Role.find({}, logger.queryCallbackFactory(TAG, "role", {}));
 }
 
 module.exports = {
-  getRole: getRole,
-  getById: getById,
-  getAll: getAll,
-  createRole: createRole,
+    getRole: getRole,
+    getById: getById,
+    getAll: getAll,
+    createRole: createRole
 };
