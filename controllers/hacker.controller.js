@@ -1,7 +1,7 @@
 "use strict";
 const Constants = {
-  Success: require("../constants/success.constant"),
-  Error: require("../constants/error.constant")
+    Success: require("../constants/success.constant"),
+    Error: require("../constants/error.constant")
 };
 
 /**
@@ -70,12 +70,12 @@ function downloadedResume(req, res) {
 }
 
 function gotStats(req, res) {
-  return res.status(200).json({
-    message: "Retrieved stats",
-    data: {
-      stats: req.body.stats
-    }
-  });
+    return res.status(200).json({
+        message: "Retrieved stats",
+        data: {
+            stats: req.body.stats
+        }
+    });
 }
 
 function sentWeekOfEmail(req, res) {
@@ -93,12 +93,12 @@ function sentDayOfEmail(req, res) {
 }
 
 module.exports = {
-  updatedHacker: updatedHacker,
-  createdHacker: createdHacker,
-  uploadedResume: uploadedResume,
-  downloadedResume: downloadedResume,
-  showHacker: showHacker,
-  gotStats: gotStats,
-  sentWeekOfEmail: sentWeekOfEmail,
-  sentDayOfEmail: sentDayOfEmail
+    updatedHacker: updatedHacker,
+    createdHacker: createdHacker,
+    uploadedResume: uploadedResume,
+    downloadedResume: downloadedResume,
+    showHacker: showHacker,
+    gotStats: gotStats,
+    sentWeekOfEmail: sentWeekOfEmail,
+    sentDayOfEmail: sentDayOfEmail
 };

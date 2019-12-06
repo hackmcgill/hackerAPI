@@ -1,10 +1,10 @@
 "use strict";
 const {
-  body,
-  query,
-  header,
-  param,
-  check
+    body,
+    query,
+    header,
+    param,
+    check
 } = require("express-validator/check");
 const logger = require("../../services/logger.service");
 const mongoose = require("mongoose");
@@ -12,7 +12,7 @@ const TAG = `[ VALIDATOR.HELPER.js ]`;
 const jwt = require("jsonwebtoken");
 const Constants = require("../../constants/general.constant");
 const Models = {
-  Hacker: require("../../models/hacker.model")
+    Hacker: require("../../models/hacker.model")
 };
 
 /**
@@ -24,44 +24,44 @@ const Models = {
  * @param {number} upperBound Lpper bound for a valid integer.
  */
 function integerValidator(
-  fieldLocation,
-  fieldname,
-  optional = true,
-  lowerBound = -Infinity,
-  upperBound = Infinity
-) {
-  const value = setProperValidationChainBuilder(
     fieldLocation,
     fieldname,
-    "invalid integer"
-  );
+    optional = true,
+    lowerBound = -Infinity,
+    upperBound = Infinity
+) {
+    const value = setProperValidationChainBuilder(
+        fieldLocation,
+        fieldname,
+        "invalid integer"
+    );
 
-  if (optional) {
-    return value
-      .optional({
-        checkFalsy: true
-      })
-      .isInt()
-      .withMessage(`${fieldname} must be an integer.`)
-      .custom(value => {
-        return value >= lowerBound && value <= upperBound;
-      })
-      .withMessage(
-        `${fieldname} must be between ${lowerBound} and  ${upperBound}`
-      );
-  } else {
-    return value
-      .exists()
-      .withMessage("tier must exist")
-      .isInt()
-      .withMessage(`${fieldname} must be an integer.`)
-      .custom(value => {
-        return value >= lowerBound && value <= upperBound;
-      })
-      .withMessage(
-        `${fieldname} must be between ${lowerBound} and  ${upperBound}`
-      );
-  }
+    if (optional) {
+        return value
+            .optional({
+                checkFalsy: true
+            })
+            .isInt()
+            .withMessage(`${fieldname} must be an integer.`)
+            .custom((value) => {
+                return value >= lowerBound && value <= upperBound;
+            })
+            .withMessage(
+                `${fieldname} must be between ${lowerBound} and  ${upperBound}`
+            );
+    } else {
+        return value
+            .exists()
+            .withMessage("tier must exist")
+            .isInt()
+            .withMessage(`${fieldname} must be an integer.`)
+            .custom((value) => {
+                return value >= lowerBound && value <= upperBound;
+            })
+            .withMessage(
+                `${fieldname} must be between ${lowerBound} and  ${upperBound}`
+            );
+    }
 }
 
 /**
@@ -71,25 +71,25 @@ function integerValidator(
  * @param {boolean} optional Whether the field is optional or not.
  */
 function mongoIdValidator(fieldLocation, fieldname, optional = true) {
-  const mongoId = setProperValidationChainBuilder(
-    fieldLocation,
-    fieldname,
-    "invalid mongoID"
-  );
+    const mongoId = setProperValidationChainBuilder(
+        fieldLocation,
+        fieldname,
+        "invalid mongoID"
+    );
 
-  if (optional) {
-    return mongoId
-      .optional({
-        checkFalsy: true
-      })
-      .isMongoId()
-      .withMessage("must be a valid mongoID");
-  } else {
-    return mongoId
-      .exists()
-      .isMongoId()
-      .withMessage("must be a valid mongoID");
-  }
+    if (optional) {
+        return mongoId
+            .optional({
+                checkFalsy: true
+            })
+            .isMongoId()
+            .withMessage("must be a valid mongoID");
+    } else {
+        return mongoId
+            .exists()
+            .isMongoId()
+            .withMessage("must be a valid mongoID");
+    }
 }
 
 /**
@@ -99,25 +99,25 @@ function mongoIdValidator(fieldLocation, fieldname, optional = true) {
  * @param {boolean} optional Whether the field is optional or not.
  */
 function mongoIdArrayValidator(fieldLocation, fieldname, optional = true) {
-  const arr = setProperValidationChainBuilder(
-    fieldLocation,
-    fieldname,
-    "invalid mongoID array"
-  );
+    const arr = setProperValidationChainBuilder(
+        fieldLocation,
+        fieldname,
+        "invalid mongoID array"
+    );
 
-  if (optional) {
-    return arr
-      .optional({
-        checkFalsy: true
-      })
-      .custom(isMongoIdArray)
-      .withMessage("Value must be an array of mongoIDs");
-  } else {
-    return arr
-      .exists()
-      .custom(isMongoIdArray)
-      .withMessage("Value must be an array of mongoIDs");
-  }
+    if (optional) {
+        return arr
+            .optional({
+                checkFalsy: true
+            })
+            .custom(isMongoIdArray)
+            .withMessage("Value must be an array of mongoIDs");
+    } else {
+        return arr
+            .exists()
+            .custom(isMongoIdArray)
+            .withMessage("Value must be an array of mongoIDs");
+    }
 }
 
 /**
@@ -127,43 +127,43 @@ function mongoIdArrayValidator(fieldLocation, fieldname, optional = true) {
  * @param {boolean} optional whether the field is optional or not.
  */
 function booleanValidator(
-  fieldLocation,
-  fieldname,
-  optional = true,
-  desire = null
-) {
-  const booleanField = setProperValidationChainBuilder(
     fieldLocation,
     fieldname,
-    "invalid boolean"
-  );
+    optional = true,
+    desire = null
+) {
+    const booleanField = setProperValidationChainBuilder(
+        fieldLocation,
+        fieldname,
+        "invalid boolean"
+    );
 
-  if (optional) {
-    // do not use check falsy option as a 'false' boolean will be skipped
-    return booleanField
-      .optional()
-      .isBoolean()
-      .withMessage("must be boolean")
-      .custom(val => {
-        if (desire !== null) {
-          return desire === val;
-        }
-        return true;
-      })
-      .withMessage(`Must be equal to ${desire}`);
-  } else {
-    return booleanField
-      .exists()
-      .isBoolean()
-      .withMessage("must be boolean")
-      .custom(val => {
-        if (desire !== null) {
-          return desire === val;
-        }
-        return true;
-      })
-      .withMessage(`Must be equal to ${desire}`);
-  }
+    if (optional) {
+        // do not use check falsy option as a 'false' boolean will be skipped
+        return booleanField
+            .optional()
+            .isBoolean()
+            .withMessage("must be boolean")
+            .custom((val) => {
+                if (desire !== null) {
+                    return desire === val;
+                }
+                return true;
+            })
+            .withMessage(`Must be equal to ${desire}`);
+    } else {
+        return booleanField
+            .exists()
+            .isBoolean()
+            .withMessage("must be boolean")
+            .custom((val) => {
+                if (desire !== null) {
+                    return desire === val;
+                }
+                return true;
+            })
+            .withMessage(`Must be equal to ${desire}`);
+    }
 }
 
 /**
@@ -173,25 +173,25 @@ function booleanValidator(
  * @param {boolean} optional whether the field is optional or not.
  */
 function asciiValidator(fieldLocation, fieldname, optional = true) {
-  const name = setProperValidationChainBuilder(
-    fieldLocation,
-    fieldname,
-    "invalid name"
-  );
-  if (optional) {
-    return name
-      .optional({
-        checkFalsy: true
-      })
-      .isAscii()
-      .withMessage("must contain only ascii characters");
-  } else {
-    return name
-      .exists()
-      .withMessage("name must exist")
-      .isAscii()
-      .withMessage("must contain only ascii characters");
-  }
+    const name = setProperValidationChainBuilder(
+        fieldLocation,
+        fieldname,
+        "invalid name"
+    );
+    if (optional) {
+        return name
+            .optional({
+                checkFalsy: true
+            })
+            .isAscii()
+            .withMessage("must contain only ascii characters");
+    } else {
+        return name
+            .exists()
+            .withMessage("name must exist")
+            .isAscii()
+            .withMessage("must contain only ascii characters");
+    }
 }
 
 /**
@@ -201,26 +201,26 @@ function asciiValidator(fieldLocation, fieldname, optional = true) {
  * @param {boolean} optional whether the field is optional or not.
  */
 function stringValidator(fieldLocation, fieldname, optional = true) {
-  const name = setProperValidationChainBuilder(
-    fieldLocation,
-    fieldname,
-    "Invalid String"
-  );
+    const name = setProperValidationChainBuilder(
+        fieldLocation,
+        fieldname,
+        "Invalid String"
+    );
 
-  if (optional) {
-    return name
-      .optional({
-        checkFalsy: true
-      })
-      .isString()
-      .withMessage("must be a string");
-  } else {
-    return name
-      .exists()
-      .withMessage("name must exist")
-      .isString()
-      .withMessage("must be a string");
-  }
+    if (optional) {
+        return name
+            .optional({
+                checkFalsy: true
+            })
+            .isString()
+            .withMessage("must be a string");
+    } else {
+        return name
+            .exists()
+            .withMessage("name must exist")
+            .isString()
+            .withMessage("must be a string");
+    }
 }
 
 /**
@@ -232,31 +232,31 @@ function stringValidator(fieldLocation, fieldname, optional = true) {
  * @description The default regex to match against accepts anything
  */
 function regexValidator(
-  fieldLocation,
-  fieldname,
-  optional = true,
-  desire = Constants.ANY_REGEX
-) {
-  const match = setProperValidationChainBuilder(
     fieldLocation,
     fieldname,
-    "invalid name"
-  );
+    optional = true,
+    desire = Constants.ANY_REGEX
+) {
+    const match = setProperValidationChainBuilder(
+        fieldLocation,
+        fieldname,
+        "invalid name"
+    );
 
-  if (optional) {
-    return match
-      .optional({
-        checkFalsy: true
-      })
-      .matches(desire)
-      .withMessage("must be valid url");
-  } else {
-    return match
-      .exists()
-      .withMessage("url must exist")
-      .matches(desire)
-      .withMessage("must be valid url");
-  }
+    if (optional) {
+        return match
+            .optional({
+                checkFalsy: true
+            })
+            .matches(desire)
+            .withMessage("must be valid url");
+    } else {
+        return match
+            .exists()
+            .withMessage("url must exist")
+            .matches(desire)
+            .withMessage("must be valid url");
+    }
 }
 
 /**
@@ -266,25 +266,25 @@ function regexValidator(
  * @param {boolean} optional whether the field is optional or not.
  */
 function alphaValidator(fieldLocation, fieldname, optional = true) {
-  const name = setProperValidationChainBuilder(
-    fieldLocation,
-    fieldname,
-    "invalid alpha string"
-  );
-  if (optional) {
-    return name
-      .optional({
-        checkFalsy: true
-      })
-      .isAlpha()
-      .withMessage("must contain alphabet characters");
-  } else {
-    return name
-      .exists()
-      .withMessage("must exist")
-      .isAlpha()
-      .withMessage("must contain alphabet characters");
-  }
+    const name = setProperValidationChainBuilder(
+        fieldLocation,
+        fieldname,
+        "invalid alpha string"
+    );
+    if (optional) {
+        return name
+            .optional({
+                checkFalsy: true
+            })
+            .isAlpha()
+            .withMessage("must contain alphabet characters");
+    } else {
+        return name
+            .exists()
+            .withMessage("must exist")
+            .isAlpha()
+            .withMessage("must contain alphabet characters");
+    }
 }
 /**
  * Validates that field must be an array with alphabetical characters.
@@ -293,30 +293,30 @@ function alphaValidator(fieldLocation, fieldname, optional = true) {
  * @param {boolean} optional whether the field is optional or not.
  */
 function alphaArrayValidator(fieldLocation, fieldname, optional = true) {
-  const name = setProperValidationChainBuilder(
-    fieldLocation,
-    fieldname,
-    "invalid alpha array"
-  );
+    const name = setProperValidationChainBuilder(
+        fieldLocation,
+        fieldname,
+        "invalid alpha array"
+    );
 
-  if (optional) {
-    return name
-      .optional({
-        checkFalsy: true
-      })
-      .custom(alphaArrayValidationHelper)
-      .withMessage(
-        "must contain alphabet characters in each element of the array"
-      );
-  } else {
-    return name
-      .exists()
-      .withMessage("must exist")
-      .custom(alphaArrayValidationHelper)
-      .withMessage(
-        "must contain alphabet characters in each element of the array"
-      );
-  }
+    if (optional) {
+        return name
+            .optional({
+                checkFalsy: true
+            })
+            .custom(alphaArrayValidationHelper)
+            .withMessage(
+                "must contain alphabet characters in each element of the array"
+            );
+    } else {
+        return name
+            .exists()
+            .withMessage("must exist")
+            .custom(alphaArrayValidationHelper)
+            .withMessage(
+                "must contain alphabet characters in each element of the array"
+            );
+    }
 }
 
 /**
@@ -324,15 +324,15 @@ function alphaArrayValidator(fieldLocation, fieldname, optional = true) {
  * @param {*} value value to check against
  */
 function alphaArrayValidationHelper(value) {
-  if (!Array.isArray(value)) {
-    return false;
-  }
-  for (const el of value) {
-    if (typeof el !== "string") {
-      return false;
+    if (!Array.isArray(value)) {
+        return false;
     }
-  }
-  return true;
+    for (const el of value) {
+        if (typeof el !== "string") {
+            return false;
+        }
+    }
+    return true;
 }
 
 /**
@@ -343,29 +343,29 @@ function alphaArrayValidationHelper(value) {
  * @param {boolean} optional whether the field is optional or not.
  */
 function passwordValidator(fieldLocation, fieldname, optional = true) {
-  const password = setProperValidationChainBuilder(
-    fieldLocation,
-    fieldname,
-    "invalid password"
-  );
-  if (optional) {
-    return password
-      .optional({
-        checkFalsy: true
-      })
-      .isLength({
-        min: 6
-      })
-      .withMessage("must be longer than 6 characters");
-  } else {
-    return password
-      .exists()
-      .withMessage("password must exist")
-      .isLength({
-        min: 6
-      })
-      .withMessage("must be longer than 6 characters");
-  }
+    const password = setProperValidationChainBuilder(
+        fieldLocation,
+        fieldname,
+        "invalid password"
+    );
+    if (optional) {
+        return password
+            .optional({
+                checkFalsy: true
+            })
+            .isLength({
+                min: 6
+            })
+            .withMessage("must be longer than 6 characters");
+    } else {
+        return password
+            .exists()
+            .withMessage("password must exist")
+            .isLength({
+                min: 6
+            })
+            .withMessage("must be longer than 6 characters");
+    }
 }
 
 /**
@@ -375,260 +375,266 @@ function passwordValidator(fieldLocation, fieldname, optional = true) {
  * @param {boolean} optional whether the field is optional or not.
  */
 function applicationValidator(fieldLocation, fieldname, optional = true) {
-  const application = setProperValidationChainBuilder(
-    fieldLocation,
-    fieldname,
-    "invalid application"
-  );
+    const application = setProperValidationChainBuilder(
+        fieldLocation,
+        fieldname,
+        "invalid application"
+    );
 
-  //helper object to iterate through the items in the application and track which items are not valid.
-  const hasValid = {
-    school: false,
-    degree: false,
-    fieldOfStudy: false,
-    gender: false,
-    ethnicity: false,
-    bus: false,
-    gender: false,
-    graduationYear: false,
-    codeOfConduct_MLH: false,
-    codeOfConduct_MCHACKS: false,
-    github: false,
-    dribbble: false,
-    personal: false,
-    linkedIn: false,
-    other: false,
-    jobInterest: false,
-    skills: false,
-    comments: false,
-    question1: false,
-    question2: false,
-    team: false
-  };
-  if (optional) {
-    return application
-      .optional({
-        checkFalsy: true
-      })
-      .custom(app => {
-        hasValid.school = stringValidator(
-          "body",
-          "application.general.school",
-          false
-        );
-        hasValid.degree = stringValidator(
-          "body",
-          "application.general.degree",
-          false
-        );
-        hasValid.fieldOfStudy = alphaArrayValidator(
-          "body",
-          "application.general.fieldOfStudy",
-          false
-        );
-        hasValid.general = stringValidator(
-          "body",
-          "application.other.gender",
-          false
-        );
-        hasValid.bus = booleanValidator(
-          "body",
-          "application.accomodation.needsBus",
-          false
-        );
-        hasValid.ethnicity = alphaArrayValidator(
-          "body",
-          "application.other.ethnicity",
-          false
-        );
-        hasValid.gender = stringValidator(
-          "body",
-          "application.other.gender",
-          false
-        );
-        hasValid.graduationYear = integerValidator(
-          "body",
-          "application.general.graduationYear",
-          false,
-          2019,
-          2030
-        );
-        hasValid.codeOfConduct_MLH = booleanValidator(
-          "body",
-          "application.other.codeOfConduct_MLH",
-          false
-        );
-        hasValid.codeOfConduct_MCHACKS = booleanValidator(
-          "body",
-          "appliction.other.codeOfConduct_MCHACKS",
-          false
-        );
-        const jobInterests = Constants.JOB_INTERESTS;
-        hasValid.github =
-          !app.general.URL.github || typeof app.general.URL.github === "string";
-        hasValid.dribbble =
-          !app.general.URL.dribbble ||
-          typeof app.general.URL.dribbble === "string";
-        hasValid.personal =
-          !app.general.URL.personal ||
-          typeof app.general.URL.personal === "string";
-        hasValid.linkedIn =
-          !app.general.URL.linkedIn ||
-          typeof app.general.URL.linkedIn === "string";
-        hasValid.other =
-          !app.general.URL.other || typeof app.general.URL.other === "string";
-        hasValid.jobInterest =
-          !app.general.jobInterest ||
-          jobInterests.includes(app.general.jobInterest);
-        hasValid.skills =
-          !app.shortAnswer.skills ||
-          alphaArrayValidationHelper(app.shortAnswer.skills);
-        hasValid.comments =
-          !app.shortAnswer.comments ||
-          typeof app.shortAnswer.comments === "string";
-        hasValid.question1 =
-          !app.shortAnswer.question1 ||
-          typeof app.shortAnswer.question1 === "string";
-        hasValid.question2 =
-          !app.shortAnswer.question2 ||
-          typeof app.shortAnswer.question2 === "string";
-        hasValid.team = !app.team || mongoose.Types.ObjectId.isValid(app.team);
-        return (
-          hasValid.comments &&
-          hasValid.school &&
-          hasValid.degree &&
-          hasValid.fieldOfStudy &&
-          hasValid.graduationYear &&
-          hasValid.ethnicity &&
-          hasValid.gender &&
-          hasValid.bus &&
-          hasValid.codeOfConduct_MLH &&
-          hasValid.codeOfConduct_MCHACKS &&
-          hasValid.github &&
-          hasValid.dribbble &&
-          hasValid.personal &&
-          hasValid.linkedIn &&
-          hasValid.other &&
-          hasValid.jobInterest &&
-          hasValid.skills &&
-          hasValid.team
-        );
-      })
-      .withMessage({
-        message: "Not all items of the application are valid",
-        isValid: hasValid
-      });
-  } else {
-    return application
-      .custom(app => {
-        hasValid.school = stringValidator(
-          "body",
-          "application.general.school",
-          false
-        );
-        hasValid.degree = stringValidator(
-          "body",
-          "application.general.degree",
-          false
-        );
-        hasValid.fieldOfStudy = alphaArrayValidator(
-          "body",
-          "application.general.fieldOfStudy",
-          false
-        );
-        hasValid.general = stringValidator(
-          "body",
-          "application.other.gender",
-          false
-        );
-        hasValid.bus = booleanValidator(
-          "body",
-          "application.accomodation.needsBus",
-          false
-        );
-        hasValid.ethnicity = alphaArrayValidator(
-          "body",
-          "application.other.ethnicity",
-          false
-        );
-        hasValid.gender = stringValidator(
-          "body",
-          "application.other.gender",
-          false
-        );
-        hasValid.graduationYear = integerValidator(
-          "body",
-          "application.general.graduationYear",
-          false,
-          2019,
-          2030
-        );
-        hasValid.codeOfConduct_MLH = booleanValidator(
-          "body",
-          "application.other.codeOfConduct_MLH",
-          false
-        );
-        hasValid.codeOfConduct_MCHACKS = booleanValidator(
-          "body",
-          "appliction.other.codeOfConduct_MCHACKS",
-          false
-        );
-        const jobInterests = Constants.JOB_INTERESTS;
-        hasValid.github =
-          !app.general.URL.github || typeof app.general.URL.github === "string";
-        hasValid.dribbble =
-          !app.general.URL.dribbble ||
-          typeof app.general.URL.dribbble === "string";
-        hasValid.personal =
-          !app.general.URL.personal ||
-          typeof app.general.URL.personal === "string";
-        hasValid.linkedIn =
-          !app.general.URL.linkedIn ||
-          typeof app.general.URL.linkedIn === "string";
-        hasValid.other =
-          !app.general.URL.other || typeof app.general.URL.other === "string";
-        hasValid.jobInterest =
-          !app.general.jobInterest ||
-          jobInterests.includes(app.general.jobInterest);
-        hasValid.skills =
-          !app.shortAnswer.skills ||
-          alphaArrayValidationHelper(app.shortAnswer.skills);
-        hasValid.comments =
-          !app.shortAnswer.comments ||
-          typeof app.shortAnswer.comments === "string";
-        hasValid.question1 =
-          !app.shortAnswer.question1 ||
-          typeof app.shortAnswer.question1 === "string";
-        hasValid.question2 =
-          !app.shortAnswer.question2 ||
-          typeof app.shortAnswer.question2 === "string";
-        hasValid.team = !app.team || mongoose.Types.ObjectId.isValid(app.team);
-        return (
-          hasValid.comments &&
-          hasValid.school &&
-          hasValid.degree &&
-          hasValid.fieldOfStudy &&
-          hasValid.graduationYear &&
-          hasValid.ethnicity &&
-          hasValid.gender &&
-          hasValid.bus &&
-          hasValid.codeOfConduct_MLH &&
-          hasValid.codeOfConduct_MCHACKS &&
-          hasValid.github &&
-          hasValid.dribbble &&
-          hasValid.personal &&
-          hasValid.linkedIn &&
-          hasValid.other &&
-          hasValid.jobInterest &&
-          hasValid.skills &&
-          hasValid.team
-        );
-      })
-      .withMessage({
-        message: "Not all items of the application are valid",
-        isValid: hasValid
-      });
-  }
+    //helper object to iterate through the items in the application and track which items are not valid.
+    const hasValid = {
+        school: false,
+        degree: false,
+        fieldOfStudy: false,
+        gender: false,
+        ethnicity: false,
+        bus: false,
+        gender: false,
+        graduationYear: false,
+        codeOfConduct_MLH: false,
+        codeOfConduct_MCHACKS: false,
+        github: false,
+        dribbble: false,
+        personal: false,
+        linkedIn: false,
+        other: false,
+        jobInterest: false,
+        skills: false,
+        comments: false,
+        question1: false,
+        question2: false,
+        team: false
+    };
+    if (optional) {
+        return application
+            .optional({
+                checkFalsy: true
+            })
+            .custom((app) => {
+                hasValid.school = stringValidator(
+                    "body",
+                    "application.general.school",
+                    false
+                );
+                hasValid.degree = stringValidator(
+                    "body",
+                    "application.general.degree",
+                    false
+                );
+                hasValid.fieldOfStudy = alphaArrayValidator(
+                    "body",
+                    "application.general.fieldOfStudy",
+                    false
+                );
+                hasValid.general = stringValidator(
+                    "body",
+                    "application.other.gender",
+                    false
+                );
+                hasValid.bus = booleanValidator(
+                    "body",
+                    "application.accomodation.needsBus",
+                    false
+                );
+                hasValid.ethnicity = alphaArrayValidator(
+                    "body",
+                    "application.other.ethnicity",
+                    false
+                );
+                hasValid.gender = stringValidator(
+                    "body",
+                    "application.other.gender",
+                    false
+                );
+                hasValid.graduationYear = integerValidator(
+                    "body",
+                    "application.general.graduationYear",
+                    false,
+                    2019,
+                    2030
+                );
+                hasValid.codeOfConduct_MLH = booleanValidator(
+                    "body",
+                    "application.other.codeOfConduct_MLH",
+                    false
+                );
+                hasValid.codeOfConduct_MCHACKS = booleanValidator(
+                    "body",
+                    "appliction.other.codeOfConduct_MCHACKS",
+                    false
+                );
+                const jobInterests = Constants.JOB_INTERESTS;
+                hasValid.github =
+                    !app.general.URL.github ||
+                    typeof app.general.URL.github === "string";
+                hasValid.dribbble =
+                    !app.general.URL.dribbble ||
+                    typeof app.general.URL.dribbble === "string";
+                hasValid.personal =
+                    !app.general.URL.personal ||
+                    typeof app.general.URL.personal === "string";
+                hasValid.linkedIn =
+                    !app.general.URL.linkedIn ||
+                    typeof app.general.URL.linkedIn === "string";
+                hasValid.other =
+                    !app.general.URL.other ||
+                    typeof app.general.URL.other === "string";
+                hasValid.jobInterest =
+                    !app.general.jobInterest ||
+                    jobInterests.includes(app.general.jobInterest);
+                hasValid.skills =
+                    !app.shortAnswer.skills ||
+                    alphaArrayValidationHelper(app.shortAnswer.skills);
+                hasValid.comments =
+                    !app.shortAnswer.comments ||
+                    typeof app.shortAnswer.comments === "string";
+                hasValid.question1 =
+                    !app.shortAnswer.question1 ||
+                    typeof app.shortAnswer.question1 === "string";
+                hasValid.question2 =
+                    !app.shortAnswer.question2 ||
+                    typeof app.shortAnswer.question2 === "string";
+                hasValid.team =
+                    !app.team || mongoose.Types.ObjectId.isValid(app.team);
+                return (
+                    hasValid.comments &&
+                    hasValid.school &&
+                    hasValid.degree &&
+                    hasValid.fieldOfStudy &&
+                    hasValid.graduationYear &&
+                    hasValid.ethnicity &&
+                    hasValid.gender &&
+                    hasValid.bus &&
+                    hasValid.codeOfConduct_MLH &&
+                    hasValid.codeOfConduct_MCHACKS &&
+                    hasValid.github &&
+                    hasValid.dribbble &&
+                    hasValid.personal &&
+                    hasValid.linkedIn &&
+                    hasValid.other &&
+                    hasValid.jobInterest &&
+                    hasValid.skills &&
+                    hasValid.team
+                );
+            })
+            .withMessage({
+                message: "Not all items of the application are valid",
+                isValid: hasValid
+            });
+    } else {
+        return application
+            .custom((app) => {
+                hasValid.school = stringValidator(
+                    "body",
+                    "application.general.school",
+                    false
+                );
+                hasValid.degree = stringValidator(
+                    "body",
+                    "application.general.degree",
+                    false
+                );
+                hasValid.fieldOfStudy = alphaArrayValidator(
+                    "body",
+                    "application.general.fieldOfStudy",
+                    false
+                );
+                hasValid.general = stringValidator(
+                    "body",
+                    "application.other.gender",
+                    false
+                );
+                hasValid.bus = booleanValidator(
+                    "body",
+                    "application.accomodation.needsBus",
+                    false
+                );
+                hasValid.ethnicity = alphaArrayValidator(
+                    "body",
+                    "application.other.ethnicity",
+                    false
+                );
+                hasValid.gender = stringValidator(
+                    "body",
+                    "application.other.gender",
+                    false
+                );
+                hasValid.graduationYear = integerValidator(
+                    "body",
+                    "application.general.graduationYear",
+                    false,
+                    2019,
+                    2030
+                );
+                hasValid.codeOfConduct_MLH = booleanValidator(
+                    "body",
+                    "application.other.codeOfConduct_MLH",
+                    false
+                );
+                hasValid.codeOfConduct_MCHACKS = booleanValidator(
+                    "body",
+                    "appliction.other.codeOfConduct_MCHACKS",
+                    false
+                );
+                const jobInterests = Constants.JOB_INTERESTS;
+                hasValid.github =
+                    !app.general.URL.github ||
+                    typeof app.general.URL.github === "string";
+                hasValid.dribbble =
+                    !app.general.URL.dribbble ||
+                    typeof app.general.URL.dribbble === "string";
+                hasValid.personal =
+                    !app.general.URL.personal ||
+                    typeof app.general.URL.personal === "string";
+                hasValid.linkedIn =
+                    !app.general.URL.linkedIn ||
+                    typeof app.general.URL.linkedIn === "string";
+                hasValid.other =
+                    !app.general.URL.other ||
+                    typeof app.general.URL.other === "string";
+                hasValid.jobInterest =
+                    !app.general.jobInterest ||
+                    jobInterests.includes(app.general.jobInterest);
+                hasValid.skills =
+                    !app.shortAnswer.skills ||
+                    alphaArrayValidationHelper(app.shortAnswer.skills);
+                hasValid.comments =
+                    !app.shortAnswer.comments ||
+                    typeof app.shortAnswer.comments === "string";
+                hasValid.question1 =
+                    !app.shortAnswer.question1 ||
+                    typeof app.shortAnswer.question1 === "string";
+                hasValid.question2 =
+                    !app.shortAnswer.question2 ||
+                    typeof app.shortAnswer.question2 === "string";
+                hasValid.team =
+                    !app.team || mongoose.Types.ObjectId.isValid(app.team);
+                return (
+                    hasValid.comments &&
+                    hasValid.school &&
+                    hasValid.degree &&
+                    hasValid.fieldOfStudy &&
+                    hasValid.graduationYear &&
+                    hasValid.ethnicity &&
+                    hasValid.gender &&
+                    hasValid.bus &&
+                    hasValid.codeOfConduct_MLH &&
+                    hasValid.codeOfConduct_MCHACKS &&
+                    hasValid.github &&
+                    hasValid.dribbble &&
+                    hasValid.personal &&
+                    hasValid.linkedIn &&
+                    hasValid.other &&
+                    hasValid.jobInterest &&
+                    hasValid.skills &&
+                    hasValid.team
+                );
+            })
+            .withMessage({
+                message: "Not all items of the application are valid",
+                isValid: hasValid
+            });
+    }
 }
 
 /**
@@ -637,17 +643,17 @@ function applicationValidator(fieldLocation, fieldname, optional = true) {
  * @returns {boolean} whether the array contains only mongoIds
  */
 function isMongoIdArray(arr) {
-  if (!Array.isArray(arr)) {
-    return false;
-  }
-
-  for (var ele of arr) {
-    if (!mongoose.Types.ObjectId.isValid(ele)) {
-      return false;
+    if (!Array.isArray(arr)) {
+        return false;
     }
-  }
 
-  return true;
+    for (var ele of arr) {
+        if (!mongoose.Types.ObjectId.isValid(ele)) {
+            return false;
+        }
+    }
+
+    return true;
 }
 
 /**
@@ -658,37 +664,37 @@ function isMongoIdArray(arr) {
  * @param {boolean} optional whether the field is optional or not.
  */
 function jwtValidator(fieldLocation, fieldname, jwtSecret, optional = true) {
-  const jwtValidationChain = setProperValidationChainBuilder(
-    fieldLocation,
-    fieldname,
-    "Must be vali jwt"
-  );
-  if (optional) {
-    return jwtValidationChain
-      .optional({
-        checkFalsy: true
-      })
-      .custom(value => {
-        const token = jwt.verify(value, jwtSecret);
-        if (typeof token !== "undefined") {
-          return true;
-        }
-        return false;
-      })
-      .withMessage(`must be valid jwt`);
-  } else {
-    return jwtValidationChain
-      .exists()
-      .withMessage("Token must be provided")
-      .custom(value => {
-        const token = jwt.verify(value, jwtSecret);
-        if (typeof token !== "undefined") {
-          return true;
-        }
-        return false;
-      })
-      .withMessage(`must be valid jwt`);
-  }
+    const jwtValidationChain = setProperValidationChainBuilder(
+        fieldLocation,
+        fieldname,
+        "Must be vali jwt"
+    );
+    if (optional) {
+        return jwtValidationChain
+            .optional({
+                checkFalsy: true
+            })
+            .custom((value) => {
+                const token = jwt.verify(value, jwtSecret);
+                if (typeof token !== "undefined") {
+                    return true;
+                }
+                return false;
+            })
+            .withMessage(`must be valid jwt`);
+    } else {
+        return jwtValidationChain
+            .exists()
+            .withMessage("Token must be provided")
+            .custom((value) => {
+                const token = jwt.verify(value, jwtSecret);
+                if (typeof token !== "undefined") {
+                    return true;
+                }
+                return false;
+            })
+            .withMessage(`must be valid jwt`);
+    }
 }
 
 /**
@@ -697,19 +703,19 @@ function jwtValidator(fieldLocation, fieldname, jwtSecret, optional = true) {
  * @param {string} fieldname name of the field that needs to be validated.
  */
 function searchModelValidator(fieldLocation, fieldName) {
-  const paramChain = setProperValidationChainBuilder(
-    fieldLocation,
-    fieldName,
-    "Must be a valid searchable model"
-  );
-  return paramChain
-    .exists()
-    .withMessage("Model must be provided")
-    .isLowercase()
-    .withMessage("Model must be lower case")
-    .isAlpha()
-    .withMessage("must contain alphabet characters")
-    .isIn([Constants.HACKER.toLowerCase()]);
+    const paramChain = setProperValidationChainBuilder(
+        fieldLocation,
+        fieldName,
+        "Must be a valid searchable model"
+    );
+    return paramChain
+        .exists()
+        .withMessage("Model must be provided")
+        .isLowercase()
+        .withMessage("Model must be lower case")
+        .isAlpha()
+        .withMessage("must contain alphabet characters")
+        .isIn([Constants.HACKER.toLowerCase()]);
 }
 
 /**==
@@ -718,95 +724,105 @@ function searchModelValidator(fieldLocation, fieldName) {
  * @param {string} fieldname name of the field that needs to be validated.
  */
 function searchValidator(fieldLocation, fieldname) {
-  const search = setProperValidationChainBuilder(
-    fieldLocation,
-    fieldname,
-    "Invalid search query"
-  );
+    const search = setProperValidationChainBuilder(
+        fieldLocation,
+        fieldname,
+        "Invalid search query"
+    );
 
-  return search
-    .exists()
-    .withMessage("Search query must be provided")
-    .custom((value, { req }) => {
-      //value is a serialized JSON
-      value = JSON.parse(value);
-      let modelString = req.query.model;
-      //Supported models for searching
-      let model;
-      if (modelString === Constants.HACKER.toLowerCase()) {
-        model = Models.Hacker;
-      } else {
-        return false;
-      }
-      //Validates each clause in the query
-      for (var q in value) {
-        //Checks that each clause has Param, Value, and Operation
-        var clause = value[q];
-        if (
-          !(
-            clause.hasOwnProperty("param") ||
-            clause.hasOwnProperty("value") ||
-            clause.hasOwnProperty("operation")
-          )
-        ) {
-          return false;
-        }
-        var schemaPath = model.searchableField(clause.param);
-        if (!schemaPath) return false;
-        //Validates that operation corresponding to each clause is valid
-        switch (schemaPath) {
-          case "String":
-            if (!["equals", "ne", "regex", "in"].includes(clause.operation)) {
-              return false;
+    return search
+        .exists()
+        .withMessage("Search query must be provided")
+        .custom((value, { req }) => {
+            //value is a serialized JSON
+            value = JSON.parse(value);
+            let modelString = req.query.model;
+            //Supported models for searching
+            let model;
+            if (modelString === Constants.HACKER.toLowerCase()) {
+                model = Models.Hacker;
+            } else {
+                return false;
             }
-            break;
-          case "Number":
-            if (
-              !["equals", "ne", "gte", "lte", "le", "ge", "in"].includes(
-                clause.operation
-              )
-            ) {
-              return false;
+            //Validates each clause in the query
+            for (var q in value) {
+                //Checks that each clause has Param, Value, and Operation
+                var clause = value[q];
+                if (
+                    !(
+                        clause.hasOwnProperty("param") ||
+                        clause.hasOwnProperty("value") ||
+                        clause.hasOwnProperty("operation")
+                    )
+                ) {
+                    return false;
+                }
+                var schemaPath = model.searchableField(clause.param);
+                if (!schemaPath) return false;
+                //Validates that operation corresponding to each clause is valid
+                switch (schemaPath) {
+                    case "String":
+                        if (
+                            !["equals", "ne", "regex", "in"].includes(
+                                clause.operation
+                            )
+                        ) {
+                            return false;
+                        }
+                        break;
+                    case "Number":
+                        if (
+                            ![
+                                "equals",
+                                "ne",
+                                "gte",
+                                "lte",
+                                "le",
+                                "ge",
+                                "in"
+                            ].includes(clause.operation)
+                        ) {
+                            return false;
+                        }
+                        break;
+                    case "Boolean":
+                        if (!["equals", "ne"].includes(clause.operation)) {
+                            return false;
+                        }
+                        break;
+                }
             }
-            break;
-          case "Boolean":
-            if (!["equals", "ne"].includes(clause.operation)) {
-              return false;
-            }
-            break;
-        }
-      }
-      return true;
-    });
+            return true;
+        });
 }
 
 function searchSortValidator(fieldLocation, fieldName) {
-  const searchSort = setProperValidationChainBuilder(
-    fieldLocation,
-    fieldName,
-    "Invalid sort criteria"
-  );
-  return searchSort
-    .optional({
-      checkFalsy: true
-    })
-    .custom((value, { req }) => {
-      let modelString = req.query.model;
-      if (modelString.equals("hacker")) {
-        model = Models.Hacker;
-      } else {
-        return false;
-      }
-      if (!!model.searchableField(value)) {
-        let sortOrder = param("sort", "Sorting order not found");
-        if (!sortOrder.equals("asc") || !sortOrder.equals("desc")) {
-          return false;
-        }
-      } else {
-        return false;
-      }
-      return true;
-    });
+    const searchSort = setProperValidationChainBuilder(
+        fieldLocation,
+        fieldName,
+        "Invalid sort criteria"
+    );
+    return searchSort
+        .optional({
+            checkFalsy: true
+        })
+        .custom((value, { req }) => {
+            let modelString = req.query.model;
+            if (modelString.equals("hacker")) {
+                model = Models.Hacker;
+            } else {
+                return false;
+            }
+            if (!!model.searchableField(value)) {
+                let sortOrder = param("sort", "Sorting order not found");
+                if (!sortOrder.equals("asc") || !sortOrder.equals("desc")) {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+            return true;
+        });
 }
 
 /**
@@ -816,35 +832,35 @@ function searchSortValidator(fieldLocation, fieldName) {
  * @param {boolean} optional whether the field is optional or not.
  */
 function dateValidator(fieldLocation, fieldname, optional = true) {
-  const date = setProperValidationChainBuilder(
-    fieldLocation,
-    fieldname,
-    "invalid date"
-  );
-  if (optional) {
-    return date
-      .optional({
-        checkFalsy: true
-      })
-      .custom(value => {
-        return !isNaN(Date.parse(value));
-      })
-      .withMessage({
-        message: "Date is not valid.",
-        isValid: date
-      });
-  } else {
-    return date
-      .exists()
-      .withMessage("Date field must be specified")
-      .custom(value => {
-        return !isNaN(Date.parse(value));
-      })
-      .withMessage({
-        message: "Date is not valid.",
-        isValid: date
-      });
-  }
+    const date = setProperValidationChainBuilder(
+        fieldLocation,
+        fieldname,
+        "invalid date"
+    );
+    if (optional) {
+        return date
+            .optional({
+                checkFalsy: true
+            })
+            .custom((value) => {
+                return !isNaN(Date.parse(value));
+            })
+            .withMessage({
+                message: "Date is not valid.",
+                isValid: date
+            });
+    } else {
+        return date
+            .exists()
+            .withMessage("Date field must be specified")
+            .custom((value) => {
+                return !isNaN(Date.parse(value));
+            })
+            .withMessage({
+                message: "Date is not valid.",
+                isValid: date
+            });
+    }
 }
 
 /**
@@ -856,31 +872,31 @@ function dateValidator(fieldLocation, fieldname, optional = true) {
  * @param {boolean} optional whether the field is optional or not.
  */
 function phoneNumberValidator(fieldLocation, fieldname, optional = true) {
-  const number = setProperValidationChainBuilder(
-    fieldLocation,
-    fieldname,
-    "invalid phone number"
-  );
-  if (optional) {
-    return number
-      .optional({
-        checkFalsy: true
-      })
-      .isLength({
-        min: 8
-      })
-      .isInt()
-      .withMessage("Phone number must consist of numbers.");
-  } else {
-    return number
-      .exists()
-      .withMessage("Phone number must be specified.")
-      .isLength({
-        min: 8
-      })
-      .isInt()
-      .withMessage("Phone number must consist of numbers.");
-  }
+    const number = setProperValidationChainBuilder(
+        fieldLocation,
+        fieldname,
+        "invalid phone number"
+    );
+    if (optional) {
+        return number
+            .optional({
+                checkFalsy: true
+            })
+            .isLength({
+                min: 8
+            })
+            .isInt()
+            .withMessage("Phone number must consist of numbers.");
+    } else {
+        return number
+            .exists()
+            .withMessage("Phone number must be specified.")
+            .isLength({
+                min: 8
+            })
+            .isInt()
+            .withMessage("Phone number must consist of numbers.");
+    }
 }
 
 /**
@@ -890,26 +906,26 @@ function phoneNumberValidator(fieldLocation, fieldname, optional = true) {
  * @param {boolean} optional whether the field is optional or not.
  */
 function routesValidator(fieldLocation, fieldname, optional = true) {
-  const routes = setProperValidationChainBuilder(
-    fieldLocation,
-    fieldname,
-    "Invalid routes"
-  );
+    const routes = setProperValidationChainBuilder(
+        fieldLocation,
+        fieldname,
+        "Invalid routes"
+    );
 
-  if (optional) {
-    return routes
-      .optional({
-        checkFalsy: true
-      })
-      .custom(routesArrayValidationHelper)
-      .withMessage("The value must be a route");
-  } else {
-    return routes
-      .exists()
-      .withMessage("The route must exist.")
-      .custom(routesArrayValidationHelper)
-      .withMessage("The value must be a route");
-  }
+    if (optional) {
+        return routes
+            .optional({
+                checkFalsy: true
+            })
+            .custom(routesArrayValidationHelper)
+            .withMessage("The value must be a route");
+    } else {
+        return routes
+            .exists()
+            .withMessage("The route must exist.")
+            .custom(routesArrayValidationHelper)
+            .withMessage("The value must be a route");
+    }
 }
 
 /**
@@ -917,21 +933,21 @@ function routesValidator(fieldLocation, fieldname, optional = true) {
  * @param {*} routes value to check against
  */
 function routesArrayValidationHelper(routes) {
-  if (!Array.isArray(routes)) {
-    return false;
-  }
-  for (const route of routes) {
-    if (route.uri === null || typeof route.uri !== "string") {
-      return false;
+    if (!Array.isArray(routes)) {
+        return false;
     }
-    if (
-      route.requestType === null ||
-      !checkEnum(route.requestType, Constants.REQUEST_TYPES)
-    ) {
-      return false;
+    for (const route of routes) {
+        if (route.uri === null || typeof route.uri !== "string") {
+            return false;
+        }
+        if (
+            route.requestType === null ||
+            !checkEnum(route.requestType, Constants.REQUEST_TYPES)
+        ) {
+            return false;
+        }
     }
-  }
-  return true;
+    return true;
 }
 
 /**
@@ -942,30 +958,30 @@ function routesArrayValidationHelper(routes) {
  * @param {boolean} optional Whether the field is optional or not.
  */
 function enumValidator(fieldLocation, fieldname, enums, optional = true) {
-  const enumValue = setProperValidationChainBuilder(
-    fieldLocation,
-    fieldname,
-    "Invalid enums"
-  );
+    const enumValue = setProperValidationChainBuilder(
+        fieldLocation,
+        fieldname,
+        "Invalid enums"
+    );
 
-  if (optional) {
-    return enumValue
-      .optional({
-        checkFalsy: true
-      })
-      .custom(val => {
-        return checkEnum(val, enums);
-      })
-      .withMessage("The value must be part of the enum");
-  } else {
-    return enumValue
-      .exists()
-      .withMessage("The value being checked agains the enums must exist.")
-      .custom(val => {
-        return checkEnum(val, enums);
-      })
-      .withMessage("The value must be part of the enum");
-  }
+    if (optional) {
+        return enumValue
+            .optional({
+                checkFalsy: true
+            })
+            .custom((val) => {
+                return checkEnum(val, enums);
+            })
+            .withMessage("The value must be part of the enum");
+    } else {
+        return enumValue
+            .exists()
+            .withMessage("The value being checked agains the enums must exist.")
+            .custom((val) => {
+                return checkEnum(val, enums);
+            })
+            .withMessage("The value must be part of the enum");
+    }
 }
 
 /**
@@ -975,12 +991,12 @@ function enumValidator(fieldLocation, fieldname, enums, optional = true) {
  * @return {boolean} Returns true if the value is part of the enum, false otherwise.
  */
 function checkEnum(value, enums) {
-  for (var enumKey in enums) {
-    if (value === enums[enumKey]) {
-      return true;
+    for (var enumKey in enums) {
+        if (value === enums[enumKey]) {
+            return true;
+        }
     }
-  }
-  return false;
+    return false;
 }
 
 /**
@@ -990,50 +1006,50 @@ function checkEnum(value, enums) {
  * @param {*} errorString the string that is sent back to the user if the field is invalid
  */
 function setProperValidationChainBuilder(
-  fieldLocation,
-  fieldName,
-  errorString
+    fieldLocation,
+    fieldName,
+    errorString
 ) {
-  /**
-   * check: ValidationChainBuilder;
-   * body: ValidationChainBuilder;
-   * cookie: ValidationChainBuilder;
-   * header: ValidationChainBuilder;
-   * param: ValidationChainBuilder;
-   * query: ValidationChainBuilder;
-   */
-  switch (fieldLocation) {
-    case "query":
-      return query(fieldName, errorString);
-    case "body":
-      return body(fieldName, errorString);
-    case "header":
-      return header(fieldName, errorString);
-    case "param":
-      return param(fieldName, errorString);
-    default:
-      logger.error(`${TAG} Invalid field location: ${fieldLocation}`);
-  }
+    /**
+     * check: ValidationChainBuilder;
+     * body: ValidationChainBuilder;
+     * cookie: ValidationChainBuilder;
+     * header: ValidationChainBuilder;
+     * param: ValidationChainBuilder;
+     * query: ValidationChainBuilder;
+     */
+    switch (fieldLocation) {
+        case "query":
+            return query(fieldName, errorString);
+        case "body":
+            return body(fieldName, errorString);
+        case "header":
+            return header(fieldName, errorString);
+        case "param":
+            return param(fieldName, errorString);
+        default:
+            logger.error(`${TAG} Invalid field location: ${fieldLocation}`);
+    }
 }
 
 module.exports = {
-  regexValidator: regexValidator,
-  integerValidator: integerValidator,
-  mongoIdValidator: mongoIdValidator,
-  mongoIdArrayValidator: mongoIdArrayValidator,
-  asciiValidator: asciiValidator,
-  alphaValidator: alphaValidator,
-  alphaArrayValidator: alphaArrayValidator,
-  passwordValidator: passwordValidator,
-  booleanValidator: booleanValidator,
-  applicationValidator: applicationValidator,
-  jwtValidator: jwtValidator,
-  searchValidator: searchValidator,
-  searchModelValidator: searchModelValidator,
-  searchSortValidator: searchSortValidator,
-  phoneNumberValidator: phoneNumberValidator,
-  dateValidator: dateValidator,
-  enumValidator: enumValidator,
-  routesValidator: routesValidator,
-  stringValidator: stringValidator
+    regexValidator: regexValidator,
+    integerValidator: integerValidator,
+    mongoIdValidator: mongoIdValidator,
+    mongoIdArrayValidator: mongoIdArrayValidator,
+    asciiValidator: asciiValidator,
+    alphaValidator: alphaValidator,
+    alphaArrayValidator: alphaArrayValidator,
+    passwordValidator: passwordValidator,
+    booleanValidator: booleanValidator,
+    applicationValidator: applicationValidator,
+    jwtValidator: jwtValidator,
+    searchValidator: searchValidator,
+    searchModelValidator: searchModelValidator,
+    searchSortValidator: searchSortValidator,
+    phoneNumberValidator: phoneNumberValidator,
+    dateValidator: dateValidator,
+    enumValidator: enumValidator,
+    routesValidator: routesValidator,
+    stringValidator: stringValidator
 };

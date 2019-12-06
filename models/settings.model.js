@@ -16,7 +16,7 @@ const settings = new mongoose.Schema({
     }
 });
 
-settings.methods.toJSON = function () {
+settings.methods.toJSON = function() {
     const ss = this.toObject();
     delete ss.__v;
     ss.id = ss._id;

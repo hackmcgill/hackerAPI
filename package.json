@@ -8,7 +8,9 @@
     "debug": "DEBUG=hackboard:* NODE_ENV=deployment nodemon --ignore gcp_creds.json ./bin/www.js",
     "test": "DEBUG=hackboard:* NODE_ENV=test mocha --reporter spec tests/**.js --exit",
     "seed": "NODE_ENV=development node ./seed/index.js",
-    "docs": "apidoc -i ./routes -o ./docs/api/"
+    "docs": "apidoc -i ./routes -o ./docs/api/",
+    "format": "prettier --write '**/*.js'",
+    "lint": "eslint --fix '**/*.js'"
   },
   "dependencies": {
     "@google-cloud/logging-winston": "^0.11.1",
@@ -44,9 +46,11 @@
     "apidoc": "^0.17.7",
     "chai": "^4.2.0",
     "chai-http": "^4.3.0",
-    "jshint": "^2.10.2",
-    "jslint": "^0.12.1",
+    "eslint": "6.7.2",
+    "eslint-config-prettier": "6.7.0",
+    "eslint-plugin-prettier": "3.1.1",
     "mocha": "^6.2.1",
-    "nodemon": "^1.19.4"
+    "nodemon": "^1.19.4",
+    "prettier": "1.19.1"
   }
 }

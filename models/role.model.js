@@ -15,18 +15,20 @@ const RoleSchema = new mongoose.Schema({
         required: true
     },
     //The array of routes that this Role should have access to.
-    routes: [{
-        uri: {
-            type: String
-        },
-        requestType: {
-            type: String,
-            enum: Object.values(Constants.REQUEST_TYPES)
-        },
-    }]
+    routes: [
+        {
+            uri: {
+                type: String
+            },
+            requestType: {
+                type: String,
+                enum: Object.values(Constants.REQUEST_TYPES)
+            }
+        }
+    ]
 });
 
-RoleSchema.methods.toJSON = function () {
+RoleSchema.methods.toJSON = function() {
     const ps = this.toObject();
     delete ps.__v;
     ps.id = ps._id;

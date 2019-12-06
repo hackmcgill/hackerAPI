@@ -10,12 +10,14 @@ const Seed = {
 const db = require("../services/database.service");
 //connect to db
 db.connect(undefined, () => {
-    onConnected().catch((reason) => {
-        console.error(reason);
-        process.exit(1);
-    }).then(() => {
-        process.exit(0);
-    });
+    onConnected()
+        .catch((reason) => {
+            console.error(reason);
+            process.exit(1);
+        })
+        .then(() => {
+            process.exit(0);
+        });
 });
 
 //called when the db is connected

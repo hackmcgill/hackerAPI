@@ -5,30 +5,33 @@ const RoleBinding = require("../services/roleBinding.service");
 const logger = require("./logger.service");
 
 module.exports = {
-    emailAndPassStrategy: new LocalStrategy({
-        usernameField: "email",
-        passwordField: "password"
-    }, function (email, password, done) {
-        email = email.toLowerCase();
-        Account.getAccountIfValid(email, password).then(
-            (account) => {
-                if (!!account) {
-                    done(null, account);
-                } else {
-                    done(null, false);
+    emailAndPassStrategy: new LocalStrategy(
+        {
+            usernameField: "email",
+            passwordField: "password"
+        },
+        function(email, password, done) {
+            email = email.toLowerCase();
+            Account.getAccountIfValid(email, password).then(
+                (account) => {
+                    if (account) {
+                        done(null, account);
+                    } else {
+                        done(null, false);
+                    }
+                },
+                (reason) => {
+                    done(reason, false);
                 }
-            },
-            (reason) => {
-                done(reason, false);
-            }
-        );
-    }),
+            );
+        }
+    ),
     /**
-     * Takes as input the id of the user. If the user id exists, it passes the user object to the callback 
+     * Takes as input the id of the user. If the user id exists, it passes the user object to the callback
      * (done). The two arguments of the callback must be (failureReason, userObject). If there is no user,
      * then the userObject will be undefined.
      */
-    deserializeUser: function (id, done) {
+    deserializeUser: function(id, done) {
         Account.findById(id).then(
             (user) => {
                 done(null, user);
@@ -38,7 +41,7 @@ module.exports = {
             }
         );
     },
-    serializeUser: function (user, done) {
+    serializeUser: function(user, done) {
         done(null, user.id);
     },
     ensureAuthorized: ensureAuthorized
@@ -52,7 +55,7 @@ module.exports = {
 
 // assuming that routes are strings, not objects
 // assuming that the route subtypes are :self and :all
-// assuming that the route params (resource ids) are in 
+// assuming that the route params (resource ids) are in
 // size of findByIdFns needs to match the number of route parameters
 
 // to check for :all, just replace :all with the paramID (AKA resource ID)
@@ -107,7 +110,8 @@ async function ensureAuthorized(req, findByIdFns) {
         let currentlyValid = true;
         for (let i = 0; i < splitPath.length; i++) {
             // checks whether the current chunk in the route path is a parameter
-            const isParam = Object.values(req.params).indexOf(splitPath[i]) > -1;
+            const isParam =
+                Object.values(req.params).indexOf(splitPath[i]) > -1;
 
             // if current chunk isn't a parameter, then check whether auth route and request path are the same
             if (!isParam) {
@@ -118,7 +122,11 @@ async function ensureAuthorized(req, findByIdFns) {
                         currentlyValid = true;
                         break;
                     case ":self":
-                        currentlyValid = await verifySelfCase(findByIdFns[findByParamCount], splitPath[i], req.user.id);
+                        currentlyValid = await verifySelfCase(
+                            findByIdFns[findByParamCount],
+                            splitPath[i],
+                            req.user.id
+                        );
                         findByParamCount += 1;
                         break;
                     default:
@@ -151,7 +159,7 @@ function verifyParamsFunctions(params, idFns) {
     let validRoute = true;
 
     if (numParams === 0) {
-        validRoute = !idFns || (idFns.length === 0);
+        validRoute = !idFns || idFns.length === 0;
     } else {
         validRoute = numParams === idFns.length;
     }

@@ -81,8 +81,23 @@ POST_ROLES[STAFF] = "postStaff";
 
 const SHIRT_SIZES = ["XS", "S", "M", "L", "XL", "XXL"];
 const USER_TYPES = [HACKER, VOLUNTEER, STAFF, SPONSOR];
-const SPONSOR_TIERS = [SPONSOR_T1, SPONSOR_T2, SPONSOR_T3, SPONSOR_T4, SPONSOR_T5];
-const EXTENDED_USER_TYPES = [HACKER, VOLUNTEER, STAFF, SPONSOR_T1, SPONSOR_T2, SPONSOR_T3, SPONSOR_T4, SPONSOR_T5];
+const SPONSOR_TIERS = [
+    SPONSOR_T1,
+    SPONSOR_T2,
+    SPONSOR_T3,
+    SPONSOR_T4,
+    SPONSOR_T5
+];
+const EXTENDED_USER_TYPES = [
+    HACKER,
+    VOLUNTEER,
+    STAFF,
+    SPONSOR_T1,
+    SPONSOR_T2,
+    SPONSOR_T3,
+    SPONSOR_T4,
+    SPONSOR_T5
+];
 
 // matches optional http://, https://, http:, https:, and optional www.
 // matches the domain, and then optional route, path, query parameters
@@ -91,15 +106,21 @@ const ANY_REGEX = /^.+$/;
 
 const MAX_TEAM_SIZE = 4;
 
-const WEEK_OF = 'Week Of';
+const WEEK_OF = "Week Of";
 
 const EMAIL_SUBJECTS = {};
-EMAIL_SUBJECTS[HACKER_STATUS_NONE] = `Application for ${HACKATHON_NAME} incomplete`;
-EMAIL_SUBJECTS[HACKER_STATUS_APPLIED] = `Thanks for applying to ${HACKATHON_NAME}`;
+EMAIL_SUBJECTS[
+    HACKER_STATUS_NONE
+] = `Application for ${HACKATHON_NAME} incomplete`;
+EMAIL_SUBJECTS[
+    HACKER_STATUS_APPLIED
+] = `Thanks for applying to ${HACKATHON_NAME}`;
 EMAIL_SUBJECTS[HACKER_STATUS_ACCEPTED] = `Great update from ${HACKATHON_NAME}`;
 EMAIL_SUBJECTS[HACKER_STATUS_DECLINED] = `Update from ${HACKATHON_NAME}`;
 EMAIL_SUBJECTS[HACKER_STATUS_WAITLISTED] = `Update from ${HACKATHON_NAME}`;
-EMAIL_SUBJECTS[HACKER_STATUS_CONFIRMED] = `Thanks for confirming your attendance to ${HACKATHON_NAME}`;
+EMAIL_SUBJECTS[
+    HACKER_STATUS_CONFIRMED
+] = `Thanks for confirming your attendance to ${HACKATHON_NAME}`;
 EMAIL_SUBJECTS[HACKER_STATUS_WITHDRAWN] = "Sorry to see you go";
 EMAIL_SUBJECTS[HACKER_STATUS_CHECKED_IN] = `Welcome to ${HACKATHON_NAME}`;
 
@@ -107,10 +128,18 @@ EMAIL_SUBJECTS[WEEK_OF] = `Welcome to ${HACKATHON_NAME}`;
 
 const CONFIRM_ACC_EMAIL_SUBJECT = `Please complete your hacker application for ${HACKATHON_NAME}`;
 const CREATE_ACC_EMAIL_SUBJECTS = {};
-CREATE_ACC_EMAIL_SUBJECTS[HACKER] = `You've been invited to create a hacker account for ${HACKATHON_NAME}`;
-CREATE_ACC_EMAIL_SUBJECTS[SPONSOR] = `You've been invited to create a sponsor account for ${HACKATHON_NAME}`;
-CREATE_ACC_EMAIL_SUBJECTS[VOLUNTEER] = `You've been invited to create a volunteer account for ${HACKATHON_NAME}`;
-CREATE_ACC_EMAIL_SUBJECTS[STAFF] = `You've been invited to create a staff account for ${HACKATHON_NAME}`;
+CREATE_ACC_EMAIL_SUBJECTS[
+    HACKER
+] = `You've been invited to create a hacker account for ${HACKATHON_NAME}`;
+CREATE_ACC_EMAIL_SUBJECTS[
+    SPONSOR
+] = `You've been invited to create a sponsor account for ${HACKATHON_NAME}`;
+CREATE_ACC_EMAIL_SUBJECTS[
+    VOLUNTEER
+] = `You've been invited to create a volunteer account for ${HACKATHON_NAME}`;
+CREATE_ACC_EMAIL_SUBJECTS[
+    STAFF
+] = `You've been invited to create a staff account for ${HACKATHON_NAME}`;
 
 const CACHE_TIMEOUT_STATS = 5 * 60 * 1000;
 const CACHE_KEY_STATS = "hackerStats";
@@ -154,5 +183,5 @@ module.exports = {
     CACHE_KEY_STATS: CACHE_KEY_STATS,
     MAX_TEAM_SIZE: MAX_TEAM_SIZE,
     WEEK_OF: WEEK_OF,
-    SAMPLE_DIET_RESTRICTIONS: SAMPLE_DIET_RESTRICTIONS,
+    SAMPLE_DIET_RESTRICTIONS: SAMPLE_DIET_RESTRICTIONS
 };

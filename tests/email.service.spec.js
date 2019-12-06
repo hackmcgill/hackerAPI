@@ -7,7 +7,7 @@ dotenv.config({
 const EmailService = require("../services/email.service");
 const assert = require("chai").assert;
 
-describe("Email Service", function () {
+describe("Email Service", function() {
     it("It should send an email", (done) => {
         EmailService.send({
             to: process.env.NO_REPLY_EMAIL,
@@ -19,10 +19,16 @@ describe("Email Service", function () {
                     enable: true
                 }
             }
-        }).then((response) => {
-            assert.equal(response[0].statusCode, 200, "response should be accepted");
-            done();
-        }).catch(done);
+        })
+            .then((response) => {
+                assert.equal(
+                    response[0].statusCode,
+                    200,
+                    "response should be accepted"
+                );
+                done();
+            })
+            .catch(done);
     });
     it("It should send multiple emails", (done) => {
         EmailService.sendMultiple({
@@ -35,14 +41,20 @@ describe("Email Service", function () {
                     enable: true
                 }
             }
-        }).then((responses) => {
-            responses.forEach((resp) => {
-                if (resp) {
-                    assert.equal(resp.statusCode, 200, "response should be accepted");
-                }
-            });
-            done();
-        }).catch(done);
+        })
+            .then((responses) => {
+                responses.forEach((resp) => {
+                    if (resp) {
+                        assert.equal(
+                            resp.statusCode,
+                            200,
+                            "response should be accepted"
+                        );
+                    }
+                });
+                done();
+            })
+            .catch(done);
     });
     it("It should compile a handlebars email", (done) => {
         const handlebarPath = path.join(__dirname, `../assets/email/test.hbs`);
@@ -50,7 +62,10 @@ describe("Email Service", function () {
             TEST: "TESTTEST",
             NOT_ESCAPED: "localhost:1337/reset?token=lala"
         });
-        assert.equal('<div>This is used for testing email service. DO NOT REMOVE.TESTTEST. <a href="localhost:1337/reset?token=lala">link</a></div>', rendered);
+        assert.equal(
+            '<div>This is used for testing email service. DO NOT REMOVE.TESTTEST. <a href="localhost:1337/reset?token=lala">link</a></div>',
+            rendered
+        );
         done();
     });
 });
