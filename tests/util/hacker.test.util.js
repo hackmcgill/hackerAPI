@@ -367,7 +367,6 @@ const invalidHacker1 = {
             jobInterest: "ASDF",
             URL: {
                 // invalid URL links with no resume
-                github: null
             }
         },
         shortAnswer: {

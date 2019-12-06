@@ -460,7 +460,7 @@ function applicationValidator(fieldLocation, fieldname, optional = true) {
                     !app.general.URL.github ||
                     typeof app.general.URL.github === "string";
                 hasValid.dribbble =
-                    !app.general.URL.hasOwnProperty("dribbble") ||
+                    !app.general.URL.dribbble ||
                     typeof app.general.URL.dribbble === "string";
                 hasValid.personal =
                     !app.general.URL.personal ||

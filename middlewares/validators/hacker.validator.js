@@ -39,7 +39,11 @@ module.exports = {
             false,
             true
         ),
-        VALIDATOR.booleanValidator("body", "application.accomodation.needsBus"),
+        VALIDATOR.booleanValidator(
+            "body",
+            "application.accomodation.needsBus",
+            true
+        ),
         VALIDATOR.mongoIdValidator("body", "teamId", true)
     ],
 
@@ -48,7 +52,44 @@ module.exports = {
     ],
 
     updateHackerValidator: [
-        VALIDATOR.applicationValidator("body", "application", true)
+        VALIDATOR.stringValidator("body", "application.general.school", true),
+        VALIDATOR.stringValidator("body", "application.general.degree", true),
+        VALIDATOR.alphaArrayValidator(
+            "body",
+            "application.general.fieldOfStudy",
+            true
+        ),
+        VALIDATOR.integerValidator(
+            "body",
+            "application.general.graduationYear",
+            true,
+            2019,
+            2030
+        ),
+        VALIDATOR.applicationValidator("body", "application", true),
+        VALIDATOR.stringValidator("body", "application.other.gender", true),
+        VALIDATOR.alphaArrayValidator(
+            "body",
+            "application.other.ethnicity",
+            true
+        ),
+        VALIDATOR.booleanValidator(
+            "body",
+            "application.other.codeOfConduct_MLH",
+            true,
+            true
+        ),
+        VALIDATOR.booleanValidator(
+            "body",
+            "application.other.codeOfConduct_MCHACKS",
+            true,
+            true
+        ),
+        VALIDATOR.booleanValidator(
+            "body",
+            "application.accomodation.needsBus",
+            true
+        )
     ],
     updateStatusValidator: [
         VALIDATOR.enumValidator(
