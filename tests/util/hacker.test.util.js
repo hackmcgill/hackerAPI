@@ -317,7 +317,7 @@ const newHacker1 = {
 
 // duplicate of newHack0, but with false for code of conduct
 const invalidHacker0 = {
-    accountId: Util.Account.hackerAccounts.invalid[0]._id,
+    accountId: Util.Account.hackerAccounts.new[0]._id,
     application: {
         general: {
             school: "University of ASDF",

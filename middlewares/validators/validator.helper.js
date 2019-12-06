@@ -380,8 +380,6 @@ function applicationValidator(fieldLocation, fieldname, optional = true) {
         fieldname,
         "invalid application"
     );
-
-    console.log("hi");
     //helper object to iterate through the items in the application and track which items are not valid.
     const hasValid = {
         school: false,
@@ -406,17 +404,17 @@ function applicationValidator(fieldLocation, fieldname, optional = true) {
         question2: false,
         team: false
     };
+
     if (optional) {
         return application
             .optional({
                 checkFalsy: true
             })
             .custom((app) => {
-                hasValid.school = stringValidator(
-                    "body",
-                    "application.general.school",
-                    false
-                );
+                hasValid.school =
+                    !app.general.school ||
+                    typeof app.general.school === "string";
+
                 hasValid.degree = stringValidator(
                     "body",
                     "application.general.degree",
@@ -425,11 +423,6 @@ function applicationValidator(fieldLocation, fieldname, optional = true) {
                 hasValid.fieldOfStudy = alphaArrayValidator(
                     "body",
                     "application.general.fieldOfStudy",
-                    false
-                );
-                hasValid.general = stringValidator(
-                    "body",
-                    "application.other.gender",
                     false
                 );
                 hasValid.bus = booleanValidator(
@@ -527,41 +520,53 @@ function applicationValidator(fieldLocation, fieldname, optional = true) {
     } else {
         return application
             .custom((app) => {
-                hasValid.school = stringValidator(
-                    "body",
-                    "application.general.school",
-                    false
-                );
-                hasValid.degree = stringValidator(
-                    "body",
-                    "application.general.degree",
-                    false
-                );
-                hasValid.fieldOfStudy = alphaArrayValidator(
-                    "body",
-                    "application.general.fieldOfStudy",
-                    false
-                );
-                hasValid.general = stringValidator(
-                    "body",
-                    "application.other.gender",
-                    false
-                );
-                hasValid.bus = booleanValidator(
-                    "body",
-                    "application.accomodation.needsBus",
-                    false
-                );
+                // hasValid.school = stringValidator(
+                //     "body",
+                //     "application.general.school",
+                //     false
+                // );
+                // console.log(hasValid.school);
+                hasValid.school =
+                    !app.general.school ||
+                    typeof app.general.school === "string";
+
+                // hasValid.degree = stringValidator(
+                //     "body",
+                //     "application.general.degree",
+                //     false
+                // );
+                hasValid.degree =
+                    !app.general.degree ||
+                    typeof app.general.degree === "string";
+                // hasValid.fieldOfStudy = alphaArrayValidator(
+                //     "body",
+                //     "application.general.fieldOfStudy",
+                //     false
+                // );
+                hasValid.bus =
+                    !app.accomodation.needsBus ||
+                    (typeof app.accomodation.needsBus === "boolean" &&
+                        app.accomodation.needsBus === true);
+
+                // hasValid.bus = booleanValidator(
+                //     "body",
+                //     "application.accomodation.needsBus",
+                //     false
+                // );
+
                 hasValid.ethnicity = alphaArrayValidator(
                     "body",
                     "application.other.ethnicity",
                     false
                 );
-                hasValid.gender = stringValidator(
-                    "body",
-                    "application.other.gender",
-                    false
-                );
+                hasValid.gender =
+                    !app.other.gender || typeof app.other.gender === "string";
+
+                // hasValid.gender = stringValidator(
+                //     "body",
+                //     "application.other.gender",
+                //     false
+                // );
                 hasValid.graduationYear = integerValidator(
                     "body",
                     "application.general.graduationYear",
@@ -569,18 +574,29 @@ function applicationValidator(fieldLocation, fieldname, optional = true) {
                     2019,
                     2030
                 );
-                hasValid.codeOfConduct_MLH = booleanValidator(
-                    "body",
-                    "application.other.codeOfConduct_MLH",
-                    false,
-                    true
-                );
-                hasValid.codeOfConduct_MCHACKS = booleanValidator(
-                    "body",
-                    "appliction.other.codeOfConduct_MCHACKS",
-                    false,
-                    true
-                );
+
+                hasValid.codeOfConduct_MLH =
+                    !app.other.codeOfConduct_MLH ||
+                    (typeof app.other.codeOfConduct_MLH === "boolean" &&
+                        app.other.codeOfConduct_MLH === true);
+                // hasValid.codeOfConduct_MLH = booleanValidator(
+                //     "body",
+                //     "application.other.codeOfConduct_MLH",
+                //     false,
+                //     true
+                // );
+
+                hasValid.codeOfConduct_MCHACKS =
+                    !app.other.codeOfConduct_MCHACKS ||
+                    (typeof app.other.codeOfConduct_MCHACKS === "boolean" &&
+                        app.other.codeOfConduct_MCHACKS === true);
+                // hasValid.codeOfConduct_MCHACKS = booleanValidator(
+                //     "body",
+                //     "appliction.other.codeOfConduct_MCHACKS",
+                //     false,
+                //     true
+                // );
+                console.log("Before");
                 const jobInterests = Constants.JOB_INTERESTS;
                 hasValid.github =
                     !app.general.URL.github ||
@@ -614,6 +630,7 @@ function applicationValidator(fieldLocation, fieldname, optional = true) {
                     typeof app.shortAnswer.question2 === "string";
                 hasValid.team =
                     !app.team || mongoose.Types.ObjectId.isValid(app.team);
+                console.log(hasValid.codeOfConduct_MCHACKS);
                 return (
                     hasValid.comments &&
                     hasValid.school &&

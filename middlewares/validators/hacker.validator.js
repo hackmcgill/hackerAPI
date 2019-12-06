@@ -15,7 +15,7 @@ module.exports = {
     ],
 
     updateHackerValidator: [
-        VALIDATOR.applicationValidator("body", "application", false)
+        VALIDATOR.applicationValidator("body", "application", true)
     ],
     updateStatusValidator: [
         VALIDATOR.enumValidator(
