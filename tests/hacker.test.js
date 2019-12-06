@@ -458,26 +458,24 @@ describe("POST create hacker", function() {
                 .type("application/json")
                 .send(invalidHacker0)
                 .end(function(err, res) {
-                    console.log(res.body.data);
+                    console.log(res.body.data.application.msg.isValid);
                     res.should.have.status(422);
                     res.should.be.json;
                     res.body.should.have.property("message");
                     res.body.message.should.equal("Validation failed");
                     res.body.should.have.property("data");
-                    res.body.data.should.have.property("application");
-                    res.body.data.application.should.have.property("other");
-                    res.body.data.application.other.should.have.property(
-                        "codeOfConduct_MLH"
+                    res.body.data.should.have.property(
+                        "application.other.codeOfConduct_MLH"
                     );
-                    res.body.data.application.other.should.have.property(
-                        "codeOfConduct_MCHACKS"
+                    res.body.data[
+                        "application.other.codeOfConduct_MLH"
+                    ].msg.should.equal("Must be equal to true");
+                    res.body.data.should.have.property(
+                        "application.other.codeOfConduct_MCHACKS"
                     );
-                    res.body.data.application.other.codeOfConduct_MLH.msg.should.equal(
-                        "Must be equal to true"
-                    );
-                    res.body.data.application.other.codeOfConduct_MCHACKS.msh.should.equal(
-                        "Must be equal to true"
-                    );
+                    res.body.data[
+                        "application.other.codeOfConduct_MCHACKS"
+                    ].msg.should.equal("Must be equal to true");
                     done();
                 });
         });
@@ -541,8 +539,35 @@ describe("POST create hacker", function() {
                 .type("application/json")
                 .send(invalidHacker1)
                 .end(function(err, res) {
-                    // replace with actual test comparisons after error handler is implemented
+                    console.log(res.body.data.application.msg);
                     res.should.have.status(422);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal("Validation failed");
+                    res.body.should.have.property("data");
+                    res.body.data.should.have.property("accountId");
+                    res.body.data.accountId.should.have.property("msg");
+                    res.body.data.accountId.msg.should.equal("invalid mongoID");
+                    res.body.data.should.have.property(
+                        "application.general.school"
+                    );
+                    res.body.data[
+                        "application.general.school"
+                    ].should.have.property("msg");
+                    res.body.data[
+                        "application.general.school"
+                    ].msg.should.equal("name must exist");
+                    res.body.data.should.have.property("application");
+                    res.body.data.application.should.have.property("msg");
+                    res.body.data.application.msg.should.have.property(
+                        "isValid"
+                    );
+                    res.body.data.application.msg.isValid.should.have.property(
+                        "jobInterest"
+                    );
+                    res.body.data.application.msg.isValid.jobInterest.should.equal(
+                        false
+                    );
                     done();
                 });
         });

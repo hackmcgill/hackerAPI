@@ -382,16 +382,6 @@ function applicationValidator(fieldLocation, fieldname, optional = true) {
     );
     //helper object to iterate through the items in the application and track which items are not valid.
     const hasValid = {
-        school: false,
-        degree: false,
-        fieldOfStudy: false,
-        gender: false,
-        ethnicity: false,
-        bus: false,
-        gender: false,
-        graduationYear: false,
-        codeOfConduct_MLH: false,
-        codeOfConduct_MCHACKS: false,
         github: false,
         dribbble: false,
         personal: false,
@@ -411,54 +401,6 @@ function applicationValidator(fieldLocation, fieldname, optional = true) {
                 checkFalsy: true
             })
             .custom((app) => {
-                hasValid.school =
-                    !app.general.school ||
-                    typeof app.general.school === "string";
-
-                hasValid.degree = stringValidator(
-                    "body",
-                    "application.general.degree",
-                    false
-                );
-                hasValid.fieldOfStudy = alphaArrayValidator(
-                    "body",
-                    "application.general.fieldOfStudy",
-                    false
-                );
-                hasValid.bus = booleanValidator(
-                    "body",
-                    "application.accomodation.needsBus",
-                    false
-                );
-                hasValid.ethnicity = alphaArrayValidator(
-                    "body",
-                    "application.other.ethnicity",
-                    false
-                );
-                hasValid.gender = stringValidator(
-                    "body",
-                    "application.other.gender",
-                    false
-                );
-                hasValid.graduationYear = integerValidator(
-                    "body",
-                    "application.general.graduationYear",
-                    false,
-                    2019,
-                    2030
-                );
-                hasValid.codeOfConduct_MLH = booleanValidator(
-                    "body",
-                    "application.other.codeOfConduct_MLH",
-                    false,
-                    true
-                );
-                hasValid.codeOfConduct_MCHACKS = booleanValidator(
-                    "body",
-                    "appliction.other.codeOfConduct_MCHACKS",
-                    false,
-                    true
-                );
                 const jobInterests = Constants.JOB_INTERESTS;
                 hasValid.github =
                     !app.general.URL.github ||
@@ -476,7 +418,7 @@ function applicationValidator(fieldLocation, fieldname, optional = true) {
                     !app.general.URL.other ||
                     typeof app.general.URL.other === "string";
                 hasValid.jobInterest =
-                    !app.general.jobInterest ||
+                    !!app.general.jobInterest &&
                     jobInterests.includes(app.general.jobInterest);
                 hasValid.skills =
                     !app.shortAnswer.skills ||
@@ -485,24 +427,14 @@ function applicationValidator(fieldLocation, fieldname, optional = true) {
                     !app.shortAnswer.comments ||
                     typeof app.shortAnswer.comments === "string";
                 hasValid.question1 =
-                    !app.shortAnswer.question1 ||
+                    !!app.shortAnswer.question1 &&
                     typeof app.shortAnswer.question1 === "string";
                 hasValid.question2 =
-                    !app.shortAnswer.question2 ||
+                    !!app.shortAnswer.question2 &&
                     typeof app.shortAnswer.question2 === "string";
                 hasValid.team =
                     !app.team || mongoose.Types.ObjectId.isValid(app.team);
                 return (
-                    hasValid.comments &&
-                    hasValid.school &&
-                    hasValid.degree &&
-                    hasValid.fieldOfStudy &&
-                    hasValid.graduationYear &&
-                    hasValid.ethnicity &&
-                    hasValid.gender &&
-                    hasValid.bus &&
-                    hasValid.codeOfConduct_MLH &&
-                    hasValid.codeOfConduct_MCHACKS &&
                     hasValid.github &&
                     hasValid.dribbble &&
                     hasValid.personal &&
@@ -510,6 +442,9 @@ function applicationValidator(fieldLocation, fieldname, optional = true) {
                     hasValid.other &&
                     hasValid.jobInterest &&
                     hasValid.skills &&
+                    hasValid.comments &&
+                    hasValid.question1 &&
+                    hasValid.question2 &&
                     hasValid.team
                 );
             })
@@ -520,89 +455,12 @@ function applicationValidator(fieldLocation, fieldname, optional = true) {
     } else {
         return application
             .custom((app) => {
-                // hasValid.school = stringValidator(
-                //     "body",
-                //     "application.general.school",
-                //     false
-                // );
-                // console.log(hasValid.school);
-                hasValid.school =
-                    !app.general.school ||
-                    typeof app.general.school === "string";
-
-                // hasValid.degree = stringValidator(
-                //     "body",
-                //     "application.general.degree",
-                //     false
-                // );
-                hasValid.degree =
-                    !app.general.degree ||
-                    typeof app.general.degree === "string";
-                // hasValid.fieldOfStudy = alphaArrayValidator(
-                //     "body",
-                //     "application.general.fieldOfStudy",
-                //     false
-                // );
-                hasValid.bus =
-                    !app.accomodation.needsBus ||
-                    (typeof app.accomodation.needsBus === "boolean" &&
-                        app.accomodation.needsBus === true);
-
-                // hasValid.bus = booleanValidator(
-                //     "body",
-                //     "application.accomodation.needsBus",
-                //     false
-                // );
-
-                hasValid.ethnicity = alphaArrayValidator(
-                    "body",
-                    "application.other.ethnicity",
-                    false
-                );
-                hasValid.gender =
-                    !app.other.gender || typeof app.other.gender === "string";
-
-                // hasValid.gender = stringValidator(
-                //     "body",
-                //     "application.other.gender",
-                //     false
-                // );
-                hasValid.graduationYear = integerValidator(
-                    "body",
-                    "application.general.graduationYear",
-                    false,
-                    2019,
-                    2030
-                );
-
-                hasValid.codeOfConduct_MLH =
-                    !app.other.codeOfConduct_MLH ||
-                    (typeof app.other.codeOfConduct_MLH === "boolean" &&
-                        app.other.codeOfConduct_MLH === true);
-                // hasValid.codeOfConduct_MLH = booleanValidator(
-                //     "body",
-                //     "application.other.codeOfConduct_MLH",
-                //     false,
-                //     true
-                // );
-
-                hasValid.codeOfConduct_MCHACKS =
-                    !app.other.codeOfConduct_MCHACKS ||
-                    (typeof app.other.codeOfConduct_MCHACKS === "boolean" &&
-                        app.other.codeOfConduct_MCHACKS === true);
-                // hasValid.codeOfConduct_MCHACKS = booleanValidator(
-                //     "body",
-                //     "appliction.other.codeOfConduct_MCHACKS",
-                //     false,
-                //     true
-                // );
-                console.log("Before");
                 const jobInterests = Constants.JOB_INTERESTS;
                 hasValid.github =
                     !app.general.URL.github ||
                     typeof app.general.URL.github === "string";
                 hasValid.dribbble =
-                    !app.general.URL.dribbble ||
+                    !app.general.URL.hasOwnProperty("dribbble") ||
                     typeof app.general.URL.dribbble === "string";
                 hasValid.personal =
                     !app.general.URL.personal ||
@@ -614,7 +472,7 @@ function applicationValidator(fieldLocation, fieldname, optional = true) {
                     !app.general.URL.other ||
                     typeof app.general.URL.other === "string";
                 hasValid.jobInterest =
-                    !app.general.jobInterest ||
+                    !!app.general.jobInterest &&
                     jobInterests.includes(app.general.jobInterest);
                 hasValid.skills =
                     !app.shortAnswer.skills ||
@@ -623,32 +481,24 @@ function applicationValidator(fieldLocation, fieldname, optional = true) {
                     !app.shortAnswer.comments ||
                     typeof app.shortAnswer.comments === "string";
                 hasValid.question1 =
-                    !app.shortAnswer.question1 ||
+                    !!app.shortAnswer.question1 &&
                     typeof app.shortAnswer.question1 === "string";
                 hasValid.question2 =
-                    !app.shortAnswer.question2 ||
+                    !!app.shortAnswer.question2 &&
                     typeof app.shortAnswer.question2 === "string";
                 hasValid.team =
                     !app.team || mongoose.Types.ObjectId.isValid(app.team);
-                console.log(hasValid.codeOfConduct_MCHACKS);
                 return (
-                    hasValid.comments &&
-                    hasValid.school &&
-                    hasValid.degree &&
-                    hasValid.fieldOfStudy &&
-                    hasValid.graduationYear &&
-                    hasValid.ethnicity &&
-                    hasValid.gender &&
-                    hasValid.bus &&
-                    hasValid.codeOfConduct_MLH &&
-                    hasValid.codeOfConduct_MCHACKS &&
                     hasValid.github &&
                     hasValid.dribbble &&
                     hasValid.personal &&
                     hasValid.linkedIn &&
                     hasValid.other &&
                     hasValid.jobInterest &&
+                    hasValid.comments &&
                     hasValid.skills &&
+                    hasValid.question1 &&
+                    hasValid.question2 &&
                     hasValid.team
                 );
             })

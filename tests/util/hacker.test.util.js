@@ -25,10 +25,10 @@ const TeamHacker0 = {
                 //gcloud bucket link
                 resume: "www.gcloud.com/myResume100",
                 github: "www.github.com/Person1",
-                dribbble: undefined,
+                dribbble: null,
                 personal: "www.person1.com",
                 linkedIn: "www.linkedin.com/in/Person1",
-                other: undefined
+                other: null
             }
         },
         shortAnswer: {
@@ -64,10 +64,10 @@ const TeamHacker1 = {
                 //gcloud bucket link
                 resume: "www.gcloud.com/myResume2",
                 github: "www.github.com/Personasdf",
-                dribbble: undefined,
-                personal: undefined,
-                linkedIn: undefined,
-                other: undefined
+                dribbble: null,
+                personal: null,
+                linkedIn: null,
+                other: null
             }
         },
         shortAnswer: {
@@ -103,10 +103,10 @@ const TeamHacker2 = {
                 //gcloud bucket link
                 resume: "www.gcloud.com/myResume2",
                 github: "www.github.com/Personasdf",
-                dribbble: undefined,
-                personal: undefined,
-                linkedIn: undefined,
-                other: undefined
+                dribbble: null,
+                personal: null,
+                linkedIn: null,
+                other: null
             }
         },
         shortAnswer: {
@@ -142,10 +142,10 @@ const TeamHacker3 = {
                 //gcloud bucket link
                 resume: "www.gcloud.com/myResume2",
                 github: "www.github.com/Personasdf",
-                dribbble: undefined,
-                personal: undefined,
-                linkedIn: undefined,
-                other: undefined
+                dribbble: null,
+                personal: null,
+                linkedIn: null,
+                other: null
             }
         },
         shortAnswer: {
@@ -181,10 +181,10 @@ const TeamHacker4 = {
                 //gcloud bucket link
                 resume: "www.gcloud.com/myResume2",
                 github: "www.github.com/Personasdf",
-                dribbble: undefined,
-                personal: undefined,
-                linkedIn: undefined,
-                other: undefined
+                dribbble: null,
+                personal: null,
+                linkedIn: null,
+                other: null
             }
         },
         shortAnswer: {
@@ -220,10 +220,10 @@ const NoTeamHacker0 = {
                 //gcloud bucket link
                 resume: "www.gcloud.com/myResume1",
                 github: "www.github.com/Person4",
-                dribbble: undefined,
-                personal: undefined,
-                linkedIn: undefined,
-                other: undefined
+                dribbble: null,
+                personal: null,
+                linkedIn: null,
+                other: null
             }
         },
         shortAnswer: {
@@ -256,10 +256,10 @@ const newHacker0 = {
                 //gcloud bucket link
                 resume: "www.gcloud.com/myResume100",
                 github: "www.github.com/Person1",
-                dribbble: undefined,
+                dribbble: null,
                 personal: "www.person1.com",
                 linkedIn: "www.linkedin.com/in/Person1",
-                other: undefined
+                other: null
             }
         },
         shortAnswer: {
@@ -292,10 +292,10 @@ const newHacker1 = {
                 //gcloud bucket link
                 resume: "www.gcloud.com/myResume100",
                 github: "www.github.com/Person1",
-                dribbble: undefined,
+                dribbble: null,
                 personal: "www.person1.com",
                 linkedIn: "www.linkedin.com/in/Person1",
-                other: undefined
+                other: null
             }
         },
         shortAnswer: {
@@ -329,10 +329,10 @@ const invalidHacker0 = {
                 //gcloud bucket link
                 resume: "www.gcloud.com/myResume100",
                 github: "www.github.com/Person1",
-                dribbble: undefined,
+                dribbble: null,
                 personal: "www.person1.com",
                 linkedIn: "www.linkedin.com/in/Person1",
-                other: undefined
+                other: null
             }
         },
         shortAnswer: {
@@ -367,6 +367,7 @@ const invalidHacker1 = {
             jobInterest: "ASDF",
             URL: {
                 // invalid URL links with no resume
+                github: null
             }
         },
         shortAnswer: {
@@ -401,10 +402,10 @@ const duplicateAccountLinkHacker0 = {
                 //gcloud bucket link
                 resume: "www.gcloud.com/myResume100",
                 github: "www.github.com/Person1",
-                dribbble: undefined,
+                dribbble: null,
                 personal: "www.person1.com",
                 linkedIn: "www.linkedin.com/in/Person1",
-                other: undefined
+                other: null
             }
         },
         shortAnswer: {
@@ -439,10 +440,10 @@ const waitlistedHacker0 = {
                 //gcloud bucket link
                 resume: "www.gcloud.com/myResume2",
                 github: "www.github.com/Personasdf",
-                dribbble: undefined,
-                personal: undefined,
-                linkedIn: undefined,
-                other: undefined
+                dribbble: null,
+                personal: null,
+                linkedIn: null,
+                other: null
             }
         },
         shortAnswer: {
@@ -478,10 +479,10 @@ const unconfirmedAccountHacker0 = {
                 //gcloud bucket link
                 resume: "www.gcloud.com/myResume123",
                 github: "www.github.com/Personasdf",
-                dribbble: undefined,
-                personal: undefined,
-                linkedIn: undefined,
-                other: undefined
+                dribbble: null,
+                personal: null,
+                linkedIn: null,
+                other: null
             }
         },
         shortAnswer: {
@@ -516,10 +517,10 @@ const unconfirmedAccountHacker1 = {
                 //gcloud bucket link
                 resume: "www.gcloud.com/myResume123",
                 github: "www.github.com/Personasdf",
-                dropler: undefined,
-                personal: undefined,
-                linkedIn: undefined,
-                other: undefined
+                dropler: null,
+                personal: null,
+                linkedIn: null,
+                other: null
             }
         },
         shortAnswer: {
