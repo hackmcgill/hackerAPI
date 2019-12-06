@@ -465,7 +465,7 @@ const waitlistedHacker0 = {
 
 const unconfirmedAccountHacker0 = {
     _id: Constants.MongoId.hackerCId,
-    accountId: Util.Account.NonConfirmedAccount2._id,
+    accountId: Util.Account.NonConfirmedAccount3._id,
     status: "Waitlisted",
     application: {
         general: {
@@ -547,8 +547,6 @@ const Hackers = [
     TeamHacker4,
 
     NoTeamHacker0,
-
-    invalidHacker0,
     unconfirmedAccountHacker1,
 
     duplicateAccountLinkHacker0,
