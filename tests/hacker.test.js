@@ -44,7 +44,6 @@ const unconfirmedHackerAccount1 =
     util.account.hackerAccounts.stored.unconfirmed[0];
 const unconfirmedHackerAccount0 = util.hacker.unconfirmedAccountHacker0;
 
-const unconfirmedHacker0 = util.hacker.unconfirmedAccountHacker0;
 const unconfirmedHacker1 = util.hacker.unconfirmedAccountHacker1;
 
 const invalidHacker1 = util.hacker.invalidHacker1;
