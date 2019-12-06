@@ -12,10 +12,10 @@ const Constants = {
  * @description Returns the JSON of hacker object located in req.body.hacker
  */
 function showHacker(req, res) {
-  return res.status(200).json({
-    message: Constants.Success.HACKER_READ,
-    data: req.body.hacker.toJSON()
-  });
+    return res.status(200).json({
+        message: Constants.Success.HACKER_READ,
+        data: req.body.hacker.toJSON()
+    });
 }
 
 /**
@@ -26,10 +26,10 @@ function showHacker(req, res) {
  * @description returns success message
  */
 function createdHacker(req, res) {
-  return res.status(200).json({
-    message: Constants.Success.HACKER_CREATE,
-    data: req.body.hacker.toJSON()
-  });
+    return res.status(200).json({
+        message: Constants.Success.HACKER_CREATE,
+        data: req.body.hacker.toJSON()
+    });
 }
 
 /**
@@ -44,29 +44,29 @@ function createdHacker(req, res) {
  *      The new information is located in req.body.
  */
 function updatedHacker(req, res) {
-  return res.status(200).json({
-    message: Constants.Success.HACKER_UPDATE,
-    data: req.body
-  });
+    return res.status(200).json({
+        message: Constants.Success.HACKER_UPDATE,
+        data: req.body
+    });
 }
 
 function uploadedResume(req, res) {
-  return res.status(200).json({
-    message: Constants.Success.RESUME_UPLOAD,
-    data: {
-      filename: req.body.gcfilename
-    }
-  });
+    return res.status(200).json({
+        message: Constants.Success.RESUME_UPLOAD,
+        data: {
+            filename: req.body.gcfilename
+        }
+    });
 }
 
 function downloadedResume(req, res) {
-  return res.status(200).json({
-    message: Constants.Success.RESUME_DOWNLOAD,
-    data: {
-      id: req.body.id,
-      resume: req.body.resume
-    }
-  });
+    return res.status(200).json({
+        message: Constants.Success.RESUME_DOWNLOAD,
+        data: {
+            id: req.body.id,
+            resume: req.body.resume
+        }
+    });
 }
 
 function gotStats(req, res) {
@@ -79,17 +79,17 @@ function gotStats(req, res) {
 }
 
 function sentWeekOfEmail(req, res) {
-  return res.status(200).json({
-    message: Constants.Success.HACKER_SENT_WEEK_OF,
-    data: {}
-  });
+    return res.status(200).json({
+        message: Constants.Success.HACKER_SENT_WEEK_OF,
+        data: {}
+    });
 }
 
 function sentDayOfEmail(req, res) {
-  return res.status(200).json({
-    message: Constants.Success.HACKER_SENT_DAY_OF,
-    data: {}
-  });
+    return res.status(200).json({
+        message: Constants.Success.HACKER_SENT_DAY_OF,
+        data: {}
+    });
 }
 
 module.exports = {

@@ -10,15 +10,15 @@ const bcrypt = require("bcrypt");
  * @description Finds an account by mongoID.
  */
 function findById(id) {
-  const TAG = `[Account Service # findById]:`;
-  const query = {
-    _id: id
-  };
+    const TAG = `[Account Service # findById]:`;
+    const query = {
+        _id: id
+    };
 
-  return Account.findById(
-    query,
-    logger.queryCallbackFactory(TAG, "account", query)
-  );
+    return Account.findById(
+        query,
+        logger.queryCallbackFactory(TAG, "account", query)
+    );
 }
 
 /**
@@ -28,11 +28,11 @@ function findById(id) {
  * @description Find an account by email.
  */
 function findByEmail(email) {
-  const query = {
-    email: email
-  };
+    const query = {
+        email: email
+    };
 
-  return findOne(query);
+    return findOne(query);
 }
 
 /**
@@ -41,12 +41,12 @@ function findByEmail(email) {
  * @return {Account | null} either account or null
  */
 async function getAccountIfValid(email, password) {
-  const account = await findByEmail(email);
+    const account = await findByEmail(email);
 
-  if (!!account && account.comparePassword(password)) {
-    return account;
-  }
-  return null;
+    if (!!account && account.comparePassword(password)) {
+        return account;
+    }
+    return null;
 }
 
 /**
@@ -56,7 +56,7 @@ async function getAccountIfValid(email, password) {
  * @description Hashes password with bcrypt.
  */
 function hashPassword(password) {
-  return bcrypt.hashSync(password, 10);
+    return bcrypt.hashSync(password, 10);
 }
 
 /**
@@ -66,12 +66,12 @@ function hashPassword(password) {
  * @description Finds an account by some query.
  */
 function findOne(query) {
-  const TAG = `[Account Service # findOne ]:`;
+    const TAG = `[Account Service # findOne ]:`;
 
-  return Account.findOne(
-    query,
-    logger.queryCallbackFactory(TAG, "account", query)
-  );
+    return Account.findOne(
+        query,
+        logger.queryCallbackFactory(TAG, "account", query)
+    );
 }
 
 /**
@@ -81,11 +81,11 @@ function findOne(query) {
  * @description Adds a new account to database.
  */
 function addOneAccount(accountDetails) {
-  const TAG = `[Account Service # addOneAccount ]:`;
+    const TAG = `[Account Service # addOneAccount ]:`;
 
-  const account = new Account(accountDetails);
+    const account = new Account(accountDetails);
 
-  return account.save();
+    return account.save();
 }
 
 /**
@@ -96,17 +96,17 @@ function addOneAccount(accountDetails) {
  * @description Changes account information to the specified information in accountDetails.
  */
 function updateOne(id, accountDetails) {
-  const TAG = `[Account Service # updateOne ]:`;
+    const TAG = `[Account Service # updateOne ]:`;
 
-  const query = {
-    _id: id
-  };
+    const query = {
+        _id: id
+    };
 
-  return Account.findOneAndUpdate(
-    query,
-    accountDetails,
-    logger.updateCallbackFactory(TAG, "account")
-  );
+    return Account.findOneAndUpdate(
+        query,
+        accountDetails,
+        logger.updateCallbackFactory(TAG, "account")
+    );
 }
 
 /**
@@ -115,19 +115,19 @@ function updateOne(id, accountDetails) {
  * @param {string} newPassword the new password for the account (in plain-text).
  */
 function updatePassword(id, newPassword) {
-  const hashed = hashPassword(newPassword);
-  return updateOne(id, {
-    password: hashed
-  });
+    const hashed = hashPassword(newPassword);
+    return updateOne(id, {
+        password: hashed
+    });
 }
 
 module.exports = {
-  findOne: findOne,
-  findById: findById,
-  findByEmail: findByEmail,
-  addOneAccount: addOneAccount,
-  getAccountIfValid: getAccountIfValid,
-  hashPassword: hashPassword,
-  updateOne: updateOne,
-  updatePassword: updatePassword
+    findOne: findOne,
+    findById: findById,
+    findByEmail: findByEmail,
+    addOneAccount: addOneAccount,
+    getAccountIfValid: getAccountIfValid,
+    hashPassword: hashPassword,
+    updateOne: updateOne,
+    updatePassword: updatePassword
 };
