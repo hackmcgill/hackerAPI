@@ -493,6 +493,19 @@ async function updateHacker(req, res, next) {
 }
 
 /**
+ * Sets Hacker Status to Accepted and runs it through updateHacker's functionality.
+ * @param {{params:{id: string}, body: *}} req 
+ * @param {*} res 
+ * @param {*} next 
+ */
+async function acceptHacker(req, res, next) {
+    req.body.status = Constants.General.HACKER_STATUS_ACCEPTED;
+    updateHacker(req, res, next);
+
+}
+
+
+/**
  * @function createhacker
  * @param {{body: {hackerDetails: object}}} req 
  * @param {*} res 
@@ -602,6 +615,7 @@ module.exports = {
     sendStatusUpdateEmail: Middleware.Util.asyncMiddleware(sendStatusUpdateEmail),
     sendAppliedStatusEmail: Middleware.Util.asyncMiddleware(sendAppliedStatusEmail),
     updateHacker: Middleware.Util.asyncMiddleware(updateHacker),
+    acceptHacker: Middleware.Util.asyncMiddleware(acceptHacker),
     validateConfirmedStatusFromAccountId: Middleware.Util.asyncMiddleware(validateConfirmedStatusFromAccountId),
     validateConfirmedStatusFromHackerId: Middleware.Util.asyncMiddleware(validateConfirmedStatusFromHackerId),
     validateConfirmedStatusFromObject: Middleware.Util.asyncMiddleware(validateConfirmedStatusFromObject),
