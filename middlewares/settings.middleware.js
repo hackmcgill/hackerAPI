@@ -22,8 +22,8 @@ const Model = {
  * @description Put relevent settings attributes into settingsDetails
  */
 function parsePatch(req, res, next) {
-    let parseSettingDetails = Services.ParsePatch.parsePatch(Model.Settings, "settingDetails");
-    return parseSettingDetails(req, res, next);
+    let parseSettingsDetails = Services.ParsePatch.parsePatch(Model.Settings, "settingsDetails");
+    return parseSettingsDetails(req, res, next);
 }
 
 /**
@@ -35,7 +35,7 @@ function parsePatch(req, res, next) {
  * @description Update settings object
  */
 async function updateSettings(req, res, next) {
-    const settings = await Services.Settings.updateSettings(req.body.settingDetails);
+    const settings = await Services.Settings.updateSettings(req.body.settingsDetails);
     if (!settings) {
         return next({
             status: 500,
@@ -62,7 +62,7 @@ async function getSettings(req, res, next) {
             message: Constants.Error.SETTINGS_404_MESSAGE
         });
     } else {
-        req.body.settingDetails = settings;
+        req.body.settingsDetails = settings;
         next();
     }
 }

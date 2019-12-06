@@ -10,7 +10,6 @@ const Success = require("../constants/success.constant");
  * @description Returns the JSON of role object located in req.body.role
  */
 function createdRole(req, res) {
-    console.log(req.body.role);
     return res.status(200).json({
         message: Success.ROLE_CREATE,
         data: req.body.role.toJSON(),

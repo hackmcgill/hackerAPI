@@ -204,7 +204,6 @@ module.exports = {
             Middleware.Validator.RouteParam.hackeridValidator,
             Middleware.parseBody.middleware,
             Middleware.Team.parsePatch,
-            Middleware.Team.addId,
             Middleware.Team.getTeamIdByHackerId,
             Middleware.Team.updateTeam,
 
