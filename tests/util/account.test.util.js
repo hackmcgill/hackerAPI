@@ -136,7 +136,8 @@ let hackerAccounts = {
         })
     },
     invalid: createNAccounts(10, {
-        accountType: Constants.HACKER
+        accountType: Constants.HACKER,
+        confirmed: true
     })
 };
 

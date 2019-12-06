@@ -14,6 +14,7 @@ function findById(id) {
     const query = {
         _id: id
     };
+    console.log(query);
 
     return Account.findById(
         query,

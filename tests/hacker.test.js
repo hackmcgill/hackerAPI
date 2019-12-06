@@ -28,7 +28,6 @@ const volunteerAccount0 = util.account.volunteerAccounts.stored[0];
 
 const newHackerAccount0 = util.account.hackerAccounts.new[0];
 const newHacker0 = util.hacker.newHacker0;
-const invalidHackerAccount0 = util.account.hackerAccounts.invalid[0];
 const invalidHacker0 = util.hacker.invalidHacker0;
 const newHacker1 = util.hacker.newHacker1;
 
@@ -40,10 +39,6 @@ const teamHackerAccount1 = util.account.hackerAccounts.stored.team[1];
 const TeamHacker0 = util.hacker.TeamHacker0;
 const TeamHacker1 = util.hacker.TeamHacker1;
 const duplicateAccountLinkHacker0 = util.hacker.duplicateAccountLinkHacker0;
-
-const unconfirmedHackerAccount1 =
-    util.account.hackerAccounts.stored.unconfirmed[0];
-const unconfirmedHackerAccount0 = util.hacker.unconfirmedAccountHacker0;
 
 const unconfirmedHacker1 = util.hacker.unconfirmedAccountHacker1;
 
@@ -430,7 +425,7 @@ describe("POST create hacker", function() {
 
     // should fail due to 'false' on code of conduct
     it("should FAIL if the new hacker does not accept code of conduct", function(done) {
-        util.auth.login(agent, Admin0, (error) => {
+        util.auth.login(agent, newHacker0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);
@@ -440,6 +435,7 @@ describe("POST create hacker", function() {
                 .type("application/json")
                 .send(invalidHacker0)
                 .end(function(err, res) {
+                    console.log(res.body.message);
                     res.should.have.status(422);
                     res.should.be.json;
                     res.body.should.have.property("message");

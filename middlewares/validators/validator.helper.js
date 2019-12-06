@@ -381,6 +381,7 @@ function applicationValidator(fieldLocation, fieldname, optional = true) {
         "invalid application"
     );
 
+    console.log("hi");
     //helper object to iterate through the items in the application and track which items are not valid.
     const hasValid = {
         school: false,
@@ -456,12 +457,14 @@ function applicationValidator(fieldLocation, fieldname, optional = true) {
                 hasValid.codeOfConduct_MLH = booleanValidator(
                     "body",
                     "application.other.codeOfConduct_MLH",
-                    false
+                    false,
+                    true
                 );
                 hasValid.codeOfConduct_MCHACKS = booleanValidator(
                     "body",
                     "appliction.other.codeOfConduct_MCHACKS",
-                    false
+                    false,
+                    true
                 );
                 const jobInterests = Constants.JOB_INTERESTS;
                 hasValid.github =
@@ -569,12 +572,14 @@ function applicationValidator(fieldLocation, fieldname, optional = true) {
                 hasValid.codeOfConduct_MLH = booleanValidator(
                     "body",
                     "application.other.codeOfConduct_MLH",
-                    false
+                    false,
+                    true
                 );
                 hasValid.codeOfConduct_MCHACKS = booleanValidator(
                     "body",
                     "appliction.other.codeOfConduct_MCHACKS",
-                    false
+                    false,
+                    true
                 );
                 const jobInterests = Constants.JOB_INTERESTS;
                 hasValid.github =
