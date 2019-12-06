@@ -65,7 +65,6 @@ function login(req, res, next) {
  */
 function ensureAuthenticated() {
     return function(req, res, next) {
-        console.log("are we here");
         if (req.isUnauthenticated()) {
             return next({
                 status: 401,

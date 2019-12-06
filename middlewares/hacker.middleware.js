@@ -144,7 +144,6 @@ async function validateConfirmedStatus(account, next) {
  * @param {(err?) => void} next
  */
 async function validateConfirmedStatusFromAccountId(req, res, next) {
-    console.log(req.body.accountId);
     const account = await Services.Account.findById(req.body.accountId);
     return validateConfirmedStatus(account, next);
 }
