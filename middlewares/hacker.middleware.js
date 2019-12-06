@@ -523,7 +523,6 @@ async function updateHacker(req, res, next) {
  * Creates hacker document after making sure there is no other hacker with the same linked accountId
  */
 async function createHacker(req, res, next) {
-  console.log("here we are");
   const hackerDetails = req.body.hackerDetails;
 
   const exists = await Services.Hacker.findByAccountId(hackerDetails.accountId);

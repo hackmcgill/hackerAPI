@@ -412,7 +412,7 @@ describe("POST create hacker", function() {
 
   // should fail due to 'false' on code of conduct
   it("should FAIL if the new hacker does not accept code of conduct", function(done) {
-    util.auth.login(agent, newHacker0, error => {
+    util.auth.login(agent, Admin0, error => {
       if (error) {
         agent.close();
         return done(error);
@@ -422,7 +422,6 @@ describe("POST create hacker", function() {
         .type("application/json")
         .send(invalidHacker0)
         .end(function(err, res) {
-          console.log(res.body);
           res.should.have.status(422);
           res.should.be.json;
           res.body.should.have.property("message");
