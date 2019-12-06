@@ -2,267 +2,266 @@
 const Constants = require("./general.constant");
 
 const authRoutes = {
-    "login": {
+    login: {
         requestType: Constants.REQUEST_TYPES.POST,
         uri: "/api/auth/login"
     },
-    "logout": {
+    logout: {
         requestType: Constants.REQUEST_TYPES.POST,
         uri: "/api/auth/logout"
     },
-    "getSelfRoleBindindings": {
+    getSelfRoleBindindings: {
         requestType: Constants.REQUEST_TYPES.GET,
         uri: "/api/auth/rolebindings/" + Constants.ROLE_CATEGORIES.SELF
     },
-    "getAnyRoleBindings": {
+    getAnyRoleBindings: {
         requestType: Constants.REQUEST_TYPES.GET,
         uri: "/api/auth/rolebindings/" + Constants.ROLE_CATEGORIES.ALL
     },
-    "changePassword": {
+    changePassword: {
         requestType: Constants.REQUEST_TYPES.PATCH,
         uri: "/api/auth/password/change"
-    },
+    }
 };
 
 const accountRoutes = {
-    "getSelf": {
+    getSelf: {
         requestType: Constants.REQUEST_TYPES.GET,
         uri: "/api/account/self"
     },
-    "getSelfById": {
+    getSelfById: {
         requestType: Constants.REQUEST_TYPES.GET,
-        uri: "/api/account/" + Constants.ROLE_CATEGORIES.SELF,
+        uri: "/api/account/" + Constants.ROLE_CATEGORIES.SELF
     },
-    "getAnyById": {
+    getAnyById: {
         requestType: Constants.REQUEST_TYPES.GET,
-        uri: "/api/account/" + Constants.ROLE_CATEGORIES.ALL,
+        uri: "/api/account/" + Constants.ROLE_CATEGORIES.ALL
     },
-    "post": {
+    post: {
         requestType: Constants.REQUEST_TYPES.POST,
         uri: "/api/account/"
     },
-    "patchSelfById": {
+    patchSelfById: {
         requestType: Constants.REQUEST_TYPES.PATCH,
-        uri: "/api/account/" + Constants.ROLE_CATEGORIES.SELF,
+        uri: "/api/account/" + Constants.ROLE_CATEGORIES.SELF
     },
-    "patchAnyById": {
+    patchAnyById: {
         requestType: Constants.REQUEST_TYPES.PATCH,
-        uri: "/api/account/" + Constants.ROLE_CATEGORIES.ALL,
+        uri: "/api/account/" + Constants.ROLE_CATEGORIES.ALL
     },
-    "inviteAccount": {
+    inviteAccount: {
         requestType: Constants.REQUEST_TYPES.POST,
         uri: "/api/account/invite"
     }
 };
 
 const hackerRoutes = {
-    "getSelf": {
+    getSelf: {
         requestType: Constants.REQUEST_TYPES.GET,
-        uri: "/api/hacker/self/",
+        uri: "/api/hacker/self/"
     },
-    "getSelfById": {
+    getSelfById: {
         requestType: Constants.REQUEST_TYPES.GET,
-        uri: "/api/hacker/" + Constants.ROLE_CATEGORIES.SELF,
+        uri: "/api/hacker/" + Constants.ROLE_CATEGORIES.SELF
     },
-    "getAnyById": {
+    getAnyById: {
         requestType: Constants.REQUEST_TYPES.GET,
-        uri: "/api/hacker/" + Constants.ROLE_CATEGORIES.ALL,
+        uri: "/api/hacker/" + Constants.ROLE_CATEGORIES.ALL
     },
-    "getSelfByEmail": {
+    getSelfByEmail: {
         requestType: Constants.REQUEST_TYPES.GET,
-        uri: "/api/hacker/email/" + Constants.ROLE_CATEGORIES.SELF,
+        uri: "/api/hacker/email/" + Constants.ROLE_CATEGORIES.SELF
     },
-    "getAnyByEmail": {
+    getAnyByEmail: {
         requestType: Constants.REQUEST_TYPES.GET,
-        uri: "/api/hacker/email/" + Constants.ROLE_CATEGORIES.ALL,
+        uri: "/api/hacker/email/" + Constants.ROLE_CATEGORIES.ALL
     },
-    "getSelfResumeById": {
+    getSelfResumeById: {
         requestType: Constants.REQUEST_TYPES.GET,
-        uri: "/api/hacker/resume/" + Constants.ROLE_CATEGORIES.SELF,
+        uri: "/api/hacker/resume/" + Constants.ROLE_CATEGORIES.SELF
     },
-    "getAnyResumeById": {
+    getAnyResumeById: {
         requestType: Constants.REQUEST_TYPES.GET,
-        uri: "/api/hacker/resume/" + Constants.ROLE_CATEGORIES.ALL,
+        uri: "/api/hacker/resume/" + Constants.ROLE_CATEGORIES.ALL
     },
-    "post": {
+    post: {
         requestType: Constants.REQUEST_TYPES.POST,
-        uri: "/api/hacker/",
+        uri: "/api/hacker/"
     },
-    "postSelfResumeById": {
+    postSelfResumeById: {
         requestType: Constants.REQUEST_TYPES.POST,
-        uri: "/api/hacker/resume/" + Constants.ROLE_CATEGORIES.SELF,
+        uri: "/api/hacker/resume/" + Constants.ROLE_CATEGORIES.SELF
     },
-    "postAnyResumeById": {
+    postAnyResumeById: {
         requestType: Constants.REQUEST_TYPES.POST,
-        uri: "/api/hacker/resume/" + Constants.ROLE_CATEGORIES.ALL,
+        uri: "/api/hacker/resume/" + Constants.ROLE_CATEGORIES.ALL
     },
-    "patchSelfById": {
+    patchSelfById: {
         requestType: Constants.REQUEST_TYPES.PATCH,
-        uri: "/api/hacker/" + Constants.ROLE_CATEGORIES.SELF,
+        uri: "/api/hacker/" + Constants.ROLE_CATEGORIES.SELF
     },
-    "patchAnyById": {
+    patchAnyById: {
         requestType: Constants.REQUEST_TYPES.PATCH,
-        uri: "/api/hacker/" + Constants.ROLE_CATEGORIES.ALL,
+        uri: "/api/hacker/" + Constants.ROLE_CATEGORIES.ALL
     },
-    "patchAnyStatusById": {
+    patchAnyStatusById: {
         requestType: Constants.REQUEST_TYPES.PATCH,
-        uri: "/api/hacker/status/" + Constants.ROLE_CATEGORIES.ALL,
+        uri: "/api/hacker/status/" + Constants.ROLE_CATEGORIES.ALL
     },
-    "patchSelfStatusById": {
+    patchSelfStatusById: {
         requestType: Constants.REQUEST_TYPES.PATCH,
-        uri: "/api/hacker/status/" + Constants.ROLE_CATEGORIES.SELF,
+        uri: "/api/hacker/status/" + Constants.ROLE_CATEGORIES.SELF
     },
-    "patchSelfCheckInById": {
+    patchSelfCheckInById: {
         requestType: Constants.REQUEST_TYPES.PATCH,
-        uri: "/api/hacker/checkin/" + Constants.ROLE_CATEGORIES.SELF,
+        uri: "/api/hacker/checkin/" + Constants.ROLE_CATEGORIES.SELF
     },
-    "patchAnyCheckInById": {
+    patchAnyCheckInById: {
         requestType: Constants.REQUEST_TYPES.PATCH,
-        uri: "/api/hacker/checkin/" + Constants.ROLE_CATEGORIES.ALL,
+        uri: "/api/hacker/checkin/" + Constants.ROLE_CATEGORIES.ALL
     },
-    "patchSelfConfirmationById": {
+    patchSelfConfirmationById: {
         requestType: Constants.REQUEST_TYPES.PATCH,
-        uri: "/api/hacker/confirmation/" + Constants.ROLE_CATEGORIES.SELF,
+        uri: "/api/hacker/confirmation/" + Constants.ROLE_CATEGORIES.SELF
     },
-    "postAnySendWeekOfEmail": {
+    postAnySendWeekOfEmail: {
         requestType: Constants.REQUEST_TYPES.POST,
-        uri: "/api/hacker/email/weekOf/" + Constants.ROLE_CATEGORIES.ALL,
+        uri: "/api/hacker/email/weekOf/" + Constants.ROLE_CATEGORIES.ALL
     },
-    "postSelfSendWeekOfEmail": {
+    postSelfSendWeekOfEmail: {
         requestType: Constants.REQUEST_TYPES.POST,
-        uri: "/api/hacker/email/weekOf/" + Constants.ROLE_CATEGORIES.SELF,
+        uri: "/api/hacker/email/weekOf/" + Constants.ROLE_CATEGORIES.SELF
     },
-    "postAnySendDayOfEmail": {
+    postAnySendDayOfEmail: {
         requestType: Constants.REQUEST_TYPES.POST,
-        uri: "/api/hacker/email/dayOf/" + Constants.ROLE_CATEGORIES.ALL,
+        uri: "/api/hacker/email/dayOf/" + Constants.ROLE_CATEGORIES.ALL
     },
-    "postSelfSendDayOfEmail": {
+    postSelfSendDayOfEmail: {
         requestType: Constants.REQUEST_TYPES.POST,
-        uri: "/api/hacker/email/dayOf/" + Constants.ROLE_CATEGORIES.SELF,
-    },
+        uri: "/api/hacker/email/dayOf/" + Constants.ROLE_CATEGORIES.SELF
+    }
 };
 
 const sponsorRoutes = {
-    "getSelf": {
+    getSelf: {
         requestType: Constants.REQUEST_TYPES.GET,
-        uri: "/api/sponsor/self/",
+        uri: "/api/sponsor/self/"
     },
-    "getSelfById": {
+    getSelfById: {
         requestType: Constants.REQUEST_TYPES.GET,
-        uri: "/api/sponsor/" + Constants.ROLE_CATEGORIES.SELF,
+        uri: "/api/sponsor/" + Constants.ROLE_CATEGORIES.SELF
     },
-    "getAnyById": {
+    getAnyById: {
         requestType: Constants.REQUEST_TYPES.GET,
-        uri: "/api/sponsor/" + Constants.ROLE_CATEGORIES.ALL,
+        uri: "/api/sponsor/" + Constants.ROLE_CATEGORIES.ALL
     },
-    "post": {
+    post: {
         requestType: Constants.REQUEST_TYPES.POST,
-        uri: "/api/sponsor/",
+        uri: "/api/sponsor/"
     },
-    "patchSelfById": {
+    patchSelfById: {
         requestType: Constants.REQUEST_TYPES.PATCH,
-        uri: "/api/sponsor/" + Constants.ROLE_CATEGORIES.SELF,
+        uri: "/api/sponsor/" + Constants.ROLE_CATEGORIES.SELF
     },
-    "patchAnyById": {
+    patchAnyById: {
         requestType: Constants.REQUEST_TYPES.PATCH,
-        uri: "/api/sponsor/" + Constants.ROLE_CATEGORIES.ALL,
+        uri: "/api/sponsor/" + Constants.ROLE_CATEGORIES.ALL
     }
 };
 
 const teamRoutes = {
-    "get": {
+    get: {
         requestType: Constants.REQUEST_TYPES.GET,
-        uri: "/api/team/" + Constants.ROLE_CATEGORIES.ALL,
+        uri: "/api/team/" + Constants.ROLE_CATEGORIES.ALL
     },
-    "post": {
+    post: {
         requestType: Constants.REQUEST_TYPES.POST,
-        uri: "/api/team/",
+        uri: "/api/team/"
     },
-    "join": {
+    join: {
         requestType: Constants.REQUEST_TYPES.PATCH,
-        uri: "/api/team/join/",
+        uri: "/api/team/join/"
     },
-    "patchSelfById": {
+    patchSelfById: {
         requestType: Constants.REQUEST_TYPES.PATCH,
         uri: "/api/team/" + Constants.ROLE_CATEGORIES.SELF
     },
-    "patchAnyById": {
+    patchAnyById: {
         requestType: Constants.REQUEST_TYPES.PATCH,
         uri: "/api/team/" + Constants.ROLE_CATEGORIES.ALL
     },
-    "leave": {
+    leave: {
         requestType: Constants.REQUEST_TYPES.PATCH,
-        uri: "/api/team/leave/",
-    },
+        uri: "/api/team/leave/"
+    }
 };
 
 const volunteerRoutes = {
-    "getSelfById": {
+    getSelfById: {
         requestType: Constants.REQUEST_TYPES.GET,
-        uri: "/api/volunteer/" + Constants.ROLE_CATEGORIES.SELF,
+        uri: "/api/volunteer/" + Constants.ROLE_CATEGORIES.SELF
     },
-    "getAnyById": {
+    getAnyById: {
         requestType: Constants.REQUEST_TYPES.GET,
-        uri: "/api/volunteer/" + Constants.ROLE_CATEGORIES.ALL,
+        uri: "/api/volunteer/" + Constants.ROLE_CATEGORIES.ALL
     },
-    "post": {
+    post: {
         requestType: Constants.REQUEST_TYPES.POST,
-        uri: "/api/volunteer/",
-    },
+        uri: "/api/volunteer/"
+    }
 };
 
 const roleRoutes = {
-    "post": {
+    post: {
         requestType: Constants.REQUEST_TYPES.POST,
-        uri: "/api/role/",
+        uri: "/api/role/"
     }
 };
 
 const searchRoutes = {
-    "get": {
+    get: {
         requestType: Constants.REQUEST_TYPES.GET,
         uri: "/api/search/"
     }
 };
 
 const staffRoutes = {
-    "hackerStats": {
+    hackerStats: {
         requestType: Constants.REQUEST_TYPES.GET,
-        uri: "/api/hacker/stats",
+        uri: "/api/hacker/stats"
     },
-    "postInvite": {
+    postInvite: {
         requestType: Constants.REQUEST_TYPES.POST,
         uri: "/api/account/invite"
     },
-    "getInvite": {
+    getInvite: {
         requestType: Constants.REQUEST_TYPES.GET,
         uri: "/api/account/invite"
-    },
-
-}
+    }
+};
 
 const settingsRoutes = {
-    "getSettings": {
+    getSettings: {
         requestType: Constants.REQUEST_TYPES.GET,
         uri: "/api/settings"
     },
-    "patchSettings": {
+    patchSettings: {
         requestType: Constants.REQUEST_TYPES.PATCH,
         uri: "/api/settings"
-    },
-}
+    }
+};
 
 const allRoutes = {
-    "Auth": authRoutes,
-    "Account": accountRoutes,
-    "Hacker": hackerRoutes,
-    "Sponsor": sponsorRoutes,
-    "Team": teamRoutes,
-    "Volunteer": volunteerRoutes,
-    "Role": roleRoutes,
-    "Search": searchRoutes,
-    "Settings": settingsRoutes,
-    "Staff": staffRoutes,
+    Auth: authRoutes,
+    Account: accountRoutes,
+    Hacker: hackerRoutes,
+    Sponsor: sponsorRoutes,
+    Team: teamRoutes,
+    Volunteer: volunteerRoutes,
+    Role: roleRoutes,
+    Search: searchRoutes,
+    Settings: settingsRoutes,
+    Staff: staffRoutes
 };
 
 /**
@@ -303,5 +302,5 @@ module.exports = {
     settingsRoutes: settingsRoutes,
     staffRoutes: staffRoutes,
     allRoutes: allRoutes,
-    listAllRoutes: listAllRoutes,
+    listAllRoutes: listAllRoutes
 };

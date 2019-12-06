@@ -5,27 +5,25 @@ const settingRegistrationNotYetOpen = {
     openTime: new Date(Date.now() + 100000000000),
     closeTime: new Date(Date.now() + 10000000000000000),
     confirmTime: new Date(Date.now() + 100000000000000000)
-}
-
+};
 
 const settingRegistrationOpen = {
     openTime: new Date(Date.now() - 100),
     closeTime: new Date(Date.now() + 10000000000),
     confirmTime: new Date(Date.now() + 100000000000000)
-}
+};
 
 const settingRegistrationClosed = {
     openTime: new Date(Date.now() - 100),
     closeTime: new Date(Date.now() - 1000),
     confirmTime: new Date(Date.now() + 100000000000000)
-}
+};
 
 const settingConfirmClosed = {
     openTime: new Date(Date.now() - 10000),
     closeTime: new Date(Date.now() - 1000),
     confirmTime: new Date(Date.now() - 100)
-}
-
+};
 
 async function storeAll() {
     const toStore = new Settings(settingRegistrationClosed);
@@ -48,5 +46,5 @@ module.exports = {
     settingRegistrationNotYetOpen: settingRegistrationNotYetOpen,
     settingRegistrationOpen: settingRegistrationOpen,
     settingRegistrationClosed: settingRegistrationClosed,
-    settingConfirmClosed: settingConfirmClosed,
-}
+    settingConfirmClosed: settingConfirmClosed
+};

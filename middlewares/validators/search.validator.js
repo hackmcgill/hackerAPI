@@ -10,5 +10,5 @@ module.exports = {
         VALIDATOR.searchSortValidator("query", "sort_by"),
         VALIDATOR.booleanValidator("query", "expand", true),
         VALIDATOR.searchValidator("query", "q")
-    ],
+    ]
 };

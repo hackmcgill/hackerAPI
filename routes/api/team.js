@@ -103,7 +103,9 @@ module.exports = {
          *          "data": {}
          *      }
          */
-        teamRouter.route("/leave").patch(
+        teamRouter
+            .route("/leave")
+            .patch(
                 Middleware.Auth.ensureAuthenticated(),
                 Middleware.Auth.ensureAuthorized(),
                 Middleware.Team.deleteUserFromTeam,
@@ -154,7 +156,7 @@ module.exports = {
             // is /api/team/:all, so the id is not checked. The returned object places the id inside accountId
             // to be consistent with other findById functions
             Middleware.Auth.ensureAuthorized([
-                id => {
+                (id) => {
                     return {
                         accountId: id
                     };

@@ -6,20 +6,18 @@ const Bus = require("../../models/bus.model");
 const logger = require("../../services/logger.service");
 
 const Bus1 = {
-    "origin": {
-        "country": "Country1",
-        "provinceOrState": "Province2",
-        "zip": "123456",
-        "city": "City1",
-        "addr1": "addr1-1",
-        "addr2": "addr2-1"
+    origin: {
+        country: "Country1",
+        provinceOrState: "Province2",
+        zip: "123456",
+        city: "City1",
+        addr1: "addr1-1",
+        addr2: "addr2-1"
     },
-    "capacity": 10,
-    "hackers": [Util.Hacker.TeamHacker0._id]
+    capacity: 10,
+    hackers: [Util.Hacker.TeamHacker0._id]
 };
-const Busses = [
-    Bus1,
-];
+const Busses = [Bus1];
 
 module.exports = {
     Bus1: Bus1,

@@ -45,10 +45,9 @@ module.exports = {
          * 
          * @apiPermission: public
          */
-        authRouter.route("/login").post(
-            Middleware.Auth.login,
-            Controllers.Auth.onSuccessfulLogin
-        );
+        authRouter
+            .route("/login")
+            .post(Middleware.Auth.login, Controllers.Auth.onSuccessfulLogin);
 
         /**
          * @api {get} /auth/logout logout of service
@@ -189,13 +188,15 @@ module.exports = {
          *      {"message": "Invalid token for confirming account, "data": {}}
          *
          */
-        authRouter.route("/confirm/:token").post(
+        authRouter
+            .route("/confirm/:token")
+            .post(
                 Middleware.Validator.Auth.accountConfirmationValidator,
                 Middleware.parseBody.middleware,
                 Middleware.Auth.parseAccountConfirmationToken,
                 Middleware.Auth.validateConfirmationToken,
                 Controllers.Auth.confirmAccount
-        );
+            );
 
         /**
          * @api {get} /auth/rolebindings/:id retrieve rolebindings for a user given by their user id :id
@@ -239,14 +240,16 @@ module.exports = {
          *      {"message": "Role Bindings not found", "data": {}}
          * 
          */
-        authRouter.route("/rolebindings/:id").get(
+        authRouter
+            .route("/rolebindings/:id")
+            .get(
                 Middleware.Validator.RouteParam.idValidator,
                 Middleware.Auth.ensureAuthenticated(),
                 Middleware.Auth.ensureAuthorized([Services.Account.findById]),
                 Middleware.parseBody.middleware,
                 Middleware.Auth.retrieveRoleBindings,
                 Controllers.Auth.retrieveRoleBindings
-        );
+            );
 
         /**
          * @api {get} /auth/confirm/resend resend confirmation token
@@ -272,11 +275,13 @@ module.exports = {
          *      {"message": "Account confirmation token does not exist", "data": {}}
          *
          */
-        authRouter.route("/confirm/resend").get(
+        authRouter
+            .route("/confirm/resend")
+            .get(
                 Middleware.Auth.ensureAuthenticated(),
                 Middleware.Auth.resendConfirmAccountEmail,
                 Controllers.Auth.sentConfirmationEmail
-        );
+            );
 
         /**
          * @api {get} /auth/roles get roles
@@ -294,10 +299,12 @@ module.exports = {
          *       {name: "Volunteer", routes: Array(4), id: "5bee20ef3ca9dd4754382882"}]
          *
          */
-        authRouter.route("/roles").get(
+        authRouter
+            .route("/roles")
+            .get(
                 Middleware.Auth.retrieveRoles,
                 Controllers.Auth.retrievedRoles
-        );
+            );
 
         apiRouter.use("/auth", authRouter);
     }

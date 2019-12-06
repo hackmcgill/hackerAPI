@@ -23,7 +23,7 @@ const Services = {
 const CONSTANTS = require("../../constants/general.constant");
 
 module.exports = {
-    activate: function (apiRouter) {
+    activate: function(apiRouter) {
         const hackerRouter = express.Router();
 
         /**
@@ -204,17 +204,19 @@ module.exports = {
          *      }
          * 
          */
-        hackerRouter.route("/stats").get(
-            Middleware.Auth.ensureAuthenticated(),
-            Middleware.Auth.ensureAuthorized(),
-            Middleware.Validator.Hacker.statsValidator,
-            Middleware.parseBody.middleware,
-            Middleware.Search.setExpandTrue,
-            Middleware.Search.parseQuery,
-            Middleware.Search.executeQuery,
-            Middleware.Hacker.getStats,
-            Controllers.Hacker.gotStats
-        );
+        hackerRouter
+            .route("/stats")
+            .get(
+                Middleware.Auth.ensureAuthenticated(),
+                Middleware.Auth.ensureAuthorized(),
+                Middleware.Validator.Hacker.statsValidator,
+                Middleware.parseBody.middleware,
+                Middleware.Search.setExpandTrue,
+                Middleware.Search.parseQuery,
+                Middleware.Search.executeQuery,
+                Middleware.Hacker.getStats,
+                Controllers.Hacker.gotStats
+            );
 
         /**
          * @api {patch} /hacker/status/:id update a hacker's status
@@ -481,7 +483,8 @@ module.exports = {
             Controllers.Hacker.showHacker
         );
 
-        hackerRouter.route("/resume/:id")
+        hackerRouter
+            .route("/resume/:id")
             /**
              * @api {post} /hacker/resume/:id upload or update resume for a hacker.
              * @apiName postHackerResume
@@ -667,13 +670,13 @@ module.exports = {
          * @apiName postHackerSendWeekOfEmail
          * @apiGroup Hacker
          * @apiVersion 0.0.9
-         * 
+         *
          * @apiParam (param) {string} [status] The hacker ID
          * @apiSuccess {string} message Success message
          * @apiSuccess {object} data empty
-         * @apiSuccessExample {object} Success-Response: 
+         * @apiSuccessExample {object} Success-Response:
          *      {
-         *          "message": "Hacker week-of email sent.", 
+         *          "message": "Hacker week-of email sent.",
          *          "data": {}
          *      }
          * @apiPermission Administrator

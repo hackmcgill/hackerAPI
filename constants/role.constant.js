@@ -1,14 +1,14 @@
 "use strict";
 const Constants = {
     General: require("./general.constant"),
-    Routes: require("./routes.constant"),
+    Routes: require("./routes.constant")
 };
 const mongoose = require("mongoose");
 
 const accountRole = {
-    "_id": mongoose.Types.ObjectId("00000000e285ec4f6ec7e5c2"),
-    "name": "account",
-    "routes": [
+    _id: mongoose.Types.ObjectId("00000000e285ec4f6ec7e5c2"),
+    name: "account",
+    routes: [
         Constants.Routes.authRoutes.login,
         Constants.Routes.authRoutes.logout,
         Constants.Routes.authRoutes.changePassword,
@@ -16,20 +16,20 @@ const accountRole = {
         Constants.Routes.accountRoutes.getSelf,
         Constants.Routes.accountRoutes.getSelfById,
         Constants.Routes.accountRoutes.patchSelfById,
-        Constants.Routes.settingsRoutes.getSettings,
+        Constants.Routes.settingsRoutes.getSettings
     ]
 };
 
 const adminRole = {
-    "_id": mongoose.Types.ObjectId.createFromTime(1),
-    "name": Constants.General.STAFF,
-    "routes": Constants.Routes.listAllRoutes(),
+    _id: mongoose.Types.ObjectId.createFromTime(1),
+    name: Constants.General.STAFF,
+    routes: Constants.Routes.listAllRoutes()
 };
 
 const hackerRole = {
-    "_id": mongoose.Types.ObjectId.createFromTime(2),
-    "name": Constants.General.HACKER,
-    "routes": [
+    _id: mongoose.Types.ObjectId.createFromTime(2),
+    name: Constants.General.HACKER,
+    routes: [
         Constants.Routes.hackerRoutes.post,
         Constants.Routes.hackerRoutes.getSelfById,
         Constants.Routes.hackerRoutes.getSelfByEmail,
@@ -47,9 +47,9 @@ const hackerRole = {
 };
 
 const volunteerRole = {
-    "_id": mongoose.Types.ObjectId.createFromTime(3),
-    "name": Constants.General.VOLUNTEER,
-    "routes": [
+    _id: mongoose.Types.ObjectId.createFromTime(3),
+    name: Constants.General.VOLUNTEER,
+    routes: [
         Constants.Routes.volunteerRoutes.getSelfById,
         Constants.Routes.volunteerRoutes.post,
 
@@ -61,9 +61,9 @@ const volunteerRole = {
 };
 
 const sponsorT1Role = {
-    "_id": mongoose.Types.ObjectId.createFromTime(4),
-    "name": Constants.General.SPONSOR_T1,
-    "routes": [
+    _id: mongoose.Types.ObjectId.createFromTime(4),
+    name: Constants.General.SPONSOR_T1,
+    routes: [
         Constants.Routes.sponsorRoutes.post,
         Constants.Routes.sponsorRoutes.getSelfById,
         Constants.Routes.sponsorRoutes.getSelf,
@@ -71,14 +71,14 @@ const sponsorT1Role = {
 
         Constants.Routes.searchRoutes.get,
         Constants.Routes.accountRoutes.getAnyById,
-        Constants.Routes.hackerRoutes.getAnyById,
+        Constants.Routes.hackerRoutes.getAnyById
     ]
 };
 
 const sponsorT2Role = {
-    "_id": mongoose.Types.ObjectId.createFromTime(5),
-    "name": Constants.General.SPONSOR_T2,
-    "routes": [
+    _id: mongoose.Types.ObjectId.createFromTime(5),
+    name: Constants.General.SPONSOR_T2,
+    routes: [
         Constants.Routes.sponsorRoutes.post,
         Constants.Routes.sponsorRoutes.getSelfById,
         Constants.Routes.sponsorRoutes.getSelf,
@@ -86,14 +86,14 @@ const sponsorT2Role = {
 
         Constants.Routes.searchRoutes.get,
         Constants.Routes.accountRoutes.getAnyById,
-        Constants.Routes.hackerRoutes.getAnyById,
+        Constants.Routes.hackerRoutes.getAnyById
     ]
 };
 
 const sponsorT3Role = {
-    "_id": mongoose.Types.ObjectId.createFromTime(6),
-    "name": Constants.General.SPONSOR_T3,
-    "routes": [
+    _id: mongoose.Types.ObjectId.createFromTime(6),
+    name: Constants.General.SPONSOR_T3,
+    routes: [
         Constants.Routes.sponsorRoutes.post,
         Constants.Routes.sponsorRoutes.getSelfById,
         Constants.Routes.sponsorRoutes.getSelf,
@@ -101,14 +101,14 @@ const sponsorT3Role = {
 
         Constants.Routes.searchRoutes.get,
         Constants.Routes.accountRoutes.getAnyById,
-        Constants.Routes.hackerRoutes.getAnyById,
+        Constants.Routes.hackerRoutes.getAnyById
     ]
 };
 
 const sponsorT4Role = {
-    "_id": mongoose.Types.ObjectId.createFromTime(7),
-    "name": Constants.General.SPONSOR_T4,
-    "routes": [
+    _id: mongoose.Types.ObjectId.createFromTime(7),
+    name: Constants.General.SPONSOR_T4,
+    routes: [
         Constants.Routes.sponsorRoutes.post,
         Constants.Routes.sponsorRoutes.getSelfById,
         Constants.Routes.sponsorRoutes.getSelf,
@@ -116,14 +116,14 @@ const sponsorT4Role = {
 
         Constants.Routes.searchRoutes.get,
         Constants.Routes.accountRoutes.getAnyById,
-        Constants.Routes.hackerRoutes.getAnyById,
+        Constants.Routes.hackerRoutes.getAnyById
     ]
 };
 
 const sponsorT5Role = {
-    "_id": mongoose.Types.ObjectId.createFromTime(8),
-    "name": Constants.General.SPONSOR_T5,
-    "routes": [
+    _id: mongoose.Types.ObjectId.createFromTime(8),
+    name: Constants.General.SPONSOR_T5,
+    routes: [
         Constants.Routes.sponsorRoutes.post,
         Constants.Routes.sponsorRoutes.getSelfById,
         Constants.Routes.sponsorRoutes.getSelf,
@@ -131,7 +131,7 @@ const sponsorT5Role = {
 
         Constants.Routes.searchRoutes.get,
         Constants.Routes.accountRoutes.getAnyById,
-        Constants.Routes.hackerRoutes.getAnyById,
+        Constants.Routes.hackerRoutes.getAnyById
     ]
 };
 
@@ -150,7 +150,6 @@ function createAllSingularRoles() {
     // i is unique integer so that objectId is constant
     var i = 1000000;
     for (let routeGroupKey in allRoutes) {
-
         if (!allRoutes.hasOwnProperty(routeGroupKey)) {
             continue;
         }
@@ -164,7 +163,7 @@ function createAllSingularRoles() {
             let role = {
                 _id: mongoose.Types.ObjectId(i),
                 name: routeKey + routeGroupKey,
-                routes: routeGroup[routeKey],
+                routes: routeGroup[routeKey]
             };
             let roleName = role.name;
             roles[roleName] = role;
@@ -189,7 +188,7 @@ function createAllRoles() {
         sponsorT2Role: sponsorT2Role,
         sponsorT3Role: sponsorT3Role,
         sponsorT4Role: sponsorT4Role,
-        sponsorT5Role: sponsorT5Role,
+        sponsorT5Role: sponsorT5Role
     };
 
     const singularRoles = createAllSingularRoles();
@@ -218,5 +217,5 @@ module.exports = {
     allRolesObject: allRolesObject,
     allRolesArray: allRolesArray,
     createAllSingularRoles: createAllSingularRoles,
-    createAllRoles: createAllRoles,
+    createAllRoles: createAllRoles
 };

@@ -6,7 +6,7 @@ const Services = {
 const Util = require("../middlewares/util.middleware");
 const Constants = {
     Success: require("../constants/success.constant"),
-    Error: require("../constants/error.constant"),
+    Error: require("../constants/error.constant")
 };
 
 /**
@@ -54,5 +54,5 @@ function updatedSponsor(req, res) {
 module.exports = {
     createdSponsor: createdSponsor,
     showSponsor: showSponsor,
-    updatedSponsor: updatedSponsor,
+    updatedSponsor: updatedSponsor
 };
