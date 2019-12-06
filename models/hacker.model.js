@@ -44,7 +44,8 @@ const HackerSchema = new mongoose.Schema({
       URL: {
         //gcloud bucket link
         resume: {
-          type: String
+          type: String,
+          default: ""
         },
         github: {
           type: String

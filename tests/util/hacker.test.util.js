@@ -317,7 +317,6 @@ const newHacker1 = {
 
 // duplicate of newHack0, but with false for code of conduct
 const invalidHacker0 = {
-  _id: mongoose.Types.ObjectId(),
   accountId: Util.Account.hackerAccounts.invalid[0]._id,
   application: {
     general: {
@@ -363,7 +362,7 @@ const invalidHacker1 = {
       // invalid missing school attribute
       degree: "Undersaduate",
       fieldOfStudy: ["EE"],
-      graduationYear: 2019,
+      graduationYear: 2020,
       // invalid job interest
       jobInterest: "ASDF",
       URL: {
@@ -394,7 +393,7 @@ const duplicateAccountLinkHacker0 = {
   application: {
     general: {
       school: "University of Blah",
-      degree: "Masters",
+      degree: "Undergraduate",
       fieldOfStudy: ["CS"],
       graduationYear: 2019,
       jobInterest: "Full-time",

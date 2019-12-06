@@ -412,7 +412,7 @@ describe("POST create hacker", function() {
 
   // should fail due to 'false' on code of conduct
   it("should FAIL if the new hacker does not accept code of conduct", function(done) {
-    util.auth.login(agent, Admin0, error => {
+    util.auth.login(agent, newHacker0, error => {
       if (error) {
         agent.close();
         return done(error);

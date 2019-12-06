@@ -248,7 +248,7 @@ function ensureAccountLinkedToHacker(req, res, next) {
  * @param {(err?)=>void} next
  */
 async function uploadResume(req, res, next) {
-  const gcfilename = `resume/${Date.now()}-${req.hacker.id}`;
+  const gcfilename = `resumes/${Date.now()}-${req.hacker.id}`;
   await Services.Storage.upload(req.file, gcfilename);
   req.body.gcfilename = gcfilename;
   await Services.Hacker.updateOne(req.hacker.id, {

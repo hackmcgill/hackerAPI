@@ -64,7 +64,7 @@ function downloadedResume(req, res) {
     message: Constants.Success.RESUME_DOWNLOAD,
     data: {
       id: req.body.id,
-      resume: req.body.gcfilename
+      resume: req.body.resume
     }
   });
 }
