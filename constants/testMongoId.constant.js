@@ -13,7 +13,7 @@ const hackerDId = mongoose.Types.ObjectId();
 const hackerEId = mongoose.Types.ObjectId();
 const hackerFId = mongoose.Types.ObjectId();
 const hackerGId = mongoose.Types.ObjectId();
-
+const hackerHId = mongoose.Types.ObjectId();
 
 module.exports = {
     team1Id: team1Id,
@@ -26,4 +26,5 @@ module.exports = {
     hackerEId: hackerEId,
     hackerFId: hackerFId,
     hackerGId: hackerGId,
+    hackerHId: hackerHId
 };

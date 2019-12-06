@@ -16,7 +16,7 @@ const Middleware = {
 };
 
 module.exports = {
-    activate: function (apiRouter) {
+    activate: function(apiRouter) {
         const searchRouter = new express.Router();
 
         /**
@@ -57,15 +57,17 @@ module.exports = {
          * @apiErrorExample {object} Error-Response:
          *      {"message": "Validation failed", "data": {}}
          */
-        searchRouter.route("/").get(
-            Middleware.Auth.ensureAuthenticated(),
-            Middleware.Auth.ensureAuthorized(),
-            Middleware.Validator.Search.searchQueryValidator,
-            Middleware.parseBody.middleware,
-            Middleware.Search.parseQuery,
-            Middleware.Search.executeQuery,
-            Controllers.Search.searchResults
-        );
+        searchRouter
+            .route("/")
+            .get(
+                Middleware.Auth.ensureAuthenticated(),
+                Middleware.Auth.ensureAuthorized(),
+                Middleware.Validator.Search.searchQueryValidator,
+                Middleware.parseBody.middleware,
+                Middleware.Search.parseQuery,
+                Middleware.Search.executeQuery,
+                Controllers.Search.searchResults
+            );
 
         apiRouter.use("/search", searchRouter);
     }

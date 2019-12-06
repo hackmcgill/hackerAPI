@@ -1,7 +1,7 @@
 "use strict";
 const Constants = {
     Success: require("../constants/success.constant"),
-    Error: require("../constants/error.constant"),
+    Error: require("../constants/error.constant")
 };
 
 /**
@@ -37,7 +37,7 @@ function createdHacker(req, res) {
  * @param {{params: {id: ObjectId}, body: {Object}}} req
  * @param {*} res
  * @return {JSON} Success or error status
- * @description 
+ * @description
  *      Change a hacker's information based on the hacker's mongoID specified in req.params.id.
  *      The id is moved to req.body.id from req.params.id by validation.
  *      Returns a 200 status for an updated hacker.
@@ -73,10 +73,9 @@ function gotStats(req, res) {
     return res.status(200).json({
         message: "Retrieved stats",
         data: {
-            stats: req.body.stats,
+            stats: req.body.stats
         }
     });
-
 }
 
 function sentWeekOfEmail(req, res) {

@@ -19,7 +19,7 @@ module.exports = {
     ],
 
     updateConfirmationValidator: [
-        VALIDATOR.booleanValidator("body", "confirm", false),
+        VALIDATOR.booleanValidator("body", "confirm", false)
     ],
 
     updateHackerValidator: [
@@ -30,20 +30,26 @@ module.exports = {
         VALIDATOR.applicationValidator("body", "application", true),
         VALIDATOR.alphaArrayValidator("body", "ethnicity", true),
         VALIDATOR.alphaArrayValidator("body", "major", true),
-        VALIDATOR.integerValidator("body", "graduationYear", true, 2019, 2030),
+        VALIDATOR.integerValidator("body", "graduationYear", true, 2019, 2030)
     ],
     updateStatusValidator: [
-        VALIDATOR.enumValidator("body", "status", Constants.HACKER_STATUSES, false),
+        VALIDATOR.enumValidator(
+            "body",
+            "status",
+            Constants.HACKER_STATUSES,
+            false
+        )
     ],
     checkInStatusValidator: [
-        VALIDATOR.enumValidator("body", "status", Constants.HACKER_STATUS_CHECKED_IN, false)
+        VALIDATOR.enumValidator(
+            "body",
+            "status",
+            Constants.HACKER_STATUS_CHECKED_IN,
+            false
+        )
     ],
-    uploadResumeValidator: [
-        VALIDATOR.mongoIdValidator("param", "id", false)
-    ],
-    downloadResumeValidator: [
-        VALIDATOR.mongoIdValidator("param", "id", false)
-    ],
+    uploadResumeValidator: [VALIDATOR.mongoIdValidator("param", "id", false)],
+    downloadResumeValidator: [VALIDATOR.mongoIdValidator("param", "id", false)],
     statsValidator: [
         VALIDATOR.searchModelValidator("query", "model", false),
         VALIDATOR.searchValidator("query", "q")

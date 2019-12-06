@@ -19,36 +19,42 @@ const Util = {
 const logger = require("../services/logger.service");
 
 //make sure that we are connected to the database
-before(function (done) {
+before(function(done) {
     this.timeout(60000);
 
     server.app.on("event:connected to db", () => {
         /**
-         * Give the database time to create an index on existing schemas before we delete them. 
+         * Give the database time to create an index on existing schemas before we delete them.
          * Hacky way to get around a new error.
          */
         setTimeout(() => {
-            dropAll().then(done).catch(done);
+            dropAll()
+                .then(done)
+                .catch(done);
         }, 1000);
     });
 });
 
-beforeEach(function (done) {
+beforeEach(function(done) {
     this.timeout(60000);
-    storeAll().then(() => {
-        done();
-    }).catch((error) => {
-        done(error);
-    });
+    storeAll()
+        .then(() => {
+            done();
+        })
+        .catch((error) => {
+            done(error);
+        });
 });
 
-afterEach(function (done) {
+afterEach(function(done) {
     this.timeout(60000);
-    dropAll().then(() => {
-        done();
-    }).catch((error) => {
-        done(error);
-    });
+    dropAll()
+        .then(() => {
+            done();
+        })
+        .catch((error) => {
+            done(error);
+        });
 });
 async function storeAll() {
     await Util.Account.storeAll();

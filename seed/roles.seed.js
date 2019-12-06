@@ -33,5 +33,5 @@ function storeAll(attributes) {
 
 module.exports = {
     storeAll: storeAll,
-    dropAll: dropAll,
+    dropAll: dropAll
 };

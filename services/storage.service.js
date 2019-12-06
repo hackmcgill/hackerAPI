@@ -1,6 +1,6 @@
 "use strict";
 // Imports the Google Cloud client library
-const GStorage = require('@google-cloud/storage');
+const GStorage = require("@google-cloud/storage");
 const Logger = require("./logger.service");
 class StorageService {
     constructor() {
@@ -14,7 +14,7 @@ class StorageService {
     }
 
     /**
-     * Upload a file to storage. 
+     * Upload a file to storage.
      * @param {{mimetype:string,buffer:Buffer}} file Multer file object
      * @param {string} gcfilename the location in the bucket that you want the file stored.
      * @returns {Promise<string>} the address of the file that was uploaded
@@ -28,7 +28,7 @@ class StorageService {
             resumable: false
         });
         const _this = this;
-        return new Promise(function (resolve, reject) {
+        return new Promise(function(resolve, reject) {
             blobStream.on("finish", () => {
                 resolve(_this.getPublicUrl(gcfilename));
             });
@@ -59,7 +59,7 @@ class StorageService {
     /**
      * Delete a file
      * @param {*} filename the file that you want to delete
-     * @returns {Promise<[ApiResponse]>} 
+     * @returns {Promise<[ApiResponse]>}
      */
     delete(filename) {
         const file = this.bucket.file(filename);
@@ -67,9 +67,9 @@ class StorageService {
     }
 
     /**
-     * 
+     *
      * @param {*} filename the file that you want to check exists
-     * @returns {Promise<[Boolean]>} 
+     * @returns {Promise<[Boolean]>}
      */
     exists(filename) {
         const file = this.bucket.file(filename);

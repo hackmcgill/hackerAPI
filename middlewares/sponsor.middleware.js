@@ -10,7 +10,7 @@ const Middleware = {
 };
 const Constants = {
     General: require("../constants/general.constant"),
-    Error: require("../constants/error.constant"),
+    Error: require("../constants/error.constant")
 };
 const Model = {
     Sponsor: require("../models/sponsor.model")
@@ -18,9 +18,9 @@ const Model = {
 
 /**
  * @function parsePatch
- * @param {body: {id: ObjectId}} req 
- * @param {*} res 
- * @param {(err?) => void} next 
+ * @param {body: {id: ObjectId}} req
+ * @param {*} res
+ * @param {(err?) => void} next
  * @return {void}
  * @description Put relevent sponsor attributes into sponsorDetails
  */
@@ -35,14 +35,16 @@ function parsePatch(req, res, next) {
  * @param {JSON} res
  * @param {(err?)=>void} next
  * @return {void}
- * @description 
+ * @description
  * Moves accountId, tier, company, contractURL, nominees from req.body to req.body.sponsorDetails.
  * Adds _id to sponsorDetails.
  */
 function parseSponsor(req, res, next) {
+
     let parseSponsorDetails = Services.ParsePatch.parsePatch(Model.Sponsor, "sponsorDetails")
     return parseSponsorDetails(req, res, next);
 }
+
 
 
 function addId(req, res, next) {
@@ -53,9 +55,9 @@ function addId(req, res, next) {
 
 /**
  * Verifies that account is confirmed and of proper type from the account ID passed in req.body.accountId
- * @param {{body: {accountId: ObjectId}}} req 
- * @param {*} res 
- * @param {(err?) => void} next 
+ * @param {{body: {accountId: ObjectId}}} req
+ * @param {*} res
+ * @param {(err?) => void} next
  */
 async function validateConfirmedStatus(req, res, next) {
     const account = await Services.Account.findById(req.body.accountId);
@@ -75,7 +77,7 @@ async function validateConfirmedStatus(req, res, next) {
     } else if (!account.isSponsor()) {
         return next({
             status: 409,
-            message: Constants.Error.ACCOUNT_TYPE_409_MESSAGE,
+            message: Constants.Error.ACCOUNT_TYPE_409_MESSAGE
         });
     } else {
         return next();
@@ -84,9 +86,9 @@ async function validateConfirmedStatus(req, res, next) {
 
 /**
  * Finds the sponsor information of the logged in user
- * @param {{user: {id: string, accountType: string}}} req 
- * @param {*} res 
- * @param {(err?)=>void} next 
+ * @param {{user: {id: string, accountType: string}}} req
+ * @param {*} res
+ * @param {(err?)=>void} next
  */
 async function findSelf(req, res, next) {
     if (!Constants.General.SPONSOR_TIERS.includes(req.user.accountType)) {
@@ -101,7 +103,7 @@ async function findSelf(req, res, next) {
 
     const sponsor = await Services.Sponsor.findByAccountId(req.user.id);
 
-    if (!!sponsor) {
+    if (sponsor) {
         req.body.sponsor = sponsor;
         return next();
     } else {
@@ -152,7 +154,7 @@ async function createSponsor(req, res, next) {
 
     const sponsor = await Services.Sponsor.createSponsor(sponsorDetails);
 
-    if (!!sponsor) {
+    if (sponsor) {
         req.body.sponsor = sponsor;
         return next();
     } else {
@@ -167,17 +169,20 @@ async function createSponsor(req, res, next) {
 /**
  * @async
  * @function updateSponsor
- * @param {{body: {id: ObjectId, sponsorDetails: {company?: string, contractURL?: string, nominees?: ObjectId[]}}}}  req 
- * @param {*} res 
- * @param {(err?)=>void} next 
+ * @param {{body: {id: ObjectId, sponsorDetails: {company?: string, contractURL?: string, nominees?: ObjectId[]}}}}  req
+ * @param {*} res
+ * @param {(err?)=>void} next
  * @description Updates a sponsor specified by req.body.id with information specified in req.body.sponsorDetails.
  */
 async function updateSponsor(req, res, next) {
     const sponsorDetails = req.body.sponsorDetails;
 
-    const sponsor = await Services.Sponsor.updateOne(req.body.id, sponsorDetails);
+    const sponsor = await Services.Sponsor.updateOne(
+        req.body.id,
+        sponsorDetails
+    );
 
-    if (!!sponsor) {
+    if (sponsor) {
         req.body.sponsor = sponsor;
         return next();
     } else {
@@ -191,8 +196,8 @@ async function updateSponsor(req, res, next) {
 
 /**
  * Checks that there are no other sponsor with the same account id as the one passed into req.body.accountId
- * @param {{body:{accountId: ObjectId}}} req 
- * @param {*} res 
+ * @param {{body:{accountId: ObjectId}}} req
+ * @param {*} res
  * @param {*} next
  */
 async function checkDuplicateAccountLinks(req, res, next) {
@@ -217,7 +222,11 @@ module.exports = {
     findSelf: Middleware.Util.asyncMiddleware(findSelf),
     findById: Middleware.Util.asyncMiddleware(findById),
     createSponsor: Middleware.Util.asyncMiddleware(createSponsor),
-    checkDuplicateAccountLinks: Middleware.Util.asyncMiddleware(checkDuplicateAccountLinks),
-    validateConfirmedStatus: Middleware.Util.asyncMiddleware(validateConfirmedStatus),
-    updateSponsor: Middleware.Util.asyncMiddleware(updateSponsor),
+    checkDuplicateAccountLinks: Middleware.Util.asyncMiddleware(
+        checkDuplicateAccountLinks
+    ),
+    validateConfirmedStatus: Middleware.Util.asyncMiddleware(
+        validateConfirmedStatus
+    ),
+    updateSponsor: Middleware.Util.asyncMiddleware(updateSponsor)
 };

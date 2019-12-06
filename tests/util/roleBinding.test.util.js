@@ -1,7 +1,7 @@
 "use strict";
 const RoleBinding = require("../../models/roleBinding.model");
 const Util = {
-    Account: require("./account.test.util"),
+    Account: require("./account.test.util")
 };
 const Constants = {
     Role: require("../../constants/role.constant"),
@@ -59,8 +59,15 @@ function createRoleBindings(accounts) {
     return roleBindings;
 }
 
-const TeamHackerRB = createRoleBindings(Util.Account.hackerAccounts.stored.team);
-const NoTeamHackerRB = createRoleBindings(Util.Account.hackerAccounts.stored.noTeam);
+const TeamHackerRB = createRoleBindings(
+    Util.Account.hackerAccounts.stored.team
+);
+const NoTeamHackerRB = createRoleBindings(
+    Util.Account.hackerAccounts.stored.noTeam
+);
+const UnconfirmedHackerRB = createRoleBindings(
+    Util.Account.hackerAccounts.stored.unconfirmed
+);
 const VolunteerRB = createRoleBindings(Util.Account.volunteerAccounts.stored);
 const StaffRB = createRoleBindings(Util.Account.staffAccounts.stored);
 const SponsorT1RB = createRoleBindings(Util.Account.sponsorT1Accounts.stored);
@@ -81,7 +88,10 @@ const extraAccounts = [
     createRoleBinding(Util.Account.NonConfirmedAccount1._id),
     createRoleBinding(Util.Account.NonConfirmedAccount2._id),
     createRoleBinding(Util.Account.NonConfirmedAccount3._id),
-    createRoleBinding(Util.Account.waitlistedHacker0._id, Constants.General.HACKER),
+    createRoleBinding(
+        Util.Account.waitlistedHacker0._id,
+        Constants.General.HACKER
+    )
 ];
 
 function store(attributes) {
@@ -98,6 +108,7 @@ function store(attributes) {
 async function storeAll() {
     await store(TeamHackerRB);
     await store(NoTeamHackerRB);
+    await store(UnconfirmedHackerRB);
     await store(VolunteerRB);
     await store(StaffRB);
     await store(SponsorT1RB);
@@ -132,6 +143,7 @@ async function dropAll() {
 module.exports = {
     TeamHackerRB: TeamHackerRB,
     NoTeamHackerRB: NoTeamHackerRB,
+    UnconfirmedHackerRB: UnconfirmedHackerRB,
     VolunteerRB: VolunteerRB,
     StaffRB: StaffRB,
     SponsorT1RB: SponsorT1RB,
@@ -151,5 +163,5 @@ module.exports = {
     extraAccounts: extraAccounts,
 
     storeAll: storeAll,
-    dropAll: dropAll,
+    dropAll: dropAll
 };

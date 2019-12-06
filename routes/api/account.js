@@ -17,11 +17,11 @@ const Middleware = {
     Auth: require("../../middlewares/auth.middleware")
 };
 const Services = {
-    Account: require("../../services/account.service"),
+    Account: require("../../services/account.service")
 };
 
 module.exports = {
-    activate: function (apiRouter) {
+    activate: function(apiRouter) {
         const accountRouter = express.Router();
 
         /**
@@ -137,9 +137,9 @@ module.exports = {
             Middleware.Account.addAccount,
             Middleware.Auth.addCreationRoleBindings,
 
-            // middleware to create a hacker token 
+            // middleware to create a hacker token
             // and send a confirmation message
-            Middleware.Auth.sendConfirmAccountEmailMiddleware,
+            Middleware.Auth.sendConfirmAccountEmail,
             // should return status in this function
             Controllers.Account.addUser
         );
@@ -171,14 +171,16 @@ module.exports = {
                 }
             }
          */
-        accountRouter.route("/invite").post(
-            Middleware.Auth.ensureAuthenticated(),
-            Middleware.Auth.ensureAuthorized(),
-            Middleware.Validator.Account.inviteAccountValidator,
-            Middleware.parseBody.middleware,
-            Middleware.Account.inviteAccount,
-            Controllers.Account.invitedAccount
-        );
+        accountRouter
+            .route("/invite")
+            .post(
+                Middleware.Auth.ensureAuthenticated(),
+                Middleware.Auth.ensureAuthorized(),
+                Middleware.Validator.Account.inviteAccountValidator,
+                Middleware.parseBody.middleware,
+                Middleware.Account.inviteAccount,
+                Controllers.Account.invitedAccount
+            );
         /**
          * @api {get} /account/invite Get all of the invites.
          * @apiName getAllInvites
@@ -194,13 +196,15 @@ module.exports = {
                     }]
                 }
          */
-        accountRouter.route("/invite").get(
-            Middleware.Auth.ensureAuthenticated(),
-            Middleware.Auth.ensureAuthorized(),
-            Middleware.parseBody.middleware,
-            Middleware.Account.getInvites,
-            Controllers.Account.gotInvites
-        );
+        accountRouter
+            .route("/invite")
+            .get(
+                Middleware.Auth.ensureAuthenticated(),
+                Middleware.Auth.ensureAuthorized(),
+                Middleware.parseBody.middleware,
+                Middleware.Account.getInvites,
+                Controllers.Account.gotInvites
+            );
 
         /**
          * @api {patch} /account/:id update an account's information
@@ -225,7 +229,7 @@ module.exports = {
          * @apiSuccess {object} data Account object
          * @apiSuccessExample {object} Success-Response: 
          *      {
-                    "message": "Changed account information", 
+                    "message": "Account update successful.", 
                     "data": {
                             "id": ObjectId("5bff8b9f3274cf001bc71048"),
                         	"firstName": "Theo",
@@ -245,16 +249,17 @@ module.exports = {
          *      {"message": "Error while updating account", "data": {}}
          */
         accountRouter.route("/:id").patch(
+            Middleware.Validator.RouteParam.idValidator,
             Middleware.Auth.ensureAuthenticated(),
             Middleware.Auth.ensureAuthorized([Services.Account.findById]),
             // validators
-            Middleware.Validator.RouteParam.idValidator,
             Middleware.Validator.Account.updateAccountValidator,
 
             Middleware.parseBody.middleware,
             Middleware.Account.parsePatch,
 
             Middleware.Account.updateAccount,
+            Middleware.Auth.sendConfirmAccountEmail,
             // no parse account because will use req.body as information
             // because the number of fields will be variable
             Controllers.Account.updatedAccount
@@ -292,10 +297,10 @@ module.exports = {
          *      {"message": "Account not found", "data": {}}
          */
         accountRouter.route("/:id").get(
+            Middleware.Validator.RouteParam.idValidator,
             Middleware.Auth.ensureAuthenticated(),
             Middleware.Auth.ensureAuthorized([Services.Account.findById]),
 
-            Middleware.Validator.RouteParam.idValidator,
             Middleware.parseBody.middleware,
 
             Middleware.Account.getById,

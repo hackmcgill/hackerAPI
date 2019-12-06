@@ -5,7 +5,7 @@ const mongoose = require("mongoose");
 
 /**
  * @function createRole
- * @param {{_id: ObjectId, name: String, routes: route[]}} roleDetails 
+ * @param {{_id: ObjectId, name: String, routes: route[]}} roleDetails
  * @return {Promise<Role>} The promise will resolve to a role object if save was successful.
  * @description Adds a new role to database.
  */
@@ -18,7 +18,7 @@ function createRole(roleDetails) {
 /**
  * @function getRole
  * @param {string} roleName The name of the role that you're looking for.
- * @description 
+ * @description
  * Returns the role defined by the role name
  */
 function getRole(roleName) {
@@ -34,7 +34,7 @@ function getRole(roleName) {
 /**
  * @function getById
  * @param {ObjectId} id The role id
- * @description 
+ * @description
  * Returns the role specified by the id.
  */
 function getById(id) {
@@ -44,12 +44,15 @@ function getById(id) {
     };
     //get the roleBinding for account
     //Populate roles for roleBinding
-    return Role.findById(query, logger.queryCallbackFactory(TAG, "role", query));
+    return Role.findById(
+        query,
+        logger.queryCallbackFactory(TAG, "role", query)
+    );
 }
 
 /**
  * @function getAll
- * @description 
+ * @description
  * Returns all the roles in the database
  */
 function getAll() {
@@ -61,5 +64,5 @@ module.exports = {
     getRole: getRole,
     getById: getById,
     getAll: getAll,
-    createRole: createRole,
+    createRole: createRole
 };

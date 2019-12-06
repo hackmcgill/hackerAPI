@@ -1,11 +1,12 @@
 "use strict";
 const mongoose = require("mongoose");
 const Services = {
+
     Role: require("../services/role.service"),
     ParsePatch: require("../services/parsePatch.service")
 };
 const Constants = {
-    Error: require("../constants/error.constant"),
+    Error: require("../constants/error.constant")
 };
 
 const Model = {
@@ -18,13 +19,14 @@ const Model = {
  * @param {*} res
  * @param {(err?)=>void} next
  * @return {void}
- * @description 
+ * @description
  * Moves name and routes from req.body to req.body.roleDetails.
  * Adds _id to roleDetails.
  */
 function parseRole(req, res, next) {
     let parseRoleDetails = Services.ParsePatch.parsePatch(Model.Role, "roleDetails");
     return parseRoleDetails(req, res, next);
+
 
 }
 
@@ -37,9 +39,9 @@ function setId(req, res, next) {
 
 /**
  * @function createRole
- * @param {{body: {roleDetails: object}}} req 
- * @param {*} res 
- * @param {(err?)=>void} next 
+ * @param {{body: {roleDetails: object}}} req
+ * @param {*} res
+ * @param {(err?)=>void} next
  * @return {void}
  * @description
  * Creates role document
@@ -65,4 +67,6 @@ module.exports = {
     parseRole: parseRole,
     setId: setId,
     createRole: createRole,
+
 };
+

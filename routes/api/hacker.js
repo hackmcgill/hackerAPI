@@ -7,7 +7,7 @@ const Middleware = {
     Validator: {
         /* Insert the require statement to the validator file here */
         Hacker: require("../../middlewares/validators/hacker.validator"),
-        RouteParam: require("../../middlewares/validators/routeParam.validator"),
+        RouteParam: require("../../middlewares/validators/routeParam.validator")
     },
     /* Insert all of ther middleware require statements here */
     parseBody: require("../../middlewares/parse-body.middleware"),
@@ -18,12 +18,12 @@ const Middleware = {
 };
 const Services = {
     Hacker: require("../../services/hacker.service"),
-    Account: require("../../services/account.service"),
-}
+    Account: require("../../services/account.service")
+};
 const CONSTANTS = require("../../constants/general.constant");
 
 module.exports = {
-    activate: function (apiRouter) {
+    activate: function(apiRouter) {
         const hackerRouter = express.Router();
 
         /**
@@ -156,7 +156,7 @@ module.exports = {
 
             Middleware.parseBody.middleware,
             // validate type
-            Middleware.Hacker.validateConfirmedStatus,
+            Middleware.Hacker.validateConfirmedStatusFromAccountId,
             // validate that the accountId is not being used for any other thing
             Middleware.Hacker.checkDuplicateAccountLinks,
 
@@ -206,30 +206,32 @@ module.exports = {
          *      }
          * 
          */
-        hackerRouter.route("/stats").get(
-            Middleware.Auth.ensureAuthenticated(),
-            Middleware.Auth.ensureAuthorized(),
-            Middleware.Validator.Hacker.statsValidator,
-            Middleware.parseBody.middleware,
-            Middleware.Search.setExpandTrue,
-            Middleware.Search.parseQuery,
-            Middleware.Search.executeQuery,
-            Middleware.Hacker.getStats,
-            Controllers.Hacker.gotStats
-        );
+        hackerRouter
+            .route("/stats")
+            .get(
+                Middleware.Auth.ensureAuthenticated(),
+                Middleware.Auth.ensureAuthorized(),
+                Middleware.Validator.Hacker.statsValidator,
+                Middleware.parseBody.middleware,
+                Middleware.Search.setExpandTrue,
+                Middleware.Search.parseQuery,
+                Middleware.Search.executeQuery,
+                Middleware.Hacker.getStats,
+                Controllers.Hacker.gotStats
+            );
 
         /**
          * @api {patch} /hacker/status/:id update a hacker's status
          * @apiName patchHackerStatus
          * @apiGroup Hacker
          * @apiVersion 0.0.9
-         * 
-         * @apiParam (body) {string} [status] Status of the hacker's application ("None"|"Applied"|"Waitlisted"|"Confirmed"|"Cancelled"|"Checked-in")
+         *
+         * @apiParam (body) {string} [status] Status of the hacker's application ("None"|"Applied"|"Accepted"|"Declined"|"Waitlisted"|"Confirmed"|"Withdrawn"|"Checked-in")
          * @apiSuccess {string} message Success message
          * @apiSuccess {object} data Hacker object
-         * @apiSuccessExample {object} Success-Response: 
+         * @apiSuccessExample {object} Success-Response:
          *      {
-         *          "message": "Changed hacker information", 
+         *          "message": "Changed hacker information",
          *          "data": {
          *              "status": "Accepted"
          *          }
@@ -237,12 +239,14 @@ module.exports = {
          * @apiPermission Administrator
          */
         hackerRouter.route("/status/:id").patch(
+            Middleware.Validator.RouteParam.idValidator,
             Middleware.Auth.ensureAuthenticated(),
             Middleware.Auth.ensureAuthorized([Services.Hacker.findById]),
-            Middleware.Validator.RouteParam.idValidator,
             Middleware.Validator.Hacker.updateStatusValidator,
             Middleware.parseBody.middleware,
             Middleware.Hacker.parsePatch,
+            Middleware.Hacker.validateConfirmedStatusFromHackerId,
+
             Middleware.Hacker.updateHacker,
             Middleware.Hacker.sendStatusUpdateEmail,
             Controllers.Hacker.updatedHacker
@@ -256,9 +260,9 @@ module.exports = {
          * @apiParam (body) {string} [status] Check-in status. "Checked-in"
          * @apiSuccess {string} message Success message
          * @apiSuccess {object} data Hacker object
-         * @apiSuccessExample {object} Success-Response: 
+         * @apiSuccessExample {object} Success-Response:
          *      {
-         *          "message": "Changed hacker information", 
+         *          "message": "Changed hacker information",
          *          "data": {
          *              "status": "Checked-in"
          *          }
@@ -267,14 +271,17 @@ module.exports = {
          * @apiPermission Volunteer
          */
         hackerRouter.route("/checkin/:id").patch(
+            Middleware.Validator.RouteParam.idValidator,
             Middleware.Auth.ensureAuthenticated(),
             Middleware.Auth.ensureAuthorized([Services.Hacker.findById]),
 
-            Middleware.Validator.RouteParam.idValidator,
             Middleware.parseBody.middleware,
             Middleware.Hacker.parsePatch,
-
-            Middleware.Hacker.checkStatus([CONSTANTS.HACKER_STATUS_ACCEPTED, CONSTANTS.HACKER_STATUS_CONFIRMED]),
+            Middleware.Hacker.validateConfirmedStatusFromHackerId,
+            Middleware.Hacker.checkStatus([
+                CONSTANTS.HACKER_STATUS_ACCEPTED,
+                CONSTANTS.HACKER_STATUS_CONFIRMED
+            ]),
             Middleware.Hacker.parseCheckIn,
             Middleware.Hacker.updateHacker,
 
@@ -349,14 +356,15 @@ module.exports = {
          *      {"message": "Error while updating hacker", "data": {}}
          */
         hackerRouter.route("/:id").patch(
+            Middleware.Validator.RouteParam.idValidator,
             Middleware.Auth.ensureAuthenticated(),
             Middleware.Auth.ensureAuthorized([Services.Hacker.findById]),
 
-            Middleware.Validator.RouteParam.idValidator,
             Middleware.Validator.Hacker.updateHackerValidator,
 
             Middleware.parseBody.middleware,
             Middleware.Hacker.parsePatch,
+            Middleware.Hacker.validateConfirmedStatusFromHackerId,
 
             Middleware.Hacker.updateHacker,
             Middleware.Hacker.updateStatusIfApplicationCompleted,
@@ -410,10 +418,10 @@ module.exports = {
          *      {"message": "Hacker not found", "data": {}}
          */
         hackerRouter.route("/:id").get(
+            Middleware.Validator.RouteParam.idValidator,
             Middleware.Auth.ensureAuthenticated(),
             Middleware.Auth.ensureAuthorized([Services.Hacker.findById]),
 
-            Middleware.Validator.RouteParam.idValidator,
             Middleware.parseBody.middleware,
 
             Middleware.Hacker.findById,
@@ -477,28 +485,29 @@ module.exports = {
             Controllers.Hacker.showHacker
         );
 
-        hackerRouter.route("/resume/:id")
+        hackerRouter
+            .route("/resume/:id")
             /**
              * @api {post} /hacker/resume/:id upload or update resume for a hacker.
              * @apiName postHackerResume
              * @apiGroup Hacker
              * @apiVersion 0.0.8
              * @apiDescription <b>NOTE: This must be sent via multipart/form-data POST request</b>
-             * 
+             *
              * @apiParam (param) {ObjectId} id Hacker id
              * @apiParam (body) {File} resume The uploaded file.
-             * 
+             *
              * @apiSuccess {String} message Success message
              * @apiSuccess {Object} data Location in the bucket that the file was stored.
-             * @apiSuccessExample {json} Success-Response: 
+             * @apiSuccessExample {json} Success-Response:
              *      HTTP/1.1 200 OK
              *      {
-             *          message: "Uploaded resume", 
+             *          message: "Uploaded resume",
              *          data: {
              *              filename: "resumes/1535032624768-507f191e810c19729de860ea"
              *          }
              *      }
-             * 
+             *
              * @apiPermission Must be logged in, and the account id must be linked to the hacker.
              */
             .post(
@@ -511,7 +520,7 @@ module.exports = {
                 Middleware.Util.Multer.single("resume"),
                 //upload resume to storage and update hacker profile
                 Middleware.Hacker.uploadResume,
-                //controller response           
+                //controller response
                 Controllers.Hacker.uploadedResume
             )
             /**
@@ -519,25 +528,25 @@ module.exports = {
              * @apiName getHackerResume
              * @apiGroup Hacker
              * @apiVersion 0.0.8
-             * 
+             *
              * @apiParam (param) {ObjectId} id Hacker id
-             * 
+             *
              * @apiSuccess {String} message Success message
              * @apiSuccessExample {json} Success-Response:
-             *      HTTP/1.1 200 OK 
-             *      { 
-             *          message: "Downloaded resume", 
-             *          data: { 
-             *              id: "507f191e810c19729de860ea", 
-             *              resume: [Buffer] 
-             *          } 
+             *      HTTP/1.1 200 OK
+             *      {
+             *          message: "Downloaded resume",
+             *          data: {
+             *              id: "507f191e810c19729de860ea",
+             *              resume: [Buffer]
+             *          }
              *      }
              * @apiError {String} message "Resume does not exist"
              * @apiErrorExample {json} Error-Response:
-             *      HTTP/1.1 404 
-             *      { 
-             *          message: "Resume not found", 
-             *          data: {} 
+             *      HTTP/1.1 404
+             *      {
+             *          message: "Resume not found",
+             *          data: {}
              *      }
              * @apiSampleRequest off
              * @apiPermission Must be logged in, and the account id must be linked to the hacker.
@@ -552,17 +561,17 @@ module.exports = {
 
         /**
          * @api {patch} /hacker/confirmation/:id
-         * Allows confirmation of hacker attendence if they are accepted. Also allows change from 'confirmed' to 'cancelled'.
+         * Allows confirmation of hacker attendence if they are accepted. Also allows change from 'confirmed' to 'withdrawn'.
          * @apiName patchHackerConfirmed
          * @apiGroup Hacker
          * @apiVersion 0.0.9
-         * 
-         * @apiParam (body) {string} [status] The new status of the hacker. "Accepted", "Confirmed", or "Cancelled"
+         *
+         * @apiParam (body) {string} [status] The new status of the hacker. "Accepted", "Confirmed", or "Withdrawn"
          * @apiSuccess {string} message Success message
          * @apiSuccess {object} data Hacker object
-         * @apiSuccessExample {object} Success-Response: 
+         * @apiSuccessExample {object} Success-Response:
          *      {
-         *          "message": "Changed hacker information", 
+         *          "message": "Changed hacker information",
          *          "data": {
          *              "status": "Confirmed"
          *          }
@@ -571,15 +580,19 @@ module.exports = {
          * @apiPermission Hacker
          */
         hackerRouter.route("/confirmation/:id").patch(
+            Middleware.Validator.RouteParam.idValidator,
             Middleware.Auth.ensureAuthenticated(),
             Middleware.Auth.ensureAuthorized([Services.Hacker.findById]),
 
-            Middleware.Validator.RouteParam.idValidator,
             Middleware.Validator.Hacker.updateConfirmationValidator,
             Middleware.parseBody.middleware,
             Middleware.Hacker.parsePatch,
-
-            Middleware.Hacker.checkStatus([CONSTANTS.HACKER_STATUS_ACCEPTED, CONSTANTS.HACKER_STATUS_CONFIRMED, CONSTANTS.HACKER_STATUS_CANCELLED]),
+            Middleware.Hacker.validateConfirmedStatusFromHackerId,
+            Middleware.Hacker.checkStatus([
+                CONSTANTS.HACKER_STATUS_ACCEPTED,
+                CONSTANTS.HACKER_STATUS_CONFIRMED,
+                CONSTANTS.HACKER_STATUS_WITHDRAWN
+            ]),
 
             Middleware.Hacker.parseConfirmation,
             Middleware.Hacker.updateHacker,
@@ -590,32 +603,68 @@ module.exports = {
 
         /**
          * @api {post} /hacker/email/weekOf/:id
-         * @apiDescription Sends a hacker the week-of email, along with the HackPass QR code to view their hacker profile (for checkin purposes). Hackers must be eitherconfirmed, or checked in.
+         * @apiDescription Sends a hacker the week-of email, along with the HackPass QR code to view their hacker profile (for checkin purposes). Hackers must be either confirmed, or checked in.
          * @apiName postHackerSendWeekOfEmail
          * @apiGroup Hacker
          * @apiVersion 0.0.9
-         * 
+         *
          * @apiParam (param) {string} [status] The hacker ID
          * @apiSuccess {string} message Success message
          * @apiSuccess {object} data empty
-         * @apiSuccessExample {object} Success-Response: 
+         * @apiSuccessExample {object} Success-Response:
          *      {
-         *          "message": "Hacker week-of email sent.", 
+         *          "message": "Hacker week-of email sent.",
          *          "data": {}
          *      }
          * @apiPermission Administrator
          */
         hackerRouter.route("/email/weekOf/:id").post(
+            Middleware.Validator.RouteParam.idValidator,
             Middleware.Auth.ensureAuthenticated(),
             Middleware.Auth.ensureAuthorized([Services.Hacker.findById]),
 
-            Middleware.Validator.RouteParam.idValidator,
             Middleware.parseBody.middleware,
             Middleware.Hacker.findById,
-            Middleware.Hacker.checkStatus([CONSTANTS.HACKER_STATUS_CONFIRMED, CONSTANTS.HACKER_STATUS_CHECKED_IN]),
+
+            Middleware.Hacker.validateConfirmedStatusFromHackerId,
+            Middleware.Hacker.checkStatus([
+                CONSTANTS.HACKER_STATUS_CONFIRMED,
+                CONSTANTS.HACKER_STATUS_CHECKED_IN
+            ]),
+
             Middleware.Hacker.sendWeekOfEmail,
             Controllers.Hacker.sentWeekOfEmail
-        )
+        );
+
+        /**
+         * @api {post} /hacker/email/dayOf/:id
+         * @apiDescription Sends a hacker the day-of email, along with the HackPass QR code to view their hacker profile (for checkin purposes). Hackers must be either confirmed, or checked in.
+         * @apiName postHackerSendDayOfEmail
+         * @apiGroup Hacker
+         * @apiVersion 0.0.9
+         *
+         * @apiParam (param) {string} [status] The hacker ID
+         * @apiSuccess {string} message Success message
+         * @apiSuccess {object} data empty
+         * @apiSuccessExample {object} Success-Response:
+         *      {
+         *          "message": "Hacker day-of email sent.",
+         *          "data": {}
+         *      }
+         * @apiPermission Administrator
+         */
+        hackerRouter.route("/email/dayOf/:id").post(
+            Middleware.Validator.RouteParam.idValidator,
+            Middleware.Auth.ensureAuthenticated(),
+            Middleware.Auth.ensureAuthorized([Services.Hacker.findById]),
+
+            Middleware.parseBody.middleware,
+            Middleware.Hacker.findById,
+            Middleware.Hacker.validateConfirmedStatusFromHackerId,
+            Middleware.Hacker.checkStatus([CONSTANTS.HACKER_STATUS_CHECKED_IN]),
+            Middleware.Hacker.sendDayOfEmail,
+            Controllers.Hacker.sentDayOfEmail
+        );
 
         /**
          * @api {post} /hacker/email/weekOf/:id
@@ -623,13 +672,13 @@ module.exports = {
          * @apiName postHackerSendWeekOfEmail
          * @apiGroup Hacker
          * @apiVersion 0.0.9
-         * 
+         *
          * @apiParam (param) {string} [status] The hacker ID
          * @apiSuccess {string} message Success message
          * @apiSuccess {object} data empty
-         * @apiSuccessExample {object} Success-Response: 
+         * @apiSuccessExample {object} Success-Response:
          *      {
-         *          "message": "Hacker week-of email sent.", 
+         *          "message": "Hacker week-of email sent.",
          *          "data": {}
          *      }
          * @apiPermission Administrator

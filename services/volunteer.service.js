@@ -25,7 +25,10 @@ function createVolunteer(volunteerDetails) {
 function findById(id) {
     const TAG = `[Volunteer Service # findById ]:`;
 
-    return Volunteer.findById(id, logger.queryCallbackFactory(TAG, "volunteer", id));
+    return Volunteer.findById(
+        id,
+        logger.queryCallbackFactory(TAG, "volunteer", id)
+    );
 }
 
 /**
@@ -40,11 +43,14 @@ function findByAccountId(accountId) {
         accountId: accountId
     };
 
-    return Volunteer.findOne(query, logger.updateCallbackFactory(TAG, "volunteer"));
+    return Volunteer.findOne(
+        query,
+        logger.updateCallbackFactory(TAG, "volunteer")
+    );
 }
 
 module.exports = {
     createVolunteer: createVolunteer,
     findById: findById,
-    findByAccountId: findByAccountId,
+    findByAccountId: findByAccountId
 };

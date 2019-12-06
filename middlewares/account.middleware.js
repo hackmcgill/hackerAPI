@@ -18,17 +18,19 @@ const Middleware = {
 
 const Constants = {
     Error: require("../constants/error.constant")
+
 };
 
 const Model = {
     Account: require("../models/account.model")
+
 };
 
 /**
  * @function parsePatch
- * @param {body: {id: ObjectId}} req 
- * @param {*} res 
- * @param {(err?) => void} next 
+ * @param {body: {id: ObjectId}} req
+ * @param {*} res
+ * @param {(err?) => void} next
  * @return {void}
  * @description Delete the req.body.id that was added by the validation of route parameter.
  */
@@ -43,7 +45,7 @@ function parsePatch(req, res, next) {
  * @param {*} res
  * @param {(err?)=>void} next
  * @return {void}
- * @description 
+ * @description
  * Moves firstName, lastName, email, password, dietaryRestrictions, shirtSize from req.body to req.body.accountDetails.
  * Hashes the password.
  * Adds _id to accountDetails.
@@ -65,12 +67,15 @@ function hashPassword(req, res, next) {
 
 /**
  * Middleware that updates the password for the current user
- * @param {{body: {password: string}}} req 
- * @param {*} res 
+ * @param {{body: {password: string}}} req
+ * @param {*} res
  * @param {(err?)=>void} next
  */
 async function updatePassword(req, res, next) {
-    req.body.account = await Services.Account.updatePassword(req.body.decodedToken.accountId, req.body.password);
+    req.body.account = await Services.Account.updatePassword(
+        req.body.decodedToken.accountId,
+        req.body.password
+    );
     return next();
 }
 
@@ -118,9 +123,9 @@ async function getByEmail(req, res, next) {
 
 /**
  * @function addAccount
- * @param {{body: {accountDetails: object}}} req 
- * @param {*} res 
- * @param {(err?)=>void} next 
+ * @param {{body: {accountDetails: object}}} req
+ * @param {*} res
+ * @param {(err?)=>void} next
  * @return {void}
  * @description
  * Creates account document after checking if it exists first
@@ -145,13 +150,25 @@ async function addAccount(req, res, next) {
 
 /**
  * Updates an account that is specified by req.params.id
- * @param {{params:{id: string}, body: *}} req 
- * @param {*} res 
- * @param {*} next 
+ * @param {{params:{id: string}, body: *}} req
+ * @param {*} res
+ * @param {*} next
  */
 async function updateAccount(req, res, next) {
-    const account = await Services.Account.updateOne(req.params.id, req.body);
-    if (account) {
+    var account = await Services.Account.findById(req.params.id);
+
+    // If we are changing the email, and there is a difference between the two, set back to unconfirmed status.
+    // TODO: When pull request for parse patch refactor #546 hits, req.body.email will not be present.
+    if (req.body.email && account.email != req.body.email) {
+        req.body.confirmed = false;
+    }
+
+    req.body.account = await Services.Account.updateOne(
+        req.params.id,
+        req.body
+    );
+
+    if (req.body.account) {
         return next();
     } else {
         return next({
@@ -166,20 +183,32 @@ async function updateAccount(req, res, next) {
 
 /**
  * @function inviteAccount
- * @param {{body: {email: string, accountType: string}}} req 
- * @param {*} res 
- * @param {(err?)=>void} next 
+ * @param {{body: {email: string, accountType: string}}} req
+ * @param {*} res
+ * @param {(err?)=>void} next
  * @return {void}
  * Creates email to provide a link for the user to create an account
  */
 async function inviteAccount(req, res, next) {
     const email = req.body.email;
     const accountType = req.body.accountType;
-    const confirmationObj = await Services.AccountConfirmation.create(accountType, email);
-    const confirmationToken = Services.AccountConfirmation.generateToken(confirmationObj.id);
-    const address = Services.Env.isProduction() ? process.env.FRONTEND_ADDRESS_DEPLOY : process.env.FRONTEND_ADDRESS_DEV;
+    const confirmationObj = await Services.AccountConfirmation.create(
+        accountType,
+        email
+    );
+    const confirmationToken = Services.AccountConfirmation.generateToken(
+        confirmationObj.id
+    );
+    const address = Services.Env.isProduction()
+        ? process.env.FRONTEND_ADDRESS_DEPLOY
+        : process.env.FRONTEND_ADDRESS_DEV;
 
-    const mailData = Services.AccountConfirmation.generateAccountInvitationEmail(address, email, accountType, confirmationToken);
+    const mailData = Services.AccountConfirmation.generateAccountInvitationEmail(
+        address,
+        email,
+        accountType,
+        confirmationToken
+    );
     if (mailData !== undefined) {
         Services.Email.send(mailData, (err) => {
             if (err) {
@@ -190,15 +219,15 @@ async function inviteAccount(req, res, next) {
         });
     } else {
         return next({
-            message: Constants.Error.EMAIL_500_MESSAGE,
+            message: Constants.Error.EMAIL_500_MESSAGE
         });
     }
 }
 /**
  * Gets all of the invites in the database and adds it to req.body.
- * @param {{}} req 
- * @param {*} res 
- * @param {(err?)=>void} next 
+ * @param {{}} req
+ * @param {*} res
+ * @param {(err?)=>void} next
  */
 async function getInvites(req, res, next) {
     const invites = await Services.AccountConfirmation.find({});

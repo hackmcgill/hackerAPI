@@ -14,15 +14,15 @@ const Middleware = {
     /* Insert all of ther middleware require statements here */
     parseBody: require("../../middlewares/parse-body.middleware"),
     Sponsor: require("../../middlewares/sponsor.middleware"),
-    Auth: require("../../middlewares/auth.middleware"),
+    Auth: require("../../middlewares/auth.middleware")
 };
 const Services = {
-    Sponsor: require("../../services/sponsor.service"),
+    Sponsor: require("../../services/sponsor.service")
 };
 const CONSTANTS = require("../../constants/general.constant");
 
 module.exports = {
-    activate: function (apiRouter) {
+    activate: function(apiRouter) {
         const sponsorRouter = new express.Router();
 
         /**
@@ -89,10 +89,10 @@ module.exports = {
          *      {"message": "Sponsor not found", "data": {}}
          */
         sponsorRouter.route("/:id").get(
+            Middleware.Validator.RouteParam.idValidator,
             Middleware.Auth.ensureAuthenticated(),
             Middleware.Auth.ensureAuthorized([Services.Sponsor.findById]),
 
-            Middleware.Validator.RouteParam.idValidator,
             Middleware.parseBody.middleware,
 
             Middleware.Sponsor.findById,
@@ -172,10 +172,10 @@ module.exports = {
          *      {"message": "Error while updating sponsor", "data": {}}
          */
         sponsorRouter.route("/:id").patch(
+            Middleware.Validator.RouteParam.idValidator,
             Middleware.Auth.ensureAuthenticated(),
             Middleware.Auth.ensureAuthorized([Services.Sponsor.findById]),
 
-            Middleware.Validator.RouteParam.idValidator,
             Middleware.Validator.Sponsor.updateSponsorValidator,
 
             Middleware.parseBody.middleware,
