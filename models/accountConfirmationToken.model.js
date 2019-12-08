@@ -1,7 +1,7 @@
 "use strict";
 const mongoose = require("mongoose");
 const Constants = {
-    General: require("../constants/general.constant"),
+    General: require("../constants/general.constant")
 };
 
 const AccountConfirmationSchema = new mongoose.Schema({
@@ -21,12 +21,15 @@ const AccountConfirmationSchema = new mongoose.Schema({
     }
 });
 
-AccountConfirmationSchema.methods.toJSON = function () {
+AccountConfirmationSchema.methods.toJSON = function() {
     const resetObj = this.toObject();
     delete resetObj.__v;
     resetObj.id = resetObj._id;
     delete resetObj._id;
     return resetObj;
-}
+};
 
-module.exports = mongoose.model("AccountConfirmationToken", AccountConfirmationSchema);
+module.exports = mongoose.model(
+    "AccountConfirmationToken",
+    AccountConfirmationSchema
+);

@@ -14,7 +14,10 @@ function findById(id) {
         _id: id
     };
 
-    return Sponsor.findById(query, logger.queryCallbackFactory(TAG, "sponsor", JSON.stringify(query)));
+    return Sponsor.findById(
+        query,
+        logger.queryCallbackFactory(TAG, "sponsor", JSON.stringify(query))
+    );
 }
 
 /**
@@ -33,8 +36,8 @@ function createSponsor(sponsorDetails) {
 
 /**
  * @function updateOne
- * @param {ObjectId} id 
- * @param {{company?: string, contractURL?: string, nominees?: ObjectId[]}} sponsorDetails 
+ * @param {ObjectId} id
+ * @param {{company?: string, contractURL?: string, nominees?: ObjectId[]}} sponsorDetails
  * @return {Promise<Sponsor>} The promise will resolve to a sponsor object if update was successful.
  * @description Updates a sponsor by id with information in sponsorDetails. Return the updated sponsor
  */
@@ -69,5 +72,5 @@ module.exports = {
     findByAccountId: findByAccountId,
     findById: findById,
     createSponsor: createSponsor,
-    updateOne: updateOne,
+    updateOne: updateOne
 };

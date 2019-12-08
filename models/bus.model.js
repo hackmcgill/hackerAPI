@@ -31,15 +31,17 @@ const BusSchema = new mongoose.Schema({
         min: 0
     },
     hackers: {
-        type: [{
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "Hacker"
-        }]
+        type: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "Hacker"
+            }
+        ]
         // TODO: find way to validate that this array size is smaller than the max capacity
     }
 });
 
-BusSchema.methods.toJSON = function () {
+BusSchema.methods.toJSON = function() {
     const bs = this.toObject();
     delete bs.__v;
     bs.id = bs._id;

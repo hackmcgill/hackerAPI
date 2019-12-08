@@ -7,18 +7,20 @@ const TeamSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
-        unique: true,
+        unique: true
     },
     members: {
-        type: [{
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "Hacker"
-        }],
+        type: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "Hacker"
+            }
+        ],
         validate: [validateTeamSize, "{PATH} exceeds the limit"]
     },
     devpostURL: {
         type: String,
-        default: undefined,
+        default: undefined
     },
     projectName: String
 });
@@ -27,7 +29,7 @@ function validateTeamSize(membersArr) {
     return membersArr.length <= Constants.MAX_TEAM_SIZE;
 }
 
-TeamSchema.methods.toJSON = function () {
+TeamSchema.methods.toJSON = function() {
     const ts = this.toObject();
     delete ts.__v;
     ts.id = ts._id;

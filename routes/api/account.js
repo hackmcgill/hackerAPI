@@ -21,7 +21,7 @@ const Services = {
 };
 
 module.exports = {
-    activate: function (apiRouter) {
+    activate: function(apiRouter) {
         const accountRouter = express.Router();
 
         /**
@@ -169,14 +169,16 @@ module.exports = {
                 }
             }
          */
-        accountRouter.route("/invite").post(
-            Middleware.Auth.ensureAuthenticated(),
-            Middleware.Auth.ensureAuthorized(),
-            Middleware.Validator.Account.inviteAccountValidator,
-            Middleware.parseBody.middleware,
-            Middleware.Account.inviteAccount,
-            Controllers.Account.invitedAccount
-        );
+        accountRouter
+            .route("/invite")
+            .post(
+                Middleware.Auth.ensureAuthenticated(),
+                Middleware.Auth.ensureAuthorized(),
+                Middleware.Validator.Account.inviteAccountValidator,
+                Middleware.parseBody.middleware,
+                Middleware.Account.inviteAccount,
+                Controllers.Account.invitedAccount
+            );
         /**
          * @api {get} /account/invite Get all of the invites.
          * @apiName getAllInvites
@@ -192,13 +194,15 @@ module.exports = {
                     }]
                 }
          */
-        accountRouter.route("/invite").get(
-            Middleware.Auth.ensureAuthenticated(),
-            Middleware.Auth.ensureAuthorized(),
-            Middleware.parseBody.middleware,
-            Middleware.Account.getInvites,
-            Controllers.Account.gotInvites
-        );
+        accountRouter
+            .route("/invite")
+            .get(
+                Middleware.Auth.ensureAuthenticated(),
+                Middleware.Auth.ensureAuthorized(),
+                Middleware.parseBody.middleware,
+                Middleware.Account.getInvites,
+                Controllers.Account.gotInvites
+            );
 
         /**
          * @api {patch} /account/:id update an account's information

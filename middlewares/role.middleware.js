@@ -1,10 +1,10 @@
 "use strict";
 const mongoose = require("mongoose");
 const Services = {
-    Role: require("../services/role.service"),
+    Role: require("../services/role.service")
 };
 const Constants = {
-    Error: require("../constants/error.constant"),
+    Error: require("../constants/error.constant")
 };
 
 /**
@@ -13,7 +13,7 @@ const Constants = {
  * @param {*} res
  * @param {(err?)=>void} next
  * @return {void}
- * @description 
+ * @description
  * Moves name and routes from req.body to req.body.roleDetails.
  * Adds _id to roleDetails.
  */
@@ -21,7 +21,7 @@ function parseRole(req, res, next) {
     const roleDetails = {
         _id: mongoose.Types.ObjectId(),
         name: req.body.name,
-        routes: req.body.routes,
+        routes: req.body.routes
     };
 
     delete req.body.name;
@@ -34,9 +34,9 @@ function parseRole(req, res, next) {
 
 /**
  * @function createRole
- * @param {{body: {roleDetails: object}}} req 
- * @param {*} res 
- * @param {(err?)=>void} next 
+ * @param {{body: {roleDetails: object}}} req
+ * @param {*} res
+ * @param {(err?)=>void} next
  * @return {void}
  * @description
  * Creates role document
@@ -46,7 +46,7 @@ async function createRole(req, res, next) {
 
     const role = await Services.Role.createRole(roleDetails);
 
-    if (!!role) {
+    if (role) {
         delete req.body.roleDetails;
         req.body.role = role;
         return next();
@@ -61,5 +61,5 @@ async function createRole(req, res, next) {
 
 module.exports = {
     parseRole: parseRole,
-    createRole: createRole,
+    createRole: createRole
 };

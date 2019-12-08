@@ -13,16 +13,29 @@ const logger = require("./logger.service");
  * @returns {Promise<[Array]>}
  * @description Builds and executes a search query based on a subset of mongodb
  */
-function executeQuery(model, queryArray, page, limit, sort, sort_by, shouldExpand = false) {
+function executeQuery(
+    model,
+    queryArray,
+    page,
+    limit,
+    sort,
+    sort_by,
+    shouldExpand = false
+) {
     var query;
     switch (model.toLowerCase()) {
         case "hacker":
-            query = (shouldExpand) ? Hacker.find().populate([{
-                path: "accountId",
-                select: " -password"
-            }, {
-                path: "teamId"
-            }]) : Hacker.find();
+            query = shouldExpand
+                ? Hacker.find().populate([
+                      {
+                          path: "accountId",
+                          select: " -password"
+                      },
+                      {
+                          path: "teamId"
+                      }
+                  ])
+                : Hacker.find();
             break;
         default:
             return [];
@@ -67,7 +80,8 @@ function executeQuery(model, queryArray, page, limit, sort, sort_by, shouldExpan
     } else if (sort == "asc") {
         query.sort(sort_by);
     }
-    return query.limit(limit)
+    return query
+        .limit(limit)
         .skip(limit * page)
         .exec();
 }

@@ -16,9 +16,12 @@ const Services = {
  */
 function findByAccountId(accountId) {
     const TAG = `[ AccountConfirmation Reset Service # findByAccountId ]`;
-    return AccountConfirmation.findOne({
-        accountId: accountId
-    }, logger.queryCallbackFactory(TAG, "AccountConfirmation", "accountId"));
+    return AccountConfirmation.findOne(
+        {
+            accountId: accountId
+        },
+        logger.queryCallbackFactory(TAG, "AccountConfirmation", "accountId")
+    );
 }
 
 /**
@@ -29,18 +32,24 @@ function findByAccountId(accountId) {
  */
 function findById(id) {
     const TAG = `[ AccountConfirmation Service # findById ]`;
-    return AccountConfirmation.findById(id, logger.queryCallbackFactory(TAG, "AccountConfirmation", "mongoId"));
+    return AccountConfirmation.findById(
+        id,
+        logger.queryCallbackFactory(TAG, "AccountConfirmation", "mongoId")
+    );
 }
 
 /**
- * @function find 
+ * @function find
  * @param {*} query the query to search the database by.
  * @return {DocumentQuery<any[]>} The document query will resolve to either account confirmations or null.
  * @description Finds an account by query.
  */
 function find(query) {
     const TAG = `[ AccountConfirmation Service # find ]`;
-    return AccountConfirmation.find(query, logger.queryCallbackFactory(TAG, "AccountConfirmation", query));
+    return AccountConfirmation.find(
+        query,
+        logger.queryCallbackFactory(TAG, "AccountConfirmation", query)
+    );
 }
 
 /**
@@ -69,20 +78,24 @@ async function create(type, email, accountId) {
  * @returns {string} JWT Token containing accountId and accountConfirmationId
  */
 function generateToken(accountConfirmationId, accountId = null) {
-    const token = jwt.sign({
-        accountConfirmationId: accountConfirmationId,
-        accountId: accountId
-    }, process.env.JWT_CONFIRM_ACC_SECRET, {
-        expiresIn: "7 day"
-    });
+    const token = jwt.sign(
+        {
+            accountConfirmationId: accountConfirmationId,
+            accountId: accountId
+        },
+        process.env.JWT_CONFIRM_ACC_SECRET,
+        {
+            expiresIn: "7 day"
+        }
+    );
     return token;
 }
 
 /**
  * Generates the link that the user will use to access the page to begin account creationg
- * @param {'http'|'https'} httpOrHttps 
+ * @param {'http'|'https'} httpOrHttps
  * @param {string} domain the domain of the current
- * @param {string} type the model that the 
+ * @param {string} type the model that the
  * @param {string} token the reset token
  * @returns {string} the string, of form: [http|https]://{domain}/{model}/create?token={token}
  */
@@ -93,9 +106,9 @@ function generateCreateAccountTokenLink(httpOrHttps, domain, type, token) {
 
 /**
  * Generates the link that the user will use to confirm account and proceed with account creationg
- * @param {'http'|'https'} httpOrHttps 
+ * @param {'http'|'https'} httpOrHttps
  * @param {string} domain the domain of the current
- * @param {string} type the model that the 
+ * @param {string} type the model that the
  * @param {string} token the reset token
  * @returns {string} the string, of form: [http|https]://{domain}/{model}/create?token={token}
  */
@@ -112,7 +125,7 @@ function generateConfirmTokenLink(httpOrHttps, domain, token) {
  * @param {string} token The account confirmation token
  */
 function generateAccountConfirmationEmail(address, receiverEmail, type, token) {
-    const httpOrHttps = (address.includes("localhost")) ? "http" : "https";
+    const httpOrHttps = address.includes("localhost") ? "http" : "https";
     const tokenLink = generateConfirmTokenLink(httpOrHttps, address, token);
     var emailSubject = "";
     if (token === undefined || tokenLink === undefined) {
@@ -121,7 +134,10 @@ function generateAccountConfirmationEmail(address, receiverEmail, type, token) {
     if (type === Constants.HACKER) {
         emailSubject = Constants.CONFIRM_ACC_EMAIL_SUBJECT;
     }
-    const handlebarPath = path.join(__dirname, `../assets/email/AccountConfirmation.hbs`);
+    const handlebarPath = path.join(
+        __dirname,
+        `../assets/email/AccountConfirmation.hbs`
+    );
 
     const mailData = {
         from: process.env.NO_REPLY_EMAIL,
@@ -142,8 +158,13 @@ function generateAccountConfirmationEmail(address, receiverEmail, type, token) {
  * @param {string} token The account confirmation token
  */
 function generateAccountInvitationEmail(address, receiverEmail, type, token) {
-    const httpOrHttps = (address.includes("localhost")) ? "http" : "https";
-    const tokenLink = generateCreateAccountTokenLink(httpOrHttps, address, type, token);
+    const httpOrHttps = address.includes("localhost") ? "http" : "https";
+    const tokenLink = generateCreateAccountTokenLink(
+        httpOrHttps,
+        address,
+        type,
+        token
+    );
     var emailSubject = "";
     if (token === undefined || tokenLink === undefined) {
         return undefined;
@@ -157,7 +178,10 @@ function generateAccountInvitationEmail(address, receiverEmail, type, token) {
     } else if (type === Constants.STAFF) {
         emailSubject = Constants.CREATE_ACC_EMAIL_SUBJECTS[Constants.STAFF];
     }
-    const handlebarPath = path.join(__dirname, `../assets/email/AccountInvitation.hbs`);
+    const handlebarPath = path.join(
+        __dirname,
+        `../assets/email/AccountInvitation.hbs`
+    );
     const mailData = {
         from: process.env.NO_REPLY_EMAIL,
         to: receiverEmail,
@@ -176,4 +200,4 @@ module.exports = {
     generateToken: generateToken,
     generateAccountConfirmationEmail: generateAccountConfirmationEmail,
     generateAccountInvitationEmail: generateAccountInvitationEmail
-}
+};

@@ -11,7 +11,12 @@ module.exports = {
         VALIDATOR.alphaArrayValidator("body", "dietaryRestrictions", false),
         VALIDATOR.stringValidator("body", "gender", false),
         VALIDATOR.passwordValidator("body", "password", false),
-        VALIDATOR.jwtValidator("header", "token", process.env.JWT_CONFIRM_ACC_SECRET, true),
+        VALIDATOR.jwtValidator(
+            "header",
+            "token",
+            process.env.JWT_CONFIRM_ACC_SECRET,
+            true
+        ),
         VALIDATOR.dateValidator("body", "birthDate", false),
         VALIDATOR.phoneNumberValidator("body", "phoneNumber", false)
     ],
@@ -27,6 +32,11 @@ module.exports = {
     ],
     inviteAccountValidator: [
         VALIDATOR.regexValidator("body", "email", false, Constants.EMAIL_REGEX),
-        VALIDATOR.enumValidator("body", "accountType", Constants.EXTENDED_USER_TYPES, false)
+        VALIDATOR.enumValidator(
+            "body",
+            "accountType",
+            Constants.EXTENDED_USER_TYPES,
+            false
+        )
     ]
 };

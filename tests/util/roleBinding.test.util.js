@@ -1,7 +1,7 @@
 "use strict";
 const RoleBinding = require("../../models/roleBinding.model");
 const Util = {
-    Account: require("./account.test.util"),
+    Account: require("./account.test.util")
 };
 const Constants = {
     Role: require("../../constants/role.constant"),
@@ -59,9 +59,15 @@ function createRoleBindings(accounts) {
     return roleBindings;
 }
 
-const TeamHackerRB = createRoleBindings(Util.Account.hackerAccounts.stored.team);
-const NoTeamHackerRB = createRoleBindings(Util.Account.hackerAccounts.stored.noTeam);
-const UnconfirmedHackerRB = createRoleBindings(Util.Account.hackerAccounts.stored.unconfirmed);
+const TeamHackerRB = createRoleBindings(
+    Util.Account.hackerAccounts.stored.team
+);
+const NoTeamHackerRB = createRoleBindings(
+    Util.Account.hackerAccounts.stored.noTeam
+);
+const UnconfirmedHackerRB = createRoleBindings(
+    Util.Account.hackerAccounts.stored.unconfirmed
+);
 const VolunteerRB = createRoleBindings(Util.Account.volunteerAccounts.stored);
 const StaffRB = createRoleBindings(Util.Account.staffAccounts.stored);
 const SponsorT1RB = createRoleBindings(Util.Account.sponsorT1Accounts.stored);
@@ -82,7 +88,10 @@ const extraAccounts = [
     createRoleBinding(Util.Account.NonConfirmedAccount1._id),
     createRoleBinding(Util.Account.NonConfirmedAccount2._id),
     createRoleBinding(Util.Account.NonConfirmedAccount3._id),
-    createRoleBinding(Util.Account.waitlistedHacker0._id, Constants.General.HACKER),
+    createRoleBinding(
+        Util.Account.waitlistedHacker0._id,
+        Constants.General.HACKER
+    )
 ];
 
 function store(attributes) {
@@ -154,5 +163,5 @@ module.exports = {
     extraAccounts: extraAccounts,
 
     storeAll: storeAll,
-    dropAll: dropAll,
+    dropAll: dropAll
 };
