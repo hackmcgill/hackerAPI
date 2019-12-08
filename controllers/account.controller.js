@@ -25,7 +25,7 @@ function showAccount(req, res) {
 
 /**
  * @function addUser
- * @param {{body: {accountDetails: {_id: ObjectId, firstName: string, lastName: string, email: string, password: string, dietaryRestrictions: string, shirtSize: string}}}} req
+ * @param {{body: {accountDetails: {_id: ObjectId, firstName: string, lastName: string, email: string, password: string}}}} req
  * @param {*} res
  * @return {JSON} Success or error status
  * @description Adds a user from information in req.body.accountDetails

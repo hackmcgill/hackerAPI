@@ -51,6 +51,8 @@ function generateRandomValue(atr) {
                 .toString(36)
                 .replace(/[^a-z]+/g, "")
                 .substr(0, Math.floor(Math.random() * 3 + 2));
+        case "gender":
+            return "Female";
         case "email":
             const email = `abc.def${counters.emailCounter}@blahblah.com`;
             return email;
@@ -58,19 +60,6 @@ function generateRandomValue(atr) {
             return Math.random()
                 .toString(36)
                 .substr(0, 10);
-        case "dietaryRestrictions":
-            return [
-                Constants.SAMPLE_DIET_RESTRICTIONS[
-                    Math.floor(
-                        Math.random() *
-                            Constants.SAMPLE_DIET_RESTRICTIONS.length
-                    )
-                ]
-            ];
-        case "shirtSize":
-            return Constants.SHIRT_SIZES[
-                Math.floor(Math.random() * Constants.SHIRT_SIZES.length)
-            ];
         case "confirmed":
             // return false, because if an account is confirmed there should be a document of that account type,
             // which this does not create
@@ -88,7 +77,6 @@ function generateRandomValue(atr) {
 
 function createAccount(acc = {}) {
     incrementCounters();
-
     const extractedAcc = extractAccountInfo(acc);
 
     for (const atr in Account.schema.paths) {
@@ -254,10 +242,9 @@ const waitlistedHacker0 = {
     firstName: "abcd",
     lastName: "defg3",
     pronoun: "They/Them",
+    gender: "Female",
     email: "waitlisted1@blahblah.com",
     password: "probsShouldBeHashed2",
-    dietaryRestrictions: ["vegetarian"],
-    shirtSize: "M",
     confirmed: true,
     accountType: Constants.HACKER,
     birthDate: "1990-01-04",
@@ -270,10 +257,9 @@ const NonConfirmedAccount1 = {
     firstName: "LMAO",
     lastName: "ROFL",
     pronoun: "Ey/Em",
+    gender: "Female",
     email: "notconfirmed1@blahblah.com",
     password: "probsShouldBeHashed5",
-    dietaryRestrictions: ["something1", "something2"],
-    shirtSize: "XXL",
     confirmed: false,
     birthDate: "1980-07-30",
     phoneNumber: 1001230236,
@@ -284,10 +270,9 @@ const NonConfirmedAccount2 = {
     _id: mongoose.Types.ObjectId(),
     firstName: "LMAO",
     lastName: "ROFL",
+    gender: "Female",
     email: "notconfirmed2@blahblah.com",
     password: "probsShouldBeHashed5",
-    dietaryRestrictions: ["something1", "something2"],
-    shirtSize: "XXL",
     confirmed: false,
     accountType: Constants.HACKER
 };
@@ -397,17 +382,6 @@ function equals(acc1, acc2) {
     const lastName = acc1.lastName === acc2.lastName;
     const pronoun = acc1.pronoun === acc2.pronoun;
     const email = acc1.email === acc2.email;
-    const dietaryRestrictions =
-        acc1.dietaryRestrictions.join(",") ===
-        acc2.dietaryRestrictions.join(",");
-    const shirtSize = acc1.shirtSize === acc2.shirtSize;
-    return [
-        id,
-        firstName,
-        lastName,
-        email,
-        dietaryRestrictions,
-        shirtSize,
-        pronoun
-    ];
+    const gender = acc1.gender === acc2.gender;
+    return [id, firstName, lastName, email, pronoun, gender];
 }

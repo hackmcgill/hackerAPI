@@ -98,22 +98,31 @@ const HackerSchema = new mongoose.Schema({
                 ],
                 required: true
             },
-            gender: {
-                type: String,
-                required: true
-            },
-            codeOfConduct_MLH: {
+            privacyPolicy: {
                 type: Boolean,
                 required: true
             },
-            codeOfConduct_MCHACKS: {
+            codeOfConduct: {
                 type: Boolean,
                 required: true
             }
         },
-        accomodation: {
-            needsBus: Boolean,
-            default: false
+        accommodation: {
+            dietaryRestrictions: {
+                type: [
+                    {
+                        type: String
+                    }
+                ],
+                required: true
+            },
+
+            shirtSize: {
+                type: String,
+                enum: Constants.SHIRT_SIZES,
+                required: true
+            },
+            needsBus: { type: Boolean, default: false }
         },
         team: {
             type: mongoose.Schema.Types.ObjectId,

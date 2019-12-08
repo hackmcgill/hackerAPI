@@ -37,12 +37,13 @@ const TeamHacker0 = {
             question2: "a"
         },
         other: {
-            gender: "Male",
             ethnicity: ["Native American"],
-            codeOfConduct_MCHACKS: true,
-            codeOfConduct_MLH: true
+            codeOfConduct: true,
+            privacyPolicy: true
         },
-        accomodation: {
+        accommodation: {
+            dietaryRestrictions: ["Gluten-Free"],
+            shirtSize: "L",
             needsBus: true
         }
     },
@@ -76,12 +77,13 @@ const TeamHacker1 = {
             question2: "a"
         },
         other: {
-            gender: "Female",
             ethnicity: ["European"],
-            codeOfConduct_MCHACKS: true,
-            codeOfConduct_MLH: true
+            codeOfConduct: true,
+            privacyPolicy: true
         },
-        accomodation: {
+        accommodation: {
+            dietaryRestrictions: ["Gluten-Free"],
+            shirtSize: "L",
             needsBus: false
         }
     },
@@ -115,12 +117,13 @@ const TeamHacker2 = {
             question2: "a"
         },
         other: {
-            gender: "Female",
             ethnicity: ["European"],
-            codeOfConduct_MCHACKS: true,
-            codeOfConduct_MLH: true
+            codeOfConduct: true,
+            privacyPolicy: true
         },
-        accomodation: {
+        accommodation: {
+            dietaryRestrictions: ["Gluten-Free"],
+            shirtSize: "L",
             needsBus: false
         }
     },
@@ -154,12 +157,13 @@ const TeamHacker3 = {
             question2: "a"
         },
         other: {
-            gender: "Female",
             ethnicity: ["European"],
-            codeOfConduct_MCHACKS: true,
-            codeOfConduct_MLH: true
+            codeOfConduct: true,
+            privacyPolicy: true
         },
-        accomodation: {
+        accommodation: {
+            dietaryRestrictions: ["Gluten-Free"],
+            shirtSize: "L",
             needsBus: false
         }
     },
@@ -193,12 +197,13 @@ const TeamHacker4 = {
             question2: "a"
         },
         other: {
-            gender: "Female",
             ethnicity: ["European"],
-            codeOfConduct_MCHACKS: true,
-            codeOfConduct_MLH: true
+            codeOfConduct: true,
+            privacyPolicy: true
         },
-        accomodation: {
+        accommodation: {
+            dietaryRestrictions: ["Gluten-Free"],
+            shirtSize: "L",
             needsBus: false
         }
     },
@@ -232,12 +237,13 @@ const NoTeamHacker0 = {
             question2: "a"
         },
         other: {
-            gender: "Female",
             ethnicity: ["European"],
-            codeOfConduct_MCHACKS: true,
-            codeOfConduct_MLH: true
+            codeOfConduct: true,
+            privacyPolicy: true
         },
-        accomodation: {
+        accommodation: {
+            dietaryRestrictions: ["Gluten-Free"],
+            shirtSize: "L",
             needsBus: false
         }
     }
@@ -268,12 +274,13 @@ const newHacker0 = {
             question2: "a"
         },
         other: {
-            gender: "Female",
             ethnicity: ["Caucasian"],
-            codeOfConduct_MCHACKS: true,
-            codeOfConduct_MLH: true
+            codeOfConduct: true,
+            privacyPolicy: true
         },
-        accomodation: {
+        accommodation: {
+            dietaryRestrictions: ["Gluten-Free"],
+            shirtSize: "L",
             needsBus: false
         }
     }
@@ -304,12 +311,13 @@ const newHacker1 = {
             question2: "a"
         },
         other: {
-            gender: "Female",
             ethnicity: ["African American"],
-            codeOfConduct_MCHACKS: true,
-            codeOfConduct_MLH: true
+            codeOfConduct: true,
+            privacyPolicy: true
         },
-        accomodation: {
+        accommodation: {
+            dietaryRestrictions: ["Gluten-Free"],
+            shirtSize: "L",
             needsBus: true
         }
     }
@@ -341,13 +349,14 @@ const invalidHacker0 = {
             question2: "a"
         },
         other: {
-            gender: "Female",
             ethnicity: ["Caucasian"],
             // must accept code of conduct to be valid
-            codeOfConduct_MCHACKS: false,
-            codeOfConduct_MLH: false
+            codeOfConduct: false,
+            privacyPolicy: false
         },
-        accomodation: {
+        accommodation: {
+            dietaryRestrictions: ["Gluten-Free"],
+            shirtSize: "L",
             needsBus: true
         }
     }
@@ -375,12 +384,13 @@ const invalidHacker1 = {
             question2: "a"
         },
         other: {
-            gender: "Female",
             ethnicity: ["Caucasian"],
-            codeOfConduct_MCHACKS: true,
-            codeOfConduct_MLH: true
+            codeOfConduct: true,
+            privacyPolicy: true
         },
-        accomodation: {
+        accommodation: {
+            dietaryRestrictions: ["Gluten-Free"],
+            shirtSize: "L",
             needsBus: true
         }
     }
@@ -413,12 +423,13 @@ const duplicateAccountLinkHacker0 = {
             question2: "a"
         },
         other: {
-            gender: "Male",
             ethnicity: ["Caucasian"],
-            codeOfConduct_MCHACKS: true,
-            codeOfConduct_MLH: true
+            codeOfConduct: true,
+            privacyPolicy: true
         },
-        accomodation: {
+        accommodation: {
+            dietaryRestrictions: ["Gluten-Free"],
+            shirtSize: "L",
             needsBus: true
         }
     }
@@ -451,12 +462,13 @@ const waitlistedHacker0 = {
             question2: "a"
         },
         other: {
-            gender: "Female",
             ethnicity: ["European"],
-            codeOfConduct_MCHACKS: true,
-            codeOfConduct_MLH: true
+            codeOfConduct: true,
+            privacyPolicy: true
         },
-        accomodation: {
+        accommodation: {
+            dietaryRestrictions: ["Gluten-Free"],
+            shirtSize: "L",
             needsBus: false
         }
     },
@@ -490,12 +502,13 @@ const unconfirmedAccountHacker0 = {
             question2: "a"
         },
         other: {
-            gender: "Female",
             ethnicity: ["European"],
-            codeOfConduct_MCHACKS: true,
-            codeOfConduct_MLH: true
+            codeOfConduct: true,
+            privacyPolicy: true
         },
-        accomodation: {
+        accommodation: {
+            dietaryRestrictions: ["Gluten-Free"],
+            shirtSize: "L",
             needsBus: false
         }
     }
@@ -528,12 +541,13 @@ const unconfirmedAccountHacker1 = {
             question2: "a"
         },
         other: {
-            gender: "Female",
             ethnicity: ["European"],
-            codeOfConduct_MCHACKS: true,
-            codeOfConduct_MLH: true
+            codeOfConduct: true,
+            privacyPolicy: true
         },
-        accomodation: {
+        accommodation: {
+            dietaryRestrictions: ["Gluten-Free"],
+            shirtSize: "L",
             needsBus: false
         }
     }

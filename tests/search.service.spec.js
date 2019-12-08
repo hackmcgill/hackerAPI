@@ -22,7 +22,7 @@ const util = {
 
 const queryToExecute = [
     {
-        param: "application.other.gender",
+        param: "gender",
         operation: "equals",
         value: "Female"
     }
@@ -64,7 +64,7 @@ describe("Searching for hackers", function() {
                 return agent
                     .get("/api/search")
                     .query({
-                        model: "hacker",
+                        model: "account",
                         q: JSON.stringify(queryToExecute)
                     })
                     .end(function(err, res) {
@@ -88,7 +88,7 @@ describe("Searching for hackers", function() {
             return agent
                 .get("/api/search")
                 .query({
-                    model: "hacker",
+                    model: "account",
                     q: JSON.stringify(queryToExecute)
                 })
                 .end(function(err, res) {
@@ -109,7 +109,7 @@ describe("Searching for hackers", function() {
                 return agent
                     .get("/api/search")
                     .query({
-                        model: "hacker",
+                        model: "account",
                         q: JSON.stringify(queryToExecute)
                     })
                     .end(function(err, res) {
@@ -296,7 +296,7 @@ describe("Searching for hackers", function() {
             return agent
                 .get("/api/search")
                 .query({
-                    model: "hacker",
+                    model: "account",
                     q: JSON.stringify(queryToExecute),
                     expand: true
                 })

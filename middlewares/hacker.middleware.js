@@ -542,7 +542,6 @@ async function createHacker(req, res, next) {
         });
     }
     const hacker = await Services.Hacker.createHacker(hackerDetails);
-
     if (!!hacker) {
         req.body.hacker = hacker;
         return next();

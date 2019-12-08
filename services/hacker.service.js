@@ -166,14 +166,14 @@ function getStats(hackers) {
         ]
             ? stats.degree[hacker.application.general.degree] + 1
             : 1;
-        stats.gender[hacker.application.other.gender] = stats.gender[
-            hacker.application.other.gender
+        stats.gender[hacker.accountId.gender] = stats.gender[
+            hacker.accountId.gender
         ]
-            ? stats.gender[hacker.application.other.gender] + 1
+            ? stats.gender[hacker.accountId.gender] + 1
             : 1;
-        stats.needsBus[hacker.application.accomodation.needsBus] = stats
-            .needsBus[hacker.application.accomodation.needsBus]
-            ? stats.needsBus[hacker.application.accomodation.needsBus] + 1
+        stats.needsBus[hacker.application.accommodation.needsBus] = stats
+            .needsBus[hacker.application.accommodation.needsBus]
+            ? stats.needsBus[hacker.application.accommodation.needsBus] + 1
             : 1;
 
         for (const ethnicity of hacker.application.other.ethnicity) {
@@ -196,17 +196,16 @@ function getStats(hackers) {
               1
             : 1;
 
-        for (const dietaryRestrictions of hacker.accountId
-            .dietaryRestrictions) {
+        for (const dietaryRestrictions of hacker.application.accommodation
+            .dietaryRestrictions.dietaryRestrictions) {
             stats.dietaryRestrictions[dietaryRestrictions] = stats
                 .dietaryRestrictions[dietaryRestrictions]
                 ? stats.dietaryRestrictions[dietaryRestrictions] + 1
                 : 1;
         }
-        stats.shirtSize[hacker.accountId.shirtSize] = stats.shirtSize[
-            hacker.accountId.shirtSize
-        ]
-            ? stats.shirtSize[hacker.accountId.shirtSize] + 1
+        stats.shirtSize[hacker.application.accommodation.shirtSize] = stats
+            .shirtSize[hacker.application.accommodation.shirtSize]
+            ? stats.shirtSize[hacker.application.accommodation.shirtSize] + 1
             : 1;
         const age = hacker.accountId.getAge();
         stats.age[age] = stats.age[age] ? stats.age[age] + 1 : 1;

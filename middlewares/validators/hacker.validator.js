@@ -20,8 +20,19 @@ module.exports = {
             2019,
             2030
         ),
+
+        VALIDATOR.alphaArrayValidator(
+            "body",
+            "application.accommodation.dietaryRestrictions",
+            true
+        ),
+        VALIDATOR.enumValidator(
+            "body",
+            "application.accommodation.shirtSize",
+            Constants.SHIRT_SIZES,
+            true
+        ),
         VALIDATOR.applicationValidator("body", "application", false),
-        VALIDATOR.stringValidator("body", "application.other.gender", false),
         VALIDATOR.alphaArrayValidator(
             "body",
             "application.other.ethnicity",
@@ -29,19 +40,19 @@ module.exports = {
         ),
         VALIDATOR.booleanValidator(
             "body",
-            "application.other.codeOfConduct_MLH",
+            "application.other.privacyPolicy",
             false,
             true
         ),
         VALIDATOR.booleanValidator(
             "body",
-            "application.other.codeOfConduct_MCHACKS",
+            "application.other.codeOfConduct",
             false,
             true
         ),
         VALIDATOR.booleanValidator(
             "body",
-            "application.accomodation.needsBus",
+            "application.accommodation.needsBus",
             true
         ),
         VALIDATOR.mongoIdValidator("body", "teamId", true)
@@ -66,8 +77,18 @@ module.exports = {
             2019,
             2030
         ),
+        VALIDATOR.alphaArrayValidator(
+            "body",
+            "application.accommodation.dietaryRestrictions",
+            true
+        ),
+        VALIDATOR.enumValidator(
+            "body",
+            "application.accommodation.shirtSize",
+            Constants.SHIRT_SIZES,
+            true
+        ),
         VALIDATOR.applicationValidator("body", "application", true),
-        VALIDATOR.stringValidator("body", "application.other.gender", true),
         VALIDATOR.alphaArrayValidator(
             "body",
             "application.other.ethnicity",
@@ -75,19 +96,19 @@ module.exports = {
         ),
         VALIDATOR.booleanValidator(
             "body",
-            "application.other.codeOfConduct_MLH",
+            "application.other.privacyPolicy",
             true,
             true
         ),
         VALIDATOR.booleanValidator(
             "body",
-            "application.other.codeOfConduct_MCHACKS",
+            "application.other.codeOfConduct",
             true,
             true
         ),
         VALIDATOR.booleanValidator(
             "body",
-            "application.accomodation.needsBus",
+            "application.accommodation.needsBus",
             true
         )
     ],

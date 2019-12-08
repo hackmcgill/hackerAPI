@@ -120,8 +120,8 @@ module.exports = {
                       "other:" {
                         "gender": "male",
                         "ethnicity": "Asian or Pacific Islander",
-                        "codeOfConduct_MLH": true,
-                        "codeOfConduct_MCHACKS": true,
+                        "privacyPolicy": true,
+                        "codeOfConduct": true,
                       }
                       "accomodation": {
                         "needsBus": "false"
@@ -162,8 +162,8 @@ module.exports = {
                           "other:" {
                             "gender": "male",
                             "ethnicity": "Asian or Pacific Islander",
-                            "codeOfConduct_MLH": true,
-                            "codeOfConduct_MCHACKS": true,
+                            "privacyPolicy": true,
+                            "codeOfConduct": true,
                           }
                           "accomodation": {
                             "needsBus": "false"
@@ -356,8 +356,8 @@ module.exports = {
                     "other:" {
                       "gender": "male",
                       "ethnicity": "Asian or Pacific Islander",
-                      "codeOfConduct_MLH": true,
-                      "codeOfConduct_MCHACKS": true,
+                      "privacyPolicy": true,
+                      "codeOfConduct": true,
                     }
                     "accomodation": {
                       "needsBus": "false"
@@ -398,8 +398,8 @@ module.exports = {
                           "other:" {
                             "gender": "male",
                             "ethnicity": "Asian or Pacific Islander",
-                            "codeOfConduct_MLH": true,
-                            "codeOfConduct_MCHACKS": true,
+                            "privacyPolicy": true,
+                            "codeOfConduct": true,
                           }
                           "accomodation": {
                             "needsBus": "false"
@@ -469,8 +469,8 @@ module.exports = {
                           "other:" {
                             "gender": "male",
                             "ethnicity": "Asian or Pacific Islander",
-                            "codeOfConduct_MLH": true,
-                            "codeOfConduct_MCHACKS": true,
+                            "privacyPolicy": true,
+                            "codeOfConduct": true,
                           }
                           "accomodation": {
                             "needsBus": "false"
@@ -536,8 +536,8 @@ module.exports = {
                           "other:" {
                             "gender": "male",
                             "ethnicity": "Asian or Pacific Islander",
-                            "codeOfConduct_MLH": true,
-                            "codeOfConduct_MCHACKS": true,
+                            "privacyPolicy": true,
+                            "codeOfConduct": true,
                           }
                           "accomodation": {
                             "needsBus": "false"

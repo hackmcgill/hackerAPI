@@ -16,6 +16,10 @@ const AccountSchema = new mongoose.Schema({
         type: String,
         default: "Prefer not to say"
     },
+    gender: {
+        type: String,
+        required: true
+    },
     email: {
         type: String,
         trim: true,
@@ -26,16 +30,6 @@ const AccountSchema = new mongoose.Schema({
     },
     password: {
         type: String,
-        required: true
-    },
-    dietaryRestrictions: [
-        {
-            type: String
-        }
-    ],
-    shirtSize: {
-        type: String,
-        enum: Constants.SHIRT_SIZES,
         required: true
     },
     confirmed: {

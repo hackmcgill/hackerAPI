@@ -95,10 +95,6 @@ describe("GET user account", function() {
                         res.body.data.should.have.property("firstName");
                         res.body.data.should.have.property("lastName");
                         res.body.data.should.have.property("email");
-                        res.body.data.should.have.property(
-                            "dietaryRestrictions"
-                        );
-                        res.body.data.should.have.property("shirtSize");
                         done();
                     })
             );
@@ -211,6 +207,8 @@ describe("POST create account", function() {
             .type("application/json")
             .send(newAccount0)
             .end(function(err, res) {
+                console.log(res.body);
+                console.log(newAccount0);
                 res.should.have.status(200);
                 res.should.be.json;
                 res.body.should.have.property("message");
