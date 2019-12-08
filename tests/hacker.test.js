@@ -854,8 +854,8 @@ describe("PATCH update one hacker", function() {
                 return done(error);
             }
             // this endpoint requires an application object to work properly, so will clone and mutate the object
-            // let app = cloneDeep(noTeamHacker0.application);
-            let app = noTeamHacker0.application;
+            // let app = cloneDeep(unconfirmedHacker1.application);
+            let app = unconfirmedHacker1.application;
             app.accommodation.shirtSize = "M";
             return agent
                 .patch(`/api/hacker/${unconfirmedHacker1._id}`)
