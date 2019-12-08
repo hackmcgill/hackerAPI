@@ -1,1 +1,1 @@
-web: npm run build
+web: NODE_ENV=deployment node ./bin/www.js
