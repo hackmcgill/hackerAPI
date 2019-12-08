@@ -493,7 +493,7 @@ async function updateHacker(req, res, next) {
 }
 
 /**
- * Sets Hacker Status to Accepted and runs it through updateHacker's functionality.
+ * Sets req.body.status to Accepted for next middleware.
  * @param {{params:{id: string}, body: *}} req 
  * @param {*} res 
  * @param {*} next 

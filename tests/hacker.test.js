@@ -504,9 +504,7 @@ describe("PATCH update one hacker", function () {
         chai.request(server.app)
             .patch(`/api/hacker/accept/${TeamHacker0._id}`)
             .type("application/json")
-            .send({
-                gender: "Other"
-            })
+            .send()
             .end(function (err, res) {
                 res.should.have.status(401);
                 res.should.be.json;
@@ -517,7 +515,7 @@ describe("PATCH update one hacker", function () {
     });
 
     // should FAIL due to authorization
-    it("should Fail to accept hacker info due to lack of authorization", function (done) {
+    it("should FAIL to accept hacker info due to lack of authorization", function (done) {
         util.auth.login(agent, noTeamHackerAccount0, (error) => {
             if (error) {
                 agent.close();
@@ -526,14 +524,35 @@ describe("PATCH update one hacker", function () {
             return agent
                 .patch(`/api/hacker/accept/${TeamHacker0._id}`)
                 .type("application/json")
-                .send({
-                    gender: "Other"
-                })
+                .send()
                 .end(function (err, res) {
                     res.should.have.status(403);
                     res.should.be.json;
                     res.body.should.have.property("message");
                     res.body.message.should.equal(Constants.Error.AUTH_403_MESSAGE);
+                    res.body.should.have.property("data");
+
+                    done();
+                });
+        });
+    });
+
+    it("should FAIL to accept an invalid hacker's info", function (done) {
+        util.auth.login(agent, Admin0, (error) => {
+            if (error) {
+                agent.close();
+                return done(error);
+            }
+            return agent
+                .patch(`/api/hacker/accept/${invalidHacker1._id}`)
+                .end(function (err, res) {
+                    if (err) {
+                        return done(err);
+                    }
+                    res.should.have.status(404);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal(Constants.Error.HACKER_404_MESSAGE);
                     res.body.should.have.property("data");
 
                     done();
