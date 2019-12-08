@@ -12,7 +12,8 @@ const ACCOUNT_TYPE_409_MESSAGE = "Wrong account type";
 const SPONSOR_ID_409_MESSAGE = "Conflict with sponsor accountId link";
 const VOLUNTEER_ID_409_MESSAGE = "Conflict with volunteer accountId link";
 const HACKER_ID_409_MESSAGE = "Conflict with hacker accountId link";
-const TEAM_MEMBER_409_MESSAGE = "Conflict with team member being in another team";
+const TEAM_MEMBER_409_MESSAGE =
+    "Conflict with team member being in another team";
 const TEAM_NAME_409_MESSAGE = "Conflict with team name already in use";
 const HACKER_STATUS_409_MESSAGE = "Conflict with hacker status";
 const TEAM_SIZE_409_MESSAGE = "Team full";

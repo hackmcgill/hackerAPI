@@ -58,9 +58,11 @@ const HackerSchema = new mongoose.Schema({
             required: true,
             default: "None"
         },
-        skills: [{
-            type: String
-        }],
+        skills: [
+            {
+                type: String
+            }
+        ],
         //any miscelaneous comments that the user has
         comments: {
             type: String,
@@ -77,16 +79,20 @@ const HackerSchema = new mongoose.Schema({
         }
     },
     ethnicity: {
-        type: [{
-            type: String,
-            required: true
-        }],
+        type: [
+            {
+                type: String,
+                required: true
+            }
+        ],
         required: true
     },
-    major: [{
-        type: String,
-        required: true
-    }],
+    major: [
+        {
+            type: String,
+            required: true
+        }
+    ],
     graduationYear: {
         type: Number,
         required: true
@@ -101,14 +107,14 @@ const HackerSchema = new mongoose.Schema({
     }
 });
 
-HackerSchema.methods.toJSON = function () {
+HackerSchema.methods.toJSON = function() {
     const hs = this.toObject();
     delete hs.__v;
     hs.id = hs._id;
     delete hs._id;
     return hs;
 };
-HackerSchema.methods.isApplicationComplete = function () {
+HackerSchema.methods.isApplicationComplete = function() {
     const hs = this.toObject();
     const portfolioDone = !!hs.application.portfolioURL.resume;
     const jobInterestDone = !!hs.application.jobInterest;
@@ -121,10 +127,10 @@ HackerSchema.methods.isApplicationComplete = function () {
  * @returns {String} type of the field being queried
  * @description return the type of the field(if it exists and is allowed to be searched on)
  */
-HackerSchema.statics.searchableField = function (field) {
-    const schemaField = HackerSchema.path(field)
+HackerSchema.statics.searchableField = function(field) {
+    const schemaField = HackerSchema.path(field);
     if (schemaField != undefined) {
-        return schemaField.instance
+        return schemaField.instance;
     } else {
         return null;
     }

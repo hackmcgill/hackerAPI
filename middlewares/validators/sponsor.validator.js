@@ -11,13 +11,23 @@ module.exports = {
         // 5 is the custom class
         VALIDATOR.integerValidator("body", "tier", false, 0, 5),
         VALIDATOR.stringValidator("body", "company", false),
-        VALIDATOR.regexValidator("body", "contractURL", false, Constants.URL_REGEX),
-        VALIDATOR.mongoIdArrayValidator("body", "nominees", true),
+        VALIDATOR.regexValidator(
+            "body",
+            "contractURL",
+            false,
+            Constants.URL_REGEX
+        ),
+        VALIDATOR.mongoIdArrayValidator("body", "nominees", true)
     ],
 
     updateSponsorValidator: [
         VALIDATOR.stringValidator("body", "company", true),
-        VALIDATOR.regexValidator("body", "contractURL", true, Constants.URL_REGEX),
-        VALIDATOR.mongoIdArrayValidator("body", "nominees", true),
-    ],
+        VALIDATOR.regexValidator(
+            "body",
+            "contractURL",
+            true,
+            Constants.URL_REGEX
+        ),
+        VALIDATOR.mongoIdArrayValidator("body", "nominees", true)
+    ]
 };

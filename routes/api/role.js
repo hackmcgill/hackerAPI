@@ -7,14 +7,14 @@ const Controllers = {
 const Middleware = {
     Auth: require("../../middlewares/auth.middleware"),
     Validator: {
-        Role: require("../../middlewares/validators/role.validator"),
+        Role: require("../../middlewares/validators/role.validator")
     },
     parseBody: require("../../middlewares/parse-body.middleware"),
-    Role: require("../../middlewares/role.middleware"),
+    Role: require("../../middlewares/role.middleware")
 };
 
 module.exports = {
-    activate: function (apiRouter) {
+    activate: function(apiRouter) {
         const roleRouter = express.Router();
 
         /**

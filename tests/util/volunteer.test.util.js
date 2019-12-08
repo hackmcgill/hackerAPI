@@ -1,32 +1,30 @@
 "use strict";
 const Util = {
-    Account: require("./account.test.util"),
+    Account: require("./account.test.util")
 };
 const mongoose = require("mongoose");
 const Volunteer = require("../../models/volunteer.model");
 const logger = require("../../services/logger.service");
 
 const newVolunteer0 = {
-    "accountId": Util.Account.volunteerAccounts.new[0]._id
+    accountId: Util.Account.volunteerAccounts.new[0]._id
 };
 
 const duplicateVolunteer1 = {
-    "accountId": Util.Account.volunteerAccounts.stored[0]._id
+    accountId: Util.Account.volunteerAccounts.stored[0]._id
 };
 
 const Volunteer0 = {
-    "_id": mongoose.Types.ObjectId(),
-    "accountId": Util.Account.volunteerAccounts.stored[0]._id
+    _id: mongoose.Types.ObjectId(),
+    accountId: Util.Account.volunteerAccounts.stored[0]._id
 };
 
 const invalidVolunteer0 = {
-    "_id": mongoose.Types.ObjectId(),
-    "accountId": Util.Account.staffAccounts.stored[0]._id
+    _id: mongoose.Types.ObjectId(),
+    accountId: Util.Account.staffAccounts.stored[0]._id
 };
 
-const Volunteers = [
-    Volunteer0,
-];
+const Volunteers = [Volunteer0];
 
 function store(attributes) {
     const volunteerDocs = [];
@@ -63,5 +61,5 @@ module.exports = {
 
     Volunteers: Volunteers,
     storeAll: storeAll,
-    dropAll: dropAll,
+    dropAll: dropAll
 };

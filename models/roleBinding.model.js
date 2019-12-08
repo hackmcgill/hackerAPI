@@ -9,15 +9,17 @@ const roleBinding = new mongoose.Schema({
         unique: true
     },
     roles: {
-        type: [{
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "Role",
-            required: true
-        }]
+        type: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "Role",
+                required: true
+            }
+        ]
     }
 });
 
-roleBinding.methods.toJSON = function () {
+roleBinding.methods.toJSON = function() {
     const ps = this.toObject();
     delete ps.__v;
     ps.id = ps._id;

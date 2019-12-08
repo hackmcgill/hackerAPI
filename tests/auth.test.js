@@ -18,47 +18,45 @@ const util = {
 };
 
 const constants = {
-    success: require("../constants/success.constant"),
-}
+    success: require("../constants/success.constant")
+};
 
 const roles = require("../constants/role.constant");
 
 // hacker role binding
 const teamHackerAccount0 = util.account.hackerAccounts.stored.team[0];
 
-describe("GET roles", function () {
-    it("should list all roles GET", function (done) {
+describe("GET roles", function() {
+    it("should list all roles GET", function(done) {
         util.auth.login(agent, teamHackerAccount0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);
             }
-            return agent
-                .get("/api/auth/roles")
-                .end(function (err, res) {
-                    if (err) {
-                        return done(err);
-                    }
-                    res.should.have.status(200);
-                    res.should.be.json;
-                    res.body.should.have.property("message");
-                    res.body.message.should.equal(constants.success.AUTH_GET_ROLES);
-                    res.body.should.have.property("data");
-                    res.body.data.should.be.a("Array");
+            return agent.get("/api/auth/roles").end(function(err, res) {
+                if (err) {
+                    return done(err);
+                }
+                res.should.have.status(200);
+                res.should.be.json;
+                res.body.should.have.property("message");
+                res.body.message.should.equal(constants.success.AUTH_GET_ROLES);
+                res.body.should.have.property("data");
+                res.body.data.should.be.a("Array");
 
-                    let rolenames = []
-                    roles.allRolesArray.forEach(element => {
-                        rolenames.push(element.name)
-                    });
-
-                    let retrievedRoleNames = []
-                    res.body.data.forEach(element => {
-                        retrievedRoleNames.push(element.name)
-                    });
-
-                    rolenames.should.have.members(retrievedRoleNames)
-                    done();
+                let rolenames = [];
+                roles.allRolesArray.forEach((element) => {
+                    rolenames.push(element.name);
                 });
+
+                let retrievedRoleNames = [];
+                res.body.data.forEach((element) => {
+                    retrievedRoleNames.push(element.name);
+                });
+
+                rolenames.should.have.members(retrievedRoleNames);
+                done();
+            });
         });
     });
 });

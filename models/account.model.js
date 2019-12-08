@@ -14,6 +14,10 @@ const AccountSchema = new mongoose.Schema({
     },
     pronoun: {
         type: String,
+        default: "Prefer not to say"
+    },
+    gender: {
+        type: String,
         default: "Prefer not to say",
     },
     email: {
@@ -28,14 +32,11 @@ const AccountSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    dietaryRestrictions: [{
-        type: String
-    }],
-    shirtSize: {
-        type: String,
-        enum: Constants.SHIRT_SIZES,
-        required: true
-    },
+    dietaryRestrictions: [
+        {
+            type: String
+        }
+    ],
     confirmed: {
         type: Boolean,
         default: false
@@ -55,7 +56,7 @@ const AccountSchema = new mongoose.Schema({
     }
 });
 
-AccountSchema.methods.toJSON = function () {
+AccountSchema.methods.toJSON = function() {
     const as = this.toObject();
     delete as.__v;
     as.id = as._id;
@@ -63,29 +64,33 @@ AccountSchema.methods.toJSON = function () {
     return as;
 };
 //deletes password
-AccountSchema.methods.toStrippedJSON = function () {
+AccountSchema.methods.toStrippedJSON = function() {
     const as = this.toJSON();
     delete as.password;
     return as;
 };
 /**
- * Pass in an un-encrypted password and see whether it matches the 
+ * Pass in an un-encrypted password and see whether it matches the
  * encrypted password
- * @param {String} password 
+ * @param {String} password
  */
-AccountSchema.methods.comparePassword = function (password) {
+AccountSchema.methods.comparePassword = function(password) {
     return bcrypt.compareSync(password, this.password);
 };
 /**
- * Returns if the accountType corresponds to a sponsor 
+ * Returns if the accountType corresponds to a sponsor
  */
-AccountSchema.methods.isSponsor = function () {
-    return Constants.SPONSOR_TIERS.includes(this.accountType) || this.accountType == Constants.SPONSOR;
+AccountSchema.methods.isSponsor = function() {
+    return (
+        Constants.SPONSOR_TIERS.includes(this.accountType) ||
+        this.accountType == Constants.SPONSOR
+    );
 };
 /**
  * Calculates the user's age
  */
-AccountSchema.methods.getAge = function () { // birthday is a date
+AccountSchema.methods.getAge = function() {
+    // birthday is a date
     var ageDifMs = Date.now() - this.birthDate.getTime();
     var ageDate = new Date(ageDifMs); // miliseconds from epoch
     return Math.abs(ageDate.getUTCFullYear() - 1970);
