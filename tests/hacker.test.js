@@ -555,7 +555,7 @@ describe("PATCH update one hacker", function() {
             });
     });
 
-    it("should FAIL to accept a hacker on /api/hacker/accept/:id GET due to authentication", function (done) {
+    it("should FAIL to accept a hacker on /api/hacker/accept/:id due to authentication", function (done) {
         chai.request(server.app)
             .patch(`/api/hacker/accept/${TeamHacker0._id}`)
             .type("application/json")
@@ -624,9 +624,7 @@ describe("PATCH update one hacker", function() {
             return agent
                 .patch(`/api/hacker/accept/${TeamHacker0._id}`)
                 .type("application/json")
-                .send({
-                    status: "Accepted"
-                })
+                .send()
                 .end(function (err, res) {
                     res.should.have.status(200);
                     res.should.be.json;

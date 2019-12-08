@@ -256,7 +256,6 @@ module.exports = {
          * @apiGroup Hacker
          * @apiVersion 0.0.9
          *
-         * @apiParam (body) {ObjectId} Hacker Id
          * @apiSuccess {string} message Success message
          * @apiSuccess {object} data Hacker object
          * @apiSuccessExample {object} Success-Response:
