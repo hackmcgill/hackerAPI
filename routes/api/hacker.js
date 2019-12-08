@@ -271,7 +271,8 @@ module.exports = {
             Middleware.Auth.ensureAuthenticated(),
             Middleware.Auth.ensureAuthorized([Services.Hacker.findById]),
             Middleware.Hacker.validateConfirmedStatusFromHackerId,
-            Middleware.Hacker.acceptHacker,
+            Middleware.Hacker.parseAccept,
+            Middleware.Hacker.updateHacker,
             Middleware.Hacker.sendStatusUpdateEmail,
             Controllers.Hacker.updatedHacker
         );

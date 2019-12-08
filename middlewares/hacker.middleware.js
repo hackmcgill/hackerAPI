@@ -498,9 +498,9 @@ async function updateHacker(req, res, next) {
  * @param {*} res 
  * @param {*} next 
  */
-async function acceptHacker(req, res, next) {
+function parseAccept(req, res, next) {
     req.body.status = Constants.General.HACKER_STATUS_ACCEPTED;
-    updateHacker(req, res, next);
+    next();
 }
 
 
@@ -614,7 +614,7 @@ module.exports = {
     sendStatusUpdateEmail: Middleware.Util.asyncMiddleware(sendStatusUpdateEmail),
     sendAppliedStatusEmail: Middleware.Util.asyncMiddleware(sendAppliedStatusEmail),
     updateHacker: Middleware.Util.asyncMiddleware(updateHacker),
-    acceptHacker: Middleware.Util.asyncMiddleware(acceptHacker),
+    parseAccept: parseAccept,
     validateConfirmedStatusFromAccountId: Middleware.Util.asyncMiddleware(validateConfirmedStatusFromAccountId),
     validateConfirmedStatusFromHackerId: Middleware.Util.asyncMiddleware(validateConfirmedStatusFromHackerId),
     validateConfirmedStatusFromObject: Middleware.Util.asyncMiddleware(validateConfirmedStatusFromObject),
