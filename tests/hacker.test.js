@@ -8,7 +8,7 @@ const should = chai.should();
 const Hacker = require("../models/hacker.model");
 const fs = require("fs");
 const path = require("path");
-const cloneDeep = require("lodash/clonedeep");
+// const cloneDeep = require("lodash/clonedeep");
 const Constants = {
     Success: require("../constants/success.constant"),
     General: require("../constants/general.constant"),
@@ -602,7 +602,8 @@ describe("PATCH update one hacker", function() {
                 return done(error);
             }
             // this endpoint requires an application object to work properly, so will clone and mutate the object
-            let app = cloneDeep(TeamHacker0.application);
+            // let app = cloneDeep(TeamHacker0.application);
+            let app = TeamHacker0.application;
             app.accommodation.shirtSize = "M";
             return agent
                 .patch(`/api/hacker/${TeamHacker0._id}`)
@@ -810,7 +811,8 @@ describe("PATCH update one hacker", function() {
                 return done(error);
             }
             // this endpoint requires an application object to work properly, so will clone and mutate the object
-            let app = cloneDeep(noTeamHacker0.application);
+            // let app = cloneDeep(noTeamHacker0.application);
+            let app = noTeamHacker0.application;
             app.accommodation.shirtSize = "M";
             return agent
                 .patch(`/api/hacker/${noTeamHacker0._id}`)
@@ -852,7 +854,8 @@ describe("PATCH update one hacker", function() {
                 return done(error);
             }
             // this endpoint requires an application object to work properly, so will clone and mutate the object
-            let app = cloneDeep(noTeamHacker0.application);
+            // let app = cloneDeep(noTeamHacker0.application);
+            let app = noTeamHacker0.application;
             app.accommodation.shirtSize = "M";
             return agent
                 .patch(`/api/hacker/${unconfirmedHacker1._id}`)
