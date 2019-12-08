@@ -15,7 +15,7 @@ class EmailService {
 
     /**
      * Send one email
-     * @param {*} mailData 
+     * @param {*} mailData
      * @param {(err?)=>void} callback
      */
     send(mailData, callback = () => {}) {
@@ -38,7 +38,7 @@ class EmailService {
     }
     /**
      * Send separate emails to the list of users in mailData
-     * @param {*} mailData 
+     * @param {*} mailData
      * @param {(err?)=>void} callback
      */
     sendMultiple(mailData, callback = () => {}) {
@@ -59,7 +59,10 @@ class EmailService {
      * @param {(err?)=>void} callback
      */
     sendWeekOfEmail(firstName, recipient, ticket, callback) {
-        const handlebarsPath = path.join(__dirname, `../assets/email/Ticket.hbs`);
+        const handlebarsPath = path.join(
+            __dirname,
+            `../assets/email/Ticket.hbs`
+        );
         const html = this.renderEmail(handlebarsPath, {
             firstName: firstName,
             ticket: ticket
@@ -70,14 +73,13 @@ class EmailService {
             subject: Constants.EMAIL_SUBJECTS[Constants.WEEK_OF],
             html: html
         };
-        this.send(mailData).then(
-            (response) => {
-                if (response[0].statusCode >= 200 && response[0].statusCode < 300) {
-                    callback();
-                } else {
-                    callback(response[0]);
-                }
-            }, callback);
+        this.send(mailData).then((response) => {
+            if (response[0].statusCode >= 200 && response[0].statusCode < 300) {
+                callback();
+            } else {
+                callback(response[0]);
+            }
+        }, callback);
     }
     /**
      * Send email with ticket.
@@ -86,9 +88,12 @@ class EmailService {
      * @param {(err?)=>void} callback
      */
     sendDayOfEmail(firstName, recipient, callback) {
-        const handlebarsPath = path.join(__dirname, `../assets/email/Welcome.hbs`);
+        const handlebarsPath = path.join(
+            __dirname,
+            `../assets/email/Welcome.hbs`
+        );
         const html = this.renderEmail(handlebarsPath, {
-            firstName: firstName,
+            firstName: firstName
         });
         const mailData = {
             to: recipient,
@@ -96,18 +101,20 @@ class EmailService {
             subject: Constants.EMAIL_SUBJECTS[Constants.WEEK_OF],
             html: html
         };
-        this.send(mailData).then(
-            (response) => {
-                if (response[0].statusCode >= 200 && response[0].statusCode < 300) {
-                    callback();
-                } else {
-                    callback(response[0]);
-                }
-            }, callback);
+        this.send(mailData).then((response) => {
+            if (response[0].statusCode >= 200 && response[0].statusCode < 300) {
+                callback();
+            } else {
+                callback(response[0]);
+            }
+        }, callback);
     }
 
     sendStatusUpdate(firstName, recipient, status, callback) {
-        const handlebarsPath = path.join(__dirname, `../assets/email/statusEmail/${status}.hbs`);
+        const handlebarsPath = path.join(
+            __dirname,
+            `../assets/email/statusEmail/${status}.hbs`
+        );
         const mailData = {
             to: recipient,
             from: process.env.NO_REPLY_EMAIL,
@@ -116,14 +123,13 @@ class EmailService {
                 firstName: firstName
             })
         };
-        this.send(mailData).then(
-            (response) => {
-                if (response[0].statusCode >= 200 && response[0].statusCode < 300) {
-                    callback();
-                } else {
-                    callback(response[0]);
-                }
-            }, callback);
+        this.send(mailData).then((response) => {
+            if (response[0].statusCode >= 200 && response[0].statusCode < 300) {
+                callback();
+            } else {
+                callback(response[0]);
+            }
+        }, callback);
     }
     /**
      * Generates the HTML from the handlebars template file found at the given path.

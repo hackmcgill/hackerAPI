@@ -26,5 +26,5 @@ module.exports = {
     hackerEId: hackerEId,
     hackerFId: hackerFId,
     hackerGId: hackerGId,
-    hackerHId: hackerHId,
+    hackerHId: hackerHId
 };

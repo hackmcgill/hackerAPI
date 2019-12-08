@@ -1,18 +1,16 @@
 "use strict";
 const Util = {
-    Account: require("./account.test.util"),
+    Account: require("./account.test.util")
 };
 const Staff = require("../../models/staff.model");
 const mongoose = require("mongoose");
 const logger = require("../../services/logger.service");
 
 const Staff0 = {
-    "_id": mongoose.Types.ObjectId(),
-    "accountId": Util.Account.staffAccounts.stored[0],
+    _id: mongoose.Types.ObjectId(),
+    accountId: Util.Account.staffAccounts.stored[0]
 };
-const Staffs = [
-    Staff0,
-];
+const Staffs = [Staff0];
 
 function store(attributes) {
     const staffDocs = [];
@@ -45,5 +43,5 @@ module.exports = {
     Staff0: Staff0,
     Staffs: Staffs,
     storeAll: storeAll,
-    dropAll: dropAll,
+    dropAll: dropAll
 };

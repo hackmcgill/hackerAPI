@@ -1,7 +1,8 @@
 "use strict";
 const winston = require("winston");
 const expressWinston = require("express-winston");
-const StackDriverTransport = require("@google-cloud/logging-winston").LoggingWinston;
+const StackDriverTransport = require("@google-cloud/logging-winston")
+    .LoggingWinston;
 
 const colorize = process.env.NODE_ENV !== "deployment";
 
@@ -33,11 +34,24 @@ function queryCallbackFactory(TAG, model, query) {
     // err is error, res is result
     return (err, res) => {
         if (err) {
-            winston.error(`${TAG} Failed to verify if ${model} exist or not using ${JSON.stringify(query)}`, err);
+            winston.error(
+                `${TAG} Failed to verify if ${model} exist or not using ${JSON.stringify(
+                    query
+                )}`,
+                err
+            );
         } else if (res) {
-            winston.debug(`${TAG} ${model} using ${JSON.stringify(query)} exist in the database`);
+            winston.debug(
+                `${TAG} ${model} using ${JSON.stringify(
+                    query
+                )} exist in the database`
+            );
         } else {
-            winston.debug(`${TAG} ${model} using ${JSON.stringify(query)} do not exist in the database`);
+            winston.debug(
+                `${TAG} ${model} using ${JSON.stringify(
+                    query
+                )} do not exist in the database`
+            );
         }
     };
 }

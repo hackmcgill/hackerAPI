@@ -9,7 +9,7 @@ const assert = require("chai").assert;
 
 var fs = require("fs");
 
-describe("Storage service", function () {
+describe("Storage service", function() {
     this.timeout(0);
     const file = {
         mimetype: "application/pdf",
@@ -17,31 +17,35 @@ describe("Storage service", function () {
     };
     it("Should upload new file", (done) => {
         const gcfilename = "resumes/testResume.pdf";
-        StorageService.upload(file, gcfilename).then(
-            (addr) => {
+        StorageService.upload(file, gcfilename)
+            .then((addr) => {
                 assert.equal(addr, StorageService.getPublicUrl(gcfilename));
                 done();
-            }
-        ).catch(done);
+            })
+            .catch(done);
     });
     it("should get test file", (done) => {
-        StorageService.download("resumes/testResume.pdf").then(
-            (buffer) => {
-                assert.deepEqual(buffer[0], file.buffer, "Two buffers are not equal");
+        StorageService.download("resumes/testResume.pdf")
+            .then((buffer) => {
+                assert.deepEqual(
+                    buffer[0],
+                    file.buffer,
+                    "Two buffers are not equal"
+                );
                 done();
-            }
-        ).catch(done);
+            })
+            .catch(done);
     });
     it("should delete test file", (done) => {
-        StorageService.delete("resumes/testResume.pdf").then(
-            () => {
-                StorageService.exists("resumes/testResume.pdf").then(
-                    (exists) => {
+        StorageService.delete("resumes/testResume.pdf")
+            .then(() => {
+                StorageService.exists("resumes/testResume.pdf")
+                    .then((exists) => {
                         assert.isFalse(exists[0]);
                         done();
-                    }
-                ).catch(done);
-            }
-        ).catch(done);
+                    })
+                    .catch(done);
+            })
+            .catch(done);
     });
 });

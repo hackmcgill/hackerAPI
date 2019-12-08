@@ -1,12 +1,7 @@
 "use strict";
-const {
-    validationResult
-} = require("express-validator/check");
-const {
-    matchedData
-} = require("express-validator/filter");
+const { validationResult, matchedData } = require("express-validator");
 const Constants = {
-    Error: require("../constants/error.constant"),
+    Error: require("../constants/error.constant")
 };
 
 module.exports = {
@@ -15,8 +10,8 @@ module.exports = {
 
 /**
  * Moves matched data to req.body, and fails if any validation fails.
- * @param {*} req 
- * @param {*} res 
+ * @param {*} req
+ * @param {*} res
  * @param {(err?)=>void} next
  */
 function middleware(req, res, next) {

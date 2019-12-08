@@ -21,8 +21,8 @@ const HACKER_GET_BY_ID = "Hacker found by id.";
 const HACKER_READ = "Hacker retrieval successful.";
 const HACKER_CREATE = "Hacker creation successful.";
 const HACKER_UPDATE = "Hacker update successful.";
-const HACKER_SENT_WEEK_OF = "Hacker week-of email sent."
-const HACKER_SENT_DAY_OF = "Hacker day-of email sent."
+const HACKER_SENT_WEEK_OF = "Hacker week-of email sent.";
+const HACKER_SENT_DAY_OF = "Hacker day-of email sent.";
 
 const RESUME_UPLOAD = "Resume upload successful.";
 const RESUME_DOWNLOAD = "Resume download successful.";
@@ -34,7 +34,6 @@ const SEARCH_NO_RESULTS = "Query search successful. No results found.";
 
 const SETTINGS_PATCH = "Settings update successful.";
 const SETTINGS_GET = "Settings get successful.";
-
 
 const SPONSOR_GET_BY_ID = "Sponsor found by id.";
 const SPONSOR_READ = "Sponsor retrieval successful.";
@@ -100,5 +99,5 @@ module.exports = {
     TEAM_HACKER_LEAVE: TEAM_HACKER_LEAVE,
 
     VOLUNTEER_GET_BY_ID: VOLUNTEER_GET_BY_ID,
-    VOLUNTEER_CREATE: VOLUNTEER_CREATE,
+    VOLUNTEER_CREATE: VOLUNTEER_CREATE
 };

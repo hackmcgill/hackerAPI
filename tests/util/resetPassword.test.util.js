@@ -1,6 +1,6 @@
 "use strict";
 const Util = {
-    Account: require("./account.test.util"),
+    Account: require("./account.test.util")
 };
 
 const Services = {
@@ -13,15 +13,16 @@ const ResetPassword = require("../../models/passwordResetToken.model");
 const logger = require("../../services/logger.service");
 
 const ResetPasswordToken1 = {
-    "_id": mongoose.Types.ObjectId(),
-    "accountId": Util.Account.hackerAccounts.stored.team[0]._id
+    _id: mongoose.Types.ObjectId(),
+    accountId: Util.Account.hackerAccounts.stored.team[0]._id
 };
 
-const ResetToken = Services.resetPassword.generateToken(ResetPasswordToken1._id, ResetPasswordToken1.accountId);
+const ResetToken = Services.resetPassword.generateToken(
+    ResetPasswordToken1._id,
+    ResetPasswordToken1.accountId
+);
 
-const ResetPasswords = [
-    ResetPasswordToken1
-];
+const ResetPasswords = [ResetPasswordToken1];
 
 function store(attributes) {
     const resetPasswordDocs = [];
@@ -42,13 +43,15 @@ async function dropAll() {
         await ResetPassword.collection.drop();
     } catch (e) {
         if (e.code === 26) {
-            logger.info("namespace %s not found", ResetPassword.collection.name);
+            logger.info(
+                "namespace %s not found",
+                ResetPassword.collection.name
+            );
         } else {
             throw e;
         }
     }
 }
-
 
 module.exports = {
     ResetToken: ResetToken,

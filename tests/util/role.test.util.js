@@ -2,25 +2,20 @@
 const Role = require("../../models/role.model");
 const Constants = {
     General: require("../../constants/general.constant"),
-    Role: require("../../constants/role.constant"),
-}
+    Role: require("../../constants/role.constant")
+};
 const Routes = require("../../constants/routes.constant");
 const mongoose = require("mongoose");
 const logger = require("../../services/logger.service");
 
 const newRole1 = {
     name: "newRole",
-    routes: [
-        Routes.hackerRoutes.getSelf,
-        Routes.hackerRoutes.getSelfById,
-    ]
+    routes: [Routes.hackerRoutes.getSelf, Routes.hackerRoutes.getSelfById]
 };
 
 const duplicateRole1 = {
     name: "duplicateRole",
-    routes: [
-        Routes.hackerRoutes.getAnyById,
-    ]
+    routes: [Routes.hackerRoutes.getAnyById]
 };
 
 function store(attributes) {
@@ -54,5 +49,5 @@ module.exports = {
     newRole1: newRole1,
     duplicateRole1: duplicateRole1,
     storeAll: storeAll,
-    dropAll: dropAll,
+    dropAll: dropAll
 };

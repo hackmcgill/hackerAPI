@@ -15,12 +15,15 @@ function findById(id) {
         _id: id
     };
 
-    return Account.findById(query, logger.queryCallbackFactory(TAG, "account", query));
+    return Account.findById(
+        query,
+        logger.queryCallbackFactory(TAG, "account", query)
+    );
 }
 
 /**
  * @function findByEmail
- * @param {String} email 
+ * @param {String} email
  * @return {DocumentQuery} The document query will resolve to either account or null.
  * @description Find an account by email.
  */
@@ -65,7 +68,10 @@ function hashPassword(password) {
 function findOne(query) {
     const TAG = `[Account Service # findOne ]:`;
 
-    return Account.findOne(query, logger.queryCallbackFactory(TAG, "account", query));
+    return Account.findOne(
+        query,
+        logger.queryCallbackFactory(TAG, "account", query)
+    );
 }
 
 /**
@@ -85,7 +91,7 @@ function addOneAccount(accountDetails) {
 /**
  * @function updateOne
  * @param {ObjectId} id
- * @param {{_id?: ObjectId, firstName?: string, lastName?: string, email?: string, password?: string, dietaryRestrictions?: string, shirtSize?: string}} accountDetails 
+ * @param {{_id?: ObjectId, firstName?: string, lastName?: string, email?: string, password?: string, dietaryRestrictions?: string, shirtSize?: string}} accountDetails
  * @return {DocumentQuery} The document query will resolve to either account or null.
  * @description Changes account information to the specified information in accountDetails.
  */
@@ -96,7 +102,11 @@ function updateOne(id, accountDetails) {
         _id: id
     };
 
-    return Account.findOneAndUpdate(query, accountDetails, logger.updateCallbackFactory(TAG, "account"));
+    return Account.findOneAndUpdate(
+        query,
+        accountDetails,
+        logger.updateCallbackFactory(TAG, "account")
+    );
 }
 
 /**
@@ -110,7 +120,6 @@ function updatePassword(id, newPassword) {
         password: hashed
     });
 }
-
 
 module.exports = {
     findOne: findOne,

@@ -6,7 +6,7 @@ const bcrypt = require("bcrypt");
 const logger = require("../../services/logger.service");
 
 let counters = {
-    emailCounter: 0,
+    emailCounter: 0
 };
 
 function incrementCounters() {
@@ -36,27 +36,48 @@ function generateRandomValue(atr) {
             return mongoose.Types.ObjectId();
         case "firstName":
             // generates a random string between length 5 and 10 of random characters from a-z
-            return Math.random().toString(36).replace(/[^a-z]+/g, "").substr(0, Math.floor(Math.random() * 6 + 5));
+            return Math.random()
+                .toString(36)
+                .replace(/[^a-z]+/g, "")
+                .substr(0, Math.floor(Math.random() * 6 + 5));
         case "lastName":
-            return Math.random().toString(36).replace(/[^a-z]+/g, "").substr(0, Math.floor(Math.random() * 6 + 5));
+            return Math.random()
+                .toString(36)
+                .replace(/[^a-z]+/g, "")
+                .substr(0, Math.floor(Math.random() * 6 + 5));
         case "pronoun":
             // generate random string between length 2 and 4
-            return Math.random().toString(36).replace(/[^a-z]+/g, "").substr(0, Math.floor(Math.random() * 3 + 2));
+            return Math.random()
+                .toString(36)
+                .replace(/[^a-z]+/g, "")
+                .substr(0, Math.floor(Math.random() * 3 + 2));
         case "email":
             const email = `abc.def${counters.emailCounter}@blahblah.com`;
             return email;
         case "password":
-            return Math.random().toString(36).substr(0, 10);
+            return Math.random()
+                .toString(36)
+                .substr(0, 10);
         case "dietaryRestrictions":
-            return [Constants.SAMPLE_DIET_RESTRICTIONS[Math.floor(Math.random() * Constants.SAMPLE_DIET_RESTRICTIONS.length)]];
-        case "shirtSize":
-            return Constants.SHIRT_SIZES[Math.floor(Math.random() * Constants.SHIRT_SIZES.length)];
+            return [
+                Constants.SAMPLE_DIET_RESTRICTIONS[
+                    Math.floor(
+                        Math.random() *
+                            Constants.SAMPLE_DIET_RESTRICTIONS.length
+                    )
+                ]
+            ];
+        case "gender":
+            // generate random string between length 2 and 10
+            return Math.random().toString(36).replace(/[^a-z]+/g, "").substr(0, Math.floor(Math.random() * 9 + 2));
         case "confirmed":
-            // return false, because if an account is confirmed there should be a document of that account type, 
+            // return false, because if an account is confirmed there should be a document of that account type,
             // which this does not create
             return Math.random() < 0.5;
         case "accountType":
-            return Constants.EXTENDED_USER_TYPES[Math.floor(Math.random() * Constants.EXTENDED_USER_TYPES.length)];
+            return Constants.EXTENDED_USER_TYPES[
+                Math.floor(Math.random() * Constants.EXTENDED_USER_TYPES.length)
+            ];
         case "birthDate":
             return new Date();
         case "phoneNumber":
@@ -96,182 +117,192 @@ function createNAccounts(n, acc = {}) {
 
 let hackerAccounts = {
     new: createNAccounts(10, {
-        "accountType": Constants.HACKER,
-        "confirmed": true,
+        accountType: Constants.HACKER,
+        confirmed: true
     }),
     stored: {
         team: createNAccounts(10, {
-            "accountType": Constants.HACKER,
-            "confirmed": true,
+            accountType: Constants.HACKER,
+            confirmed: true
         }),
         noTeam: createNAccounts(10, {
-            "accountType": Constants.HACKER,
-            "confirmed": true,
+            accountType: Constants.HACKER,
+            confirmed: true
         }),
         unconfirmed: createNAccounts(5, {
-            "accountType": Constants.HACKER,
-            "confirmed": false,
-        }),
+            accountType: Constants.HACKER,
+            confirmed: false
+        })
     },
     invalid: createNAccounts(10, {
-        "accountType": Constants.HACKER
+        accountType: Constants.HACKER
     })
 };
 
 let volunteerAccounts = {
     new: createNAccounts(5, {
-        "accountType": Constants.VOLUNTEER,
-        "confirmed": true,
+        accountType: Constants.VOLUNTEER,
+        confirmed: true
     }),
     stored: createNAccounts(5, {
-        "accountType": Constants.VOLUNTEER,
-        "confirmed": true,
+        accountType: Constants.VOLUNTEER,
+        confirmed: true
     }),
     invalid: createNAccounts(5, {
-        "accountType": Constants.VOLUNTEER
-    }),
+        accountType: Constants.VOLUNTEER
+    })
 };
 
 let staffAccounts = {
     stored: createNAccounts(5, {
-        "accountType": Constants.STAFF,
-        "confirmed": true,
+        accountType: Constants.STAFF,
+        confirmed: true
     })
 };
 
 let sponsorT1Accounts = {
     new: createNAccounts(5, {
-        "accountType": Constants.SPONSOR_T1,
-        "confirmed": false,
+        accountType: Constants.SPONSOR_T1,
+        confirmed: false
     }),
     stored: createNAccounts(5, {
-        "accountType": Constants.SPONSOR_T1,
-        "confirmed": true,
+        accountType: Constants.SPONSOR_T1,
+        confirmed: true
     }),
     invalid: createNAccounts(5, {
-        "accountType": Constants.SPONSOR_T1
+        accountType: Constants.SPONSOR_T1
     })
 };
 
 let sponsorT2Accounts = {
     new: createNAccounts(5, {
-        "accountType": Constants.SPONSOR_T2,
-        "confirmed": true,
+        accountType: Constants.SPONSOR_T2,
+        confirmed: true
     }),
     stored: createNAccounts(5, {
-        "accountType": Constants.SPONSOR_T2,
-        "confirmed": true,
+        accountType: Constants.SPONSOR_T2,
+        confirmed: true
     }),
     invalid: createNAccounts(5, {
-        "accountType": Constants.SPONSOR_T2
+        accountType: Constants.SPONSOR_T2
     })
 };
 
 let sponsorT3Accounts = {
     new: createNAccounts(5, {
-        "accountType": Constants.SPONSOR_T3,
-        "confirmed": true,
+        accountType: Constants.SPONSOR_T3,
+        confirmed: true
     }),
     stored: createNAccounts(5, {
-        "accountType": Constants.SPONSOR_T3,
-        "confirmed": true,
+        accountType: Constants.SPONSOR_T3,
+        confirmed: true
     }),
     invalid: createNAccounts(5, {
-        "accountType": Constants.SPONSOR_T3
+        accountType: Constants.SPONSOR_T3
     })
 };
 
 let sponsorT4Accounts = {
     new: createNAccounts(5, {
-        "accountType": Constants.SPONSOR_T4,
-        "confirmed": true,
+        accountType: Constants.SPONSOR_T4,
+        confirmed: true
     }),
     stored: createNAccounts(5, {
-        "accountType": Constants.SPONSOR_T4,
-        "confirmed": true,
+        accountType: Constants.SPONSOR_T4,
+        confirmed: true
     }),
     invalid: createNAccounts(5, {
-        "accountType": Constants.SPONSOR_T4
+        accountType: Constants.SPONSOR_T4
     })
 };
 
 let sponsorT5Accounts = {
     new: createNAccounts(5, {
-        "accountType": Constants.SPONSOR_T5,
-        "confirmed": true,
+        accountType: Constants.SPONSOR_T5,
+        confirmed: true
     }),
     stored: createNAccounts(5, {
-        "accountType": Constants.SPONSOR_T5,
-        "confirmed": true,
+        accountType: Constants.SPONSOR_T5,
+        confirmed: true
     }),
     invalid: createNAccounts(5, {
-        "accountType": Constants.SPONSOR_T5
+        accountType: Constants.SPONSOR_T5
     })
 };
 
 let unlinkedAccounts = {
-    new: [createAccount({
-        "accountType": Constants.HACKER,
-        "confirmed": false,
-    })],
+    new: [
+        createAccount({
+            accountType: Constants.HACKER,
+            confirmed: false
+        })
+    ],
     invalid: [createAccount()],
-    stored: [createAccount({
-        "accountType": Constants.HACKER
-    }), createAccount({
-        "accountType": Constants.HACKER
-    })]
+    stored: [
+        createAccount({
+            accountType: Constants.HACKER
+        }),
+        createAccount({
+            accountType: Constants.HACKER
+        })
+    ]
 };
 
 const waitlistedHacker0 = {
-    "_id": mongoose.Types.ObjectId(),
-    "firstName": "abcd",
-    "lastName": "defg3",
-    "pronoun": "They/Them",
-    "email": "waitlisted1@blahblah.com",
-    "password": "probsShouldBeHashed2",
-    "dietaryRestrictions": ["vegetarian"],
-    "shirtSize": "M",
-    "confirmed": true,
-    "accountType": Constants.HACKER,
-    "birthDate": "1990-01-04",
-    "phoneNumber": 1000000004,
+    _id: mongoose.Types.ObjectId(),
+    firstName: "abcd",
+    lastName: "defg3",
+    pronoun: "They/Them",
+    email: "waitlisted1@blahblah.com",
+    password: "probsShouldBeHashed2",
+    dietaryRestrictions: ["vegetarian"],
+    gender: "Male",
+    confirmed: true,
+    accountType: Constants.HACKER,
+    birthDate: "1990-01-04",
+    phoneNumber: 1000000004
 };
 
 // non confirmed account for hacker
 const NonConfirmedAccount1 = {
-    "_id": mongoose.Types.ObjectId(),
-    "firstName": "LMAO",
-    "lastName": "ROFL",
-    "pronoun": "Ey/Em",
-    "email": "notconfirmed1@blahblah.com",
-    "password": "probsShouldBeHashed5",
-    "dietaryRestrictions": ["something1", "something2"],
-    "shirtSize": "XXL",
-    "confirmed": false,
-    "birthDate": "1980-07-30",
-    "phoneNumber": 1001230236,
-    "accountType": Constants.HACKER
+    _id: mongoose.Types.ObjectId(),
+    firstName: "LMAO",
+    lastName: "ROFL",
+    pronoun: "Ey/Em",
+    email: "notconfirmed1@blahblah.com",
+    password: "probsShouldBeHashed5",
+    dietaryRestrictions: ["something1", "something2"],
+    gender: "Male",
+    confirmed: false,
+    birthDate: "1980-07-30",
+    phoneNumber: 1001230236,
+    accountType: Constants.HACKER
 };
 
 const NonConfirmedAccount2 = {
-    "_id": mongoose.Types.ObjectId(),
-    "firstName": "LMAO",
-    "lastName": "ROFL",
-    "email": "notconfirmed2@blahblah.com",
-    "password": "probsShouldBeHashed5",
-    "dietaryRestrictions": ["something1", "something2"],
-    "shirtSize": "XXL",
-    "confirmed": false,
-    "accountType": Constants.HACKER,
+    _id: mongoose.Types.ObjectId(),
+    firstName: "LMAO",
+    lastName: "ROFL",
+    email: "notconfirmed2@blahblah.com",
+    password: "probsShouldBeHashed5",
+    dietaryRestrictions: ["something1", "something2"],
+    gender: "Male",
+    confirmed: false,
+    accountType: Constants.HACKER
 };
 
 const NonConfirmedAccount3 = createAccount({
-    "confirmed": false,
-    "accountType": Constants.HACKER,
-    "email": "notconfirmed3@blahblah.com"
+    confirmed: false,
+    accountType: Constants.HACKER,
+    email: "notconfirmed3@blahblah.com"
 });
 
-const extraAccounts = [waitlistedHacker0, NonConfirmedAccount1, NonConfirmedAccount2, NonConfirmedAccount3];
+const extraAccounts = [
+    waitlistedHacker0,
+    NonConfirmedAccount1,
+    NonConfirmedAccount2,
+    NonConfirmedAccount3
+];
 
 module.exports = {
     hackerAccounts: hackerAccounts,
@@ -293,7 +324,7 @@ module.exports = {
 
     storeAll: storeAll,
     dropAll: dropAll,
-    equals: equals,
+    equals: equals
 };
 
 function encryptPassword(user) {
@@ -354,18 +385,28 @@ async function dropAll() {
 
 /**
  * Compare two accounts
- * @param {Account} acc1 
- * @param {Account} acc2 
+ * @param {Account} acc1
+ * @param {Account} acc2
  */
 function equals(acc1, acc2) {
-    const id1 = (typeof acc1._id === "string") ? acc1._id : acc1._id.valueOf();
-    const id2 = (typeof acc2._id === "string") ? acc1._id : acc1._id.valueOf();
-    const id = (id1 === id2);
-    const firstName = (acc1.firstName === acc2.firstName);
-    const lastName = (acc1.lastName === acc2.lastName);
-    const pronoun = (acc1.pronoun === acc2.pronoun);
-    const email = (acc1.email === acc2.email);
-    const dietaryRestrictions = (acc1.dietaryRestrictions.join(",") === acc2.dietaryRestrictions.join(","));
-    const shirtSize = (acc1.shirtSize === acc2.shirtSize);
-    return [id, firstName, lastName, email, dietaryRestrictions, shirtSize, pronoun];
+    const id1 = typeof acc1._id === "string" ? acc1._id : acc1._id.valueOf();
+    const id2 = typeof acc2._id === "string" ? acc1._id : acc1._id.valueOf();
+    const id = id1 === id2;
+    const firstName = acc1.firstName === acc2.firstName;
+    const lastName = acc1.lastName === acc2.lastName;
+    const pronoun = acc1.pronoun === acc2.pronoun;
+    const email = acc1.email === acc2.email;
+    const dietaryRestrictions =
+        acc1.dietaryRestrictions.join(",") ===
+        acc2.dietaryRestrictions.join(",");
+    const gender = acc1.gender === acc2.gender;
+    return [
+        id,
+        firstName,
+        lastName,
+        email,
+        dietaryRestrictions,
+        gender,
+        pronoun
+    ];
 }

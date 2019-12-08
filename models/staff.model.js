@@ -9,7 +9,7 @@ const StaffSchema = new mongoose.Schema({
     }
 });
 
-StaffSchema.methods.toJSON = function () {
+StaffSchema.methods.toJSON = function() {
     const ss = this.toObject();
     delete ss.__v;
     ss.id = ss._id;

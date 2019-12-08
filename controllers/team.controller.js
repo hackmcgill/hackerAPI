@@ -8,7 +8,7 @@ const Services = {
 const Util = require("../middlewares/util.middleware");
 const Constants = {
     Success: require("../constants/success.constant"),
-    Error: require("../constants/error.constant"),
+    Error: require("../constants/error.constant")
 };
 
 /**
@@ -26,8 +26,8 @@ function showTeam(req, res) {
         const strippedMemberJSON = member.toStrippedJSON();
 
         const memberName = {
-            "firstName": strippedMemberJSON.firstName,
-            "lastName": strippedMemberJSON.lastName,
+            firstName: strippedMemberJSON.firstName,
+            lastName: strippedMemberJSON.lastName
         };
 
         memberNames.push(memberName);
@@ -37,22 +37,22 @@ function showTeam(req, res) {
         message: Constants.Success.TEAM_READ,
         data: {
             team: teamData,
-            members: memberNames,
+            members: memberNames
         }
     });
 }
 
 /**
  * @function joinedTeam
- * @param {*} req 
- * @param {*} res 
+ * @param {*} req
+ * @param {*} res
  * @return {JSON} Success status of joining team
  * @description return success message of joining team
  */
 function joinedTeam(req, res) {
     return res.status(200).json({
         message: Constants.Success.TEAM_JOIN,
-        data: {},
+        data: {}
     });
 }
 
@@ -66,7 +66,7 @@ function joinedTeam(req, res) {
 function updatedTeam(req, res) {
     return res.status(200).json({
         message: Constants.Success.TEAM_UPDATE,
-        data: req.body.team.toJSON(),
+        data: req.body.team.toJSON()
     });
 }
 
@@ -80,7 +80,7 @@ function updatedTeam(req, res) {
 function createdTeam(req, res) {
     return res.status(200).json({
         message: Constants.Success.TEAM_CREATE,
-        data: req.body.team,
+        data: req.body.team
     });
 }
 
@@ -95,7 +95,7 @@ function createdTeam(req, res) {
 function leftTeam(req, res) {
     return res.status(200).json({
         message: Constants.Success.TEAM_HACKER_LEAVE,
-        data: {},
+        data: {}
     });
 }
 
@@ -104,5 +104,5 @@ module.exports = {
     updatedTeam: updatedTeam,
     createdTeam: createdTeam,
     showTeam: showTeam,
-    leftTeam: leftTeam,
+    leftTeam: leftTeam
 };

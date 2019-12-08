@@ -21,7 +21,7 @@ const Services = {
 };
 
 module.exports = {
-    activate: function (apiRouter) {
+    activate: function(apiRouter) {
         const accountRouter = express.Router();
 
         /**
@@ -43,7 +43,7 @@ module.exports = {
                             "email":"theo@klein.com",
                             "dietaryRestrictions":["Halal"],
                             "phoneNumber":1234567890,
-                        	"shirtSize":"S",
+                        	"gender":"Male",
                             "birthDate":Date("10/30/1997")
                     }
                 }
@@ -71,7 +71,7 @@ module.exports = {
          * @apiParam (body) {String} pronoun the pronoun of the account creator.
          * @apiParam (body) {String} email Email of the account.
          * @apiParam (body) {String[]} dietaryRestrictions Any dietary restrictions for the user. 'None' if there are no restrictions
-         * @apiParam (body) {String} shirtSize Size of the shirt that the user will receive.
+         * @apiParam (body) {String} gender Gender of the account creator.
          * @apiParam (body) {String} password The password of the account.
          * @apiParam (body) {String} birthDate a Date parsable string.
          * @apiParam (body) {Number} phoneNumber the user's phone number, represented as a string.
@@ -86,7 +86,7 @@ module.exports = {
                     "password":"hunter2",
                     "dietaryRestrictions":["Halal"],
                     "phoneNumber":1234567890,
-                    "shirtSize":"S",
+                    "gender":"Male",
                     "birthDate":"10/30/1997"
          *      }
          * 
@@ -103,7 +103,7 @@ module.exports = {
                             "email":"theo@klein.com",
                             "dietaryRestrictions":["Halal"],
                             "phoneNumber":1234567890,
-                        	"shirtSize":"S",
+                        	"gender":"Male",
                             "birthDate":Date("10/30/1997")
                     }
                 }
@@ -169,14 +169,16 @@ module.exports = {
                 }
             }
          */
-        accountRouter.route("/invite").post(
-            Middleware.Auth.ensureAuthenticated(),
-            Middleware.Auth.ensureAuthorized(),
-            Middleware.Validator.Account.inviteAccountValidator,
-            Middleware.parseBody.middleware,
-            Middleware.Account.inviteAccount,
-            Controllers.Account.invitedAccount
-        );
+        accountRouter
+            .route("/invite")
+            .post(
+                Middleware.Auth.ensureAuthenticated(),
+                Middleware.Auth.ensureAuthorized(),
+                Middleware.Validator.Account.inviteAccountValidator,
+                Middleware.parseBody.middleware,
+                Middleware.Account.inviteAccount,
+                Controllers.Account.invitedAccount
+            );
         /**
          * @api {get} /account/invite Get all of the invites.
          * @apiName getAllInvites
@@ -192,13 +194,15 @@ module.exports = {
                     }]
                 }
          */
-        accountRouter.route("/invite").get(
-            Middleware.Auth.ensureAuthenticated(),
-            Middleware.Auth.ensureAuthorized(),
-            Middleware.parseBody.middleware,
-            Middleware.Account.getInvites,
-            Controllers.Account.gotInvites
-        );
+        accountRouter
+            .route("/invite")
+            .get(
+                Middleware.Auth.ensureAuthenticated(),
+                Middleware.Auth.ensureAuthorized(),
+                Middleware.parseBody.middleware,
+                Middleware.Account.getInvites,
+                Controllers.Account.gotInvites
+            );
 
         /**
          * @api {patch} /account/:id update an account's information
@@ -208,15 +212,15 @@ module.exports = {
          * 
          * @apiParam (body) {String} [firstName] First name of the account creator.
          * @apiParam (body) {String} [lastName] Last name of the account creator.
-         * @apiParam (body) {String} [pronoun] the pronoun of the account creator.
+         * @apiParam (body) {String} [pronoun] The pronoun of the account creator.
          * @apiParam (body) {String} [email] Email of the account.
          * @apiParam (body) {String[]} [dietaryRestrictions] Any dietary restrictions for the user. 'None' if there are no restrictions
-         * @apiParam (body) {String} [shirtSize] Size of the shirt that the user will receive.
-         * @apiParam (body) {String} [birthDate] a Date parsable string.
-         * @apiParam (body) {Number} [phoneNumber] the user's phone number, represented as a string.
+         * @apiParam (body) {String} [gender] Gender of the account creator.
+         * @apiParam (body) {String} [birthDate] A Date parsable string.
+         * @apiParam (body) {Number} [phoneNumber] The user's phone number, represented as a string.
 
          * @apiParamExample {json} Request-Example:
-         *      { "shirtSize": "M" }
+         *      { "gender": "Male" }
          * 
 
          * @apiSuccess {string} message Success message
@@ -232,7 +236,7 @@ module.exports = {
                             "email":"theo@klein.com",
                             "dietaryRestrictions":["Halal"],
                             "phoneNumber":1234567890,
-                        	"shirtSize":"M",
+                        	"gender": "Male",
                             "birthDate":Date("10/30/1997")
                     }
                 }
@@ -280,7 +284,7 @@ module.exports = {
                         "email":"theo@klein.com",
                         "dietaryRestrictions":["Halal"],
                         "phoneNumber":1234567890,
-                        "shirtSize":"S",
+                        "gender":"Male",
                         "birthDate":Date("10/30/1997")
                     }
                 }
