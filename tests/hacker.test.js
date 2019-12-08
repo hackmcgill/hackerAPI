@@ -555,7 +555,7 @@ describe("PATCH update one hacker", function() {
             });
     });
 
-    it("should FAIL to accept a hacker on /api/hacker/:id GET due to authentication", function (done) {
+    it("should FAIL to accept a hacker on /api/hacker/accept/:id GET due to authentication", function (done) {
         chai.request(server.app)
             .patch(`/api/hacker/accept/${TeamHacker0._id}`)
             .type("application/json")
@@ -570,7 +570,7 @@ describe("PATCH update one hacker", function() {
     });
 
     // should FAIL due to authorization
-    it("should FAIL to accept hacker info due to lack of authorization", function (done) {
+    it("should FAIL to accept hacker info due to lack of authorization on /api/hacker/accept/:id", function (done) {
         util.auth.login(agent, noTeamHackerAccount0, (error) => {
             if (error) {
                 agent.close();
@@ -592,7 +592,7 @@ describe("PATCH update one hacker", function() {
         });
     });
 
-    it("should FAIL to accept an invalid hacker's info", function (done) {
+    it("should FAIL to accept an invalid hacker's info on /api/hacker/accept/:id", function (done) {
         util.auth.login(agent, Admin0, (error) => {
             if (error) {
                 agent.close();
@@ -615,7 +615,7 @@ describe("PATCH update one hacker", function() {
         });
     });
 
-    it("should SUCCEED and accept a hacker STATUS as an Admin", function (done) {
+    it("should SUCCEED and accept a hacker on /api/hacker/accept/:id as an Admin", function (done) {
         util.auth.login(agent, Admin0, (error) => {
             if (error) {
                 agent.close();
