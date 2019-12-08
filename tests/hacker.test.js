@@ -500,6 +500,73 @@ describe("PATCH update one hacker", function () {
             });
     });
 
+    it("should FAIL to accept a hacker on /api/hacker/:id GET due to authentication", function (done) {
+        chai.request(server.app)
+            .patch(`/api/hacker/accept/${TeamHacker0._id}`)
+            .type("application/json")
+            .send({
+                gender: "Other"
+            })
+            .end(function (err, res) {
+                res.should.have.status(401);
+                res.should.be.json;
+                res.body.should.have.property("message");
+                res.body.message.should.equal(Constants.Error.AUTH_401_MESSAGE);
+                done();
+            });
+    });
+
+    // should FAIL due to authorization
+    it("should Fail to accept hacker info due to lack of authorization", function (done) {
+        util.auth.login(agent, noTeamHackerAccount0, (error) => {
+            if (error) {
+                agent.close();
+                return done(error);
+            }
+            return agent
+                .patch(`/api/hacker/accept/${TeamHacker0._id}`)
+                .type("application/json")
+                .send({
+                    gender: "Other"
+                })
+                .end(function (err, res) {
+                    res.should.have.status(403);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal(Constants.Error.AUTH_403_MESSAGE);
+                    res.body.should.have.property("data");
+
+                    done();
+                });
+        });
+    });
+
+    it("should SUCCEED and accept a hacker STATUS as an Admin", function (done) {
+        util.auth.login(agent, Admin0, (error) => {
+            if (error) {
+                agent.close();
+                return done(error);
+            }
+            return agent
+                .patch(`/api/hacker/accept/${TeamHacker0._id}`)
+                .type("application/json")
+                .send({
+                    status: "Accepted"
+                })
+                .end(function (err, res) {
+                    res.should.have.status(200);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal(Constants.Success.HACKER_UPDATE);
+                    res.body.should.have.property("data");
+                    chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify({
+                        status: "Accepted"
+                    }));
+                    done();
+                });
+        });
+    });
+
     // should succeed on admin case
     it("should SUCCEED and update a hacker using admin power", function (done) {
         util.auth.login(agent, Admin0, (error) => {
