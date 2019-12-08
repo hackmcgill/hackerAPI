@@ -216,7 +216,7 @@ module.exports = {
          * @apiParam (body) {Number} [phoneNumber] The user's phone number, represented as a string.
 
          * @apiParamExample {json} Request-Example:
-         *      { "email": "aFakeEmail@aol.com" }
+         *      { "gender": "Male" }
          * 
 
          * @apiSuccess {string} message Success message
