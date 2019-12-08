@@ -67,10 +67,9 @@ function generateRandomValue(atr) {
                     )
                 ]
             ];
-        case "shirtSize":
-            return Constants.SHIRT_SIZES[
-                Math.floor(Math.random() * Constants.SHIRT_SIZES.length)
-            ];
+        case "gender":
+            // generate random string between length 2 and 10
+            return Math.random().toString(36).replace(/[^a-z]+/g, "").substr(0, Math.floor(Math.random() * 9 + 2));
         case "confirmed":
             // return false, because if an account is confirmed there should be a document of that account type,
             // which this does not create
@@ -257,7 +256,7 @@ const waitlistedHacker0 = {
     email: "waitlisted1@blahblah.com",
     password: "probsShouldBeHashed2",
     dietaryRestrictions: ["vegetarian"],
-    shirtSize: "M",
+    gender: "Male",
     confirmed: true,
     accountType: Constants.HACKER,
     birthDate: "1990-01-04",
@@ -273,7 +272,7 @@ const NonConfirmedAccount1 = {
     email: "notconfirmed1@blahblah.com",
     password: "probsShouldBeHashed5",
     dietaryRestrictions: ["something1", "something2"],
-    shirtSize: "XXL",
+    gender: "Male",
     confirmed: false,
     birthDate: "1980-07-30",
     phoneNumber: 1001230236,
@@ -287,7 +286,7 @@ const NonConfirmedAccount2 = {
     email: "notconfirmed2@blahblah.com",
     password: "probsShouldBeHashed5",
     dietaryRestrictions: ["something1", "something2"],
-    shirtSize: "XXL",
+    gender: "Male",
     confirmed: false,
     accountType: Constants.HACKER
 };
@@ -400,14 +399,14 @@ function equals(acc1, acc2) {
     const dietaryRestrictions =
         acc1.dietaryRestrictions.join(",") ===
         acc2.dietaryRestrictions.join(",");
-    const shirtSize = acc1.shirtSize === acc2.shirtSize;
+    const gender = acc1.gender === acc2.gender;
     return [
         id,
         firstName,
         lastName,
         email,
         dietaryRestrictions,
-        shirtSize,
+        gender,
         pronoun
     ];
 }

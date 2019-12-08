@@ -16,6 +16,10 @@ const AccountSchema = new mongoose.Schema({
         type: String,
         default: "Prefer not to say"
     },
+    gender: {
+        type: String,
+        default: "Prefer not to say",
+    },
     email: {
         type: String,
         trim: true,
@@ -33,11 +37,6 @@ const AccountSchema = new mongoose.Schema({
             type: String
         }
     ],
-    shirtSize: {
-        type: String,
-        enum: Constants.SHIRT_SIZES,
-        required: true
-    },
     confirmed: {
         type: Boolean,
         default: false
