@@ -35,7 +35,6 @@ function updateOne(id, hackerDetails) {
     const query = {
         _id: id
     };
-    console.log(query, hackerDetails);
 
     return Hacker.findOneAndUpdate(
         query,

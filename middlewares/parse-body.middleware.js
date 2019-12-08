@@ -18,7 +18,6 @@ module.exports = {
 function middleware(req, res, next) {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        console.log(errors);
         return next({
             status: 422,
             message: Constants.Error.VALIDATION_422_MESSAGE,

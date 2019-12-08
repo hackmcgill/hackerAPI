@@ -369,7 +369,7 @@ const invalidHacker1 = {
     application: {
         general: {
             // invalid missing school attribute
-            degree: "Undersaduate",
+            degree: "Undergraduate",
             fieldOfStudy: ["EE"],
             graduationYear: 2020,
             // invalid job interest
@@ -521,7 +521,7 @@ const unconfirmedAccountHacker1 = {
     application: {
         general: {
             school: "University of Blah2",
-            degree: "Underggraduate",
+            degree: "Undergraduate",
             fieldOfStudy: ["EE"],
             graduationYear: 2019,
             jobInterest: "Internship",

@@ -207,8 +207,6 @@ describe("POST create account", function() {
             .type("application/json")
             .send(newAccount0)
             .end(function(err, res) {
-                console.log(res.body);
-                console.log(newAccount0);
                 res.should.have.status(200);
                 res.should.be.json;
                 res.body.should.have.property("message");

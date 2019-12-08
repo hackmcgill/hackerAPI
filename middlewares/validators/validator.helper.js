@@ -380,19 +380,26 @@ function applicationValidator(fieldLocation, fieldname, optional = true) {
         fieldname,
         "Invalid application"
     );
-    //helper object to iterate through the items in the application and track which items are not valid.
+    let valid = true;
+    //helper object to iterate through the items in the application and track which items are not present.
     const hasValid = {
-        github: false,
-        dribbble: false,
-        personal: false,
-        linkedIn: false,
-        other: false,
+        general: false,
+        school: false,
+        degree: false,
+        graduationYear: false,
+        fieldOfStudy: false,
         jobInterest: false,
-        skills: false,
-        comments: false,
+        URL: false,
+        shortAnswer: false,
         question1: false,
         question2: false,
-        team: false
+        accommodation: false,
+        dietaryRestrictions: false,
+        shirtSize: false,
+        other: false,
+        ethnicity: false,
+        codeOfConduct: false,
+        privacyPolicy: false
     };
 
     if (optional) {
@@ -401,51 +408,101 @@ function applicationValidator(fieldLocation, fieldname, optional = true) {
                 checkFalsy: true
             })
             .custom((app) => {
-                const jobInterests = Constants.JOB_INTERESTS;
-                hasValid.github =
-                    !app.general.URL.github ||
-                    typeof app.general.URL.github === "string";
-                hasValid.dribbble =
-                    !app.general.URL.dribbble ||
-                    typeof app.general.URL.dribbble === "string";
-                hasValid.personal =
-                    !app.general.URL.personal ||
-                    typeof app.general.URL.personal === "string";
-                hasValid.linkedIn =
-                    !app.general.URL.linkedIn ||
-                    typeof app.general.URL.linkedIn === "string";
-                hasValid.other =
-                    !app.general.URL.other ||
-                    typeof app.general.URL.other === "string";
-                hasValid.jobInterest =
-                    !!app.general.jobInterest &&
-                    jobInterests.includes(app.general.jobInterest);
-                hasValid.skills =
-                    !app.shortAnswer.skills ||
-                    alphaArrayValidationHelper(app.shortAnswer.skills);
-                hasValid.comments =
-                    !app.shortAnswer.comments ||
-                    typeof app.shortAnswer.comments === "string";
-                hasValid.question1 =
-                    !!app.shortAnswer.question1 &&
-                    typeof app.shortAnswer.question1 === "string";
-                hasValid.question2 =
-                    !!app.shortAnswer.question2 &&
-                    typeof app.shortAnswer.question2 === "string";
-                hasValid.team =
-                    !app.team || mongoose.Types.ObjectId.isValid(app.team);
+                hasValid.general = app.hasOwnProperty("general");
+                if (hasValid.general) {
+                    hasValid.school = app.general.hasOwnProperty("school");
+                    hasValid.degree = app.general.hasOwnProperty("degree");
+                    hasValid.fieldOfStudy = app.general.hasOwnProperty(
+                        "fieldOfStudy"
+                    );
+                    hasValid.graduationYear = app.general.hasOwnProperty(
+                        "graduationYear"
+                    );
+                    hasValid.jobInterest = app.general.hasOwnProperty(
+                        "jobInterest"
+                    );
+                    hasValid.URL = app.general.hasOwnProperty("URL");
+                }
+
+                hasValid.shortAnswer = app.hasOwnProperty("shortAnswer");
+                if (hasValid.shortAnswer) {
+                    hasValid.question1 = app.shortAnswer.hasOwnProperty(
+                        "question1"
+                    );
+                    hasValid.question2 = app.shortAnswer.hasOwnProperty(
+                        "question2"
+                    );
+                }
+                hasValid.accommodation = app.hasOwnProperty("accommodation");
+                if (hasValid.accommodation) {
+                    hasValid.dietaryRestrictions = app.accommodation.hasOwnProperty(
+                        "dietaryRestrictions"
+                    );
+                    hasValid.shirtSize = app.accommodation.hasOwnProperty(
+                        "shirtSize"
+                    );
+                }
+                hasValid.other = app.hasOwnProperty("other");
+                if (hasValid.other) {
+                    hasValid.ethnicity = app.other.hasOwnProperty("ethnicity");
+                    hasValid.codeOfConduct = app.other.hasOwnProperty(
+                        "codeOfConduct"
+                    );
+                    hasValid.privacyPolicy = app.other.hasOwnProperty(
+                        "privacyPolicy"
+                    );
+                }
+                // hasValid.github =
+                //     !app.general.URL.github ||
+                //     typeof app.general.URL.github === "string";
+                // hasValid.dribbble =
+                //     !app.general.URL.dribbble ||
+                //     typeof app.general.URL.dribbble === "string";
+                // hasValid.personal =
+                //     !app.general.URL.personal ||
+                //     typeof app.general.URL.personal === "string";
+                // hasValid.linkedIn =
+                //     !app.general.URL.linkedIn ||
+                //     typeof app.general.URL.linkedIn === "string";
+                // hasValid.other =
+                //     !app.general.URL.other ||
+                //     typeof app.general.URL.other === "string";
+                // hasValid.jobInterest =
+                //     !!app.general.jobInterest &&
+                //     jobInterests.includes(app.general.jobInterest);
+                // hasValid.skills =
+                //     !app.shortAnswer.skills ||
+                //     alphaArrayValidationHelper(app.shortAnswer.skills);
+                // hasValid.comments =
+                //     !app.shortAnswer.comments ||
+                //     typeof app.shortAnswer.comments === "string";
+                // hasValid.question1 =
+                //     !!app.shortAnswer.question1 &&
+                //     typeof app.shortAnswer.question1 === "string";
+                // hasValid.question2 =
+                //     !!app.shortAnswer.question2 &&
+                //     typeof app.shortAnswer.question2 === "string";
+                // hasValid.team =
+                //     !app.team || mongoose.Types.ObjectId.isValid(app.team);
+
                 return (
-                    hasValid.github &&
-                    hasValid.dribbble &&
-                    hasValid.personal &&
-                    hasValid.linkedIn &&
-                    hasValid.other &&
+                    hasValid.general &&
+                    hasValid.school &&
+                    hasValid.degree &&
+                    hasValid.graduationYear &&
+                    hasValid.fieldOfStudy &&
                     hasValid.jobInterest &&
-                    hasValid.skills &&
-                    hasValid.comments &&
+                    hasValid.URL &&
+                    hasValid.shortAnswer &&
                     hasValid.question1 &&
                     hasValid.question2 &&
-                    hasValid.team
+                    hasValid.accommodation &&
+                    hasValid.dietaryRestrictions &&
+                    hasValid.shirtSize &&
+                    hasValid.other &&
+                    hasValid.ethnicity &&
+                    hasValid.privacyPolicy &&
+                    hasValid.codeOfConduct
                 );
             })
             .withMessage({
@@ -455,55 +512,106 @@ function applicationValidator(fieldLocation, fieldname, optional = true) {
     } else {
         return application
             .custom((app) => {
-                const jobInterests = Constants.JOB_INTERESTS;
-                hasValid.github =
-                    !app.general.URL.github ||
-                    typeof app.general.URL.github === "string";
-                hasValid.dribbble =
-                    !app.general.URL.dribbble ||
-                    typeof app.general.URL.dribbble === "string";
-                hasValid.personal =
-                    !app.general.URL.personal ||
-                    typeof app.general.URL.personal === "string";
-                hasValid.linkedIn =
-                    !app.general.URL.linkedIn ||
-                    typeof app.general.URL.linkedIn === "string";
-                hasValid.other =
-                    !app.general.URL.other ||
-                    typeof app.general.URL.other === "string";
-                hasValid.jobInterest =
-                    !!app.general.jobInterest &&
-                    jobInterests.includes(app.general.jobInterest);
-                hasValid.skills =
-                    !app.shortAnswer.skills ||
-                    alphaArrayValidationHelper(app.shortAnswer.skills);
-                hasValid.comments =
-                    !app.shortAnswer.comments ||
-                    typeof app.shortAnswer.comments === "string";
-                hasValid.question1 =
-                    !!app.shortAnswer.question1 &&
-                    typeof app.shortAnswer.question1 === "string";
-                hasValid.question2 =
-                    !!app.shortAnswer.question2 &&
-                    typeof app.shortAnswer.question2 === "string";
-                hasValid.team =
-                    !app.team || mongoose.Types.ObjectId.isValid(app.team);
+                hasValid.general = app.hasOwnProperty("general");
+                if (hasValid.general) {
+                    hasValid.school = app.general.hasOwnProperty("school");
+                    hasValid.degree = app.general.hasOwnProperty("degree");
+                    hasValid.fieldOfStudy = app.general.hasOwnProperty(
+                        "fieldOfStudy"
+                    );
+                    hasValid.graduationYear = app.general.hasOwnProperty(
+                        "graduationYear"
+                    );
+                    hasValid.jobInterest = app.general.hasOwnProperty(
+                        "jobInterest"
+                    );
+                    hasValid.URL = app.general.hasOwnProperty("URL");
+                }
+
+                hasValid.shortAnswer = app.hasOwnProperty("shortAnswer");
+                if (hasValid.shortAnswer) {
+                    hasValid.question1 = app.shortAnswer.hasOwnProperty(
+                        "question1"
+                    );
+                    hasValid.question2 = app.shortAnswer.hasOwnProperty(
+                        "question2"
+                    );
+                }
+                hasValid.accommodation = app.hasOwnProperty("accommodation");
+                if (hasValid.accommodation) {
+                    hasValid.dietaryRestrictions = app.accommodation.hasOwnProperty(
+                        "dietaryRestrictions"
+                    );
+                    hasValid.shirtSize = app.accommodation.hasOwnProperty(
+                        "shirtSize"
+                    );
+                }
+                hasValid.other = app.hasOwnProperty("other");
+                if (hasValid.other) {
+                    hasValid.ethnicity = app.other.hasOwnProperty("ethnicity");
+                    hasValid.codeOfConduct = app.other.hasOwnProperty(
+                        "codeOfConduct"
+                    );
+                    hasValid.privacyPolicy = app.other.hasOwnProperty(
+                        "privacyPolicy"
+                    );
+                }
+                // hasValid.github =
+                //     !app.general.URL.github ||
+                //     typeof app.general.URL.github === "string";
+                // hasValid.dribbble =
+                //     !app.general.URL.dribbble ||
+                //     typeof app.general.URL.dribbble === "string";
+                // hasValid.personal =
+                //     !app.general.URL.personal ||
+                //     typeof app.general.URL.personal === "string";
+                // hasValid.linkedIn =
+                //     !app.general.URL.linkedIn ||
+                //     typeof app.general.URL.linkedIn === "string";
+                // hasValid.other =
+                //     !app.general.URL.other ||
+                //     typeof app.general.URL.other === "string";
+                // hasValid.jobInterest =
+                //     !!app.general.jobInterest &&
+                //     jobInterests.includes(app.general.jobInterest);
+                // hasValid.skills =
+                //     !app.shortAnswer.skills ||
+                //     alphaArrayValidationHelper(app.shortAnswer.skills);
+                // hasValid.comments =
+                //     !app.shortAnswer.comments ||
+                //     typeof app.shortAnswer.comments === "string";
+                // hasValid.question1 =
+                //     !!app.shortAnswer.question1 &&
+                //     typeof app.shortAnswer.question1 === "string";
+                // hasValid.question2 =
+                //     !!app.shortAnswer.question2 &&
+                //     typeof app.shortAnswer.question2 === "string";
+                // hasValid.team =
+                //     !app.team || mongoose.Types.ObjectId.isValid(app.team);
+
                 return (
-                    hasValid.github &&
-                    hasValid.dribbble &&
-                    hasValid.personal &&
-                    hasValid.linkedIn &&
-                    hasValid.other &&
+                    hasValid.general &&
+                    hasValid.school &&
+                    hasValid.degree &&
+                    hasValid.graduationYear &&
+                    hasValid.fieldOfStudy &&
                     hasValid.jobInterest &&
-                    hasValid.comments &&
-                    hasValid.skills &&
+                    hasValid.URL &&
+                    hasValid.shortAnswer &&
                     hasValid.question1 &&
                     hasValid.question2 &&
-                    hasValid.team
+                    hasValid.accommodation &&
+                    hasValid.dietaryRestrictions &&
+                    hasValid.shirtSize &&
+                    hasValid.other &&
+                    hasValid.ethnicity &&
+                    hasValid.privacyPolicy &&
+                    hasValid.codeOfConduct
                 );
             })
             .withMessage({
-                message: "Not all items of the application are valid",
+                message:
+                    "Application does not have all of the required fields.",
                 isValid: hasValid
             });
     }

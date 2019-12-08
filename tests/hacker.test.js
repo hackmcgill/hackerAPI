@@ -8,6 +8,7 @@ const should = chai.should();
 const Hacker = require("../models/hacker.model");
 const fs = require("fs");
 const path = require("path");
+const cloneDeep = require("lodash/clonedeep");
 const Constants = {
     Success: require("../constants/success.constant"),
     General: require("../constants/general.constant"),
@@ -545,7 +546,7 @@ describe("POST create hacker", function() {
                     res.body.should.have.property("data");
                     res.body.data.should.have.property("accountId");
                     res.body.data.accountId.should.have.property("msg");
-                    res.body.data.accountId.msg.should.equal("invalid mongoID");
+                    res.body.data.accountId.msg.should.equal("Invalid mongoID");
                     res.body.data.should.have.property(
                         "application.general.school"
                     );
@@ -555,17 +556,20 @@ describe("POST create hacker", function() {
                     res.body.data[
                         "application.general.school"
                     ].msg.should.equal("name must exist");
-                    res.body.data.should.have.property("application");
-                    res.body.data.application.should.have.property("msg");
-                    res.body.data.application.msg.should.have.property(
-                        "isValid"
+                    res.body.data.should.have.property(
+                        "application.general.jobInterest"
                     );
-                    res.body.data.application.msg.isValid.should.have.property(
-                        "jobInterest"
-                    );
-                    res.body.data.application.msg.isValid.jobInterest.should.equal(
-                        false
-                    );
+                    res.body.data[
+                        "application.general.jobInterest"
+                    ].should.have.property("msg");
+
+                    res.body.data[
+                        "application.general.jobInterest"
+                    ].should.have.property("msg");
+                    res.body.data[
+                        "application.general.jobInterest"
+                    ].msg.should.equal("The value must be part of the enum");
+
                     done();
                 });
         });
@@ -597,11 +601,14 @@ describe("PATCH update one hacker", function() {
                 agent.close();
                 return done(error);
             }
+            // this endpoint requires an application object to work properly, so will clone and mutate the object
+            let app = cloneDeep(TeamHacker0.application);
+            app.accommodation.shirtSize = "M";
             return agent
                 .patch(`/api/hacker/${TeamHacker0._id}`)
                 .type("application/json")
                 .send({
-                    accommodation: { shirtSize: "M" }
+                    application: app
                 })
                 .end(function(err, res) {
                     res.should.have.status(200);
@@ -611,10 +618,13 @@ describe("PATCH update one hacker", function() {
                         Constants.Success.HACKER_UPDATE
                     );
                     res.body.should.have.property("data");
-                    // console.log(res.body);
-                    res.body.should.have.property("application");
-                    res.body.should.have.property("accommodation");
-                    res.body.should.have.property("shirtSize");
+                    res.body.data.should.have.property("application");
+                    res.body.data.application.should.have.property(
+                        "accommodation"
+                    );
+                    res.body.data.application.accommodation.should.have.property(
+                        "shirtSize"
+                    );
                     chai.assert.equal(
                         JSON.stringify(
                             res.body.data.application.accommodation.shirtSize
@@ -799,8 +809,9 @@ describe("PATCH update one hacker", function() {
                 agent.close();
                 return done(error);
             }
-            let app = noTeamHacker0.application;
-            app.other.gender = "Other";
+            // this endpoint requires an application object to work properly, so will clone and mutate the object
+            let app = cloneDeep(noTeamHacker0.application);
+            app.accommodation.shirtSize = "M";
             return agent
                 .patch(`/api/hacker/${noTeamHacker0._id}`)
                 .type("application/json")
@@ -815,9 +826,18 @@ describe("PATCH update one hacker", function() {
                         Constants.Success.HACKER_UPDATE
                     );
                     res.body.should.have.property("data");
+                    res.body.data.should.have.property("application");
+                    res.body.data.application.should.have.property(
+                        "accommodation"
+                    );
+                    res.body.data.application.accommodation.should.have.property(
+                        "shirtSize"
+                    );
                     chai.assert.equal(
-                        JSON.stringify(res.body.data.application.other.gender),
-                        '"Other"'
+                        JSON.stringify(
+                            res.body.data.application.accommodation.shirtSize
+                        ),
+                        '"M"'
                     );
                     done();
                 });
@@ -831,11 +851,14 @@ describe("PATCH update one hacker", function() {
                 agent.close();
                 return done(error);
             }
+            // this endpoint requires an application object to work properly, so will clone and mutate the object
+            let app = cloneDeep(noTeamHacker0.application);
+            app.accommodation.shirtSize = "M";
             return agent
                 .patch(`/api/hacker/${unconfirmedHacker1._id}`)
                 .type("application/json")
                 .send({
-                    gender: "Other"
+                    application: app
                 })
                 .end(function(err, res) {
                     res.should.have.status(403);

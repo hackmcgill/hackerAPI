@@ -116,7 +116,14 @@ const HackerSchema = new mongoose.Schema({
                 ],
                 required: true
             },
-
+            impairments: {
+                type: String,
+                default: ""
+            },
+            barriers: {
+                type: String,
+                default: ""
+            },
             shirtSize: {
                 type: String,
                 enum: Constants.SHIRT_SIZES,
