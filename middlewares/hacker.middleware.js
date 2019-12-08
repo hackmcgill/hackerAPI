@@ -501,7 +501,6 @@ async function updateHacker(req, res, next) {
 async function acceptHacker(req, res, next) {
     req.body.status = Constants.General.HACKER_STATUS_ACCEPTED;
     updateHacker(req, res, next);
-
 }
 
 
