@@ -53,8 +53,9 @@ define({
                             group: "body",
                             type: "String",
                             optional: false,
-                            field: "gender",
-                            description: "<p>Gender of the account creator.</p>"
+                            field: "shirtSize",
+                            description:
+                                "<p>Size of the shirt that the user will receive.</p>"
                         },
                         {
                             group: "body",
@@ -93,7 +94,7 @@ define({
                     {
                         title: "Request-Example:",
                         content:
-                            '{ \n               "firstName": "Theo",\n               "lastName":"Klein",\n               "pronoun":"he/him",\n               "email":"theo@klein.com",\n               "password":"hunter2",\n               "dietaryRestrictions":["Halal"],\n               "phoneNumber":1234567890,\n               "gender":"Male",\n               "birthDate":"10/30/1997"\n}',
+                            '{ \n               "firstName": "Theo",\n               "lastName":"Klein",\n               "pronoun":"he/him",\n               "email":"theo@klein.com",\n               "password":"hunter2",\n               "dietaryRestrictions":["Halal"],\n               "phoneNumber":1234567890,\n               "shirtSize":"S",\n               "birthDate":"10/30/1997"\n}',
                         type: "json"
                     }
                 ]
@@ -121,7 +122,7 @@ define({
                     {
                         title: "Success-Response: ",
                         content:
-                            '{\n               "message": "Account creation successful", \n               "data": {\n                       "id": ObjectId("5bff8b9f3274cf001bc71048"),\n                   \t"firstName": "Theo",\n                       "lastName":"Klein",\n                       "pronoun":"he/him",\n                       "email":"theo@klein.com",\n                       "dietaryRestrictions":["Halal"],\n                       "phoneNumber":1234567890,\n                   \t"gender":"Male",\n                       "birthDate":Date("10/30/1997")\n               }\n           }',
+                            '{\n               "message": "Account creation successful", \n               "data": {\n                       "id": ObjectId("5bff8b9f3274cf001bc71048"),\n                   \t"firstName": "Theo",\n                       "lastName":"Klein",\n                       "pronoun":"he/him",\n                       "email":"theo@klein.com",\n                       "dietaryRestrictions":["Halal"],\n                       "phoneNumber":1234567890,\n                   \t"shirtSize":"S",\n                       "birthDate":Date("10/30/1997")\n               }\n           }',
                         type: "object"
                     }
                 ]
@@ -205,7 +206,7 @@ define({
                     {
                         title: "Success-Response: ",
                         content:
-                            '{\n               "message": "Account found by user id", \n               "data": {\n                   "id": ObjectId("5bff8b9f3274cf001bc71048"),\n                   "firstName": "Theo",\n                   "lastName":"Klein",\n                   "pronoun":"he/him",\n                   "email":"theo@klein.com",\n                   "dietaryRestrictions":["Halal"],\n                   "phoneNumber":1234567890,\n                   "gender":"Male",\n                   "birthDate":Date("10/30/1997")\n               }\n           }',
+                            '{\n               "message": "Account found by user id", \n               "data": {\n                   "id": ObjectId("5bff8b9f3274cf001bc71048"),\n                   "firstName": "Theo",\n                   "lastName":"Klein",\n                   "pronoun":"he/him",\n                   "email":"theo@klein.com",\n                   "dietaryRestrictions":["Halal"],\n                   "phoneNumber":1234567890,\n                   "shirtSize":"S",\n                   "birthDate":Date("10/30/1997")\n               }\n           }',
                         type: "object"
                     }
                 ]
@@ -398,7 +399,7 @@ define({
                     {
                         title: "Success-Response: ",
                         content:
-                            '{\n               "message": "Account found by user email", \n               "data": {\n                   \t"id": ObjectId("5bff8b9f3274cf001bc71048"),\n                   \t"firstName": "Theo",\n                       "lastName":"Klein",\n                       "pronoun":"he/him",\n                       "email":"theo@klein.com",\n                       "dietaryRestrictions":["Halal"],\n                       "phoneNumber":1234567890,\n                   \t"gender":"Male",\n                       "birthDate":Date("10/30/1997")\n               }\n           }',
+                            '{\n               "message": "Account found by user email", \n               "data": {\n                   \t"id": ObjectId("5bff8b9f3274cf001bc71048"),\n                   \t"firstName": "Theo",\n                       "lastName":"Klein",\n                       "pronoun":"he/him",\n                       "email":"theo@klein.com",\n                       "dietaryRestrictions":["Halal"],\n                       "phoneNumber":1234567890,\n                   \t"shirtSize":"S",\n                       "birthDate":Date("10/30/1997")\n               }\n           }',
                         type: "object"
                     }
                 ]
@@ -470,7 +471,7 @@ define({
                             optional: true,
                             field: "pronoun",
                             description:
-                                "<p>The pronoun of the account creator.</p>"
+                                "<p>the pronoun of the account creator.</p>"
                         },
                         {
                             group: "body",
@@ -491,15 +492,16 @@ define({
                             group: "body",
                             type: "String",
                             optional: true,
-                            field: "gender",
-                            description: "<p>Gender of the account creator.</p>"
+                            field: "shirtSize",
+                            description:
+                                "<p>Size of the shirt that the user will receive.</p>"
                         },
                         {
                             group: "body",
                             type: "String",
                             optional: true,
                             field: "birthDate",
-                            description: "<p>A Date parsable string.</p>"
+                            description: "<p>a Date parsable string.</p>"
                         },
                         {
                             group: "body",
@@ -507,14 +509,14 @@ define({
                             optional: true,
                             field: "phoneNumber",
                             description:
-                                "<p>The user's phone number, represented as a string.</p>"
+                                "<p>the user's phone number, represented as a string.</p>"
                         }
                     ]
                 },
                 examples: [
                     {
                         title: "Request-Example:",
-                        content: '{ "gender": "Male" }',
+                        content: '{ "shirtSize": "M" }',
                         type: "json"
                     }
                 ]
@@ -542,7 +544,7 @@ define({
                     {
                         title: "Success-Response: ",
                         content:
-                            '{\n               "message": "Account update successful.", \n               "data": {\n                       "id": ObjectId("5bff8b9f3274cf001bc71048"),\n                   \t"firstName": "Theo",\n                       "lastName":"Klein",\n                       "pronoun":"he/him",\n                       "email":"theo@klein.com",\n                       "dietaryRestrictions":["Halal"],\n                       "phoneNumber":1234567890,\n                   \t"gender": "Male",\n                       "birthDate":Date("10/30/1997")\n               }\n           }',
+                            '{\n               "message": "Changed account information", \n               "data": {\n                       "id": ObjectId("5bff8b9f3274cf001bc71048"),\n                   \t"firstName": "Theo",\n                       "lastName":"Klein",\n                       "pronoun":"he/him",\n                       "email":"theo@klein.com",\n                       "dietaryRestrictions":["Halal"],\n                       "phoneNumber":1234567890,\n                   \t"shirtSize":"M",\n                       "birthDate":Date("10/30/1997")\n               }\n           }',
                         type: "object"
                     }
                 ]
@@ -614,7 +616,7 @@ define({
                     {
                         title: "Request-Example:",
                         content:
-                            '{\n    "oldPassword": "password12345",\n    "newPassword": "password123456"\n}',
+                            '{ \n    "oldPassword": "password12345",\n    "newPassword": "password123456"\n}',
                         type: "json"
                     }
                 ]
@@ -640,7 +642,7 @@ define({
                 },
                 examples: [
                     {
-                        title: "Success-Response:",
+                        title: "Success-Response: ",
                         content:
                             '{"message": "Successfully reset password", "data": {}}',
                         type: "json"
@@ -729,7 +731,7 @@ define({
                 },
                 examples: [
                     {
-                        title: "Error-Response:",
+                        title: "Error-Response: ",
                         content:
                             '{"message": "Invalid token for confirming account, "data": {}}',
                         type: "object"
@@ -793,7 +795,7 @@ define({
                 },
                 examples: [
                     {
-                        title: "Success-Response:",
+                        title: "Success-Response: ",
                         content: '{"message": "Sent reset email", "data": {}}',
                         type: "json"
                     }
@@ -1065,7 +1067,7 @@ define({
                 },
                 examples: [
                     {
-                        title: "Success-Response:",
+                        title: "Success-Response: ",
                         content:
                             '{"message": "Successfully logged out", "data": {}}',
                         type: "object"
@@ -1232,7 +1234,7 @@ define({
                 },
                 examples: [
                     {
-                        title: "Success-Response:",
+                        title: "Success-Response: ",
                         content:
                             '{"message": "Successfully reset password", "data": {}}',
                         type: "json"
@@ -1295,9 +1297,9 @@ define({
                 },
                 examples: [
                     {
-                        title: "Success-Response:",
+                        title: "Success-Response: ",
                         content:
-                            '{\n    "message": "Changed hacker information",\n    "data": {\n        "status": "Checked-in"\n    }\n}',
+                            '{\n    "message": "Changed hacker information", \n    "data": {\n        "status": "Checked-in"\n    }\n}',
                         type: "object"
                     }
                 ]
@@ -1474,89 +1476,6 @@ define({
         },
         {
             type: "get",
-            url: "/hacker/:id",
-            title: "get a hacker's information",
-            name: "getHacker",
-            group: "Hacker",
-            version: "0.0.8",
-            parameter: {
-                fields: {
-                    param: [
-                        {
-                            group: "param",
-                            type: "String",
-                            optional: false,
-                            field: "id",
-                            description: "<p>a hacker's unique mongoID</p>"
-                        }
-                    ]
-                }
-            },
-            success: {
-                fields: {
-                    "Success 200": [
-                        {
-                            group: "Success 200",
-                            type: "String",
-                            optional: false,
-                            field: "message",
-                            description: "<p>Success message</p>"
-                        },
-                        {
-                            group: "Success 200",
-                            type: "Object",
-                            optional: false,
-                            field: "data",
-                            description: "<p>Hacker object</p>"
-                        }
-                    ]
-                },
-                examples: [
-                    {
-                        title: "Success-Response: ",
-                        content:
-                            '{\n               "message": "Successfully retrieved hacker information", \n               "data": {\n                   "id":"5bff4d736f86be0a41badb91",\n                   "application":{\n                       "portfolioURL":{\n                           "resume":"resumes/1543458163426-5bff4d736f86be0a41badb91",\n                           "github":"https://github.com/abcd",\n                           "dropler":"https://dribbble.com/abcd",\n                           "personal":"https://www.hi.com/",\n                           "linkedIn":"https://linkedin.com/in/abcd",\n                           "other":"https://github.com/hackmcgill/hackerAPI/issues/168"\n                       },\n                       "jobInterest":"Internship",\n                       "skills":["Javascript","Typescript"],\n                       "comments":"hi!",\n                       "essay":"Pls accept me"\n                   },\n                   "status":"Applied",\n                   "ethnicity":["White or Caucasian"," Asian or Pacific Islander"],\n                   "accountId":"5bff2a35e533b0f6562b4998",\n                   "school":"McPherson College",\n                   "gender":"Female",\n                   "needsBus":false,\n                   "major":"Accounting",\n                   "graduationYear":2019,\n                   "codeOfConduct":true,\n               }\n           }',
-                        type: "object"
-                    }
-                ]
-            },
-            error: {
-                fields: {
-                    "Error 4xx": [
-                        {
-                            group: "Error 4xx",
-                            type: "String",
-                            optional: false,
-                            field: "message",
-                            description: "<p>Error message</p>"
-                        },
-                        {
-                            group: "Error 4xx",
-                            type: "Object",
-                            optional: false,
-                            field: "data",
-                            description: "<p>empty</p>"
-                        }
-                    ]
-                },
-                examples: [
-                    {
-                        title: "Error-Response: ",
-                        content: '{"message": "Hacker not found", "data": {}}',
-                        type: "object"
-                    }
-                ]
-            },
-            filename: "routes/api/hacker.js",
-            groupTitle: "Hacker",
-            sampleRequest: [
-                {
-                    url: "https://api.mchacks.ca/api/hacker/:id"
-                }
-            ]
-        },
-        {
-            type: "get",
             url: "/hacker/email/:email",
             title: "get a hacker's information",
             name: "getHacker",
@@ -1640,6 +1559,89 @@ define({
         },
         {
             type: "get",
+            url: "/hacker/:id",
+            title: "get a hacker's information",
+            name: "getHacker",
+            group: "Hacker",
+            version: "0.0.8",
+            parameter: {
+                fields: {
+                    param: [
+                        {
+                            group: "param",
+                            type: "String",
+                            optional: false,
+                            field: "id",
+                            description: "<p>a hacker's unique mongoID</p>"
+                        }
+                    ]
+                }
+            },
+            success: {
+                fields: {
+                    "Success 200": [
+                        {
+                            group: "Success 200",
+                            type: "String",
+                            optional: false,
+                            field: "message",
+                            description: "<p>Success message</p>"
+                        },
+                        {
+                            group: "Success 200",
+                            type: "Object",
+                            optional: false,
+                            field: "data",
+                            description: "<p>Hacker object</p>"
+                        }
+                    ]
+                },
+                examples: [
+                    {
+                        title: "Success-Response: ",
+                        content:
+                            '{\n               "message": "Successfully retrieved hacker information", \n               "data": {\n                   "id":"5bff4d736f86be0a41badb91",\n                   "application":{\n                       "portfolioURL":{\n                           "resume":"resumes/1543458163426-5bff4d736f86be0a41badb91",\n                           "github":"https://github.com/abcd",\n                           "dropler":"https://dribbble.com/abcd",\n                           "personal":"https://www.hi.com/",\n                           "linkedIn":"https://linkedin.com/in/abcd",\n                           "other":"https://github.com/hackmcgill/hackerAPI/issues/168"\n                       },\n                       "jobInterest":"Internship",\n                       "skills":["Javascript","Typescript"],\n                       "comments":"hi!",\n                       "essay":"Pls accept me"\n                   },\n                   "status":"Applied",\n                   "ethnicity":["White or Caucasian"," Asian or Pacific Islander"],\n                   "accountId":"5bff2a35e533b0f6562b4998",\n                   "school":"McPherson College",\n                   "gender":"Female",\n                   "needsBus":false,\n                   "major":"Accounting",\n                   "graduationYear":2019,\n                   "codeOfConduct":true,\n               }\n           }',
+                        type: "object"
+                    }
+                ]
+            },
+            error: {
+                fields: {
+                    "Error 4xx": [
+                        {
+                            group: "Error 4xx",
+                            type: "String",
+                            optional: false,
+                            field: "message",
+                            description: "<p>Error message</p>"
+                        },
+                        {
+                            group: "Error 4xx",
+                            type: "Object",
+                            optional: false,
+                            field: "data",
+                            description: "<p>empty</p>"
+                        }
+                    ]
+                },
+                examples: [
+                    {
+                        title: "Error-Response: ",
+                        content: '{"message": "Hacker not found", "data": {}}',
+                        type: "object"
+                    }
+                ]
+            },
+            filename: "routes/api/hacker.js",
+            groupTitle: "Hacker",
+            sampleRequest: [
+                {
+                    url: "https://api.mchacks.ca/api/hacker/:id"
+                }
+            ]
+        },
+        {
+            type: "get",
             url: "/hacker/resume:id",
             title: "get the resume for a hacker.",
             name: "getHackerResume",
@@ -1674,7 +1676,7 @@ define({
                     {
                         title: "Success-Response:",
                         content:
-                            'HTTP/1.1 200 OK\n{\n    message: "Downloaded resume",\n    data: {\n        id: "507f191e810c19729de860ea",\n        resume: [Buffer]\n    }\n}',
+                            'HTTP/1.1 200 OK \n{ \n    message: "Downloaded resume", \n    data: { \n        id: "507f191e810c19729de860ea", \n        resume: [Buffer] \n    } \n}',
                         type: "json"
                     }
                 ]
@@ -1696,7 +1698,7 @@ define({
                     {
                         title: "Error-Response:",
                         content:
-                            'HTTP/1.1 404\n{\n    message: "Resume not found",\n    data: {}\n}',
+                            'HTTP/1.1 404 \n{ \n    message: "Resume not found", \n    data: {} \n}',
                         type: "json"
                     }
                 ]
@@ -1957,9 +1959,9 @@ define({
                 },
                 examples: [
                     {
-                        title: "Success-Response:",
+                        title: "Success-Response: ",
                         content:
-                            '{\n    "message": "Changed hacker information",\n    "data": {\n        "status": "Confirmed"\n    }\n}',
+                            '{\n    "message": "Changed hacker information", \n    "data": {\n        "status": "Confirmed"\n    }\n}',
                         type: "object"
                     }
                 ]
@@ -1996,7 +1998,7 @@ define({
                             optional: true,
                             field: "status",
                             description:
-                                "<p>Status of the hacker's application (&quot;None&quot;|&quot;Applied&quot;|&quot;Accepted&quot;|&quot;Declined&quot;|&quot;Waitlisted&quot;|&quot;Confirmed&quot;|&quot;Withdrawn&quot;|&quot;Checked-in&quot;)</p>"
+                                "<p>Status of the hacker's application (&quot;None&quot;|&quot;Applied&quot;|&quot;Waitlisted&quot;|&quot;Declined&quot;|&quot;Confirmed&quot;|&quot;Withdrawn&quot;|&quot;Checked-in&quot;)</p>"
                         }
                     ]
                 }
@@ -2022,9 +2024,9 @@ define({
                 },
                 examples: [
                     {
-                        title: "Success-Response:",
+                        title: "Success-Response: ",
                         content:
-                            '{\n    "message": "Changed hacker information",\n    "data": {\n        "status": "Accepted"\n    }\n}',
+                            '{\n    "message": "Changed hacker information", \n    "data": {\n        "status": "Accepted"\n    }\n}',
                         type: "object"
                     }
                 ]
@@ -2095,9 +2097,9 @@ define({
                 },
                 examples: [
                     {
-                        title: "Success-Response:",
+                        title: "Success-Response: ",
                         content:
-                            'HTTP/1.1 200 OK\n{\n    message: "Uploaded resume",\n    data: {\n        filename: "resumes/1535032624768-507f191e810c19729de860ea"\n    }\n}',
+                            'HTTP/1.1 200 OK\n{\n    message: "Uploaded resume", \n    data: {\n        filename: "resumes/1535032624768-507f191e810c19729de860ea"\n    }\n}',
                         type: "json"
                     }
                 ]
@@ -2118,73 +2120,10 @@ define({
         },
         {
             type: "post",
-            url: "/hacker/email/dayOf/:id",
-            title: "",
-            description:
-                "<p>Sends a hacker the day-of email, along with the HackPass QR code to view their hacker profile (for checkin purposes). Hackers must be either confirmed, or checked in.</p>",
-            name: "postHackerSendDayOfEmail",
-            group: "Hacker",
-            version: "0.0.9",
-            parameter: {
-                fields: {
-                    param: [
-                        {
-                            group: "param",
-                            type: "string",
-                            optional: true,
-                            field: "status",
-                            description: "<p>The hacker ID</p>"
-                        }
-                    ]
-                }
-            },
-            success: {
-                fields: {
-                    "Success 200": [
-                        {
-                            group: "Success 200",
-                            type: "string",
-                            optional: false,
-                            field: "message",
-                            description: "<p>Success message</p>"
-                        },
-                        {
-                            group: "Success 200",
-                            type: "object",
-                            optional: false,
-                            field: "data",
-                            description: "<p>empty</p>"
-                        }
-                    ]
-                },
-                examples: [
-                    {
-                        title: "Success-Response:",
-                        content:
-                            '{\n    "message": "Hacker day-of email sent.",\n    "data": {}\n}',
-                        type: "object"
-                    }
-                ]
-            },
-            permission: [
-                {
-                    name: "Administrator"
-                }
-            ],
-            filename: "routes/api/hacker.js",
-            groupTitle: "Hacker",
-            sampleRequest: [
-                {
-                    url: "https://api.mchacks.ca/api/hacker/email/dayOf/:id"
-                }
-            ]
-        },
-        {
-            type: "post",
             url: "/hacker/email/weekOf/:id",
             title: "",
             description:
-                "<p>Sends a hacker the week-of email, along with the HackPass QR code to view their hacker profile (for checkin purposes). Hackers must be either confirmed, or checked in.</p>",
+                "<p>Sends a hacker the week-of email, along with the HackPass QR code to view their hacker profile (for checkin purposes). Hackers must be eitherconfirmed, or checked in.</p>",
             name: "postHackerSendWeekOfEmail",
             group: "Hacker",
             version: "0.0.9",
@@ -2222,9 +2161,9 @@ define({
                 },
                 examples: [
                     {
-                        title: "Success-Response:",
+                        title: "Success-Response: ",
                         content:
-                            '{\n    "message": "Hacker week-of email sent.",\n    "data": {}\n}',
+                            '{\n    "message": "Hacker week-of email sent.", \n    "data": {}\n}',
                         type: "object"
                     }
                 ]
@@ -2285,9 +2224,9 @@ define({
                 },
                 examples: [
                     {
-                        title: "Success-Response:",
+                        title: "Success-Response: ",
                         content:
-                            '{\n    "message": "Hacker week-of email sent.",\n    "data": {}\n}',
+                            '{\n    "message": "Hacker week-of email sent.", \n    "data": {}\n}',
                         type: "object"
                     }
                 ]
@@ -2735,9 +2674,9 @@ define({
                 },
                 examples: [
                     {
-                        title: "Success-Response:",
+                        title: "Success-Response: ",
                         content:
-                            '{\n    "message": "Settings creation successful.",\n    "data": {\n        "settings": {\n            openTime: "Wed Feb 06 2019 00:00:00 GMT-0500 (GMT-05:00)",\n            closeTime: "Sat Feb 01 2020 00:00:00 GMT-0500 (GMT-05:00)",\n            confirmTime: "Sat Feb 20 2020 00:00:00 GMT-0500 (GMT-05:00)"\n        }\n    }\n}',
+                            '{\n    "message": "Settings creation successful.", \n    "data": {\n        "settings": {\n            openTime: "Wed Feb 06 2019 00:00:00 GMT-0500 (GMT-05:00)",\n            closeTime: "Sat Feb 01 2020 00:00:00 GMT-0500 (GMT-05:00)",\n            confirmTime: "Sat Feb 20 2020 00:00:00 GMT-0500 (GMT-05:00)"\n        }\n    }\n}',
                         type: "object"
                     }
                 ]
@@ -2813,9 +2752,9 @@ define({
                 },
                 examples: [
                     {
-                        title: "Success-Response:",
+                        title: "Success-Response: ",
                         content:
-                            '{\n    "message": "Settings patch successful.",\n    "data": {\n        "settings": {\n            openTime: "Wed Feb 06 2019 00:00:00 GMT-0500 (GMT-05:00)",\n            closeTime: "Sat Feb 01 2020 00:00:00 GMT-0500 (GMT-05:00)",\n            confirmTime: "Sat Feb 20 2020 00:00:00 GMT-0500 (GMT-05:00)"\n        }\n    }\n}',
+                            '{\n    "message": "Settings patch successful.", \n    "data": {\n        "settings": {\n            openTime: "Wed Feb 06 2019 00:00:00 GMT-0500 (GMT-05:00)",\n            closeTime: "Sat Feb 01 2020 00:00:00 GMT-0500 (GMT-05:00)",\n            confirmTime: "Sat Feb 20 2020 00:00:00 GMT-0500 (GMT-05:00)"\n        }\n    }\n}',
                         type: "object"
                     }
                 ]
@@ -3268,9 +3207,9 @@ define({
                 },
                 examples: [
                     {
-                        title: "Success-Response:",
+                        title: "Success-Response: ",
                         content:
-                            '{\n    "message": "Removal from team successful.",\n    "data": {}\n}',
+                            '{\n    "message": "Removal from team successful.", \n    "data": {}\n}',
                         type: "object"
                     }
                 ]
@@ -3407,9 +3346,9 @@ define({
                 },
                 examples: [
                     {
-                        title: "Success-Response:",
+                        title: "Success-Response: ",
                         content:
-                            '{\n    "message": "Team join successful.",\n    "data": {}\n}',
+                            '{\n    "message": "Team join successful.", \n    "data": {}\n}',
                         type: "object"
                     }
                 ]

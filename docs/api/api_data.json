@@ -2198,8 +2198,8 @@
       },
       "examples": [
         {
-          "title": "Success-Response:",
-          "content": "{\n    \"message\": \"Hacker week-of email sent.\",\n    \"data\": {}\n}",
+          "title": "Success-Response: ",
+          "content": "{\n    \"message\": \"Hacker week-of email sent.\", \n    \"data\": {}\n}",
           "type": "object"
         }
       ]
@@ -2633,8 +2633,8 @@
       },
       "examples": [
         {
-          "title": "Success-Response:",
-          "content": "{\n    \"message\": \"Settings creation successful.\",\n    \"data\": {\n        \"settings\": {\n            openTime: \"Wed Feb 06 2019 00:00:00 GMT-0500 (GMT-05:00)\",\n            closeTime: \"Sat Feb 01 2020 00:00:00 GMT-0500 (GMT-05:00)\",\n            confirmTime: \"Sat Feb 20 2020 00:00:00 GMT-0500 (GMT-05:00)\"\n        }\n    }\n}",
+          "title": "Success-Response: ",
+          "content": "{\n    \"message\": \"Settings creation successful.\", \n    \"data\": {\n        \"settings\": {\n            openTime: \"Wed Feb 06 2019 00:00:00 GMT-0500 (GMT-05:00)\",\n            closeTime: \"Sat Feb 01 2020 00:00:00 GMT-0500 (GMT-05:00)\",\n            confirmTime: \"Sat Feb 20 2020 00:00:00 GMT-0500 (GMT-05:00)\"\n        }\n    }\n}",
           "type": "object"
         }
       ]
@@ -2707,8 +2707,8 @@
       },
       "examples": [
         {
-          "title": "Success-Response:",
-          "content": "{\n    \"message\": \"Settings patch successful.\",\n    \"data\": {\n        \"settings\": {\n            openTime: \"Wed Feb 06 2019 00:00:00 GMT-0500 (GMT-05:00)\",\n            closeTime: \"Sat Feb 01 2020 00:00:00 GMT-0500 (GMT-05:00)\",\n            confirmTime: \"Sat Feb 20 2020 00:00:00 GMT-0500 (GMT-05:00)\"\n        }\n    }\n}",
+          "title": "Success-Response: ",
+          "content": "{\n    \"message\": \"Settings patch successful.\", \n    \"data\": {\n        \"settings\": {\n            openTime: \"Wed Feb 06 2019 00:00:00 GMT-0500 (GMT-05:00)\",\n            closeTime: \"Sat Feb 01 2020 00:00:00 GMT-0500 (GMT-05:00)\",\n            confirmTime: \"Sat Feb 20 2020 00:00:00 GMT-0500 (GMT-05:00)\"\n        }\n    }\n}",
           "type": "object"
         }
       ]

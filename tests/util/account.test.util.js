@@ -69,10 +69,7 @@ function generateRandomValue(atr) {
             ];
         case "gender":
             // generate random string between length 2 and 10
-            return Math.random()
-                .toString(36)
-                .replace(/[^a-z]+/g, "")
-                .substr(0, Math.floor(Math.random() * 9 + 2));
+            return Math.random().toString(36).replace(/[^a-z]+/g, "").substr(0, Math.floor(Math.random() * 9 + 2));
         case "confirmed":
             // return false, because if an account is confirmed there should be a document of that account type,
             // which this does not create
