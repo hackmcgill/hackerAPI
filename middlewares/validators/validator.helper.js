@@ -33,7 +33,7 @@ function integerValidator(
     const value = setProperValidationChainBuilder(
         fieldLocation,
         fieldname,
-        "invalid integer"
+        "Invalid integer"
     );
 
     if (optional) {
@@ -74,7 +74,7 @@ function mongoIdValidator(fieldLocation, fieldname, optional = true) {
     const mongoId = setProperValidationChainBuilder(
         fieldLocation,
         fieldname,
-        "invalid mongoID"
+        "Invalid mongoID"
     );
 
     if (optional) {
@@ -102,7 +102,7 @@ function mongoIdArrayValidator(fieldLocation, fieldname, optional = true) {
     const arr = setProperValidationChainBuilder(
         fieldLocation,
         fieldname,
-        "invalid mongoID array"
+        "Invalid mongoID array"
     );
 
     if (optional) {
@@ -135,7 +135,7 @@ function booleanValidator(
     const booleanField = setProperValidationChainBuilder(
         fieldLocation,
         fieldname,
-        "invalid boolean"
+        "Invalid boolean"
     );
 
     if (optional) {
@@ -176,7 +176,7 @@ function asciiValidator(fieldLocation, fieldname, optional = true) {
     const name = setProperValidationChainBuilder(
         fieldLocation,
         fieldname,
-        "invalid name"
+        "Invalid name"
     );
     if (optional) {
         return name
@@ -240,7 +240,7 @@ function regexValidator(
     const match = setProperValidationChainBuilder(
         fieldLocation,
         fieldname,
-        "invalid name"
+        "Invalid name"
     );
 
     if (optional) {
@@ -269,7 +269,7 @@ function alphaValidator(fieldLocation, fieldname, optional = true) {
     const name = setProperValidationChainBuilder(
         fieldLocation,
         fieldname,
-        "invalid alpha string"
+        "Invalid alpha string"
     );
     if (optional) {
         return name
@@ -296,7 +296,7 @@ function alphaArrayValidator(fieldLocation, fieldname, optional = true) {
     const name = setProperValidationChainBuilder(
         fieldLocation,
         fieldname,
-        "invalid alpha array"
+        "Invalid alpha array"
     );
 
     if (optional) {
@@ -346,7 +346,7 @@ function passwordValidator(fieldLocation, fieldname, optional = true) {
     const password = setProperValidationChainBuilder(
         fieldLocation,
         fieldname,
-        "invalid password"
+        "Invalid password"
     );
     if (optional) {
         return password
@@ -378,7 +378,7 @@ function applicationValidator(fieldLocation, fieldname, optional = true) {
     const application = setProperValidationChainBuilder(
         fieldLocation,
         fieldname,
-        "invalid application"
+        "Invalid application"
     );
     //helper object to iterate through the items in the application and track which items are not valid.
     const hasValid = {
@@ -707,7 +707,7 @@ function dateValidator(fieldLocation, fieldname, optional = true) {
     const date = setProperValidationChainBuilder(
         fieldLocation,
         fieldname,
-        "invalid date"
+        "Invalid date"
     );
     if (optional) {
         return date
@@ -747,7 +747,7 @@ function phoneNumberValidator(fieldLocation, fieldname, optional = true) {
     const number = setProperValidationChainBuilder(
         fieldLocation,
         fieldname,
-        "invalid phone number"
+        "Invalid phone number"
     );
     if (optional) {
         return number
@@ -875,7 +875,7 @@ function checkEnum(value, enums) {
  *
  * @param {"query" | "body" | "header" | "param"} fieldLocation the location where the field should be found
  * @param {string} fieldname name of the field that needs to be validated.
- * @param {*} errorString the string that is sent back to the user if the field is invalid
+ * @param {*} errorString the string that is sent back to the user if the field is Invalid
  */
 function setProperValidationChainBuilder(
     fieldLocation,

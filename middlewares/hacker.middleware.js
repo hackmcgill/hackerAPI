@@ -26,6 +26,7 @@ const Constants = {
  * @description Delete the req.body.id that was added by the validation of route parameter.
  */
 function parsePatch(req, res, next) {
+    console.log(req.body);
     delete req.body.id;
     return next();
 }

@@ -35,6 +35,7 @@ function updateOne(id, hackerDetails) {
     const query = {
         _id: id
     };
+    console.log(query, hackerDetails);
 
     return Hacker.findOneAndUpdate(
         query,
@@ -195,9 +196,8 @@ function getStats(hackers) {
             ? stats.graduationYear[hacker.application.general.graduationYear] +
               1
             : 1;
-
         for (const dietaryRestrictions of hacker.application.accommodation
-            .dietaryRestrictions.dietaryRestrictions) {
+            .dietaryRestrictions) {
             stats.dietaryRestrictions[dietaryRestrictions] = stats
                 .dietaryRestrictions[dietaryRestrictions]
                 ? stats.dietaryRestrictions[dietaryRestrictions] + 1

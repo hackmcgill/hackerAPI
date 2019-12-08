@@ -597,13 +597,11 @@ describe("PATCH update one hacker", function() {
                 agent.close();
                 return done(error);
             }
-            let app = TeamHacker0.application;
-            app.other.gender = "Other";
             return agent
                 .patch(`/api/hacker/${TeamHacker0._id}`)
                 .type("application/json")
                 .send({
-                    application: app
+                    accommodation: { shirtSize: "M" }
                 })
                 .end(function(err, res) {
                     res.should.have.status(200);
@@ -613,9 +611,15 @@ describe("PATCH update one hacker", function() {
                         Constants.Success.HACKER_UPDATE
                     );
                     res.body.should.have.property("data");
+                    // console.log(res.body);
+                    res.body.should.have.property("application");
+                    res.body.should.have.property("accommodation");
+                    res.body.should.have.property("shirtSize");
                     chai.assert.equal(
-                        JSON.stringify(res.body.data.application.other.gender),
-                        '"Other"'
+                        JSON.stringify(
+                            res.body.data.application.accommodation.shirtSize
+                        ),
+                        '"M"'
                     );
                     done();
                 });

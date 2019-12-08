@@ -70,6 +70,7 @@ function downloadedResume(req, res) {
 }
 
 function gotStats(req, res) {
+    console.log("gotStats?");
     return res.status(200).json({
         message: "Retrieved stats",
         data: {
