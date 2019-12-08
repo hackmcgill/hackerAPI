@@ -600,6 +600,8 @@ describe("PATCH update one hacker", function() {
             }
             return agent
                 .patch(`/api/hacker/accept/${invalidHacker1._id}`)
+                .type("application/json")
+                .send()
                 .end(function (err, res) {
                     if (err) {
                         return done(err);
