@@ -603,9 +603,6 @@ describe("PATCH update one hacker", function() {
                 .type("application/json")
                 .send()
                 .end(function (err, res) {
-                    if (err) {
-                        return done(err);
-                    }
                     res.should.have.status(404);
                     res.should.be.json;
                     res.body.should.have.property("message");

@@ -175,6 +175,13 @@ async function validateConfirmedStatusFromAccountId(req, res, next) {
  */
 async function validateConfirmedStatusFromHackerId(req, res, next) {
     const hacker = await Services.Hacker.findById(req.params.id);
+    if (hacker == null) {
+        return next({
+        status: 404,
+        message: Constants.Error.HACKER_404_MESSAGE,
+        data: req.body.hackerId
+        });
+    }
     const account = await Services.Account.findById(hacker.accountId);
     return validateConfirmedStatus(account, next);
 }
