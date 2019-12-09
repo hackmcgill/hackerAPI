@@ -254,7 +254,7 @@ module.exports = {
          * @api {patch} /hacker/accept/:id accept a Hacker
          * @apiName acceptHacker
          * @apiGroup Hacker
-         * @apiVersion 0.0.9
+         * @apiVersion 2.0.0
          *
          * @apiSuccess {string} message Success message
          * @apiSuccess {object} data Hacker object
