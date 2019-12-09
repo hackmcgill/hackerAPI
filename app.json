@@ -1,0 +1,77 @@
+{
+    "name": "HackMcGill HackerAPI",
+    "description": "API for registration, live-site",
+    "repository": "https://github.com/hackmcgill/hackerAPI",
+    "keywords": ["node", "express", "mongo", "react", "hackathon"],
+    "env": {
+        "FRONTEND_ADDRESS_DEPLOY": {
+            "description": "URL for application front end"
+        },
+        "DB_ADDRESS_DEPLOY": {
+            "description": "Connection string for MongoDB"
+        },
+        "DB_USER_DEPLOY": {
+            "description": "DB Username"
+        },
+        "DB_PASS_DEPLOY": {
+            "description": "DB Password"
+        },
+        "JWT_INVITE_SECRET": {
+            "generator": "secret"
+        },
+        "JWT_RESET_PWD_SECRET": {
+            "generator": "secret"
+        },
+        "JWT_CONFIRM_ACC_SECRET": {
+            "generator": "secret"
+        },
+        "SENDGRID_API_KEY": {
+            "description": "Sendgrid API Key"
+        },
+        "NO_REPLY_EMAIL": {
+            "description": "Noreply email address"
+        },
+        "NO_REPLY_EMAIL": {
+            "description": "GCP Storage Bucket Name"
+        },
+        "TYPE": {
+            "description": "GCP Account Type"
+        },
+        "PROJECT_ID": {
+            "description": "GCP Project ID"
+        },
+        "PRIVATE_KEY_ID": {
+            "description": "GCP Private Key ID"
+        },
+        "PRIVATE_KEY": {
+            "description": "GCP Private Key"
+        },
+        "CLIENT_EMAIL": {
+            "description": "GCP Client Email"
+        },
+        "AUTH_URI": {
+            "description": "GCP Auth URI"
+        },
+        "TOKEN_URI": {
+            "description": "GCP TOken URI"
+        },
+        "AUTH_PROVIDER_X509_CERT_URL": {
+            "description": "GCP Provider Cert URL"
+        },
+        "CLIENT_X509_CERT_URL": {
+            "description": "GCP Cert URL"
+        }
+    },
+    "formation": {
+        "web": {
+            "quantity": 1,
+            "size": "free"
+        }
+    },
+    "image": "heroku/nodejs",
+    "buildpacks": [
+        {
+            "url": "https://github.com/heroku/heroku-buildpack-nodejs"
+        }
+    ]
+}
