@@ -632,6 +632,53 @@
     ]
   },
   {
+    "type": "patch",
+    "url": "/hacker/accept/:id",
+    "title": "accept a Hacker",
+    "name": "acceptHacker",
+    "group": "Hacker",
+    "version": "0.0.9",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "message",
+            "description": "<p>Success message</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>Hacker object</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n    \"message\": \"Changed hacker information\",\n    \"data\": {\n        \"status\": \"Accepted\"\n    }\n}",
+          "type": "object"
+        }
+      ]
+    },
+    "permission": [
+      {
+        "name": "Administrator"
+      }
+    ],
+    "filename": "routes/api/hacker.js",
+    "groupTitle": "Hacker",
+    "sampleRequest": [
+      {
+        "url": "https://api.mchacks.ca/api/hacker/accept/:id"
+      }
+    ]
+  },
+  {
     "type": "post",
     "url": "/auth/confirm/:token",
     "title": "confirm account using the JWT in :token",
