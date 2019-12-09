@@ -3,8 +3,8 @@
     "version": "1.6.2",
     "private": true,
     "scripts": {
-        "start:dev": "DEBUG=hackboard:* NODE_ENV=development nodemon --ignore gcp_creds.json ./bin/www.js",
-        "start": "NODE_ENV=deployment node ./bin/www.js",
+        "start": "DEBUG=hackboard:* NODE_ENV=development nodemon --ignore gcp_creds.json ./bin/www.js",
+        "deploy": "NODE_ENV=deployment node ./bin/www.js",
         "debug": "DEBUG=hackboard:* NODE_ENV=deployment nodemon --ignore gcp_creds.json ./bin/www.js",
         "test": "DEBUG=hackboard:* NODE_ENV=test mocha --reporter spec tests/**.js --exit",
         "seed": "NODE_ENV=development node ./seed/index.js",
