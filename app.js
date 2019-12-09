@@ -46,7 +46,7 @@ if (!Services.env.isProduction()) {
     corsOptions = {
         origin: [
             `https://${process.env.FRONTEND_ADDRESS_DEPLOY}`,
-            `https://${process.env.FRONTEND_ADDRESS_DEVELOP}`,
+            `https://${process.env.FRONTEND_ADDRESS_BETA}`,
             `https://docs.mchacks.ca`
         ],
         credentials: true
