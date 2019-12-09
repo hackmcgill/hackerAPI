@@ -124,7 +124,7 @@ const hackerRoutes = {
         requestType: Constants.REQUEST_TYPES.PATCH,
         uri: "/api/hacker/confirmation/" + Constants.ROLE_CATEGORIES.SELF
     },
-    "patchAcceptHackerById": {
+    patchAcceptHackerById: {
         requestType: Constants.REQUEST_TYPES.PATCH,
         uri: "/api/hacker/accept/" + Constants.ROLE_CATEGORIES.ALL,
     },
