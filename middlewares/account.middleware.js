@@ -34,12 +34,12 @@ function parsePatch(req, res, next) {
 
 /**
  * @function parseAccount
- * @param {{body: {firstName: string, lastName: string, email: string, password: string, dietaryRestrictions: string, shirtSize: string}}} req
+ * @param {{body: {firstName: string, lastName: string, email: string, password: string}}} req
  * @param {*} res
  * @param {(err?)=>void} next
  * @return {void}
  * @description
- * Moves firstName, lastName, email, password, dietaryRestrictions, shirtSize from req.body to req.body.accountDetails.
+ * Moves firstName, lastName, email, password from req.body to req.body.accountDetails.
  * Hashes the password.
  * Adds _id to accountDetails.
  */
@@ -49,6 +49,7 @@ function parseAccount(req, res, next) {
         firstName: req.body.firstName,
         lastName: req.body.lastName,
         pronoun: req.body.pronoun,
+        gender: req.body.gender,
         email: req.body.email,
         password: Services.Account.hashPassword(req.body.password),
         dietaryRestrictions: req.body.dietaryRestrictions,
@@ -60,6 +61,7 @@ function parseAccount(req, res, next) {
     delete req.body.firstName;
     delete req.body.lastName;
     delete req.body.pronoun;
+    delete req.body.gender;
     delete req.body.email;
     delete req.body.password;
     delete req.body.dietaryRestrictions;

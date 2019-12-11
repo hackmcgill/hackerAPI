@@ -393,12 +393,12 @@ def getHackers():
                 'First Name': result['accountId']['firstName'],
                 'Last Name': result['accountId']['lastName'],
                 'Email': result['accountId']['email'],
-                'School': result['school'],
-                'Degree': result['degree'],
-                'Graduation Year': result['graduationYear'],
-                'Job Interest': result['application']['jobInterest'],
-                'Github': result['application']['portfolioURL']['github'],
-                'LinkedIn': result['application']['portfolioURL']['linkedIn'],
+                'School': result['application']['general']['school'],
+                'Degree': result['application']['general']['degree'],
+                'Graduation Year': result['application']['general']['graduationYear'],
+                'Job Interest': result['application']['general']['jobInterest'],
+                'Github': result['application']['general']['URL']['github'],
+                'LinkedIn': result['application']['general']['URL']['linkedIn'],
             })
 
 

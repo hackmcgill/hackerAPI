@@ -29,7 +29,6 @@ const volunteerAccount0 = util.account.volunteerAccounts.stored[0];
 const newHackerAccount0 = util.account.hackerAccounts.new[0];
 const newHacker0 = util.hacker.newHacker0;
 const invalidHacker0 = util.hacker.invalidHacker0;
-
 const newHacker1 = util.hacker.newHacker1;
 
 const noTeamHackerAccount0 = util.account.hackerAccounts.stored.noTeam[0];
@@ -377,6 +376,7 @@ describe("POST create hacker", function() {
         util.auth.login(agent, Admin0, (error) => {
             if (error) {
                 agent.close();
+
                 return done(error);
             }
             return agent
@@ -401,7 +401,8 @@ describe("POST create hacker", function() {
                     delete hacker.id;
                     chai.assert.equal(
                         JSON.stringify(res.body.data),
-                        JSON.stringify(hacker)
+                        JSON.stringify(hacker),
+                        "objects do not match"
                     );
 
                     done();
@@ -445,9 +446,9 @@ describe("POST create hacker", function() {
         });
     });
 
-    // should FAIL due to 'false' on code of conduct
+    // should fail due to 'false' on code of conduct
     it("should FAIL if the new hacker does not accept code of conduct", function(done) {
-        util.auth.login(agent, newHacker0, (error) => {
+        util.auth.login(agent, newHackerAccount0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);
@@ -462,10 +463,18 @@ describe("POST create hacker", function() {
                     res.body.should.have.property("message");
                     res.body.message.should.equal("Validation failed");
                     res.body.should.have.property("data");
-                    res.body.data.should.have.property("codeOfConduct");
-                    res.body.data.codeOfConduct.msg.should.equal(
-                        "Must be equal to true"
+                    res.body.data.should.have.property(
+                        "application.other.privacyPolicy"
                     );
+                    res.body.data[
+                        "application.other.privacyPolicy"
+                    ].msg.should.equal("Must be equal to true");
+                    res.body.data.should.have.property(
+                        "application.other.codeOfConduct"
+                    );
+                    res.body.data[
+                        "application.other.codeOfConduct"
+                    ].msg.should.equal("Must be equal to true");
                     done();
                 });
         });
@@ -529,8 +538,37 @@ describe("POST create hacker", function() {
                 .type("application/json")
                 .send(invalidHacker1)
                 .end(function(err, res) {
-                    // replace with actual test comparisons after error handler is implemented
                     res.should.have.status(422);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal("Validation failed");
+                    res.body.should.have.property("data");
+                    res.body.data.should.have.property("accountId");
+                    res.body.data.accountId.should.have.property("msg");
+                    res.body.data.accountId.msg.should.equal("Invalid mongoID");
+                    res.body.data.should.have.property(
+                        "application.general.school"
+                    );
+                    res.body.data[
+                        "application.general.school"
+                    ].should.have.property("msg");
+                    res.body.data[
+                        "application.general.school"
+                    ].msg.should.equal("name must exist");
+                    res.body.data.should.have.property(
+                        "application.general.jobInterest"
+                    );
+                    res.body.data[
+                        "application.general.jobInterest"
+                    ].should.have.property("msg");
+
+                    res.body.data[
+                        "application.general.jobInterest"
+                    ].should.have.property("msg");
+                    res.body.data[
+                        "application.general.jobInterest"
+                    ].msg.should.equal("The value must be part of the enum");
+
                     done();
                 });
         });
@@ -544,7 +582,7 @@ describe("PATCH update one hacker", function() {
             .patch(`/api/hacker/${TeamHacker0._id}`)
             .type("application/json")
             .send({
-                gender: "Other"
+                application: TeamHacker0.application
             })
             .end(function(err, res) {
                 res.should.have.status(401);
@@ -555,12 +593,12 @@ describe("PATCH update one hacker", function() {
             });
     });
 
-    it("should FAIL to accept a hacker on /api/hacker/accept/:id due to authentication", function (done) {
+    it("should FAIL to accept a hacker on /api/hacker/accept/:id due to authentication", function(done) {
         chai.request(server.app)
             .patch(`/api/hacker/accept/${TeamHacker0._id}`)
             .type("application/json")
             .send()
-            .end(function (err, res) {
+            .end(function(err, res) {
                 res.should.have.status(401);
                 res.should.be.json;
                 res.body.should.have.property("message");
@@ -570,7 +608,7 @@ describe("PATCH update one hacker", function() {
     });
 
     // should FAIL due to authorization
-    it("should FAIL to accept hacker info due to lack of authorization on /api/hacker/accept/:id", function (done) {
+    it("should FAIL to accept hacker info due to lack of authorization on /api/hacker/accept/:id", function(done) {
         util.auth.login(agent, noTeamHackerAccount0, (error) => {
             if (error) {
                 agent.close();
@@ -580,11 +618,13 @@ describe("PATCH update one hacker", function() {
                 .patch(`/api/hacker/accept/${TeamHacker0._id}`)
                 .type("application/json")
                 .send()
-                .end(function (err, res) {
+                .end(function(err, res) {
                     res.should.have.status(403);
                     res.should.be.json;
                     res.body.should.have.property("message");
-                    res.body.message.should.equal(Constants.Error.AUTH_403_MESSAGE);
+                    res.body.message.should.equal(
+                        Constants.Error.AUTH_403_MESSAGE
+                    );
                     res.body.should.have.property("data");
 
                     done();
@@ -592,7 +632,7 @@ describe("PATCH update one hacker", function() {
         });
     });
 
-    it("should FAIL to accept an invalid hacker's info on /api/hacker/accept/:id", function (done) {
+    it("should FAIL to accept an invalid hacker's info on /api/hacker/accept/:id", function(done) {
         util.auth.login(agent, Admin0, (error) => {
             if (error) {
                 agent.close();
@@ -602,11 +642,13 @@ describe("PATCH update one hacker", function() {
                 .patch(`/api/hacker/accept/${invalidHacker1._id}`)
                 .type("application/json")
                 .send()
-                .end(function (err, res) {
+                .end(function(err, res) {
                     res.should.have.status(404);
                     res.should.be.json;
                     res.body.should.have.property("message");
-                    res.body.message.should.equal(Constants.Error.HACKER_404_MESSAGE);
+                    res.body.message.should.equal(
+                        Constants.Error.HACKER_404_MESSAGE
+                    );
                     res.body.should.have.property("data");
 
                     done();
@@ -614,7 +656,7 @@ describe("PATCH update one hacker", function() {
         });
     });
 
-    it("should SUCCEED and accept a hacker on /api/hacker/accept/:id as an Admin", function (done) {
+    it("should SUCCEED and accept a hacker on /api/hacker/accept/:id as an Admin", function(done) {
         util.auth.login(agent, Admin0, (error) => {
             if (error) {
                 agent.close();
@@ -624,15 +666,20 @@ describe("PATCH update one hacker", function() {
                 .patch(`/api/hacker/accept/${TeamHacker0._id}`)
                 .type("application/json")
                 .send()
-                .end(function (err, res) {
+                .end(function(err, res) {
                     res.should.have.status(200);
                     res.should.be.json;
                     res.body.should.have.property("message");
-                    res.body.message.should.equal(Constants.Success.HACKER_UPDATE);
+                    res.body.message.should.equal(
+                        Constants.Success.HACKER_UPDATE
+                    );
                     res.body.should.have.property("data");
-                    chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify({
-                        status: "Accepted"
-                    }));
+                    chai.assert.equal(
+                        JSON.stringify(res.body.data),
+                        JSON.stringify({
+                            status: "Accepted"
+                        })
+                    );
                     done();
                 });
         });
@@ -645,11 +692,23 @@ describe("PATCH update one hacker", function() {
                 agent.close();
                 return done(error);
             }
+            let app = TeamHacker0.application;
+            app.accommodation.shirtSize = "M";
             return agent
                 .patch(`/api/hacker/${TeamHacker0._id}`)
                 .type("application/json")
                 .send({
-                    gender: "Other"
+                    application: {
+                        general: app.general,
+                        shortAnswer: app.shortAnswer,
+                        other: app.other,
+                        accommodation: {
+                            barriers: app.accommodation.barriers,
+                            impairments: app.accommodation.impairments,
+                            travel: app.accommodation.travel,
+                            shirtSize: "M"
+                        }
+                    }
                 })
                 .end(function(err, res) {
                     res.should.have.status(200);
@@ -659,11 +718,18 @@ describe("PATCH update one hacker", function() {
                         Constants.Success.HACKER_UPDATE
                     );
                     res.body.should.have.property("data");
+                    res.body.data.should.have.property("application");
+                    res.body.data.application.should.have.property(
+                        "accommodation"
+                    );
+                    res.body.data.application.accommodation.should.have.property(
+                        "shirtSize"
+                    );
                     chai.assert.equal(
-                        JSON.stringify(res.body.data),
-                        JSON.stringify({
-                            gender: "Other"
-                        })
+                        JSON.stringify(
+                            res.body.data.application.accommodation.shirtSize
+                        ),
+                        '"M"'
                     );
                     done();
                 });
@@ -784,7 +850,7 @@ describe("PATCH update one hacker", function() {
         });
     });
 
-    // hacker should FAIL to checkin hacker
+    // hacker should fail to checkin hacker
     it("should FAIL to check in hacker as a hacker", function(done) {
         util.auth.login(agent, teamHackerAccount0, (error) => {
             if (error) {
@@ -843,11 +909,22 @@ describe("PATCH update one hacker", function() {
                 agent.close();
                 return done(error);
             }
+            let app = noTeamHacker0.application;
             return agent
                 .patch(`/api/hacker/${noTeamHacker0._id}`)
                 .type("application/json")
                 .send({
-                    gender: "Other"
+                    application: {
+                        general: app.general,
+                        shortAnswer: app.shortAnswer,
+                        other: app.other,
+                        accommodation: {
+                            barriers: app.accommodation.barriers,
+                            impairments: app.accommodation.impairments,
+                            travel: app.accommodation.travel,
+                            shirtSize: "M"
+                        }
+                    }
                 })
                 .end(function(err, res) {
                     res.should.have.status(200);
@@ -857,11 +934,18 @@ describe("PATCH update one hacker", function() {
                         Constants.Success.HACKER_UPDATE
                     );
                     res.body.should.have.property("data");
+                    res.body.data.should.have.property("application");
+                    res.body.data.application.should.have.property(
+                        "accommodation"
+                    );
+                    res.body.data.application.accommodation.should.have.property(
+                        "shirtSize"
+                    );
                     chai.assert.equal(
-                        JSON.stringify(res.body.data),
-                        JSON.stringify({
-                            gender: "Other"
-                        })
+                        JSON.stringify(
+                            res.body.data.application.accommodation.shirtSize
+                        ),
+                        '"M"'
                     );
                     done();
                 });
@@ -875,11 +959,22 @@ describe("PATCH update one hacker", function() {
                 agent.close();
                 return done(error);
             }
+            let app = unconfirmedHacker1.application;
             return agent
                 .patch(`/api/hacker/${unconfirmedHacker1._id}`)
                 .type("application/json")
                 .send({
-                    gender: "Other"
+                    application: {
+                        general: app.general,
+                        shortAnswer: app.shortAnswer,
+                        other: app.other,
+                        accommodation: {
+                            barriers: app.accommodation.barriers,
+                            impairments: app.accommodation.impairments,
+                            travel: app.accommodation.travel,
+                            shirtSize: "M"
+                        }
+                    }
                 })
                 .end(function(err, res) {
                     res.should.have.status(403);
@@ -894,18 +989,29 @@ describe("PATCH update one hacker", function() {
         });
     });
 
-    // should FAIL due to authorization
+    // should fail due to authorization
     it("should Fail to update hacker info due to lack of authorization", function(done) {
         util.auth.login(agent, noTeamHackerAccount0, (error) => {
             if (error) {
                 agent.close();
                 return done(error);
             }
+            let app = TeamHacker0.application;
             return agent
                 .patch(`/api/hacker/${TeamHacker0._id}`)
                 .type("application/json")
                 .send({
-                    gender: "Other"
+                    application: {
+                        general: app.general,
+                        shortAnswer: app.shortAnswer,
+                        other: app.other,
+                        accommodation: {
+                            barriers: app.accommodation.barriers,
+                            impairments: app.accommodation.impairments,
+                            travel: app.accommodation.travel,
+                            shirtSize: "M"
+                        }
+                    }
                 })
                 .end(function(err, res) {
                     res.should.have.status(403);
@@ -922,7 +1028,7 @@ describe("PATCH update one hacker", function() {
     });
 
     // fail due to lack of hacker
-    it("should FAIL to change an invalid hacker's info", function(done) {
+    it("should fail to change an invalid hacker's info", function(done) {
         util.auth.login(agent, Admin0, (error) => {
             if (error) {
                 agent.close();
@@ -1081,7 +1187,7 @@ describe("PATCH update one hacker", function() {
     });
 
     // fail for a hacker that's not accepted
-    it("should FAIL for hacker trying to confirm someone else", function(done) {
+    it("should fail for hacker trying to confirm someone else", function(done) {
         util.auth.login(agent, util.account.waitlistedHacker0, (error) => {
             if (error) {
                 agent.close();
@@ -1110,6 +1216,7 @@ describe("PATCH update one hacker", function() {
         });
     });
 });
+
 describe("POST add a hacker resume", function() {
     it("It should SUCCEED and upload a resume for a hacker", function(done) {
         //this takes a lot of time for some reason
@@ -1196,10 +1303,10 @@ describe("GET Hacker stats", function() {
                     res.body.data.stats.should.have.property("school");
                     res.body.data.stats.should.have.property("degree");
                     res.body.data.stats.should.have.property("gender");
-                    res.body.data.stats.should.have.property("needsBus");
+                    res.body.data.stats.should.have.property("travel");
                     res.body.data.stats.should.have.property("ethnicity");
                     res.body.data.stats.should.have.property("jobInterest");
-                    res.body.data.stats.should.have.property("major");
+                    res.body.data.stats.should.have.property("fieldOfStudy");
                     res.body.data.stats.should.have.property("graduationYear");
                     res.body.data.stats.should.have.property(
                         "dietaryRestrictions"

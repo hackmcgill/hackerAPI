@@ -6,15 +6,120 @@ module.exports = {
     newHackerValidator: [
         // status will be added automatically
         VALIDATOR.mongoIdValidator("body", "accountId", false),
-        VALIDATOR.stringValidator("body", "school", false),
-        VALIDATOR.stringValidator("body", "degree", false),
-        VALIDATOR.stringValidator("body", "gender", false),
-        VALIDATOR.booleanValidator("body", "needsBus", false),
+        // validate that application is a valid object
         VALIDATOR.applicationValidator("body", "application", false),
-        VALIDATOR.alphaArrayValidator("body", "ethnicity", false),
-        VALIDATOR.alphaArrayValidator("body", "major", false),
-        VALIDATOR.integerValidator("body", "graduationYear", false, 2019, 2030),
-        VALIDATOR.booleanValidator("body", "codeOfConduct", false, true),
+        VALIDATOR.stringValidator("body", "application.general.school", false),
+        VALIDATOR.stringValidator("body", "application.general.degree", false),
+        VALIDATOR.alphaArrayValidator(
+            "body",
+            "application.general.fieldOfStudy",
+            false
+        ),
+        VALIDATOR.integerValidator(
+            "body",
+            "application.general.graduationYear",
+            false,
+            2019,
+            2030
+        ),
+        VALIDATOR.enumValidator(
+            "body",
+            "application.accommodation.shirtSize",
+            Constants.SHIRT_SIZES,
+            false
+        ),
+        VALIDATOR.stringValidator(
+            "body",
+            "application.accommodation.impairments",
+            true
+        ),
+        VALIDATOR.stringValidator(
+            "body",
+            "application.accommodation.barriers",
+            true
+        ),
+        VALIDATOR.stringValidator(
+            "body",
+            "application.general.URL.resume",
+            false
+        ),
+        VALIDATOR.stringValidator(
+            "body",
+            "application.general.URL.github",
+            true
+        ),
+        VALIDATOR.stringValidator(
+            "body",
+            "application.general.URL.dribbble",
+            true
+        ),
+        VALIDATOR.stringValidator(
+            "body",
+            "application.general.URL.linkedin",
+            true
+        ),
+        VALIDATOR.stringValidator(
+            "body",
+            "application.general.URL.other",
+            true
+        ),
+        VALIDATOR.stringValidator(
+            "body",
+            "application.general.URL.personal",
+            true
+        ),
+        VALIDATOR.enumValidator(
+            "body",
+            "application.general.jobInterest",
+            Constants.JOB_INTERESTS,
+            false
+        ),
+        VALIDATOR.alphaArrayValidator(
+            "body",
+            "application.shortAnswer.skills",
+            true
+        ),
+        VALIDATOR.stringValidator(
+            "body",
+            "application.shortAnswer.comments",
+            true
+        ),
+        VALIDATOR.stringValidator(
+            "body",
+            "application.shortAnswer.question1",
+            false
+        ),
+        VALIDATOR.stringValidator(
+            "body",
+            "application.shortAnswer.question2",
+            false
+        ),
+
+        VALIDATOR.alphaArrayValidator(
+            "body",
+            "application.other.ethnicity",
+            false
+        ),
+        VALIDATOR.booleanValidator(
+            "body",
+            "application.other.privacyPolicy",
+            false,
+            true
+        ),
+        VALIDATOR.booleanValidator(
+            "body",
+            "application.other.codeOfConduct",
+            false,
+            true
+        ),
+        VALIDATOR.integerValidator(
+            "body",
+            "application.accommodation.travel",
+            true,
+            0,
+            100
+        ),
+        VALIDATOR.mongoIdValidator("body", "application.team", true),
         VALIDATOR.mongoIdValidator("body", "teamId", true)
     ],
 
@@ -23,14 +128,120 @@ module.exports = {
     ],
 
     updateHackerValidator: [
-        VALIDATOR.stringValidator("body", "school", true),
-        VALIDATOR.stringValidator("body", "degree", true),
-        VALIDATOR.stringValidator("body", "gender", true),
-        VALIDATOR.booleanValidator("body", "needsBus", true),
-        VALIDATOR.applicationValidator("body", "application", true),
-        VALIDATOR.alphaArrayValidator("body", "ethnicity", true),
-        VALIDATOR.alphaArrayValidator("body", "major", true),
-        VALIDATOR.integerValidator("body", "graduationYear", true, 2019, 2030)
+        // validate that application is a valid object
+        VALIDATOR.applicationValidator("body", "application", false),
+        VALIDATOR.stringValidator("body", "application.general.school", false),
+        VALIDATOR.stringValidator("body", "application.general.degree", false),
+        VALIDATOR.alphaArrayValidator(
+            "body",
+            "application.general.fieldOfStudy",
+            false
+        ),
+        VALIDATOR.integerValidator(
+            "body",
+            "application.general.graduationYear",
+            false,
+            2019,
+            2030
+        ),
+        VALIDATOR.enumValidator(
+            "body",
+            "application.accommodation.shirtSize",
+            Constants.SHIRT_SIZES,
+            false
+        ),
+        VALIDATOR.stringValidator(
+            "body",
+            "application.accommodation.impairments",
+            true
+        ),
+        VALIDATOR.stringValidator(
+            "body",
+            "application.accommodation.barriers",
+            true
+        ),
+        VALIDATOR.stringValidator(
+            "body",
+            "application.general.URL.resume",
+            false
+        ),
+        VALIDATOR.stringValidator(
+            "body",
+            "application.general.URL.github",
+            true
+        ),
+        VALIDATOR.stringValidator(
+            "body",
+            "application.general.URL.dribbble",
+            true
+        ),
+        VALIDATOR.stringValidator(
+            "body",
+            "application.general.URL.linkedin",
+            true
+        ),
+        VALIDATOR.stringValidator(
+            "body",
+            "application.general.URL.other",
+            true
+        ),
+        VALIDATOR.stringValidator(
+            "body",
+            "application.general.URL.personal",
+            true
+        ),
+        VALIDATOR.enumValidator(
+            "body",
+            "application.general.jobInterest",
+            Constants.JOB_INTERESTS,
+            false
+        ),
+        VALIDATOR.alphaArrayValidator(
+            "body",
+            "application.shortAnswer.skills",
+            true
+        ),
+        VALIDATOR.stringValidator(
+            "body",
+            "application.shortAnswer.comments",
+            true
+        ),
+        VALIDATOR.stringValidator(
+            "body",
+            "application.shortAnswer.question1",
+            false
+        ),
+        VALIDATOR.stringValidator(
+            "body",
+            "application.shortAnswer.question2",
+            false
+        ),
+
+        VALIDATOR.alphaArrayValidator(
+            "body",
+            "application.other.ethnicity",
+            false
+        ),
+        VALIDATOR.booleanValidator(
+            "body",
+            "application.other.privacyPolicy",
+            false,
+            true
+        ),
+        VALIDATOR.booleanValidator(
+            "body",
+            "application.other.codeOfConduct",
+            false,
+            true
+        ),
+        VALIDATOR.booleanValidator(
+            "body",
+            "application.accommodation.travel",
+            true,
+            0,
+            100
+        ),
+        VALIDATOR.mongoIdValidator("body", "application.team", true)
     ],
     updateStatusValidator: [
         VALIDATOR.enumValidator(

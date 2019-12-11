@@ -364,7 +364,7 @@ describe("PATCH update account", function() {
     });
 
     // fail due to lack of authorization
-    it("should Fail to update an account due to lack of authorization", function(done) {
+    it("should FAIL to update an account due to lack of authorization", function(done) {
         util.auth.login(agent, teamHackerAccount0, (error) => {
             if (error) {
                 agent.close();

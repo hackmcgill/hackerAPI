@@ -51,6 +51,8 @@ function generateRandomValue(atr) {
                 .toString(36)
                 .replace(/[^a-z]+/g, "")
                 .substr(0, Math.floor(Math.random() * 3 + 2));
+        case "gender":
+            return "Female";
         case "email":
             const email = `abc.def${counters.emailCounter}@blahblah.com`;
             return email;
@@ -69,7 +71,10 @@ function generateRandomValue(atr) {
             ];
         case "gender":
             // generate random string between length 2 and 10
-            return Math.random().toString(36).replace(/[^a-z]+/g, "").substr(0, Math.floor(Math.random() * 9 + 2));
+            return Math.random()
+                .toString(36)
+                .replace(/[^a-z]+/g, "")
+                .substr(0, Math.floor(Math.random() * 9 + 2));
         case "confirmed":
             // return false, because if an account is confirmed there should be a document of that account type,
             // which this does not create
@@ -87,7 +92,6 @@ function generateRandomValue(atr) {
 
 function createAccount(acc = {}) {
     incrementCounters();
-
     const extractedAcc = extractAccountInfo(acc);
 
     for (const atr in Account.schema.paths) {
@@ -253,6 +257,7 @@ const waitlistedHacker0 = {
     firstName: "abcd",
     lastName: "defg3",
     pronoun: "They/Them",
+    gender: "Female",
     email: "waitlisted1@blahblah.com",
     password: "probsShouldBeHashed2",
     dietaryRestrictions: ["vegetarian"],
@@ -269,6 +274,7 @@ const NonConfirmedAccount1 = {
     firstName: "LMAO",
     lastName: "ROFL",
     pronoun: "Ey/Em",
+    gender: "Female",
     email: "notconfirmed1@blahblah.com",
     password: "probsShouldBeHashed5",
     dietaryRestrictions: ["something1", "something2"],
@@ -283,6 +289,7 @@ const NonConfirmedAccount2 = {
     _id: mongoose.Types.ObjectId(),
     firstName: "LMAO",
     lastName: "ROFL",
+    gender: "Female",
     email: "notconfirmed2@blahblah.com",
     password: "probsShouldBeHashed5",
     dietaryRestrictions: ["something1", "something2"],

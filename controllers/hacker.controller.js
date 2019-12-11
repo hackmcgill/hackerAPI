@@ -20,7 +20,7 @@ function showHacker(req, res) {
 
 /**
  * @function createdHacker
- * @param {{body: {hacker: {_id: ObjectId, accountId: ObjectId, school: string, gender: string, needsBus: boolean, application: {Object}}}}} req
+ * @param {{body: {hacker: {_id: ObjectId, accountId: ObjectId, status: string, application: {Object}}}}} req
  * @param {*} res
  * @return {JSON} Success status
  * @description returns success message

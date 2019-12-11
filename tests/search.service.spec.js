@@ -22,15 +22,15 @@ const util = {
 
 const queryToExecute = [
     {
-        param: "gender",
+        param: "application.general.degree",
         operation: "equals",
-        value: "Female"
+        value: "Undergraduate"
     }
 ];
 
 const query2 = [
     {
-        param: "school",
+        param: "application.general.school",
         operation: "ne",
         value: "McGill"
     }
@@ -64,7 +64,7 @@ describe("Searching for hackers", function() {
                 return agent
                     .get("/api/search")
                     .query({
-                        model: "hacker",
+                        model: "account",
                         q: JSON.stringify(queryToExecute)
                     })
                     .end(function(err, res) {
@@ -88,7 +88,7 @@ describe("Searching for hackers", function() {
             return agent
                 .get("/api/search")
                 .query({
-                    model: "hacker",
+                    model: "account",
                     q: JSON.stringify(queryToExecute)
                 })
                 .end(function(err, res) {
@@ -101,7 +101,7 @@ describe("Searching for hackers", function() {
                 });
         });
     });
-    it("Should return all female hackers", function(done) {
+    it("Should return all undergraduate hackers", function(done) {
         util.auth.login(agent, Admin0, (error) => {
             if (error) {
                 agent.close();
@@ -116,11 +116,12 @@ describe("Searching for hackers", function() {
                 .end(function(err, res) {
                     res.should.have.status(200);
                     res.body.should.have.property("data");
-                    res.body.data.should.have.length(7);
+                    res.body.data.should.have.length(2);
                     done();
                 });
         });
     });
+
     it("Should return an error as hackers don't have password stored", function(done) {
         util.auth.login(agent, Admin0, (error) => {
             if (error) {
@@ -303,7 +304,7 @@ describe("Searching for hackers", function() {
                 .end(function(err, res) {
                     res.should.have.status(200);
                     res.body.should.have.property("data");
-                    res.body.data.should.have.length(7);
+                    res.body.data.should.have.length(2);
                     res.body.data[0].should.have.property("accountId");
                     res.body.data[0].accountId.should.have.property("email");
                     done();

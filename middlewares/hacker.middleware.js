@@ -32,44 +32,25 @@ function parsePatch(req, res, next) {
 
 /**
  * @function parseHacker
- * @param {{body: {accountId: ObjectId, school: string, degree: string, gender: string, needsBus: string, application: Object, authorization: string}}} req
+ * @param {{body: {accountId: ObjectId, application: Object, authorization: string}}} req
  * @param {*} res
  * @param {(err?)=>void} next
  * @return {void}
  * @description
- * Moves accountId, school, degree, gender, needsBus, application from req.body to req.body.hackerDetails.
+ * Moves accountId, application from req.body to req.body.hackerDetails.
  * Adds _id to hackerDetails.
  */
 function parseHacker(req, res, next) {
     const hackerDetails = {
         _id: mongoose.Types.ObjectId(),
         accountId: req.body.accountId,
-        school: req.body.school,
-        degree: req.body.degree,
-        gender: req.body.gender,
-        needsBus: req.body.needsBus,
         application: req.body.application,
-
-        ethnicity: req.body.ethnicity,
-        major: req.body.major,
-        graduationYear: req.body.graduationYear,
-        codeOfConduct: req.body.codeOfConduct,
-
         teamId: req.body.teamId
     };
     req.body.token = req.body.authorization;
 
     delete req.body.accountId;
-    delete req.body.school;
-    delete req.body.degree;
-    delete req.body.gender;
-    delete req.body.needsBus;
     delete req.body.application;
-    delete req.body.authorization;
-    delete req.body.ethnicity;
-    delete req.body.major;
-    delete req.body.graduationYear;
-    delete req.body.codeOfConduct;
     delete req.body.teamId;
 
     req.body.hackerDetails = hackerDetails;
@@ -280,7 +261,7 @@ async function uploadResume(req, res, next) {
     req.body.gcfilename = gcfilename;
     await Services.Hacker.updateOne(req.hacker.id, {
         $set: {
-            "application.portfolioURL.resume": gcfilename
+            "application.general.URL.resume": gcfilename
         }
     });
     return next();
@@ -297,11 +278,12 @@ async function downloadResume(req, res, next) {
     if (
         hacker &&
         hacker.application &&
-        hacker.application.portfolioURL &&
-        hacker.application.portfolioURL.resume
+        hacker.application.general &&
+        hacker.application.general.URL &&
+        hacker.application.general.URL.resume
     ) {
         req.body.resume = await Services.Storage.download(
-            hacker.application.portfolioURL.resume
+            hacker.application.general.URL.resume
         );
     } else {
         return next({
@@ -480,7 +462,7 @@ function checkStatus(statuses) {
     return Middleware.Util.asyncMiddleware(async (req, res, next) => {
         let hacker = await Services.Hacker.findById(req.params.id);
 
-        if (hacker) {
+        if (!!hacker) {
             const status = hacker.status;
             // makes sure the hacker's status is in the accepted statuses list
             if (statuses.indexOf(status) === -1) {
@@ -578,10 +560,8 @@ async function createHacker(req, res, next) {
             }
         });
     }
-
     const hacker = await Services.Hacker.createHacker(hackerDetails);
-
-    if (hacker) {
+    if (!!hacker) {
         req.body.hacker = hacker;
         return next();
     } else {
@@ -636,7 +616,7 @@ async function findSelf(req, res, next) {
 
     const hacker = await Services.Hacker.findByAccountId(req.user.id);
 
-    if (hacker) {
+    if (!!hacker) {
         req.body.hacker = hacker;
         return next();
     } else {

@@ -140,7 +140,7 @@ async function changePassword(req, res, next) {
         req.body.oldPassword
     );
     // user's old password is correct
-    if (acc) {
+    if (!!acc) {
         req.body.account = await Services.Account.updatePassword(
             req.user.id,
             req.body.newPassword
@@ -332,7 +332,7 @@ function parseResetToken(req, res, next) {
  * @param {(err?)=>void} next
  */
 function parseAccountConfirmationToken(req, res, next) {
-    if (req.body.token) {
+    if (!!req.body.token) {
         jwt.verify(req.body.token, process.env.JWT_CONFIRM_ACC_SECRET, function(
             err,
             decoded
@@ -432,7 +432,7 @@ async function validateConfirmationToken(req, res, next) {
  * @param {*} next
  */
 async function validateConfirmationTokenWithoutAccount(req, res, next) {
-    if (req.body.decodedToken) {
+    if (!!req.body.decodedToken) {
         const confirmationObj = await Services.AccountConfirmation.findById(
             req.body.decodedToken.accountConfirmationId
         );

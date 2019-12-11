@@ -40,7 +40,7 @@ module.exports = {
                     "data": {
                         "id":"5bff4d736f86be0a41badb91",
                         "application":{
-                            "portfolioURL":{
+                            "URL":{
                                 "resume":"resumes/1543458163426-5bff4d736f86be0a41badb91",
                                 "github":"https://github.com/abcd",
                                 "dropler":"https://dribbble.com/abcd",
@@ -58,7 +58,7 @@ module.exports = {
                         "accountId":"5bff2a35e533b0f6562b4998",
                         "school":"McPherson College",
                         "gender":"Female",
-                        "needsBus":false,
+                        "travel":0,
                         "major":["Accounting"],
                         "graduationYear":2019,
                         "codeOfConduct":true,
@@ -87,7 +87,7 @@ module.exports = {
          * @apiParam (body) {MongoID} accountId ObjectID of the respective account
          * @apiParam (body) {String} school Name of the school the hacker goes to
          * @apiParam (body) {String} gender Gender of the hacker
-         * @apiParam (body) {Boolean} needsBus Whether the hacker requires a bus for transportation
+         * @apiParam (body) {Number} travel Whether the hacker requires a bus for transportation
          * @apiParam (body) {String[]} ethnicity the ethnicities of the hacker
          * @apiParam (body) {String[]} major the major of the hacker
          * @apiParam (body) {Number} graduationYear the graduation year of the hacker
@@ -96,7 +96,13 @@ module.exports = {
          * @apiParamExample {Json} application: 
          *      {
                     "application":{
-                        "portfolioURL":{
+                      "general":{
+                        "school": "McGill University",
+                        "degree": "Undergraduate",
+                        "fieldOfStudy": "Computer Science",
+                        "graduationYear": "2021",
+                        "jobInterest":"Internship",
+                        "URL":{
                             "resume":"resumes/1543458163426-5bff4d736f86be0a41badb91",
                             "github":"https://github.com/abcd",
                             "dropler":"https://dribbble.com/abcd",
@@ -104,10 +110,24 @@ module.exports = {
                             "linkedIn":"https://linkedin.com/in/abcd",
                             "other":"https://github.com/hackmcgill/hackerAPI/issues/168"
                         },
-                        "jobInterest":"Internship",
+                      },
+                      "shortAnswer": {
                         "skills":["Javascript","Typescript"],
+                        "question1": "I love McHacks",
+                        "question2":"Pls accept me",
                         "comments":"hi!",
-                        "essay":"Pls accept me"
+                      },
+                      "other:" {
+                        "gender": "male",
+                        "ethnicity": "Asian or Pacific Islander",
+                        "privacyPolicy": true,
+                        "codeOfConduct": true,
+                      }
+                      "accomodation": {
+                        "travel": 0
+                      },
+                    }
+                        
          *      }
          * 
          * @apiSuccess {string} message Success message
@@ -118,29 +138,37 @@ module.exports = {
          *          "data": {
                         "id":"5bff4d736f86be0a41badb91",
                         "application":{
-                            "portfolioURL":{
-                                "resume":"resumes/1543458163426-5bff4d736f86be0a41badb91",
-                                "github":"https://github.com/abcd",
-                                "dropler":"https://dribbble.com/abcd",
-                                "personal":"https://www.hi.com/",
-                                "linkedIn":"https://linkedin.com/in/abcd",
-                                "other":"https://github.com/hackmcgill/hackerAPI/issues/168"
-                            },
+                          "general":{
+                            "school": "McGill University",
+                            "degree": "Undergraduate",
+                            "fieldOfStudy": "Computer Science",
+                            "graduationYear": "2021",
                             "jobInterest":"Internship",
+                            "URL":{
+                              "resume":"resumes/1543458163426-5bff4d736f86be0a41badb91",
+                              "github":"https://github.com/abcd",
+                              "dropler":"https://dribbble.com/abcd",
+                              "personal":"https://www.hi.com/",
+                              "linkedIn":"https://linkedin.com/in/abcd",
+                              "other":"https://github.com/hackmcgill/hackerAPI/issues/168"
+                            },
+                          },
+                          "shortAnswer": {
                             "skills":["Javascript","Typescript"],
+                            "question1": "I love McHacks",
+                            "question2":"Pls accept me",
                             "comments":"hi!",
-                            "essay":"Pls accept me"
-                        },
-                        "status":"Applied",
-                        "ethnicity":["White or Caucasian"," Asian or Pacific Islander"],
-                        "accountId":"5bff2a35e533b0f6562b4998",
-                        "school":"McPherson College",
-                        "gender":"Female",
-                        "needsBus":false,
-                        "major":"Accounting",
-                        "graduationYear":2019,
-                        "codeOfConduct":true,
-         *          }
+                          },
+                          "other:" {
+                            "gender": "male",
+                            "ethnicity": "Asian or Pacific Islander",
+                            "privacyPolicy": true,
+                            "codeOfConduct": true,
+                          }
+                          "accomodation": {
+                            "travel": 0
+                          },
+                        }
          *      }
 
          * @apiError {string} message Error message
@@ -151,7 +179,6 @@ module.exports = {
         hackerRouter.route("/").post(
             Middleware.Auth.ensureAuthenticated(),
             Middleware.Auth.ensureAuthorized(),
-
             Middleware.Validator.Hacker.newHackerValidator,
 
             Middleware.parseBody.middleware,
@@ -166,6 +193,7 @@ module.exports = {
             Middleware.Auth.createRoleBindings(CONSTANTS.HACKER),
             Middleware.Hacker.createHacker,
             Middleware.Hacker.sendAppliedStatusEmail,
+
             Controllers.Hacker.createdHacker
         );
 
@@ -191,7 +219,7 @@ module.exports = {
                             "school": { "McGill University": 3, "Harvard University": 7 },
                             degree: { "Undergraduate": 10 },
                             gender: { "Male": 1, "Female": 9 },
-                            needsBus: { "true": 7, "false": 3 },
+                            travel: { "true": 7, "false": 3 },
                             ethnicity: { "White": 10, },
                             jobInterest: { "Internship": 10 },
                             major: { "Computer Science": 10 },
@@ -267,17 +295,18 @@ module.exports = {
          *      }
          * @apiPermission Administrator
          */
-        hackerRouter.route("/accept/:id").patch(
-            Middleware.Validator.RouteParam.idValidator,
-            Middleware.Auth.ensureAuthenticated(),
-            Middleware.Auth.ensureAuthorized([Services.Hacker.findById]),
-            Middleware.Hacker.validateConfirmedStatusFromHackerId,
-            Middleware.Hacker.parseAccept,
-            Middleware.Hacker.updateHacker,
-            Middleware.Hacker.sendStatusUpdateEmail,
-            Controllers.Hacker.updatedHacker
-        );
-
+        hackerRouter
+            .route("/accept/:id")
+            .patch(
+                Middleware.Validator.RouteParam.idValidator,
+                Middleware.Auth.ensureAuthenticated(),
+                Middleware.Auth.ensureAuthorized([Services.Hacker.findById]),
+                Middleware.Hacker.validateConfirmedStatusFromHackerId,
+                Middleware.Hacker.parseAccept,
+                Middleware.Hacker.updateHacker,
+                Middleware.Hacker.sendStatusUpdateEmail,
+                Controllers.Hacker.updatedHacker
+            );
 
         /**
          * @api {patch} /hacker/checkin/:id update a hacker's status to be 'Checked-in'. Note that the Hacker must eitehr be Accepted or Confirmed.
@@ -325,25 +354,45 @@ module.exports = {
          * 
          * @apiParam (body) {String} [school] Name of the school the hacker goes to
          * @apiParam (body) {String} [gender] Gender of the hacker
-         * @apiParam (body) {Boolean} [needsBus] Whether the hacker requires a bus for transportation
+         * @apiParam (body) {Number} [travel] How much the hacker requires a bus for transportation
          * @apiParam (body) {String[]} [ethnicity] the ethnicities of the hacker
          * @apiParam (body) {String[]} [major] the major of the hacker
          * @apiParam (body) {Number} [graduationYear] the graduation year of the hacker
          * @apiParam (body) {Json} [application] The hacker's application
          * @apiParamExample {Json} application: 
          *      {
-                    "portfolioURL":{
+                  "application":{
+                    "general":{
+                      "school": "McGill University",
+                      "degree": "Undergraduate",
+                      "fieldOfStudy": "Computer Science",
+                      "graduationYear": "2021",
+                      "jobInterest":"Internship",
+                      "URL":{
                         "resume":"resumes/1543458163426-5bff4d736f86be0a41badb91",
                         "github":"https://github.com/abcd",
                         "dropler":"https://dribbble.com/abcd",
                         "personal":"https://www.hi.com/",
                         "linkedIn":"https://linkedin.com/in/abcd",
                         "other":"https://github.com/hackmcgill/hackerAPI/issues/168"
+                      },
                     },
-                    "jobInterest":"Internship",
-                    "skills":["Javascript","Typescript"],
-                    "comments":"hi!",
-                    "essay":"Pls accept me"
+                    "shortAnswer": {
+                      "skills":["Javascript","Typescript"],
+                      "question1": "I love McHacks",
+                      "question2":"Pls accept me",
+                      "comments":"hi!",
+                    },
+                    "other:" {
+                      "gender": "male",
+                      "ethnicity": "Asian or Pacific Islander",
+                      "privacyPolicy": true,
+                      "codeOfConduct": true,
+                    }
+                    "accomodation": {
+                      "travel": 0
+                    },
+                  }
                 }
          * 
          * @apiSuccess {string} message Success message
@@ -353,29 +402,40 @@ module.exports = {
          *          "message": "Changed hacker information", 
          *          "data": {
                         "id":"5bff4d736f86be0a41badb91",
-                        "application":{
-                            "portfolioURL":{
-                                "resume":"resumes/1543458163426-5bff4d736f86be0a41badb91",
-                                "github":"https://github.com/abcd",
-                                "dropler":"https://dribbble.com/abcd",
-                                "personal":"https://www.hi.com/",
-                                "linkedIn":"https://linkedin.com/in/abcd",
-                                "other":"https://github.com/hackmcgill/hackerAPI/issues/168"
-                            },
+                        "status": "Applied",
+                         "application":{
+                          "general":{
+                            "school": "McGill University",
+                            "degree": "Undergraduate",
+                            "fieldOfStudy": "Computer Science",
+                            "graduationYear": "2021",
                             "jobInterest":"Internship",
+                            "URL":{
+                              "resume":"resumes/1543458163426-5bff4d736f86be0a41badb91",
+                              "github":"https://github.com/abcd",
+                              "dropler":"https://dribbble.com/abcd",
+                              "personal":"https://www.hi.com/",
+                              "linkedIn":"https://linkedin.com/in/abcd",
+                              "other":"https://github.com/hackmcgill/hackerAPI/issues/168"
+                            },
+                          },
+                          "shortAnswer": {
                             "skills":["Javascript","Typescript"],
+                            "question1": "I love McHacks",
+                            "question2":"Pls accept me",
                             "comments":"hi!",
-                            "essay":"Pls accept me"
-                        },
-                        "status":"Applied",
-                        "ethnicity":["White or Caucasian"," Asian or Pacific Islander"],
-                        "accountId":"5bff2a35e533b0f6562b4998",
-                        "school":"McPherson College",
-                        "gender":"Female",
-                        "needsBus":false,
-                        "major":"Accounting",
-                        "graduationYear":2019,
-                        "codeOfConduct":true,
+                          },
+                          "other:" {
+                            "gender": "male",
+                            "ethnicity": "Asian or Pacific Islander",
+                            "privacyPolicy": true,
+                            "codeOfConduct": true,
+                          }
+                          "accomodation": {
+                            "travel": 0
+                          },
+                        }
+                      }
          *      }
          * @apiError {string} message Error message
          * @apiError {object} data empty
@@ -413,29 +473,39 @@ module.exports = {
                     "message": "Successfully retrieved hacker information", 
                     "data": {
                         "id":"5bff4d736f86be0a41badb91",
+                        "status": "Applied",
                         "application":{
-                            "portfolioURL":{
-                                "resume":"resumes/1543458163426-5bff4d736f86be0a41badb91",
-                                "github":"https://github.com/abcd",
-                                "dropler":"https://dribbble.com/abcd",
-                                "personal":"https://www.hi.com/",
-                                "linkedIn":"https://linkedin.com/in/abcd",
-                                "other":"https://github.com/hackmcgill/hackerAPI/issues/168"
-                            },
+                          "general":{
+                            "school": "McGill University",
+                            "degree": "Undergraduate",
+                            "fieldOfStudy": "Computer Science",
+                            "graduationYear": "2021",
                             "jobInterest":"Internship",
+                            "URL":{
+                              "resume":"resumes/1543458163426-5bff4d736f86be0a41badb91",
+                              "github":"https://github.com/abcd",
+                              "dropler":"https://dribbble.com/abcd",
+                              "personal":"https://www.hi.com/",
+                              "linkedIn":"https://linkedin.com/in/abcd",
+                              "other":"https://github.com/hackmcgill/hackerAPI/issues/168"
+                            },
+                          },
+                          "shortAnswer": {
                             "skills":["Javascript","Typescript"],
+                            "question1": "I love McHacks",
+                            "question2":"Pls accept me",
                             "comments":"hi!",
-                            "essay":"Pls accept me"
-                        },
-                        "status":"Applied",
-                        "ethnicity":["White or Caucasian"," Asian or Pacific Islander"],
-                        "accountId":"5bff2a35e533b0f6562b4998",
-                        "school":"McPherson College",
-                        "gender":"Female",
-                        "needsBus":false,
-                        "major":"Accounting",
-                        "graduationYear":2019,
-                        "codeOfConduct":true,
+                          },
+                          "other:" {
+                            "gender": "male",
+                            "ethnicity": "Asian or Pacific Islander",
+                            "privacyPolicy": true,
+                            "codeOfConduct": true,
+                          }
+                          "accomodation": {
+                            "travel": 0
+                          },
+                        }
                     }
                 }
 
@@ -470,29 +540,39 @@ module.exports = {
                     "message": "Successfully retrieved hacker information", 
                     "data": {
                         "id":"5bff4d736f86be0a41badb91",
+                        "status": "Applied",
                         "application":{
-                            "portfolioURL":{
-                                "resume":"resumes/1543458163426-5bff4d736f86be0a41badb91",
-                                "github":"https://github.com/abcd",
-                                "dropler":"https://dribbble.com/abcd",
-                                "personal":"https://www.hi.com/",
-                                "linkedIn":"https://linkedin.com/in/abcd",
-                                "other":"https://github.com/hackmcgill/hackerAPI/issues/168"
-                            },
+                          "general":{
+                            "school": "McGill University",
+                            "degree": "Undergraduate",
+                            "fieldOfStudy": "Computer Science",
+                            "graduationYear": "2021",
                             "jobInterest":"Internship",
+                            "URL":{
+                              "resume":"resumes/1543458163426-5bff4d736f86be0a41badb91",
+                              "github":"https://github.com/abcd",
+                              "dropler":"https://dribbble.com/abcd",
+                              "personal":"https://www.hi.com/",
+                              "linkedIn":"https://linkedin.com/in/abcd",
+                              "other":"https://github.com/hackmcgill/hackerAPI/issues/168"
+                            },
+                          },
+                          "shortAnswer": {
                             "skills":["Javascript","Typescript"],
+                            "question1": "I love McHacks",
+                            "question2":"Pls accept me",
                             "comments":"hi!",
-                            "essay":"Pls accept me"
-                        },
-                        "status":"Applied",
-                        "ethnicity":["White or Caucasian"," Asian or Pacific Islander"],
-                        "accountId":"5bff2a35e533b0f6562b4998",
-                        "school":"McPherson College",
-                        "gender":"Female",
-                        "needsBus":false,
-                        "major":"Accounting",
-                        "graduationYear":2019,
-                        "codeOfConduct":true,
+                          },
+                          "other:" {
+                            "gender": "male",
+                            "ethnicity": "Asian or Pacific Islander",
+                            "privacyPolicy": true,
+                            "codeOfConduct": true,
+                          }
+                          "accomodation": {
+                            "travel": 0
+                          },
+                        }
                     }
                 }
 
