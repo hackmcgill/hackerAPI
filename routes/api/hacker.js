@@ -58,7 +58,7 @@ module.exports = {
                         "accountId":"5bff2a35e533b0f6562b4998",
                         "school":"McPherson College",
                         "gender":"Female",
-                        "needsBus":false,
+                        "travel":0,
                         "major":["Accounting"],
                         "graduationYear":2019,
                         "codeOfConduct":true,
@@ -87,7 +87,7 @@ module.exports = {
          * @apiParam (body) {MongoID} accountId ObjectID of the respective account
          * @apiParam (body) {String} school Name of the school the hacker goes to
          * @apiParam (body) {String} gender Gender of the hacker
-         * @apiParam (body) {Boolean} needsBus Whether the hacker requires a bus for transportation
+         * @apiParam (body) {Number} travel Whether the hacker requires a bus for transportation
          * @apiParam (body) {String[]} ethnicity the ethnicities of the hacker
          * @apiParam (body) {String[]} major the major of the hacker
          * @apiParam (body) {Number} graduationYear the graduation year of the hacker
@@ -124,7 +124,7 @@ module.exports = {
                         "codeOfConduct": true,
                       }
                       "accomodation": {
-                        "needsBus": "false"
+                        "travel": 0
                       },
                     }
                         
@@ -166,7 +166,7 @@ module.exports = {
                             "codeOfConduct": true,
                           }
                           "accomodation": {
-                            "needsBus": "false"
+                            "travel": 0
                           },
                         }
          *      }
@@ -219,7 +219,7 @@ module.exports = {
                             "school": { "McGill University": 3, "Harvard University": 7 },
                             degree: { "Undergraduate": 10 },
                             gender: { "Male": 1, "Female": 9 },
-                            needsBus: { "true": 7, "false": 3 },
+                            travel: { "true": 7, "false": 3 },
                             ethnicity: { "White": 10, },
                             jobInterest: { "Internship": 10 },
                             major: { "Computer Science": 10 },
@@ -295,17 +295,18 @@ module.exports = {
          *      }
          * @apiPermission Administrator
          */
-        hackerRouter.route("/accept/:id").patch(
-            Middleware.Validator.RouteParam.idValidator,
-            Middleware.Auth.ensureAuthenticated(),
-            Middleware.Auth.ensureAuthorized([Services.Hacker.findById]),
-            Middleware.Hacker.validateConfirmedStatusFromHackerId,
-            Middleware.Hacker.parseAccept,
-            Middleware.Hacker.updateHacker,
-            Middleware.Hacker.sendStatusUpdateEmail,
-            Controllers.Hacker.updatedHacker
-        );
-
+        hackerRouter
+            .route("/accept/:id")
+            .patch(
+                Middleware.Validator.RouteParam.idValidator,
+                Middleware.Auth.ensureAuthenticated(),
+                Middleware.Auth.ensureAuthorized([Services.Hacker.findById]),
+                Middleware.Hacker.validateConfirmedStatusFromHackerId,
+                Middleware.Hacker.parseAccept,
+                Middleware.Hacker.updateHacker,
+                Middleware.Hacker.sendStatusUpdateEmail,
+                Controllers.Hacker.updatedHacker
+            );
 
         /**
          * @api {patch} /hacker/checkin/:id update a hacker's status to be 'Checked-in'. Note that the Hacker must eitehr be Accepted or Confirmed.
@@ -353,7 +354,7 @@ module.exports = {
          * 
          * @apiParam (body) {String} [school] Name of the school the hacker goes to
          * @apiParam (body) {String} [gender] Gender of the hacker
-         * @apiParam (body) {Boolean} [needsBus] Whether the hacker requires a bus for transportation
+         * @apiParam (body) {Number} [travel] How much the hacker requires a bus for transportation
          * @apiParam (body) {String[]} [ethnicity] the ethnicities of the hacker
          * @apiParam (body) {String[]} [major] the major of the hacker
          * @apiParam (body) {Number} [graduationYear] the graduation year of the hacker
@@ -389,7 +390,7 @@ module.exports = {
                       "codeOfConduct": true,
                     }
                     "accomodation": {
-                      "needsBus": "false"
+                      "travel": 0
                     },
                   }
                 }
@@ -431,7 +432,7 @@ module.exports = {
                             "codeOfConduct": true,
                           }
                           "accomodation": {
-                            "needsBus": "false"
+                            "travel": 0
                           },
                         }
                       }
@@ -502,7 +503,7 @@ module.exports = {
                             "codeOfConduct": true,
                           }
                           "accomodation": {
-                            "needsBus": "false"
+                            "travel": 0
                           },
                         }
                     }
@@ -569,7 +570,7 @@ module.exports = {
                             "codeOfConduct": true,
                           }
                           "accomodation": {
-                            "needsBus": "false"
+                            "travel": 0
                           },
                         }
                     }

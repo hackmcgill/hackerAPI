@@ -594,12 +594,12 @@ describe("PATCH update one hacker", function() {
             });
     });
 
-    it("should FAIL to accept a hacker on /api/hacker/accept/:id due to authentication", function (done) {
+    it("should FAIL to accept a hacker on /api/hacker/accept/:id due to authentication", function(done) {
         chai.request(server.app)
             .patch(`/api/hacker/accept/${TeamHacker0._id}`)
             .type("application/json")
             .send()
-            .end(function (err, res) {
+            .end(function(err, res) {
                 res.should.have.status(401);
                 res.should.be.json;
                 res.body.should.have.property("message");
@@ -609,7 +609,7 @@ describe("PATCH update one hacker", function() {
     });
 
     // should FAIL due to authorization
-    it("should FAIL to accept hacker info due to lack of authorization on /api/hacker/accept/:id", function (done) {
+    it("should FAIL to accept hacker info due to lack of authorization on /api/hacker/accept/:id", function(done) {
         util.auth.login(agent, noTeamHackerAccount0, (error) => {
             if (error) {
                 agent.close();
@@ -619,11 +619,13 @@ describe("PATCH update one hacker", function() {
                 .patch(`/api/hacker/accept/${TeamHacker0._id}`)
                 .type("application/json")
                 .send()
-                .end(function (err, res) {
+                .end(function(err, res) {
                     res.should.have.status(403);
                     res.should.be.json;
                     res.body.should.have.property("message");
-                    res.body.message.should.equal(Constants.Error.AUTH_403_MESSAGE);
+                    res.body.message.should.equal(
+                        Constants.Error.AUTH_403_MESSAGE
+                    );
                     res.body.should.have.property("data");
 
                     done();
@@ -631,7 +633,7 @@ describe("PATCH update one hacker", function() {
         });
     });
 
-    it("should FAIL to accept an invalid hacker's info on /api/hacker/accept/:id", function (done) {
+    it("should FAIL to accept an invalid hacker's info on /api/hacker/accept/:id", function(done) {
         util.auth.login(agent, Admin0, (error) => {
             if (error) {
                 agent.close();
@@ -641,11 +643,13 @@ describe("PATCH update one hacker", function() {
                 .patch(`/api/hacker/accept/${invalidHacker1._id}`)
                 .type("application/json")
                 .send()
-                .end(function (err, res) {
+                .end(function(err, res) {
                     res.should.have.status(404);
                     res.should.be.json;
                     res.body.should.have.property("message");
-                    res.body.message.should.equal(Constants.Error.HACKER_404_MESSAGE);
+                    res.body.message.should.equal(
+                        Constants.Error.HACKER_404_MESSAGE
+                    );
                     res.body.should.have.property("data");
 
                     done();
@@ -653,7 +657,7 @@ describe("PATCH update one hacker", function() {
         });
     });
 
-    it("should SUCCEED and accept a hacker on /api/hacker/accept/:id as an Admin", function (done) {
+    it("should SUCCEED and accept a hacker on /api/hacker/accept/:id as an Admin", function(done) {
         util.auth.login(agent, Admin0, (error) => {
             if (error) {
                 agent.close();
@@ -663,15 +667,20 @@ describe("PATCH update one hacker", function() {
                 .patch(`/api/hacker/accept/${TeamHacker0._id}`)
                 .type("application/json")
                 .send()
-                .end(function (err, res) {
+                .end(function(err, res) {
                     res.should.have.status(200);
                     res.should.be.json;
                     res.body.should.have.property("message");
-                    res.body.message.should.equal(Constants.Success.HACKER_UPDATE);
+                    res.body.message.should.equal(
+                        Constants.Success.HACKER_UPDATE
+                    );
                     res.body.should.have.property("data");
-                    chai.assert.equal(JSON.stringify(res.body.data), JSON.stringify({
-                        status: "Accepted"
-                    }));
+                    chai.assert.equal(
+                        JSON.stringify(res.body.data),
+                        JSON.stringify({
+                            status: "Accepted"
+                        })
+                    );
                     done();
                 });
         });
@@ -1262,7 +1271,7 @@ describe("GET Hacker stats", function() {
                     res.body.data.stats.should.have.property("school");
                     res.body.data.stats.should.have.property("degree");
                     res.body.data.stats.should.have.property("gender");
-                    res.body.data.stats.should.have.property("needsBus");
+                    res.body.data.stats.should.have.property("travel");
                     res.body.data.stats.should.have.property("ethnicity");
                     res.body.data.stats.should.have.property("jobInterest");
                     res.body.data.stats.should.have.property("fieldOfStudy");

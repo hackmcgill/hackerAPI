@@ -22,11 +22,6 @@ module.exports = {
             2019,
             2030
         ),
-        VALIDATOR.alphaArrayValidator(
-            "body",
-            "application.accommodation.dietaryRestrictions",
-            false
-        ),
         VALIDATOR.enumValidator(
             "body",
             "application.accommodation.shirtSize",
@@ -117,10 +112,12 @@ module.exports = {
             false,
             true
         ),
-        VALIDATOR.booleanValidator(
+        VALIDATOR.integerValidator(
             "body",
-            "application.accommodation.needsBus",
-            true
+            "application.accommodation.travel",
+            true,
+            0,
+            100
         ),
         VALIDATOR.mongoIdValidator("body", "application.team", true),
         VALIDATOR.mongoIdValidator("body", "teamId", true)
@@ -244,8 +241,10 @@ module.exports = {
         ),
         VALIDATOR.booleanValidator(
             "body",
-            "application.accommodation.needsBus",
-            true
+            "application.accommodation.travel",
+            true,
+            0,
+            100
         ),
         VALIDATOR.mongoIdValidator("body", "application.team", true)
     ],

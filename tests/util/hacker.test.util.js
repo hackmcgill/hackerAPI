@@ -44,7 +44,7 @@ const TeamHacker0 = {
         accommodation: {
             dietaryRestrictions: ["Gluten-Free"],
             shirtSize: "L",
-            needsBus: true
+            travel: 0
         }
     },
     teamId: Constants.MongoId.team1Id
@@ -84,7 +84,7 @@ const TeamHacker1 = {
         accommodation: {
             dietaryRestrictions: ["Gluten-Free"],
             shirtSize: "L",
-            needsBus: false
+            travel: 0
         }
     },
     teamId: Constants.MongoId.team3Id
@@ -124,7 +124,7 @@ const TeamHacker2 = {
         accommodation: {
             dietaryRestrictions: ["Gluten-Free"],
             shirtSize: "L",
-            needsBus: false
+            travel: 0
         }
     },
     teamId: Constants.MongoId.team3Id
@@ -164,7 +164,7 @@ const TeamHacker3 = {
         accommodation: {
             dietaryRestrictions: ["Gluten-Free"],
             shirtSize: "L",
-            needsBus: false
+            travel: 0
         }
     },
     teamId: Constants.MongoId.team3Id
@@ -204,7 +204,7 @@ const TeamHacker4 = {
         accommodation: {
             dietaryRestrictions: ["Gluten-Free"],
             shirtSize: "L",
-            needsBus: false
+            travel: 0
         }
     },
     teamId: Constants.MongoId.team3Id
@@ -244,7 +244,7 @@ const NoTeamHacker0 = {
         accommodation: {
             dietaryRestrictions: ["Gluten-Free"],
             shirtSize: "L",
-            needsBus: false
+            travel: 0
         }
     }
 };
@@ -281,7 +281,7 @@ const newHacker0 = {
         accommodation: {
             dietaryRestrictions: ["Gluten-Free"],
             shirtSize: "L",
-            needsBus: false
+            travel: 0
         }
     }
 };
@@ -318,7 +318,7 @@ const newHacker1 = {
         accommodation: {
             dietaryRestrictions: ["Gluten-Free"],
             shirtSize: "L",
-            needsBus: true
+            travel: 0
         }
     }
 };
@@ -357,7 +357,7 @@ const invalidHacker0 = {
         accommodation: {
             dietaryRestrictions: ["Gluten-Free"],
             shirtSize: "L",
-            needsBus: true
+            travel: 0
         }
     }
 };
@@ -391,7 +391,7 @@ const invalidHacker1 = {
         accommodation: {
             dietaryRestrictions: ["Gluten-Free"],
             shirtSize: "L",
-            needsBus: true
+            travel: 0
         }
     }
 };
@@ -430,7 +430,7 @@ const duplicateAccountLinkHacker0 = {
         accommodation: {
             dietaryRestrictions: ["Gluten-Free"],
             shirtSize: "L",
-            needsBus: true
+            travel: 0
         }
     }
 };
@@ -469,7 +469,7 @@ const waitlistedHacker0 = {
         accommodation: {
             dietaryRestrictions: ["Gluten-Free"],
             shirtSize: "L",
-            needsBus: false
+            travel: 0
         }
     },
     teamId: Constants.MongoId.team2Id
@@ -509,7 +509,7 @@ const unconfirmedAccountHacker0 = {
         accommodation: {
             dietaryRestrictions: ["Gluten-Free"],
             shirtSize: "L",
-            needsBus: false
+            travel: 0
         }
     }
 };
@@ -548,7 +548,7 @@ const unconfirmedAccountHacker1 = {
         accommodation: {
             dietaryRestrictions: ["Gluten-Free"],
             shirtSize: "L",
-            needsBus: false
+            travel: 0
         }
     }
 };

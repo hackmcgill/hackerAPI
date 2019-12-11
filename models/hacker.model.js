@@ -129,7 +129,7 @@ const HackerSchema = new mongoose.Schema({
                 enum: Constants.SHIRT_SIZES,
                 required: true
             },
-            needsBus: { type: Boolean, default: false }
+            travel: { type: Number, default: 0 }
         },
         team: {
             type: mongoose.Schema.Types.ObjectId,

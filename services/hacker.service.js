@@ -137,7 +137,7 @@ function getStats(hackers) {
         school: {},
         degree: {},
         gender: {},
-        needsBus: {},
+        travel: {},
         ethnicity: {},
         jobInterest: {},
         fieldOfStudy: {},
@@ -171,9 +171,10 @@ function getStats(hackers) {
         ]
             ? stats.gender[hacker.accountId.gender] + 1
             : 1;
-        stats.needsBus[hacker.application.accommodation.needsBus] = stats
-            .needsBus[hacker.application.accommodation.needsBus]
-            ? stats.needsBus[hacker.application.accommodation.needsBus] + 1
+        stats.travel[hacker.application.accommodation.travel] = stats.travel[
+            hacker.application.accommodation.travel
+        ]
+            ? stats.travel[hacker.application.accommodation.travel] + 1
             : 1;
 
         for (const ethnicity of hacker.application.other.ethnicity) {

@@ -388,7 +388,6 @@ function applicationValidator(fieldLocation, fieldname, optional = true) {
         question1: false,
         question2: false,
         accommodation: false,
-        dietaryRestrictions: false,
         shirtSize: false,
         other: false,
         ethnicity: false,
@@ -429,9 +428,6 @@ function applicationValidator(fieldLocation, fieldname, optional = true) {
                 }
                 hasValid.accommodation = app.hasOwnProperty("accommodation");
                 if (hasValid.accommodation) {
-                    hasValid.dietaryRestrictions = app.accommodation.hasOwnProperty(
-                        "dietaryRestrictions"
-                    );
                     hasValid.shirtSize = app.accommodation.hasOwnProperty(
                         "shirtSize"
                     );
@@ -491,7 +487,6 @@ function applicationValidator(fieldLocation, fieldname, optional = true) {
                     hasValid.question1 &&
                     hasValid.question2 &&
                     hasValid.accommodation &&
-                    hasValid.dietaryRestrictions &&
                     hasValid.shirtSize &&
                     hasValid.other &&
                     hasValid.ethnicity &&
@@ -533,9 +528,6 @@ function applicationValidator(fieldLocation, fieldname, optional = true) {
                 }
                 hasValid.accommodation = app.hasOwnProperty("accommodation");
                 if (hasValid.accommodation) {
-                    hasValid.dietaryRestrictions = app.accommodation.hasOwnProperty(
-                        "dietaryRestrictions"
-                    );
                     hasValid.shirtSize = app.accommodation.hasOwnProperty(
                         "shirtSize"
                     );
@@ -595,7 +587,6 @@ function applicationValidator(fieldLocation, fieldname, optional = true) {
                     hasValid.question1 &&
                     hasValid.question2 &&
                     hasValid.accommodation &&
-                    hasValid.dietaryRestrictions &&
                     hasValid.shirtSize &&
                     hasValid.other &&
                     hasValid.ethnicity &&
