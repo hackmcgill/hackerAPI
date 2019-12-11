@@ -18,7 +18,7 @@ const AccountSchema = new mongoose.Schema({
     },
     gender: {
         type: String,
-        required: true
+        default: "Prefer not to say",
     },
     email: {
         type: String,
@@ -32,6 +32,11 @@ const AccountSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    dietaryRestrictions: [
+        {
+            type: String
+        }
+    ],
     confirmed: {
         type: Boolean,
         default: false

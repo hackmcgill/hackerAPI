@@ -32,7 +32,7 @@ function parsePatch(req, res, next) {
 
 /**
  * @function parseHacker
- * @param {{body: {accountId: ObjectId, school: string, degree: string, gender: string, needsBus: string, application: Object, authorization: string}}} req
+ * @param {{body: {accountId: ObjectId, application: Object, authorization: string}}} req
  * @param {*} res
  * @param {(err?)=>void} next
  * @return {void}
@@ -156,6 +156,13 @@ async function validateConfirmedStatusFromAccountId(req, res, next) {
  */
 async function validateConfirmedStatusFromHackerId(req, res, next) {
     const hacker = await Services.Hacker.findById(req.params.id);
+    if (hacker == null) {
+        return next({
+        status: 404,
+        message: Constants.Error.HACKER_404_MESSAGE,
+        data: req.body.hackerId
+        });
+    }
     const account = await Services.Account.findById(hacker.accountId);
     return validateConfirmedStatus(account, next);
 }
@@ -517,6 +524,18 @@ async function updateHacker(req, res, next) {
 }
 
 /**
+ * Sets req.body.status to Accepted for next middleware.
+ * @param {{params:{id: string}, body: *}} req 
+ * @param {*} res 
+ * @param {*} next 
+ */
+function parseAccept(req, res, next) {
+    req.body.status = Constants.General.HACKER_STATUS_ACCEPTED;
+    next();
+}
+
+
+/**
  * @function createhacker
  * @param {{body: {hackerDetails: object}}} req
  * @param {*} res
@@ -633,6 +652,7 @@ module.exports = {
         sendAppliedStatusEmail
     ),
     updateHacker: Middleware.Util.asyncMiddleware(updateHacker),
+    parseAccept: parseAccept,
     validateConfirmedStatusFromAccountId: Middleware.Util.asyncMiddleware(
         validateConfirmedStatusFromAccountId
     ),

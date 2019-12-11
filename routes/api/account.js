@@ -42,6 +42,10 @@ module.exports = {
                             "pronoun":"he/him",
                             "email":"theo@klein.com",
                             "phoneNumber":1234567890,
+<<<<<<< HEAD
+=======
+                        	"gender":"Male",
+>>>>>>> develop
                             "birthDate":Date("10/30/1997")
                     }
                 }
@@ -68,6 +72,11 @@ module.exports = {
          * @apiParam (body) {String} lastName Last name of the account creator.
          * @apiParam (body) {String} pronoun the pronoun of the account creator.
          * @apiParam (body) {String} email Email of the account.
+<<<<<<< HEAD
+=======
+         * @apiParam (body) {String[]} dietaryRestrictions Any dietary restrictions for the user. 'None' if there are no restrictions
+         * @apiParam (body) {String} gender Gender of the account creator.
+>>>>>>> develop
          * @apiParam (body) {String} password The password of the account.
          * @apiParam (body) {String} birthDate a Date parsable string.
          * @apiParam (body) {Number} phoneNumber the user's phone number, represented as a string.
@@ -81,6 +90,10 @@ module.exports = {
                     "email":"theo@klein.com",
                     "password":"hunter2",
                     "phoneNumber":1234567890,
+<<<<<<< HEAD
+=======
+                    "gender":"Male",
+>>>>>>> develop
                     "birthDate":"10/30/1997"
          *      }
          * 
@@ -96,6 +109,10 @@ module.exports = {
                             "pronoun":"he/him",
                             "email":"theo@klein.com",
                             "phoneNumber":1234567890,
+<<<<<<< HEAD
+=======
+                        	"gender":"Male",
+>>>>>>> develop
                             "birthDate":Date("10/30/1997")
                     }
                 }
@@ -204,13 +221,20 @@ module.exports = {
          * 
          * @apiParam (body) {String} [firstName] First name of the account creator.
          * @apiParam (body) {String} [lastName] Last name of the account creator.
-         * @apiParam (body) {String} [pronoun] the pronoun of the account creator.
+         * @apiParam (body) {String} [pronoun] The pronoun of the account creator.
          * @apiParam (body) {String} [email] Email of the account.
+<<<<<<< HEAD
          * @apiParam (body) {String} [birthDate] a Date parsable string.
          * @apiParam (body) {Number} [phoneNumber] the user's phone number, represented as a string.
+=======
+         * @apiParam (body) {String[]} [dietaryRestrictions] Any dietary restrictions for the user. 'None' if there are no restrictions
+         * @apiParam (body) {String} [gender] Gender of the account creator.
+         * @apiParam (body) {String} [birthDate] A Date parsable string.
+         * @apiParam (body) {Number} [phoneNumber] The user's phone number, represented as a string.
+>>>>>>> develop
 
          * @apiParamExample {json} Request-Example:
-         *      { "shirtSize": "M" }
+         *      { "gender": "Male" }
          * 
 
          * @apiSuccess {string} message Success message
@@ -225,6 +249,10 @@ module.exports = {
                             "pronoun":"he/him",
                             "email":"theo@klein.com",
                             "phoneNumber":1234567890,
+<<<<<<< HEAD
+=======
+                        	"gender": "Male",
+>>>>>>> develop
                             "birthDate":Date("10/30/1997")
                     }
                 }
@@ -271,6 +299,7 @@ module.exports = {
                         "pronoun":"he/him",
                         "email":"theo@klein.com",
                         "phoneNumber":1234567890,
+                        "gender":"Male",
                         "birthDate":Date("10/30/1997")
                     }
                 }
