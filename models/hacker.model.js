@@ -108,14 +108,6 @@ const HackerSchema = new mongoose.Schema({
             }
         },
         accommodation: {
-            dietaryRestrictions: {
-                type: [
-                    {
-                        type: String
-                    }
-                ],
-                required: true
-            },
             impairments: {
                 type: String,
                 default: ""

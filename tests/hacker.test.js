@@ -8,7 +8,6 @@ const should = chai.should();
 const Hacker = require("../models/hacker.model");
 const fs = require("fs");
 const path = require("path");
-// const cloneDeep = require("lodash/clonedeep");
 const Constants = {
     Success: require("../constants/success.constant"),
     General: require("../constants/general.constant"),
@@ -583,7 +582,7 @@ describe("PATCH update one hacker", function() {
             .patch(`/api/hacker/${TeamHacker0._id}`)
             .type("application/json")
             .send({
-                gender: "Other"
+                application: TeamHacker0.application
             })
             .end(function(err, res) {
                 res.should.have.status(401);
@@ -693,15 +692,23 @@ describe("PATCH update one hacker", function() {
                 agent.close();
                 return done(error);
             }
-            // this endpoint requires an application object to work properly, so will clone and mutate the object
-            // let app = cloneDeep(TeamHacker0.application);
             let app = TeamHacker0.application;
             app.accommodation.shirtSize = "M";
             return agent
                 .patch(`/api/hacker/${TeamHacker0._id}`)
                 .type("application/json")
                 .send({
-                    application: app
+                    application: {
+                        general: app.general,
+                        shortAnswer: app.shortAnswer,
+                        other: app.other,
+                        accommodation: {
+                            barriers: app.accommodation.barriers,
+                            impairments: app.accommodation.impairments,
+                            travel: app.accommodation.travel,
+                            shirtSize: "M"
+                        }
+                    }
                 })
                 .end(function(err, res) {
                     res.should.have.status(200);
@@ -902,15 +909,22 @@ describe("PATCH update one hacker", function() {
                 agent.close();
                 return done(error);
             }
-            // this endpoint requires an application object to work properly, so will clone and mutate the object
-            // let app = cloneDeep(noTeamHacker0.application);
             let app = noTeamHacker0.application;
-            app.accommodation.shirtSize = "M";
             return agent
                 .patch(`/api/hacker/${noTeamHacker0._id}`)
                 .type("application/json")
                 .send({
-                    application: app
+                    application: {
+                        general: app.general,
+                        shortAnswer: app.shortAnswer,
+                        other: app.other,
+                        accommodation: {
+                            barriers: app.accommodation.barriers,
+                            impairments: app.accommodation.impairments,
+                            travel: app.accommodation.travel,
+                            shirtSize: "M"
+                        }
+                    }
                 })
                 .end(function(err, res) {
                     res.should.have.status(200);
@@ -945,15 +959,22 @@ describe("PATCH update one hacker", function() {
                 agent.close();
                 return done(error);
             }
-            // this endpoint requires an application object to work properly, so will clone and mutate the object
-            // let app = cloneDeep(unconfirmedHacker1.application);
             let app = unconfirmedHacker1.application;
-            app.accommodation.shirtSize = "M";
             return agent
                 .patch(`/api/hacker/${unconfirmedHacker1._id}`)
                 .type("application/json")
                 .send({
-                    application: app
+                    application: {
+                        general: app.general,
+                        shortAnswer: app.shortAnswer,
+                        other: app.other,
+                        accommodation: {
+                            barriers: app.accommodation.barriers,
+                            impairments: app.accommodation.impairments,
+                            travel: app.accommodation.travel,
+                            shirtSize: "M"
+                        }
+                    }
                 })
                 .end(function(err, res) {
                     res.should.have.status(403);
@@ -975,11 +996,22 @@ describe("PATCH update one hacker", function() {
                 agent.close();
                 return done(error);
             }
+            let app = TeamHacker0.application;
             return agent
                 .patch(`/api/hacker/${TeamHacker0._id}`)
                 .type("application/json")
                 .send({
-                    gender: "Other"
+                    application: {
+                        general: app.general,
+                        shortAnswer: app.shortAnswer,
+                        other: app.other,
+                        accommodation: {
+                            barriers: app.accommodation.barriers,
+                            impairments: app.accommodation.impairments,
+                            travel: app.accommodation.travel,
+                            shirtSize: "M"
+                        }
+                    }
                 })
                 .end(function(err, res) {
                     res.should.have.status(403);

@@ -144,11 +144,6 @@ module.exports = {
             2019,
             2030
         ),
-        VALIDATOR.alphaArrayValidator(
-            "body",
-            "application.accommodation.dietaryRestrictions",
-            false
-        ),
         VALIDATOR.enumValidator(
             "body",
             "application.accommodation.shirtSize",

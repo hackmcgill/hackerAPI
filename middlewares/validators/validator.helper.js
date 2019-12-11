@@ -574,7 +574,6 @@ function applicationValidator(fieldLocation, fieldname, optional = true) {
                 //     typeof app.shortAnswer.question2 === "string";
                 // hasValid.team =
                 //     !app.team || mongoose.Types.ObjectId.isValid(app.team);
-
                 return (
                     hasValid.general &&
                     hasValid.school &&
