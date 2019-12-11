@@ -1,6 +1,5 @@
 "use strict";
-const { validationResult } = require("express-validator/check");
-const { matchedData } = require("express-validator/filter");
+const { validationResult, matchedData } = require("express-validator");
 const Constants = {
     Error: require("../constants/error.constant")
 };

@@ -1,11 +1,5 @@
 "use strict";
-const {
-    body,
-    query,
-    header,
-    param,
-    check
-} = require("express-validator/check");
+const { body, query, header, param } = require("express-validator");
 const logger = require("../../services/logger.service");
 const mongoose = require("mongoose");
 const TAG = `[ VALIDATOR.HELPER.js ]`;

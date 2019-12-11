@@ -18,7 +18,7 @@ const AccountSchema = new mongoose.Schema({
     },
     gender: {
         type: String,
-        required: true
+        default: "Prefer not to say",
     },
     email: {
         type: String,
