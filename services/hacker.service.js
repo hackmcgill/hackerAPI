@@ -196,7 +196,7 @@ function getStats(hackers) {
             ? stats.graduationYear[hacker.application.general.graduationYear] +
               1
             : 1;
-        for (const dietaryRestrictions of hacker.application.accommodation
+        for (const dietaryRestrictions of hacker.accountId
             .dietaryRestrictions) {
             stats.dietaryRestrictions[dietaryRestrictions] = stats
                 .dietaryRestrictions[dietaryRestrictions]
