@@ -9,6 +9,7 @@ module.exports = {
         VALIDATOR.stringValidator("body", "pronoun", false),
         VALIDATOR.stringValidator("body", "gender", false),
         VALIDATOR.regexValidator("body", "email", false, Constants.EMAIL_REGEX),
+        VALIDATOR.alphaArrayValidator("body", "dietaryRestrictions", false),
         VALIDATOR.stringValidator("body", "gender", false),
         VALIDATOR.passwordValidator("body", "password", false),
         VALIDATOR.jwtValidator(
@@ -26,6 +27,7 @@ module.exports = {
         VALIDATOR.stringValidator("body", "pronoun", true),
         VALIDATOR.stringValidator("body", "gender", true),
         VALIDATOR.regexValidator("body", "email", true, Constants.EMAIL_REGEX),
+        VALIDATOR.alphaArrayValidator("body", "dietaryRestrictions", true),
         VALIDATOR.stringValidator("body", "gender", true),
         VALIDATOR.dateValidator("body", "birthDate", true),
         VALIDATOR.phoneNumberValidator("body", "phoneNumber", true)

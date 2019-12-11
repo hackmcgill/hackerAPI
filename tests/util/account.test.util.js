@@ -60,6 +60,15 @@ function generateRandomValue(atr) {
             return Math.random()
                 .toString(36)
                 .substr(0, 10);
+        case "dietaryRestrictions":
+            return [
+                Constants.SAMPLE_DIET_RESTRICTIONS[
+                    Math.floor(
+                        Math.random() *
+                            Constants.SAMPLE_DIET_RESTRICTIONS.length
+                    )
+                ]
+            ];
         case "gender":
             // generate random string between length 2 and 10
             return Math.random()
@@ -251,6 +260,7 @@ const waitlistedHacker0 = {
     gender: "Female",
     email: "waitlisted1@blahblah.com",
     password: "probsShouldBeHashed2",
+    dietaryRestrictions: ["vegetarian"],
     gender: "Male",
     confirmed: true,
     accountType: Constants.HACKER,
@@ -267,6 +277,7 @@ const NonConfirmedAccount1 = {
     gender: "Female",
     email: "notconfirmed1@blahblah.com",
     password: "probsShouldBeHashed5",
+    dietaryRestrictions: ["something1", "something2"],
     gender: "Male",
     confirmed: false,
     birthDate: "1980-07-30",
@@ -281,6 +292,7 @@ const NonConfirmedAccount2 = {
     gender: "Female",
     email: "notconfirmed2@blahblah.com",
     password: "probsShouldBeHashed5",
+    dietaryRestrictions: ["something1", "something2"],
     gender: "Male",
     confirmed: false,
     accountType: Constants.HACKER
@@ -391,6 +403,9 @@ function equals(acc1, acc2) {
     const lastName = acc1.lastName === acc2.lastName;
     const pronoun = acc1.pronoun === acc2.pronoun;
     const email = acc1.email === acc2.email;
+    const dietaryRestrictions =
+        acc1.dietaryRestrictions.join(",") ===
+        acc2.dietaryRestrictions.join(",");
     const gender = acc1.gender === acc2.gender;
     return [
         id,

@@ -32,7 +32,7 @@ function parsePatch(req, res, next) {
 
 /**
  * @function parseHacker
- * @param {{body: {accountId: ObjectId, school: string, degree: string, gender: string, needsBus: string, application: Object, authorization: string}}} req
+ * @param {{body: {accountId: ObjectId, application: Object, authorization: string}}} req
  * @param {*} res
  * @param {(err?)=>void} next
  * @return {void}
