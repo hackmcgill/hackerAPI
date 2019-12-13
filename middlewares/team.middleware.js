@@ -62,8 +62,8 @@ async function ensureUniqueHackerId(req, res, next) {
  * @description create a team from information in req.body.teamDetails.
  */
 async function createTeam(req, res, next) {
+    req.body.teamDetails.name.toLowerCase();
     const teamDetails = req.body.teamDetails;
-
     const team = await Services.Team.createTeam(teamDetails);
 
     if (!team) {
@@ -102,7 +102,7 @@ async function createTeam(req, res, next) {
  */
 async function ensureSpace(req, res, next) {
     Services.Logger.info(req.body.name);
-    const teamSize = await Services.Team.getSize(req.body.name);
+    const teamSize = await Services.Team.getSize(req.body.name.toLowerCase());
     Services.Logger.info(teamSize);
 
     if (teamSize === -1) {
@@ -240,7 +240,7 @@ async function getTeamIdByUser(req, res, next) {
 async function ensureFreeTeamName(req, res, next) {
     const teamDetails = req.body.teamDetails;
 
-    const team = await Services.Team.findByName(teamDetails.name);
+    const team = await Services.Team.findByName(teamDetails.name.toLowerCase());
 
     if (team) {
         return next({
