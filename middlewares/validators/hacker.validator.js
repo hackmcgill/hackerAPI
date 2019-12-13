@@ -234,7 +234,7 @@ module.exports = {
             false,
             true
         ),
-        VALIDATOR.booleanValidator(
+        VALIDATOR.integerValidator(
             "body",
             "application.accommodation.travel",
             true,
