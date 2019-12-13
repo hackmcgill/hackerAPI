@@ -163,7 +163,7 @@ module.exports = {
         VALIDATOR.stringValidator(
             "body",
             "application.general.URL.resume",
-            true
+            false
         ),
         VALIDATOR.stringValidator(
             "body",
