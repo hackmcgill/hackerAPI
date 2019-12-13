@@ -163,7 +163,7 @@ module.exports = {
         VALIDATOR.stringValidator(
             "body",
             "application.general.URL.resume",
-            false
+            true
         ),
         VALIDATOR.stringValidator(
             "body",
@@ -234,7 +234,7 @@ module.exports = {
             false,
             true
         ),
-        VALIDATOR.booleanValidator(
+        VALIDATOR.integerValidator(
             "body",
             "application.accommodation.travel",
             true,
