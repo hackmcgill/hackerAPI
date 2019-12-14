@@ -930,7 +930,7 @@ define({
                   {
                       title: "Success-Response:",
                       content:
-                          '{"message": "Sucessfully retrieved all roles", "data":\n[{name: "GodStaff", routes: Array(27), id: "5bee20ef3ca9dd4754382880"},\n {name: "Hacker", routes: Array(10), id: "5bee20ef3ca9dd4754382881"},\n {name: "Volunteer", routes: Array(4), id: "5bee20ef3ca9dd4754382882"}]',
+                          '{"message": "Sucessfully retrieved all roles", "data":\n[{name: "GodAdmin", routes: Array(27), id: "5bee20ef3ca9dd4754382880"},\n {name: "Hacker", routes: Array(10), id: "5bee20ef3ca9dd4754382881"},\n {name: "Volunteer", routes: Array(4), id: "5bee20ef3ca9dd4754382882"}]',
                       type: "json"
                   }
               ]

@@ -406,7 +406,7 @@ This script expects python3, and will not work in python2. Before you run the sc
 Then, run the following command:
 ```python3 batch_scripts.py```
 
-In order for the script to work with all of the actions, you must have a staff account. Otherwise, it's possible that you do not have the proper permission to execute all of the actions.
+In order for the script to work with all of the actions, you must have an admin account. Otherwise, it's possible that you do not have the proper permission to execute all of the actions.
 
 ### Existing Actions in the Script file
 
@@ -419,7 +419,7 @@ There are 6 batch actions:
 5. `inviteUsers`: Invites a set of emails to create accounts. The script asks for a CSV file, which should be formatted in the following way:
    | email       | accountType |
    | ----------- | ----------- |
-   | foo@bar.com | Staff       |
+   | foo@bar.com | Admin       |
    | baz@bar.com | Sponsor     |
 6. `getHackers`: Downloads all of the hacker details whose status matches the inputted status. Places the hacker information into a CSV file in the inputted directory.
 

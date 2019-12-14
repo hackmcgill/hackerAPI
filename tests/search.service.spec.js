@@ -44,7 +44,7 @@ const badQuery = [
     }
 ];
 
-const Admin0 = util.account.staffAccounts.stored[0];
+const Admin0 = util.account.adminAccounts.stored[0];
 
 const noTeamHackerAccount0 = util.account.hackerAccounts.stored.noTeam[0];
 
@@ -141,7 +141,7 @@ describe("Searching for hackers", function() {
         });
     });
 
-    it("Should return an error as staff aren't searchable", function(done) {
+    it("Should return an error as admin aren't searchable", function(done) {
         util.auth.login(agent, Admin0, (error) => {
             if (error) {
                 agent.close();
@@ -150,7 +150,7 @@ describe("Searching for hackers", function() {
             return agent
                 .get("/api/search")
                 .query({
-                    model: "staff",
+                    model: "admin",
                     q: JSON.stringify(badQuery)
                 })
                 .end(function(err, res) {

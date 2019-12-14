@@ -22,7 +22,7 @@ const util = {
 };
 const StorageService = require("../services/storage.service");
 
-const Admin0 = util.account.staffAccounts.stored[0];
+const Admin0 = util.account.adminAccounts.stored[0];
 
 const volunteerAccount0 = util.account.volunteerAccounts.stored[0];
 
