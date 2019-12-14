@@ -44,12 +44,12 @@ const badQuery = [
     }
 ];
 
-const Admin0 = util.account.staffAccounts.stored[0];
+const Admin0 = util.account.adminAccounts.stored[0];
 
 const noTeamHackerAccount0 = util.account.hackerAccounts.stored.noTeam[0];
 
-describe("Searching for hackers", function() {
-    it("Should FAIL to search due to invalid authentication", function(done) {
+describe("Searching for hackers", function () {
+    it("Should FAIL to search due to invalid authentication", function (done) {
         util.auth.login(
             agent,
             {
@@ -67,7 +67,7 @@ describe("Searching for hackers", function() {
                         model: "account",
                         q: JSON.stringify(queryToExecute)
                     })
-                    .end(function(err, res) {
+                    .end(function (err, res) {
                         res.should.have.status(401);
                         res.body.message.should.equal(
                             Constants.Error.AUTH_401_MESSAGE
@@ -79,7 +79,7 @@ describe("Searching for hackers", function() {
         );
     });
 
-    it("Should FAIL to search due to invalid authorization", function(done) {
+    it("Should FAIL to search due to invalid authorization", function (done) {
         util.auth.login(agent, noTeamHackerAccount0, (error) => {
             if (error) {
                 agent.close();
@@ -91,7 +91,7 @@ describe("Searching for hackers", function() {
                     model: "account",
                     q: JSON.stringify(queryToExecute)
                 })
-                .end(function(err, res) {
+                .end(function (err, res) {
                     res.should.have.status(403);
                     res.body.message.should.equal(
                         Constants.Error.AUTH_403_MESSAGE
@@ -101,7 +101,7 @@ describe("Searching for hackers", function() {
                 });
         });
     });
-    it("Should return all undergraduate hackers", function(done) {
+    it("Should return all undergraduate hackers", function (done) {
         util.auth.login(agent, Admin0, (error) => {
             if (error) {
                 agent.close();
@@ -113,7 +113,7 @@ describe("Searching for hackers", function() {
                     model: "hacker",
                     q: JSON.stringify(queryToExecute)
                 })
-                .end(function(err, res) {
+                .end(function (err, res) {
                     res.should.have.status(200);
                     res.body.should.have.property("data");
                     res.body.data.should.have.length(2);
@@ -122,7 +122,7 @@ describe("Searching for hackers", function() {
         });
     });
 
-    it("Should return an error as hackers don't have password stored", function(done) {
+    it("Should return an error as hackers don't have password stored", function (done) {
         util.auth.login(agent, Admin0, (error) => {
             if (error) {
                 agent.close();
@@ -134,14 +134,14 @@ describe("Searching for hackers", function() {
                     model: "hacker",
                     q: JSON.stringify(badQuery)
                 })
-                .end(function(err, res) {
+                .end(function (err, res) {
                     res.should.have.status(422);
                     done();
                 });
         });
     });
 
-    it("Should return an error as staff aren't searchable", function(done) {
+    it("Should return an error as admin aren't searchable", function (done) {
         util.auth.login(agent, Admin0, (error) => {
             if (error) {
                 agent.close();
@@ -150,10 +150,10 @@ describe("Searching for hackers", function() {
             return agent
                 .get("/api/search")
                 .query({
-                    model: "staff",
+                    model: "admin",
                     q: JSON.stringify(badQuery)
                 })
-                .end(function(err, res) {
+                .end(function (err, res) {
                     res.should.have.status(422);
                     res.body.data.model.msg.should.equal(
                         "Must be a valid searchable model"
@@ -162,7 +162,7 @@ describe("Searching for hackers", function() {
                 });
         });
     });
-    it("Should throw an error because model is not lowercase", function(done) {
+    it("Should throw an error because model is not lowercase", function (done) {
         util.auth.login(agent, Admin0, (error) => {
             if (error) {
                 agent.close();
@@ -174,7 +174,7 @@ describe("Searching for hackers", function() {
                     model: "Hacker",
                     q: JSON.stringify(query2)
                 })
-                .end(function(err, res) {
+                .end(function (err, res) {
                     res.should.have.status(422);
                     res.body.data.model.msg.should.equal(
                         "Model must be lower case"
@@ -183,7 +183,7 @@ describe("Searching for hackers", function() {
                 });
         });
     });
-    it("Should throw an error because of a fake model", function(done) {
+    it("Should throw an error because of a fake model", function (done) {
         util.auth.login(agent, Admin0, (error) => {
             if (error) {
                 agent.close();
@@ -195,7 +195,7 @@ describe("Searching for hackers", function() {
                     model: "hackerz",
                     q: JSON.stringify(query2)
                 })
-                .end(function(err, res) {
+                .end(function (err, res) {
                     res.should.have.status(422);
                     res.body.data.model.msg.should.equal(
                         "Must be a valid searchable model"
@@ -204,7 +204,7 @@ describe("Searching for hackers", function() {
                 });
         });
     });
-    it("Should only return 1 hacker (page size)", function(done) {
+    it("Should only return 1 hacker (page size)", function (done) {
         util.auth.login(agent, Admin0, (error) => {
             if (error) {
                 agent.close();
@@ -217,14 +217,14 @@ describe("Searching for hackers", function() {
                     q: JSON.stringify(query2),
                     limit: 1
                 })
-                .end(function(err, res) {
+                .end(function (err, res) {
                     res.should.have.status(200);
                     res.body.data.should.have.length(1);
                     done();
                 });
         });
     });
-    it("Should only return 1 hacker (pagination)", function(done) {
+    it("Should only return 1 hacker (pagination)", function (done) {
         util.auth.login(agent, Admin0, (error) => {
             if (error) {
                 agent.close();
@@ -240,7 +240,7 @@ describe("Searching for hackers", function() {
                         limit: 1,
                         page: 1
                     })
-                    .end(function(err, res) {
+                    .end(function (err, res) {
                         res.should.have.status(200);
                         res.body.data.should.have.length(1);
                         done();
@@ -248,7 +248,7 @@ describe("Searching for hackers", function() {
             );
         });
     });
-    it("Should throw an error because out of bounds (page size)", function(done) {
+    it("Should throw an error because out of bounds (page size)", function (done) {
         util.auth.login(agent, Admin0, (error) => {
             if (error) {
                 agent.close();
@@ -261,13 +261,13 @@ describe("Searching for hackers", function() {
                     q: JSON.stringify(query2),
                     limit: 5000
                 })
-                .end(function(err, res) {
+                .end(function (err, res) {
                     res.should.have.status(422);
                     done();
                 });
         });
     });
-    it("Should throw an error because out of bounds (pagination)", function(done) {
+    it("Should throw an error because out of bounds (pagination)", function (done) {
         util.auth.login(agent, Admin0, (error) => {
             if (error) {
                 agent.close();
@@ -281,14 +281,14 @@ describe("Searching for hackers", function() {
                     limit: 1,
                     page: -1
                 })
-                .end(function(err, res) {
+                .end(function (err, res) {
                     res.should.have.status(422);
                     done();
                 });
         });
     });
 
-    it("Should expand the accountId when expand is set to true", function(done) {
+    it("Should expand the accountId when expand is set to true", function (done) {
         util.auth.login(agent, Admin0, (error) => {
             if (error) {
                 agent.close();
@@ -301,7 +301,7 @@ describe("Searching for hackers", function() {
                     q: JSON.stringify(queryToExecute),
                     expand: true
                 })
-                .end(function(err, res) {
+                .end(function (err, res) {
                     res.should.have.status(200);
                     res.body.should.have.property("data");
                     res.body.data.should.have.length(2);

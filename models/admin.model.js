@@ -1,7 +1,7 @@
 "use strict";
 const mongoose = require("mongoose");
 //describes the data type
-const StaffSchema = new mongoose.Schema({
+const AdminSchema = new mongoose.Schema({
     accountId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Account",
@@ -9,7 +9,7 @@ const StaffSchema = new mongoose.Schema({
     }
 });
 
-StaffSchema.methods.toJSON = function() {
+AdminSchema.methods.toJSON = function () {
     const ss = this.toObject();
     delete ss.__v;
     ss.id = ss._id;
@@ -17,4 +17,4 @@ StaffSchema.methods.toJSON = function() {
     return ss;
 };
 //export the model
-module.exports = mongoose.model("Staff", StaffSchema);
+module.exports = mongoose.model("Admin", AdminSchema);

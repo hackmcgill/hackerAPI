@@ -229,7 +229,7 @@ const searchRoutes = {
     }
 };
 
-const staffRoutes = {
+const adminRoutes = {
     hackerStats: {
         requestType: Constants.REQUEST_TYPES.GET,
         uri: "/api/hacker/stats"
@@ -265,7 +265,7 @@ const allRoutes = {
     Role: roleRoutes,
     Search: searchRoutes,
     Settings: settingsRoutes,
-    Staff: staffRoutes
+    Admin: adminRoutes
 };
 
 /**
@@ -304,7 +304,7 @@ module.exports = {
     roleRoutes: roleRoutes,
     searchRoutes: searchRoutes,
     settingsRoutes: settingsRoutes,
-    staffRoutes: staffRoutes,
+    adminRoutes: adminRoutes,
     allRoutes: allRoutes,
     listAllRoutes: listAllRoutes
 };

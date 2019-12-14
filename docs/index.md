@@ -56,7 +56,7 @@ HackerAPI
 │   ├── role.model.js
 │   ├── roleBinding.model.js
 │   ├── sponsor.model.js            Schema for sponsor account.
-│   ├── staff.model.js              Schema for staff members (not volunteers)
+│   ├── admin.model.js              Schema for admin members (not volunteers)
 │   ├── team.model.js               Schema for a hacker team.
 │   └── volunteer.model.js          Schema for volunteers on the day-of
 ├── package-lock.json
@@ -95,7 +95,7 @@ HackerAPI
         ├── bus.test.util.js
         ├── hacker.test.util.js
         ├── sponsor.test.util.js
-        ├── staff.test.util.js
+        ├── admin.test.util.js
         ├── team.test.util.js
         └── volunteer.test.util.js
 ```

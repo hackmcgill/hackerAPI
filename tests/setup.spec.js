@@ -10,7 +10,7 @@ const Util = {
     RoleBinding: require("./util/roleBinding.test.util"),
     Settings: require("./util/settings.test.util"),
     Sponsor: require("./util/sponsor.test.util"),
-    Staff: require("./util/staff.test.util"),
+    Admin: require("./util/admin.test.util"),
     Team: require("./util/team.test.util"),
     Volunteer: require("./util/volunteer.test.util"),
     AccountConfirmation: require("./util/accountConfirmation.test.util"),
@@ -19,7 +19,7 @@ const Util = {
 const logger = require("../services/logger.service");
 
 //make sure that we are connected to the database
-before(function(done) {
+before(function (done) {
     this.timeout(60000);
 
     server.app.on("event:connected to db", () => {
@@ -35,7 +35,7 @@ before(function(done) {
     });
 });
 
-beforeEach(function(done) {
+beforeEach(function (done) {
     this.timeout(60000);
     storeAll()
         .then(() => {
@@ -46,7 +46,7 @@ beforeEach(function(done) {
         });
 });
 
-afterEach(function(done) {
+afterEach(function (done) {
     this.timeout(60000);
     dropAll()
         .then(() => {
@@ -62,7 +62,7 @@ async function storeAll() {
     await Util.Hacker.storeAll();
     await Util.Sponsor.storeAll();
     await Util.Team.storeAll();
-    await Util.Staff.storeAll();
+    await Util.Admin.storeAll();
     await Util.AccountConfirmation.storeAll();
     await Util.ResetPassword.storeAll();
     await Util.Bus.storeAll();
@@ -78,7 +78,7 @@ async function dropAll() {
     await Util.AccountConfirmation.dropAll();
     await Util.Volunteer.dropAll();
     await Util.Settings.dropAll();
-    await Util.Staff.dropAll();
+    await Util.Admin.dropAll();
     await Util.Team.dropAll();
     await Util.Sponsor.dropAll();
     await Util.Bus.dropAll();

@@ -20,7 +20,7 @@ const Controllers = {
 };
 
 module.exports = {
-    activate: function(apiRouter) {
+    activate: function (apiRouter) {
         passport.serializeUser(Services.Auth.serializeUser);
         passport.deserializeUser(Services.Auth.deserializeUser);
         const authRouter = express.Router();
@@ -294,7 +294,7 @@ module.exports = {
          * @apiSuccess {object} data empty
          * @apiSuccessExample {json} Success-Response:
          *      {"message": "Sucessfully retrieved all roles", "data":
-         *      [{name: "GodStaff", routes: Array(27), id: "5bee20ef3ca9dd4754382880"},
+         *      [{name: "GodAdmin", routes: Array(27), id: "5bee20ef3ca9dd4754382880"},
          *       {name: "Hacker", routes: Array(10), id: "5bee20ef3ca9dd4754382881"},
          *       {name: "Volunteer", routes: Array(4), id: "5bee20ef3ca9dd4754382882"}]
          *

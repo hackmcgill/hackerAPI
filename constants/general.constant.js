@@ -45,7 +45,7 @@ const SAMPLE_DIET_RESTRICTIONS = [
 
 const HACKER = "Hacker";
 const VOLUNTEER = "Volunteer";
-const STAFF = "Staff";
+const ADMIN = "Admin";
 const SPONSOR = "Sponsor";
 
 const SPONSOR_T1 = "SponsorT1";
@@ -77,10 +77,10 @@ POST_ROLES[SPONSOR_T3] = "postSponsor";
 POST_ROLES[SPONSOR_T4] = "postSponsor";
 POST_ROLES[SPONSOR_T5] = "postSponsor";
 POST_ROLES[VOLUNTEER] = "postVolunteer";
-POST_ROLES[STAFF] = "postStaff";
+POST_ROLES[ADMIN] = "postAdmin";
 
 const SHIRT_SIZES = ["XS", "S", "M", "L", "XL", "XXL"];
-const USER_TYPES = [HACKER, VOLUNTEER, STAFF, SPONSOR];
+const USER_TYPES = [HACKER, VOLUNTEER, ADMIN, SPONSOR];
 const SPONSOR_TIERS = [
     SPONSOR_T1,
     SPONSOR_T2,
@@ -91,7 +91,7 @@ const SPONSOR_TIERS = [
 const EXTENDED_USER_TYPES = [
     HACKER,
     VOLUNTEER,
-    STAFF,
+    ADMIN,
     SPONSOR_T1,
     SPONSOR_T2,
     SPONSOR_T3,
@@ -138,8 +138,8 @@ CREATE_ACC_EMAIL_SUBJECTS[
     VOLUNTEER
 ] = `You've been invited to create a volunteer account for ${HACKATHON_NAME}`;
 CREATE_ACC_EMAIL_SUBJECTS[
-    STAFF
-] = `You've been invited to create a staff account for ${HACKATHON_NAME}`;
+    ADMIN
+] = `You've been invited to create a admin account for ${HACKATHON_NAME}`;
 
 const CACHE_TIMEOUT_STATS = 5 * 60 * 1000;
 const CACHE_KEY_STATS = "hackerStats";
@@ -171,7 +171,7 @@ module.exports = {
     HACKER: HACKER,
     SPONSOR: SPONSOR,
     VOLUNTEER: VOLUNTEER,
-    STAFF: STAFF,
+    ADMIN: ADMIN,
     SPONSOR_T1: SPONSOR_T1,
     SPONSOR_T2: SPONSOR_T2,
     SPONSOR_T3: SPONSOR_T3,

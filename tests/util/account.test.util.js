@@ -63,10 +63,10 @@ function generateRandomValue(atr) {
         case "dietaryRestrictions":
             return [
                 Constants.SAMPLE_DIET_RESTRICTIONS[
-                    Math.floor(
-                        Math.random() *
-                            Constants.SAMPLE_DIET_RESTRICTIONS.length
-                    )
+                Math.floor(
+                    Math.random() *
+                    Constants.SAMPLE_DIET_RESTRICTIONS.length
+                )
                 ]
             ];
         case "gender":
@@ -157,9 +157,9 @@ let volunteerAccounts = {
     })
 };
 
-let staffAccounts = {
+let adminAccounts = {
     stored: createNAccounts(5, {
-        accountType: Constants.STAFF,
+        accountType: Constants.ADMIN,
         confirmed: true
     })
 };
@@ -314,7 +314,7 @@ const extraAccounts = [
 module.exports = {
     hackerAccounts: hackerAccounts,
     volunteerAccounts: volunteerAccounts,
-    staffAccounts: staffAccounts,
+    adminAccounts: adminAccounts,
     sponsorT1Accounts: sponsorT1Accounts,
     sponsorT2Accounts: sponsorT2Accounts,
     sponsorT3Accounts: sponsorT3Accounts,
@@ -357,7 +357,7 @@ async function storeAll() {
     await store(hackerAccounts.stored.noTeam);
     await store(hackerAccounts.stored.unconfirmed);
     await store(volunteerAccounts.stored);
-    await store(staffAccounts.stored);
+    await store(adminAccounts.stored);
     await store(sponsorT1Accounts.stored);
     await store(sponsorT2Accounts.stored);
     await store(sponsorT3Accounts.stored);
