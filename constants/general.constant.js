@@ -139,7 +139,7 @@ CREATE_ACC_EMAIL_SUBJECTS[
 ] = `You've been invited to create a volunteer account for ${HACKATHON_NAME}`;
 CREATE_ACC_EMAIL_SUBJECTS[
     ADMIN
-] = `You've been invited to create a admin account for ${HACKATHON_NAME}`;
+] = `You've been invited to create an admin account for ${HACKATHON_NAME}`;
 
 const CACHE_TIMEOUT_STATS = 5 * 60 * 1000;
 const CACHE_KEY_STATS = "hackerStats";
