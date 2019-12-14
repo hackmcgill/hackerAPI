@@ -123,7 +123,7 @@ function generateResetPasswordEmail(address, receiverEmail, token) {
     const mailData = {
         from: process.env.NO_REPLY_EMAIL,
         to: receiverEmail,
-        subject: "Request to reset password",
+        subject: "Password Reset Instructions",
         html: Services.Email.renderEmail(handlebarPath, {
             link: tokenLink
         })
