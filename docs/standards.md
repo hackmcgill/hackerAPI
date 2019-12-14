@@ -406,7 +406,7 @@ This script expects python3, and will not work in python2. Before you run the sc
 Then, run the following command:
 ```python3 batch_scripts.py```
 
-In order for the script to work with all of the actions, you must have a admin account. Otherwise, it's possible that you do not have the proper permission to execute all of the actions.
+In order for the script to work with all of the actions, you must have an admin account. Otherwise, it's possible that you do not have the proper permission to execute all of the actions.
 
 ### Existing Actions in the Script file
 
