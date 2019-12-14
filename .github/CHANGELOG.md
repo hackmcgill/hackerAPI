@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Add code formatting with ESLint and Prettier
 -   Add `declined` hacker status
 -   Add accept hacker route
+-   Create changelog
 
 ### Changed
 
