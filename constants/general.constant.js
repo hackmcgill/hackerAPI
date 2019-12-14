@@ -111,7 +111,7 @@ const WEEK_OF = "Week Of";
 const EMAIL_SUBJECTS = {};
 EMAIL_SUBJECTS[
     HACKER_STATUS_NONE
-] = `Application for ${HACKATHON_NAME} incomplete`;
+] = `Get started on your application!`;
 EMAIL_SUBJECTS[
     HACKER_STATUS_APPLIED
 ] = `Thanks for applying to ${HACKATHON_NAME}`;
