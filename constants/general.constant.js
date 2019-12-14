@@ -114,7 +114,7 @@ EMAIL_SUBJECTS[
 ] = `Get started on your application!`;
 EMAIL_SUBJECTS[
     HACKER_STATUS_APPLIED
-] = `Thanks for applying to ${HACKATHON_NAME}`;
+] = `Thanks for applying to ${HACKATHON_NAME}!`;
 EMAIL_SUBJECTS[HACKER_STATUS_ACCEPTED] = `Great update from ${HACKATHON_NAME}`;
 EMAIL_SUBJECTS[HACKER_STATUS_DECLINED] = `Update from ${HACKATHON_NAME}`;
 EMAIL_SUBJECTS[HACKER_STATUS_WAITLISTED] = `Update from ${HACKATHON_NAME}`;
