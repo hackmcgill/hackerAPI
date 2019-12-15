@@ -18,7 +18,7 @@ const util = {
     account: require("./util/account.test.util")
 };
 
-const Admin0 = util.account.staffAccounts.stored[0];
+const Admin0 = util.account.adminAccounts.stored[0];
 const HackerAccount0 = util.account.hackerAccounts.stored.team[0];
 const T1SponsorAccount0 = util.account.sponsorT1Accounts.stored[0];
 const newT2SponsorAccount0 = util.account.sponsorT2Accounts.new[0];

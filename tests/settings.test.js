@@ -16,7 +16,7 @@ const Constants = {
 };
 
 const invalidAccount = util.account.hackerAccounts.stored.noTeam[0];
-const Admin = util.account.staffAccounts.stored[0];
+const Admin = util.account.adminAccounts.stored[0];
 
 describe("GET settings", function() {
     it("should get the current settings", function(done) {

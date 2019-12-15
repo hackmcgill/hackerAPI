@@ -22,7 +22,7 @@ const accountRole = {
 
 const adminRole = {
     _id: mongoose.Types.ObjectId.createFromTime(1),
-    name: Constants.General.STAFF,
+    name: Constants.General.ADMIN,
     routes: Constants.Routes.listAllRoutes()
 };
 

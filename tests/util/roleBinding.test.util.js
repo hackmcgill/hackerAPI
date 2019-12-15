@@ -22,7 +22,7 @@ function createRoleBinding(accountId, accountType = null, specificRoles = []) {
         case Constants.General.VOLUNTEER:
             roleBinding.roles.push(Constants.Role.volunteerRole);
             break;
-        case Constants.General.STAFF:
+        case Constants.General.ADMIN:
             roleBinding.roles.push(Constants.Role.adminRole);
             break;
         case Constants.General.SPONSOR_T1:
@@ -69,7 +69,7 @@ const UnconfirmedHackerRB = createRoleBindings(
     Util.Account.hackerAccounts.stored.unconfirmed
 );
 const VolunteerRB = createRoleBindings(Util.Account.volunteerAccounts.stored);
-const StaffRB = createRoleBindings(Util.Account.staffAccounts.stored);
+const AdminRB = createRoleBindings(Util.Account.adminAccounts.stored);
 const SponsorT1RB = createRoleBindings(Util.Account.sponsorT1Accounts.stored);
 const SponsorT2RB = createRoleBindings(Util.Account.sponsorT2Accounts.stored);
 const SponsorT3RB = createRoleBindings(Util.Account.sponsorT3Accounts.stored);
@@ -110,7 +110,7 @@ async function storeAll() {
     await store(NoTeamHackerRB);
     await store(UnconfirmedHackerRB);
     await store(VolunteerRB);
-    await store(StaffRB);
+    await store(AdminRB);
     await store(SponsorT1RB);
     await store(SponsorT2RB);
     await store(SponsorT3RB);
@@ -145,7 +145,7 @@ module.exports = {
     NoTeamHackerRB: NoTeamHackerRB,
     UnconfirmedHackerRB: UnconfirmedHackerRB,
     VolunteerRB: VolunteerRB,
-    StaffRB: StaffRB,
+    AdminRB: AdminRB,
     SponsorT1RB: SponsorT1RB,
     SponsorT2RB: SponsorT2RB,
     SponsorT3RB: SponsorT3RB,

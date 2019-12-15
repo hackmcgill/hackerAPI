@@ -20,7 +20,7 @@ const Constants = {
 
 const agent = chai.request.agent(server.app);
 
-const Admin0 = util.account.staffAccounts.stored[0];
+const Admin0 = util.account.adminAccounts.stored[0];
 const teamHackerAccount0 = util.account.hackerAccounts.stored.team[0];
 const noTeamHackerAccount0 = util.account.hackerAccounts.stored.noTeam[0];
 const sponsorT1Account0 = util.account.sponsorT1Accounts.stored[0];

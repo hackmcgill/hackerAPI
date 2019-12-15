@@ -18,11 +18,11 @@ const Constants = {
     Success: require("../constants/success.constant")
 };
 
-const Admin0 = util.account.staffAccounts.stored[0];
+const Admin0 = util.account.adminAccounts.stored[0];
 const Hacker0 = util.account.hackerAccounts.stored.team[0];
 
 describe("POST create role", function() {
-    it("should Fail to create a role because staff is not logged in", function(done) {
+    it("should Fail to create a role because admin is not logged in", function(done) {
         chai.request(server.app)
             .post(`/api/role/`)
             .type("application/json")
