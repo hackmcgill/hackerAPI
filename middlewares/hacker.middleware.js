@@ -524,12 +524,59 @@ async function updateHacker(req, res, next) {
 }
 
 /**
+ * Updates a hacker that is specified by req.params.id, and then sets req.email
+ * to the email of the hacker, found in Account.
+ * @param {{params:{id: String[]}, body: *}} req
+ * @param {*} res
+ * @param {*} next
+ */
+async function updateBatchHacker(req, res, next) {
+    req.params.id.forEach(async (id) => {
+        const hacker = await Services.Hacker.updateOne(id , req.body);
+        if (hacker) {
+            const acct = await Services.Account.findById(hacker.accountId);
+            if (!acct) {
+                return next({
+                    status: 500,
+                    message: Constants.Error.HACKER_UPDATE_500_MESSAGE,
+                    data: {
+                        hackerId: hacker.id,
+                        accountId: hacker.accountId
+                    }
+                });
+            }
+            req.email = acct.email;
+            return next();
+        } else {
+            return next({
+                status: 404,
+                message: Constants.Error.HACKER_404_MESSAGE,
+                data: {
+                    id: req.params.id
+                }
+            });
+        }
+    });
+}
+
+/**
  * Sets req.body.status to Accepted for next middleware.
  * @param {{params:{id: string}, body: *}} req 
  * @param {*} res 
  * @param {*} next 
  */
 function parseAccept(req, res, next) {
+    req.body.status = Constants.General.HACKER_STATUS_ACCEPTED;
+    next();
+}
+
+/**
+ * Sets req.body.status to Accepted for next middleware.
+ * @param {{params:{id: string}, body: *}} req 
+ * @param {*} res 
+ * @param {*} next 
+ */
+function parseBatchAccept(req, res, next) {
     req.body.status = Constants.General.HACKER_STATUS_ACCEPTED;
     next();
 }
@@ -652,7 +699,9 @@ module.exports = {
         sendAppliedStatusEmail
     ),
     updateHacker: Middleware.Util.asyncMiddleware(updateHacker),
+    updateBatchHacker: Middleware.Util.asyncMiddleware(updateBatchHacker),
     parseAccept: parseAccept,
+    parseBatch: parseBatchAccept,
     validateConfirmedStatusFromAccountId: Middleware.Util.asyncMiddleware(
         validateConfirmedStatusFromAccountId
     ),

@@ -283,7 +283,7 @@ module.exports = {
          * @apiName acceptHacker
          * @apiGroup Hacker
          * @apiVersion 2.0.0
-         *
+         * 
          * @apiSuccess {string} message Success message
          * @apiSuccess {object} data Hacker object
          * @apiSuccessExample {object} Success-Response:
@@ -308,6 +308,37 @@ module.exports = {
                 Controllers.Hacker.updatedHacker
             );
 
+                    /**
+         * @api {patch} /hacker/accept/:id accept a Hacker
+         * @apiName acceptHacker
+         * @apiGroup Hacker
+         * @apiVersion 2.0.0
+         *
+         * @apiParam (body) {ObjectId[]} Array of id(s) that needed to be accepted
+         * 
+         * @apiSuccess {string} message Success message
+         * @apiSuccess {object} data Hacker object
+         * @apiSuccessExample {object} Success-Response:
+         *      {
+         *          "message": "Changed hacker information",
+         *          "data": {
+         *              "status": "Accepted"
+         *          }
+         *      }
+         * @apiPermission Administrator
+         */
+        hackerRouter
+        .route("/batchAccept")
+        .patch(
+            Middleware.Validator.RouteParam.idValidator,
+            Middleware.Auth.ensureAuthenticated(),
+            Middleware.Auth.ensureAuthorized([Services.Hacker.findById]),
+            Middleware.Hacker.validateConfirmedStatusFromHackerId,
+            Middleware.Hacker.parseAccept,
+            Middleware.Hacker.updateBatchHacker,
+            Middleware.Hacker.sendStatusUpdateEmail,
+            Controllers.Hacker.updatedHacker
+        );
         /**
          * @api {patch} /hacker/checkin/:id update a hacker's status to be 'Checked-in'. Note that the Hacker must eitehr be Accepted or Confirmed.
          * @apiName checkinHacker
