@@ -309,7 +309,7 @@ module.exports = {
             );
 
                     /**
-         * @api {patch} /hacker/accept/:id accept a Hacker
+         * @api {patch} /hacker/batchAccept/ accept array of Hackers
          * @apiName acceptHacker
          * @apiGroup Hacker
          * @apiVersion 2.0.0
@@ -330,10 +330,9 @@ module.exports = {
         hackerRouter
         .route("/batchAccept")
         .patch(
-            Middleware.Validator.RouteParam.idValidator,
             Middleware.Auth.ensureAuthenticated(),
-            Middleware.Auth.ensureAuthorized([Services.Hacker.findById]),
-            Middleware.Hacker.validateConfirmedStatusFromHackerId,
+            Middleware.Auth.ensureAuthorized([Services.Hacker.findIds]),
+            Middleware.Hacker.validateConfirmedStatusFromArrayofHackerIds,
             Middleware.Hacker.parseAccept,
             Middleware.Hacker.updateBatchHacker,
             Middleware.Hacker.sendStatusUpdateEmail,
