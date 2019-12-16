@@ -168,6 +168,27 @@ async function validateConfirmedStatusFromHackerId(req, res, next) {
 }
 
 /**
+ * Verifies that account is confirmed and of proper type from the hacker ID passed in req.params.id
+ * @param {{params: {id: ObjectId}}} req
+ * @param {*} res
+ * @param {(err?) => void} next
+ */
+async function validateConfirmedStatusFromArrayofHackerIds(req, res, next) {
+    req.body.ids.forEach(async (id) => {
+        const hacker = await Services.Hacker.findById(id);
+        if (hacker == null) {
+            return next({
+                status: 404,
+                message: Constants.Error.HACKER_404_MESSAGE,
+                data: req.body.hackerId
+            });
+        }
+        const account = await Services.Account.findById(hacker.accountId);
+        return validateConfirmedStatus(account, next);
+    });
+}
+
+/**
  * Verifies that account is confirmed and of proper type from the account object passed in req.body.account
  * @param {{body: {account: Object}}} req
  * @param {*} res
@@ -531,7 +552,7 @@ async function updateHacker(req, res, next) {
  * @param {*} next
  */
 async function updateBatchHacker(req, res, next) {
-    req.params.id.forEach(async (id) => {
+    req.body.ids.forEach(async (id) => {
         const hacker = await Services.Hacker.updateOne(id , req.body);
         if (hacker) {
             const acct = await Services.Account.findById(hacker.accountId);
@@ -707,6 +728,9 @@ module.exports = {
     ),
     validateConfirmedStatusFromHackerId: Middleware.Util.asyncMiddleware(
         validateConfirmedStatusFromHackerId
+    ),
+    validateConfirmedStatusFromArrayofHackerIds: Middleware.Util.asyncMiddleware(
+        validateConfirmedStatusFromArrayofHackerIds
     ),
     validateConfirmedStatusFromObject: Middleware.Util.asyncMiddleware(
         validateConfirmedStatusFromObject
