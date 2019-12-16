@@ -111,10 +111,10 @@ const WEEK_OF = "Week Of";
 const EMAIL_SUBJECTS = {};
 EMAIL_SUBJECTS[
     HACKER_STATUS_NONE
-] = `Application for ${HACKATHON_NAME} incomplete`;
+] = `Get started on your application!`;
 EMAIL_SUBJECTS[
     HACKER_STATUS_APPLIED
-] = `Thanks for applying to ${HACKATHON_NAME}`;
+] = `Thanks for applying to ${HACKATHON_NAME}!`;
 EMAIL_SUBJECTS[HACKER_STATUS_ACCEPTED] = `Great update from ${HACKATHON_NAME}`;
 EMAIL_SUBJECTS[HACKER_STATUS_DECLINED] = `Update from ${HACKATHON_NAME}`;
 EMAIL_SUBJECTS[HACKER_STATUS_WAITLISTED] = `Update from ${HACKATHON_NAME}`;
@@ -126,7 +126,7 @@ EMAIL_SUBJECTS[HACKER_STATUS_CHECKED_IN] = `Welcome to ${HACKATHON_NAME}`;
 
 EMAIL_SUBJECTS[WEEK_OF] = `Welcome to ${HACKATHON_NAME}`;
 
-const CONFIRM_ACC_EMAIL_SUBJECT = `Please complete your hacker application for ${HACKATHON_NAME}`;
+const CONFIRM_ACC_EMAIL_SUBJECT = `Confirm your ${HACKATHON_NAME} Account`;
 const CREATE_ACC_EMAIL_SUBJECTS = {};
 CREATE_ACC_EMAIL_SUBJECTS[
     HACKER
