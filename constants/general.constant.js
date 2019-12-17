@@ -54,7 +54,7 @@ const SPONSOR_T3 = "SponsorT3";
 const SPONSOR_T4 = "SponsorT4";
 const SPONSOR_T5 = "SponsorT5";
 
-const JOB_INTERESTS = ["Internship", "Full-time", "None"];
+const JOB_INTERESTS = ["Internship", "Full Time", "None"];
 const ROLE_CATEGORIES = {
     SELF: ":self",
     ALL: ":all"
