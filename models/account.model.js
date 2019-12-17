@@ -2,7 +2,6 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const Constants = require("../constants/general.constant");
-const Error = require("../constants/error.constant")
 
 //describes the data type
 const AccountSchema = new mongoose.Schema({
