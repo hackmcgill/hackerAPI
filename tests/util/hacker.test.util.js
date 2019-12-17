@@ -20,7 +20,7 @@ const TeamHacker0 = {
             degree: "Masters",
             fieldOfStudy: ["EE"],
             graduationYear: 2019,
-            jobInterest: "Full-time",
+            jobInterest: "Full Time",
             URL: {
                 //gcloud bucket link
                 resume: "www.gcloud.com/myResume100",
@@ -257,7 +257,7 @@ const newHacker0 = {
             degree: "Masters",
             fieldOfStudy: ["EE"],
             graduationYear: 2019,
-            jobInterest: "Full-time",
+            jobInterest: "Full Time",
             URL: {
                 //gcloud bucket link
                 resume: "www.gcloud.com/myResume100",
@@ -294,7 +294,7 @@ const newHacker1 = {
             degree: "PhD",
             fieldOfStudy: ["EE"],
             graduationYear: 2019,
-            jobInterest: "Full-time",
+            jobInterest: "Full Time",
             URL: {
                 //gcloud bucket link
                 resume: "www.gcloud.com/myResume100",
@@ -332,7 +332,7 @@ const invalidHacker0 = {
             degree: "Masters",
             fieldOfStudy: ["EE"],
             graduationYear: 2019,
-            jobInterest: "Full-time",
+            jobInterest: "Full Time",
             URL: {
                 //gcloud bucket link
                 resume: "www.gcloud.com/myResume100",
@@ -406,7 +406,7 @@ const duplicateAccountLinkHacker0 = {
             degree: "Undergraduate",
             fieldOfStudy: ["CS"],
             graduationYear: 2019,
-            jobInterest: "Full-time",
+            jobInterest: "Full Time",
             URL: {
                 //gcloud bucket link
                 resume: "www.gcloud.com/myResume100",
