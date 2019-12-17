@@ -156,6 +156,13 @@ async function addAccount(req, res, next) {
     return next();
 }
 
+/**
+ * @async
+ * @function validateUniqueEmail
+ * @param {{params:{id: string}, body: {email: string}}} req
+ * @param {*} res
+ * @description Gets an account by email in req.body, and if found ensures id matches req.params.id
+ */
 async function validateUniqueEmail(req, res, next) {
     const acc = await Services.Account.findByEmail(req.body.email);
     if (acc && acc.id != req.params.id) {
