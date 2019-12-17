@@ -169,7 +169,7 @@ async function updateAccount(req, res, next) {
     // TODO: When pull request for parse patch refactor #546 hits, req.body.email will not be present.
     if (req.body.email && account.email != req.body.email) {
         const existingAccount = await Services.Account.findByEmail(
-            account.email
+            req.body.email
         );
         if (existingAccount) {
             return next({
