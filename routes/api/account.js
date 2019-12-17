@@ -21,7 +21,7 @@ const Services = {
 };
 
 module.exports = {
-    activate: function(apiRouter) {
+    activate: function (apiRouter) {
         const accountRouter = express.Router();
 
         /**
@@ -252,6 +252,7 @@ module.exports = {
             Middleware.parseBody.middleware,
             Middleware.Account.parsePatch,
 
+            Middleware.Account.validateUniqueEmail,
             Middleware.Account.updateAccount,
             Middleware.Auth.sendConfirmAccountEmail,
             // no parse account because will use req.body as information

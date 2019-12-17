@@ -98,18 +98,5 @@ AccountSchema.methods.getAge = function() {
     return Math.abs(ageDate.getUTCFullYear() - 1970);
 };
 
-var handleE11000 = function(error, res, next) {
-    if (error.name === 'MongoError' && error.code === 11000) {
-      next(
-        {
-        status: 409,
-        message: Error.ACCOUNT_EMAIL_409_MESSAGE,
-      });
-    } else {
-      next();
-    }
-};
-
-AccountSchema.post('findOneAndUpdate', handleE11000);
 //export the model
 module.exports = mongoose.model("Account", AccountSchema);

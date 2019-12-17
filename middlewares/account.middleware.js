@@ -156,6 +156,17 @@ async function addAccount(req, res, next) {
     return next();
 }
 
+async function validateUniqueEmail(req, res, next) {
+    const acc = await Services.Account.findByEmail(req.body.email);
+    if (acc && acc.id != req.params.id) {
+        return next({
+            status: 409,
+            message: Constants.Error.ACCOUNT_EMAIL_409_MESSAGE,
+        });
+    }
+    return next();
+}
+
 /**
  * Updates an account that is specified by req.params.id
  * @param {{params:{id: string}, body: *}} req
@@ -254,5 +265,6 @@ module.exports = {
     updatePassword: Middleware.Util.asyncMiddleware(updatePassword),
     addAccount: Middleware.Util.asyncMiddleware(addAccount),
     updateAccount: Middleware.Util.asyncMiddleware(updateAccount),
-    inviteAccount: Middleware.Util.asyncMiddleware(inviteAccount)
+    inviteAccount: Middleware.Util.asyncMiddleware(inviteAccount),
+    validateUniqueEmail: Middleware.Util.asyncMiddleware(validateUniqueEmail)
 };
