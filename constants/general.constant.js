@@ -54,7 +54,10 @@ const SPONSOR_T3 = "SponsorT3";
 const SPONSOR_T4 = "SponsorT4";
 const SPONSOR_T5 = "SponsorT5";
 
+// Enums (must match with frontend)
 const JOB_INTERESTS = ["Internship", "Full Time", "None"];
+const SHIRT_SIZES = ["XS", "S", "M", "L", "XL", "XXL"];
+
 const ROLE_CATEGORIES = {
     SELF: ":self",
     ALL: ":all"
@@ -79,7 +82,6 @@ POST_ROLES[SPONSOR_T5] = "postSponsor";
 POST_ROLES[VOLUNTEER] = "postVolunteer";
 POST_ROLES[STAFF] = "postStaff";
 
-const SHIRT_SIZES = ["XS", "S", "M", "L", "XL", "XXL"];
 const USER_TYPES = [HACKER, VOLUNTEER, STAFF, SPONSOR];
 const SPONSOR_TIERS = [
     SPONSOR_T1,
