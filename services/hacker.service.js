@@ -10,7 +10,7 @@ const QRCode = require("qrcode");
 
 /**
  * @function createHacker
- * @param {{_id: ObjectId, accountId: ObjectId, school: string, gender: string, needsBus: boolean, application: {Object}}} hackerDetails
+ * @param {{_id: ObjectId, accountId: ObjectId, application: {Object}}} hackerDetails
  * @return {Promise<Hacker>} The promise will resolve to a hacker object if save is successful.
  * @description Adds a new hacker to database.
  */
@@ -25,7 +25,7 @@ function createHacker(hackerDetails) {
 /**
  * @function updateOne
  * @param {ObjectId} id
- * @param {{_id?: ObjectId, accountId?: ObjectId, school?: string, gender?: string, needsBus?: boolean, application?: {Object}, teamId?: ObjectId}} hackerDetails
+ * @param {{_id?: ObjectId, accountId?: ObjectId, application?: {Object}, teamId?: ObjectId}} hackerDetails
  * @return {DocumentQuery} The document query will resolve to hacker or null.
  * @description Update an account specified by its mongoId with information specified by hackerDetails.
  */
@@ -36,7 +36,11 @@ function updateOne(id, hackerDetails) {
         _id: id
     };
 
-    return Hacker.findOneAndUpdate(query, hackerDetails, logger.updateCallbackFactory(TAG, "hacker"));
+    return Hacker.findOneAndUpdate(
+        query,
+        hackerDetails,
+        logger.updateCallbackFactory(TAG, "hacker")
+    );
 }
 
 /**
@@ -63,7 +67,11 @@ async function findIds(queries) {
     let ids = [];
 
     for (const query of queries) {
-        let currId = await Hacker.findOne(query, "_id", logger.queryCallbackFactory(TAG, "hacker", query));
+        let currId = await Hacker.findOne(
+            query,
+            "_id",
+            logger.queryCallbackFactory(TAG, "hacker", query)
+        );
         ids.push(currId);
     }
     return ids;
@@ -76,7 +84,6 @@ async function findIds(queries) {
  */
 function findByAccountId(accountId) {
     const TAG = `[ Hacker Service # findByAccountId ]:`;
-
     const query = {
         accountId: accountId
     };
@@ -90,8 +97,11 @@ async function getStatsAllHackersCached() {
         logger.info(`${TAG} Getting cached stats`);
         return cache.get(Constants.CACHE_KEY_STATS);
     }
-    const allHackers = await Hacker.find({}, logger.updateCallbackFactory(TAG, "hacker")).populate({
-        path: "accountId",
+    const allHackers = await Hacker.find(
+        {},
+        logger.updateCallbackFactory(TAG, "hacker")
+    ).populate({
+        path: "accountId"
     });
     cache.put(Constants.CACHE_KEY_STATS, stats, Constants.CACHE_TIMEOUT_STATS); //set a time-out of 5 minutes
     return getStats(allHackers);
@@ -127,10 +137,10 @@ function getStats(hackers) {
         school: {},
         degree: {},
         gender: {},
-        needsBus: {},
+        travel: {},
         ethnicity: {},
         jobInterest: {},
-        major: {},
+        fieldOfStudy: {},
         graduationYear: {},
         dietaryRestrictions: {},
         shirtSize: {},
@@ -143,30 +153,65 @@ function getStats(hackers) {
             return;
         }
         stats.total += 1;
-        stats.status[hacker.status] = (stats.status[hacker.status]) ? stats.status[hacker.status] + 1 : 1;
-        stats.school[hacker.school] = (stats.school[hacker.school]) ? stats.school[hacker.school] + 1 : 1;
-        stats.degree[hacker.degree] = (stats.degree[hacker.degree]) ? stats.degree[hacker.degree] + 1 : 1;
-        stats.gender[hacker.gender] = (stats.gender[hacker.gender]) ? stats.gender[hacker.gender] + 1 : 1;
-        stats.needsBus[hacker.needsBus] = (stats.needsBus[hacker.needsBus]) ? stats.needsBus[hacker.needsBus] + 1 : 1;
+        stats.status[hacker.status] = stats.status[hacker.status]
+            ? stats.status[hacker.status] + 1
+            : 1;
+        stats.school[hacker.application.general.school] = stats.school[
+            hacker.application.general.school
+        ]
+            ? stats.school[hacker.application.general.school] + 1
+            : 1;
+        stats.degree[hacker.application.general.degree] = stats.degree[
+            hacker.application.general.degree
+        ]
+            ? stats.degree[hacker.application.general.degree] + 1
+            : 1;
+        stats.gender[hacker.accountId.gender] = stats.gender[
+            hacker.accountId.gender
+        ]
+            ? stats.gender[hacker.accountId.gender] + 1
+            : 1;
+        stats.travel[hacker.application.accommodation.travel] = stats.travel[
+            hacker.application.accommodation.travel
+        ]
+            ? stats.travel[hacker.application.accommodation.travel] + 1
+            : 1;
 
-        for (const ethnicity of hacker.ethnicity) {
-            stats.ethnicity[ethnicity] = (stats.ethnicity[ethnicity]) ? stats.ethnicity[ethnicity] + 1 : 1;
+        for (const ethnicity of hacker.application.other.ethnicity) {
+            stats.ethnicity[ethnicity] = stats.ethnicity[ethnicity]
+                ? stats.ethnicity[ethnicity] + 1
+                : 1;
         }
 
-        stats.jobInterest[hacker.application.jobInterest] = (stats.jobInterest[hacker.application.jobInterest]) ? stats.jobInterest[hacker.application.jobInterest] + 1 : 1;
-        stats.major[hacker.major] = (stats.major[hacker.major]) ? stats.major[hacker.major] + 1 : 1;
-        stats.graduationYear[hacker.graduationYear] = (stats.graduationYear[hacker.graduationYear]) ? stats.graduationYear[hacker.graduationYear] + 1 : 1;
-
-        for (const dietaryRestrictions of hacker.accountId.dietaryRestrictions) {
-            stats.dietaryRestrictions[dietaryRestrictions] = (stats.dietaryRestrictions[dietaryRestrictions]) ? stats.dietaryRestrictions[dietaryRestrictions] + 1 : 1;
+        stats.jobInterest[hacker.application.general.jobInterest] = stats
+            .jobInterest[hacker.application.general.jobInterest]
+            ? stats.jobInterest[hacker.application.general.jobInterest] + 1
+            : 1;
+        stats.fieldOfStudy[hacker.application.general.fieldOfStudy] = stats
+            .fieldOfStudy[hacker.application.general.fieldOfStudy]
+            ? stats.fieldOfStudy[hacker.application.general.fieldOfStudy] + 1
+            : 1;
+        stats.graduationYear[hacker.application.general.graduationYear] = stats
+            .graduationYear[hacker.application.general.graduationYear]
+            ? stats.graduationYear[hacker.application.general.graduationYear] +
+              1
+            : 1;
+        for (const dietaryRestrictions of hacker.accountId
+            .dietaryRestrictions) {
+            stats.dietaryRestrictions[dietaryRestrictions] = stats
+                .dietaryRestrictions[dietaryRestrictions]
+                ? stats.dietaryRestrictions[dietaryRestrictions] + 1
+                : 1;
         }
-        stats.shirtSize[hacker.accountId.shirtSize] = (stats.shirtSize[hacker.accountId.shirtSize]) ? stats.shirtSize[hacker.accountId.shirtSize] + 1 : 1;
+        stats.shirtSize[hacker.application.accommodation.shirtSize] = stats
+            .shirtSize[hacker.application.accommodation.shirtSize]
+            ? stats.shirtSize[hacker.application.accommodation.shirtSize] + 1
+            : 1;
         const age = hacker.accountId.getAge();
-        stats.age[age] = (stats.age[age]) ? stats.age[age] + 1 : 1;
+        stats.age[age] = stats.age[age] ? stats.age[age] + 1 : 1;
     });
     return stats;
 }
-
 
 module.exports = {
     createHacker: createHacker,
@@ -177,5 +222,5 @@ module.exports = {
     getStats: getStats,
     getStatsAllHackersCached: getStatsAllHackersCached,
     generateQRCode: generateQRCode,
-    generateHackerViewLink: generateHackerViewLink,
+    generateHackerViewLink: generateHackerViewLink
 };

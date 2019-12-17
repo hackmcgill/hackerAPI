@@ -17,11 +17,11 @@ const Middleware = {
     Auth: require("../../middlewares/auth.middleware")
 };
 const Services = {
-    Account: require("../../services/account.service"),
+    Account: require("../../services/account.service")
 };
 
 module.exports = {
-    activate: function (apiRouter) {
+    activate: function(apiRouter) {
         const accountRouter = express.Router();
 
         /**
@@ -41,9 +41,8 @@ module.exports = {
                             "lastName":"Klein",
                             "pronoun":"he/him",
                             "email":"theo@klein.com",
-                            "dietaryRestrictions":["Halal"],
                             "phoneNumber":1234567890,
-                        	"shirtSize":"S",
+                        	"gender":"Male",
                             "birthDate":Date("10/30/1997")
                     }
                 }
@@ -70,8 +69,8 @@ module.exports = {
          * @apiParam (body) {String} lastName Last name of the account creator.
          * @apiParam (body) {String} pronoun the pronoun of the account creator.
          * @apiParam (body) {String} email Email of the account.
+         * @apiParam (body) {String} gender Gender of the account creator.
          * @apiParam (body) {String[]} dietaryRestrictions Any dietary restrictions for the user. 'None' if there are no restrictions
-         * @apiParam (body) {String} shirtSize Size of the shirt that the user will receive.
          * @apiParam (body) {String} password The password of the account.
          * @apiParam (body) {String} birthDate a Date parsable string.
          * @apiParam (body) {Number} phoneNumber the user's phone number, represented as a string.
@@ -84,9 +83,8 @@ module.exports = {
                     "pronoun":"he/him",
                     "email":"theo@klein.com",
                     "password":"hunter2",
-                    "dietaryRestrictions":["Halal"],
                     "phoneNumber":1234567890,
-                    "shirtSize":"S",
+                    "gender":"Male",
                     "birthDate":"10/30/1997"
          *      }
          * 
@@ -101,9 +99,8 @@ module.exports = {
                             "lastName":"Klein",
                             "pronoun":"he/him",
                             "email":"theo@klein.com",
-                            "dietaryRestrictions":["Halal"],
                             "phoneNumber":1234567890,
-                        	"shirtSize":"S",
+                        	"gender":"Male",
                             "birthDate":Date("10/30/1997")
                     }
                 }
@@ -135,9 +132,9 @@ module.exports = {
             Middleware.Account.addAccount,
             Middleware.Auth.addCreationRoleBindings,
 
-            // middleware to create a hacker token 
+            // middleware to create a hacker token
             // and send a confirmation message
-            Middleware.Auth.sendConfirmAccountEmailMiddleware,
+            Middleware.Auth.sendConfirmAccountEmail,
             // should return status in this function
             Controllers.Account.addUser
         );
@@ -169,14 +166,16 @@ module.exports = {
                 }
             }
          */
-        accountRouter.route("/invite").post(
-            Middleware.Auth.ensureAuthenticated(),
-            Middleware.Auth.ensureAuthorized(),
-            Middleware.Validator.Account.inviteAccountValidator,
-            Middleware.parseBody.middleware,
-            Middleware.Account.inviteAccount,
-            Controllers.Account.invitedAccount
-        );
+        accountRouter
+            .route("/invite")
+            .post(
+                Middleware.Auth.ensureAuthenticated(),
+                Middleware.Auth.ensureAuthorized(),
+                Middleware.Validator.Account.inviteAccountValidator,
+                Middleware.parseBody.middleware,
+                Middleware.Account.inviteAccount,
+                Controllers.Account.invitedAccount
+            );
         /**
          * @api {get} /account/invite Get all of the invites.
          * @apiName getAllInvites
@@ -192,13 +191,15 @@ module.exports = {
                     }]
                 }
          */
-        accountRouter.route("/invite").get(
-            Middleware.Auth.ensureAuthenticated(),
-            Middleware.Auth.ensureAuthorized(),
-            Middleware.parseBody.middleware,
-            Middleware.Account.getInvites,
-            Controllers.Account.gotInvites
-        );
+        accountRouter
+            .route("/invite")
+            .get(
+                Middleware.Auth.ensureAuthenticated(),
+                Middleware.Auth.ensureAuthorized(),
+                Middleware.parseBody.middleware,
+                Middleware.Account.getInvites,
+                Controllers.Account.gotInvites
+            );
 
         /**
          * @api {patch} /account/:id update an account's information
@@ -208,31 +209,30 @@ module.exports = {
          * 
          * @apiParam (body) {String} [firstName] First name of the account creator.
          * @apiParam (body) {String} [lastName] Last name of the account creator.
-         * @apiParam (body) {String} [pronoun] the pronoun of the account creator.
+         * @apiParam (body) {String} [pronoun] The pronoun of the account creator.
          * @apiParam (body) {String} [email] Email of the account.
-         * @apiParam (body) {String[]} [dietaryRestrictions] Any dietary restrictions for the user. 'None' if there are no restrictions
-         * @apiParam (body) {String} [shirtSize] Size of the shirt that the user will receive.
+         * @apiParam (body) {String} [gender] Gender of the account creator.
+         * @apiParam (body) {String} [birthDate] A Date parsable string.
+         * @apiParam (body) {Number} [phoneNumber] The user's phone number, represented as a string.
          * @apiParam (body) {String} [birthDate] a Date parsable string.
-         * @apiParam (body) {Number} [phoneNumber] the user's phone number, represented as a string.
-
+         * @apiParam (body) {String[]} [dietaryRestrictions] Any dietary restrictions for the user. 'None' if there are no restrictions
          * @apiParamExample {json} Request-Example:
-         *      { "shirtSize": "M" }
+         *      { "gender": "Male" }
          * 
 
          * @apiSuccess {string} message Success message
          * @apiSuccess {object} data Account object
          * @apiSuccessExample {object} Success-Response: 
          *      {
-                    "message": "Changed account information", 
+                    "message": "Account update successful.", 
                     "data": {
                             "id": ObjectId("5bff8b9f3274cf001bc71048"),
                         	"firstName": "Theo",
                             "lastName":"Klein",
                             "pronoun":"he/him",
                             "email":"theo@klein.com",
-                            "dietaryRestrictions":["Halal"],
                             "phoneNumber":1234567890,
-                        	"shirtSize":"M",
+                        	"gender": "Male",
                             "birthDate":Date("10/30/1997")
                     }
                 }
@@ -243,16 +243,17 @@ module.exports = {
          *      {"message": "Error while updating account", "data": {}}
          */
         accountRouter.route("/:id").patch(
+            Middleware.Validator.RouteParam.idValidator,
             Middleware.Auth.ensureAuthenticated(),
             Middleware.Auth.ensureAuthorized([Services.Account.findById]),
             // validators
-            Middleware.Validator.RouteParam.idValidator,
             Middleware.Validator.Account.updateAccountValidator,
 
             Middleware.parseBody.middleware,
             Middleware.Account.parsePatch,
 
             Middleware.Account.updateAccount,
+            Middleware.Auth.sendConfirmAccountEmail,
             // no parse account because will use req.body as information
             // because the number of fields will be variable
             Controllers.Account.updatedAccount
@@ -277,9 +278,8 @@ module.exports = {
                         "lastName":"Klein",
                         "pronoun":"he/him",
                         "email":"theo@klein.com",
-                        "dietaryRestrictions":["Halal"],
                         "phoneNumber":1234567890,
-                        "shirtSize":"S",
+                        "gender":"Male",
                         "birthDate":Date("10/30/1997")
                     }
                 }
@@ -290,10 +290,10 @@ module.exports = {
          *      {"message": "Account not found", "data": {}}
          */
         accountRouter.route("/:id").get(
+            Middleware.Validator.RouteParam.idValidator,
             Middleware.Auth.ensureAuthenticated(),
             Middleware.Auth.ensureAuthorized([Services.Account.findById]),
 
-            Middleware.Validator.RouteParam.idValidator,
             Middleware.parseBody.middleware,
 
             Middleware.Account.getById,

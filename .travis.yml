@@ -1,7 +1,7 @@
 language: node_js
 dist: trusty
 sudo: false
-services: 
+services:
   - mongodb
 before_install:
   - npm i -g npm@6.4.0
@@ -17,4 +17,4 @@ branches:
     - develop
 
 notifications:
-  slack: hackboard6:4baCeRXUOQmvy4ZBAHQclN6K
+  slack: hackboard7:Yt0nW0DyaF85eTOxceBLptU1

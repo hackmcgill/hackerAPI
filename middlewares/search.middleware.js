@@ -4,7 +4,7 @@ const Services = {
 };
 const Middleware = {
     Util: require("../middlewares/util.middleware")
-}
+};
 
 /**
  * @function parseQuery
@@ -51,7 +51,8 @@ function parseQuery(req, res, next) {
  * @returns {Promise.<void>}
  */
 async function executeQuery(req, res, next) {
-    req.body.results = await Services.Search.executeQuery(req.body.model,
+    req.body.results = await Services.Search.executeQuery(
+        req.body.model,
         req.body.q,
         req.body.page,
         req.body.limit,
@@ -67,9 +68,8 @@ function setExpandTrue(req, res, next) {
     next();
 }
 
-
 module.exports = {
     parseQuery: parseQuery,
     executeQuery: Middleware.Util.asyncMiddleware(executeQuery),
-    setExpandTrue: setExpandTrue,
+    setExpandTrue: setExpandTrue
 };

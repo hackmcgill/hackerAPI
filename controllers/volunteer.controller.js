@@ -6,8 +6,8 @@ const Services = {
 const Util = require("../middlewares/util.middleware");
 const Constants = {
     Success: require("../constants/success.constant"),
-    Error: require("../constants/error.constant"),
-}
+    Error: require("../constants/error.constant")
+};
 
 /**
  * @function createdVolunteer
@@ -37,8 +37,7 @@ function showVolunteer(req, res) {
     });
 }
 
-
 module.exports = {
     createdVolunteer: createdVolunteer,
-    showVolunteer: showVolunteer,
+    showVolunteer: showVolunteer
 };

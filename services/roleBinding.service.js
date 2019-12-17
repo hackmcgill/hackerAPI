@@ -15,7 +15,7 @@ async function createRoleBinding(accountId, roleId = undefined) {
     };
     const roleBindingModel = await getRoleBindingForAcct(accountId);
     if (!roleBindingModel) {
-        const roleArray = (!!roleId) ? [roleId] : [];
+        const roleArray = roleId ? [roleId] : [];
         const newRb = new RoleBinding({
             name: accountId + "_rolebinding",
             accountId: accountId,
@@ -23,11 +23,15 @@ async function createRoleBinding(accountId, roleId = undefined) {
         });
         return newRb.save();
     } else {
-        return RoleBinding.findByIdAndUpdate(roleBindingModel._id, {
-            $push: {
-                roles: roleId
-            }
-        }, logger.queryCallbackFactory(TAG, "roleBinding", query));
+        return RoleBinding.findByIdAndUpdate(
+            roleBindingModel._id,
+            {
+                $addToSet: {
+                    roles: roleId
+                }
+            },
+            logger.queryCallbackFactory(TAG, "roleBinding", query)
+        );
     }
 }
 
@@ -36,9 +40,9 @@ async function createRoleBinding(accountId, roleId = undefined) {
  * @param {ObjectId} accountId the id of the account that you want to add a rolebinding to
  * @param {String} roleName the name of the role that you want to add
  */
-async function createRoleBindingByRoleName(accountId, roleName){
+async function createRoleBindingByRoleName(accountId, roleName) {
     const role = await RoleService.getRole(roleName);
-    if (!!role) {
+    if (role) {
         await createRoleBinding(accountId, role.id);
     }
 }
@@ -51,11 +55,15 @@ async function createRoleBindingByRoleName(accountId, roleName){
 async function removeRoleBinding(accountId, roleId) {
     const TAG = "[RoleBinding Service # removeRoleBinding]:";
     const roleBindingModel = await getRoleBindingForAcct(accountId);
-    return RoleBinding.findByIdAndUpdate(roleBindingModel._id, {
-        $pop: {
-            roles: roleId
-        }
-    }, logger.queryCallbackFactory(TAG, "roleBinding", roleBindingModel._id));
+    return RoleBinding.findByIdAndUpdate(
+        roleBindingModel._id,
+        {
+            $pop: {
+                roles: roleId
+            }
+        },
+        logger.queryCallbackFactory(TAG, "roleBinding", roleBindingModel._id)
+    );
 }
 
 /**
@@ -63,8 +71,8 @@ async function removeRoleBinding(accountId, roleId) {
  * @function getRoleBindingForAcct
  * @param {string} accountId The id of the account that you want the role bindings for.
  * @returns {Promise<RoleBinding>}
- * @description 
- * Gets the roleBinding for a given account. Populates the role array as well with the Roles. 
+ * @description
+ * Gets the roleBinding for a given account. Populates the role array as well with the Roles.
  */
 async function getRoleBindingForAcct(accountId) {
     const TAG = "[RoleBinding Service # getRoleBindings]:";
@@ -74,8 +82,11 @@ async function getRoleBindingForAcct(accountId) {
     //get the roleBinding for account
     //Populate roles for roleBinding
 
-    return RoleBinding.findOne(query, logger.queryCallbackFactory(TAG, "roleBinding", query)).populate({
-        path: "roles",
+    return RoleBinding.findOne(
+        query,
+        logger.queryCallbackFactory(TAG, "roleBinding", query)
+    ).populate({
+        path: "roles"
     });
 }
 
@@ -83,7 +94,7 @@ async function getRoleBindingForAcct(accountId) {
  * @async
  * @function getById
  * @param {ObjectId} id The rolebinding id
- * @description 
+ * @description
  * Returns the roleBinding specified by the id.
  */
 async function getById(id) {
@@ -93,7 +104,10 @@ async function getById(id) {
     };
     //get the roleBinding for account
     //Populate roles for roleBinding
-    return await RoleBinding.findById(query, logger.queryCallbackFactory(TAG, "roleBinding", query));
+    return await RoleBinding.findById(
+        query,
+        logger.queryCallbackFactory(TAG, "roleBinding", query)
+    );
 }
 
 module.exports = {

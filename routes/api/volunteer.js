@@ -8,12 +8,12 @@ const Middleware = {
     Validator: {
         /* Insert the require statement to the validator file here */
         Volunteer: require("../../middlewares/validators/volunteer.validator"),
-        RouteParam: require("../../middlewares/validators/routeParam.validator"),
+        RouteParam: require("../../middlewares/validators/routeParam.validator")
     },
     /* Insert all of ther middleware require statements here */
     parseBody: require("../../middlewares/parse-body.middleware"),
     Volunteer: require("../../middlewares/volunteer.middleware"),
-    Auth: require("../../middlewares/auth.middleware"),
+    Auth: require("../../middlewares/auth.middleware")
 };
 const Services = {
     Volunteer: require("../../services/volunteer.service")
@@ -22,7 +22,7 @@ const Services = {
 const CONSTANTS = require("../../constants/general.constant");
 
 module.exports = {
-    activate: function (apiRouter) {
+    activate: function(apiRouter) {
         const volunteerRouter = express.Router();
 
         /**
@@ -47,10 +47,10 @@ module.exports = {
          *      {"message": "Volunteer not found", "data": {}}
          */
         volunteerRouter.route("/:id").get(
+            Middleware.Validator.RouteParam.idValidator,
             Middleware.Auth.ensureAuthenticated(),
             Middleware.Auth.ensureAuthorized([Services.Volunteer.findById]),
 
-            Middleware.Validator.RouteParam.idValidator,
             Middleware.parseBody.middleware,
 
             Middleware.Volunteer.findById,

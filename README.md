@@ -15,3 +15,7 @@ API for registration, live-site
 ## How to use and contribute
 
 See documentation here: <https://docs.mchacks.ca>
+
+## Deploy
+
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)

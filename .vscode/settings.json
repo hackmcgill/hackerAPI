@@ -1,10 +1,7 @@
 {
-    "jslint.version": "es6",
-    "jslint.options": {
-        "node":true,
-        "this":false,
-        "bad_property":false
-    },
     "search.usePCRE2": true,
-    "editor.formatOnSave": true
+    "editor.formatOnSave": true,
+    "files.insertFinalNewline": true,
+    "files.trimFinalNewlines": true,
+    "editor.tabSize": 4
 }

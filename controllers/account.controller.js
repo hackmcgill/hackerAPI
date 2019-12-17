@@ -6,7 +6,7 @@ const Services = {
 const Util = require("../middlewares/util.middleware");
 const Constants = {
     Error: require("../constants/error.constant"),
-    Success: require("../constants/success.constant"),
+    Success: require("../constants/success.constant")
 };
 
 /**
@@ -25,7 +25,7 @@ function showAccount(req, res) {
 
 /**
  * @function addUser
- * @param {{body: {accountDetails: {_id: ObjectId, firstName: string, lastName: string, email: string, password: string, dietaryRestrictions: string, shirtSize: string}}}} req
+ * @param {{body: {accountDetails: {_id: ObjectId, firstName: string, lastName: string, email: string, password: string}}}} req
  * @param {*} res
  * @return {JSON} Success or error status
  * @description Adds a user from information in req.body.accountDetails
@@ -38,18 +38,18 @@ function addUser(req, res) {
     });
 }
 
-
 /**
  * @function updatedAccount
  * @param {{body: {Object}}} req
  * @param {*} res
  * @return {JSON} Success or error status
- * @description 
+ * @description
  *      Returns a 200 status for an updated account.
  *      The new account information is located in req.body.
  *      The id is moved to req.body.id from req.params.id by validation.
  */
 function updatedAccount(req, res) {
+    delete req.body.account;
     return res.status(200).json({
         message: Constants.Success.ACCOUNT_UPDATE,
         data: req.body
@@ -77,5 +77,5 @@ module.exports = {
     gotInvites: gotInvites,
     updatedAccount: updatedAccount,
     invitedAccount: invitedAccount,
-    showAccount: showAccount,
+    showAccount: showAccount
 };

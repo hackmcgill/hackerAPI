@@ -23,13 +23,15 @@ const SponsorSchema = new mongoose.Schema({
         required: true
     },
     //which hackers did the sponsor flag to see again?
-    nominees: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Hacker"
-    }]
+    nominees: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Hacker"
+        }
+    ]
 });
 
-SponsorSchema.methods.toJSON = function () {
+SponsorSchema.methods.toJSON = function() {
     const ss = this.toObject();
     delete ss.__v;
     ss.id = ss._id;

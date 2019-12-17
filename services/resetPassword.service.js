@@ -7,17 +7,22 @@ const Services = {
     Email: require("./email.service")
 };
 
-
 function findByAccountId(accountId) {
     const TAG = `[ PasswordReset Service # findByAccountId ]`;
-    return PasswordReset.findOne({
-        accountId: accountId
-    }, logger.queryCallbackFactory(TAG, "passwordReset", "accountId"));
+    return PasswordReset.findOne(
+        {
+            accountId: accountId
+        },
+        logger.queryCallbackFactory(TAG, "passwordReset", "accountId")
+    );
 }
 
 function findById(id) {
     const TAG = `[ PasswordReset Service # findById ]`;
-    return PasswordReset.findById(id, logger.queryCallbackFactory(TAG, "passwordReset", "mongoId"));
+    return PasswordReset.findById(
+        id,
+        logger.queryCallbackFactory(TAG, "passwordReset", "mongoId")
+    );
 }
 
 async function create(accountId) {
@@ -29,20 +34,28 @@ async function create(accountId) {
     });
 
     //invalidate all of the previous reset tokens such that they do not work anymore
-    await PasswordReset.update({
+    await PasswordReset.update(
+        {
             accountId: accountId
-        }, {
+        },
+        {
             $set: {
                 wasUsed: true
             }
-        }, {
+        },
+        {
             multi: true
         },
         (error) => {
             if (error) {
-                logger.error(`${TAG} could not invalidate all previous password reset tokens`, error);
+                logger.error(
+                    `${TAG} could not invalidate all previous password reset tokens`,
+                    error
+                );
             } else {
-                logger.info(`${TAG} invalidated all previous password reset tokens ${accountId}`);
+                logger.info(
+                    `${TAG} invalidated all previous password reset tokens ${accountId}`
+                );
             }
         }
     );
@@ -53,29 +66,35 @@ async function create(accountId) {
 function deleteToken(id) {
     const TAG = `[ PasswordReset Service # deleteToken]:`;
     //Create new instance of password reset token
-    return PasswordReset.deleteOne({
-        _id: id
-    }, (err) => {
-        if (err) {
-            logger.erro(`${TAG} could not delete token id: ${id}`);
+    return PasswordReset.deleteOne(
+        {
+            _id: id
+        },
+        (err) => {
+            if (err) {
+                logger.erro(`${TAG} could not delete token id: ${id}`);
+            }
         }
-    });
+    );
 }
 
-
 function generateToken(resetId, accountId) {
-    const token = jwt.sign({
-        resetId: resetId,
-        accountId: accountId
-    }, process.env.JWT_RESET_PWD_SECRET, {
-        expiresIn: "1 day"
-    });
+    const token = jwt.sign(
+        {
+            resetId: resetId,
+            accountId: accountId
+        },
+        process.env.JWT_RESET_PWD_SECRET,
+        {
+            expiresIn: "1 day"
+        }
+    );
     return token;
 }
 
 /**
  * Generates the link that the user will use to access the reset password page
- * @param {'http'|'https'} httpOrHttps 
+ * @param {'http'|'https'} httpOrHttps
  * @param {string} domain the domain of the current
  * @param {string} token the reset token
  * @returns {string} the string, of form: [http|https]://{domain}/password/reset?token={token}
@@ -92,23 +111,25 @@ function generateTokenLink(httpOrHttps, domain, token) {
  * @param {string} token The resetPassword token
  */
 function generateResetPasswordEmail(address, receiverEmail, token) {
-    const httpOrHttps = (address.includes("localhost")) ? "http" : "https";
+    const httpOrHttps = address.includes("localhost") ? "http" : "https";
     const tokenLink = generateTokenLink(httpOrHttps, address, token);
     if (token === undefined || tokenLink === undefined) {
         return undefined;
     }
-    const handlebarPath = path.join(__dirname, `../assets/email/ResetPassword.hbs`);
+    const handlebarPath = path.join(
+        __dirname,
+        `../assets/email/ResetPassword.hbs`
+    );
     const mailData = {
         from: process.env.NO_REPLY_EMAIL,
         to: receiverEmail,
-        subject: "Request to reset password",
+        subject: "Password Reset Instructions",
         html: Services.Email.renderEmail(handlebarPath, {
             link: tokenLink
         })
     };
     return mailData;
 }
-
 
 module.exports = {
     findByAccountId: findByAccountId,
@@ -117,5 +138,5 @@ module.exports = {
     generateToken: generateToken,
     deleteToken: deleteToken,
     generateTokenLink: generateTokenLink,
-    generateResetPasswordEmail: generateResetPasswordEmail,
+    generateResetPasswordEmail: generateResetPasswordEmail
 };

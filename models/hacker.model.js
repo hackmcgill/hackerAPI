@@ -1,5 +1,4 @@
 "use strict";
-
 const Constants = require("../constants/general.constant");
 const mongoose = require("mongoose");
 //describes the data type
@@ -16,84 +15,118 @@ const HackerSchema = new mongoose.Schema({
         required: true,
         default: "None"
     },
-    school: {
-        type: String,
-        required: true
-    },
-    degree: {
-        type: String,
-        required: true
-    },
-    //no enum for this
-    gender: {
-        type: String
-    },
-    needsBus: Boolean,
     application: {
-        portfolioURL: {
-            //gcloud bucket link
-            resume: {
+        general: {
+            school: {
+                type: String,
+                required: true
+            },
+            degree: {
+                type: String,
+                required: true
+            },
+            fieldOfStudy: [
+                {
+                    type: String,
+                    required: true
+                }
+            ],
+            graduationYear: {
+                type: Number,
+                required: true
+            },
+            jobInterest: {
+                type: String,
+                enum: Constants.JOB_INTERESTS,
+                required: true,
+                default: "None"
+            },
+            URL: {
+                //gcloud bucket link
+                resume: {
+                    type: String,
+                    default: ""
+                },
+                github: {
+                    type: String
+                },
+                dribbble: {
+                    type: String
+                },
+                personal: {
+                    type: String
+                },
+                linkedIn: {
+                    type: String
+                },
+                other: {
+                    type: String
+                }
+            }
+        },
+        shortAnswer: {
+            skills: [
+                {
+                    type: String
+                }
+            ],
+            //any miscelaneous comments that the user has
+            comments: {
                 type: String,
                 default: ""
             },
-            github: {
-                type: String
+            //"Why do you want to come to our hackathon?"
+            question1: {
+                type: String,
+                default: "",
+                required: true
             },
-            dropler: {
-                type: String
-            },
-            personal: {
-                type: String
-            },
-            linkedIn: {
-                type: String
-            },
-            other: {
-                type: String
+            // "Some Q"
+            question2: {
+                type: String,
+                default: "",
+                required: true
             }
         },
-        jobInterest: {
-            type: String,
-            enum: Constants.JOB_INTERESTS,
-            required: true,
-            default: "None"
+        other: {
+            ethnicity: {
+                type: [
+                    {
+                        type: String,
+                        required: true
+                    }
+                ],
+                required: true
+            },
+            privacyPolicy: {
+                type: Boolean,
+                required: true
+            },
+            codeOfConduct: {
+                type: Boolean,
+                required: true
+            }
         },
-        skills: [{
-            type: String
-        }],
-        //any miscelaneous comments that the user has
-        comments: {
-            type: String,
-            default: ""
-        },
-        //"Why do you want to come to our hackathon?"
-        essay: {
-            type: String,
-            default: ""
+        accommodation: {
+            impairments: {
+                type: String,
+                default: ""
+            },
+            barriers: {
+                type: String,
+                default: ""
+            },
+            shirtSize: {
+                type: String,
+                enum: Constants.SHIRT_SIZES,
+                required: true
+            },
+            travel: { type: Number, default: 0 }
         },
         team: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "Team"
         }
-    },
-    ethnicity: {
-        type: [{
-            type: String,
-            required: true
-        }],
-        required: true
-    },
-    major: [{
-        type: String,
-        required: true
-    }],
-    graduationYear: {
-        type: Number,
-        required: true
-    },
-    codeOfConduct: {
-        type: Boolean,
-        required: true
     },
     teamId: {
         type: mongoose.Schema.Types.ObjectId,
@@ -101,19 +134,20 @@ const HackerSchema = new mongoose.Schema({
     }
 });
 
-HackerSchema.methods.toJSON = function () {
+HackerSchema.methods.toJSON = function() {
     const hs = this.toObject();
     delete hs.__v;
     hs.id = hs._id;
     delete hs._id;
     return hs;
 };
-HackerSchema.methods.isApplicationComplete = function () {
+HackerSchema.methods.isApplicationComplete = function() {
     const hs = this.toObject();
-    const portfolioDone = !!hs.application.portfolioURL.resume;
-    const jobInterestDone = !!hs.application.jobInterest;
-    const essayDone = !!hs.application.essay;
-    return portfolioDone && jobInterestDone && essayDone;
+    const portfolioDone = !!hs.application.general.URL.resume;
+    const jobInterestDone = !!hs.application.general.jobInterest;
+    const question1Done = !!hs.application.shortAnswer.question1;
+    const question2Done = !!hs.application.shortAnswer.question2;
+    return portfolioDone && jobInterestDone && question1Done && question2Done;
 };
 
 /**
@@ -121,10 +155,10 @@ HackerSchema.methods.isApplicationComplete = function () {
  * @returns {String} type of the field being queried
  * @description return the type of the field(if it exists and is allowed to be searched on)
  */
-HackerSchema.statics.searchableField = function (field) {
-    const schemaField = HackerSchema.path(field)
+HackerSchema.statics.searchableField = function(field) {
+    const schemaField = HackerSchema.path(field);
     if (schemaField != undefined) {
-        return schemaField.instance
+        return schemaField.instance;
     } else {
         return null;
     }

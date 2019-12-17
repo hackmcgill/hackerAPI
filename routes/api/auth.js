@@ -20,7 +20,7 @@ const Controllers = {
 };
 
 module.exports = {
-    activate: function (apiRouter) {
+    activate: function(apiRouter) {
         passport.serializeUser(Services.Auth.serializeUser);
         passport.deserializeUser(Services.Auth.deserializeUser);
         const authRouter = express.Router();
@@ -45,44 +45,41 @@ module.exports = {
          * 
          * @apiPermission: public
          */
-        authRouter.route("/login").post(
-            Middleware.Auth.login,
-            Controllers.Auth.onSuccessfulLogin
-        );
+        authRouter
+            .route("/login")
+            .post(Middleware.Auth.login, Controllers.Auth.onSuccessfulLogin);
 
         /**
          * @api {get} /auth/logout logout of service
          * @apiName logout
          * @apiGroup Authentication
          * @apiVersion 0.0.8
-         * 
+         *
          * @apiSuccess {string} message Success message
          * @apiSuccess {object} data empty
-         * @apiSuccessExample {object} Success-Response: 
+         * @apiSuccessExample {object} Success-Response:
          *      {"message": "Successfully logged out", "data": {}}
-         * 
+         *
          * @apiPermission: public
          */
-        authRouter.route("/logout").get(
-            Controllers.Auth.logout
-        );
+        authRouter.route("/logout").get(Controllers.Auth.logout);
 
         /**
          * @api {post} /auth/password/forgot forgot password route
          * @apiName forgotPassword
          * @apiGroup Authentication
          * @apiVersion 0.0.8
-         * 
+         *
          * @apiParam {String} email the email address of the account
-         * 
+         *
          * @apiParamExample {json} Request-Example:
          *      { "email": "myemail@mchacks.ca" }
-         * 
+         *
          * @apiSuccess {string} message Success message
          * @apiSuccess {object} data empty
-         * @apiSuccessExample {json} Success-Response: 
+         * @apiSuccessExample {json} Success-Response:
          *      {"message": "Sent reset email", "data": {}}
-         * 
+         *
          * @apiPermission: public
          */
         authRouter.route("/password/forgot").post(
@@ -102,21 +99,21 @@ module.exports = {
          * @apiName changePassword
          * @apiGroup Authentication
          * @apiVersion 0.0.8
-         * 
+         *
          * @apiParam {String} oldPassword The current password of the user
          * @apiParam {String} newPassword The new password of the user
-         * 
+         *
          * @apiParamExample {json} Request-Example:
-         *      { 
+         *      {
          *          "oldPassword": "password12345",
          *          "newPassword": "password123456"
          *      }
-         * 
+         *
          * @apiSuccess {string} message Success message
          * @apiSuccess {object} data empty
-         * @apiSuccessExample {json} Success-Response: 
+         * @apiSuccessExample {json} Success-Response:
          *      {"message": "Successfully reset password", "data": {}}
-         * 
+         *
          * @apiPermission: Must be logged in
          */
         authRouter.route("/password/change").patch(
@@ -135,22 +132,22 @@ module.exports = {
          * @apiName resetPassword
          * @apiGroup Authentication
          * @apiVersion 0.0.8
-         * 
+         *
          * @apiParam {String} password the password of the account
          * @apiHeader {String} Authentication the token that was provided in the reset password email
          * @apiHeaderExample {json} Header-Example:
          *     {
          *       "X-Reset-Token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
          *     }
-         * 
+         *
          * @apiParamExample {json} Request-Example:
          *      { "password": "hunter2" }
-         * 
+         *
          * @apiSuccess {string} message Success message
          * @apiSuccess {object} data empty
-         * @apiSuccessExample {json} Success-Response: 
+         * @apiSuccessExample {json} Success-Response:
          *      {"message": "Successfully reset password", "data": {}}
-         * 
+         *
          * @apiPermission: must have authentication token
          */
         authRouter.route("/password/reset").post(
@@ -184,20 +181,22 @@ module.exports = {
          * @apiSuccess {object} data empty
          * @apiSuccessExample {json} Success-Response:
          *      {"message": "Successfully confirmed account", "data": {}}
-         * 
+         *
          * @apiError {string} message Error message
          * @apiError {object} data empty
-         * @apiErrorExample {object} Error-Response: 
+         * @apiErrorExample {object} Error-Response:
          *      {"message": "Invalid token for confirming account, "data": {}}
-         * 
+         *
          */
-        authRouter.route("/confirm/:token").post(
-            Middleware.Validator.Auth.accountConfirmationValidator,
-            Middleware.parseBody.middleware,
-            Middleware.Auth.parseAccountConfirmationToken,
-            Middleware.Auth.validateConfirmationToken,
-            Controllers.Auth.confirmAccount
-        );
+        authRouter
+            .route("/confirm/:token")
+            .post(
+                Middleware.Validator.Auth.accountConfirmationValidator,
+                Middleware.parseBody.middleware,
+                Middleware.Auth.parseAccountConfirmationToken,
+                Middleware.Auth.validateConfirmationToken,
+                Controllers.Auth.confirmAccount
+            );
 
         /**
          * @api {get} /auth/rolebindings/:id retrieve rolebindings for a user given by their user id :id
@@ -241,14 +240,16 @@ module.exports = {
          *      {"message": "Role Bindings not found", "data": {}}
          * 
          */
-        authRouter.route("/rolebindings/:id").get(
-            Middleware.Auth.ensureAuthenticated(),
-            Middleware.Auth.ensureAuthorized([Services.Account.findById]),
-            Middleware.Validator.RouteParam.idValidator,
-            Middleware.parseBody.middleware,
-            Middleware.Auth.retrieveRoleBindings,
-            Controllers.Auth.retrieveRoleBindings
-        );
+        authRouter
+            .route("/rolebindings/:id")
+            .get(
+                Middleware.Validator.RouteParam.idValidator,
+                Middleware.Auth.ensureAuthenticated(),
+                Middleware.Auth.ensureAuthorized([Services.Account.findById]),
+                Middleware.parseBody.middleware,
+                Middleware.Auth.retrieveRoleBindings,
+                Controllers.Auth.retrieveRoleBindings
+            );
 
         /**
          * @api {get} /auth/confirm/resend resend confirmation token
@@ -260,25 +261,27 @@ module.exports = {
          * @apiSuccess {object} data empty
          * @apiSuccessExample {json} Success-Response:
          *      {"message": "Successfully resent confirmation email", "data": {}}
-         * 
+         *
          * @apiError {string} message Error message
          * @apiError {object} data empty
          * @apiErrorExample {json} Error-Response:
          *       HTTP/1.1 422
          *      {"message": "Account already confirmed", "data": {}}
-         * 
+         *
          * @apiError {string} message Error message
          * @apiError {object} data empty
          * @apiErrorExample {json} Error-Response:
          *       HTTP/1.1 428
          *      {"message": "Account confirmation token does not exist", "data": {}}
-         * 
+         *
          */
-        authRouter.route("/confirm/resend").get(
-            Middleware.Auth.ensureAuthenticated(),
-            Middleware.Auth.resendConfirmAccountEmail,
-            Controllers.Auth.sentConfirmationEmail
-        );
+        authRouter
+            .route("/confirm/resend")
+            .get(
+                Middleware.Auth.ensureAuthenticated(),
+                Middleware.Auth.resendConfirmAccountEmail,
+                Controllers.Auth.sentConfirmationEmail
+            );
 
         /**
          * @api {get} /auth/roles get roles
@@ -294,12 +297,14 @@ module.exports = {
          *      [{name: "GodStaff", routes: Array(27), id: "5bee20ef3ca9dd4754382880"},
          *       {name: "Hacker", routes: Array(10), id: "5bee20ef3ca9dd4754382881"},
          *       {name: "Volunteer", routes: Array(4), id: "5bee20ef3ca9dd4754382882"}]
-         * 
+         *
          */
-        authRouter.route("/roles").get(
-            Middleware.Auth.retrieveRoles,
-            Controllers.Auth.retrievedRoles
-        );
+        authRouter
+            .route("/roles")
+            .get(
+                Middleware.Auth.retrieveRoles,
+                Controllers.Auth.retrievedRoles
+            );
 
         apiRouter.use("/auth", authRouter);
     }

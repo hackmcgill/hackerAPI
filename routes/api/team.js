@@ -9,19 +9,19 @@ const Middleware = {
     Validator: {
         /* Insert the require statement to the validator file here */
         Team: require("../../middlewares/validators/team.validator"),
-        RouteParam: require("../../middlewares/validators/routeParam.validator"),
+        RouteParam: require("../../middlewares/validators/routeParam.validator")
     },
     /* Insert all of ther middleware require statements here */
     parseBody: require("../../middlewares/parse-body.middleware"),
     Team: require("../../middlewares/team.middleware"),
-    Auth: require("../../middlewares/auth.middleware"),
+    Auth: require("../../middlewares/auth.middleware")
 };
 const Services = {
-    Hacker: require("../../services/hacker.service"),
+    Hacker: require("../../services/hacker.service")
 };
 
 module.exports = {
-    activate: function (apiRouter) {
+    activate: function(apiRouter) {
         const teamRouter = new express.Router();
 
         /**
@@ -66,13 +66,13 @@ module.exports = {
          * @apiName patchJoinTeam
          * @apiGroup Team
          * @apiVersion 1.1.1
-         * 
+         *
          * @apiParam (body) {string} [name] Name of the team to join
          * @apiSuccess {string} message Success message
          * @apiSuccess {object} data {}
-         * @apiSuccessExample {object} Success-Response: 
+         * @apiSuccessExample {object} Success-Response:
          *      {
-         *          "message": "Team join successful.", 
+         *          "message": "Team join successful.",
          *          "data": {}
          *      }
          */
@@ -94,21 +94,23 @@ module.exports = {
          * @apiName deleteSelfFromTeam
          * @apiGroup Team
          * @apiVersion 1.1.1
-         * 
+         *
          * @apiSuccess {string} message Success message
          * @apiSuccess {object} data {}
-         * @apiSuccessExample {object} Success-Response: 
+         * @apiSuccessExample {object} Success-Response:
          *      {
-         *          "message": "Removal from team successful.", 
+         *          "message": "Removal from team successful.",
          *          "data": {}
          *      }
          */
-        teamRouter.route("/leave").patch(
-            Middleware.Auth.ensureAuthenticated(),
-            Middleware.Auth.ensureAuthorized(),
-            Middleware.Team.deleteUserFromTeam,
-            Controllers.Team.leftTeam
-        );
+        teamRouter
+            .route("/leave")
+            .patch(
+                Middleware.Auth.ensureAuthenticated(),
+                Middleware.Auth.ensureAuthorized(),
+                Middleware.Team.deleteUserFromTeam,
+                Controllers.Team.leftTeam
+            );
 
         /**
          * @api {get} /team/:id get a team's information
@@ -147,18 +149,20 @@ module.exports = {
          *      {"message": "Team not found", "data": {}}
          */
         teamRouter.route("/:id").get(
+            Middleware.Validator.RouteParam.idValidator,
             Middleware.Auth.ensureAuthenticated(),
             // get is available for all teams, or no teams. No authorization is done on the :id parameter.
             // However, a function is needed, so the identity function is put here. In reality, the route
             // is /api/team/:all, so the id is not checked. The returned object places the id inside accountId
             // to be consistent with other findById functions
-            Middleware.Auth.ensureAuthorized([(id) => {
-                return {
-                    accountId: id
-                };
-            }]),
+            Middleware.Auth.ensureAuthorized([
+                (id) => {
+                    return {
+                        accountId: id
+                    };
+                }
+            ]),
 
-            Middleware.Validator.RouteParam.idValidator,
             Middleware.parseBody.middleware,
 
             Middleware.Team.populateMemberAccountsById,
@@ -195,11 +199,10 @@ module.exports = {
          */
         teamRouter.route("/:hackerId").patch(
             Middleware.Auth.ensureAuthenticated(),
-
+            Middleware.Validator.RouteParam.hackeridValidator,
             Middleware.Auth.ensureAuthorized([Services.Hacker.findById]),
 
             Middleware.Validator.Team.patchTeamValidator,
-            Middleware.Validator.RouteParam.hackeridValidator,
             Middleware.parseBody.middleware,
             Middleware.Team.parsePatch,
 

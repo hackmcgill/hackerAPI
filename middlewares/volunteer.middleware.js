@@ -5,11 +5,11 @@ const Middleware = {
 };
 const Services = {
     Volunteer: require("../services/volunteer.service"),
-    Account: require("../services/account.service"),
+    Account: require("../services/account.service")
 };
 const Constants = {
     General: require("../constants/general.constant"),
-    Error: require("../constants/error.constant"),
+    Error: require("../constants/error.constant")
 };
 
 /**
@@ -18,14 +18,14 @@ const Constants = {
  * @param {*} res
  * @param {(err?)=>void} next
  * @return {void}
- * @description 
+ * @description
  * Moves accountId from req.body to req.body.volunteerDetails.
  * Adds _id to volunteerDetails.
  */
 function parseVolunteer(req, res, next) {
     const volunteerDetails = {
         _id: mongoose.Types.ObjectId(),
-        accountId: req.body.accountId,
+        accountId: req.body.accountId
     };
 
     delete req.body.accountId;
@@ -37,12 +37,14 @@ function parseVolunteer(req, res, next) {
 
 /**
  * Checks that there are no other volunteers with the same account id as the one passed into req.body.accountId
- * @param {{body:{accountId: ObjectId}}} req 
- * @param {*} res 
+ * @param {{body:{accountId: ObjectId}}} req
+ * @param {*} res
  * @param {*} next
  */
 async function checkDuplicateAccountLinks(req, res, next) {
-    const volunteer = await Services.Volunteer.findByAccountId(req.body.accountId);
+    const volunteer = await Services.Volunteer.findByAccountId(
+        req.body.accountId
+    );
     if (!volunteer) {
         return next();
     } else {
@@ -66,7 +68,9 @@ async function checkDuplicateAccountLinks(req, res, next) {
 async function createVolunteer(req, res, next) {
     const volunteerDetails = req.body.volunteerDetails;
 
-    const volunteer = await Services.Volunteer.createVolunteer(volunteerDetails);
+    const volunteer = await Services.Volunteer.createVolunteer(
+        volunteerDetails
+    );
 
     if (!volunteer) {
         return next({
@@ -82,9 +86,9 @@ async function createVolunteer(req, res, next) {
 
 /**
  * Verifies that account is confirmed and of proper type from the account ID passed in req.body.accountId
- * @param {{body: {accountId: ObjectId}}} req 
- * @param {*} res 
- * @param {(err?) => void} next 
+ * @param {{body: {accountId: ObjectId}}} req
+ * @param {*} res
+ * @param {(err?) => void} next
  */
 async function validateConfirmedStatus(req, res, next) {
     const account = await Services.Account.findById(req.body.accountId);
@@ -103,7 +107,7 @@ async function validateConfirmedStatus(req, res, next) {
     } else if (account.accountType !== Constants.General.VOLUNTEER) {
         return next({
             status: 409,
-            message: Constants.Error.ACCOUNT_TYPE_409_MESSAGE,
+            message: Constants.Error.ACCOUNT_TYPE_409_MESSAGE
         });
     } else {
         return next();
@@ -125,7 +129,7 @@ async function findById(req, res, next) {
             status: 404,
             message: Constants.Error.VOLUNTEER_404_MESSAGE,
             data: {
-                id: req.body.id,
+                id: req.body.id
             }
         });
     }
@@ -137,7 +141,11 @@ async function findById(req, res, next) {
 module.exports = {
     parseVolunteer: parseVolunteer,
     createVolunteer: Middleware.Util.asyncMiddleware(createVolunteer),
-    checkDuplicateAccountLinks: Middleware.Util.asyncMiddleware(checkDuplicateAccountLinks),
-    validateConfirmedStatus: Middleware.Util.asyncMiddleware(validateConfirmedStatus),
-    findById: Middleware.Util.asyncMiddleware(findById),
+    checkDuplicateAccountLinks: Middleware.Util.asyncMiddleware(
+        checkDuplicateAccountLinks
+    ),
+    validateConfirmedStatus: Middleware.Util.asyncMiddleware(
+        validateConfirmedStatus
+    ),
+    findById: Middleware.Util.asyncMiddleware(findById)
 };

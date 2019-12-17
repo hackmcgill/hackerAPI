@@ -16,9 +16,10 @@ VALID_STATUSES = {
     '1': 'Applied',
     '2': 'Accepted',
     '3': 'Waitlisted',
-    '4': 'Confirmed',
-    '5': 'Cancelled',
-    '6': 'Checked-in'
+    '4': 'Declined',
+    '5': 'Confirmed',
+    '6': 'Withdrawn',
+    '7': 'Checked-in'
 }
 BATCH_ACTIONS = {
     '1': 'updateStatus',
@@ -392,12 +393,12 @@ def getHackers():
                 'First Name': result['accountId']['firstName'],
                 'Last Name': result['accountId']['lastName'],
                 'Email': result['accountId']['email'],
-                'School': result['school'],
-                'Degree': result['degree'],
-                'Graduation Year': result['graduationYear'],
-                'Job Interest': result['application']['jobInterest'],
-                'Github': result['application']['portfolioURL']['github'],
-                'LinkedIn': result['application']['portfolioURL']['linkedIn'],
+                'School': result['application']['general']['school'],
+                'Degree': result['application']['general']['degree'],
+                'Graduation Year': result['application']['general']['graduationYear'],
+                'Job Interest': result['application']['general']['jobInterest'],
+                'Github': result['application']['general']['URL']['github'],
+                'LinkedIn': result['application']['general']['URL']['linkedIn'],
             })
 
 

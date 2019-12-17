@@ -44,7 +44,11 @@ if (!Services.env.isProduction()) {
 } else {
     // TODO: change this when necessary
     corsOptions = {
-        origin: [`https://${process.env.FRONTEND_ADDRESS_DEPLOY}`, `https://docs.mchacks.ca`],
+        origin: [
+            `https://${process.env.FRONTEND_ADDRESS_DEPLOY}`,
+            `https://${process.env.FRONTEND_ADDRESS_BETA}`,
+            `https://docs.mchacks.ca`
+        ],
         credentials: true
     };
 }
@@ -53,17 +57,21 @@ app.use(cors(corsOptions));
 app.use(Services.log.requestLogger);
 app.use(Services.log.errorLogger);
 app.use(express.json());
-app.use(express.urlencoded({
-    extended: false
-}));
+app.use(
+    express.urlencoded({
+        extended: false
+    })
+);
 app.use(cookieParser());
 //Cookie-based session tracking
-app.use(cookieSession({
-    name: "session",
-    keys: [process.env.COOKIE_SECRET],
-    // Cookie Options
-    maxAge: 48 * 60 * 60 * 1000 //Logged in for 48 hours
-}));
+app.use(
+    cookieSession({
+        name: "session",
+        keys: [process.env.COOKIE_SECRET],
+        // Cookie Options
+        maxAge: 48 * 60 * 60 * 1000 //Logged in for 48 hours
+    })
+);
 app.use(passport.initialize());
 app.use(passport.session()); //persistent login session
 
@@ -98,8 +106,8 @@ app.use("/api", apiRouter);
 //Custom error handler
 app.use((err, req, res, next) => {
     // log the error...
-    const status = (err.status) ? err.status : 500;
-    const message = (err.message) ? err.message : "Internal Server Error";
+    const status = err.status ? err.status : 500;
+    const message = err.message ? err.message : "Internal Server Error";
     //Only show bad error when we're not in deployment
     let errorContents;
     if (status === 500 && Services.env.isProduction) {
@@ -118,5 +126,5 @@ app.use((err, req, res, next) => {
 });
 
 module.exports = {
-    app: app,
+    app: app
 };

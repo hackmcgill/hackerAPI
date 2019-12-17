@@ -2,10 +2,10 @@
 const Team = require("../models/team.model");
 const logger = require("./logger.service");
 const Services = {
-    Hacker: require("../services/hacker.service"),
+    Hacker: require("../services/hacker.service")
 };
 const Middleware = {
-    Util: require("../middlewares/util.middleware"),
+    Util: require("../middlewares/util.middleware")
 };
 
 /**
@@ -18,7 +18,7 @@ function findTeamByHackerId(hackerId) {
     const TAG = `[Team Service # findTeamByHackerId]:`;
 
     const query = {
-        members: hackerId,
+        members: hackerId
     };
 
     return Team.findOne(query, logger.queryCallbackFactory(TAG, "team", query));
@@ -53,7 +53,11 @@ function updateOne(id, teamDetails) {
         _id: id
     };
 
-    return Team.findOneAndUpdate(query, teamDetails, logger.updateCallbackFactory(TAG, "team"));
+    return Team.findOneAndUpdate(
+        query,
+        teamDetails,
+        logger.updateCallbackFactory(TAG, "team")
+    );
 }
 
 /**
@@ -67,7 +71,10 @@ function findById(id) {
     const query = {
         _id: id
     };
-    return Team.findById(query, logger.queryCallbackFactory(TAG, "team", query));
+    return Team.findById(
+        query,
+        logger.queryCallbackFactory(TAG, "team", query)
+    );
 }
 
 /**
@@ -105,13 +112,16 @@ async function removeMember(teamId, hackerId) {
         return null;
     }
 
-    return Team.findOneAndUpdate({
-        _id: teamId
-    }, {
-        $pull: {
-            members: hackerId
+    return Team.findOneAndUpdate(
+        {
+            _id: teamId
+        },
+        {
+            $pull: {
+                members: hackerId
+            }
         }
-    });
+    );
 }
 
 /**
@@ -127,7 +137,7 @@ async function addMember(teamId, hackerId) {
 
     const hacker = await Services.Hacker.updateOne(hackerId, {
         $set: {
-            teamId: teamId,
+            teamId: teamId
         }
     });
 
@@ -135,13 +145,16 @@ async function addMember(teamId, hackerId) {
         return null;
     }
 
-    return Team.update({
-        _id: teamId
-    }, {
-        $push: {
-            members: [hackerId]
+    return Team.update(
+        {
+            _id: teamId
+        },
+        {
+            $push: {
+                members: [hackerId]
+            }
         }
-    });
+    );
 }
 
 /**
@@ -170,7 +183,7 @@ async function removeTeamIfEmpty(teamId) {
  * @function removeTeam
  * @param {ObjectId} teamId
  * @return {DocumentQuery} The document query will resolve to the number of objects removed, or null.
- * @description Delete the team specified by teamId. 
+ * @description Delete the team specified by teamId.
  */
 async function removeTeam(teamId) {
     const TAG = `[Team Services # removeTeam]`;
@@ -189,7 +202,7 @@ async function removeTeam(teamId) {
 /**
  * @async
  * @function getSize
- * @param {*} name 
+ * @param {*} name
  * @return {number} If the team exists, return the number of members in the team. Otherwise, returns -1.
  * @description Gets the number of current members of a team defined by name
  */
@@ -226,5 +239,5 @@ module.exports = {
     removeTeam: removeTeam,
     addMember: addMember,
     updateOne: updateOne,
-    removeTeamIfEmpty: removeTeamIfEmpty,
+    removeTeamIfEmpty: removeTeamIfEmpty
 };
