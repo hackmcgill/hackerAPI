@@ -23,6 +23,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Modify account creation/profile fields
 -   Move deployment from GCP to Heroku
 -   Change `cancelled` hacker status to `withdrawn`
+-   Update pre-acceptance email templates: none hacker status, applied hacker status, account invitation, account confirmation, password reset
+-   Group application enums
+-   Change job interest enums
 
 ### Security
 
