@@ -168,7 +168,17 @@ async function updateAccount(req, res, next) {
     // If we are changing the email, and there is a difference between the two, set back to unconfirmed status.
     // TODO: When pull request for parse patch refactor #546 hits, req.body.email will not be present.
     if (req.body.email && account.email != req.body.email) {
-        req.body.confirmed = false;
+        const existingAccount = await Services.Account.findByEmail(
+            account.email
+        );
+        if (existingAccount) {
+            return next({
+                status: 409,
+                message: Constants.Error.ACCOUNT_EMAIL_409_MESSAGE
+            });
+        } else {
+            req.body.confirmed = false;
+        }
     }
 
     req.body.account = await Services.Account.updateOne(

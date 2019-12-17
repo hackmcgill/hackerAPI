@@ -9,6 +9,7 @@ const VOLUNTEER_404_MESSAGE = "Volunteer not found";
 const SETTINGS_404_MESSAGE = "Settings not found";
 
 const ACCOUNT_TYPE_409_MESSAGE = "Wrong account type";
+const ACCOUNT_EMAIL_409_MESSAGE = "Email already in use";
 const SPONSOR_ID_409_MESSAGE = "Conflict with sponsor accountId link";
 const VOLUNTEER_ID_409_MESSAGE = "Conflict with volunteer accountId link";
 const HACKER_ID_409_MESSAGE = "Conflict with hacker accountId link";
@@ -50,6 +51,7 @@ module.exports = {
     TEAM_404_MESSAGE: TEAM_404_MESSAGE,
     RESUME_404_MESSAGE: RESUME_404_MESSAGE,
     ACCOUNT_TYPE_409_MESSAGE: ACCOUNT_TYPE_409_MESSAGE,
+    ACCOUNT_EMAIL_409_MESSAGE: ACCOUNT_EMAIL_409_MESSAGE,
     SPONSOR_ID_409_MESSAGE: SPONSOR_ID_409_MESSAGE,
     VOLUNTEER_ID_409_MESSAGE: VOLUNTEER_ID_409_MESSAGE,
     TEAM_MEMBER_409_MESSAGE: TEAM_MEMBER_409_MESSAGE,
