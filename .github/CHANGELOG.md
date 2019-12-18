@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Add accept hacker route
 -   Create changelog
 
+
 ### Changed
 
 -   Match npm scripts with dashboard
@@ -26,6 +27,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Update pre-acceptance email templates: none hacker status, applied hacker status, account invitation, account confirmation, password reset
 -   Group application enums
 -   Change job interest enums
+-   Changed the attribute used to check already exisiting emails when updating one's account
 
 ### Security
 
