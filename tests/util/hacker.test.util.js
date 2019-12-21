@@ -391,7 +391,46 @@ const invalidHacker1 = {
         accommodation: {
             dietaryRestrictions: ["Gluten-Free"],
             shirtSize: "L",
-            travel: 0
+            travel: "sfg"
+        }
+    }
+};
+
+// duplicate of newHack0, but with 101 for travel
+const invalidHacker2 = {
+    accountId: Util.Account.hackerAccounts.new[0]._id,
+    application: {
+        general: {
+            school: "University of ASDF",
+            degree: "Masters",
+            fieldOfStudy: ["EE"],
+            graduationYear: 2019,
+            jobInterest: "Full Time",
+            URL: {
+                //gcloud bucket link
+                resume: "www.gcloud.com/myResume100",
+                github: "www.github.com/Person1",
+                dribbble: null,
+                personal: "www.person1.com",
+                linkedIn: "www.linkedin.com/in/Person1",
+                other: null
+            }
+        },
+        shortAnswer: {
+            skills: ["CSS", "HTML", "JS"],
+            question1: "a",
+            question2: "a"
+        },
+        other: {
+            ethnicity: ["Caucasian"],
+            codeOfConduct: true,
+            privacyPolicy: true
+        },
+        accommodation: {
+            dietaryRestrictions: ["Gluten-Free"],
+            shirtSize: "L",
+            // must be between [0,100] to be valid
+            travel: 101
         }
     }
 };
@@ -581,6 +620,7 @@ module.exports = {
 
     invalidHacker0: invalidHacker0,
     invalidHacker1: invalidHacker1,
+    invalidHacker2: invalidHacker2,
 
     duplicateAccountLinkHacker0: duplicateAccountLinkHacker0,
     waitlistedHacker0: waitlistedHacker0,
