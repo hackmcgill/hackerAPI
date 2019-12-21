@@ -38,8 +38,6 @@ function integerValidator(
             .isInt()
             .withMessage(`${fieldname} must be an integer.`)
             .custom((value) => {
-                console.log(typeof value);
-
                 return value >= lowerBound && value <= upperBound;
             })
             .withMessage(
