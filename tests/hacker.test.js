@@ -28,6 +28,7 @@ const volunteerAccount0 = util.account.volunteerAccounts.stored[0];
 
 const newHackerAccount0 = util.account.hackerAccounts.new[0];
 const newHacker0 = util.hacker.newHacker0;
+const invalidHackerAccount0 = util.account.hackerAccounts.invalid;
 const invalidHacker0 = util.hacker.invalidHacker0;
 const invalidHacker2 = util.hacker.invalidHacker2;
 const newHacker1 = util.hacker.newHacker1;
@@ -638,6 +639,7 @@ describe("PATCH update one hacker", function() {
             });
     });
 
+    //should FAIL on authentication
     it("should FAIL to accept a hacker on /api/hacker/accept/:id due to authentication", function(done) {
         chai.request(server.app)
             .patch(`/api/hacker/accept/${TeamHacker0._id}`)
@@ -709,6 +711,98 @@ describe("PATCH update one hacker", function() {
             }
             return agent
                 .patch(`/api/hacker/accept/${TeamHacker0._id}`)
+                .type("application/json")
+                .send()
+                .end(function(err, res) {
+                    res.should.have.status(200);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal(
+                        Constants.Success.HACKER_UPDATE
+                    );
+                    res.body.should.have.property("data");
+                    chai.assert.equal(
+                        JSON.stringify(res.body.data),
+                        JSON.stringify({
+                            status: "Accepted"
+                        })
+                    );
+                    done();
+                });
+        });
+    });
+
+    it("should FAIL to accept a hacker on /api/hacker/acceptEmail/:email due to authentication", function(done) {
+        chai.request(server.app)
+            .patch(`/api/hacker/acceptEmail/${teamHackerAccount0.email}`)
+            .type("application/json")
+            .send()
+            .end(function(err, res) {
+                res.should.have.status(401);
+                res.should.be.json;
+                res.body.should.have.property("message");
+                res.body.message.should.equal(Constants.Error.AUTH_401_MESSAGE);
+                done();
+            });
+    });
+
+    // should FAIL due to authorization
+    it("should FAIL to accept hacker info due to lack of authorization on /api/hacker/acceptEmail/:email", function(done) {
+        util.auth.login(agent, noTeamHackerAccount0, (error) => {
+            if (error) {
+                agent.close();
+                return done(error);
+            }
+            return agent
+                .patch(`/api/hacker/acceptEmail/${teamHackerAccount0.email}`)
+                .type("application/json")
+                .send()
+                .end(function(err, res) {
+                    res.should.have.status(403);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal(
+                        Constants.Error.AUTH_403_MESSAGE
+                    );
+                    res.body.should.have.property("data");
+
+                    done();
+                });
+        });
+    });
+
+    it("should FAIL to accept an invalid hacker's info on /api/hacker/acceptEmail/:email", function(done) {
+        util.auth.login(agent, Admin0, (error) => {
+            if (error) {
+                agent.close();
+                return done(error);
+            }
+            return agent
+                .patch(`/api/hacker/acceptEmail/${invalidHackerAccount0.email}`)
+                .type("application/json")
+                .send()
+                .end(function(err, res) {
+                    res.should.have.status(404);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal(
+                        Constants.Error.HACKER_404_MESSAGE
+                    );
+                    res.body.should.have.property("data");
+
+                    done();
+                });
+        });
+    });
+
+    it("should SUCCEED and accept a hacker on /api/hacker/acceptEmail/:email as an Admin", function(done) {
+        util.auth.login(agent, Admin0, (error) => {
+            if (error) {
+                agent.close();
+                return done(error);
+            }
+            return agent
+                .patch(`/api/hacker/acceptEmail/${teamHackerAccount1.email}`)
                 .type("application/json")
                 .send()
                 .end(function(err, res) {
