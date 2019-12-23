@@ -524,6 +524,40 @@ async function updateHacker(req, res, next) {
 }
 
 /**
+ * Updates a hacker that is specified by req.body.hacker._id, and then sets req.email
+ * to the email of the hacker, found in Account.
+ * @param {{params:{id: string}, body: *}} req
+ * @param {*} res
+ * @param {*} next
+ */
+async function updateHackerByEmailRoute(req, res, next) {
+    const hacker = await Services.Hacker.updateOne(req.body.hacker._id, req.body);
+    if (hacker) {
+        const acct = await Services.Account.findById(hacker.accountId);
+        if (!acct) {
+            return next({
+                status: 500,
+                message: Constants.Error.HACKER_UPDATE_500_MESSAGE,
+                data: {
+                    hackerId: hacker.id,
+                    accountId: hacker.accountId
+                }
+            });
+        }
+        req.email = acct.email;
+        return next();
+    } else {
+        return next({
+            status: 404,
+            message: Constants.Error.HACKER_404_MESSAGE,
+            data: {
+                id: req.params.id
+            }
+        });
+    }
+}
+
+/**
  * Sets req.body.status to Accepted for next middleware.
  * @param {{params:{id: string}, body: *}} req 
  * @param {*} res 
@@ -531,6 +565,19 @@ async function updateHacker(req, res, next) {
  */
 function parseAccept(req, res, next) {
     req.body.status = Constants.General.HACKER_STATUS_ACCEPTED;
+    req.hackerId = req.params.id;
+    next();
+}
+
+/**
+ * Sets req.body.status to Accepted for next middleware.
+ * @param {{params:{email: string}, body: *}} req 
+ * @param {*} res 
+ * @param {*} next 
+ */
+function parseAcceptEmail(req, res, next) {
+    req.body.hacker.status = Constants.General.HACKER_STATUS_ACCEPTED;
+    req.hackerId = req.body.hacker._id;
     next();
 }
 
@@ -652,7 +699,9 @@ module.exports = {
         sendAppliedStatusEmail
     ),
     updateHacker: Middleware.Util.asyncMiddleware(updateHacker),
+    updateHackerByEmailRoute: Middleware.Util.asyncMiddleware(updateHackerByEmailRoute),
     parseAccept: parseAccept,
+    parseAcceptEmail: parseAcceptEmail,
     validateConfirmedStatusFromAccountId: Middleware.Util.asyncMiddleware(
         validateConfirmedStatusFromAccountId
     ),
