@@ -287,7 +287,8 @@ describe("PATCH update account", function() {
     const updatedInfo = {
         _id: teamHackerAccount0._id,
         firstName: "new",
-        lastName: "name"
+        lastName: "name",
+        email: "newUpdatedEmail@mail.com"
     };
 
     const failUpdatedInfo = {
@@ -359,6 +360,7 @@ describe("PATCH update account", function() {
                     // Is this correct matching of data?
                     res.body.data.firstName.should.equal(updatedInfo.firstName);
                     res.body.data.lastName.should.equal(updatedInfo.lastName);
+                    res.body.data.email.should.equal(updatedInfo.email);
                     done();
                 });
         });
@@ -390,7 +392,7 @@ describe("PATCH update account", function() {
     });
 
     // fail due to attempt to update account email to one that already exists in DB
-    it("should FAIL to update email to one that already exists", function (done) {
+    it("should FAIL to update email to one that already exists", function(done) {
         util.auth.login(agent, Admin0, (error) => {
             if (error) {
                 agent.close();
@@ -400,7 +402,7 @@ describe("PATCH update account", function() {
                 .patch(`/api/account/${failUpdatedInfo._id}`)
                 .type("application/json")
                 .send(failUpdatedInfo)
-                .end(function (err, res) {
+                .end(function(err, res) {
                     res.should.have.status(409);
                     res.should.be.json;
                     res.body.should.have.property("message");
