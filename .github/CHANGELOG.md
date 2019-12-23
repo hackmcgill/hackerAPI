@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -   Add email blast marketing email
 
+### Fixed
+
+-   Change the attribute used to check already exisiting emails when updating one's account
+
 ## [2.0.0](https://github.com/hackmcgill/hackerapi/tree/2.0.0) - 2019-12-17
 
 ### Added

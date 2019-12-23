@@ -287,13 +287,15 @@ describe("PATCH update account", function() {
     const updatedInfo = {
         _id: teamHackerAccount0._id,
         firstName: "new",
-        lastName: "name"
+        lastName: "name",
+        email: "newUpdatedEmail@mail.com"
     };
 
     const failUpdatedInfo = {
         _id: Admin0._id,
         firstName: "fail",
-        lastName: "fail"
+        lastName: "fail",
+        email: storedAccount1.email
     };
 
     // fail on authentication
@@ -358,6 +360,7 @@ describe("PATCH update account", function() {
                     // Is this correct matching of data?
                     res.body.data.firstName.should.equal(updatedInfo.firstName);
                     res.body.data.lastName.should.equal(updatedInfo.lastName);
+                    res.body.data.email.should.equal(updatedInfo.email);
                     done();
                 });
         });
@@ -383,6 +386,29 @@ describe("PATCH update account", function() {
                     );
                     res.body.should.have.property("data");
 
+                    done();
+                });
+        });
+    });
+
+    // fail due to attempt to update account email to one that already exists in DB
+    it("should FAIL to update email to one that already exists", function(done) {
+        util.auth.login(agent, Admin0, (error) => {
+            if (error) {
+                agent.close();
+                return done(error);
+            }
+            agent
+                .patch(`/api/account/${failUpdatedInfo._id}`)
+                .type("application/json")
+                .send(failUpdatedInfo)
+                .end(function(err, res) {
+                    res.should.have.status(409);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal(
+                        Constants.Error.ACCOUNT_EMAIL_409_MESSAGE
+                    );
                     done();
                 });
         });
