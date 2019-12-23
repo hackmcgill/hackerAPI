@@ -332,6 +332,7 @@ module.exports = {
             Middleware.Auth.ensureAuthorized([Services.Hacker.findByEmail]),
             Middleware.Validator.RouteParam.emailValidator,
             Middleware.parseBody.middleware,
+            Middleware.Hacker.findByEmail,
             Middleware.Hacker.parseAcceptEmail,
             Middleware.Hacker.updateHackerByEmailRoute,
             Middleware.Hacker.sendStatusUpdateEmail,
