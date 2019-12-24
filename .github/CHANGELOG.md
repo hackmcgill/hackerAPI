@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+<<<<<<< HEAD
 ### Added
 
 -   Add tests for `travel` field in hacker's application
@@ -14,6 +15,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 -   Removed all instances of `needsBus`
+=======
+### Fixed
+
+-   Change the attribute used to check already exisiting emails when updating one's account
+>>>>>>> develop
 
 ## [2.0.0](https://github.com/hackmcgill/hackerapi/tree/2.0.0) - 2019-12-17
 
