@@ -29,6 +29,7 @@ const volunteerAccount0 = util.account.volunteerAccounts.stored[0];
 const newHackerAccount0 = util.account.hackerAccounts.new[0];
 const newHacker0 = util.hacker.newHacker0;
 const invalidHacker0 = util.hacker.invalidHacker0;
+const invalidHacker2 = util.hacker.invalidHacker2;
 const newHacker1 = util.hacker.newHacker1;
 
 const noTeamHackerAccount0 = util.account.hackerAccounts.stored.noTeam[0];
@@ -446,6 +447,39 @@ describe("POST create hacker", function() {
         });
     });
 
+    // should fail due to travel request larger than 100
+    it("should FAIL if the new hacker inputs a value larger than 100 for travel reimbursement", function(done) {
+        util.auth.login(agent, newHackerAccount0, (error) => {
+            if (error) {
+                agent.close();
+                return done(error);
+            }
+            return agent
+                .post(`/api/hacker/`)
+                .type("application/json")
+                .send(invalidHacker2)
+                .end(function(err, res) {
+                    res.should.have.status(422);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal("Validation failed");
+                    res.body.should.have.property("data");
+                    res.body.data.should.have.property(
+                        "application.accommodation.travel"
+                    );
+                    res.body.data[
+                        "application.accommodation.travel"
+                    ].should.have.property("msg");
+                    res.body.data[
+                        "application.accommodation.travel"
+                    ].msg.should.equal(
+                        "application.accommodation.travel must be between 0 and 100"
+                    );
+                    done();
+                });
+        });
+    });
+
     // should fail due to 'false' on code of conduct
     it("should FAIL if the new hacker does not accept code of conduct", function(done) {
         util.auth.login(agent, newHackerAccount0, (error) => {
@@ -568,6 +602,17 @@ describe("POST create hacker", function() {
                     res.body.data[
                         "application.general.jobInterest"
                     ].msg.should.equal("The value must be part of the enum");
+                    res.body.data.should.have.property(
+                        "application.accommodation.travel"
+                    );
+                    res.body.data[
+                        "application.accommodation.travel"
+                    ].should.have.property("msg");
+                    res.body.data[
+                        "application.accommodation.travel"
+                    ].msg.should.equal(
+                        "application.accommodation.travel must be an integer."
+                    );
 
                     done();
                 });

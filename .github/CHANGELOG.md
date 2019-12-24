@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+-   Add tests for `travel` field in hacker's application
+
+### Changed
+
+-   Removed all instances of `needsBus`
+
 ### Fixed
 
 -   Change the attribute used to check already exisiting emails when updating one's account

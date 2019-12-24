@@ -41,7 +41,7 @@ function integerValidator(
                 return value >= lowerBound && value <= upperBound;
             })
             .withMessage(
-                `${fieldname} must be between ${lowerBound} and  ${upperBound}`
+                `${fieldname} must be between ${lowerBound} and ${upperBound}`
             );
     } else {
         return value
@@ -53,7 +53,7 @@ function integerValidator(
                 return value >= lowerBound && value <= upperBound;
             })
             .withMessage(
-                `${fieldname} must be between ${lowerBound} and  ${upperBound}`
+                `${fieldname} must be between ${lowerBound} and ${upperBound}`
             );
     }
 }
