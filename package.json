@@ -1,6 +1,6 @@
 {
     "name": "hackerAPI",
-    "version": "2.0.0",
+    "version": "2.0.1",
     "private": true,
     "scripts": {
         "start": "DEBUG=hackboard:* NODE_ENV=development nodemon --ignore gcp_creds.json ./bin/www.js",
