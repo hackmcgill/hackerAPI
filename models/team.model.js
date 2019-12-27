@@ -1,7 +1,6 @@
 "use strict";
 const mongoose = require("mongoose");
 const Constants = require("../constants/general.constant");
-
 //describes the data type
 const TeamSchema = new mongoose.Schema({
     name: {
@@ -29,7 +28,7 @@ function validateTeamSize(membersArr) {
     return membersArr.length <= Constants.MAX_TEAM_SIZE;
 }
 
-TeamSchema.methods.toJSON = function() {
+TeamSchema.methods.toJSON = function () {
     const ts = this.toObject();
     delete ts.__v;
     ts.id = ts._id;

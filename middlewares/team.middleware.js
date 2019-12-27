@@ -2,6 +2,7 @@
 
 const TAG = `[ TEAM.MIDDLEWARE.js ]`;
 const mongoose = require("mongoose");
+const shortid = require('shortid');
 const Services = {
     Logger: require("../services/logger.service"),
     Team: require("../services/team.service"),
@@ -63,9 +64,7 @@ async function ensureUniqueHackerId(req, res, next) {
  */
 async function createTeam(req, res, next) {
     const teamDetails = req.body.teamDetails;
-
     const team = await Services.Team.createTeam(teamDetails);
-
     if (!team) {
         return next({
             status: 500,
@@ -73,7 +72,6 @@ async function createTeam(req, res, next) {
             data: {}
         });
     }
-
     for (const hackerId of teamDetails.members) {
         const hacker = await Services.Hacker.updateOne(hackerId, {
             teamId: team._id
@@ -487,7 +485,7 @@ function parsePatch(req, res, next) {
 
 async function parseNewTeam(req, res, next) {
     const teamDetails = {
-        _id: mongoose.Types.ObjectId(),
+        _id: shortid.generate(),
         name: req.body.name,
         members: [],
         devpostURL: req.body.devpostURL,
