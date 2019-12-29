@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 -   Add email blast marketing email
+-   Add 3 days left marketing email
 
 ## [2.0.1](https://github.com/hackmcgill/hackerapi/tree/2.0.1) - 2019-12-24
 
