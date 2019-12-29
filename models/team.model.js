@@ -8,6 +8,9 @@ const TeamSchema = new mongoose.Schema({
         required: true,
         unique: true
     },
+    _id: {
+        'type': String,
+    },
     members: {
         type: [
             {

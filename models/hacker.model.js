@@ -124,24 +124,24 @@ const HackerSchema = new mongoose.Schema({
             travel: { type: Number, default: 0 }
         },
         team: {
-            type: mongoose.Schema.Types.ObjectId,
+            type: String,
             ref: "Team"
         }
     },
     teamId: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: String,
         ref: "Team"
     }
 });
 
-HackerSchema.methods.toJSON = function() {
+HackerSchema.methods.toJSON = function () {
     const hs = this.toObject();
     delete hs.__v;
     hs.id = hs._id;
     delete hs._id;
     return hs;
 };
-HackerSchema.methods.isApplicationComplete = function() {
+HackerSchema.methods.isApplicationComplete = function () {
     const hs = this.toObject();
     const portfolioDone = !!hs.application.general.URL.resume;
     const jobInterestDone = !!hs.application.general.jobInterest;
@@ -155,7 +155,7 @@ HackerSchema.methods.isApplicationComplete = function() {
  * @returns {String} type of the field being queried
  * @description return the type of the field(if it exists and is allowed to be searched on)
  */
-HackerSchema.statics.searchableField = function(field) {
+HackerSchema.statics.searchableField = function (field) {
     const schemaField = HackerSchema.path(field);
     if (schemaField != undefined) {
         return schemaField.instance;
