@@ -158,9 +158,9 @@ async function validateConfirmedStatusFromHackerId(req, res, next) {
     const hacker = await Services.Hacker.findById(req.params.id);
     if (hacker == null) {
         return next({
-        status: 404,
-        message: Constants.Error.HACKER_404_MESSAGE,
-        data: req.body.hackerId
+            status: 404,
+            message: Constants.Error.HACKER_404_MESSAGE,
+            data: req.body.hackerId
         });
     }
     const account = await Services.Account.findById(hacker.accountId);
@@ -235,7 +235,7 @@ function ensureAccountLinkedToHacker(req, res, next) {
                 hacker &&
                 req.user &&
                 String.toString(hacker.accountId) ===
-                    String.toString(req.user.id)
+                String.toString(req.user.id)
             ) {
                 return next();
             } else {
@@ -536,7 +536,7 @@ function parseAccept(req, res, next) {
 
 
 /**
- * @function createhacker
+ * @function createHacker
  * @param {{body: {hackerDetails: object}}} req
  * @param {*} res
  * @param {(err?)=>void} next

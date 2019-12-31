@@ -18,7 +18,7 @@ const Middleware = {
 };
 const Services = {
     Travel: require('../../services/travel.service'),
-    Hacker: require("../../services/hacker.service")
+    //Hacker: require("../../services/hacker.service")
 };
 const CONSTANTS = require("../../constants/general.constant");
 
@@ -54,177 +54,54 @@ module.exports = {
             Middleware.Auth.ensureAuthenticated(),
             Middleware.Auth.ensureAuthorized(),
 
-            Middleware.Hacker.findSelf,
-            Controllers.Hacker.showHacker
+            Middleware.Travel.findSelf,
+            Controllers.Travel.showTfravel
         );
 
         /**
-         * @api {post} /hacker/ create a new hacker
-         * @apiName createHacker
-         * @apiGroup Hacker
-         * @apiVersion 0.0.8
+         * @api {post} /travel/ create a new travel
+         * @apiName createTravel
+         * @apiGroup Travel
+         * @apiVersion 2.0.1
          * 
          * @apiParam (body) {MongoID} accountId ObjectID of the respective account
-         * @apiParam (body) {String} school Name of the school the hacker goes to
-         * @apiParam (body) {String} gender Gender of the hacker
-         * @apiParam (body) {Number} travel Whether the hacker requires a bus for transportation
-         * @apiParam (body) {String[]} ethnicity the ethnicities of the hacker
-         * @apiParam (body) {String[]} major the major of the hacker
-         * @apiParam (body) {Number} graduationYear the graduation year of the hacker
-         * @apiParam (body) {Boolean} codeOfConduct acceptance of the code of conduct 
-         * @apiParam (body) {Json} application The hacker's application. Resume and jobInterest fields are required.
-         * @apiParamExample {Json} application: 
-         *      {
-                    "application":{
-                      "general":{
-                        "school": "McGill University",
-                        "degree": "Undergraduate",
-                        "fieldOfStudy": "Computer Science",
-                        "graduationYear": "2021",
-                        "jobInterest":"Internship",
-                        "URL":{
-                            "resume":"resumes/1543458163426-5bff4d736f86be0a41badb91",
-                            "github":"https://github.com/abcd",
-                            "dropler":"https://dribbble.com/abcd",
-                            "personal":"https://www.hi.com/",
-                            "linkedIn":"https://linkedin.com/in/abcd",
-                            "other":"https://github.com/hackmcgill/hackerAPI/issues/168"
-                        },
-                      },
-                      "shortAnswer": {
-                        "skills":["Javascript","Typescript"],
-                        "question1": "I love McHacks",
-                        "question2":"Pls accept me",
-                        "comments":"hi!",
-                      },
-                      "other:" {
-                        "gender": "male",
-                        "ethnicity": "Asian or Pacific Islander",
-                        "privacyPolicy": true,
-                        "codeOfConduct": true,
-                      }
-                      "accomodation": {
-                        "travel": 0
-                      },
-                    }
-                        
-         *      }
+         * @apiParam (body) {MongoID} hackerId ObjectID of the respective hacker
+         * @apiParam (body) {Number} request The amount of money the traveller wants for travel
          * 
          * @apiSuccess {string} message Success message
-         * @apiSuccess {object} data Hacker object
+         * @apiSuccess {object} data Travel object
          * @apiSuccessExample {object} Success-Response: 
          *      {
-         *          "message": "Hacker creation successful", 
+         *          "message": "Travel creation successful", 
          *          "data": {
-                        "id":"5bff4d736f86be0a41badb91",
-                        "application":{
-                          "general":{
-                            "school": "McGill University",
-                            "degree": "Undergraduate",
-                            "fieldOfStudy": "Computer Science",
-                            "graduationYear": "2021",
-                            "jobInterest":"Internship",
-                            "URL":{
-                              "resume":"resumes/1543458163426-5bff4d736f86be0a41badb91",
-                              "github":"https://github.com/abcd",
-                              "dropler":"https://dribbble.com/abcd",
-                              "personal":"https://www.hi.com/",
-                              "linkedIn":"https://linkedin.com/in/abcd",
-                              "other":"https://github.com/hackmcgill/hackerAPI/issues/168"
-                            },
-                          },
-                          "shortAnswer": {
-                            "skills":["Javascript","Typescript"],
-                            "question1": "I love McHacks",
-                            "question2":"Pls accept me",
-                            "comments":"hi!",
-                          },
-                          "other:" {
-                            "gender": "male",
-                            "ethnicity": "Asian or Pacific Islander",
-                            "privacyPolicy": true,
-                            "codeOfConduct": true,
-                          }
-                          "accomodation": {
-                            "travel": 0
-                          },
-                        }
+         *               "id":"5bff4d736f86be0a41badb91",
+         *              "status": "None",
+         *              "request": 50,
+         *              "offer": 0
+         *          }
          *      }
 
          * @apiError {string} message Error message
          * @apiError {object} data empty
          * @apiErrorExample {object} Error-Response: 
-         *      {"message": "Error while creating hacker", "data": {}}
+         *      {"message": "Error while creating travel", "data": {}}
          */
         hackerRouter.route("/").post(
             Middleware.Auth.ensureAuthenticated(),
             Middleware.Auth.ensureAuthorized(),
-            Middleware.Validator.Hacker.newHackerValidator,
+            Middleware.Validator.Travel.newTravelValidator,
 
             Middleware.parseBody.middleware,
             // validate type
             Middleware.Hacker.validateConfirmedStatusFromAccountId,
-            // validate that the accountId is not being used for any other thing
-            Middleware.Hacker.checkDuplicateAccountLinks,
 
-            Middleware.Hacker.parseHacker,
+            Middleware.Travel.parseHacker,
 
-            Middleware.Hacker.addDefaultStatus,
-            Middleware.Auth.createRoleBindings(CONSTANTS.HACKER),
-            Middleware.Hacker.createHacker,
-            Middleware.Hacker.sendAppliedStatusEmail,
+            Middleware.Travel.addDefaultStatusAndOffer,
+            Middleware.Travel.createTravel,
 
-            Controllers.Hacker.createdHacker
+            Controllers.Travel.createdTravel
         );
-
-        /**
-         * @api {get} /hacker/stats
-         * Gets the stats of all of the hackers who have applied.
-         * @apiName getHackerStats
-         * @apiGroup Hacker
-         * @apiVersion 0.0.9
-         * 
-         * @apiParam (query) {String} model the model to be searched (Only hacker supported)
-         * @apiParam (query) {Array} q the query to be executed. For more information on how to format this, please see https://docs.mchacks.ca/architecture/
-         * 
-         * @apiSuccess {string} message Success message
-         * @apiSuccess {object} data Hacker object
-         * @apiSuccessExample {object} Success-Response: 
-         *      {
-         *          "message": "Retrieved stats",
-         *          "data": {
-         *              "stats" : {
-         *                  "total": 10,
-                            "status": { "Applied": 10 },
-                            "school": { "McGill University": 3, "Harvard University": 7 },
-                            degree: { "Undergraduate": 10 },
-                            gender: { "Male": 1, "Female": 9 },
-                            travel: { "true": 7, "false": 3 },
-                            ethnicity: { "White": 10, },
-                            jobInterest: { "Internship": 10 },
-                            major: { "Computer Science": 10 },
-                            graduationYear: { "2019": 10 },
-                            dietaryRestrictions: { "None": 10 },
-                            shirtSize: { "M": 3, "XL": 7 },
-                            age: { "22": 10 }
-                        }
-         *          }
-         *      }
-         * 
-         */
-        hackerRouter
-            .route("/stats")
-            .get(
-                Middleware.Auth.ensureAuthenticated(),
-                Middleware.Auth.ensureAuthorized(),
-                Middleware.Validator.Hacker.statsValidator,
-                Middleware.parseBody.middleware,
-                Middleware.Search.setExpandTrue,
-                Middleware.Search.parseQuery,
-                Middleware.Search.executeQuery,
-                Middleware.Hacker.getStats,
-                Controllers.Hacker.gotStats
-            );
 
         /**
          * @api {patch} /hacker/status/:id update a hacker's status

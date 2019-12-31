@@ -11,7 +11,7 @@ const logger = require("./logger.service");
  * @return {Promise<Hacker>} The promise will resolve to a travel object if save is successful.
  * @description Adds a new travel to database.
  */
-function createHacker(travelDetails) {
+function createTravel(travelDetails) {
     const TAG = `[Travel Service # createTravel]:`;
 
     const travel = new Travel(travelDetails);
@@ -93,7 +93,7 @@ function findByAccountId(accountId) {
  * @param {ObjectId} travelId
  * @return {DocumentQuery} A travel document queried by hackerId
  */
-function findByAccountId(accountId) {
+function findByHackerId(accountId) {
     const TAG = `[ Travel Service # findByAccountId ]:`;
     const query = {
         hackerId: hackerId
