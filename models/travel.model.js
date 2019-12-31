@@ -3,6 +3,11 @@ const Constants = require("../constants/general.constant");
 const mongoose = require("mongoose");
 //describes the data type
 const TravelSchema = new mongoose.Schema({
+    accountId: { // The account this travel data is associated with
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Account",
+        required: true
+    },
     hackerId: { // The hacker this travel data is associated with
         type: mongoose.Schema.Types.ObjectId,
         ref: "Hacker",
