@@ -93,7 +93,7 @@ function findByAccountId(accountId) {
  * @param {ObjectId} travelId
  * @return {DocumentQuery} A travel document queried by hackerId
  */
-function findByHackerId(accountId) {
+function findByHackerId(hackerId) {
     const TAG = `[ Travel Service # findByAccountId ]:`;
     const query = {
         hackerId: hackerId

@@ -5,10 +5,7 @@ const mongoose = require("mongoose");
 const Services = {
     Travel: require("../services/travel.service"),
     Hacker: require("../services/hacker.service"),
-    //Storage: require("../services/storage.service"),
-    //Email: require("../services/email.service"),
-    //Account: require("../services/account.service"),
-    //Env: require("../services/env.service")
+    Account: require("../services/account.service"),
 };
 const Middleware = {
     Util: require("./util.middleware")
@@ -122,6 +119,49 @@ async function updateTravel(req, res, next) {
 }
 
 /**
+ * @async
+ * @function findById
+ * @param {{body: {id: ObjectId}}} req
+ * @param {*} res
+ * @description Retrieves a travel's information via req.body.id, moving result to req.body.travel if succesful.
+ */
+async function findById(req, res, next) {
+    const hacker = await Services.Travel.findById(req.body.id);
+
+    if (!hacker) {
+        return next({
+            status: 404,
+            message: Constants.Error.TRAVEL_404_MESSAGE
+        });
+    }
+
+    req.body.travel = travel;
+    next();
+}
+
+async function findByEmail(req, res, next) {
+    const account = await Services.Account.findByEmail(req.body.email);
+    if (!account) {
+        return next({
+            status: 404,
+            message: Constants.Error.ACCOUNT_404_MESSAGE,
+            error: {}
+        });
+    }
+    const travel = await Services.Travel.findByAccountId(account._id);
+    if (!travel) {
+        return next({
+            status: 404,
+            message: Constants.Error.TRAVEL_404_MESSAGE,
+            error: {}
+        });
+    }
+
+    req.body.travel = travel;
+    next();
+}
+
+/**
  * Finds the travel information of the logged in user
  * and places that information in req.body.travel
  * @param {{user: {id: string}}} req
@@ -162,5 +202,8 @@ module.exports = {
     parseTravel: parseTravel,
     addDefaultStatusAndOffer: addDefaultStatusAndOffer,
     createTravel: Middleware.Util.asyncMiddleware(createTravel),
+    updateTravel: Middleware.Util.asyncMiddleware(updateTravel),
+    findById: Middleware.Util.asyncMiddleware(findById),
+    findByEmail: Middleware.Util.asyncMiddleware(findByEmail),
     findSelf: Middleware.Util.asyncMiddleware(findSelf)
 };
