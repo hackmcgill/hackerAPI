@@ -27,6 +27,8 @@ const HACKER_SENT_DAY_OF = "Hacker day-of email sent.";
 const RESUME_UPLOAD = "Resume upload successful.";
 const RESUME_DOWNLOAD = "Resume download successful.";
 
+const TRAVEL_READ = "Travel retrieval successful.";
+
 const ROLE_CREATE = "Role creation successful.";
 
 const SEARCH_QUERY = "Query search successful. Returning results.";
@@ -77,6 +79,8 @@ module.exports = {
 
     RESUME_UPLOAD: RESUME_UPLOAD,
     RESUME_DOWNLOAD: RESUME_DOWNLOAD,
+
+    TRAVEL_READ: TRAVEL_READ,
 
     ROLE_CREATE: ROLE_CREATE,
 

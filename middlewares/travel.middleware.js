@@ -3,6 +3,7 @@
 const TAG = `[ TRAVEL.MIDDLEWARE.js ]`;
 const mongoose = require("mongoose");
 const Services = {
+    Travel: require("../services/travel.service")
     //Hacker: require("../services/hacker.service"),
     //Storage: require("../services/storage.service"),
     //Email: require("../services/email.service"),
