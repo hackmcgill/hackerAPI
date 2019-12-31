@@ -5,6 +5,19 @@ const Constants = {
 };
 
 /**
+ * @function parsePatch
+ * @param {body: {id: ObjectId}} req
+ * @param {*} res
+ * @param {(err?) => void} next
+ * @return {void}
+ * @description Delete the req.body.id that was added by the validation of route parameter.
+ */
+function parsePatch(req, res, next) {
+    delete req.body.id;
+    return next();
+}
+
+/**
  * @function showTravel
  * @param {{body: {travel: Object}}} req
  * @param {*} res
@@ -35,7 +48,7 @@ function createdTravel(req, res) {
 }
 
 /**
- * @function updateHacker
+ * @function updatedTravel
  * @param {{params: {id: ObjectId}, body: {Object}}} req
  * @param {*} res
  * @return {JSON} Success or error status
@@ -47,12 +60,13 @@ function createdTravel(req, res) {
  */
 function updatedTravel(req, res) {
     return res.status(200).json({
-        message: Constants.Success.TRAVEL_UPLOAD,
+        message: Constants.Success.TRAVEL_UPDATE,
         data: req.body
     });
 }
 
 module.exports = {
+    parsePatch: parsePatch,
     showTravel: showTravel,
     updatedTravel: updatedTravel,
     createdTravel: createdTravel

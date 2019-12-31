@@ -104,17 +104,17 @@ module.exports = {
         );
 
         /**
-         * @api {patch} /hacker/status/:id update a hacker's status
-         * @apiName patchHackerStatus
-         * @apiGroup Hacker
-         * @apiVersion 0.0.9
+         * @api {patch} /travel/status/:id update a traveler's status
+         * @apiName patchTravelStatus
+         * @apiGroup Travel
+         * @apiVersion 2.0.1
          *
-         * @apiParam (body) {string} [status] Status of the hacker's application ("None"|"Applied"|"Accepted"|"Declined"|"Waitlisted"|"Confirmed"|"Withdrawn"|"Checked-in")
+         * @apiParam (body) {string} [status] Status of the travel's reimbursement ("None"|"Bus"|"Offered"|"Valid"|"Invalid"|"Claimed")
          * @apiSuccess {string} message Success message
-         * @apiSuccess {object} data Hacker object
+         * @apiSuccess {object} data Travel object
          * @apiSuccessExample {object} Success-Response:
          *      {
-         *          "message": "Changed hacker information",
+         *          "message": "Changed travel information",
          *          "data": {
          *              "status": "Accepted"
          *          }
@@ -124,199 +124,47 @@ module.exports = {
         hackerRouter.route("/status/:id").patch(
             Middleware.Validator.RouteParam.idValidator,
             Middleware.Auth.ensureAuthenticated(),
-            Middleware.Auth.ensureAuthorized([Services.Hacker.findById]),
-            Middleware.Validator.Hacker.updateStatusValidator,
+            Middleware.Auth.ensureAuthorized([Services.Travel.findById]),
+            Middleware.Validator.Travel.updateStatusValidator,
             Middleware.parseBody.middleware,
-            Middleware.Hacker.parsePatch,
-            Middleware.Hacker.validateConfirmedStatusFromHackerId,
+            Middleware.Travel.parsePatch,
 
-            Middleware.Hacker.updateHacker,
-            Middleware.Hacker.sendStatusUpdateEmail,
-            Controllers.Hacker.updatedHacker
+            Middleware.Travel.updateTravel,
+            Controllers.Travel.updateTravel
         );
 
         /**
-         * @api {patch} /hacker/accept/:id accept a Hacker
-         * @apiName acceptHacker
-         * @apiGroup Hacker
-         * @apiVersion 2.0.0
+         * @api {patch} /travel/offer/:id update a traveler's offer
+         * @apiName patchTravelOffer
+         * @apiGroup Travel
+         * @apiVersion 2.0.1
          *
+         * @apiParam (body) {number} [offer] Amount of money offered for travel
          * @apiSuccess {string} message Success message
-         * @apiSuccess {object} data Hacker object
+         * @apiSuccess {object} data Travel object
          * @apiSuccessExample {object} Success-Response:
          *      {
-         *          "message": "Changed hacker information",
+         *          "message": "Changed travel information",
          *          "data": {
-         *              "status": "Accepted"
+         *              "offer": 75
          *          }
          *      }
          * @apiPermission Administrator
          */
-        hackerRouter
-            .route("/accept/:id")
-            .patch(
-                Middleware.Validator.RouteParam.idValidator,
-                Middleware.Auth.ensureAuthenticated(),
-                Middleware.Auth.ensureAuthorized([Services.Hacker.findById]),
-                Middleware.Hacker.validateConfirmedStatusFromHackerId,
-                Middleware.Hacker.parseAccept,
-                Middleware.Hacker.updateHacker,
-                Middleware.Hacker.sendStatusUpdateEmail,
-                Controllers.Hacker.updatedHacker
-            );
-
-        /**
-         * @api {patch} /hacker/checkin/:id update a hacker's status to be 'Checked-in'. Note that the Hacker must eitehr be Accepted or Confirmed.
-         * @apiName checkinHacker
-         * @apiGroup Hacker
-         * @apiVersion 0.0.9
-         * @apiParam (body) {string} [status] Check-in status. "Checked-in"
-         * @apiSuccess {string} message Success message
-         * @apiSuccess {object} data Hacker object
-         * @apiSuccessExample {object} Success-Response:
-         *      {
-         *          "message": "Changed hacker information",
-         *          "data": {
-         *              "status": "Checked-in"
-         *          }
-         *      }
-         * @apiPermission Administrator
-         * @apiPermission Volunteer
-         */
-        hackerRouter.route("/checkin/:id").patch(
+        hackerRouter.route("/offer/:id").patch(
             Middleware.Validator.RouteParam.idValidator,
             Middleware.Auth.ensureAuthenticated(),
-            Middleware.Auth.ensureAuthorized([Services.Hacker.findById]),
-
+            Middleware.Auth.ensureAuthorized([Services.Travel.findById]),
+            Middleware.Validator.Travel.updateOfferValidator,
             Middleware.parseBody.middleware,
-            Middleware.Hacker.parsePatch,
-            Middleware.Hacker.validateConfirmedStatusFromHackerId,
-            Middleware.Hacker.checkStatus([
-                CONSTANTS.HACKER_STATUS_ACCEPTED,
-                CONSTANTS.HACKER_STATUS_CONFIRMED
-            ]),
-            Middleware.Hacker.parseCheckIn,
-            Middleware.Hacker.updateHacker,
+            Middleware.Travel.parsePatch,
 
-            Middleware.Hacker.sendStatusUpdateEmail,
-            Controllers.Hacker.updatedHacker
+            Middleware.Travel.updateTravel,
+            Controllers.Travel.updateTravel
         );
 
         /**
-         * @api {patch} /hacker/:id update a hacker's information.  
-         * @apiDescription This route only contains the ability to update a subset of a hacker's information. If you want to update a status, you must have Admin priviledges and use PATCH /hacker/status/:id.
-         * @apiName patchHacker
-         * @apiGroup Hacker
-         * @apiVersion 0.0.8
-         * 
-         * @apiParam (body) {String} [school] Name of the school the hacker goes to
-         * @apiParam (body) {String} [gender] Gender of the hacker
-         * @apiParam (body) {Number} [travel] How much the hacker requires a bus for transportation
-         * @apiParam (body) {String[]} [ethnicity] the ethnicities of the hacker
-         * @apiParam (body) {String[]} [major] the major of the hacker
-         * @apiParam (body) {Number} [graduationYear] the graduation year of the hacker
-         * @apiParam (body) {Json} [application] The hacker's application
-         * @apiParamExample {Json} application: 
-         *      {
-                  "application":{
-                    "general":{
-                      "school": "McGill University",
-                      "degree": "Undergraduate",
-                      "fieldOfStudy": "Computer Science",
-                      "graduationYear": "2021",
-                      "jobInterest":"Internship",
-                      "URL":{
-                        "resume":"resumes/1543458163426-5bff4d736f86be0a41badb91",
-                        "github":"https://github.com/abcd",
-                        "dropler":"https://dribbble.com/abcd",
-                        "personal":"https://www.hi.com/",
-                        "linkedIn":"https://linkedin.com/in/abcd",
-                        "other":"https://github.com/hackmcgill/hackerAPI/issues/168"
-                      },
-                    },
-                    "shortAnswer": {
-                      "skills":["Javascript","Typescript"],
-                      "question1": "I love McHacks",
-                      "question2":"Pls accept me",
-                      "comments":"hi!",
-                    },
-                    "other:" {
-                      "gender": "male",
-                      "ethnicity": "Asian or Pacific Islander",
-                      "privacyPolicy": true,
-                      "codeOfConduct": true,
-                    }
-                    "accomodation": {
-                      "travel": 0
-                    },
-                  }
-                }
-         * 
-         * @apiSuccess {string} message Success message
-         * @apiSuccess {object} data Hacker object
-         * @apiSuccessExample {object} Success-Response: 
-         *      {
-         *          "message": "Changed hacker information", 
-         *          "data": {
-                        "id":"5bff4d736f86be0a41badb91",
-                        "status": "Applied",
-                         "application":{
-                          "general":{
-                            "school": "McGill University",
-                            "degree": "Undergraduate",
-                            "fieldOfStudy": "Computer Science",
-                            "graduationYear": "2021",
-                            "jobInterest":"Internship",
-                            "URL":{
-                              "resume":"resumes/1543458163426-5bff4d736f86be0a41badb91",
-                              "github":"https://github.com/abcd",
-                              "dropler":"https://dribbble.com/abcd",
-                              "personal":"https://www.hi.com/",
-                              "linkedIn":"https://linkedin.com/in/abcd",
-                              "other":"https://github.com/hackmcgill/hackerAPI/issues/168"
-                            },
-                          },
-                          "shortAnswer": {
-                            "skills":["Javascript","Typescript"],
-                            "question1": "I love McHacks",
-                            "question2":"Pls accept me",
-                            "comments":"hi!",
-                          },
-                          "other:" {
-                            "gender": "male",
-                            "ethnicity": "Asian or Pacific Islander",
-                            "privacyPolicy": true,
-                            "codeOfConduct": true,
-                          }
-                          "accomodation": {
-                            "travel": 0
-                          },
-                        }
-                      }
-         *      }
-         * @apiError {string} message Error message
-         * @apiError {object} data empty
-         * @apiErrorExample {object} Error-Response: 
-         *      {"message": "Error while updating hacker", "data": {}}
-         */
-        hackerRouter.route("/:id").patch(
-            Middleware.Validator.RouteParam.idValidator,
-            Middleware.Auth.ensureAuthenticated(),
-            Middleware.Auth.ensureAuthorized([Services.Hacker.findById]),
-
-            Middleware.Validator.Hacker.updateHackerValidator,
-
-            Middleware.parseBody.middleware,
-            Middleware.Hacker.parsePatch,
-            Middleware.Hacker.validateConfirmedStatusFromHackerId,
-
-            Middleware.Hacker.updateHacker,
-            Middleware.Hacker.updateStatusIfApplicationCompleted,
-            Controllers.Hacker.updatedHacker
-        );
-
-        /**
-         * @api {get} /hacker/:id get a hacker's information
+         * @api {get} /travel/:id get a hacker's information
          * @apiName getHacker
          * @apiGroup Hacker
          * @apiVersion 0.0.8

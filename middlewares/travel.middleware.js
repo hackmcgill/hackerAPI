@@ -101,6 +101,27 @@ async function createTravel(req, res, next) {
 }
 
 /**
+ * Updates a travel that is specified by req.params.id
+ * @param {{params:{id: string}, body: *}} req
+ * @param {*} res
+ * @param {*} next
+ */
+async function updateTravel(req, res, next) {
+    const travel = await Services.Travel.updateOne(req.params.id, req.body);
+    if (travel) {
+        return next();
+    } else {
+        return next({
+            status: 404,
+            message: Constants.Error.TRAVEL_404_MESSAGE,
+            data: {
+                id: req.params.id
+            }
+        });
+    }
+}
+
+/**
  * Finds the travel information of the logged in user
  * and places that information in req.body.travel
  * @param {{user: {id: string}}} req

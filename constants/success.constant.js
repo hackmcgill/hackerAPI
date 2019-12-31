@@ -28,6 +28,8 @@ const RESUME_UPLOAD = "Resume upload successful.";
 const RESUME_DOWNLOAD = "Resume download successful.";
 
 const TRAVEL_READ = "Travel retrieval successful.";
+const TRAVEL_CREATE = "Travel creation successful.";
+const TRAVEL_UPDATE = "Travel update successful.";
 
 const ROLE_CREATE = "Role creation successful.";
 
@@ -81,6 +83,8 @@ module.exports = {
     RESUME_DOWNLOAD: RESUME_DOWNLOAD,
 
     TRAVEL_READ: TRAVEL_READ,
+    TRAVEL_CREATE: TRAVEL_CREATE,
+    TRAVE_UPDATE: TRAVEL_UPDATE,
 
     ROLE_CREATE: ROLE_CREATE,
 

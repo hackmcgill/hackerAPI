@@ -14,5 +14,22 @@ module.exports = {
     ],
     updateTravelValidator: [
         VALIDATOR.integerValidator("body", "request", false, 0, 3000)
+    ],
+    updateStatusValidator: [
+        VALIDATOR.enumValidator(
+            "body",
+            "status",
+            Constants.TRAVEL_STATUSES,
+            false
+        )
+    ],
+    updateOfferValidator: [
+        VALIDATOR.integerValidator(
+            "body",
+            "offer",
+            false,
+            0,
+            3000
+        )
     ]
 };
