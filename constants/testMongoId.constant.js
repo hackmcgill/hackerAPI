@@ -1,10 +1,10 @@
 "use strict";
 
 const mongoose = require("mongoose");
-
-const team1Id = mongoose.Types.ObjectId();
-const team2Id = mongoose.Types.ObjectId();
-const team3Id = mongoose.Types.ObjectId();
+const shortid = require("shortid");
+const team1Id = shortid.generate();
+const team2Id = shortid.generate();
+const team3Id = shortid.generate();
 
 const hackerAId = mongoose.Types.ObjectId();
 const hackerBId = mongoose.Types.ObjectId();

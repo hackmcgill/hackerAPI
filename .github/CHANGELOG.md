@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+-   Team id generation has been changed from using the mongooseID generator to shortID generator
+
 ### Fixed
 
 -   Change the attribute used to check already exisiting emails when updating one's account

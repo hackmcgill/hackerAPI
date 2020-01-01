@@ -21,7 +21,7 @@ const Services = {
 };
 
 module.exports = {
-    activate: function(apiRouter) {
+    activate: function (apiRouter) {
         const teamRouter = new express.Router();
 
         /**

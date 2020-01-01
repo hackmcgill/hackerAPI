@@ -63,6 +63,7 @@ async function ensureUniqueHackerId(req, res, next) {
  * @description create a team from information in req.body.teamDetails.
  */
 async function createTeam(req, res, next) {
+
     const teamDetails = req.body.teamDetails;
     const team = await Services.Team.createTeam(teamDetails);
     if (!team) {
@@ -438,7 +439,7 @@ async function populateMemberAccountsById(req, res, next) {
  */
 function parseTeam(req, res, next) {
     const teamDetails = {
-        _id: mongoose.Types.ObjectId(),
+        _id: shortid.generate(),
         name: req.body.name,
         members: req.body.members,
         devpostURL: req.body.devpostURL,
