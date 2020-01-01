@@ -7,6 +7,7 @@ const Services = {
     Storage: require("../services/storage.service"),
     Email: require("../services/email.service"),
     Account: require("../services/account.service"),
+    Travel: require("../services/travel.service"),
     Env: require("../services/env.service")
 };
 const Middleware = {
@@ -511,6 +512,12 @@ async function updateHacker(req, res, next) {
             });
         }
         req.email = acct.email;
+
+        // If this hacker has a travel account associated with it, then update request to reflect amount wanted for travel
+        const travel = await Services.Travel.findByHackerId(hacker.id);
+        if (travel) {
+            await Services.Travel.updateOne(travel.id, { "request": hacker.application.accommodation.travel });
+        }
         return next();
     } else {
         return next({
