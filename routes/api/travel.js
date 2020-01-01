@@ -142,7 +142,6 @@ module.exports = {
          * 
          * @apiParam (body) {MongoID} accountId ObjectID of the respective account
          * @apiParam (body) {MongoID} hackerId ObjectID of the respective hacker
-         * @apiParam (body) {Number} request The amount of money the traveller wants for travel
          * 
          * @apiSuccess {string} message Success message
          * @apiSuccess {object} data Travel object
@@ -173,6 +172,7 @@ module.exports = {
 
             Middleware.Travel.parseTravel,
 
+            Middleware.Travel.addRequestFromHacker,
             Middleware.Travel.addDefaultStatusAndOffer,
             Middleware.Travel.createTravel,
 

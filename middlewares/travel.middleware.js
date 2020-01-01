@@ -31,30 +31,51 @@ function parsePatch(req, res, next) {
 
 /**
  * @function parseTravel
- * @param {{body: {accountId: ObjectId, hackerId: ObjectId, request: number, authorization: string}}} req
+ * @param {{body: {accountId: ObjectId, hackerId: ObjectId, authorization: string}}} req
  * @param {*} res
  * @param {(err?)=>void} next
  * @return {void}
  * @description
- * Moves accountId, hackerId & request from req.body to req.body.travelId.
+ * Moves accountId & hackerId from req.body to req.body.travelId.
  * Adds _id to hackerDetails.
  */
 function parseTravel(req, res, next) {
     const travelDetails = {
         _id: mongoose.Types.ObjectId(),
         accountId: req.body.accountId,
-        hackerId: req.body.hackerId,
-        request: req.body.request
+        hackerId: req.body.hackerId
     };
     req.body.token = req.body.authorization;
 
     delete req.body.accountId;
     delete req.body.hackerId;
-    delete req.body.request;
 
     req.body.travelDetails = travelDetails;
 
     return next();
+}
+
+/**
+ * @function addRequestFromHacker
+ * @param {{body: {travelDetails: {request: Number}}}} req
+ * @param {JSON} res
+ * @param {(err?)=>void} next
+ * @return {void}
+ * @description Load travel request from hacker application and add it to 
+ */
+async function addRequestFromHacker(req, res, next) {
+    const hacker = await Services.Hacker.findById(req.body.travelDetails.accountId);
+    if (!hacker) {
+        return next({
+            status: 500,
+            message: Constants.Error.HACKER_UPDATE_500_MESSAGE,
+            data: {
+                hackerId: hacker.id,
+                accountId: hacker.accountId
+            }
+        });
+    }
+    req.body.travelDetails.request = hacker.application.accommodation.travel;
 }
 
 /**
@@ -216,6 +237,7 @@ module.exports = {
     parsePatch: parsePatch,
     parseTravel: parseTravel,
     addDefaultStatusAndOffer: addDefaultStatusAndOffer,
+    addRequestFromHacker: Middleware.Util.asyncMiddleware(addRequestFromHacker),
     createTravel: Middleware.Util.asyncMiddleware(createTravel),
     updateTravel: Middleware.Util.asyncMiddleware(updateTravel),
     findById: Middleware.Util.asyncMiddleware(findById),
