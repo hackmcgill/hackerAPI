@@ -13,18 +13,94 @@ const Middleware = {
     parseBody: require("../../middlewares/parse-body.middleware"),
     Util: require("../../middlewares/util.middleware"),
     Travel: require("../../middlewares/travel.middleware"),
+    Hacker: require("../../middlewares/hacker.middleware"),
     Auth: require("../../middlewares/auth.middleware"),
-    Search: require("../../middlewares/search.middleware")
+    //Search: require("../../middlewares/search.middleware")
 };
 const Services = {
     Travel: require('../../services/travel.service'),
-    //Hacker: require("../../services/hacker.service")
+    Hacker: require("../../services/hacker.service"),
+    Account: require("../../services/account.service")
 };
 const CONSTANTS = require("../../constants/general.constant");
 
 module.exports = {
     activate: function (apiRouter) {
         const travelRouter = express.Router();
+
+        /**
+         * @api {get} /travel/:id get a traveler's information
+         * @apiName getTravel
+         * @apiGroup Travel
+         * @apiVersion 2.0.1
+         * 
+         * @apiParam (param) {String} id a travel's unique mongoID
+         * 
+         * @apiSuccess {String} message Success message
+         * @apiSuccess {Object} data Travel object
+         * @apiSuccessExample {object} Success-Response: 
+         *      {
+                    "message": "Successfully retrieved travel information", 
+                    "data": {
+                        "id":"5bff4d736f86be0a41badb91",
+                        "status": "Valid",
+                        "request": 100,
+                        "offer": 50
+                    }
+                }
+
+        * @apiError {String} message Error message
+        * @apiError {Object} data empty
+        * @apiErrorExample {object} Error-Response: 
+        *      {"message": "Travel not found", "data": {}}
+        */
+        travelRouter.route("/:id").get(
+            Middleware.Validator.RouteParam.idValidator,
+            Middleware.Auth.ensureAuthenticated(),
+            Middleware.Auth.ensureAuthorized([Services.Hacker.findByAccountId]),
+
+            Middleware.parseBody.middleware,
+
+            Middleware.Travel.findById,
+            Controllers.Travel.showTravel
+        );
+
+        /**
+         * @api {get} /travel/email/:email get a travel's information
+         * @apiName getTravel
+         * @apiGroup Travel
+         * @apiVersion 2.0.1
+         * 
+         * @apiParam (param) {String} email a travel's unique email
+         * 
+         * @apiSuccess {String} message Success message
+         * @apiSuccess {Object} data Travel object
+         * @apiSuccessExample {object} Success-Response: 
+         *     {
+                    "message": "Successfully retrieved travel information", 
+                    "data": {
+                        "id":"5bff4d736f86be0a41badb91",
+                        "status": "Valid",
+                        "request": 100,
+                        "offer": 50
+                    }
+                }
+
+         * @apiError {String} message Error message
+         * @apiError {Object} data empty
+         * @apiErrorExample {object} Error-Response: 
+         *      {"message": "Travel not found", "data": {}}
+         */
+        travelRouter.route("/email/:email").get(
+            Middleware.Auth.ensureAuthenticated(),
+            Middleware.Auth.ensureAuthorized([Services.Account.findByEmail]),
+
+            Middleware.Validator.RouteParam.emailValidator,
+            Middleware.parseBody.middleware,
+
+            Middleware.Travel.findByEmail,
+            Controllers.Travel.showTravel
+        );
 
         /**
          * @api {get} /travel/self get information about own hacker's travel
@@ -55,7 +131,7 @@ module.exports = {
             Middleware.Auth.ensureAuthorized(),
 
             Middleware.Travel.findSelf,
-            Controllers.Travel.showTfravel
+            Controllers.Travel.showTravel
         );
 
         /**
@@ -95,7 +171,7 @@ module.exports = {
             // validate type
             Middleware.Hacker.validateConfirmedStatusFromAccountId,
 
-            Middleware.Travel.parseHacker,
+            Middleware.Travel.parseTravel,
 
             Middleware.Travel.addDefaultStatusAndOffer,
             Middleware.Travel.createTravel,
@@ -130,7 +206,7 @@ module.exports = {
             Middleware.Travel.parsePatch,
 
             Middleware.Travel.updateTravel,
-            Controllers.Travel.updateTravel
+            Controllers.Travel.updatedTravel
         );
 
         /**
@@ -160,81 +236,7 @@ module.exports = {
             Middleware.Travel.parsePatch,
 
             Middleware.Travel.updateTravel,
-            Controllers.Travel.updateTravel
-        );
-
-        /**
-         * @api {get} /travel/:id get a traveler's information
-         * @apiName getTravel
-         * @apiGroup Travel
-         * @apiVersion 2.0.1
-         * 
-         * @apiParam (param) {String} id a travel's unique mongoID
-         * 
-         * @apiSuccess {String} message Success message
-         * @apiSuccess {Object} data Travel object
-         * @apiSuccessExample {object} Success-Response: 
-         *      {
-                    "message": "Successfully retrieved travel information", 
-                    "data": {
-                        "id":"5bff4d736f86be0a41badb91",
-                        "status": "Valid",
-                        "request": 100,
-                        "offer": 50
-                    }
-                }
-
-         * @apiError {String} message Error message
-         * @apiError {Object} data empty
-         * @apiErrorExample {object} Error-Response: 
-         *      {"message": "Travel not found", "data": {}}
-         */
-        travelRouter.route("/:id").get(
-            Middleware.Validator.RouteParam.idValidator,
-            Middleware.Auth.ensureAuthenticated(),
-            Middleware.Auth.ensureAuthorized([Services.Hacker.findById]),
-
-            Middleware.parseBody.middleware,
-
-            Middleware.Travel.findById,
-            Controllers.Travel.showHacker
-        );
-
-        /**
-         * @api {get} /travel/email/:email get a travel's information
-         * @apiName getTravel
-         * @apiGroup Travel
-         * @apiVersion 2.0.1
-         * 
-         * @apiParam (param) {String} email a travel's unique email
-         * 
-         * @apiSuccess {String} message Success message
-         * @apiSuccess {Object} data Travel object
-         * @apiSuccessExample {object} Success-Response: 
-         *     {
-                    "message": "Successfully retrieved travel information", 
-                    "data": {
-                        "id":"5bff4d736f86be0a41badb91",
-                        "status": "Valid",
-                        "request": 100,
-                        "offer": 50
-                    }
-                }
-
-         * @apiError {String} message Error message
-         * @apiError {Object} data empty
-         * @apiErrorExample {object} Error-Response: 
-         *      {"message": "Travel not found", "data": {}}
-         */
-        travelRouter.route("/email/:email").get(
-            Middleware.Auth.ensureAuthenticated(),
-            Middleware.Auth.ensureAuthorized([Services.Account.findByEmail]),
-
-            Middleware.Validator.RouteParam.emailValidator,
-            Middleware.parseBody.middleware,
-
-            Middleware.Travel.findByEmail,
-            Controllers.Travel.showHacker
+            Controllers.Travel.updatedTravel
         );
 
         apiRouter.use("/travel", travelRouter);

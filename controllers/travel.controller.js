@@ -5,19 +5,6 @@ const Constants = {
 };
 
 /**
- * @function parsePatch
- * @param {body: {id: ObjectId}} req
- * @param {*} res
- * @param {(err?) => void} next
- * @return {void}
- * @description Delete the req.body.id that was added by the validation of route parameter.
- */
-function parsePatch(req, res, next) {
-    delete req.body.id;
-    return next();
-}
-
-/**
  * @function showTravel
  * @param {{body: {travel: Object}}} req
  * @param {*} res
@@ -66,7 +53,6 @@ function updatedTravel(req, res) {
 }
 
 module.exports = {
-    parsePatch: parsePatch,
     showTravel: showTravel,
     updatedTravel: updatedTravel,
     createdTravel: createdTravel

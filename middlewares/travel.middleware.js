@@ -16,6 +16,20 @@ const Constants = {
 };
 
 /**
+ * @function parsePatch
+ * @param {body: {id: ObjectId}} req
+ * @param {*} res
+ * @param {(err?) => void} next
+ * @return {void}
+ * @description Delete the req.body.id that was added by the validation of route parameter.
+ */
+function parsePatch(req, res, next) {
+    delete req.body.id;
+    return next();
+}
+
+
+/**
  * @function parseTravel
  * @param {{body: {accountId: ObjectId, hackerId: ObjectId, request: number, authorization: string}}} req
  * @param {*} res
@@ -199,6 +213,7 @@ async function findSelf(req, res, next) {
 }
 
 module.exports = {
+    parsePatch: parsePatch,
     parseTravel: parseTravel,
     addDefaultStatusAndOffer: addDefaultStatusAndOffer,
     createTravel: Middleware.Util.asyncMiddleware(createTravel),
