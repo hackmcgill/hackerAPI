@@ -23,7 +23,7 @@ function createHacker(hackerDetails) {
         hacker = new Hacker(hackerDetails);
         return hacker.save();
     }
-    throw new Error("Application creation deadline has passed!");
+    throw new Error("Sorry, the application deadline has passed!");
 }
 
 /**
