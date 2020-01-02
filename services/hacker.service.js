@@ -17,9 +17,13 @@ const QRCode = require("qrcode");
 function createHacker(hackerDetails) {
     const TAG = `[Hacker Service # createHacker]:`;
 
-    const hacker = new Hacker(hackerDetails);
+    let hacker;
 
-    return hacker.save();
+    if (Date.now() < Constants.APPLICATION_CLOSE_TIME) {
+        hacker = new Hacker(hackerDetails);
+        return hacker.save();
+    }
+    throw new Error("Sorry, the application deadline has passed!");
 }
 
 /**
