@@ -2,6 +2,7 @@
 const { body, query, header, param } = require("express-validator");
 const logger = require("../../services/logger.service");
 const mongoose = require("mongoose");
+const shortid = require("shortid");
 const TAG = `[ VALIDATOR.HELPER.js ]`;
 const jwt = require("jsonwebtoken");
 const Constants = require("../../constants/general.constant");
@@ -57,6 +58,28 @@ function integerValidator(
             );
     }
 }
+
+/**
+ * Validates that field is a valid shortId
+ * @param {"query" | "body" | "header" | "param"} fieldLocation the location where the field should be found
+ * @param {string} fieldname Name of the field that needs to be validated.
+ * @param {boolean} optional Whether the field is optional or not.
+ */
+function shortidValidator(fieldLocation, fieldname, optional = true) {
+    const shortId = setProperValidationChainBuilder(
+        fieldLocation,
+        fieldname,
+        "Invalid shortid"
+    );
+
+    return shortId
+        .custom(id => {
+            return shortid.isValid(id);
+        })
+        .withMessage("must be a valid shortId");
+
+}
+
 
 /**
  * Validates that field is a valid mongoID
@@ -999,6 +1022,7 @@ function setProperValidationChainBuilder(
 module.exports = {
     regexValidator: regexValidator,
     integerValidator: integerValidator,
+    shortidValidator,shortidValidator,
     mongoIdValidator: mongoIdValidator,
     mongoIdArrayValidator: mongoIdArrayValidator,
     asciiValidator: asciiValidator,

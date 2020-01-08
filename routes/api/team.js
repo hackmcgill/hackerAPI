@@ -149,7 +149,7 @@ module.exports = {
          *      {"message": "Team not found", "data": {}}
          */
         teamRouter.route("/:id").get(
-            Middleware.Validator.RouteParam.idValidator,
+            Middleware.Validator.RouteParam.shortidValidator,
             Middleware.Auth.ensureAuthenticated(),
             // get is available for all teams, or no teams. No authorization is done on the :id parameter.
             // However, a function is needed, so the identity function is put here. In reality, the route
