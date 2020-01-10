@@ -28,6 +28,7 @@ const volunteerAccount0 = util.account.volunteerAccounts.stored[0];
 
 const newHackerAccount0 = util.account.hackerAccounts.new[0];
 const newHacker0 = util.hacker.newHacker0;
+const invalidHackerAccount0 = util.account.hackerAccounts.invalid;
 const invalidHacker0 = util.hacker.invalidHacker0;
 const invalidHacker2 = util.hacker.invalidHacker2;
 const newHacker1 = util.hacker.newHacker1;
@@ -753,7 +754,7 @@ describe("PATCH update one hacker", function() {
                 return done(error);
             }
             return agent
-                .patch(`/api/hacker/acceptEmail/${invalidHackerAccount0[0].email}`)
+                .patch(`/api/hacker/acceptEmail/${teamHackerAccount0.email}`)
                 .type("application/json")
                 .send()
                 .end(function(err, res) {
@@ -777,7 +778,7 @@ describe("PATCH update one hacker", function() {
                 return done(error);
             }
             return agent
-                .patch(`/api/hacker/acceptEmail/${invalidHackerAccount0.email}`)
+                .patch(`/api/hacker/acceptEmail/${invalidHackerAccount0[0].email}`)
                 .type("application/json")
                 .send()
                 .end(function(err, res) {
