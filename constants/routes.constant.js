@@ -130,7 +130,7 @@ const hackerRoutes = {
     },
     patchAcceptHackerByArrayOfIds: {
         requestType: Constants.REQUEST_TYPES.PATCH,
-        uri: "/api/hacker/batchAccept" + Constants.ROLE_CATEGORIES.ALL,
+        uri: "/api/hacker/batchAccept",
     },
     postAnySendWeekOfEmail: {
         requestType: Constants.REQUEST_TYPES.POST,
