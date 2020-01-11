@@ -138,6 +138,22 @@ async function validateConfirmedStatus(account, next) {
 }
 
 /**
+ * Helper function that validates if account is confirmed and is of proper type and returns error
+ * @param account account object containing the information for an account
+ */
+function getErrors(account) {
+    if (!account) {
+        return Constants.Error.ACCOUNT_404_MESSAGE;
+    } else if (!account.confirmed) {
+        return Constants.Error.ACCOUNT_403_MESSAGE;
+    } else if (account.accountType !== Constants.General.HACKER) {
+        return Constants.Error.ACCOUNT_TYPE_409_MESSAGE;
+    } else {
+        return "";
+    }
+}
+
+/**
  * Verifies that account is confirmed and of proper type from the account ID passed in req.body.accountId
  * @param {{body: {accountId: ObjectId}}} req
  * @param {*} res
@@ -158,9 +174,9 @@ async function validateConfirmedStatusFromHackerId(req, res, next) {
     const hacker = await Services.Hacker.findById(req.params.id);
     if (hacker == null) {
         return next({
-        status: 404,
-        message: Constants.Error.HACKER_404_MESSAGE,
-        data: req.body.hackerId
+            status: 404,
+            message: Constants.Error.HACKER_404_MESSAGE,
+            data: req.body.hackerId
         });
     }
     const account = await Services.Account.findById(hacker.accountId);
@@ -174,17 +190,29 @@ async function validateConfirmedStatusFromHackerId(req, res, next) {
  * @param {(err?) => void} next
  */
 async function validateConfirmedStatusFromArrayofHackerIds(req, res, next) {
-    req.body.ids.forEach(async (id) => {
-        const hacker = await Services.Hacker.findById(id);
-        if (hacker == null) {
-            return next({
-                status: 404,
-                message: Constants.Error.HACKER_404_MESSAGE,
-                data: req.body.hackerId
-            });
-        }
-        const account = await Services.Account.findById(hacker.accountId);
-        return validateConfirmedStatus(account, next);
+    req.body.errors = [];
+    const promise = new Promise((resolve, reject) => {
+        req.body.ids.forEach(async (id, index) => {
+            const hacker = await Services.Hacker.findById(id);
+            if (hacker == null) {
+                req.body.errors.push([id, "Hacker Not Found"]);
+                req.body.ids.splice(index, 1);
+                if (index == req.body.ids.length-1) resolve();
+                return;
+            }
+            const account = await Services.Account.findById(hacker.accountId);
+            const error = getErrors(account, next);
+            if (error) {
+                req.body.errors.push([id, error]);
+                console.log(req.body.errors);
+                req.body.ids.splice(index, 1);
+            }
+            if (index == req.body.ids.length-1) resolve();
+        });
+    });
+
+    promise.then(() => {
+        return next();
     });
 }
 
@@ -361,26 +389,34 @@ async function sendStatusUpdateEmailForMultipleIds(req, res, next) {
         return next();
     } else {
         // send it to the hacker that is being updated.
-        req.body.ids.forEach(async (id) => {
-            const hacker = await Services.Hacker.findById(id);
-            const account = await Services.Account.findById(hacker.accountId);
-            if (!hacker) {
-                return next({
-                    status: 404,
-                    message: Constants.Error.HACKER_404_MESSAGE
-                });
-            } else if (!account) {
-                return next({
-                    status: 500,
-                    message: Constants.Error.GENERIC_500_MESSAGE
-                });
-            }
-            Services.Email.sendStatusUpdate(
-                account.firstName,
-                account.email,
-                req.body.status,
-                next
-            );
+        const promise = new Promise ((resolve, reject) => {
+            req.body.ids.forEach(async (id, index) => {
+                const hacker = await Services.Hacker.findById(id);
+                const account = await Services.Account.findById(hacker.accountId);
+                if (!hacker) {
+                    req.body.errors.push(id, Constants.Error.HACKER_404_MESSAGE);
+                    req.body.ids.splice(index, 1);
+                    if (index == req.body.ids.length-1) resolve();
+                    return;
+                } else if (!account) {
+                    req.body.errors.push(id, Constants.Error.GENERIC_500_MESSAGE);
+                    req.body.ids.splice(index, 1);
+                    if (index == req.body.ids.length-1) resolve();
+                    return;
+                }
+
+                Services.Email.sendStatusUpdate(
+                    account.firstName,
+                    account.email,
+                    req.body.status,
+                    next
+                );
+                if (index == req.body.ids.length-1) resolve();
+            })
+        })
+
+        promise.then(() => {
+            return next();
         })
     }
 }
@@ -588,39 +624,36 @@ async function updateHacker(req, res, next) {
  * @param {*} next
  */
 async function updateBatchHacker(req, res, next) {
-    req.body.ids.forEach(async (id) => {
-        const hacker = await Services.Hacker.updateOne(id , req.body);
+    const promise = new Promise((resolve, reject) => {
+        req.body.ids.forEach(async (id, index) => {
+        const hacker = await Services.Hacker.updateOne(id, req.body);
         if (hacker) {
             const acct = await Services.Account.findById(hacker.accountId);
             if (!acct) {
-                return next({
-                    status: 500,
-                    message: Constants.Error.HACKER_UPDATE_500_MESSAGE,
-                    data: {
-                        hackerId: hacker.id,
-                        accountId: hacker.accountId
-                    }
-                });
+                req.body.errors.push([id, Constants.Error.HACKER_UPDATE_500_MESSAGE]);
+                req.body.ids.splice(index, 1);
+                if (index == req.body.ids.length-1) resolve();
+                return;
             }
             req.email = acct.email;
-            return next();
+            if (index == req.body.ids.length-1) resolve();
         } else {
-            return next({
-                status: 404,
-                message: Constants.Error.HACKER_404_MESSAGE,
-                data: {
-                    id: req.params.id
-                }
-            });
+            req.body.errors([id, Constants.Error.HACKER_404_MESSAGE]);
+            req.body.ids.splice(index, 1);
+            if (index == req.body.ids.length-1) resolve();
         }
+        });
+    })
+    promise.then(() => {
+        return next();
     });
 }
 
 /**
  * Sets req.body.status to Accepted for next middleware.
- * @param {{params:{id: string}, body: *}} req 
- * @param {*} res 
- * @param {*} next 
+ * @param {{params:{id: string}, body: *}} req
+ * @param {*} res
+ * @param {*} next
  */
 function parseAccept(req, res, next) {
     req.body.status = Constants.General.HACKER_STATUS_ACCEPTED;
@@ -629,15 +662,14 @@ function parseAccept(req, res, next) {
 
 /**
  * Sets req.body.status to Accepted for next middleware.
- * @param {{params:{id: string}, body: *}} req 
- * @param {*} res 
- * @param {*} next 
+ * @param {{params:{id: string}, body: *}} req
+ * @param {*} res
+ * @param {*} next
  */
 function parseBatchAccept(req, res, next) {
     req.body.status = Constants.General.HACKER_STATUS_ACCEPTED;
     next();
 }
-
 
 /**
  * @function createhacker
