@@ -331,11 +331,11 @@ module.exports = {
         .route("/batchAccept")
         .patch(
             Middleware.Auth.ensureAuthenticated(),
-            Middleware.Auth.ensureAuthorized([Services.Hacker.findIds]),
+            //Middleware.Auth.ensureAuthorized([Services.Hacker.findIds]),
             Middleware.Hacker.validateConfirmedStatusFromArrayofHackerIds,
             Middleware.Hacker.parseAccept,
             Middleware.Hacker.updateBatchHacker,
-            Middleware.Hacker.sendStatusUpdateEmail,
+            Middleware.Hacker.sendStatusUpdateEmailForMultipleIds,
             Controllers.Hacker.updatedHacker
         );
         /**

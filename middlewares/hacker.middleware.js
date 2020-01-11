@@ -350,6 +350,42 @@ async function sendStatusUpdateEmail(req, res, next) {
 }
 
 /**
+ * Sends a preset email to a user if a status change occured.
+ * @param {{body: {status?: string}, params: {id: string}}} req
+ * @param {*} res
+ * @param {(err?:*)=>void} next
+ */
+async function sendStatusUpdateEmailForMultipleIds(req, res, next) {
+    //skip if the status doesn't exist
+    if (!req.body.status) {
+        return next();
+    } else {
+        // send it to the hacker that is being updated.
+        req.body.ids.forEach(async (id) => {
+            const hacker = await Services.Hacker.findById(id);
+            const account = await Services.Account.findById(hacker.accountId);
+            if (!hacker) {
+                return next({
+                    status: 404,
+                    message: Constants.Error.HACKER_404_MESSAGE
+                });
+            } else if (!account) {
+                return next({
+                    status: 500,
+                    message: Constants.Error.GENERIC_500_MESSAGE
+                });
+            }
+            Services.Email.sendStatusUpdate(
+                account.firstName,
+                account.email,
+                req.body.status,
+                next
+            );
+        })
+    }
+}
+
+/**
  * Sends an email telling the user that they have applied. This is used exclusively when we POST a hacker.
  * @param {{body: {hacker: {accountId: string}}}} req
  * @param {*} res
@@ -715,6 +751,9 @@ module.exports = {
     sendDayOfEmail: Middleware.Util.asyncMiddleware(sendDayOfEmail),
     sendStatusUpdateEmail: Middleware.Util.asyncMiddleware(
         sendStatusUpdateEmail
+    ),
+    sendStatusUpdateEmailForMultipleIds: Middleware.Util.asyncMiddleware(
+        sendStatusUpdateEmailForMultipleIds
     ),
     sendAppliedStatusEmail: Middleware.Util.asyncMiddleware(
         sendAppliedStatusEmail
