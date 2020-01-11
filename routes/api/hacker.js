@@ -331,7 +331,7 @@ module.exports = {
         .route("/batchAccept")
         .patch(
             Middleware.Auth.ensureAuthenticated(),
-            //Middleware.Auth.ensureAuthorized([Services.Hacker.findIds]),
+            Middleware.Auth.ensureAuthorized(),
             Middleware.Hacker.validateConfirmedStatusFromArrayofHackerIds,
             Middleware.Hacker.parseAccept,
             Middleware.Hacker.updateBatchHacker,
