@@ -329,6 +329,40 @@ async function sendStatusUpdateEmail(req, res, next) {
 }
 
 /**
+ * Sends a preset email to a user if a status change occured with email params.
+ * @param {{body: {status?: string}, params: {email: string}}} req
+ * @param {*} res
+ * @param {(err?:*)=>void} next
+ */
+async function completeStatusUpdateEmail(req, res, next) {
+    //skip if the status doesn't exist
+    if (!req.body.hacker.status) {
+        return next();
+    } else {
+        // send it to the hacker that is being updated.
+        const hacker = await Services.Hacker.findById(req.body.hacker._id);
+        const account = await Services.Account.findById(hacker.accountId);
+        if (!hacker) {
+            return next({
+                status: 404,
+                message: Constants.Error.HACKER_404_MESSAGE
+            });
+        } else if (!account) {
+            return next({
+                status: 500,
+                message: Constants.Error.GENERIC_500_MESSAGE
+            });
+        }
+        Services.Email.sendStatusUpdate(
+            account.firstName,
+            account.email,
+            req.body.hacker.status,
+            next
+        );
+    }
+}
+
+/**
  * Sends an email telling the user that they have applied. This is used exclusively when we POST a hacker.
  * @param {{body: {hacker: {accountId: string}}}} req
  * @param {*} res
@@ -524,6 +558,40 @@ async function updateHacker(req, res, next) {
 }
 
 /**
+ * Updates a hacker that is specified by req.body.hacker._id, and then sets req.email
+ * to the email of the hacker, found in Account.
+ * @param {{params:{_id: string}, body: *}} req
+ * @param {*} res
+ * @param {*} next
+ */
+async function obtainEmailByHackerId(req, res, next) {
+    const hacker = await Services.Hacker.findById(req.body.hacker._id);
+    if (hacker) {
+        const acct = await Services.Account.findById(hacker.accountId);
+        if (!acct) {
+            return next({
+                status: 500,
+                message: Constants.Error.HACKER_UPDATE_500_MESSAGE,
+                data: {
+                    hackerId: hacker.id,
+                    accountId: hacker.accountId
+                }
+            });
+        }
+        req.email = acct.email;
+        return next();
+    } else {
+        return next({
+            status: 404,
+            message: Constants.Error.HACKER_404_MESSAGE,
+            data: {
+                id: req.params.id
+            }
+        });
+    }
+}
+
+/**
  * Sets req.body.status to Accepted for next middleware.
  * @param {{params:{id: string}, body: *}} req 
  * @param {*} res 
@@ -531,6 +599,19 @@ async function updateHacker(req, res, next) {
  */
 function parseAccept(req, res, next) {
     req.body.status = Constants.General.HACKER_STATUS_ACCEPTED;
+    req.hackerId = req.params.id;
+    next();
+}
+
+/**
+ * Sets req.body.hacker.status to Accepted for next middleware.
+ * @param {{params:{email: string}, body: *}} req 
+ * @param {*} res 
+ * @param {*} next 
+ */
+function parseAcceptEmail(req, res, next) {
+    req.body.hacker.status = Constants.General.HACKER_STATUS_ACCEPTED;
+    req.hackerId = req.body.hacker._id;
     next();
 }
 
@@ -652,7 +733,9 @@ module.exports = {
         sendAppliedStatusEmail
     ),
     updateHacker: Middleware.Util.asyncMiddleware(updateHacker),
+    obtainEmailByHackerId: Middleware.Util.asyncMiddleware(obtainEmailByHackerId),
     parseAccept: parseAccept,
+    parseAcceptEmail: parseAcceptEmail,
     validateConfirmedStatusFromAccountId: Middleware.Util.asyncMiddleware(
         validateConfirmedStatusFromAccountId
     ),
@@ -661,6 +744,9 @@ module.exports = {
     ),
     validateConfirmedStatusFromObject: Middleware.Util.asyncMiddleware(
         validateConfirmedStatusFromObject
+    ),
+    completeStatusUpdateEmail: Middleware.Util.asyncMiddleware(
+        completeStatusUpdateEmail
     ),
     checkDuplicateAccountLinks: Middleware.Util.asyncMiddleware(
         checkDuplicateAccountLinks
