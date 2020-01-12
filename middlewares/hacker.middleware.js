@@ -560,12 +560,12 @@ async function updateHacker(req, res, next) {
 /**
  * Updates a hacker that is specified by req.body.hacker._id, and then sets req.email
  * to the email of the hacker, found in Account.
- * @param {{params:{id: string}, body: *}} req
+ * @param {{params:{_id: string}, body: *}} req
  * @param {*} res
  * @param {*} next
  */
-async function updateHackerByEmailRoute(req, res, next) {
-    const hacker = await Services.Hacker.updateOne(req.body.hacker._id, req.body);
+async function obtainEmailByHackerId(req, res, next) {
+    const hacker = await Services.Hacker.findById(req.body.hacker._id);
     if (hacker) {
         const acct = await Services.Account.findById(hacker.accountId);
         if (!acct) {
@@ -733,7 +733,7 @@ module.exports = {
         sendAppliedStatusEmail
     ),
     updateHacker: Middleware.Util.asyncMiddleware(updateHacker),
-    updateHackerByEmailRoute: Middleware.Util.asyncMiddleware(updateHackerByEmailRoute),
+    obtainEmailByHackerId: Middleware.Util.asyncMiddleware(obtainEmailByHackerId),
     parseAccept: parseAccept,
     parseAcceptEmail: parseAcceptEmail,
     validateConfirmedStatusFromAccountId: Middleware.Util.asyncMiddleware(

@@ -334,7 +334,7 @@ module.exports = {
             Middleware.parseBody.middleware,
             Middleware.Hacker.findByEmail,
             Middleware.Hacker.parseAcceptEmail,
-            Middleware.Hacker.updateHackerByEmailRoute,
+            Middleware.Hacker.obtainEmailByHackerId,
             Middleware.Hacker.completeStatusUpdateEmail,
             Controllers.Hacker.updatedHacker
         );
