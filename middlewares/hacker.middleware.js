@@ -191,6 +191,12 @@ async function validateConfirmedStatusFromHackerId(req, res, next) {
  */
 async function validateConfirmedStatusFromArrayofHackerIds(req, res, next) {
     req.body.errors = [];
+    if (!req.body.ids) {
+        return next({
+            status: 404,
+            message: Constants.Error.HACKER_404_MESSAGE
+        })
+    }
     const promise = new Promise((resolve, reject) => {
         req.body.ids.forEach(async (id, index) => {
             const hacker = await Services.Hacker.findById(id);
