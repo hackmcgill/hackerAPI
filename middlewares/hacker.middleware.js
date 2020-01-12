@@ -604,7 +604,7 @@ function parseAccept(req, res, next) {
 }
 
 /**
- * Sets req.body.status to Accepted for next middleware.
+ * Sets req.body.hacker.status to Accepted for next middleware.
  * @param {{params:{email: string}, body: *}} req 
  * @param {*} res 
  * @param {*} next 
