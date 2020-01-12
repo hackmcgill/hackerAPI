@@ -309,7 +309,7 @@ module.exports = {
             );
         
         /**
-         * @api {patch} /hacker/acceptEmail/:email accept a Hacker
+         * @api {patch} /hacker/acceptEmail/:email accept a Hacker by email
          * @apiName acceptHacker
          * @apiGroup Hacker
          * @apiVersion 2.0.0
