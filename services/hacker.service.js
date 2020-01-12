@@ -19,11 +19,11 @@ function createHacker(hackerDetails) {
 
     let hacker;
 
-    if (Date.now() < Constants.APPLICATION_CLOSE_TIME) {
-        hacker = new Hacker(hackerDetails);
-        return hacker.save();
-    }
-    throw new Error("Sorry, the application deadline has passed!");
+    //if (Date.now() < Constants.APPLICATION_CLOSE_TIME) {
+    hacker = new Hacker(hackerDetails);
+    return hacker.save();
+    //}
+    //throw new Error("Sorry, the application deadline has passed!");
 }
 
 /**
