@@ -49,6 +49,8 @@ const unconfirmedHacker1 = util.hacker.unconfirmedAccountHacker1;
 
 const invalidHacker1 = util.hacker.invalidHacker1;
 
+const validHackerArray = [util.account.hackerAccounts.stored.team[0]._id , util.account.hackerAccounts.stored.team[1]._id];
+
 describe("GET hacker", function() {
     // fail on authentication
     it("should FAIL to list a hacker's information on /api/hacker/:id GET due to authentication", function(done) {
@@ -614,6 +616,37 @@ describe("POST create hacker", function() {
                         "application.accommodation.travel must be an integer."
                     );
 
+                    done();
+                });
+        });
+    });
+});
+
+describe("PATCH update multiple hackers", function() {
+    it("should SUCCEED and accept a hackers on /api/hacker/accept/:id as an Admin", function(done) {
+        util.auth.login(agent, Admin0, (error) => {
+            if (error) {
+                agent.close();
+                return done(error);
+            }
+            return agent
+                .patch(`/api/hacker/batchAccept/`)
+                .type("application/json")
+                .send(validHackerArray)
+                .end(function(err, res) {
+                    res.should.have.status(200);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal(
+                        Constants.Success.HACKER_UPDATE
+                    );
+                    res.body.should.have.property("data");
+                    chai.assert.equal(
+                        JSON.stringify(res.body.data),
+                        JSON.stringify({
+                            status: "Accepted"
+                        })
+                    );
                     done();
                 });
         });
