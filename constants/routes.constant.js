@@ -146,6 +146,41 @@ const hackerRoutes = {
     }
 };
 
+const travelRoutes = {
+    getSelf: {
+        requestType: Constants.REQUEST_TYPES.GET,
+        uri: "/api/travel/self/"
+    },
+    getSelfById: {
+        requestType: Constants.REQUEST_TYPES.GET,
+        uri: "/api/travel/" + Constants.ROLE_CATEGORIES.SELF
+    },
+    getAnyById: {
+        requestType: Constants.REQUEST_TYPES.GET,
+        uri: "/api/travel/" + Constants.ROLE_CATEGORIES.ALL
+    },
+    getSelfByEmail: {
+        requestType: Constants.REQUEST_TYPES.GET,
+        uri: "/api/travel/email/" + Constants.ROLE_CATEGORIES.SELF
+    },
+    getAnyByEmail: {
+        requestType: Constants.REQUEST_TYPES.GET,
+        uri: "/api/travel/email/" + Constants.ROLE_CATEGORIES.ALL
+    },
+    post: {
+        requestType: Constants.REQUEST_TYPES.POST,
+        uri: "/api/travel/"
+    },
+    patchAnyStatusById: {
+        requestType: Constants.REQUEST_TYPES.PATCH,
+        uri: "/api/travel/status/" + Constants.ROLE_CATEGORIES.ALL
+    },
+    patchAnyOfferById: {
+        requestType: Constants.REQUEST_TYPES.PATCH,
+        uri: "/api/travel/offer/" + Constants.ROLE_CATEGORIES.ALL
+    }
+}
+
 const sponsorRoutes = {
     getSelf: {
         requestType: Constants.REQUEST_TYPES.GET,
@@ -259,6 +294,7 @@ const allRoutes = {
     Auth: authRoutes,
     Account: accountRoutes,
     Hacker: hackerRoutes,
+    Travel: travelRoutes,
     Sponsor: sponsorRoutes,
     Team: teamRoutes,
     Volunteer: volunteerRoutes,
@@ -298,6 +334,7 @@ module.exports = {
     authRoutes: authRoutes,
     accountRoutes: accountRoutes,
     hackerRoutes: hackerRoutes,
+    travelRoutes: travelRoutes,
     sponsorRoutes: sponsorRoutes,
     teamRoutes: teamRoutes,
     volunteerRoutes: volunteerRoutes,

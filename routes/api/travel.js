@@ -28,6 +28,43 @@ module.exports = {
     activate: function (apiRouter) {
         const travelRouter = express.Router();
 
+
+        travelRouter.route("/").get(
+            Controllers.Travel.okay
+        )
+
+        /**
+         * @api {get} /travel/self get information about own hacker's travel
+         * @apiName self
+         * @apiGroup Travel
+         * @apiVersion 2.0.1
+         * 
+         * @apiSuccess {string} message Success message
+         * @apiSuccess {object} data Travel object
+         * @apiSuccessExample {object} Success-Response: 
+         *      {
+                    "message": "Travel found by logged in account id", 
+                    "data": {
+                        "id":"5bff4d736f86be0a41badb91",
+                        "status": "Claimed"
+                        "request": 90,
+                        "offer": 80
+                    }  
+                }
+
+         * @apiError {string} message Error message
+         * @apiError {object} data empty
+         * @apiErrorExample {object} Error-Response: 
+         *      {"message": "Travel not found", "data": {}}
+         */
+        travelRouter.route("/self").get(
+            Middleware.Auth.ensureAuthenticated(),
+            Middleware.Auth.ensureAuthorized(),
+
+            Middleware.Travel.findSelf,
+            Controllers.Travel.showTravel
+        );
+
         /**
          * @api {get} /travel/:id get a traveler's information
          * @apiName getTravel
@@ -99,38 +136,6 @@ module.exports = {
             Middleware.parseBody.middleware,
 
             Middleware.Travel.findByEmail,
-            Controllers.Travel.showTravel
-        );
-
-        /**
-         * @api {get} /travel/self get information about own hacker's travel
-         * @apiName self
-         * @apiGroup Travel
-         * @apiVersion 2.0.1
-         * 
-         * @apiSuccess {string} message Success message
-         * @apiSuccess {object} data Travel object
-         * @apiSuccessExample {object} Success-Response: 
-         *      {
-                    "message": "Travel found by logged in account id", 
-                    "data": {
-                        "id":"5bff4d736f86be0a41badb91",
-                        "status": "Claimed"
-                        "request": 90,
-                        "offer": 80
-                    }  
-                }
-
-         * @apiError {string} message Error message
-         * @apiError {object} data empty
-         * @apiErrorExample {object} Error-Response: 
-         *      {"message": "Travel not found", "data": {}}
-         */
-        travelRouter.route("/self").get(
-            Middleware.Auth.ensureAuthenticated(),
-            Middleware.Auth.ensureAuthorized(),
-
-            Middleware.Travel.findSelf,
             Controllers.Travel.showTravel
         );
 

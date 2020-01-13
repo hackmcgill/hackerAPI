@@ -161,9 +161,9 @@ async function updateTravel(req, res, next) {
  * @description Retrieves a travel's information via req.body.id, moving result to req.body.travel if succesful.
  */
 async function findById(req, res, next) {
-    const hacker = await Services.Travel.findById(req.body.id);
+    const travel = await Services.Travel.findById(req.body.id);
 
-    if (!hacker) {
+    if (!travel) {
         return next({
             status: 404,
             message: Constants.Error.TRAVEL_404_MESSAGE

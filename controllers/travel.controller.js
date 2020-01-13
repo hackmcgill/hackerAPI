@@ -4,6 +4,12 @@ const Constants = {
     Error: require("../constants/error.constant")
 };
 
+function okay(req, res) {
+    return res.status(200).json({
+        message: "good"
+    });
+}
+
 /**
  * @function showTravel
  * @param {{body: {travel: Object}}} req
@@ -53,6 +59,7 @@ function updatedTravel(req, res) {
 }
 
 module.exports = {
+    okay: okay,
     showTravel: showTravel,
     updatedTravel: updatedTravel,
     createdTravel: createdTravel
