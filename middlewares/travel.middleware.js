@@ -107,10 +107,8 @@ function addDefaultStatusAndOffer(req, res, next) {
 async function createTravel(req, res, next) {
     const travelDetails = req.body.travelDetails;
 
-    const exists = await Services.Hacker.findByAccountId(
+    const exists = await Services.Travel.findByAccountId(
         travelDetails.accountId
-    ) || Services.Hacker.findById(
-        travelDetails.hackerId
     );
 
     if (exists) {
@@ -123,7 +121,7 @@ async function createTravel(req, res, next) {
         });
     }
     const travel = await Services.Travel.createTravel(travelDetails);
-    if (!!hacker) {
+    if (!!travel) {
         req.body.travel = travel;
         return next();
     } else {
