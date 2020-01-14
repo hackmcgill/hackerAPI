@@ -61,7 +61,9 @@ function parseTravel(req, res, next) {
  * @param {JSON} res
  * @param {(err?)=>void} next
  * @return {void}
- * @description Load travel request from hacker application and add it to 
+ * @description
+ * Load travel request from hacker application and add it to
+ * req.body.travelDetails
  */
 async function addRequestFromHacker(req, res, next) {
     const hacker = await Services.Hacker.findById(req.body.travelDetails.accountId);
@@ -76,6 +78,7 @@ async function addRequestFromHacker(req, res, next) {
         });
     }
     req.body.travelDetails.request = hacker.application.accommodation.travel;
+    return next();
 }
 
 /**
