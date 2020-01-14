@@ -30,6 +30,7 @@ const APPLICATION_CLOSE_TIME = 1578286800000;
 
 const TRAVEL_STATUS_NONE = "None"; // Hacker has not been offered compensation for travelling
 const TRAVEL_STATUS_BUS = "Bus"; // Hacker is taking bus to hackathon
+const TRAVEL_STATUS_POLICY = "Policy"; // Hacker has been offer some reimbursement, but we are waiting for hacker to accept travel policy first  
 const TRAVEL_STATUS_OFFERED = "Offered"; // Hacker has been offered some amount of compensation for travelling, but we have not verified their reciepts yet
 const TRAVEL_STATUS_VALID = "Valid"; // Hacker has been offered some amount of compensation for travelling and have uploaded reciepts which we have confirmed to be an approprate amount
 const TRAVEL_STATUS_INVALID = "Invalid"; // Hacker has been offered some amount of compensation for travelling but have uploaded reciepts which we have confirmed to be an inapproprate amount
@@ -37,6 +38,7 @@ const TRAVEL_STATUS_CLAIMED = "Claimed"; // Hacker has been offered some amount 
 const TRAVEL_STATUSES = [
     TRAVEL_STATUS_NONE,
     TRAVEL_STATUS_BUS,
+    TRAVEL_STATUS_POLICY,
     TRAVEL_STATUS_OFFERED,
     TRAVEL_STATUS_VALID,
     TRAVEL_STATUS_INVALID,
@@ -177,6 +179,7 @@ module.exports = {
     HACKER_STATUSES: HACKER_STATUSES,
     TRAVEL_STATUS_NONE: TRAVEL_STATUS_NONE,
     TRAVEL_STATUS_BUS: TRAVEL_STATUS_BUS,
+    TRAVEL_STATUS_POLICY: TRAVEL_STATUS_POLICY,
     TRAVEL_STATUS_OFFERED: TRAVEL_STATUS_OFFERED,
     TRAVEL_STATUS_VALID: TRAVEL_STATUS_VALID,
     TRAVEL_STATUS_INVALID: TRAVEL_STATUS_INVALID,

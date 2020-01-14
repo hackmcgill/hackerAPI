@@ -113,7 +113,7 @@ module.exports = {
          * @apiSuccess {String} message Success message
          * @apiSuccess {Object} data Travel object
          * @apiSuccessExample {object} Success-Response: 
-         *     {
+         *      {
                     "message": "Successfully retrieved travel information", 
                     "data": {
                         "id":"5bff4d736f86be0a41badb91",
