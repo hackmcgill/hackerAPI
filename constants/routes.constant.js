@@ -128,6 +128,10 @@ const hackerRoutes = {
         requestType: Constants.REQUEST_TYPES.PATCH,
         uri: "/api/hacker/accept/" + Constants.ROLE_CATEGORIES.ALL,
     },
+    patchAcceptHackerByEmail: {
+        requestType: Constants.REQUEST_TYPES.PATCH,
+        uri: "/api/hacker/acceptEmail/" + Constants.ROLE_CATEGORIES.ALL,
+    },
     postAnySendWeekOfEmail: {
         requestType: Constants.REQUEST_TYPES.POST,
         uri: "/api/hacker/email/weekOf/" + Constants.ROLE_CATEGORIES.ALL

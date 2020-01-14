@@ -1,4 +1,4 @@
-use hackboard - dev; // Change to product for actual update
+// use hackboard-dev; // Change to product for actual update
 
 // Create a travel document for every hacker document
 db.hackers.find().forEach(hacker => {
