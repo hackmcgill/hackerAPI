@@ -38,6 +38,14 @@ const hackerRole = {
         Constants.Routes.hackerRoutes.patchSelfConfirmationById,
         Constants.Routes.hackerRoutes.getSelf,
 
+        Constants.Routes.travelRoutes.getSelf,
+        Constants.Routes.travelRoutes.getSelfById,
+        Constants.Routes.travelRoutes.getAnyById,
+        Constants.Routes.travelRoutes.getSelfByEmail,
+        Constants.Routes.travelRoutes.getAnyByEmail,
+        Constants.Routes.travelRoutes.patchAnyStatusById,
+        Constants.Routes.travelRoutes.patchAnyOfferById,
+
         Constants.Routes.teamRoutes.join,
         Constants.Routes.teamRoutes.patchSelfById,
         Constants.Routes.teamRoutes.post,

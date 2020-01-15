@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Added travel model
+- Added route to create travel
+- Added routes to look up travel by id, email or self
+- Added routes to status or offer of an existing travel
+
 ### Changed
 
 -   Update hacker status emails: accepted, checked-in, confirmed, declined, waitlisted, withdrawn

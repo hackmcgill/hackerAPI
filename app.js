@@ -25,6 +25,7 @@ const accountRouter = require("./routes/api/account");
 const authRouter = require("./routes/api/auth");
 const hackerRouter = require("./routes/api/hacker");
 const teamRouter = require("./routes/api/team");
+const travelRouter = require("./routes/api/travel");
 const sponsorRouter = require("./routes/api/sponsor");
 const searchRouter = require("./routes/api/search");
 const settingsRouter = require("./routes/api/settings");
@@ -87,6 +88,8 @@ hackerRouter.activate(apiRouter);
 Services.log.info("Hacker router activated");
 teamRouter.activate(apiRouter);
 Services.log.info("Team router activated");
+travelRouter.activate(apiRouter);
+Services.log.info("Travel router activated")
 sponsorRouter.activate(apiRouter);
 Services.log.info("Sponsor router activated");
 volunteerRouter.activate(apiRouter);
