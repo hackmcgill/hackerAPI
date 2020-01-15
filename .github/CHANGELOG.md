@@ -5,12 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## Unreleased
+## [Unreleased]
+
+### Added
 
 - Added travel model
 - Added route to create travel
 - Added routes to look up travel by id, email or self
 - Added routes to status or offer of an existing travel
+
+### Changed
+
+-   Update hacker status emails: accepted, checked-in, confirmed, declined, waitlisted, withdrawn
 
 ## [2.2.0](https://github.com/hackmcgill/hackerapi/tree/2.2.0) - 2020-01-12
 
