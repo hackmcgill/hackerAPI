@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [2.3.1](https://github.com/hackmcgill/hackerapi/tree/2.3.1) - 2020-01-15
 
+### Added
+-   Added the live site link to the check in email
+
 ### Removed
 
 -   Removed travel routes from hacker
