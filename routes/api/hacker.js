@@ -307,6 +307,37 @@ module.exports = {
                 Middleware.Hacker.sendStatusUpdateEmail,
                 Controllers.Hacker.updatedHacker
             );
+        
+        /**
+         * @api {patch} /hacker/acceptEmail/:email accept a Hacker by email
+         * @apiName acceptHacker
+         * @apiGroup Hacker
+         * @apiVersion 2.0.0
+         *
+         * @apiSuccess {string} message Success message
+         * @apiSuccess {object} data Hacker object
+         * @apiSuccessExample {object} Success-Response:
+         *      {
+         *          "message": "Changed hacker information",
+         *          "data": {
+         *              "status": "Accepted"
+         *          }
+         *      }
+         * @apiPermission Administrator
+         */
+        hackerRouter
+        .route("/acceptEmail/:email")
+        .patch(
+            Middleware.Auth.ensureAuthenticated(),
+            Middleware.Auth.ensureAuthorized([Services.Hacker.findByEmail]),
+            Middleware.Validator.RouteParam.emailValidator,
+            Middleware.parseBody.middleware,
+            Middleware.Hacker.findByEmail,
+            Middleware.Hacker.parseAcceptEmail,
+            Middleware.Hacker.obtainEmailByHackerId,
+            Middleware.Hacker.completeStatusUpdateEmail,
+            Controllers.Hacker.updatedHacker
+        );
 
                     /**
          * @api {patch} /hacker/batchAccept/ accept array of Hackers

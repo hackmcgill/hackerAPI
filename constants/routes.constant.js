@@ -126,11 +126,15 @@ const hackerRoutes = {
     },
     patchAcceptHackerById: {
         requestType: Constants.REQUEST_TYPES.PATCH,
-        uri: "/api/hacker/accept/" + Constants.ROLE_CATEGORIES.ALL,
+        uri: "/api/hacker/accept/" + Constants.ROLE_CATEGORIES.ALL
+    },
+    patchAcceptHackerByEmail: {
+        requestType: Constants.REQUEST_TYPES.PATCH,
+        uri: "/api/hacker/acceptEmail/" + Constants.ROLE_CATEGORIES.ALL
     },
     patchAcceptHackerByArrayOfIds: {
         requestType: Constants.REQUEST_TYPES.PATCH,
-        uri: "/api/hacker/batchAccept",
+        uri: "/api/hacker/batchAccept"
     },
     postAnySendWeekOfEmail: {
         requestType: Constants.REQUEST_TYPES.POST,
@@ -147,6 +151,41 @@ const hackerRoutes = {
     postSelfSendDayOfEmail: {
         requestType: Constants.REQUEST_TYPES.POST,
         uri: "/api/hacker/email/dayOf/" + Constants.ROLE_CATEGORIES.SELF
+    }
+};
+
+const travelRoutes = {
+    getSelf: {
+        requestType: Constants.REQUEST_TYPES.GET,
+        uri: "/api/travel/self/"
+    },
+    getSelfById: {
+        requestType: Constants.REQUEST_TYPES.GET,
+        uri: "/api/travel/" + Constants.ROLE_CATEGORIES.SELF
+    },
+    getAnyById: {
+        requestType: Constants.REQUEST_TYPES.GET,
+        uri: "/api/travel/" + Constants.ROLE_CATEGORIES.ALL
+    },
+    getSelfByEmail: {
+        requestType: Constants.REQUEST_TYPES.GET,
+        uri: "/api/travel/email/" + Constants.ROLE_CATEGORIES.SELF
+    },
+    getAnyByEmail: {
+        requestType: Constants.REQUEST_TYPES.GET,
+        uri: "/api/travel/email/" + Constants.ROLE_CATEGORIES.ALL
+    },
+    post: {
+        requestType: Constants.REQUEST_TYPES.POST,
+        uri: "/api/travel/"
+    },
+    patchAnyStatusById: {
+        requestType: Constants.REQUEST_TYPES.PATCH,
+        uri: "/api/travel/status/" + Constants.ROLE_CATEGORIES.ALL
+    },
+    patchAnyOfferById: {
+        requestType: Constants.REQUEST_TYPES.PATCH,
+        uri: "/api/travel/offer/" + Constants.ROLE_CATEGORIES.ALL
     }
 };
 
@@ -263,6 +302,7 @@ const allRoutes = {
     Auth: authRoutes,
     Account: accountRoutes,
     Hacker: hackerRoutes,
+    Travel: travelRoutes,
     Sponsor: sponsorRoutes,
     Team: teamRoutes,
     Volunteer: volunteerRoutes,
@@ -302,6 +342,7 @@ module.exports = {
     authRoutes: authRoutes,
     accountRoutes: accountRoutes,
     hackerRoutes: hackerRoutes,
+    travelRoutes: travelRoutes,
     sponsorRoutes: sponsorRoutes,
     teamRoutes: teamRoutes,
     volunteerRoutes: volunteerRoutes,

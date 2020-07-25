@@ -19,11 +19,11 @@ function createHacker(hackerDetails) {
 
     let hacker;
 
-    if (Date.now() < Constants.APPLICATION_CLOSE_TIME) {
-        hacker = new Hacker(hackerDetails);
-        return hacker.save();
-    }
-    throw new Error("Sorry, the application deadline has passed!");
+    //if (Date.now() < Constants.APPLICATION_CLOSE_TIME) {
+    hacker = new Hacker(hackerDetails);
+    return hacker.save();
+    //}
+    //throw new Error("Sorry, the application deadline has passed!");
 }
 
 /**
@@ -198,7 +198,7 @@ function getStats(hackers) {
         stats.graduationYear[hacker.application.general.graduationYear] = stats
             .graduationYear[hacker.application.general.graduationYear]
             ? stats.graduationYear[hacker.application.general.graduationYear] +
-              1
+            1
             : 1;
         for (const dietaryRestrictions of hacker.accountId
             .dietaryRestrictions) {
