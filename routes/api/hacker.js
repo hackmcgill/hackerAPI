@@ -283,7 +283,7 @@ module.exports = {
          * @apiName acceptHacker
          * @apiGroup Hacker
          * @apiVersion 2.0.0
-         * 
+         *
          * @apiSuccess {string} message Success message
          * @apiSuccess {object} data Hacker object
          * @apiSuccessExample {object} Success-Response:
@@ -307,7 +307,7 @@ module.exports = {
                 Middleware.Hacker.sendStatusUpdateEmail,
                 Controllers.Hacker.updatedHacker
             );
-        
+
         /**
          * @api {patch} /hacker/acceptEmail/:email accept a Hacker by email
          * @apiName acceptHacker
@@ -326,49 +326,52 @@ module.exports = {
          * @apiPermission Administrator
          */
         hackerRouter
-        .route("/acceptEmail/:email")
-        .patch(
-            Middleware.Auth.ensureAuthenticated(),
-            Middleware.Auth.ensureAuthorized([Services.Hacker.findByEmail]),
-            Middleware.Validator.RouteParam.emailValidator,
-            Middleware.parseBody.middleware,
-            Middleware.Hacker.findByEmail,
-            Middleware.Hacker.parseAcceptEmail,
-            Middleware.Hacker.obtainEmailByHackerId,
-            Middleware.Hacker.completeStatusUpdateEmail,
-            Controllers.Hacker.updatedHacker
-        );
+            .route("/acceptEmail/:email")
+            .patch(
+                Middleware.Auth.ensureAuthenticated(),
+                Middleware.Auth.ensureAuthorized([Services.Hacker.findByEmail]),
+                Middleware.Validator.RouteParam.emailValidator,
+                Middleware.parseBody.middleware,
+                Middleware.Hacker.findByEmail,
+                Middleware.Hacker.parseAcceptEmail,
+                Middleware.Hacker.obtainEmailByHackerId,
+                Middleware.Hacker.completeStatusUpdateEmail,
+                Controllers.Hacker.updatedHacker
+            );
 
-                    /**
+        /**
          * @api {patch} /hacker/batchAccept/ accept array of Hackers
          * @apiName acceptHacker
          * @apiGroup Hacker
          * @apiVersion 2.0.0
          *
-         * @apiParam (body) {ObjectId[]} Array of id(s) that needed to be accepted
-         * 
+         * @apiParam (body) {{ids: ObjectId[]}} Array of id(s) that needed to be accepted
+         *
          * @apiSuccess {string} message Success message
-         * @apiSuccess {object} data Hacker object
+         * @apiSuccess {object} data success_ids array and errors array. Errors array will contain a detailed error for why the batch update for a given ID did not work
          * @apiSuccessExample {object} Success-Response:
          *      {
-         *          "message": "Changed hacker information",
+         *          "message": "Hacker batch update successful.",
          *          "data": {
-         *              "status": "Accepted"
+         *              "success_ids": ["id1", "id2"]
+         *              "errors": [{status: 404, message: "ACCOUNT_NOT_FOUND", account: null, hacker_id: "id3"}]
          *          }
          *      }
          * @apiPermission Administrator
          */
         hackerRouter
-        .route("/batchAccept")
-        .patch(
-            Middleware.Auth.ensureAuthenticated(),
-            Middleware.Auth.ensureAuthorized(),
-            Middleware.Hacker.validateConfirmedStatusFromArrayofHackerIds,
-            Middleware.Hacker.parseAccept,
-            Middleware.Hacker.updateBatchHacker,
-            Middleware.Hacker.sendStatusUpdateEmailForMultipleIds,
-            Controllers.Hacker.updatedHacker
-        );
+            .route("/batchAccept")
+            .patch(
+                Middleware.Auth.ensureAuthenticated(),
+                Middleware.Auth.ensureAuthorized([]),
+                Middleware.Validator.Hacker.batchUpdateValidator,
+                Middleware.parseBody.middleware,
+                Middleware.Hacker.validateConfirmedStatusFromArrayofHackerIds,
+                Middleware.Hacker.parseAccept,
+                Middleware.Hacker.updateBatchHacker,
+                Middleware.Hacker.sendStatusUpdateEmailForMultipleIds,
+                Controllers.Hacker.completedBatchUpdate
+            );
         /**
          * @api {patch} /hacker/checkin/:id update a hacker's status to be 'Checked-in'. Note that the Hacker must eitehr be Accepted or Confirmed.
          * @apiName checkinHacker

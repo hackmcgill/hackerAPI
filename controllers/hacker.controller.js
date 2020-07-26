@@ -92,8 +92,19 @@ function sentDayOfEmail(req, res) {
     });
 }
 
+function completedBatchUpdate(req, res) {
+    return res.status(200).json({
+        message: Constants.Success.HACKER_UPDATE_BATCH,
+        data: {
+            success_ids: req.body.ids,
+            errors: req.errors || []
+        }
+    });
+}
+
 module.exports = {
     updatedHacker: updatedHacker,
+    completedBatchUpdate: completedBatchUpdate,
     createdHacker: createdHacker,
     uploadedResume: uploadedResume,
     downloadedResume: downloadedResume,

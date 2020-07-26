@@ -265,7 +265,7 @@ module.exports = {
         VALIDATOR.searchModelValidator("query", "model", false),
         VALIDATOR.searchValidator("query", "q")
     ],
-    batchAcceptValidator: [
+    batchUpdateValidator: [
         VALIDATOR.mongoIdArrayValidator("body", "ids", false)
     ]
 };
