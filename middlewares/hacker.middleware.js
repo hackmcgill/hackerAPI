@@ -725,7 +725,7 @@ async function updateBatchHacker(req, res, next) {
 }
 
 /**
- * Sets req.body.status to Accepted for next middleware.
+ * Sets req.body.status to Accepted for next middleware, and store req.params.id as req.hackerId
  * @param {{params:{id: string}, body: *}} req
  * @param {*} res
  * @param {*} next
@@ -745,6 +745,17 @@ function parseAccept(req, res, next) {
 function parseAcceptEmail(req, res, next) {
     req.body.hacker.status = Constants.General.HACKER_STATUS_ACCEPTED;
     req.hackerId = req.body.hacker._id;
+    next();
+}
+
+/**
+ * Sets req.body.status to Accepted for next middleware.
+ * @param {{body: *}} req
+ * @param {*} res
+ * @param {*} next
+ */
+function parseAcceptBatch(req, res, next) {
+    req.body.status = Constants.General.HACKER_STATUS_ACCEPTED;
     next();
 }
 
@@ -881,6 +892,7 @@ module.exports = {
     updateHacker: Middleware.Util.asyncMiddleware(updateHacker),
     updateBatchHacker: Middleware.Util.asyncMiddleware(updateBatchHacker),
     parseAccept: parseAccept,
+    parseAcceptBatch: parseAcceptBatch,
     parseAcceptEmail: parseAcceptEmail,
     parseBatch: parseBatchAccept,
     validateConfirmedStatusFromAccountId: Middleware.Util.asyncMiddleware(

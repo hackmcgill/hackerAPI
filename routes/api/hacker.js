@@ -367,7 +367,7 @@ module.exports = {
                 Middleware.Validator.Hacker.batchUpdateValidator,
                 Middleware.parseBody.middleware,
                 Middleware.Hacker.validateConfirmedStatusFromArrayofHackerIds,
-                Middleware.Hacker.parseAccept,
+                Middleware.Hacker.parseAcceptBatch,
                 Middleware.Hacker.updateBatchHacker,
                 Middleware.Hacker.sendStatusUpdateEmailForMultipleIds,
                 Controllers.Hacker.updatedHackerBatch
