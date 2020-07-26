@@ -92,7 +92,7 @@ function sentDayOfEmail(req, res) {
     });
 }
 
-function completedBatchUpdate(req, res) {
+function updatedHackerBatch(req, res) {
     return res.status(200).json({
         message: Constants.Success.HACKER_UPDATE_BATCH,
         data: {
@@ -104,7 +104,7 @@ function completedBatchUpdate(req, res) {
 
 module.exports = {
     updatedHacker: updatedHacker,
-    completedBatchUpdate: completedBatchUpdate,
+    updatedHackerBatch: updatedHackerBatch,
     createdHacker: createdHacker,
     uploadedResume: uploadedResume,
     downloadedResume: downloadedResume,

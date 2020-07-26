@@ -370,7 +370,7 @@ module.exports = {
                 Middleware.Hacker.parseAccept,
                 Middleware.Hacker.updateBatchHacker,
                 Middleware.Hacker.sendStatusUpdateEmailForMultipleIds,
-                Controllers.Hacker.completedBatchUpdate
+                Controllers.Hacker.updatedHackerBatch
             );
         /**
          * @api {patch} /hacker/checkin/:id update a hacker's status to be 'Checked-in'. Note that the Hacker must eitehr be Accepted or Confirmed.
