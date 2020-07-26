@@ -151,8 +151,6 @@ function createAllSingularRoles() {
     const allRoutes = Constants.Routes.allRoutes;
     let roles = [];
 
-    // i is unique integer so that objectId is constant
-    var i = 1000000;
     for (let routeGroupKey in allRoutes) {
         if (!Object.prototype.hasOwnProperty.call(allRoutes, routeGroupKey)) {
             continue;
@@ -160,18 +158,19 @@ function createAllSingularRoles() {
 
         const routeGroup = allRoutes[routeGroupKey];
         for (let routeKey in routeGroup) {
+            // Iterating through the attributes in the routeGroup object
             if (!Object.prototype.hasOwnProperty.call(routeGroup, routeKey)) {
+                // Avoid all prototype attributes
                 continue;
             }
 
             let role = {
-                _id: mongoose.Types.ObjectId(i),
+                _id: routeGroup[routeKey]._id,
                 name: routeKey + routeGroupKey,
                 routes: routeGroup[routeKey]
             };
             let roleName = role.name;
             roles[roleName] = role;
-            i -= 1;
         }
     }
 
