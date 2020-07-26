@@ -28,12 +28,13 @@ We use a custom implementation for authorization, which relies heavily on the de
 
 #### `Route`
 
-A `Route`, which is a component of a `Role`, is defined by its uri path, its query parameters in the uri path, and the HTTP verb used to access it:
+A `Route`, which is a component of a `Role`, is defined by its uri path, its query parameters in the uri path, the HTTP verb used to access it, and and `_id`:
 
 ```json
 {
     "uri": "/api/sponsor/",
     "requestType": "POST",
+    "_id": "000000010000000000000000"
 }
 ```
 
@@ -52,6 +53,45 @@ A `Role` is a collection of `Routes`, and a unique name (such as `hacker`, or `s
 ```
 
 _Note here that the parameter `routes` is a list of `Route` objects described in the previous section._
+
+##### In our code-base, we have a auto-generated list of `single roles` and a custom list of `user roles`
+
+`single roles` are roles that give permissions for one specific URI and request type. Every route has a `single role`.
+
+```json
+{
+    "_id": "000000010000000000000000",
+    "name": "postAccount",
+    "routes": [{
+        "uri": "/api/account/",
+        "requestType": "POST",
+        "_id": "000000010000000000000000",
+    }]
+}
+```
+
+`user roles` are syntactically the same as custom roles that give permissions for a collection of URIs and request types. These are essentially collections of routes that a given user needs access to in order to properly function with the API.
+
+```json
+{
+    "_id": "000000020000000000000000",
+    "name": "Account",
+    "routes": [{
+            "uri": "/api/account/",
+            "requestType": "POST",
+            "_id": "000000010000000000000000",
+        },
+        {
+            "uri": "/api/account/:SELF",
+            "requestType": "GET",
+            "_id": "000000030000000000000000",
+        },
+        // etc.
+    ]
+}
+```
+
+Note that for each route in the `user role`, you have access to the `single role` document's `_id`!
 
 #### `RoleBinding`
 
@@ -174,15 +214,18 @@ The http request that this would translate to is:
 ```
 
 ### Error Codes and Messages
+
 Error messages are in the error.constant.js file. The error constants are of the for TYPE_HTTPCODE_MESSAGE. For example, HACKER_404_MESSAGE. When creating a response, use an existing error message, or create a new one. An example:
-```
+
+```js
 next({
     status: 422,
     message: Constants.Error.ACCOUNT_DUPLICATE_422_MESSAGE,
     error: {...}
 });
 ```
-Note that the error status and the HTTPCODE in the error constant name are the same. 
+
+Note that the error status and the HTTPCODE in the error constant name are the same.
 
 Error codes currently in use are:
 401 - Invalid authentication
