@@ -343,7 +343,7 @@ module.exports = {
          * @api {patch} /hacker/batchAccept/ accept array of Hackers
          * @apiName acceptHacker
          * @apiGroup Hacker
-         * @apiVersion 2.0.0
+         * @apiVersion 3.0.0
          *
          * @apiParam (body) {{ids: ObjectId[]}} Array of id(s) that needed to be accepted
          *
