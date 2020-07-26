@@ -154,13 +154,13 @@ function createAllSingularRoles() {
     // i is unique integer so that objectId is constant
     var i = 1000000;
     for (let routeGroupKey in allRoutes) {
-        if (!allRoutes.hasOwnProperty(routeGroupKey)) {
+        if (!Object.prototype.hasOwnProperty.call(allRoutes, routeGroupKey)) {
             continue;
         }
 
         const routeGroup = allRoutes[routeGroupKey];
         for (let routeKey in routeGroup) {
-            if (!routeGroup.hasOwnProperty(routeKey)) {
+            if (!Object.prototype.hasOwnProperty.call(routeGroup, routeKey)) {
                 continue;
             }
 
@@ -197,7 +197,7 @@ function createAllRoles() {
 
     const singularRoles = createAllSingularRoles();
     for (let role in singularRoles) {
-        if (!singularRoles.hasOwnProperty(role)) {
+        if (!Object.prototype.hasOwnProperty.call(singularRoles, role)) {
             continue;
         }
         allRolesObject[role] = singularRoles[role];
