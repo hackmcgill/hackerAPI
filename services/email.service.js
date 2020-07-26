@@ -74,7 +74,10 @@ class EmailService {
             html: html
         };
         this.send(mailData).then((response) => {
-            if (response[0].statusCode >= 200 && response[0].statusCode < 300) {
+            if (
+                !response ||
+                (response[0].statusCode >= 200 && response[0].statusCode < 300)
+            ) {
                 callback();
             } else {
                 callback(response[0]);
@@ -102,7 +105,10 @@ class EmailService {
             html: html
         };
         this.send(mailData).then((response) => {
-            if (response[0].statusCode >= 200 && response[0].statusCode < 300) {
+            if (
+                !response ||
+                (response[0].statusCode >= 200 && response[0].statusCode < 300)
+            ) {
                 callback();
             } else {
                 callback(response[0]);
@@ -124,7 +130,10 @@ class EmailService {
             })
         };
         this.send(mailData).then((response) => {
-            if (response[0].statusCode >= 200 && response[0].statusCode < 300) {
+            if (
+                !response ||
+                (response[0].statusCode >= 200 && response[0].statusCode < 300)
+            ) {
                 callback();
             } else {
                 callback(response[0]);
