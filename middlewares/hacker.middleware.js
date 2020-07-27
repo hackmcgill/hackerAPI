@@ -1,7 +1,12 @@
+/* eslint-disable require-atomic-updates */
 "use strict";
 
 const TAG = `[ HACKER.MIDDLEWARE.js ]`;
 const mongoose = require("mongoose");
+
+// shim to allow us to use Promise.allSettled
+require("promise.allsettled").shim();
+
 const Services = {
     Hacker: require("../services/hacker.service"),
     Storage: require("../services/storage.service"),
@@ -111,31 +116,52 @@ function addDefaultStatus(req, res, next) {
 }
 
 /**
- * Helper function that validates if account is confirmed and is of proper type
+ * Helper function that validates if account is confirmed and is of proper type.
  * @param account account object containing the information for an account
- * @param {(err?) => void} next
+ * @returns {{status: number, message: string, error: Object}| null} returns error message if invalid, or null if valid.
  */
-async function validateConfirmedStatus(account, next) {
+function validateConfirmedStatus(account) {
     if (!account) {
-        return next({
+        return {
             status: 404,
             message: Constants.Error.ACCOUNT_404_MESSAGE,
-            error: {}
-        });
+            data: { account: account }
+        };
     } else if (!account.confirmed) {
-        return next({
+        return {
             status: 403,
             message: Constants.Error.ACCOUNT_403_MESSAGE,
-            error: {}
-        });
+            data: { account: { id: account.id, confirmed: account.confirmed } }
+        };
     } else if (account.accountType !== Constants.General.HACKER) {
-        return next({
+        return {
             status: 409,
-            message: Constants.Error.ACCOUNT_TYPE_409_MESSAGE
-        });
+            message: Constants.Error.ACCOUNT_TYPE_409_MESSAGE,
+            data: {
+                account: { id: account.id, accountType: account.accountType }
+            }
+        };
     } else {
-        return next();
+        return;
     }
+}
+
+/**
+ * Verifies that account is confirmed and of proper type from the hacker ID
+ * @param {string} id
+ * @returns {string} the id if it is confirmed.
+ * @throws ACCOUNT_404_MESSAGE if hacker / and or the account does not exist
+ * @throws ACCOUNT_403_MESSAGE if account is not confirmed
+ * @throws ACCOUNT_409_MESSAGE if account is not hacker
+ */
+async function hackerHasConfirmedAccount(id) {
+    const account = await Services.Account.findByHackerId(id);
+    const error = validateConfirmedStatus(account);
+    if (error) {
+        error.data.hacker_id = id;
+        throw error;
+    }
+    return id;
 }
 
 /**
@@ -146,7 +172,7 @@ async function validateConfirmedStatus(account, next) {
  */
 async function validateConfirmedStatusFromAccountId(req, res, next) {
     const account = await Services.Account.findById(req.body.accountId);
-    return validateConfirmedStatus(account, next);
+    return next(validateConfirmedStatus(account));
 }
 
 /**
@@ -156,16 +182,42 @@ async function validateConfirmedStatusFromAccountId(req, res, next) {
  * @param {(err?) => void} next
  */
 async function validateConfirmedStatusFromHackerId(req, res, next) {
-    const hacker = await Services.Hacker.findById(req.params.id);
-    if (hacker == null) {
+    // Throws error if not confirmed.
+    await hackerHasConfirmedAccount(req.params.id);
+    next();
+}
+
+/**
+ * Verifies that account is confirmed and of proper type from the hacker ID passed in req.body.ids.
+ * It will remove all ids that are not valid.
+ * @param {{body: {ids: ObjectId[]}}} req
+ * @param {*} res
+ * @param {(err?) => void} next
+ */
+async function validateConfirmedStatusFromArrayofHackerIds(req, res, next) {
+    if (!req.body.ids) {
         return next({
             status: 404,
-            message: Constants.Error.HACKER_404_MESSAGE,
-            data: req.body.hackerId
+            message: Constants.Error.HACKER_404_MESSAGE
         });
     }
-    const account = await Services.Account.findById(hacker.accountId);
-    return validateConfirmedStatus(account, next);
+    let confirmedStatusPromises = [];
+    for (const id of req.body.ids) {
+        confirmedStatusPromises.push(hackerHasConfirmedAccount(id));
+    }
+    const results = await Promise.allSettled(confirmedStatusPromises);
+    req.body.ids = [];
+    req.errors = req.errors ? req.errors : [];
+    // Iterate through results and split by errors and IDs
+    for (const result of results) {
+        if (result.status === "rejected") {
+            req.errors.push(result.reason);
+        } else {
+            // hackerHasConfirmedAccount will return ID
+            req.body.ids.push(result.value);
+        }
+    }
+    next();
 }
 
 /**
@@ -175,7 +227,7 @@ async function validateConfirmedStatusFromHackerId(req, res, next) {
  * @param {(err?) => void} next
  */
 async function validateConfirmedStatusFromObject(req, res, next) {
-    return validateConfirmedStatus(req.body.account, next);
+    next(validateConfirmedStatus(req.body.account));
 }
 
 /**
@@ -236,7 +288,7 @@ function ensureAccountLinkedToHacker(req, res, next) {
                 hacker &&
                 req.user &&
                 String.toString(hacker.accountId) ===
-                String.toString(req.user.id)
+                    String.toString(req.user.id)
             ) {
                 return next();
             } else {
@@ -295,6 +347,36 @@ async function downloadResume(req, res, next) {
     }
     return next();
 }
+
+/**
+ * Sends the status for a given hacker.
+ * @returns {Promise} Returns a promise, which resolves into the ID, or rejects with the reason.
+ * @param {string} id
+ * @param {string} status
+ */
+async function sendStatusUpdateEmailHelper(id, status) {
+    // send it to the hacker that is being updated.
+    const account = await Services.Account.findByHackerId(id);
+    if (!account) {
+        throw {
+            status: 500,
+            message: Constants.Error.GENERIC_500_MESSAGE,
+            id: id
+        };
+    }
+    // Promisify sendStatusUpdate :/
+    return new Promise((resolve, reject) => {
+        Services.Email.sendStatusUpdate(
+            account.firstName,
+            account.email,
+            status,
+            (err) => {
+                err ? reject(err) : resolve(id);
+            }
+        );
+    });
+}
+
 /**
  * Sends a preset email to a user if a status change occured.
  * @param {{body: {status?: string}, params: {id: string}}} req
@@ -306,29 +388,42 @@ async function sendStatusUpdateEmail(req, res, next) {
     if (!req.body.status) {
         return next();
     } else {
-        // send it to the hacker that is being updated.
-        const hacker = await Services.Hacker.findById(req.params.id);
-        const account = await Services.Account.findById(hacker.accountId);
-        if (!hacker) {
-            return next({
-                status: 404,
-                message: Constants.Error.HACKER_404_MESSAGE
-            });
-        } else if (!account) {
-            return next({
-                status: 500,
-                message: Constants.Error.GENERIC_500_MESSAGE
-            });
-        }
-        Services.Email.sendStatusUpdate(
-            account.firstName,
-            account.email,
-            req.body.status,
-            next
-        );
+        await sendStatusUpdateEmailHelper(req.params.id, req.body.status);
+        next();
     }
 }
 
+/**
+ * Sends a preset email to a user if a status change occured.
+ * @param {{body: {status?: string, ids: string[]}} req
+ * @param {*} res
+ * @param {(err?:*)=>void} next
+ */
+async function sendStatusUpdateEmailForMultipleIds(req, res, next) {
+    //skip if the status doesn't exist
+    if (!req.body.status) {
+        return next();
+    } else {
+        const statusUpdatePromises = [];
+        for (const id of req.body.ids) {
+            statusUpdatePromises.push(
+                sendStatusUpdateEmailHelper(id, req.body.status)
+            );
+        }
+        const results = await Promise.allSettled(statusUpdatePromises);
+        req.body.ids = [];
+        req.errors = req.errors ? req.errors : [];
+        for (const result of results) {
+            if (result.status === "rejected") {
+                req.errors.push(result.reason);
+            } else {
+                // result.value will be the hacker's ID.
+                req.body.ids.push(result.value);
+            }
+        }
+        next();
+    }
+}
 /**
  * Sends a preset email to a user if a status change occured with email params.
  * @param {{body: {status?: string}, params: {email: string}}} req
@@ -497,7 +592,7 @@ function checkStatus(statuses) {
     return Middleware.Util.asyncMiddleware(async (req, res, next) => {
         let hacker = await Services.Hacker.findById(req.params.id);
 
-        if (!!hacker) {
+        if (hacker) {
             const status = hacker.status;
             // makes sure the hacker's status is in the accepted statuses list
             if (statuses.indexOf(status) === -1) {
@@ -550,7 +645,9 @@ async function updateHacker(req, res, next) {
         // If this hacker has a travel account associated with it, then update request to reflect amount wanted for travel
         const travel = await Services.Travel.findByHackerId(hacker.id);
         if (travel) {
-            await Services.Travel.updateOne(travel.id, { "request": hacker.application.accommodation.travel });
+            await Services.Travel.updateOne(travel.id, {
+                request: hacker.application.accommodation.travel
+            });
         }
         return next();
     } else {
@@ -599,10 +696,39 @@ async function obtainEmailByHackerId(req, res, next) {
 }
 
 /**
- * Sets req.body.status to Accepted for next middleware.
- * @param {{params:{id: string}, body: *}} req 
- * @param {*} res 
- * @param {*} next 
+ * Updates a list of hacker that is specified by req.body.ids.
+ * Some hackers may fail, and that will be stored in req.errors.
+ * Filters req.body.ids to only the successful processes.
+ * @param {{body:{ids: String[]}}} req
+ * @param {*} res
+ * @param {*} next
+ */
+async function updateBatchHacker(req, res, next) {
+    let eachHackerPromise = [];
+    for (const id of req.body.ids) {
+        eachHackerPromise.push(Services.Hacker.updateOne(id, req.body));
+    }
+    const updateResults = await Promise.allSettled(eachHackerPromise);
+    // clear req.body.ids so that we store only the good ones.
+    req.body.ids = [];
+    req.errors = req.errors ? req.errors : [];
+    for (const result of updateResults) {
+        // Some error happened when trying to update a hacker.
+        if (result.status === "rejected") {
+            req.errors.push(result.reason);
+        } else {
+            // result.value will be the hacker object.
+            req.body.ids.push(result.value._id);
+        }
+    }
+    next();
+}
+
+/**
+ * Sets req.body.status to Accepted for next middleware, and store req.params.id as req.hackerId
+ * @param {{params:{id: string}, body: *}} req
+ * @param {*} res
+ * @param {*} next
  */
 function parseAccept(req, res, next) {
     req.body.status = Constants.General.HACKER_STATUS_ACCEPTED;
@@ -612,9 +738,9 @@ function parseAccept(req, res, next) {
 
 /**
  * Sets req.body.hacker.status to Accepted for next middleware.
- * @param {{params:{email: string}, body: *}} req 
- * @param {*} res 
- * @param {*} next 
+ * @param {{params:{email: string}, body: *}} req
+ * @param {*} res
+ * @param {*} next
  */
 function parseAcceptEmail(req, res, next) {
     req.body.hacker.status = Constants.General.HACKER_STATUS_ACCEPTED;
@@ -622,6 +748,27 @@ function parseAcceptEmail(req, res, next) {
     next();
 }
 
+/**
+ * Sets req.body.status to Accepted for next middleware.
+ * @param {{body: *}} req
+ * @param {*} res
+ * @param {*} next
+ */
+function parseAcceptBatch(req, res, next) {
+    req.body.status = Constants.General.HACKER_STATUS_ACCEPTED;
+    next();
+}
+
+/**
+ * Sets req.body.status to Accepted for next middleware.
+ * @param {{params:{id: string}, body: *}} req
+ * @param {*} res
+ * @param {*} next
+ */
+function parseBatchAccept(req, res, next) {
+    req.body.status = Constants.General.HACKER_STATUS_ACCEPTED;
+    next();
+}
 
 /**
  * @function createHacker
@@ -649,7 +796,7 @@ async function createHacker(req, res, next) {
         });
     }
     const hacker = await Services.Hacker.createHacker(hackerDetails);
-    if (!!hacker) {
+    if (hacker) {
         req.body.hacker = hacker;
         return next();
     } else {
@@ -704,7 +851,7 @@ async function findSelf(req, res, next) {
 
     const hacker = await Services.Hacker.findByAccountId(req.user.id);
 
-    if (!!hacker) {
+    if (hacker) {
         req.body.hacker = hacker;
         return next();
     } else {
@@ -736,18 +883,26 @@ module.exports = {
     sendStatusUpdateEmail: Middleware.Util.asyncMiddleware(
         sendStatusUpdateEmail
     ),
+    sendStatusUpdateEmailForMultipleIds: Middleware.Util.asyncMiddleware(
+        sendStatusUpdateEmailForMultipleIds
+    ),
     sendAppliedStatusEmail: Middleware.Util.asyncMiddleware(
         sendAppliedStatusEmail
     ),
     updateHacker: Middleware.Util.asyncMiddleware(updateHacker),
-    obtainEmailByHackerId: Middleware.Util.asyncMiddleware(obtainEmailByHackerId),
+    updateBatchHacker: Middleware.Util.asyncMiddleware(updateBatchHacker),
     parseAccept: parseAccept,
+    parseAcceptBatch: parseAcceptBatch,
     parseAcceptEmail: parseAcceptEmail,
+    parseBatch: parseBatchAccept,
     validateConfirmedStatusFromAccountId: Middleware.Util.asyncMiddleware(
         validateConfirmedStatusFromAccountId
     ),
     validateConfirmedStatusFromHackerId: Middleware.Util.asyncMiddleware(
         validateConfirmedStatusFromHackerId
+    ),
+    validateConfirmedStatusFromArrayofHackerIds: Middleware.Util.asyncMiddleware(
+        validateConfirmedStatusFromArrayofHackerIds
     ),
     validateConfirmedStatusFromObject: Middleware.Util.asyncMiddleware(
         validateConfirmedStatusFromObject
@@ -768,5 +923,8 @@ module.exports = {
     findSelf: Middleware.Util.asyncMiddleware(findSelf),
     getStats: Middleware.Util.asyncMiddleware(getStats),
     findById: Middleware.Util.asyncMiddleware(findById),
-    findByEmail: Middleware.Util.asyncMiddleware(findByEmail)
+    findByEmail: Middleware.Util.asyncMiddleware(findByEmail),
+    obtainEmailByHackerId: Middleware.Util.asyncMiddleware(
+        obtainEmailByHackerId
+    )
 };

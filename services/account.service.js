@@ -1,4 +1,5 @@
 "use strict";
+const Hacker = require("../models/hacker.model");
 const Account = require("../models/account.model");
 const logger = require("./logger.service");
 const bcrypt = require("bcrypt");
@@ -18,6 +19,30 @@ function findById(id) {
         query,
         logger.queryCallbackFactory(TAG, "account", query)
     );
+}
+
+/**
+ * @function findByHackerId
+ * @param {ObjectId} id the Hacker's ID
+ * @returns {Promise<Account>} The account of the hacker, minus the password. Returns null if the hacker does not exist, or if the hacker is not associated with an account.
+ * Get the account by using the hacker's ID.
+ */
+async function findByHackerId(id) {
+    const TAG = `[Account Service # findByHackerId]:`;
+    const query = {
+        _id: id
+    };
+    const hacker = await Hacker.findById(
+        query,
+        logger.queryCallbackFactory(TAG, "account", query)
+    ).populate({
+        path: "accountId",
+        select: " -password"
+    });
+    if (!hacker || !hacker.accountId) {
+        return null;
+    }
+    return hacker.accountId;
 }
 
 /**
@@ -123,6 +148,7 @@ function updatePassword(id, newPassword) {
 module.exports = {
     findOne: findOne,
     findById: findById,
+    findByHackerId: findByHackerId,
     findByEmail: findByEmail,
     addOneAccount: addOneAccount,
     getAccountIfValid: getAccountIfValid,

@@ -4,7 +4,7 @@ const chaiHttp = require("chai-http");
 chai.use(chaiHttp);
 const server = require("../app");
 const agent = chai.request.agent(server.app);
-const should = chai.should();
+chai.should();
 const Hacker = require("../models/hacker.model");
 const fs = require("fs");
 const path = require("path");
@@ -49,6 +49,17 @@ const unconfirmedHackerAccount0 = util.hacker.unconfirmedAccountHacker0;
 const unconfirmedHacker1 = util.hacker.unconfirmedAccountHacker1;
 
 const invalidHacker1 = util.hacker.invalidHacker1;
+
+const BatchAcceptHackerArrayValid = [
+    util.hacker.TeamHacker0._id,
+    util.hacker.TeamHacker1._id,
+    util.hacker.NoTeamHacker0._id
+];
+
+const BatchAcceptHackerArrayInvalid = [
+    invalidHacker1._id,
+    unconfirmedHacker1._id
+];
 
 describe("GET hacker", function() {
     // fail on authentication
@@ -621,6 +632,106 @@ describe("POST create hacker", function() {
     });
 });
 
+describe("PATCH update multiple hackers", function() {
+    it("should FAIL input validation on /api/hacker/batchAccept as an Admin", function(done) {
+        util.auth.login(agent, Admin0, (error) => {
+            if (error) {
+                agent.close();
+                return done(error);
+            }
+            return agent
+                .patch(`/api/hacker/batchAccept/`)
+                .type("application/json")
+                .send()
+                .end(function(err, res) {
+                    res.should.have.status(422);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal(
+                        Constants.Error.VALIDATION_422_MESSAGE
+                    );
+                    done();
+                });
+        });
+    });
+    it("should FAIL authorization on /api/hacker/batchAccept as a non-Admin", function(done) {
+        util.auth.login(agent, noTeamHackerAccount0, (error) => {
+            if (error) {
+                agent.close();
+                return done(error);
+            }
+            return agent
+                .patch(`/api/hacker/batchAccept/`)
+                .type("application/json")
+                .send()
+                .end(function(err, res) {
+                    res.should.have.status(403);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal(
+                        Constants.Error.AUTH_403_MESSAGE
+                    );
+                    done();
+                });
+        });
+    });
+    it("should SUCCEED and accept 2 hackers on /api/hacker/batchAccept as an Admin", function(done) {
+        util.auth.login(agent, Admin0, (error) => {
+            if (error) {
+                agent.close();
+                return done(error);
+            }
+            return agent
+                .patch(`/api/hacker/batchAccept/`)
+                .type("application/json")
+                .send({ ids: BatchAcceptHackerArrayValid })
+                .end(function(err, res) {
+                    res.should.have.status(200);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal(
+                        Constants.Success.HACKER_UPDATE_BATCH
+                    );
+                    res.body.should.have.property("data");
+                    chai.assert.equal(
+                        JSON.stringify(res.body.data),
+                        JSON.stringify({
+                            success_ids: BatchAcceptHackerArrayValid,
+                            errors: []
+                        })
+                    );
+                    done();
+                });
+        });
+    });
+    it("should SUCCEED and accept 0 out of 2 hackers on /api/hacker/batchAccept as an Admin", function(done) {
+        util.auth.login(agent, Admin0, (error) => {
+            if (error) {
+                agent.close();
+                return done(error);
+            }
+            return agent
+                .patch(`/api/hacker/batchAccept/`)
+                .type("application/json")
+                .send({ ids: BatchAcceptHackerArrayInvalid })
+                .end(function(err, res) {
+                    res.should.have.status(200);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal(
+                        Constants.Success.HACKER_UPDATE_BATCH
+                    );
+                    res.body.should.have.property("data");
+                    res.body.data.should.have.property("success_ids");
+                    chai.assert.equal(res.body.data.success_ids.length, 0);
+                    res.body.data.should.have.property("errors");
+                    chai.assert.equal(res.body.data.errors.length, 2);
+                    done();
+                });
+        });
+    });
+});
+
 describe("PATCH update one hacker", function() {
     // fail on authentication
     it("should FAIL to update a hacker on /api/hacker/:id GET due to authentication", function(done) {
@@ -694,7 +805,7 @@ describe("PATCH update one hacker", function() {
                     res.should.be.json;
                     res.body.should.have.property("message");
                     res.body.message.should.equal(
-                        Constants.Error.HACKER_404_MESSAGE
+                        Constants.Error.ACCOUNT_404_MESSAGE
                     );
                     res.body.should.have.property("data");
 
@@ -778,7 +889,9 @@ describe("PATCH update one hacker", function() {
                 return done(error);
             }
             return agent
-                .patch(`/api/hacker/acceptEmail/${invalidHackerAccount0[0].email}`)
+                .patch(
+                    `/api/hacker/acceptEmail/${invalidHackerAccount0[0].email}`
+                )
                 .type("application/json")
                 .send()
                 .end(function(err, res) {
@@ -813,10 +926,7 @@ describe("PATCH update one hacker", function() {
                         Constants.Success.HACKER_UPDATE
                     );
                     res.body.should.have.property("data");
-                    chai.assert.equal(
-                        res.body.data.hacker.status,
-                        "Accepted"
-                    );
+                    chai.assert.equal(res.body.data.hacker.status, "Accepted");
                     done();
                 });
         });

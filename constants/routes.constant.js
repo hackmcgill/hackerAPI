@@ -6,7 +6,7 @@
  * ===***===***===***===***===***===***===***===***===
  *
  * If you are adding a route to this list, update this number
- * next avaiable createFromTime value: 165
+ * next avaiable createFromTime value: 166
  *
  * If you are deleting a route from this list, please add the ID to the list of 'reserved' IDs,
  * so that we don't accidentally assign someone to a given ID.
@@ -177,6 +177,11 @@ const hackerRoutes = {
         requestType: Constants.REQUEST_TYPES.PATCH,
         uri: "/api/hacker/acceptEmail/" + Constants.ROLE_CATEGORIES.ALL,
         _id: mongoose.Types.ObjectId.createFromTime(130)
+    },
+    patchAcceptHackerByArrayOfIds: {
+        requestType: Constants.REQUEST_TYPES.PATCH,
+        uri: "/api/hacker/batchAccept",
+        _id: mongoose.Types.ObjectId.createFromTime(165)
     },
     postAnySendWeekOfEmail: {
         requestType: Constants.REQUEST_TYPES.POST,
