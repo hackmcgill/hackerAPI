@@ -56,6 +56,28 @@ async function updateSettings(req, res, next) {
 }
 
 /**
+ * @function confirmValidPatch
+ * @param {{body:{settingsDetails:{openTime:Date, closeTime:Date, confirmTime:Date}}}} req
+ * @param {*} res
+ * @param {*} next
+ * @return {void}
+ * @description Confirms that openTime < closeTime < confirmTime
+ */
+function confirmValidPatch(req, res, next) {
+    const openTime = new Date(req.body.settingsDetails.openTime);
+    const closeTime = new Date(req.body.settingsDetails.closeTime);
+    const confirmTime = new Date(req.body.settingsDetails.closeTime);
+    if (openTime < closeTime && closeTime < confirmTime) {
+        return next();
+    }
+    return next({
+        status: 422,
+        message: Constants.Error.SETTINGS_422_MESSAGE,
+        error: req.body.settingsDetails
+    });
+}
+
+/**
  * @function updateSettings
  * @param {*} req
  * @param {*} res
@@ -76,6 +98,13 @@ async function getSettings(req, res, next) {
     }
 }
 
+/**
+ * @function confirmAppsOpen
+ * @param {*} req
+ * @param {*} res
+ * @param {*} next
+ * @description Only succeeds if the currentTime > openTime, and currentTime < closeTime
+ */
 async function confirmAppsOpen(req, res, next) {
     const settings = await Services.Settings.getSettings();
     if (!settings) {
@@ -99,6 +128,7 @@ async function confirmAppsOpen(req, res, next) {
 
 module.exports = {
     parsePatch: parsePatch,
+    confirmValidPatch: confirmValidPatch,
     confirmAppsOpen: Middleware.Util.asyncMiddleware(confirmAppsOpen),
     updateSettings: Middleware.Util.asyncMiddleware(updateSettings),
     getSettings: Middleware.Util.asyncMiddleware(getSettings)

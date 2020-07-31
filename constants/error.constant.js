@@ -25,6 +25,8 @@ const TEAM_MEMBER_422_MESSAGE = "Duplicate team member in input";
 const VALIDATION_422_MESSAGE = "Validation failed";
 const ACCOUNT_DUPLICATE_422_MESSAGE = "Account already exists";
 const ROLE_DUPLICATE_422_MESSAGE = "Role already exists";
+const SETTINGS_422_MESSAGE =
+    "openTime must be before closeTime, and closeTime must be before confirmTime";
 
 const ACCOUNT_TOKEN_401_MESSAGE = "Invalid token for account";
 const AUTH_401_MESSAGE = "Invalid Authentication";
@@ -80,6 +82,7 @@ module.exports = {
     HACKER_STATUS_409_MESSAGE: HACKER_STATUS_409_MESSAGE,
     TEAM_SIZE_409_MESSAGE: TEAM_SIZE_409_MESSAGE,
     ROLE_DUPLICATE_422_MESSAGE: ROLE_DUPLICATE_422_MESSAGE,
+    SETTINGS_422_MESSAGE: SETTINGS_422_MESSAGE,
     ROLE_CREATE_500_MESSAGE: ROLE_CREATE_500_MESSAGE,
     TEAM_NAME_409_MESSAGE: TEAM_NAME_409_MESSAGE,
     TEAM_JOIN_SAME_409_MESSAGE: TEAM_JOIN_SAME_409_MESSAGE,
