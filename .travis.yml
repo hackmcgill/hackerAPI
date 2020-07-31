@@ -2,19 +2,19 @@ language: node_js
 dist: trusty
 sudo: false
 services:
-  - mongodb
+    - mongodb
 before_install:
-  - npm i -g npm@6.4.0
+    - npm i -g npm@6.4.0
 before_script:
-  - sleep 15
+    - sleep 15
 cache:
-  directories:
-    - "node_modules"
+    directories:
+        - "node_modules"
 
 branches:
-  only:
-    - master
-    - develop
+    only:
+        - master
+        - dev
 
 notifications:
-  slack: hackboard7:Yt0nW0DyaF85eTOxceBLptU1
+    slack: hackboard8:35nI0TJmTGbi6uQ3OfBSSoh5
