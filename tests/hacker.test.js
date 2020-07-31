@@ -460,9 +460,9 @@ describe("POST create hacker", function() {
         });
     });
 
-    it("should FAIL to create a new hacker when registrations have not yet opened.", function(done) {
-        // Upload registration closed.
-        util.settings.setRegistrationNotYetOpen().then(
+    it("should FAIL to create a new hacker when applications have not yet opened.", function(done) {
+        // Upload application not yet open.
+        util.settings.setApplicationNotYetOpen().then(
             util.auth.login(agent, newHackerAccount0, (error) => {
                 if (error) {
                     agent.close();
@@ -485,9 +485,9 @@ describe("POST create hacker", function() {
         );
     });
 
-    it("should FAIL to create a new hacker when registrations have closed.", function(done) {
-        // Upload registration closed.
-        util.settings.setRegistrationClosed().then(
+    it("should FAIL to create a new hacker when applications have closed.", function(done) {
+        // Upload application closed.
+        util.settings.setApplicationClosed().then(
             util.auth.login(agent, newHackerAccount0, (error) => {
                 if (error) {
                     agent.close();

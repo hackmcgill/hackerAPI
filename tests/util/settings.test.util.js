@@ -1,19 +1,19 @@
 const Settings = require("../../models/settings.model");
 const logger = require("../../services/logger.service");
 
-const settingRegistrationNotYetOpen = {
+const settingApplicationNotYetOpen = {
     openTime: new Date(Date.now() + 100000000000),
     closeTime: new Date(Date.now() + 10000000000000000),
     confirmTime: new Date(Date.now() + 100000000000000000)
 };
 
-const settingRegistrationOpen = {
+const settingApplicationOpen = {
     openTime: new Date(Date.now() - 100),
     closeTime: new Date(Date.now() + 10000000000),
     confirmTime: new Date(Date.now() + 100000000000000)
 };
 
-const settingRegistrationClosed = {
+const settingApplicationClosed = {
     openTime: new Date(Date.now() - 100),
     closeTime: new Date(Date.now() - 1000),
     confirmTime: new Date(Date.now() + 100000000000000)
@@ -26,19 +26,19 @@ const settingConfirmClosed = {
 };
 
 async function storeAll() {
-    const toStore = new Settings(settingRegistrationOpen);
+    const toStore = new Settings(settingApplicationOpen);
     Settings.collection.insertOne(toStore);
 }
 
-async function setRegistrationClosed() {
+async function setApplicationClosed() {
     await dropAll();
-    const toStore = new Settings(settingRegistrationClosed);
+    const toStore = new Settings(settingApplicationClosed);
     Settings.collection.insertOne(toStore);
 }
 
-async function setRegistrationNotYetOpen() {
+async function setApplicationNotYetOpen() {
     await dropAll();
-    const toStore = new Settings(settingRegistrationNotYetOpen);
+    const toStore = new Settings(settingApplicationNotYetOpen);
     Settings.collection.insertOne(toStore);
 }
 
@@ -56,10 +56,10 @@ async function dropAll() {
 module.exports = {
     storeAll: storeAll,
     dropAll: dropAll,
-    setRegistrationClosed: setRegistrationClosed,
-    setRegistrationNotYetOpen: setRegistrationNotYetOpen,
-    settingRegistrationNotYetOpen: settingRegistrationNotYetOpen,
-    settingRegistrationOpen: settingRegistrationOpen,
-    settingRegistrationClosed: settingRegistrationClosed,
+    setApplicationClosed: setApplicationClosed,
+    setApplicationNotYetOpen: setApplicationNotYetOpen,
+    settingApplicationNotYetOpen: settingApplicationNotYetOpen,
+    settingApplicationOpen: settingApplicationOpen,
+    settingApplicationClosed: settingApplicationClosed,
     settingConfirmClosed: settingConfirmClosed
 };
