@@ -66,7 +66,7 @@ async function updateSettings(req, res, next) {
 function confirmValidPatch(req, res, next) {
     const openTime = new Date(req.body.settingsDetails.openTime);
     const closeTime = new Date(req.body.settingsDetails.closeTime);
-    const confirmTime = new Date(req.body.settingsDetails.closeTime);
+    const confirmTime = new Date(req.body.settingsDetails.confirmTime);
     if (openTime < closeTime && closeTime < confirmTime) {
         return next();
     }
