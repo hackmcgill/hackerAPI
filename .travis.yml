@@ -14,7 +14,7 @@ cache:
 branches:
     only:
         - master
-        - develop
+        - dev
 
 notifications:
     slack: hackboard8:35nI0TJmTGbi6uQ3OfBSSoh5
