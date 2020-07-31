@@ -86,7 +86,7 @@ async function confirmAppsOpen(req, res, next) {
     } else {
         const now = Date.now();
         const openTime = new Date(settings.openTime);
-        const closeTime = new Date(settings.openTime);
+        const closeTime = new Date(settings.closeTime);
         if (openTime < now && closeTime > now) {
             return next();
         }
