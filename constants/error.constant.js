@@ -31,6 +31,7 @@ const AUTH_401_MESSAGE = "Invalid Authentication";
 
 const AUTH_403_MESSAGE = "Invalid Authorization";
 const ACCOUNT_403_MESSAGE = "Account not verified";
+const SETTINGS_403_MESSAGE = "Applications are not open right now";
 
 const TEAM_READ_500_MESSAGE = "Error while retrieving team";
 const TEAM_UPDATE_500_MESSAGE = "Error while updating team";
@@ -86,6 +87,7 @@ module.exports = {
     VOLUNTEER_404_MESSAGE: VOLUNTEER_404_MESSAGE,
     SPONSOR_UPDATE_500_MESSAGE: SPONSOR_UPDATE_500_MESSAGE,
     SETTINGS_404_MESSAGE: SETTINGS_404_MESSAGE,
+    SETTINGS_403_MESSAGE: SETTINGS_403_MESSAGE,
     TRAVEL_404_MESSAGE: TRAVEL_404_MESSAGE,
     TRAVEL_CREATE_500_MESSAGE: TRAVEL_CREATE_500_MESSAGE
 };

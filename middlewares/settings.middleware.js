@@ -76,8 +76,30 @@ async function getSettings(req, res, next) {
     }
 }
 
+async function confirmAppsOpen(req, res, next) {
+    const settings = await Services.Settings.getSettings();
+    if (!settings) {
+        return next({
+            status: 500,
+            message: Constants.Error.GENERIC_500_MESSAGE
+        });
+    } else {
+        const now = Date.now();
+        const openTime = new Date(settings.openTime);
+        const closeTime = new Date(settings.openTime);
+        if (openTime < now && closeTime > now) {
+            return next();
+        }
+        return next({
+            status: 403,
+            message: Constants.Error.SETTINGS_403_MESSAGE
+        });
+    }
+}
+
 module.exports = {
     parsePatch: parsePatch,
+    confirmAppsOpen: Middleware.Util.asyncMiddleware(confirmAppsOpen),
     updateSettings: Middleware.Util.asyncMiddleware(updateSettings),
     getSettings: Middleware.Util.asyncMiddleware(getSettings)
 };

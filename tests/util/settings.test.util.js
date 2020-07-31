@@ -26,9 +26,22 @@ const settingConfirmClosed = {
 };
 
 async function storeAll() {
+    const toStore = new Settings(settingRegistrationOpen);
+    Settings.collection.insertOne(toStore);
+}
+
+async function setRegistrationClosed() {
+    await dropAll();
     const toStore = new Settings(settingRegistrationClosed);
     Settings.collection.insertOne(toStore);
 }
+
+async function setRegistrationNotYetOpen() {
+    await dropAll();
+    const toStore = new Settings(settingRegistrationNotYetOpen);
+    Settings.collection.insertOne(toStore);
+}
+
 async function dropAll() {
     try {
         await Settings.collection.drop();
@@ -43,6 +56,8 @@ async function dropAll() {
 module.exports = {
     storeAll: storeAll,
     dropAll: dropAll,
+    setRegistrationClosed: setRegistrationClosed,
+    setRegistrationNotYetOpen: setRegistrationNotYetOpen,
     settingRegistrationNotYetOpen: settingRegistrationNotYetOpen,
     settingRegistrationOpen: settingRegistrationOpen,
     settingRegistrationClosed: settingRegistrationClosed,
