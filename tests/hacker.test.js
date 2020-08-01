@@ -18,6 +18,7 @@ const util = {
     auth: require("./util/auth.test.util"),
     hacker: require("./util/hacker.test.util"),
     account: require("./util/account.test.util"),
+    settings: require("./util/settings.test.util"),
     accountConfirmation: require("./util/accountConfirmation.test.util")
 };
 const StorageService = require("../services/storage.service");
@@ -457,6 +458,56 @@ describe("POST create hacker", function() {
                     done();
                 });
         });
+    });
+
+    it("should FAIL to create a new hacker when applications have not yet opened.", function(done) {
+        // Upload application not yet open.
+        util.settings.setApplicationNotYetOpen().then(
+            util.auth.login(agent, newHackerAccount0, (error) => {
+                if (error) {
+                    agent.close();
+                    return done(error);
+                }
+                return agent
+                    .post(`/api/hacker/`)
+                    .type("application/json")
+                    .send(newHacker0)
+                    .end(function(err, res) {
+                        res.should.have.status(403);
+                        res.should.be.json;
+                        res.body.should.have.property("message");
+                        res.body.message.should.equal(
+                            Constants.Error.SETTINGS_403_MESSAGE
+                        );
+                        done();
+                    });
+            })
+        );
+    });
+
+    it("should FAIL to create a new hacker when applications have closed.", function(done) {
+        // Upload application closed.
+        util.settings.setApplicationClosed().then(
+            util.auth.login(agent, newHackerAccount0, (error) => {
+                if (error) {
+                    agent.close();
+                    return done(error);
+                }
+                return agent
+                    .post(`/api/hacker/`)
+                    .type("application/json")
+                    .send(newHacker0)
+                    .end(function(err, res) {
+                        res.should.have.status(403);
+                        res.should.be.json;
+                        res.body.should.have.property("message");
+                        res.body.message.should.equal(
+                            Constants.Error.SETTINGS_403_MESSAGE
+                        );
+                        done();
+                    });
+            })
+        );
     });
 
     // should fail due to travel request larger than 100

@@ -7,7 +7,8 @@ const agent = chai.request.agent(server.app);
 chai.should();
 const util = {
     account: require("./util/account.test.util"),
-    auth: require("./util/auth.test.util")
+    auth: require("./util/auth.test.util"),
+    settings: require("./util/settings.test.util")
 };
 
 const Constants = {
@@ -84,11 +85,7 @@ describe("PATCH settings", function() {
                 agent
                     .patch(`/api/settings/`)
                     .type("application/json")
-                    .send({
-                        openTime: new Date().toString(),
-                        closeTime: new Date().toString(),
-                        confirmTime: new Date().toString()
-                    })
+                    .send(util.settings.settingConfirmClosed)
                     // does not have password because of to stripped json
                     .end(function(err, res) {
                         res.should.have.status(200);

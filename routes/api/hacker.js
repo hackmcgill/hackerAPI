@@ -14,7 +14,8 @@ const Middleware = {
     Util: require("../../middlewares/util.middleware"),
     Hacker: require("../../middlewares/hacker.middleware"),
     Auth: require("../../middlewares/auth.middleware"),
-    Search: require("../../middlewares/search.middleware")
+    Search: require("../../middlewares/search.middleware"),
+    Settings: require("../../middlewares/settings.middleware")
 };
 const Services = {
     Hacker: require("../../services/hacker.service"),
@@ -180,8 +181,9 @@ module.exports = {
             Middleware.Auth.ensureAuthenticated(),
             Middleware.Auth.ensureAuthorized(),
             Middleware.Validator.Hacker.newHackerValidator,
-
             Middleware.parseBody.middleware,
+            Middleware.Settings.confirmAppsOpen,
+
             // validate type
             Middleware.Hacker.validateConfirmedStatusFromAccountId,
             // validate that the accountId is not being used for any other thing

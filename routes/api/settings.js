@@ -78,6 +78,7 @@ module.exports = {
             Middleware.Validator.Settings.createSettingsValidator,
             Middleware.parseBody.middleware,
             Middleware.Settings.parsePatch,
+            Middleware.Settings.confirmValidPatch,
             Middleware.Settings.updateSettings,
             Controllers.Settings.patchedSettings
         );
