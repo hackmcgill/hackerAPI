@@ -76,6 +76,7 @@ const SPONSOR_T5 = "SponsorT5";
 // Enums (must match with frontend)
 const JOB_INTERESTS = ["Internship", "Full Time", "None"];
 const SHIRT_SIZES = ["XS", "S", "M", "L", "XL", "XXL"];
+const HACKATHONS_COUNT = ["0", "1", "2", "3", "4", "5+"];
 
 const ROLE_CATEGORIES = {
     SELF: ":self",
@@ -189,6 +190,7 @@ module.exports = {
     REQUEST_TYPES: REQUEST_TYPES,
     JOB_INTERESTS: JOB_INTERESTS,
     SHIRT_SIZES: SHIRT_SIZES,
+    HACKATHONS_COUNT: HACKATHONS_COUNT,
     USER_TYPES: USER_TYPES,
     SPONSOR_TIERS: SPONSOR_TIERS,
     EXTENDED_USER_TYPES: EXTENDED_USER_TYPES,
