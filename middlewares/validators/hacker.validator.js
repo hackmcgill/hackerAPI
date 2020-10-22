@@ -94,12 +94,11 @@ module.exports = {
             "application.shortAnswer.question2",
             false
         ),
-        VALIDATOR.integerValidator(
+        VALIDATOR.enumValidator(
             "body",
-            "application.shortAnswer.previousHackathons",
-            false,
-            0,
-            5
+            "application.accommodation.previousHackathons",
+            Constants.PREVIOUS_HACKATHONS,
+            false
         ),
 
         VALIDATOR.alphaArrayValidator(
@@ -223,12 +222,11 @@ module.exports = {
             "application.shortAnswer.question2",
             false
         ),
-        VALIDATOR.integerValidator(
+        VALIDATOR.enumValidator(
             "body",
-            "application.shortAnswer.previousHackathons",
-            false,
-            0,
-            5
+            "application.accommodation.previousHackathons",
+            Constants.PREVIOUS_HACKATHONS,
+            false
         ),
 
         VALIDATOR.alphaArrayValidator(
