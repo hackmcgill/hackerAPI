@@ -116,7 +116,7 @@ module.exports = {
                         "skills":["Javascript","Typescript"],
                         "question1": "I love McHacks",
                         "question2":"Pls accept me",
-                        "previousHackathons": "5+",
+                        "previousHackathons": "5",
                         "comments":"hi!",
                       },
                       "other:" {
@@ -159,7 +159,7 @@ module.exports = {
                             "skills":["Javascript","Typescript"],
                             "question1": "I love McHacks",
                             "question2":"Pls accept me",
-                            "previousHackathons": "5+",
+                            "previousHackathons": "5",
                             "comments":"hi!",
                           },
                           "other:" {
@@ -449,7 +449,7 @@ module.exports = {
                       "skills":["Javascript","Typescript"],
                       "question1": "I love McHacks",
                       "question2":"Pls accept me",
-                      "previousHackathons": "5+",
+                      "previousHackathons": "5",
                       "comments":"hi!",
                     },
                     "other:" {
@@ -492,7 +492,7 @@ module.exports = {
                             "skills":["Javascript","Typescript"],
                             "question1": "I love McHacks",
                             "question2":"Pls accept me",
-                            "previousHackathons": "5+",
+                            "previousHackathons": "5",
                             "comments":"hi!",
                           },
                           "other:" {
@@ -564,7 +564,7 @@ module.exports = {
                             "skills":["Javascript","Typescript"],
                             "question1": "I love McHacks",
                             "question2":"Pls accept me",
-                            "previousHackathons": "5+",
+                            "previousHackathons": "5",
                             "comments":"hi!",
                           },
                           "other:" {
@@ -632,7 +632,7 @@ module.exports = {
                             "skills":["Javascript","Typescript"],
                             "question1": "I love McHacks",
                             "question2":"Pls accept me",
-                            "previousHackathons": "5+",
+                            "previousHackathons": "5",
                             "comments":"hi!",
                           },
                           "other:" {

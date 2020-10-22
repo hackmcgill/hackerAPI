@@ -478,7 +478,7 @@ function applicationValidator(fieldLocation, fieldname, optional = true) {
                 //     typeof app.shortAnswer.question2 === "string";
                 // hasValid.previousHackathons =
                 //     !!app.shortAnswer.previousHackathons &&
-                //     typeof app.shortAnswer.previousHackathons === "string";                
+                //     typeof app.shortAnswer.previousHackathons === "number";                
                 // hasValid.team =
                 //     !app.team || mongoose.Types.ObjectId.isValid(app.team);
 
@@ -584,7 +584,7 @@ function applicationValidator(fieldLocation, fieldname, optional = true) {
                 //     typeof app.shortAnswer.question2 === "string";
                 // hasValid.previousHackathons =
                 //     !!app.shortAnswer.previousHackathons &&
-                //     typeof app.shortAnswer.previousHackathons === "string";                
+                //     typeof app.shortAnswer.previousHackathons === "number";                
                 // hasValid.team =
                 //     !app.team || mongoose.Types.ObjectId.isValid(app.team);
                 return (
