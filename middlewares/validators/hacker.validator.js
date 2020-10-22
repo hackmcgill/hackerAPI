@@ -96,7 +96,7 @@ module.exports = {
         ),
         VALIDATOR.enumValidator(
             "body",
-            "application.accommodation.previousHackathons",
+            "application.shortAnswer.previousHackathons",
             Constants.PREVIOUS_HACKATHONS,
             false
         ),
@@ -224,7 +224,7 @@ module.exports = {
         ),
         VALIDATOR.enumValidator(
             "body",
-            "application.accommodation.previousHackathons",
+            "application.shortAnswer.previousHackathons",
             Constants.PREVIOUS_HACKATHONS,
             false
         ),
