@@ -35,7 +35,7 @@ const TeamHacker0 = {
             skills: ["CSS", "HTML", "JS"],
             question1: "a",
             question2: "a",
-            previousHackathons: "1"
+            previousHackathons: 1
         },
         other: {
             ethnicity: ["Native American"],
@@ -76,7 +76,7 @@ const TeamHacker1 = {
             skills: ["CSS", "HTML", "JS"],
             question1: "a",
             question2: "a",
-            previousHackathons: "2"
+            previousHackathons: 2
         },
         other: {
             ethnicity: ["European"],
@@ -117,7 +117,7 @@ const TeamHacker2 = {
             skills: ["CSS", "HTML", "JS"],
             question1: "a",
             question2: "a",
-            previousHackathons: "3"
+            previousHackathons: 3
         },
         other: {
             ethnicity: ["European"],
@@ -158,7 +158,7 @@ const TeamHacker3 = {
             skills: ["CSS", "HTML", "JS"],
             question1: "a",
             question2: "a",
-            previousHackathons: "4"
+            previousHackathons: 4
         },
         other: {
             ethnicity: ["European"],
@@ -199,7 +199,7 @@ const TeamHacker4 = {
             skills: ["CSS", "HTML", "JS"],
             question1: "a",
             question2: "a",
-            previousHackathons: "5+"
+            previousHackathons: 5
         },
         other: {
             ethnicity: ["European"],
@@ -240,7 +240,7 @@ const NoTeamHacker0 = {
             skills: ["CSS", "HTML", "JS"],
             question1: "a",
             question2: "a",
-            previousHackathons: "1"
+            previousHackathons: 1
         },
         other: {
             ethnicity: ["European"],
@@ -278,7 +278,7 @@ const newHacker0 = {
             skills: ["CSS", "HTML", "JS"],
             question1: "a",
             question2: "a",
-            previousHackathons: "2"
+            previousHackathons: 2
         },
         other: {
             ethnicity: ["Caucasian"],
@@ -316,7 +316,7 @@ const newHacker1 = {
             skills: ["CSS", "HTML", "JS"],
             question1: "a",
             question2: "a",
-            previousHackathons: "3"
+            previousHackathons: 3
         },
         other: {
             ethnicity: ["African American"],
@@ -355,7 +355,7 @@ const invalidHacker0 = {
             skills: ["CSS", "HTML", "JS"],
             question1: "a",
             question2: "a",
-            previousHackathons: "4"
+            previousHackathons: 4
         },
         other: {
             ethnicity: ["Caucasian"],
@@ -391,7 +391,7 @@ const invalidHacker1 = {
             skills: ["CSS", "HTML", "JS"],
             question1: "a",
             question2: "a",
-            previousHackathons: "5+"
+            previousHackathons: 5
         },
         other: {
             ethnicity: ["Caucasian"],
@@ -430,7 +430,7 @@ const invalidHacker2 = {
             skills: ["CSS", "HTML", "JS"],
             question1: "a",
             question2: "a",
-            previousHackathons: "1"
+            previousHackathons: 1
         },
         other: {
             ethnicity: ["Caucasian"],
@@ -471,7 +471,7 @@ const duplicateAccountLinkHacker0 = {
             skills: ["CSS", "HTML", "JS"],
             question1: "a",
             question2: "a",
-            previousHackathons: "2"
+            previousHackathons: 2
         },
         other: {
             ethnicity: ["Caucasian"],
@@ -511,7 +511,7 @@ const waitlistedHacker0 = {
             skills: ["CSS", "HTML", "JS"],
             question1: "a",
             question2: "a",
-            previousHackathons: "3"
+            previousHackathons: 3
         },
         other: {
             ethnicity: ["European"],
@@ -552,7 +552,7 @@ const unconfirmedAccountHacker0 = {
             skills: ["CSS", "HTML", "JS"],
             question1: "a",
             question2: "a",
-            previousHackathons: "4"
+            previousHackathons: 4
         },
         other: {
             ethnicity: ["European"],
@@ -592,7 +592,7 @@ const unconfirmedAccountHacker1 = {
             skills: ["CSS", "HTML", "JS"],
             question1: "a",
             question2: "a",
-            previousHackathons: "5+"
+            previousHackathons: 5
         },
         other: {
             ethnicity: ["European"],

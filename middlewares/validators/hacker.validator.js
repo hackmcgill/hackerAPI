@@ -97,7 +97,7 @@ module.exports = {
         VALIDATOR.enumValidator(
             "body",
             "application.shortAnswer.previousHackathons",
-            Constants.HACKATHONS_COUNT,
+            Constants.PREVIOUS_HACKATHONS,
             false
         ),
 
@@ -225,7 +225,7 @@ module.exports = {
         VALIDATOR.enumValidator(
             "body",
             "application.shortAnswer.previousHackathons",
-            Constants.HACKATHONS_COUNT,
+            Constants.PREVIOUS_HACKATHONS,
             false
         ),
 

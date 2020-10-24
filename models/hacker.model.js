@@ -88,8 +88,8 @@ const HackerSchema = new mongoose.Schema({
                 required: true
             },
             previousHackathons: {
-                type: String,
-                enum: Constants.HACKATHONS_COUNT,
+                type: Number,
+                enum: Constants.PREVIOUS_HACKATHONS,
                 required: true
             }
         },
