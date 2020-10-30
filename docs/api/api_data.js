@@ -68,7 +68,7 @@ define({ "api": [
           {
             "group": "body",
             "type": "Number",
-            "optional": false,
+            "optional": true,
             "field": "phoneNumber",
             "description": "<p>the user's phone number, represented as a string.</p>"
           }
@@ -1268,53 +1268,6 @@ define({ "api": [
   },
   {
     "type": "patch",
-    "url": "/hacker/acceptEmail/:email",
-    "title": "accept a Hacker by email",
-    "name": "acceptHacker",
-    "group": "Hacker",
-    "version": "2.0.0",
-    "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "type": "string",
-            "optional": false,
-            "field": "message",
-            "description": "<p>Success message</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "object",
-            "optional": false,
-            "field": "data",
-            "description": "<p>Hacker object</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Success-Response:",
-          "content": "{\n    \"message\": \"Changed hacker information\",\n    \"data\": {\n        \"status\": \"Accepted\"\n    }\n}",
-          "type": "object"
-        }
-      ]
-    },
-    "permission": [
-      {
-        "name": "Administrator"
-      }
-    ],
-    "filename": "routes/api/hacker.js",
-    "groupTitle": "Hacker",
-    "sampleRequest": [
-      {
-        "url": "https://api.mchacks.ca/api/hacker/acceptEmail/:email"
-      }
-    ]
-  },
-  {
-    "type": "patch",
     "url": "/hacker/accept/:id",
     "title": "accept a Hacker",
     "name": "acceptHacker",
@@ -1357,6 +1310,53 @@ define({ "api": [
     "sampleRequest": [
       {
         "url": "https://api.mchacks.ca/api/hacker/accept/:id"
+      }
+    ]
+  },
+  {
+    "type": "patch",
+    "url": "/hacker/acceptEmail/:email",
+    "title": "accept a Hacker by email",
+    "name": "acceptHacker",
+    "group": "Hacker",
+    "version": "2.0.0",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "message",
+            "description": "<p>Success message</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>Hacker object</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n    \"message\": \"Changed hacker information\",\n    \"data\": {\n        \"status\": \"Accepted\"\n    }\n}",
+          "type": "object"
+        }
+      ]
+    },
+    "permission": [
+      {
+        "name": "Administrator"
+      }
+    ],
+    "filename": "routes/api/hacker.js",
+    "groupTitle": "Hacker",
+    "sampleRequest": [
+      {
+        "url": "https://api.mchacks.ca/api/hacker/acceptEmail/:email"
       }
     ]
   },
@@ -3625,88 +3625,6 @@ define({ "api": [
   },
   {
     "type": "get",
-    "url": "/travel/email/:email",
-    "title": "get a travel's information",
-    "name": "getTravel",
-    "group": "Travel",
-    "version": "2.0.1",
-    "parameter": {
-      "fields": {
-        "param": [
-          {
-            "group": "param",
-            "type": "String",
-            "optional": false,
-            "field": "email",
-            "description": "<p>a travel's unique email</p>"
-          }
-        ]
-      }
-    },
-    "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "message",
-            "description": "<p>Success message</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "Object",
-            "optional": false,
-            "field": "data",
-            "description": "<p>Travel object</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Success-Response: ",
-          "content": "{\n               \"message\": \"Successfully retrieved travel information\", \n               \"data\": {\n                   \"id\":\"5bff4d736f86be0a41badb91\",\n                   \"status\": \"Valid\",\n                   \"request\": 100,\n                   \"offer\": 50\n               }\n           }",
-          "type": "object"
-        }
-      ]
-    },
-    "error": {
-      "fields": {
-        "Error 4xx": [
-          {
-            "group": "Error 4xx",
-            "type": "String",
-            "optional": false,
-            "field": "message",
-            "description": "<p>Error message</p>"
-          },
-          {
-            "group": "Error 4xx",
-            "type": "Object",
-            "optional": false,
-            "field": "data",
-            "description": "<p>empty</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Error-Response: ",
-          "content": "{\"message\": \"Travel not found\", \"data\": {}}",
-          "type": "object"
-        }
-      ]
-    },
-    "filename": "routes/api/travel.js",
-    "groupTitle": "Travel",
-    "sampleRequest": [
-      {
-        "url": "https://api.mchacks.ca/api/travel/email/:email"
-      }
-    ]
-  },
-  {
-    "type": "get",
     "url": "/travel/:id",
     "title": "get a traveler's information",
     "name": "getTravel",
@@ -3784,6 +3702,88 @@ define({ "api": [
     "sampleRequest": [
       {
         "url": "https://api.mchacks.ca/api/travel/:id"
+      }
+    ]
+  },
+  {
+    "type": "get",
+    "url": "/travel/email/:email",
+    "title": "get a travel's information",
+    "name": "getTravel",
+    "group": "Travel",
+    "version": "2.0.1",
+    "parameter": {
+      "fields": {
+        "param": [
+          {
+            "group": "param",
+            "type": "String",
+            "optional": false,
+            "field": "email",
+            "description": "<p>a travel's unique email</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>Success message</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>Travel object</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response: ",
+          "content": "{\n               \"message\": \"Successfully retrieved travel information\", \n               \"data\": {\n                   \"id\":\"5bff4d736f86be0a41badb91\",\n                   \"status\": \"Valid\",\n                   \"request\": 100,\n                   \"offer\": 50\n               }\n           }",
+          "type": "object"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>Error message</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>empty</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error-Response: ",
+          "content": "{\"message\": \"Travel not found\", \"data\": {}}",
+          "type": "object"
+        }
+      ]
+    },
+    "filename": "routes/api/travel.js",
+    "groupTitle": "Travel",
+    "sampleRequest": [
+      {
+        "url": "https://api.mchacks.ca/api/travel/email/:email"
       }
     ]
   },
