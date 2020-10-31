@@ -387,6 +387,7 @@ function applicationValidator(fieldLocation, fieldname, optional = true) {
         shortAnswer: false,
         question1: false,
         question2: false,
+        previousHackathons: false,
         accommodation: false,
         shirtSize: false,
         other: false,
@@ -424,6 +425,9 @@ function applicationValidator(fieldLocation, fieldname, optional = true) {
                     );
                     hasValid.question2 = app.shortAnswer.hasOwnProperty(
                         "question2"
+                    );
+                    hasValid.previousHackathons = app.shortAnswer.hasOwnProperty(
+                        "previousHackathons"
                     );
                 }
                 hasValid.accommodation = app.hasOwnProperty("accommodation");
@@ -472,6 +476,9 @@ function applicationValidator(fieldLocation, fieldname, optional = true) {
                 // hasValid.question2 =
                 //     !!app.shortAnswer.question2 &&
                 //     typeof app.shortAnswer.question2 === "string";
+                // hasValid.previousHackathons =
+                //     !!app.shortAnswer.previousHackathons &&
+                //     typeof app.shortAnswer.previousHackathons === "number";                
                 // hasValid.team =
                 //     !app.team || mongoose.Types.ObjectId.isValid(app.team);
 
@@ -525,6 +532,9 @@ function applicationValidator(fieldLocation, fieldname, optional = true) {
                     hasValid.question2 = app.shortAnswer.hasOwnProperty(
                         "question2"
                     );
+                    hasValid.previousHackathons = app.shortAnswer.hasOwnProperty(
+                        "previousHackathons"
+                    );                    
                 }
                 hasValid.accommodation = app.hasOwnProperty("accommodation");
                 if (hasValid.accommodation) {
@@ -572,6 +582,9 @@ function applicationValidator(fieldLocation, fieldname, optional = true) {
                 // hasValid.question2 =
                 //     !!app.shortAnswer.question2 &&
                 //     typeof app.shortAnswer.question2 === "string";
+                // hasValid.previousHackathons =
+                //     !!app.shortAnswer.previousHackathons &&
+                //     typeof app.shortAnswer.previousHackathons === "number";                
                 // hasValid.team =
                 //     !app.team || mongoose.Types.ObjectId.isValid(app.team);
                 return (
@@ -585,6 +598,7 @@ function applicationValidator(fieldLocation, fieldname, optional = true) {
                     hasValid.shortAnswer &&
                     hasValid.question1 &&
                     hasValid.question2 &&
+                    hasValid.previousHackathons &&
                     hasValid.accommodation &&
                     hasValid.shirtSize &&
                     hasValid.other &&
@@ -777,7 +791,7 @@ function searchSortValidator(fieldLocation, fieldName) {
             } else {
                 return false;
             }
-            if (!!model.searchableField(value)) {
+            if (model.searchableField(value)) {
                 let sortOrder = param("sort", "Sorting order not found");
                 if (!sortOrder.equals("asc") || !sortOrder.equals("desc")) {
                     return false;

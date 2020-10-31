@@ -23,7 +23,6 @@ Check out [this page](./getting-started).
 HackerAPI
 ├── Dockerfile:                     controls running of docker image
 ├── README.md:                      root of all information
-├── VERSION:                        version number of the application
 ├── app.js:                         express app object
 ├── bin
 │   └── www:                        entry point to the application

@@ -6,7 +6,7 @@
 const app = require("../app").app;
 const debug = require("debug")("hackboard:server");
 const http = require("http");
-const fs = require("fs");
+const version = require("../services/version.service");
 
 /**
  * Get port from environment and store in Express.
@@ -75,12 +75,7 @@ function onListening() {
     const bind =
         typeof addr === "string" ? "pipe " + addr : "port " + addr.port;
     debug("Listening on " + bind);
-    fs.readFile("VERSION", function(err, data) {
-        if (err) {
-            throw err;
-        }
-        debug(`VERSION ${data}`);
-    });
+    debug(`VERSION ${version.get()}`);
 }
 
 /**

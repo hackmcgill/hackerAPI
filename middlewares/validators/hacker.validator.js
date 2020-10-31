@@ -94,6 +94,12 @@ module.exports = {
             "application.shortAnswer.question2",
             false
         ),
+        VALIDATOR.enumValidator(
+            "body",
+            "application.shortAnswer.previousHackathons",
+            Constants.PREVIOUS_HACKATHONS,
+            false
+        ),
 
         VALIDATOR.alphaArrayValidator(
             "body",
@@ -214,6 +220,12 @@ module.exports = {
         VALIDATOR.stringValidator(
             "body",
             "application.shortAnswer.question2",
+            false
+        ),
+        VALIDATOR.enumValidator(
+            "body",
+            "application.shortAnswer.previousHackathons",
+            Constants.PREVIOUS_HACKATHONS,
             false
         ),
 
