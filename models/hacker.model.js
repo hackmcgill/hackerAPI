@@ -86,6 +86,11 @@ const HackerSchema = new mongoose.Schema({
                 type: String,
                 default: "",
                 required: true
+            },
+            previousHackathons: {
+                type: Number,
+                enum: Constants.PREVIOUS_HACKATHONS,
+                required: true
             }
         },
         other: {
@@ -147,7 +152,8 @@ HackerSchema.methods.isApplicationComplete = function() {
     const jobInterestDone = !!hs.application.general.jobInterest;
     const question1Done = !!hs.application.shortAnswer.question1;
     const question2Done = !!hs.application.shortAnswer.question2;
-    return portfolioDone && jobInterestDone && question1Done && question2Done;
+    const previousHackathonsDone = !!hs.application.shortAnswer.previousHackathons;
+    return portfolioDone && jobInterestDone && question1Done && question2Done && previousHackathonsDone;
 };
 
 /**

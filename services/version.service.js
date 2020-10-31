@@ -1,10 +1,8 @@
 "use strict";
-const fs = require("fs");
-const path = require("path");
+const { version } = require("../package.json");
 
 const get = function() {
-    const version = fs.readFileSync(path.join(__dirname, "../VERSION"), "utf8");
-    return version.toString();
+    return version;
 };
 
 module.exports = {
