@@ -29,7 +29,7 @@
         "express": "~4.17.1",
         "express-validator": "^6.3.0",
         "express-winston": "^2.6.0",
-        "handlebars": "^4.5.3",
+        "handlebars": "^4.7.6",
         "jsonwebtoken": "^8.5.1",
         "memory-cache": "^0.2.0",
         "mongoose": "^5.7.14",
