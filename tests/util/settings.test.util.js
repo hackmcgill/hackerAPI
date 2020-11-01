@@ -25,6 +25,13 @@ const settingConfirmClosed = {
     confirmTime: new Date(Date.now() - 100)
 };
 
+const settingRemoteHackathon = {
+    openTime: new Date(Date.now() - 100),
+    closeTime: new Date(Date.now() + 10000000000),
+    confirmTime: new Date(Date.now() + 100000000000000),
+    isRemote: true
+};
+
 async function storeAll() {
     const toStore = new Settings(settingApplicationOpen);
     Settings.collection.insertOne(toStore);
@@ -61,5 +68,6 @@ module.exports = {
     settingApplicationNotYetOpen: settingApplicationNotYetOpen,
     settingApplicationOpen: settingApplicationOpen,
     settingApplicationClosed: settingApplicationClosed,
-    settingConfirmClosed: settingConfirmClosed
+    settingConfirmClosed: settingConfirmClosed,
+    settingRemoteHackathon: settingRemoteHackathon
 };

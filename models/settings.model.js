@@ -13,6 +13,10 @@ const settings = new mongoose.Schema({
     confirmTime: {
         type: Date,
         default: Date.now() + 31104000000 + 2628000000 // 1 year and 1 month from now.
+    },
+    isRemote: {
+        type: Boolean,
+        default: false
     }
 });
 

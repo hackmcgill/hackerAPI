@@ -57,7 +57,7 @@ async function updateSettings(req, res, next) {
 
 /**
  * @function confirmValidPatch
- * @param {{body:{settingsDetails:{openTime:Date, closeTime:Date, confirmTime:Date}}}} req
+ * @param {{body:{settingsDetails:{openTime:Date, closeTime:Date, confirmTime:Date, isRemote: Boolean}}}} req
  * @param {*} res
  * @param {*} next
  * @return {void}
