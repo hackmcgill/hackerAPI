@@ -38,6 +38,9 @@ const storedAccount3 = util.account.NonConfirmedAccount3;
 
 const newAccount0 = util.account.unlinkedAccounts.new[0];
 
+//This account should NOT have a phone number
+const noPhoneAccount = util.account.NoPhoneHackerAccount0;
+
 describe("GET user account", function() {
     // fail on authentication
     it("should FAIL to list the user's account on /api/account/self GET due to authentication", function(done) {
@@ -239,6 +242,31 @@ describe("POST create account", function() {
                 done();
             });
     });
+
+    it("should SUCCEED and create a new account without a phone number", function(done) {
+        chai.request(server.app)
+            .post('/api/account')
+            .type('application/json')
+            .send(noPhoneAccount)
+            .end(function(err, res) {
+                res.should.have.status(200);
+                res.should.be.json;
+                res.body.should.have.property("message");
+                res.body.message.should.equal(Constants.Success.ACCOUNT_CREATE);
+
+                // use acc.toStrippedJSON to deal with hidden passwords and convert _id to id
+                const acc = new Account(noPhoneAccount).toStrippedJSON();
+                // delete id as those are generated
+                delete acc.id;
+                delete res.body.data.id;
+
+                chai.assert.equal(
+                    JSON.stringify(res.body.data),
+                    JSON.stringify(acc)
+                );
+                done();
+            })
+    })
 });
 
 describe("POST confirm account", function() {

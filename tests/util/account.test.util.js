@@ -304,6 +304,21 @@ const NonConfirmedAccount3 = createAccount({
     email: "notconfirmed3@blahblah.com"
 });
 
+const NoPhoneHackerAccount0 = {
+    _id: mongoose.Types.ObjectId(),
+    firstName: "LMAO",
+    lastName: "ROFL",
+    pronoun: "Ey/Em",
+    gender: "Female",
+    email: "noPhone0@blahblah.com",
+    password: "probsShouldBeHashed5",
+    dietaryRestrictions: ["something1", "something2"],
+    gender: "Male",
+    confirmed: false,
+    birthDate: "1980-07-30",
+    accountType: Constants.HACKER
+}
+
 const extraAccounts = [
     waitlistedHacker0,
     NonConfirmedAccount1,
@@ -326,6 +341,7 @@ module.exports = {
     NonConfirmedAccount1: NonConfirmedAccount1,
     NonConfirmedAccount2: NonConfirmedAccount2,
     NonConfirmedAccount3: NonConfirmedAccount3,
+    NoPhoneHackerAccount0: NoPhoneHackerAccount0,
 
     extraAccounts: extraAccounts,
 

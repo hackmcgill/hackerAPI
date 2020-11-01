@@ -19,7 +19,7 @@ module.exports = {
             true
         ),
         VALIDATOR.dateValidator("body", "birthDate", false),
-        VALIDATOR.phoneNumberValidator("body", "phoneNumber", false)
+        VALIDATOR.phoneNumberValidator("body", "phoneNumber", true)
     ],
     updateAccountValidator: [
         VALIDATOR.stringValidator("body", "firstName", true),
