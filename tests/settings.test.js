@@ -99,4 +99,28 @@ describe("PATCH settings", function() {
             );
         });
     });
+    it("should succeed to make the hackathon remote", function(done) {
+        util.auth.login(agent, Admin, (error) => {
+            if (error) {
+                agent.close();
+                return done(error);
+            }
+            return (
+                agent
+                    .patch(`/api/settings/`)
+                    .type("application/json")
+                    .send(util.settings.settingRemoteHackathon)
+                    // does not have password because of to stripped json
+                    .end(function(err, res) {
+                        res.should.have.status(200);
+                        res.should.be.json;
+                        res.body.should.have.property("message");
+                        res.body.message.should.equal(
+                            Constants.Success.SETTINGS_PATCH
+                        );
+                        done();
+                    })
+            );
+        });
+    });
 });

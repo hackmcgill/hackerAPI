@@ -34,7 +34,8 @@ module.exports = {
          *              "settings": {
          *                  openTime: "Wed Feb 06 2019 00:00:00 GMT-0500 (GMT-05:00)",
          *                  closeTime: "Sat Feb 01 2020 00:00:00 GMT-0500 (GMT-05:00)",
-         *                  confirmTime: "Sat Feb 20 2020 00:00:00 GMT-0500 (GMT-05:00)"
+         *                  confirmTime: "Sat Feb 20 2020 00:00:00 GMT-0500 (GMT-05:00)",
+         *                  isRemote: false
          *              }
          *          }
          *      }
@@ -55,6 +56,7 @@ module.exports = {
          * @apiParam (body) {Date} [openTime] The opening time for the hackathon.
          * @apiParam (body) {Date} [closeTime] The closing time for the hackathon.
          * @apiParam (body) {Date} [confirmTime] The deadline for confirmation for the hackathon.
+         * @apiParam (body) {Boolean} [isRemote] Whether this hackathon is remote or not.
          *
          * @apiSuccess {string} message Success message
          * @apiSuccess {object} data Settings Object
@@ -65,7 +67,8 @@ module.exports = {
          *              "settings": {
          *                  openTime: "Wed Feb 06 2019 00:00:00 GMT-0500 (GMT-05:00)",
          *                  closeTime: "Sat Feb 01 2020 00:00:00 GMT-0500 (GMT-05:00)",
-         *                  confirmTime: "Sat Feb 20 2020 00:00:00 GMT-0500 (GMT-05:00)"
+         *                  confirmTime: "Sat Feb 20 2020 00:00:00 GMT-0500 (GMT-05:00)",
+         *                  isRemote: true
          *              }
          *          }
          *      }

@@ -5,6 +5,7 @@ module.exports = {
     createSettingsValidator: [
         VALIDATOR.dateValidator("body", "openTime", true),
         VALIDATOR.dateValidator("body", "closeTime", true),
-        VALIDATOR.dateValidator("body", "confirmTime", true)
+        VALIDATOR.dateValidator("body", "confirmTime", true),
+        VALIDATOR.booleanValidator("body", "isRemote", true)
     ]
 };
