@@ -426,13 +426,15 @@ async function validateConfirmationToken(req, res, next) {
 }
 
 /**
- *
+ * Finds the confirmation token for this account. If there is no account ID associated with this
+ * confirmation token, then the user was invited. Therefore, we should set the confirmation bit to
+ * true by default (since they were invited).
  * @param {body: {decodedToken:{accountConfirmationId: String}}} req
  * @param {*} res
  * @param {*} next
  */
 async function validateConfirmationTokenWithoutAccount(req, res, next) {
-    if (!!req.body.decodedToken) {
+    if (req.body.decodedToken) {
         const confirmationObj = await Services.AccountConfirmation.findById(
             req.body.decodedToken.accountConfirmationId
         );
@@ -468,17 +470,26 @@ function deleteResetToken(req, res, next) {
  * @param {(err?)=>void} next
  */
 async function addCreationRoleBindings(req, res, next) {
-    // Get the default role for the account type given
-    const roleName = Constants.General.POST_ROLES[req.body.account.accountType];
-    await Services.RoleBinding.createRoleBindingByRoleName(
-        req.body.account.id,
-        roleName
-    );
-    // Add default account role bindings
-    await Services.RoleBinding.createRoleBindingByRoleName(
-        req.body.account.id,
-        Constants.Role.accountRole.name
-    );
+    if (req.body.account.accountType === Constants.General.STAFF) {
+        // Staff do not have to create a STAFF object, so give them the full permissions immediately.
+        await Services.RoleBinding.createRoleBindingByRoleName(
+            req.body.account.id,
+            Constants.Role.adminRole.name
+        );
+    } else {
+        // Get the default role for the account type given
+        const roleName =
+            Constants.General.POST_ROLES[req.body.account.accountType];
+        await Services.RoleBinding.createRoleBindingByRoleName(
+            req.body.account.id,
+            roleName
+        );
+        // Add default account role bindings
+        await Services.RoleBinding.createRoleBindingByRoleName(
+            req.body.account.id,
+            Constants.Role.accountRole.name
+        );
+    }
     return next();
 }
 
