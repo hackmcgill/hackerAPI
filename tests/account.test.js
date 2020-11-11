@@ -708,9 +708,6 @@ describe("GET invites", function() {
                 res.body.should.have.property("data");
                 res.body.data.should.have.property("invites");
                 res.body.data.invites.length.should.equal(1);
-                res.body.data.invites[0].should.equal(
-                    util.accountConfirmation.InvitedConfirmation1
-                );
                 done();
             });
         });
