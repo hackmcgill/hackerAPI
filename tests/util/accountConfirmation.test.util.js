@@ -33,10 +33,11 @@ const HackerConfirmation3 = {
     email: Util.Account.unlinkedAccounts.new[0].email
 };
 
-const HackerConfirmation4 = {
+const InvitedConfirmation1 = {
     _id: mongoose.Types.ObjectId(),
     accountType: Constants.HACKER,
-    email: "abcd@efgh.com"
+    email: "abcd@efgh.com",
+    confirmationType: Constants.CONFIRMATION_TYPE_INVITE
 };
 
 // Using a real ID which is stored but corresponds to another account
@@ -59,7 +60,7 @@ const AccountConfirmationTokens = [
     HackerConfirmation,
     HackerConfirmation2,
     HackerConfirmation3,
-    HackerConfirmation4
+    InvitedConfirmation1
 ];
 
 function store(attributes) {
@@ -100,6 +101,7 @@ module.exports = {
     ConfirmationToken: ConfirmationToken,
     FakeToken: FakeToken,
     AccountConfirmationTokens: AccountConfirmationTokens,
+    InvitedConfirmation1: InvitedConfirmation1,
     storeAll: storeAll,
     dropAll: dropAll
 };

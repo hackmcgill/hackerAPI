@@ -3,9 +3,8 @@ const chai = require("chai");
 const chaiHttp = require("chai-http");
 chai.use(chaiHttp);
 const server = require("../app");
-const logger = require("../services/logger.service");
 const Account = require("../models/account.model");
-const should = chai.should();
+chai.should();
 const Constants = {
     Error: require("../constants/error.constant"),
     General: require("../constants/general.constant"),
@@ -245,8 +244,8 @@ describe("POST create account", function() {
 
     it("should SUCCEED and create a new account without a phone number", function(done) {
         chai.request(server.app)
-            .post('/api/account')
-            .type('application/json')
+            .post("/api/account")
+            .type("application/json")
             .send(noPhoneAccount)
             .end(function(err, res) {
                 res.should.have.status(200);
@@ -265,8 +264,8 @@ describe("POST create account", function() {
                     JSON.stringify(acc)
                 );
                 done();
-            })
-    })
+            });
+    });
 });
 
 describe("POST confirm account", function() {
@@ -708,8 +707,9 @@ describe("GET invites", function() {
                 );
                 res.body.should.have.property("data");
                 res.body.data.should.have.property("invites");
-                res.body.data.invites.length.should.equal(
-                    util.accountConfirmation.AccountConfirmationTokens.length
+                res.body.data.invites.length.should.equal(1);
+                res.body.data.invites[0].should.equal(
+                    util.accountConfirmation.InvitedConfirmation1
                 );
                 done();
             });
