@@ -47,5 +47,5 @@ async function dropAll() {
 
 async function storeAll() {
     await Seed.Roles.storeAll(Constants.Role.allRolesArray);
-    await Seed.Settings.store(Constants.Settings.APP_NOT_YET_OPEN);
+    await Seed.Settings.store();
 }

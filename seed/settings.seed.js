@@ -13,7 +13,7 @@ function drop() {
  * @param {Settings} setting the setting that we want to seed
  */
 function store(setting) {
-    return Settings.collection.insertOne(setting);
+    return Settings.collection.insertOne(new Settings(setting));
 }
 
 module.exports = {
