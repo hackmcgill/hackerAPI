@@ -16,7 +16,6 @@
         "node": "10.17.0"
     },
     "dependencies": {
-        "@google-cloud/logging-winston": "^0.11.1",
         "@google-cloud/storage": "^3.5.0",
         "@sendgrid/mail": "^6.4.0",
         "bcrypt": "^5.0.0",
