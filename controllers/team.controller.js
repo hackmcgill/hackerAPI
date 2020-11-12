@@ -21,23 +21,11 @@ const Constants = {
 function showTeam(req, res) {
     const teamData = req.body.team.toJSON();
 
-    const memberNames = [];
-    for (const member of req.body.teamMembers) {
-        const strippedMemberJSON = member.toStrippedJSON();
-
-        const memberName = {
-            firstName: strippedMemberJSON.firstName,
-            lastName: strippedMemberJSON.lastName
-        };
-
-        memberNames.push(memberName);
-    }
-
     return res.status(200).json({
         message: Constants.Success.TEAM_READ,
         data: {
             team: teamData,
-            members: memberNames
+            members: req.body.teamMembers
         }
     });
 }
