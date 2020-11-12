@@ -28,9 +28,16 @@ const HACKER_STATUSES = [
 // This date is Jan 6, 2020 00:00:00 GMT -0500
 const APPLICATION_CLOSE_TIME = 1578286800000;
 
+const CONFIRMATION_TYPE_INVITE = "Invite";
+const CONFIRMATION_TYPE_ORGANIC = "Organic";
+const CONFIRMATION_TYPES = [
+    CONFIRMATION_TYPE_INVITE,
+    CONFIRMATION_TYPE_ORGANIC
+];
+
 const TRAVEL_STATUS_NONE = "None"; // Hacker has not been offered compensation for travelling
 const TRAVEL_STATUS_BUS = "Bus"; // Hacker is taking bus to hackathon
-const TRAVEL_STATUS_POLICY = "Policy"; // Hacker has been offer some reimbursement, but we are waiting for hacker to accept travel policy first  
+const TRAVEL_STATUS_POLICY = "Policy"; // Hacker has been offer some reimbursement, but we are waiting for hacker to accept travel policy first
 const TRAVEL_STATUS_OFFERED = "Offered"; // Hacker has been offered some amount of compensation for travelling, but we have not verified their reciepts yet
 const TRAVEL_STATUS_VALID = "Valid"; // Hacker has been offered some amount of compensation for travelling and have uploaded reciepts which we have confirmed to be an approprate amount
 const TRAVEL_STATUS_INVALID = "Invalid"; // Hacker has been offered some amount of compensation for travelling but have uploaded reciepts which we have confirmed to be an inapproprate amount
@@ -213,5 +220,8 @@ module.exports = {
     CACHE_KEY_STATS: CACHE_KEY_STATS,
     MAX_TEAM_SIZE: MAX_TEAM_SIZE,
     WEEK_OF: WEEK_OF,
-    SAMPLE_DIET_RESTRICTIONS: SAMPLE_DIET_RESTRICTIONS
+    SAMPLE_DIET_RESTRICTIONS: SAMPLE_DIET_RESTRICTIONS,
+    CONFIRMATION_TYPES: CONFIRMATION_TYPES,
+    CONFIRMATION_TYPE_INVITE: CONFIRMATION_TYPE_INVITE,
+    CONFIRMATION_TYPE_ORGANIC: CONFIRMATION_TYPE_ORGANIC
 };

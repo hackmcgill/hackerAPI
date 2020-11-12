@@ -56,14 +56,16 @@ function find(query) {
  * Creates Account Confirmation document in the database
  * @param {String} type the type of user which to create the token for
  * @param {String} email
+ * @param {"Invite"|"Organic"} confirmationType whether this confirmation token is for an organic acct creation, or an invited account
  * @param {ObjectId} accountId optional accountId parameter to link to account, optional when token is being made for not a hacker
  * @returns {Promise.<*>}
  */
-async function create(type, email, accountId) {
+async function create(type, email, confirmationType, accountId) {
     //Create new instance of account confirmation
     const newAccountToken = AccountConfirmation({
         accountType: type,
-        email: email
+        email: email,
+        confirmationType: confirmationType
     });
     if (accountId !== undefined) {
         newAccountToken.accountId = accountId;
