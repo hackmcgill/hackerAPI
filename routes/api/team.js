@@ -138,7 +138,8 @@ module.exports = {
                             {
                                 "firstName": "John",
                                 "lastName": "Doe",
-                                "school": "McGill University"
+                                "school": "McGill University",
+                                "status": "Applied"
                             }
                         ],
                     }
