@@ -139,10 +139,10 @@ describe("GET team", function () {
                     res.body.data.members[3].lastName.should.equal(
                         util.account.hackerAccounts.stored.team[4].lastName
                     );
-                    res.body.data.members[4].status.should.equal(
+                    res.body.data.members[3].status.should.equal(
                         util.hacker.TeamHacker4.status
                     );
-                    res.body.data.members[4].school.should.equal(
+                    res.body.data.members[3].school.should.equal(
                         util.hacker.TeamHacker4.application.general.school
                     );
 
