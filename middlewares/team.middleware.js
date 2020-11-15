@@ -419,7 +419,12 @@ async function populateMemberAccountsById(req, res, next) {
     let teamMembers = [];
 
     for (const member of team.members) {
-        teamMembers.push(member.accountId);
+        teamMembers.push({
+            school: member.application.general.school,
+            status: member.status,
+            firstName: member.accountId.firstName,
+            lastName: member.accountId.lastName
+        });
         hackerIds.push(member._id);
     }
     team.members = hackerIds;
