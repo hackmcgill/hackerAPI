@@ -128,6 +128,11 @@ module.exports = {
                       "accomodation": {
                         "travel": 0
                       },
+                      "location": {
+                        "timeZone": "GMT-5",
+                        "country": "Canada",
+                        "city": "Montreal"
+                      }
                     }
                         
          *      }
@@ -171,6 +176,11 @@ module.exports = {
                           "accomodation": {
                             "travel": 0
                           },
+                          "location": {
+                            "timeZone": "GMT-5",
+                            "country": "Canada",
+                            "city": "Montreal"
+                          }
                         }
          *      }
 
@@ -461,6 +471,11 @@ module.exports = {
                     "accomodation": {
                       "travel": 0
                     },
+                    "location": {
+                      "timeZone": "GMT-5",
+                      "country": "Canada",
+                      "city": "Montreal"
+                    }                    
                   }
                 }
          * 
@@ -504,6 +519,11 @@ module.exports = {
                           "accomodation": {
                             "travel": 0
                           },
+                          "location": {
+                            "timeZone": "GMT-5",
+                            "country": "Canada",
+                            "city": "Montreal"
+                          }                             
                         }
                       }
          *      }
@@ -576,6 +596,11 @@ module.exports = {
                           "accomodation": {
                             "travel": 0
                           },
+                          "location": {
+                            "timeZone": "GMT-5",
+                            "country": "Canada",
+                            "city": "Montreal"
+                          }                             
                         }
                     }
                 }
@@ -644,6 +669,11 @@ module.exports = {
                           "accomodation": {
                             "travel": 0
                           },
+                          "location": {
+                            "timeZone": "GMT-5",
+                            "country": "Canada",
+                            "city": "Montreal"
+                          }                             
                         }
                     }
                 }
