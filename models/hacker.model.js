@@ -131,12 +131,26 @@ const HackerSchema = new mongoose.Schema({
         team: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "Team"
+        },
+        location: {
+            timeZone: {
+                type: String,
+                default: ""
+            },
+            country: {
+                type: String,
+                default: ""
+            },
+            city: {
+                type: String,
+                default: ""
+            }
         }
     },
     teamId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Team"
-    }
+    },
 });
 
 HackerSchema.methods.toJSON = function() {
