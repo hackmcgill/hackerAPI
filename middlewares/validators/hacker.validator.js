@@ -126,7 +126,10 @@ module.exports = {
             100
         ),
         VALIDATOR.mongoIdValidator("body", "application.team", true),
-        VALIDATOR.mongoIdValidator("body", "teamId", true)
+        VALIDATOR.stringValidator("body", "application.location.timeZone", true),
+        VALIDATOR.stringValidator("body", "application.location.country", true),
+        VALIDATOR.stringValidator("body", "application.location.city", true),
+        VALIDATOR.mongoIdValidator("body", "teamId", true),
     ],
 
     updateConfirmationValidator: [
@@ -253,7 +256,10 @@ module.exports = {
             0,
             100
         ),
-        VALIDATOR.mongoIdValidator("body", "application.team", true)
+        VALIDATOR.mongoIdValidator("body", "application.team", true),
+        VALIDATOR.stringValidator("body", "application.location.timeZone", true),
+        VALIDATOR.stringValidator("body", "application.location.country", true),
+        VALIDATOR.stringValidator("body", "application.location.city", true),
     ],
     updateStatusValidator: [
         VALIDATOR.enumValidator(
