@@ -317,7 +317,7 @@ const NoPhoneHackerAccount0 = {
     confirmed: false,
     birthDate: "1980-07-30",
     accountType: Constants.HACKER
-}
+};
 
 const extraAccounts = [
     waitlistedHacker0,
@@ -346,6 +346,14 @@ module.exports = {
     extraAccounts: extraAccounts,
 
     storeAll: storeAll,
+    storeStaffAccounts: storeStaffAccounts,
+    storeHackerStaffAccounts: storeHackerStaffAccounts,
+    storeVerifyConfirmationAccounts: storeVerifyConfirmationAccounts,
+    storePostInviteAccount: storePostInviteAccount,
+    storeGetInviteAccounts: storeGetInviteAccounts,
+    storeExtraAccounts: storeExtraAccounts,
+    storePatchUpdateAccount: storePatchUpdateAccount,
+    storePostResetPasswordAccounts: storePostResetPasswordAccounts,
     dropAll: dropAll,
     equals: equals
 };
@@ -366,6 +374,48 @@ function store(attributes) {
     }
 
     return Account.collection.insertMany(acctDocs);
+}
+
+async function storePostResetPasswordAccounts() {
+    await store(hackerAccounts.stored.team);
+}
+
+async function storeStaffAccounts() {
+    await store(hackerAccounts.stored.team);
+    await store(hackerAccounts.stored.noTeam);
+    await store(hackerAccounts.stored.unconfirmed);
+    await store(staffAccounts.stored);
+}
+
+async function storeGetInviteAccounts() {
+    await store(hackerAccounts.stored.team);
+    await store(staffAccounts.stored);
+}
+
+async function storePatchUpdateAccount() {
+    await store(hackerAccounts.stored.team);
+    await store(staffAccounts.stored);
+    await store(extraAccounts);
+}
+
+async function storeHackerStaffAccounts() {
+    await store(hackerAccounts.stored.team);
+    await store(hackerAccounts.stored.noTeam);
+    await store(staffAccounts.stored);
+}
+
+async function storeExtraAccounts() {
+    await store(extraAccounts);
+}
+
+async function storeVerifyConfirmationAccounts() {
+    await store(hackerAccounts.stored.team);
+    await store(extraAccounts);
+}
+
+async function storePostInviteAccount() {
+    await store(staffAccounts.stored);
+    await store(unlinkedAccounts.stored);
 }
 
 async function storeAll() {

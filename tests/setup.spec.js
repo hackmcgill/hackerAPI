@@ -35,9 +35,9 @@ before(function(done) {
     });
 });
 
-beforeEach(function(done) {
+after(function(done) {
     this.timeout(60000);
-    storeAll()
+    dropAll()
         .then(() => {
             done();
         })
@@ -56,20 +56,6 @@ afterEach(function(done) {
             done(error);
         });
 });
-async function storeAll() {
-    await Util.Account.storeAll();
-    await Util.Settings.storeAll();
-    await Util.Hacker.storeAll();
-    await Util.Sponsor.storeAll();
-    await Util.Team.storeAll();
-    await Util.Staff.storeAll();
-    await Util.AccountConfirmation.storeAll();
-    await Util.ResetPassword.storeAll();
-    await Util.Bus.storeAll();
-    await Util.Volunteer.storeAll();
-    await Util.Role.storeAll();
-    await Util.RoleBinding.storeAll();
-}
 
 async function dropAll() {
     await Util.RoleBinding.dropAll();
