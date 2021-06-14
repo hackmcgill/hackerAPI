@@ -148,7 +148,8 @@ function getStats(hackers) {
         graduationYear: {},
         dietaryRestrictions: {},
         shirtSize: {},
-        age: {}
+        age: {},
+        applicationDate: {}
     };
 
     hackers.forEach((hacker) => {
@@ -198,7 +199,7 @@ function getStats(hackers) {
         stats.graduationYear[hacker.application.general.graduationYear] = stats
             .graduationYear[hacker.application.general.graduationYear]
             ? stats.graduationYear[hacker.application.general.graduationYear] +
-            1
+              1
             : 1;
         for (const dietaryRestrictions of hacker.accountId
             .dietaryRestrictions) {
@@ -213,6 +214,17 @@ function getStats(hackers) {
             : 1;
         const age = hacker.accountId.getAge();
         stats.age[age] = stats.age[age] ? stats.age[age] + 1 : 1;
+
+        const applicationDate = hacker._id
+            .getTimestamp()
+            .toISOString()
+            .slice(0, 10);
+
+        stats.applicationDate[applicationDate] = stats.applicationDate[
+            applicationDate
+        ]
+            ? stats.applicationDate[applicationDate] + 1
+            : 1;
     });
     return stats;
 }
