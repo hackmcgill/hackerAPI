@@ -39,6 +39,6 @@ In order to test that you have set up the API properly, run `npm run test`.
 
     |                | Local Dev Environment | Production Environment |
     |----------------|-----------------------|------------------------|
-    | base_url       | http://localhost:3000 | https://api.mchacks.ca |
+    | base_url       | http://localhost:3000/api | https://api.mchacks.ca |
 
 API parameters are not currently automatically imported by the Postman generation script. A change to a different API Doc generation tool in future could make this a more supported use case by Postman.
