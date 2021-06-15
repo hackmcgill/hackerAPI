@@ -1268,53 +1268,6 @@
   },
   {
     "type": "patch",
-    "url": "/hacker/acceptEmail/:email",
-    "title": "accept a Hacker by email",
-    "name": "acceptHacker",
-    "group": "Hacker",
-    "version": "2.0.0",
-    "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "type": "string",
-            "optional": false,
-            "field": "message",
-            "description": "<p>Success message</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "object",
-            "optional": false,
-            "field": "data",
-            "description": "<p>Hacker object</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Success-Response:",
-          "content": "{\n    \"message\": \"Changed hacker information\",\n    \"data\": {\n        \"status\": \"Accepted\"\n    }\n}",
-          "type": "object"
-        }
-      ]
-    },
-    "permission": [
-      {
-        "name": "Administrator"
-      }
-    ],
-    "filename": "routes/api/hacker.js",
-    "groupTitle": "Hacker",
-    "sampleRequest": [
-      {
-        "url": "https://api.mchacks.ca/api/hacker/acceptEmail/:email"
-      }
-    ]
-  },
-  {
-    "type": "patch",
     "url": "/hacker/accept/:id",
     "title": "accept a Hacker",
     "name": "acceptHacker",
@@ -1357,6 +1310,53 @@
     "sampleRequest": [
       {
         "url": "https://api.mchacks.ca/api/hacker/accept/:id"
+      }
+    ]
+  },
+  {
+    "type": "patch",
+    "url": "/hacker/acceptEmail/:email",
+    "title": "accept a Hacker by email",
+    "name": "acceptHacker",
+    "group": "Hacker",
+    "version": "2.0.0",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "message",
+            "description": "<p>Success message</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>Hacker object</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n    \"message\": \"Changed hacker information\",\n    \"data\": {\n        \"status\": \"Accepted\"\n    }\n}",
+          "type": "object"
+        }
+      ]
+    },
+    "permission": [
+      {
+        "name": "Administrator"
+      }
+    ],
+    "filename": "routes/api/hacker.js",
+    "groupTitle": "Hacker",
+    "sampleRequest": [
+      {
+        "url": "https://api.mchacks.ca/api/hacker/acceptEmail/:email"
       }
     ]
   },
@@ -1501,7 +1501,7 @@
       "examples": [
         {
           "title": "application: ",
-          "content": "{\n               \"application\":{\n                 \"general\":{\n                   \"school\": \"McGill University\",\n                   \"degree\": \"Undergraduate\",\n                   \"fieldOfStudy\": \"Computer Science\",\n                   \"graduationYear\": \"2021\",\n                   \"jobInterest\":\"Internship\",\n                   \"URL\":{\n                       \"resume\":\"resumes/1543458163426-5bff4d736f86be0a41badb91\",\n                       \"github\":\"https://github.com/abcd\",\n                       \"dropler\":\"https://dribbble.com/abcd\",\n                       \"personal\":\"https://www.hi.com/\",\n                       \"linkedIn\":\"https://linkedin.com/in/abcd\",\n                       \"other\":\"https://github.com/hackmcgill/hackerAPI/issues/168\"\n                   },\n                 },\n                 \"shortAnswer\": {\n                   \"skills\":[\"Javascript\",\"Typescript\"],\n                   \"question1\": \"I love McHacks\",\n                   \"question2\":\"Pls accept me\",\n                   \"previousHackathons\": \"5\",\n                   \"comments\":\"hi!\",\n                 },\n                 \"other:\" {\n                   \"gender\": \"male\",\n                   \"ethnicity\": \"Asian or Pacific Islander\",\n                   \"privacyPolicy\": true,\n                   \"codeOfConduct\": true,\n                 }\n                 \"accomodation\": {\n                   \"travel\": 0\n                 },\n                 \"location:\" {\n                   \"timeZone\": \"GMT-5\",\n                   \"country\": \"Canada\",\n                   \"city\": \"Montreal\",\n                 }\n               }\n}",
+          "content": "{\n               \"application\":{\n                 \"general\":{\n                   \"school\": \"McGill University\",\n                   \"degree\": \"Undergraduate\",\n                   \"fieldOfStudy\": \"Computer Science\",\n                   \"graduationYear\": \"2021\",\n                   \"jobInterest\":\"Internship\",\n                   \"URL\":{\n                       \"resume\":\"resumes/1543458163426-5bff4d736f86be0a41badb91\",\n                       \"github\":\"https://github.com/abcd\",\n                       \"dropler\":\"https://dribbble.com/abcd\",\n                       \"personal\":\"https://www.hi.com/\",\n                       \"linkedIn\":\"https://linkedin.com/in/abcd\",\n                       \"other\":\"https://github.com/hackmcgill/hackerAPI/issues/168\"\n                   },\n                 },\n                 \"shortAnswer\": {\n                   \"skills\":[\"Javascript\",\"Typescript\"],\n                   \"question1\": \"I love McHacks\",\n                   \"question2\":\"Pls accept me\",\n                   \"previousHackathons\": \"5\",\n                   \"comments\":\"hi!\",\n                 },\n                 \"other:\" {\n                   \"gender\": \"male\",\n                   \"ethnicity\": \"Asian or Pacific Islander\",\n                   \"privacyPolicy\": true,\n                   \"codeOfConduct\": true,\n                 }\n                 \"accomodation\": {\n                   \"travel\": 0\n                 },\n                 \"location\": {\n                   \"timeZone\": \"GMT-5\",\n                   \"country\": \"Canada\",\n                   \"city\": \"Montreal\"\n                 }\n               }\n}",
           "type": "Json"
         }
       ]
@@ -1528,7 +1528,7 @@
       "examples": [
         {
           "title": "Success-Response: ",
-          "content": "{\n    \"message\": \"Hacker creation successful\", \n    \"data\": {\n                   \"id\":\"5bff4d736f86be0a41badb91\",\n                   \"application\":{\n                     \"general\":{\n                       \"school\": \"McGill University\",\n                       \"degree\": \"Undergraduate\",\n                       \"fieldOfStudy\": \"Computer Science\",\n                       \"graduationYear\": \"2021\",\n                       \"jobInterest\":\"Internship\",\n                       \"URL\":{\n                         \"resume\":\"resumes/1543458163426-5bff4d736f86be0a41badb91\",\n                         \"github\":\"https://github.com/abcd\",\n                         \"dropler\":\"https://dribbble.com/abcd\",\n                         \"personal\":\"https://www.hi.com/\",\n                         \"linkedIn\":\"https://linkedin.com/in/abcd\",\n                         \"other\":\"https://github.com/hackmcgill/hackerAPI/issues/168\"\n                       },\n                     },\n                     \"shortAnswer\": {\n                       \"skills\":[\"Javascript\",\"Typescript\"],\n                       \"question1\": \"I love McHacks\",\n                       \"question2\":\"Pls accept me\",\n                       \"previousHackathons\": \"5\",\n                       \"comments\":\"hi!\",\n                     },\n                     \"other:\" {\n                       \"gender\": \"male\",\n                       \"ethnicity\": \"Asian or Pacific Islander\",\n                       \"privacyPolicy\": true,\n                       \"codeOfConduct\": true,\n                     }\n                     \"accomodation\": {\n                       \"travel\": 0\n                     },\n                 \"location:\" {\n                   \"timeZone\": \"GMT-5\",\n                   \"country\": \"Canada\",\n                   \"city\": \"Montreal\",\n                 }\n                   }\n}",
+          "content": "{\n    \"message\": \"Hacker creation successful\", \n    \"data\": {\n                   \"id\":\"5bff4d736f86be0a41badb91\",\n                   \"application\":{\n                     \"general\":{\n                       \"school\": \"McGill University\",\n                       \"degree\": \"Undergraduate\",\n                       \"fieldOfStudy\": \"Computer Science\",\n                       \"graduationYear\": \"2021\",\n                       \"jobInterest\":\"Internship\",\n                       \"URL\":{\n                         \"resume\":\"resumes/1543458163426-5bff4d736f86be0a41badb91\",\n                         \"github\":\"https://github.com/abcd\",\n                         \"dropler\":\"https://dribbble.com/abcd\",\n                         \"personal\":\"https://www.hi.com/\",\n                         \"linkedIn\":\"https://linkedin.com/in/abcd\",\n                         \"other\":\"https://github.com/hackmcgill/hackerAPI/issues/168\"\n                       },\n                     },\n                     \"shortAnswer\": {\n                       \"skills\":[\"Javascript\",\"Typescript\"],\n                       \"question1\": \"I love McHacks\",\n                       \"question2\":\"Pls accept me\",\n                       \"previousHackathons\": \"5\",\n                       \"comments\":\"hi!\",\n                     },\n                     \"other:\" {\n                       \"gender\": \"male\",\n                       \"ethnicity\": \"Asian or Pacific Islander\",\n                       \"privacyPolicy\": true,\n                       \"codeOfConduct\": true,\n                     }\n                     \"accomodation\": {\n                       \"travel\": 0\n                     },\n                     \"location\": {\n                       \"timeZone\": \"GMT-5\",\n                       \"country\": \"Canada\",\n                       \"city\": \"Montreal\"\n                     }\n                   }\n}",
           "type": "object"
         }
       ]
@@ -1610,7 +1610,7 @@
       "examples": [
         {
           "title": "Success-Response: ",
-          "content": "{\n               \"message\": \"Successfully retrieved hacker information\", \n               \"data\": {\n                   \"id\":\"5bff4d736f86be0a41badb91\",\n                   \"status\": \"Applied\",\n                   \"application\":{\n                     \"general\":{\n                       \"school\": \"McGill University\",\n                       \"degree\": \"Undergraduate\",\n                       \"fieldOfStudy\": \"Computer Science\",\n                       \"graduationYear\": \"2021\",\n                       \"jobInterest\":\"Internship\",\n                       \"URL\":{\n                         \"resume\":\"resumes/1543458163426-5bff4d736f86be0a41badb91\",\n                         \"github\":\"https://github.com/abcd\",\n                         \"dropler\":\"https://dribbble.com/abcd\",\n                         \"personal\":\"https://www.hi.com/\",\n                         \"linkedIn\":\"https://linkedin.com/in/abcd\",\n                         \"other\":\"https://github.com/hackmcgill/hackerAPI/issues/168\"\n                       },\n                     },\n                     \"shortAnswer\": {\n                       \"skills\":[\"Javascript\",\"Typescript\"],\n                       \"question1\": \"I love McHacks\",\n                       \"question2\":\"Pls accept me\",\n                       \"previousHackathons\": \"5\",\n                       \"comments\":\"hi!\",\n                     },\n                     \"other:\" {\n                       \"gender\": \"male\",\n                       \"ethnicity\": \"Asian or Pacific Islander\",\n                       \"privacyPolicy\": true,\n                       \"codeOfConduct\": true,\n                     }\n                     \"accomodation\": {\n                       \"travel\": 0\n                     },\n                 \"location:\" {\n                   \"timeZone\": \"GMT-5\",\n                   \"country\": \"Canada\",\n                   \"city\": \"Montreal\",\n                 }\n                   }\n               }\n           }",
+          "content": "{\n               \"message\": \"Successfully retrieved hacker information\", \n               \"data\": {\n                   \"id\":\"5bff4d736f86be0a41badb91\",\n                   \"status\": \"Applied\",\n                   \"application\":{\n                     \"general\":{\n                       \"school\": \"McGill University\",\n                       \"degree\": \"Undergraduate\",\n                       \"fieldOfStudy\": \"Computer Science\",\n                       \"graduationYear\": \"2021\",\n                       \"jobInterest\":\"Internship\",\n                       \"URL\":{\n                         \"resume\":\"resumes/1543458163426-5bff4d736f86be0a41badb91\",\n                         \"github\":\"https://github.com/abcd\",\n                         \"dropler\":\"https://dribbble.com/abcd\",\n                         \"personal\":\"https://www.hi.com/\",\n                         \"linkedIn\":\"https://linkedin.com/in/abcd\",\n                         \"other\":\"https://github.com/hackmcgill/hackerAPI/issues/168\"\n                       },\n                     },\n                     \"shortAnswer\": {\n                       \"skills\":[\"Javascript\",\"Typescript\"],\n                       \"question1\": \"I love McHacks\",\n                       \"question2\":\"Pls accept me\",\n                       \"previousHackathons\": \"5\",\n                       \"comments\":\"hi!\",\n                     },\n                     \"other:\" {\n                       \"gender\": \"male\",\n                       \"ethnicity\": \"Asian or Pacific Islander\",\n                       \"privacyPolicy\": true,\n                       \"codeOfConduct\": true,\n                     }\n                     \"accomodation\": {\n                       \"travel\": 0\n                     },\n                     \"location\": {\n                       \"timeZone\": \"GMT-5\",\n                       \"country\": \"Canada\",\n                       \"city\": \"Montreal\"\n                     }                             \n                   }\n               }\n           }",
           "type": "object"
         }
       ]
@@ -1692,7 +1692,7 @@
       "examples": [
         {
           "title": "Success-Response: ",
-          "content": "{\n               \"message\": \"Successfully retrieved hacker information\", \n               \"data\": {\n                   \"id\":\"5bff4d736f86be0a41badb91\",\n                   \"status\": \"Applied\",\n                   \"application\":{\n                     \"general\":{\n                       \"school\": \"McGill University\",\n                       \"degree\": \"Undergraduate\",\n                       \"fieldOfStudy\": \"Computer Science\",\n                       \"graduationYear\": \"2021\",\n                       \"jobInterest\":\"Internship\",\n                       \"URL\":{\n                         \"resume\":\"resumes/1543458163426-5bff4d736f86be0a41badb91\",\n                         \"github\":\"https://github.com/abcd\",\n                         \"dropler\":\"https://dribbble.com/abcd\",\n                         \"personal\":\"https://www.hi.com/\",\n                         \"linkedIn\":\"https://linkedin.com/in/abcd\",\n                         \"other\":\"https://github.com/hackmcgill/hackerAPI/issues/168\"\n                       },\n                     },\n                     \"shortAnswer\": {\n                       \"skills\":[\"Javascript\",\"Typescript\"],\n                       \"question1\": \"I love McHacks\",\n                       \"question2\":\"Pls accept me\",\n                       \"previousHackathons\": \"5\",\n                       \"comments\":\"hi!\",\n                     },\n                     \"other:\" {\n                       \"gender\": \"male\",\n                       \"ethnicity\": \"Asian or Pacific Islander\",\n                       \"privacyPolicy\": true,\n                       \"codeOfConduct\": true,\n                     }\n                     \"accomodation\": {\n                       \"travel\": 0\n                     },\n                 \"location:\" {\n                   \"timeZone\": \"GMT-5\",\n                   \"country\": \"Canada\",\n                   \"city\": \"Montreal\",\n                 }\n                   }\n               }\n           }",
+          "content": "{\n               \"message\": \"Successfully retrieved hacker information\", \n               \"data\": {\n                   \"id\":\"5bff4d736f86be0a41badb91\",\n                   \"status\": \"Applied\",\n                   \"application\":{\n                     \"general\":{\n                       \"school\": \"McGill University\",\n                       \"degree\": \"Undergraduate\",\n                       \"fieldOfStudy\": \"Computer Science\",\n                       \"graduationYear\": \"2021\",\n                       \"jobInterest\":\"Internship\",\n                       \"URL\":{\n                         \"resume\":\"resumes/1543458163426-5bff4d736f86be0a41badb91\",\n                         \"github\":\"https://github.com/abcd\",\n                         \"dropler\":\"https://dribbble.com/abcd\",\n                         \"personal\":\"https://www.hi.com/\",\n                         \"linkedIn\":\"https://linkedin.com/in/abcd\",\n                         \"other\":\"https://github.com/hackmcgill/hackerAPI/issues/168\"\n                       },\n                     },\n                     \"shortAnswer\": {\n                       \"skills\":[\"Javascript\",\"Typescript\"],\n                       \"question1\": \"I love McHacks\",\n                       \"question2\":\"Pls accept me\",\n                       \"previousHackathons\": \"5\",\n                       \"comments\":\"hi!\",\n                     },\n                     \"other:\" {\n                       \"gender\": \"male\",\n                       \"ethnicity\": \"Asian or Pacific Islander\",\n                       \"privacyPolicy\": true,\n                       \"codeOfConduct\": true,\n                     }\n                     \"accomodation\": {\n                       \"travel\": 0\n                     },\n                     \"location\": {\n                       \"timeZone\": \"GMT-5\",\n                       \"country\": \"Canada\",\n                       \"city\": \"Montreal\"\n                     }                             \n                   }\n               }\n           }",
           "type": "object"
         }
       ]
@@ -1849,7 +1849,7 @@
       "examples": [
         {
           "title": "Success-Response: ",
-          "content": "{\n    \"message\": \"Retrieved stats\",\n    \"data\": {\n        \"stats\" : {\n            \"total\": 10,\n                       \"status\": { \"Applied\": 10 },\n                       \"school\": { \"McGill University\": 3, \"Harvard University\": 7 },\n                       degree: { \"Undergraduate\": 10 },\n                       gender: { \"Male\": 1, \"Female\": 9 },\n                       travel: { \"true\": 7, \"false\": 3 },\n                       ethnicity: { \"White\": 10, },\n                       jobInterest: { \"Internship\": 10 },\n                       major: { \"Computer Science\": 10 },\n                       graduationYear: { \"2019\": 10 },\n                       dietaryRestrictions: { \"None\": 10 },\n                       shirtSize: { \"M\": 3, \"XL\": 7 },\n                       age: { \"22\": 10 }\n                   }\n    }\n}",
+          "content": "{\n    \"message\": \"Retrieved stats\",\n    \"data\": {\n        \"stats\" : {\n            \"total\": 10,\n                       \"status\": { \"Applied\": 10 },\n                       \"school\": { \"McGill University\": 3, \"Harvard University\": 7 },\n                       degree: { \"Undergraduate\": 10 },\n                       gender: { \"Male\": 1, \"Female\": 9 },\n                       travel: { \"true\": 7, \"false\": 3 },\n                       ethnicity: { \"White\": 10, },\n                       jobInterest: { \"Internship\": 10 },\n                       major: { \"Computer Science\": 10 },\n                       graduationYear: { \"2019\": 10 },\n                       dietaryRestrictions: { \"None\": 10 },\n                       shirtSize: { \"M\": 3, \"XL\": 7 },\n                       age: { \"22\": 10 },\n                       applicationDate: {\"2020-12-27\" : 2, \"2020-12-28\" : 8}\n                   }\n    }\n}",
           "type": "object"
         }
       ]
@@ -1927,7 +1927,7 @@
       "examples": [
         {
           "title": "application: ",
-          "content": "{\n             \"application\":{\n               \"general\":{\n                 \"school\": \"McGill University\",\n                 \"degree\": \"Undergraduate\",\n                 \"fieldOfStudy\": \"Computer Science\",\n                 \"graduationYear\": \"2021\",\n                 \"jobInterest\":\"Internship\",\n                 \"URL\":{\n                   \"resume\":\"resumes/1543458163426-5bff4d736f86be0a41badb91\",\n                   \"github\":\"https://github.com/abcd\",\n                   \"dropler\":\"https://dribbble.com/abcd\",\n                   \"personal\":\"https://www.hi.com/\",\n                   \"linkedIn\":\"https://linkedin.com/in/abcd\",\n                   \"other\":\"https://github.com/hackmcgill/hackerAPI/issues/168\"\n                 },\n               },\n               \"shortAnswer\": {\n                 \"skills\":[\"Javascript\",\"Typescript\"],\n                 \"question1\": \"I love McHacks\",\n                 \"question2\":\"Pls accept me\",\n                 \"previousHackathons\": \"5\",\n                 \"comments\":\"hi!\",\n               },\n               \"other:\" {\n                 \"gender\": \"male\",\n                 \"ethnicity\": \"Asian or Pacific Islander\",\n                 \"privacyPolicy\": true,\n                 \"codeOfConduct\": true,\n               }\n               \"accomodation\": {\n                 \"travel\": 0\n               },\n                 \"location:\" {\n                   \"timeZone\": \"GMT-5\",\n                   \"country\": \"Canada\",\n                   \"city\": \"Montreal\",\n                 }\n             }\n           }",
+          "content": "{\n             \"application\":{\n               \"general\":{\n                 \"school\": \"McGill University\",\n                 \"degree\": \"Undergraduate\",\n                 \"fieldOfStudy\": \"Computer Science\",\n                 \"graduationYear\": \"2021\",\n                 \"jobInterest\":\"Internship\",\n                 \"URL\":{\n                   \"resume\":\"resumes/1543458163426-5bff4d736f86be0a41badb91\",\n                   \"github\":\"https://github.com/abcd\",\n                   \"dropler\":\"https://dribbble.com/abcd\",\n                   \"personal\":\"https://www.hi.com/\",\n                   \"linkedIn\":\"https://linkedin.com/in/abcd\",\n                   \"other\":\"https://github.com/hackmcgill/hackerAPI/issues/168\"\n                 },\n               },\n               \"shortAnswer\": {\n                 \"skills\":[\"Javascript\",\"Typescript\"],\n                 \"question1\": \"I love McHacks\",\n                 \"question2\":\"Pls accept me\",\n                 \"previousHackathons\": \"5\",\n                 \"comments\":\"hi!\",\n               },\n               \"other:\" {\n                 \"gender\": \"male\",\n                 \"ethnicity\": \"Asian or Pacific Islander\",\n                 \"privacyPolicy\": true,\n                 \"codeOfConduct\": true,\n               }\n               \"accomodation\": {\n                 \"travel\": 0\n               },\n               \"location\": {\n                 \"timeZone\": \"GMT-5\",\n                 \"country\": \"Canada\",\n                 \"city\": \"Montreal\"\n               }                    \n             }\n           }",
           "type": "Json"
         }
       ]
@@ -1954,7 +1954,7 @@
       "examples": [
         {
           "title": "Success-Response: ",
-          "content": "{\n    \"message\": \"Changed hacker information\", \n    \"data\": {\n                   \"id\":\"5bff4d736f86be0a41badb91\",\n                   \"status\": \"Applied\",\n                    \"application\":{\n                     \"general\":{\n                       \"school\": \"McGill University\",\n                       \"degree\": \"Undergraduate\",\n                       \"fieldOfStudy\": \"Computer Science\",\n                       \"graduationYear\": \"2021\",\n                       \"jobInterest\":\"Internship\",\n                       \"URL\":{\n                         \"resume\":\"resumes/1543458163426-5bff4d736f86be0a41badb91\",\n                         \"github\":\"https://github.com/abcd\",\n                         \"dropler\":\"https://dribbble.com/abcd\",\n                         \"personal\":\"https://www.hi.com/\",\n                         \"linkedIn\":\"https://linkedin.com/in/abcd\",\n                         \"other\":\"https://github.com/hackmcgill/hackerAPI/issues/168\"\n                       },\n                     },\n                     \"shortAnswer\": {\n                       \"skills\":[\"Javascript\",\"Typescript\"],\n                       \"question1\": \"I love McHacks\",\n                       \"question2\":\"Pls accept me\",\n                       \"previousHackathons\": \"5\",\n                       \"comments\":\"hi!\",\n                     },\n                     \"other:\" {\n                       \"gender\": \"male\",\n                       \"ethnicity\": \"Asian or Pacific Islander\",\n                       \"privacyPolicy\": true,\n                       \"codeOfConduct\": true,\n                     }\n                     \"accomodation\": {\n                       \"travel\": 0\n                     },\n                 \"location:\" {\n                   \"timeZone\": \"GMT-5\",\n                   \"country\": \"Canada\",\n                   \"city\": \"Montreal\",\n                 }\n                   }\n                 }\n}",
+          "content": "{\n    \"message\": \"Changed hacker information\", \n    \"data\": {\n                   \"id\":\"5bff4d736f86be0a41badb91\",\n                   \"status\": \"Applied\",\n                    \"application\":{\n                     \"general\":{\n                       \"school\": \"McGill University\",\n                       \"degree\": \"Undergraduate\",\n                       \"fieldOfStudy\": \"Computer Science\",\n                       \"graduationYear\": \"2021\",\n                       \"jobInterest\":\"Internship\",\n                       \"URL\":{\n                         \"resume\":\"resumes/1543458163426-5bff4d736f86be0a41badb91\",\n                         \"github\":\"https://github.com/abcd\",\n                         \"dropler\":\"https://dribbble.com/abcd\",\n                         \"personal\":\"https://www.hi.com/\",\n                         \"linkedIn\":\"https://linkedin.com/in/abcd\",\n                         \"other\":\"https://github.com/hackmcgill/hackerAPI/issues/168\"\n                       },\n                     },\n                     \"shortAnswer\": {\n                       \"skills\":[\"Javascript\",\"Typescript\"],\n                       \"question1\": \"I love McHacks\",\n                       \"question2\":\"Pls accept me\",\n                       \"previousHackathons\": \"5\",\n                       \"comments\":\"hi!\",\n                     },\n                     \"other:\" {\n                       \"gender\": \"male\",\n                       \"ethnicity\": \"Asian or Pacific Islander\",\n                       \"privacyPolicy\": true,\n                       \"codeOfConduct\": true,\n                     }\n                     \"accomodation\": {\n                       \"travel\": 0\n                     },\n                     \"location\": {\n                       \"timeZone\": \"GMT-5\",\n                       \"country\": \"Canada\",\n                       \"city\": \"Montreal\"\n                     }                             \n                   }\n                 }\n}",
           "type": "object"
         }
       ]
@@ -3363,7 +3363,7 @@
       "examples": [
         {
           "title": "Success-Response: ",
-          "content": "{\n               \"message\": \"Team retrieval successful\", \n               \"data\": {        \n                   \"team\": {\n                       \"name\":\"foo\",\n                       \"members\": [\n                           ObjectId('...')\n                       ],\n                       \"devpostURL\": \"www.devpost.com/foo\",\n                       \"projectName\": \"fooey\"\n                   },\n                   \"members\": [\n                       {\n                           \"firstName\": \"John\",\n                           \"lastName\": \"Doe\"\n                       }\n                   ],\n               }\n           }",
+          "content": "{\n               \"message\": \"Team retrieval successful\", \n               \"data\": {        \n                   \"team\": {\n                       \"name\":\"foo\",\n                       \"members\": [\n                           ObjectId('...')\n                       ],\n                       \"devpostURL\": \"www.devpost.com/foo\",\n                       \"projectName\": \"fooey\"\n                   },\n                   \"members\": [\n                       {\n                           \"firstName\": \"John\",\n                           \"lastName\": \"Doe\",\n                           \"school\": \"McGill University\",\n                           \"status\": \"Applied\"\n                       }\n                   ],\n               }\n           }",
           "type": "object"
         }
       ]
@@ -3632,88 +3632,6 @@
   },
   {
     "type": "get",
-    "url": "/travel/email/:email",
-    "title": "get a travel's information",
-    "name": "getTravel",
-    "group": "Travel",
-    "version": "2.0.1",
-    "parameter": {
-      "fields": {
-        "param": [
-          {
-            "group": "param",
-            "type": "String",
-            "optional": false,
-            "field": "email",
-            "description": "<p>a travel's unique email</p>"
-          }
-        ]
-      }
-    },
-    "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "message",
-            "description": "<p>Success message</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "Object",
-            "optional": false,
-            "field": "data",
-            "description": "<p>Travel object</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Success-Response: ",
-          "content": "{\n               \"message\": \"Successfully retrieved travel information\", \n               \"data\": {\n                   \"id\":\"5bff4d736f86be0a41badb91\",\n                   \"status\": \"Valid\",\n                   \"request\": 100,\n                   \"offer\": 50\n               }\n           }",
-          "type": "object"
-        }
-      ]
-    },
-    "error": {
-      "fields": {
-        "Error 4xx": [
-          {
-            "group": "Error 4xx",
-            "type": "String",
-            "optional": false,
-            "field": "message",
-            "description": "<p>Error message</p>"
-          },
-          {
-            "group": "Error 4xx",
-            "type": "Object",
-            "optional": false,
-            "field": "data",
-            "description": "<p>empty</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Error-Response: ",
-          "content": "{\"message\": \"Travel not found\", \"data\": {}}",
-          "type": "object"
-        }
-      ]
-    },
-    "filename": "routes/api/travel.js",
-    "groupTitle": "Travel",
-    "sampleRequest": [
-      {
-        "url": "https://api.mchacks.ca/api/travel/email/:email"
-      }
-    ]
-  },
-  {
-    "type": "get",
     "url": "/travel/:id",
     "title": "get a traveler's information",
     "name": "getTravel",
@@ -3791,6 +3709,88 @@
     "sampleRequest": [
       {
         "url": "https://api.mchacks.ca/api/travel/:id"
+      }
+    ]
+  },
+  {
+    "type": "get",
+    "url": "/travel/email/:email",
+    "title": "get a travel's information",
+    "name": "getTravel",
+    "group": "Travel",
+    "version": "2.0.1",
+    "parameter": {
+      "fields": {
+        "param": [
+          {
+            "group": "param",
+            "type": "String",
+            "optional": false,
+            "field": "email",
+            "description": "<p>a travel's unique email</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>Success message</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>Travel object</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response: ",
+          "content": "{\n               \"message\": \"Successfully retrieved travel information\", \n               \"data\": {\n                   \"id\":\"5bff4d736f86be0a41badb91\",\n                   \"status\": \"Valid\",\n                   \"request\": 100,\n                   \"offer\": 50\n               }\n           }",
+          "type": "object"
+        }
+      ]
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>Error message</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>empty</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error-Response: ",
+          "content": "{\"message\": \"Travel not found\", \"data\": {}}",
+          "type": "object"
+        }
+      ]
+    },
+    "filename": "routes/api/travel.js",
+    "groupTitle": "Travel",
+    "sampleRequest": [
+      {
+        "url": "https://api.mchacks.ca/api/travel/email/:email"
       }
     ]
   },
