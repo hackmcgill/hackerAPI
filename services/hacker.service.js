@@ -216,9 +216,9 @@ function getStats(hackers) {
         stats.age[age] = stats.age[age] ? stats.age[age] + 1 : 1;
 
         const applicationDate = hacker._id
-            .getTimestamp()
-            .toISOString()
-            .slice(0, 10);
+            .getTimestamp() //
+            .toISOString() // converts Date to "YYYY-MM-DDTHH:mm:ss.sssZ" format
+            .slice(0, 10); // slice(beginIndex, endIndex) extracts string from beginIndex to endIndex, used to convert to "YYYY-MM-DD" format
 
         stats.applicationDate[applicationDate] = stats.applicationDate[
             applicationDate

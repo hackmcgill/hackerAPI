@@ -240,7 +240,8 @@ module.exports = {
                             graduationYear: { "2019": 10 },
                             dietaryRestrictions: { "None": 10 },
                             shirtSize: { "M": 3, "XL": 7 },
-                            age: { "22": 10 }
+                            age: { "22": 10 },
+                            applicationDate: {"2020-12-27" : 2, "2020-12-28" : 8}
                         }
          *          }
          *      }
