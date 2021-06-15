@@ -1611,6 +1611,7 @@ describe("GET Hacker stats", function() {
                     );
                     res.body.data.stats.should.have.property("shirtSize");
                     res.body.data.stats.should.have.property("age");
+                    res.body.data.stats.should.have.property("applicationDate");
                     done();
                 });
         });
