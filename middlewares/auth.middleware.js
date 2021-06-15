@@ -217,6 +217,7 @@ async function sendConfirmAccountEmail(req, res, next) {
     await Services.AccountConfirmation.create(
         Constants.General.HACKER,
         account.email,
+        Constants.General.CONFIRMATION_TYPE_ORGANIC,
         account.id
     );
     const accountConfirmationToken = await Services.AccountConfirmation.findByAccountId(

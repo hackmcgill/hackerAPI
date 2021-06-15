@@ -18,6 +18,11 @@ const AccountConfirmationSchema = new mongoose.Schema({
     email: {
         type: String,
         required: true
+    },
+    confirmationType: {
+        type: String,
+        enum: Constants.General.CONFIRMATION_TYPES,
+        default: Constants.General.CONFIRMATION_TYPE_ORGANIC
     }
 });
 

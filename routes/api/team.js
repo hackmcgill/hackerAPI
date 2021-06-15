@@ -21,7 +21,7 @@ const Services = {
 };
 
 module.exports = {
-    activate: function(apiRouter) {
+    activate: function (apiRouter) {
         const teamRouter = new express.Router();
 
         /**
@@ -137,7 +137,9 @@ module.exports = {
                         "members": [
                             {
                                 "firstName": "John",
-                                "lastName": "Doe"
+                                "lastName": "Doe",
+                                "school": "McGill University",
+                                "status": "Applied"
                             }
                         ],
                     }

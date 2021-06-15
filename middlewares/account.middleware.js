@@ -16,7 +16,8 @@ const Middleware = {
 };
 
 const Constants = {
-    Error: require("../constants/error.constant")
+    Error: require("../constants/error.constant"),
+    General: require("../constants/general.constant")
 };
 
 /**
@@ -212,7 +213,8 @@ async function inviteAccount(req, res, next) {
     const accountType = req.body.accountType;
     const confirmationObj = await Services.AccountConfirmation.create(
         accountType,
-        email
+        email,
+        Constants.General.CONFIRMATION_TYPE_INVITE
     );
     const confirmationToken = Services.AccountConfirmation.generateToken(
         confirmationObj.id
@@ -248,7 +250,9 @@ async function inviteAccount(req, res, next) {
  * @param {(err?)=>void} next
  */
 async function getInvites(req, res, next) {
-    const invites = await Services.AccountConfirmation.find({});
+    const invites = await Services.AccountConfirmation.find({
+        confirmationType: Constants.General.CONFIRMATION_TYPE_INVITE
+    });
     req.body.invites = invites;
     next();
 }

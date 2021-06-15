@@ -1,13 +1,13 @@
 {
     "name": "hackerAPI",
-    "version": "3.0.0",
+    "version": "3.1.3",
     "private": true,
     "scripts": {
-        "start": "DEBUG=hackboard:* NODE_ENV=development nodemon --ignore gcp_creds.json ./bin/www.js",
+        "start": "DEBUG=hackboard:* NODE_ENV=test nodemon --ignore gcp_creds.json ./bin/www.js",
         "deploy": "NODE_ENV=deployment node ./bin/www.js",
-        "debug": "DEBUG=hackboard:* NODE_ENV=deployment nodemon --ignore gcp_creds.json ./bin/www.js",
+        "debug": "DEBUG=hackboard:* NODE_ENV=test nodemon --ignore gcp_creds.json ./bin/www.js",
         "test": "DEBUG=hackboard:* NODE_ENV=test mocha --reporter spec tests/**.js --exit",
-        "seed": "NODE_ENV=development node ./seed/index.js",
+        "seed": "NODE_ENV=test node ./seed/index.js",
         "docs": "apidoc -i ./routes -o ./docs/api/",
         "format": "prettier --write '**/*.js'",
         "lint": "eslint --fix '**/*.js'"
@@ -16,10 +16,9 @@
         "node": "10.17.0"
     },
     "dependencies": {
-        "@google-cloud/logging-winston": "^0.11.1",
-        "@google-cloud/storage": "^3.5.0",
+        "@google-cloud/storage": "^5.5.0",
         "@sendgrid/mail": "^6.4.0",
-        "bcrypt": "^3.0.7",
+        "bcrypt": "^5.0.0",
         "cookie-parser": "~1.4.4",
         "cookie-session": "^2.0.0-beta.3",
         "cors": "^2.8.5",
@@ -29,7 +28,7 @@
         "express": "~4.17.1",
         "express-validator": "^6.3.0",
         "express-winston": "^2.6.0",
-        "handlebars": "^4.5.3",
+        "handlebars": "^4.7.6",
         "jsonwebtoken": "^8.5.1",
         "memory-cache": "^0.2.0",
         "mongoose": "^5.7.14",
@@ -54,7 +53,7 @@
         "eslint-config-prettier": "6.7.0",
         "eslint-plugin-prettier": "3.1.1",
         "mocha": "^6.2.3",
-        "nodemon": "^1.19.4",
+        "nodemon": "^2.0.6",
         "prettier": "1.19.1"
     }
 }
