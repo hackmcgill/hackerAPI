@@ -1,6 +1,6 @@
 ### Tickets:
 
--   HCK-
+-   
 
 ### List of changes:
 
@@ -16,7 +16,7 @@ Please delete options that are not relevant.
 -   [ ] New feature (non-breaking change which adds functionality)
 -   [ ] Breaking change (fix or feature that would cause existing functionality to not work as expected)
 -   [ ] New release
--   [ ] This change requires a documentation update
+-   [ ] This change requires a documentation update (run `npm run docs` and `npm run docs-postman` after changes)
 
 ### How has this been tested?
 
@@ -25,12 +25,6 @@ Please describe the tests that you ran to verify your changes. Provide instructi
 -   [ ] Test A
 -   [ ] Test B
 
-**Test Configuration**:
-
-**Firmware version:**
-**Hardware:**
-**Toolchain:**
-**SDK:**
 
 ### Questions for code reviewers?
 
