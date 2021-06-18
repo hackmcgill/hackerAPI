@@ -86,7 +86,6 @@ describe("PATCH settings", function() {
                     .patch(`/api/settings/`)
                     .type("application/json")
                     .send(util.settings.settingConfirmClosed)
-                    // does not have password because of to stripped json
                     .end(function(err, res) {
                         res.should.have.status(200);
                         res.should.be.json;
@@ -110,7 +109,6 @@ describe("PATCH settings", function() {
                     .patch(`/api/settings/`)
                     .type("application/json")
                     .send(util.settings.settingRemoteHackathon)
-                    // does not have password because of to stripped json
                     .end(function(err, res) {
                         res.should.have.status(200);
                         res.should.be.json;
