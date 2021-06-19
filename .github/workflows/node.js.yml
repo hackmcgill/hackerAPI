@@ -34,9 +34,9 @@ jobs:
         CLIENT_EMAIL: ${{ secrets.CLIENT_EMAIL }}
         CLIENT_ID: ${{ secrets.CLIENT_ID }}
         CLIENT_X509_CERT_URL: ${{ secrets.CLIENT_X509_CERT_URL }}
-        DB_ADDRESS_DEV: ${{ secrets.DB_ADDRESS_DEV }}
-        DB_PASS_DEV: ${{ secrets.DB_PASS_DEV }}
-        DB_USER_DEV: ${{ secrets.DB_USER_DEV }}
+        DB_ADDRESS_TEST: ${{ secrets.DB_ADDRESS_TEST }}
+        DB_PASS_TEST: ${{ secrets.DB_PASS_TEST }}
+        DB_USER_TEST: ${{ secrets.DB_USER_TEST }}
         JWT_CONFIRM_ACC_SECRET: ${{ secrets.JWT_CONFIRM_ACC_SECRET }}
         JWT_RESET_PWD_SECRET: ${{ secrets.JWT_RESET_PWD_SECRET }}
         NO_REPLY_EMAIL: ${{ secrets.NO_REPLY_EMAIL }}
