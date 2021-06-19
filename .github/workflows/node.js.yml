@@ -27,3 +27,22 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - run: npm ci
     - run: npm test
+      env:
+        AUTH_PROVIDER_X509_CERT_URL: ${{secrets.AUTH_PROVIDER_X509_CERT_URL}}
+        AUTH_URI: ${{secrets.AUTH_URI}}
+        BUCKET_NAME: ${{secrets.BUCKET_NAME}}
+        CLIENT_EMAIL: ${{secrets.CLIENT_EMAIL}}
+        CLIENT_ID: ${{secrets.CLIENT_ID}}
+        CLIENT_X509_CERT_URL: ${{secrets.CLIENT_X509_CERT_URL}}
+        DB_ADDRESS_DEV: ${{secrets.DB_ADDRESS_DEV}}
+        DB_PASS_DEV: ${{secrets.DB_PASS_DEV}}
+        DB_USER_DEV: ${{secrets.DB_USER_DEV}}
+        JWT_CONFIRM_ACC_SECRET: ${{secrets.JWT_CONFIRM_ACC_SECRET}}
+        JWT_RESET_PWD_SECRET: ${{secrets.JWT_RESET_PWD_SECRET}}
+        NO_REPLY_EMAIL: ${{secrets.NO_REPLY_EMAIL}}
+        PRIVATE_KEY: ${{secrets.PRIVATE_KEY}}
+        PRIVATE_KEY_ID: ${{secrets.PRIVATE_KEY_ID}}
+        PROJECT_ID: ${{secrets.PROJECT_ID}}
+        SENDGRID_API_KEY: ${{secrets.SENDGRID_API_KEY}}
+        TOKEN_URI: ${{secrets.TOKEN_URI}}
+        TYPE: ${{secrets.TYPE}}
