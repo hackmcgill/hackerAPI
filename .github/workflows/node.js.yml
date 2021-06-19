@@ -10,9 +10,8 @@ on:
     branches: [ dev ]
 
 jobs:
-  environment: hackerapi
   build:
-
+    environment: testing
     runs-on: ubuntu-latest
 
     strategy:
