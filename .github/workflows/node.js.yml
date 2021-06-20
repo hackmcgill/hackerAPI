@@ -54,3 +54,4 @@ jobs:
         TYPE: ${{ secrets.TYPE }}
         PORT: 3000
         ADDRESS: localhost
+        COOKIE_SECRET: ${{ secrets.COOKIE_SECRET }}
