@@ -11,6 +11,11 @@ on:
 
 jobs:
   build:
+    services:
+      mongodb:
+        image: mongo
+        ports:
+          - 27017:27017
     environment: testing
     runs-on: ubuntu-latest
 
@@ -34,9 +39,9 @@ jobs:
         CLIENT_EMAIL: ${{ secrets.CLIENT_EMAIL }}
         CLIENT_ID: ${{ secrets.CLIENT_ID }}
         CLIENT_X509_CERT_URL: ${{ secrets.CLIENT_X509_CERT_URL }}
-        DB_ADDRESS_TEST: ${{ secrets.DB_ADDRESS_TEST }}
-        DB_PASS_TEST: ${{ secrets.DB_PASS_TEST }}
-        DB_USER_TEST: ${{ secrets.DB_USER_TEST }}
+        DB_ADDRESS_TEST: localhost:27017
+#         DB_PASS_TEST: ${{ secrets.DB_PASS_TEST }}
+#         DB_USER_TEST: ${{ secrets.DB_USER_TEST }}
         JWT_CONFIRM_ACC_SECRET: ${{ secrets.JWT_CONFIRM_ACC_SECRET }}
         JWT_RESET_PWD_SECRET: ${{ secrets.JWT_RESET_PWD_SECRET }}
         NO_REPLY_EMAIL: ${{ secrets.NO_REPLY_EMAIL }}
