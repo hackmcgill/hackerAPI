@@ -56,5 +56,8 @@ jobs:
         PORT: 3000
         ADDRESS: localhost
         COOKIE_SECRET: ${{ secrets.COOKIE_SECRET }}
+        ELASTIC_APM_SERVICE_NAME: ${{ secrets.ELASTIC_APM_SERVICE_NAME }}
+        ELASTIC_APM_SECRET_TOKEN: ${{ secrets.ELASTIC_APM_SECRET_TOKEN }}
+        ELASTIC_APM_SERVER_URL: ${{ secrets.ELASTIC_APM_SERVER_URL }}
         FRONTEND_ADDRESS_DEV: localhost:1337
         FRONTEND_ADDRESS_DEPLOY: app.mchacks.ca
