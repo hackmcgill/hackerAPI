@@ -1,11 +1,23 @@
 "use strict";
 const Constants = {
-    Role: require("../constants/role.constant")
+    Role: require("../constants/role.constant"),
+    Settings: require("../constants/settings.constant")
 };
 
 const Seed = {
-    Roles: require("./roles.seed")
+    Roles: require("./roles.seed"),
+    Settings: require("./settings.seed")
 };
+
+const Services = {
+    env: require("../services/env.service")
+};
+const path = require("path");
+
+const envLoadResult = Services.env.load(path.join(__dirname, "../.env"));
+if (envLoadResult.error) {
+    Services.log.error(envLoadResult.error);
+}
 
 const db = require("../services/database.service");
 //connect to db
@@ -30,8 +42,10 @@ async function onConnected() {
 
 async function dropAll() {
     await Seed.Roles.dropAll();
+    await Seed.Settings.drop();
 }
 
 async function storeAll() {
     await Seed.Roles.storeAll(Constants.Role.allRolesArray);
+    await Seed.Settings.store();
 }
