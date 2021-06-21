@@ -2,7 +2,6 @@
 /**
  * Module dependencies.
  */
-const apm = require('elastic-apm-node').start()
 const app = require("../app").app;
 const debug = require("debug")("hackboard:server");
 const http = require("http");
