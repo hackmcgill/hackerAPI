@@ -1,5 +1,4 @@
 "use strict";
-const apm = require('elastic-apm-node').start()
 const express = require("express");
 const path = require("path");
 const cookieParser = require("cookie-parser");

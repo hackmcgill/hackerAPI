@@ -6,7 +6,7 @@
         "start": "DEBUG=hackboard:* NODE_ENV=test nodemon --ignore gcp_creds.json ./bin/www.js",
         "deploy": "NODE_ENV=deployment node ./bin/www.js",
         "debug": "DEBUG=hackboard:* NODE_ENV=test nodemon --ignore gcp_creds.json ./bin/www.js",
-        "test": "DEBUG=hackboard:* NODE_ENV=test mocha --full-trace --reporter spec tests/**.js --exit",
+        "test": "DEBUG=hackboard:* NODE_ENV=test mocha --reporter spec tests/**.js --exit",
         "seed": "NODE_ENV=test node ./seed/index.js",
         "docs": "apidoc -i ./routes -o ./docs/api/",
         "format": "prettier --write '**/*.js'",
