@@ -1,51 +1,23 @@
 const Settings = require("../../models/settings.model");
 const logger = require("../../services/logger.service");
-
-const settingApplicationNotYetOpen = {
-    openTime: new Date(Date.now() + 100000000000),
-    closeTime: new Date(Date.now() + 10000000000000000),
-    confirmTime: new Date(Date.now() + 100000000000000000)
-};
-
-const settingApplicationOpen = {
-    openTime: new Date(Date.now() - 100),
-    closeTime: new Date(Date.now() + 10000000000),
-    confirmTime: new Date(Date.now() + 100000000000000)
-};
-
-const settingApplicationClosed = {
-    openTime: new Date(Date.now() - 100),
-    closeTime: new Date(Date.now() - 1000),
-    confirmTime: new Date(Date.now() + 100000000000000)
-};
-
-const settingConfirmClosed = {
-    openTime: new Date(Date.now() - 10000),
-    closeTime: new Date(Date.now() - 1000),
-    confirmTime: new Date(Date.now() - 100)
-};
-
-const settingRemoteHackathon = {
-    openTime: new Date(Date.now() - 100),
-    closeTime: new Date(Date.now() + 10000000000),
-    confirmTime: new Date(Date.now() + 100000000000000),
-    isRemote: true
+const Constants = {
+    Settings: require("../../constants/settings.constant")
 };
 
 async function storeAll() {
-    const toStore = new Settings(settingApplicationOpen);
+    const toStore = new Settings(Constants.Settings.APP_OPEN);
     Settings.collection.insertOne(toStore);
 }
 
 async function setApplicationClosed() {
     await dropAll();
-    const toStore = new Settings(settingApplicationClosed);
+    const toStore = new Settings(Constants.Settings.APP_CLOSED);
     Settings.collection.insertOne(toStore);
 }
 
 async function setApplicationNotYetOpen() {
     await dropAll();
-    const toStore = new Settings(settingApplicationNotYetOpen);
+    const toStore = new Settings(Constants.Settings.APP_NOT_YET_OPEN);
     Settings.collection.insertOne(toStore);
 }
 
@@ -64,10 +36,5 @@ module.exports = {
     storeAll: storeAll,
     dropAll: dropAll,
     setApplicationClosed: setApplicationClosed,
-    setApplicationNotYetOpen: setApplicationNotYetOpen,
-    settingApplicationNotYetOpen: settingApplicationNotYetOpen,
-    settingApplicationOpen: settingApplicationOpen,
-    settingApplicationClosed: settingApplicationClosed,
-    settingConfirmClosed: settingConfirmClosed,
-    settingRemoteHackathon: settingRemoteHackathon
+    setApplicationNotYetOpen: setApplicationNotYetOpen
 };

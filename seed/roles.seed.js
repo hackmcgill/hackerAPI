@@ -1,14 +1,5 @@
 "use strict";
 const Role = require("../models/role.model");
-const Services = {
-    env: require("../services/env.service")
-};
-const path = require("path");
-
-const envLoadResult = Services.env.load(path.join(__dirname, "../.env"));
-if (envLoadResult.error) {
-    Services.log.error(envLoadResult.error);
-}
 
 /**
  * Drops all elements in Role

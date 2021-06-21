@@ -4,15 +4,15 @@ const mongoose = require("mongoose");
 const settings = new mongoose.Schema({
     openTime: {
         type: Date,
-        default: 0
+        default: Date.now() + 2628000000 // One month from now.
     },
     closeTime: {
         type: Date,
-        default: Date.now() + 31104000000 // Add a year from now.
+        default: Date.now() + 31540000000 + 2628000000 // One year and 1 month from now.
     },
     confirmTime: {
         type: Date,
-        default: Date.now() + 31104000000 + 2628000000 // 1 year and 1 month from now.
+        default: Date.now() + 31540000000 + 2628000000 + 2628000000 // 1 year and 2 months from now.
     },
     isRemote: {
         type: Boolean,
