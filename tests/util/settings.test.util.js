@@ -36,7 +36,5 @@ module.exports = {
     storeAll: storeAll,
     dropAll: dropAll,
     setApplicationClosed: setApplicationClosed,
-    setApplicationNotYetOpen: setApplicationNotYetOpen,
-    settingConfirmClosed: Constants.Settings.CONFIRM_CLOSED,
-    settingRemoteHackathon: Constants.Settings.REMOTE_HACKATHON
+    setApplicationNotYetOpen: setApplicationNotYetOpen
 };
