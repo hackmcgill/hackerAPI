@@ -1,5 +1,6 @@
 "use strict";
 const chai = require("chai");
+chai.Assertion.includeStack = true
 const chaiHttp = require("chai-http");
 chai.use(chaiHttp);
 const server = require("../app");
