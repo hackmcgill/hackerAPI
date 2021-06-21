@@ -42,14 +42,14 @@ class EmailService {
      * @param {(err?)=>void} callback
      */
     sendMultiple(mailData, callback = () => {}) {
-        return client.sendMultiple(mailData, (error) => {
-            if (error) {
-                logger.error(`${TAG} ` + JSON.stringify(error));
-                callback(error);
-            } else {
-                callback();
-            }
-        });
+        return client.sendMultiple(mailData)
+            .then(response => {
+                callback()
+                return response;
+            })
+            .catch(error => {
+                callback(error)
+            })
     }
     /**
      * Send email with ticket.
