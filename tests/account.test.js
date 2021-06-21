@@ -17,6 +17,7 @@ const util = {
     accountConfirmation: require("./util/accountConfirmation.test.util"),
     reset: require("./util/resetPassword.test.util")
 };
+
 const agent = chai.request.agent(server.app);
 // tokens
 const confirmationToken = util.accountConfirmation.ConfirmationToken;
