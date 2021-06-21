@@ -13,7 +13,7 @@
         "lint": "eslint --fix '**/*.js'"
     },
     "engines": {
-        "node": "10.17.0"
+        "node": "v14"
     },
     "dependencies": {
         "@google-cloud/storage": "^5.5.0",
