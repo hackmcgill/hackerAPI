@@ -13,7 +13,7 @@ const Services = {
 
 const envLoadResult = Services.env.load(path.join(__dirname, "./.env"));
 if (envLoadResult.error) {
-    Services.log.error(envLoadResult.error);
+    Services.log.warn(envLoadResult.error);
 }
 
 const passport = require("passport");

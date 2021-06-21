@@ -4,6 +4,7 @@
     "private": true,
     "scripts": {
         "start": "DEBUG=hackboard:* NODE_ENV=test nodemon --ignore gcp_creds.json ./bin/www.js",
+        "start-windows": "set DEBUG=hackboard:* && set NODE_ENV=test && nodemon --ignore gcp_creds.json ./bin/www.js",
         "deploy": "NODE_ENV=deployment node ./bin/www.js",
         "debug": "DEBUG=hackboard:* NODE_ENV=test nodemon --ignore gcp_creds.json ./bin/www.js",
         "test": "DEBUG=hackboard:* NODE_ENV=test mocha --reporter spec tests/**.js --exit",
@@ -13,7 +14,7 @@
         "lint": "eslint --fix '**/*.js'"
     },
     "engines": {
-        "node": "10.17.0"
+        "node": "14.x"
     },
     "dependencies": {
         "@google-cloud/storage": "^5.5.0",
