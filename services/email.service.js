@@ -35,14 +35,6 @@ class EmailService {
             .catch(error => {
                 callback(error)
             })
-        // return client.send(mailData, false, (error) => {
-        //     if (error) {
-        //         logger.error(`${TAG} ` + JSON.stringify(error));
-        //         callback(error);
-        //     } else {
-        //         callback();
-        //     }
-        // });
     }
     /**
      * Send separate emails to the list of users in mailData
