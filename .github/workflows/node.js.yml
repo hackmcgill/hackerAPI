@@ -56,3 +56,5 @@ jobs:
         PORT: 3000
         ADDRESS: localhost
         COOKIE_SECRET: ${{ secrets.COOKIE_SECRET }}
+        FRONTEND_ADDRESS_DEV: localhost:1337
+        FRONTEND_ADDRESS_DEPLOY: app.mchacks.ca
