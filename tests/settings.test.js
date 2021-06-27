@@ -15,7 +15,8 @@ const util = {
 
 const Constants = {
     Success: require("../constants/success.constant"),
-    Error: require("../constants/error.constant")
+    Error: require("../constants/error.constant"),
+    Settings: require("../constants/settings.constant")
 };
 
 const invalidAccount = util.account.hackerAccounts.stored.noTeam[0];
@@ -119,8 +120,7 @@ describe("PATCH settings", function() {
                 agent
                     .patch(`/api/settings/`)
                     .type("application/json")
-                    .send(util.settings.settingConfirmClosed)
-                    // does not have password because of to stripped json
+                    .send(Constants.Settings.CONFIRM_CLOSED)
                     .end(function(err, res) {
                         res.should.have.status(200);
                         res.should.be.json;
@@ -143,8 +143,7 @@ describe("PATCH settings", function() {
                 agent
                     .patch(`/api/settings/`)
                     .type("application/json")
-                    .send(util.settings.settingRemoteHackathon)
-                    // does not have password because of to stripped json
+                    .send(Constants.Settings.REMOTE_HACKATHON)
                     .end(function(err, res) {
                         res.should.have.status(200);
                         res.should.be.json;
