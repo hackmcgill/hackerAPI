@@ -15,7 +15,11 @@ const util = {
     account: require("./util/account.test.util"),
     auth: require("./util/auth.test.util"),
     accountConfirmation: require("./util/accountConfirmation.test.util"),
-    reset: require("./util/resetPassword.test.util")
+    reset: require("./util/resetPassword.test.util"),
+    role: require("./util/role.test.util"),
+    roleBinding: require("./util/roleBinding.test.util"),
+    accountConfirmation: require("./util/accountConfirmation.test.util"),
+    resetPassword: require("./util/resetPassword.test.util.js")
 };
 const agent = chai.request.agent(server.app);
 // tokens
@@ -40,26 +44,11 @@ const newAccount0 = util.account.unlinkedAccounts.new[0];
 //This account should NOT have a phone number
 const noPhoneAccount = util.account.NoPhoneHackerAccount0;
 
-const Util = {
-    Account: require("./util/account.test.util"),
-    Bus: require("./util/bus.test.util"),
-    Hacker: require("./util/hacker.test.util"),
-    Role: require("./util/role.test.util"),
-    RoleBinding: require("./util/roleBinding.test.util"),
-    Settings: require("./util/settings.test.util"),
-    Sponsor: require("./util/sponsor.test.util"),
-    Staff: require("./util/staff.test.util"),
-    Team: require("./util/team.test.util"),
-    Volunteer: require("./util/volunteer.test.util"),
-    AccountConfirmation: require("./util/accountConfirmation.test.util"),
-    ResetPassword: require("./util/resetPassword.test.util.js")
-};
-
 describe("GET user account", function() {
     async function storeAll() {
-        await Util.Account.storeHackerStaffAccounts();
-        await Util.Role.storeAll();
-        await Util.RoleBinding.storeAll();
+        await util.account.storeHackerStaffAccounts();
+        await util.role.storeAll();
+        await util.roleBinding.storeAll();
     }
     beforeEach(function(done) {
         this.timeout(60000);
@@ -237,9 +226,9 @@ describe("GET user account", function() {
 
 describe("POST create account", function() {
     async function storeAll() {
-        await Util.Account.storeHackerStaffAccounts();
-        await Util.Role.storeAll();
-        await Util.RoleBinding.storeAll();
+        await util.account.storeHackerStaffAccounts();
+        await util.role.storeAll();
+        await util.roleBinding.storeAll();
     }
     beforeEach(function(done) {
         this.timeout(60000);
@@ -312,10 +301,10 @@ describe("POST create account", function() {
 
 describe("POST confirm account", function() {
     async function storeAll() {
-        await Util.Account.storeExtraAccounts();
-        await Util.AccountConfirmation.storeAll();
-        await Util.Role.storeAll();
-        await Util.RoleBinding.storeAll();
+        await util.account.storeExtraAccounts();
+        await util.accountConfirmation.storeAll();
+        await util.role.storeAll();
+        await util.roleBinding.storeAll();
     }
     beforeEach(function(done) {
         this.timeout(60000);
@@ -385,10 +374,10 @@ describe("PATCH update account", function() {
         email: storedAccount1.email
     };
     async function storeAll() {
-        await Util.Account.storePatchUpdateAccount();
-        await Util.AccountConfirmation.storeAll();
-        await Util.Role.storeAll();
-        await Util.RoleBinding.storeAll();
+        await util.account.storeHackerStaffExtraAccount();
+        await util.accountConfirmation.storeAll();
+        await util.role.storeAll();
+        await util.roleBinding.storeAll();
     }
     beforeEach(function(done) {
         this.timeout(60000);
@@ -522,10 +511,10 @@ describe("POST reset password", function() {
         password: "NewPassword"
     };
     async function storeAll() {
-        await Util.Account.storePostResetPasswordAccounts();
-        await Util.ResetPassword.storeAll();
-        await Util.Role.storeAll();
-        await Util.RoleBinding.storeAll();
+        await util.account.storeStoredTeamAccounts();
+        await util.resetPassword.storeAll();
+        await util.role.storeAll();
+        await util.roleBinding.storeAll();
     }
     beforeEach(function(done) {
         this.timeout(60000);
@@ -564,11 +553,10 @@ describe("PATCH change password for logged in user", function() {
         newPassword: "password12345"
     };
     async function storeAll() {
-        // can use same function as storeGetInviteAccounts
-        await Util.Account.storeGetInviteAccounts();
-        await Util.ResetPassword.storeAll();
-        await Util.Role.storeAll();
-        await Util.RoleBinding.storeAll();
+        await util.account.storeGetInviteAccounts();
+        await util.resetPassword.storeAll();
+        await util.role.storeAll();
+        await util.roleBinding.storeAll();
     }
     beforeEach(function(done) {
         this.timeout(60000);
@@ -642,9 +630,9 @@ describe("PATCH change password for logged in user", function() {
 
 describe("GET retrieve permissions", function() {
     async function storeAll() {
-        await Util.Account.storeHackerStaffAccounts();
-        await Util.Role.storeAll();
-        await Util.RoleBinding.storeAll();
+        await util.account.storeHackerStaffAccounts();
+        await util.role.storeAll();
+        await util.roleBinding.storeAll();
     }
     beforeEach(function(done) {
         this.timeout(60000);
@@ -697,8 +685,8 @@ describe("GET retrieve permissions", function() {
 
 describe("GET resend confirmation email", function() {
     async function storeAll() {
-        await Util.Account.storeVerifyConfirmationAccounts();
-        await Util.AccountConfirmation.storeAll();
+        await util.account.storeVerifyConfirmationAccounts();
+        await util.accountConfirmation.storeAll();
     }
     beforeEach(function(done) {
         this.timeout(60000);
@@ -772,9 +760,9 @@ describe("GET resend confirmation email", function() {
 
 describe("POST invite account", function() {
     async function storeAll() {
-        await Util.Account.storePostInviteAccount();
-        await Util.Role.storeAll();
-        await Util.RoleBinding.storeAll();
+        await util.account.storeStaffUnlinkedAccount();
+        await util.role.storeAll();
+        await util.roleBinding.storeAll();
     }
     beforeEach(function(done) {
         this.timeout(60000);
@@ -819,10 +807,10 @@ describe("POST invite account", function() {
 
 describe("GET invites", function() {
     async function storeAll() {
-        await Util.Account.storeGetInviteAccounts();
-        await Util.AccountConfirmation.storeAll();
-        await Util.Role.storeAll();
-        await Util.RoleBinding.storeAll();
+        await util.account.storeGetInviteAccounts();
+        await util.accountConfirmation.storeAll();
+        await util.role.storeAll();
+        await util.roleBinding.storeAll();
     }
     beforeEach(function(done) {
         this.timeout(60000);

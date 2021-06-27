@@ -14,7 +14,9 @@ const Constants = {
 const util = {
     volunteer: require("./util/volunteer.test.util"),
     account: require("./util/account.test.util"),
-    auth: require("./util/auth.test.util")
+    auth: require("./util/auth.test.util"),
+    role: require("./util/role.test.util"),
+    roleBinding: require("./util/roleBinding.test.util")
 };
 
 const Admin0 = util.account.staffAccounts.stored[0];
@@ -30,6 +32,22 @@ const duplicateVolunteer = util.volunteer.duplicateVolunteer1;
 const invalidVolunteer0 = util.volunteer.invalidVolunteer0;
 
 describe("GET volunteer", function() {
+    async function storeAll() {
+        await util.roleBinding.storeAll();
+        await util.role.storeAll();
+        await util.volunteer.storeAll();
+        await util.account.storeOneOfEach();
+    }
+    beforeEach(function(done) {
+        this.timeout(60000);
+        storeAll()
+            .then(() => {
+                done();
+            })
+            .catch((error) => {
+                done(error);
+            });
+    });
     it("should FAIL to get volunteer due to lack of authentication", function(done) {
         chai.request(server.app)
             .get(`/api/volunteer/${Volunteer0._id}`)
@@ -152,6 +170,22 @@ describe("GET volunteer", function() {
 });
 
 describe("POST create volunteer", function() {
+    async function storeAll() {
+        await util.roleBinding.storeAll();
+        await util.role.storeAll();
+        await util.volunteer.storeAll();
+        await util.account.storeOneOfEach();
+    }
+    beforeEach(function(done) {
+        this.timeout(60000);
+        storeAll()
+            .then(() => {
+                done();
+            })
+            .catch((error) => {
+                done(error);
+            });
+    });
     it("should FAIL to create a new volunteer due to lack of authentication", function(done) {
         chai.request(server.app)
             .post(`/api/volunteer`)

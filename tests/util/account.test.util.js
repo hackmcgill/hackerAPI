@@ -346,14 +346,17 @@ module.exports = {
     extraAccounts: extraAccounts,
 
     storeAll: storeAll,
-    storeStaffAccounts: storeStaffAccounts,
     storeHackerStaffAccounts: storeHackerStaffAccounts,
     storeVerifyConfirmationAccounts: storeVerifyConfirmationAccounts,
-    storePostInviteAccount: storePostInviteAccount,
+    storeStaffUnlinkedAccount: storeStaffUnlinkedAccount,
     storeGetInviteAccounts: storeGetInviteAccounts,
     storeExtraAccounts: storeExtraAccounts,
-    storePatchUpdateAccount: storePatchUpdateAccount,
-    storePostResetPasswordAccounts: storePostResetPasswordAccounts,
+    storeHackerStaffExtraAccount: storeHackerStaffExtraAccount,
+    storeStoredTeamAccounts: storeStoredTeamAccounts,
+    storeSponsorAccount: storeSponsorAccount,
+    storeTeamAccount: storeTeamAccount,
+    storeStaffNoTeamTeamUnconfirmedInvalid: storeStaffNoTeamTeamUnconfirmedInvalid,
+    storeOneOfEach: storeOneOfEach,
     dropAll: dropAll,
     equals: equals
 };
@@ -376,15 +379,18 @@ function store(attributes) {
     return Account.collection.insertMany(acctDocs);
 }
 
-async function storePostResetPasswordAccounts() {
+async function storeStoredTeamAccounts() {
     await store(hackerAccounts.stored.team);
 }
 
-async function storeStaffAccounts() {
+async function storeStaffNoTeamTeamUnconfirmedInvalid() {
     await store(hackerAccounts.stored.team);
     await store(hackerAccounts.stored.noTeam);
     await store(hackerAccounts.stored.unconfirmed);
     await store(staffAccounts.stored);
+    await store(unlinkedAccounts.stored);
+    await store(hackerAccounts.new);
+    await store(extraAccounts);
 }
 
 async function storeGetInviteAccounts() {
@@ -392,7 +398,24 @@ async function storeGetInviteAccounts() {
     await store(staffAccounts.stored);
 }
 
-async function storePatchUpdateAccount() {
+async function storeTeamAccount() {
+    await store(hackerAccounts.stored.noTeam);
+    await store(hackerAccounts.stored.team);
+    await store(staffAccounts.stored);
+    await store(sponsorT1Accounts.stored);
+}
+
+async function storeSponsorAccount() {
+    await store(hackerAccounts.stored.team);
+    await store(staffAccounts.stored);
+    await store(sponsorT1Accounts.stored);
+    await store(sponsorT2Accounts.stored);
+    await store(sponsorT1Accounts.new);
+    await store(sponsorT2Accounts.new);
+}
+
+async function storeHackerStaffExtraAccount() {
+    await store(hackerAccounts.stored.noTeam);
     await store(hackerAccounts.stored.team);
     await store(staffAccounts.stored);
     await store(extraAccounts);
@@ -413,9 +436,21 @@ async function storeVerifyConfirmationAccounts() {
     await store(extraAccounts);
 }
 
-async function storePostInviteAccount() {
+async function storeStaffUnlinkedAccount() {
     await store(staffAccounts.stored);
     await store(unlinkedAccounts.stored);
+}
+
+async function storeOneOfEach() {
+    await store(hackerAccounts.stored.team);
+    await store(hackerAccounts.stored.noTeam);
+    await store(hackerAccounts.stored.unconfirmed);
+    await store(volunteerAccounts.stored);
+    await store(staffAccounts.stored);
+    await store(unlinkedAccounts.stored);
+    await store(hackerAccounts.new);
+    await store(volunteerAccounts.new);
+    await store(extraAccounts);
 }
 
 async function storeAll() {

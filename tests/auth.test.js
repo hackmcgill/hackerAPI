@@ -27,6 +27,19 @@ const roles = require("../constants/role.constant");
 const teamHackerAccount0 = util.account.hackerAccounts.stored.team[0];
 
 describe("GET roles", function() {
+    async function storeAll() {
+        await util.role.storeAll();
+    }
+    beforeEach(function(done) {
+        this.timeout(60000);
+        storeAll()
+            .then(() => {
+                done();
+            })
+            .catch((error) => {
+                done(error);
+            });
+    });
     it("should list all roles GET", function(done) {
         util.auth.login(agent, teamHackerAccount0, (error) => {
             if (error) {

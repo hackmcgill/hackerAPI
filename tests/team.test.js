@@ -10,7 +10,9 @@ const util = {
     team: require("./util/team.test.util"),
     hacker: require("./util/hacker.test.util"),
     account: require("./util/account.test.util"),
-    auth: require("./util/auth.test.util")
+    auth: require("./util/auth.test.util"),
+    role: require("./util/role.test.util"),
+    roleBinding: require("./util/roleBinding.test.util")
 };
 
 const Constants = {
@@ -25,11 +27,28 @@ const teamHackerAccount0 = util.account.hackerAccounts.stored.team[0];
 const noTeamHackerAccount0 = util.account.hackerAccounts.stored.noTeam[0];
 const sponsorT1Account0 = util.account.sponsorT1Accounts.stored[0];
 
-describe("GET team", function () {
-    it("should FAIL to list a team's information due to lack of authentication", function (done) {
+describe("GET team", function() {
+    async function storeAll() {
+        await util.roleBinding.storeAll();
+        await util.role.storeAll();
+        await util.team.storeAll();
+        await util.account.storeTeamAccount();
+        await util.hacker.storeAll();
+    }
+    beforeEach(function(done) {
+        this.timeout(60000);
+        storeAll()
+            .then(() => {
+                done();
+            })
+            .catch((error) => {
+                done(error);
+            });
+    });
+    it("should FAIL to list a team's information due to lack of authentication", function(done) {
         chai.request(server.app)
             .get(`/api/team/${util.team.Team3._id}`)
-            .end(function (err, res) {
+            .end(function(err, res) {
                 res.should.have.status(401);
                 res.should.be.json;
                 res.body.should.have.property("message");
@@ -40,7 +59,7 @@ describe("GET team", function () {
             });
     });
 
-    it("should Fail and list a team's information from /api/team/ GET due to non existant team id", function (done) {
+    it("should Fail and list a team's information from /api/team/ GET due to non existant team id", function(done) {
         util.auth.login(
             agent,
             util.account.hackerAccounts.stored.team[0],
@@ -51,7 +70,7 @@ describe("GET team", function () {
                 }
                 return agent
                     .get(`/api/team/${util.team.newTeam1._id}`)
-                    .end(function (err, res) {
+                    .end(function(err, res) {
                         res.should.have.status(404);
                         res.should.be.json;
                         res.body.should.have.property("message");
@@ -66,7 +85,7 @@ describe("GET team", function () {
         );
     });
 
-    it("should SUCCEED and list a team's information from /api/team/ GET", function (done) {
+    it("should SUCCEED and list a team's information from /api/team/ GET", function(done) {
         util.auth.login(agent, util.account.waitlistedHacker0, (error) => {
             if (error) {
                 agent.close();
@@ -74,7 +93,7 @@ describe("GET team", function () {
             }
             return agent
                 .get(`/api/team/${util.team.Team3._id}`)
-                .end(function (err, res) {
+                .end(function(err, res) {
                     res.should.have.status(200);
                     res.should.be.json;
                     res.body.should.have.property("message");
@@ -152,13 +171,30 @@ describe("GET team", function () {
     });
 });
 
-describe("POST create team", function () {
-    it("should FAIL to create a new team due to lack of authentication", function (done) {
+describe("POST create team", function() {
+    async function storeAll() {
+        await util.roleBinding.storeAll();
+        await util.role.storeAll();
+        await util.team.storeAll();
+        await util.account.storeTeamAccount();
+        await util.hacker.storeAll();
+    }
+    beforeEach(function(done) {
+        this.timeout(60000);
+        storeAll()
+            .then(() => {
+                done();
+            })
+            .catch((error) => {
+                done(error);
+            });
+    });
+    it("should FAIL to create a new team due to lack of authentication", function(done) {
         chai.request(server.app)
             .post(`/api/team/`)
             .type("application/json")
             .send(util.team.newTeam1)
-            .end(function (err, res) {
+            .end(function(err, res) {
                 res.should.have.status(401);
                 res.should.be.json;
                 res.body.should.have.property("message");
@@ -169,7 +205,7 @@ describe("POST create team", function () {
             });
     });
 
-    it("should FAIL to create a new team due to lack of authorization", function (done) {
+    it("should FAIL to create a new team due to lack of authorization", function(done) {
         util.auth.login(agent, sponsorT1Account0, (error) => {
             if (error) {
                 agent.close();
@@ -179,7 +215,7 @@ describe("POST create team", function () {
                 .post(`/api/team/`)
                 .type("application/json")
                 .send(util.team.newTeam1)
-                .end(function (err, res) {
+                .end(function(err, res) {
                     res.should.have.status(403);
                     res.should.be.json;
                     res.body.should.have.property("message");
@@ -193,7 +229,7 @@ describe("POST create team", function () {
         });
     });
 
-    it("should FAIL to create a new team due to logged in user not being a hacker", function (done) {
+    it("should FAIL to create a new team due to logged in user not being a hacker", function(done) {
         util.auth.login(agent, Admin0, (error) => {
             if (error) {
                 agent.close();
@@ -203,7 +239,7 @@ describe("POST create team", function () {
                 .post(`/api/team/`)
                 .type("application/json")
                 .send(util.team.newTeam1)
-                .end(function (err, res) {
+                .end(function(err, res) {
                     res.should.have.status(404);
                     res.should.be.json;
                     res.body.should.have.property("message");
@@ -217,7 +253,7 @@ describe("POST create team", function () {
         });
     });
 
-    it("should FAIL to create a new team due to duplicate team name", function (done) {
+    it("should FAIL to create a new team due to duplicate team name", function(done) {
         util.auth.login(agent, noTeamHackerAccount0, (error) => {
             if (error) {
                 agent.close();
@@ -227,7 +263,7 @@ describe("POST create team", function () {
                 .post(`/api/team/`)
                 .type("application/json")
                 .send(util.team.duplicateTeamName1)
-                .end(function (err, res) {
+                .end(function(err, res) {
                     res.should.have.status(409);
                     res.should.be.json;
                     res.body.should.have.property("message");
@@ -244,7 +280,7 @@ describe("POST create team", function () {
         });
     });
 
-    it("should Fail to create a new team due to hacker already being in a team", function (done) {
+    it("should Fail to create a new team due to hacker already being in a team", function(done) {
         util.auth.login(agent, teamHackerAccount0, (error) => {
             if (error) {
                 agent.close();
@@ -254,7 +290,7 @@ describe("POST create team", function () {
                 .post(`/api/team/`)
                 .type("application/json")
                 .send(util.team.newTeam1)
-                .end(function (err, res) {
+                .end(function(err, res) {
                     res.should.have.status(409);
                     res.should.be.json;
                     res.body.should.have.property("message");
@@ -267,7 +303,7 @@ describe("POST create team", function () {
         });
     });
 
-    it("should SUCCEED and create a new team", function (done) {
+    it("should SUCCEED and create a new team", function(done) {
         util.auth.login(agent, noTeamHackerAccount0, (error) => {
             if (error) {
                 agent.close();
@@ -277,7 +313,7 @@ describe("POST create team", function () {
                 .post(`/api/team/`)
                 .type("application/json")
                 .send(util.team.newTeam1)
-                .end(function (err, res) {
+                .end(function(err, res) {
                     res.should.have.status(200);
                     res.should.be.json;
                     res.body.should.have.property("message");
@@ -300,15 +336,32 @@ describe("POST create team", function () {
     });
 });
 
-describe("PATCH join team", function () {
-    it("should FAIL to join a hacker to a team due to lack of authentication", function (done) {
+describe("PATCH join team", function() {
+    async function storeAll() {
+        await util.roleBinding.storeAll();
+        await util.role.storeAll();
+        await util.team.storeAll();
+        await util.hacker.storeAll();
+        await util.account.storeOneOfEach();
+    }
+    beforeEach(function(done) {
+        this.timeout(60000);
+        storeAll()
+            .then(() => {
+                done();
+            })
+            .catch((error) => {
+                done(error);
+            });
+    });
+    it("should FAIL to join a hacker to a team due to lack of authentication", function(done) {
         chai.request(server.app)
             .patch(`/api/team/join/`)
             .type("application/json")
             .send({
                 name: "BronzeTeam"
             })
-            .end(function (err, res) {
+            .end(function(err, res) {
                 res.should.have.status(401);
                 res.should.be.json;
                 res.body.should.have.property("message");
@@ -319,7 +372,7 @@ describe("PATCH join team", function () {
             });
     });
 
-    it("should FAIL to join a volunteer to a team.", function (done) {
+    it("should FAIL to join a volunteer to a team.", function(done) {
         util.auth.login(
             agent,
             util.account.volunteerAccounts.stored[0],
@@ -334,7 +387,7 @@ describe("PATCH join team", function () {
                     .send({
                         name: "BronzeTeam"
                     })
-                    .end(function (err, res) {
+                    .end(function(err, res) {
                         res.should.have.status(403);
                         res.should.be.json;
                         res.body.should.have.property("message");
@@ -349,7 +402,7 @@ describe("PATCH join team", function () {
         );
     });
 
-    it("should FAIL to join a hacker to a team that doesn't exist.", function (done) {
+    it("should FAIL to join a hacker to a team that doesn't exist.", function(done) {
         util.auth.login(agent, teamHackerAccount0, (error) => {
             if (error) {
                 agent.close();
@@ -361,7 +414,7 @@ describe("PATCH join team", function () {
                 .send({
                     name: "NonExistTeam"
                 })
-                .end(function (err, res) {
+                .end(function(err, res) {
                     res.should.have.status(404);
                     res.should.be.json;
                     res.body.should.have.property("message");
@@ -375,7 +428,7 @@ describe("PATCH join team", function () {
         });
     });
 
-    it("should FAIL to join a hacker to a team that is full.", function (done) {
+    it("should FAIL to join a hacker to a team that is full.", function(done) {
         util.auth.login(agent, teamHackerAccount0, (error) => {
             if (error) {
                 agent.close();
@@ -387,7 +440,7 @@ describe("PATCH join team", function () {
                 .send({
                     name: "FullTeam"
                 })
-                .end(function (err, res) {
+                .end(function(err, res) {
                     res.should.have.status(409);
                     res.should.be.json;
                     res.body.should.have.property("message");
@@ -401,7 +454,7 @@ describe("PATCH join team", function () {
         });
     });
 
-    it("should SUCCEED and join a hacker without a team to a team.", function (done) {
+    it("should SUCCEED and join a hacker without a team to a team.", function(done) {
         util.auth.login(agent, noTeamHackerAccount0, (error) => {
             if (error) {
                 agent.close();
@@ -413,7 +466,7 @@ describe("PATCH join team", function () {
                 .send({
                     name: "BronzeTeam"
                 })
-                .end(function (err, res) {
+                .end(function(err, res) {
                     res.should.have.status(200);
                     res.should.be.json;
                     res.body.should.have.property("message");
@@ -425,7 +478,7 @@ describe("PATCH join team", function () {
         });
     });
 
-    it("should SUCCEED and join a hacker on a team to aother team.", function (done) {
+    it("should SUCCEED and join a hacker on a team to aother team.", function(done) {
         util.auth.login(agent, teamHackerAccount0, (error) => {
             if (error) {
                 agent.close();
@@ -437,7 +490,7 @@ describe("PATCH join team", function () {
                 .send({
                     name: "SilverTeam"
                 })
-                .end(function (err, res) {
+                .end(function(err, res) {
                     res.should.have.status(200);
                     res.should.be.json;
                     res.body.should.have.property("message");
@@ -450,15 +503,32 @@ describe("PATCH join team", function () {
     });
 });
 
-describe("PATCH change team info", function () {
-    it("should FAIL to change a hacker's team information due to invalid authentication", function (done) {
+describe("PATCH change team info", function() {
+    async function storeAll() {
+        await util.roleBinding.storeAll();
+        await util.role.storeAll();
+        await util.team.storeAll();
+        await util.account.storeTeamAccount();
+        await util.hacker.storeAll();
+    }
+    beforeEach(function(done) {
+        this.timeout(60000);
+        storeAll()
+            .then(() => {
+                done();
+            })
+            .catch((error) => {
+                done(error);
+            });
+    });
+    it("should FAIL to change a hacker's team information due to invalid authentication", function(done) {
         chai.request(server.app)
             .patch(`/api/team/${util.hacker.TeamHacker4._id}`)
             .type("application/json")
             .send({
                 name: "BronzeTeamASDF"
             })
-            .end(function (err, res) {
+            .end(function(err, res) {
                 res.should.have.status(401);
                 res.should.be.json;
                 res.body.should.have.property("message");
@@ -469,7 +539,7 @@ describe("PATCH change team info", function () {
             });
     });
 
-    it("should FAIL for a hacker to change another team's information due to invalid authorization", function (done) {
+    it("should FAIL for a hacker to change another team's information due to invalid authorization", function(done) {
         util.auth.login(
             agent,
             util.account.hackerAccounts.stored.team[1],
@@ -484,7 +554,7 @@ describe("PATCH change team info", function () {
                     .send({
                         name: "SuccessTeamASDF"
                     })
-                    .end(function (err, res) {
+                    .end(function(err, res) {
                         res.should.have.status(403);
                         res.should.be.json;
                         res.body.should.have.property("message");
@@ -499,7 +569,7 @@ describe("PATCH change team info", function () {
         );
     });
 
-    it("should SUCCEED to change the hacker's team information", function (done) {
+    it("should SUCCEED to change the hacker's team information", function(done) {
         util.auth.login(
             agent,
             util.account.hackerAccounts.stored.team[1],
@@ -514,7 +584,7 @@ describe("PATCH change team info", function () {
                     .send({
                         name: "SuccessTeamASDF"
                     })
-                    .end(function (err, res) {
+                    .end(function(err, res) {
                         res.should.have.status(200);
                         res.should.be.json;
                         res.body.should.have.property("message");
@@ -530,7 +600,7 @@ describe("PATCH change team info", function () {
         );
     });
 
-    it("should SUCCEED and leave a team.", function (done) {
+    it("should SUCCEED and leave a team.", function(done) {
         util.auth.login(agent, teamHackerAccount0, (error) => {
             if (error) {
                 agent.close();
@@ -539,7 +609,7 @@ describe("PATCH change team info", function () {
             return agent
                 .patch(`/api/team/leave/`)
                 .type("application/json")
-                .end(function (err, res) {
+                .end(function(err, res) {
                     res.should.have.status(200);
                     res.should.be.json;
                     res.body.should.have.property("message");
@@ -552,7 +622,7 @@ describe("PATCH change team info", function () {
         });
     });
 
-    it("should SUCCEED for an admin to change a team information", function (done) {
+    it("should SUCCEED for an admin to change a team information", function(done) {
         util.auth.login(agent, Admin0, (error) => {
             if (error) {
                 agent.close();
@@ -564,7 +634,7 @@ describe("PATCH change team info", function () {
                 .send({
                     name: "SuccessTeamASDF"
                 })
-                .end(function (err, res) {
+                .end(function(err, res) {
                     res.should.have.status(200);
                     res.should.be.json;
                     res.body.should.have.property("message");
@@ -580,11 +650,11 @@ describe("PATCH change team info", function () {
         });
     });
 
-    it("should FAIL to leave a team due to invalid authentication.", function (done) {
+    it("should FAIL to leave a team due to invalid authentication.", function(done) {
         chai.request(server.app)
             .patch(`/api/team/leave/`)
             .type("application/json")
-            .end(function (err, res) {
+            .end(function(err, res) {
                 res.should.have.status(401);
                 res.should.be.json;
                 res.body.should.have.property("message");

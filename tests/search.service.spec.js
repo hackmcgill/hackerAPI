@@ -17,7 +17,10 @@ const Constants = {
 const util = {
     hacker: require("./util/hacker.test.util"),
     account: require("./util/account.test.util"),
-    auth: require("./util/auth.test.util")
+    auth: require("./util/auth.test.util"),
+    role: require("./util/role.test.util"),
+    roleBinding: require("./util/roleBinding.test.util"),
+    settings: require("./util/settings.test.util")
 };
 
 const queryToExecute = [
@@ -49,6 +52,23 @@ const Admin0 = util.account.staffAccounts.stored[0];
 const noTeamHackerAccount0 = util.account.hackerAccounts.stored.noTeam[0];
 
 describe("Searching for hackers", function() {
+    async function storeAll() {
+        await util.roleBinding.storeAll();
+        await util.role.storeAll();
+        await util.settings.storeAll();
+        await util.hacker.storeAll();
+        await util.account.storeOneOfEach();
+    }
+    beforeEach(function(done) {
+        this.timeout(60000);
+        storeAll()
+            .then(() => {
+                done();
+            })
+            .catch((error) => {
+                done(error);
+            });
+    });
     it("Should FAIL to search due to invalid authentication", function(done) {
         util.auth.login(
             agent,
