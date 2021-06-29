@@ -317,7 +317,7 @@ const NoPhoneHackerAccount0 = {
     confirmed: false,
     birthDate: "1980-07-30",
     accountType: Constants.HACKER
-}
+};
 
 const extraAccounts = [
     waitlistedHacker0,
@@ -346,6 +346,17 @@ module.exports = {
     extraAccounts: extraAccounts,
 
     storeAll: storeAll,
+    storeHackerStaffAccounts: storeHackerStaffAccounts,
+    storeVerifyConfirmationAccounts: storeVerifyConfirmationAccounts,
+    storeStaffUnlinkedAccount: storeStaffUnlinkedAccount,
+    storeGetInviteAccounts: storeGetInviteAccounts,
+    storeExtraAccounts: storeExtraAccounts,
+    storeHackerStaffExtraAccount: storeHackerStaffExtraAccount,
+    storeStoredTeamAccounts: storeStoredTeamAccounts,
+    storeSponsorAccount: storeSponsorAccount,
+    storeTeamAccount: storeTeamAccount,
+    storeStaffNoTeamTeamUnconfirmedInvalid: storeStaffNoTeamTeamUnconfirmedInvalid,
+    storeOneOfEach: storeOneOfEach,
     dropAll: dropAll,
     equals: equals
 };
@@ -366,6 +377,80 @@ function store(attributes) {
     }
 
     return Account.collection.insertMany(acctDocs);
+}
+
+async function storeStoredTeamAccounts() {
+    await store(hackerAccounts.stored.team);
+}
+
+async function storeStaffNoTeamTeamUnconfirmedInvalid() {
+    await store(hackerAccounts.stored.team);
+    await store(hackerAccounts.stored.noTeam);
+    await store(hackerAccounts.stored.unconfirmed);
+    await store(staffAccounts.stored);
+    await store(unlinkedAccounts.stored);
+    await store(hackerAccounts.new);
+    await store(extraAccounts);
+}
+
+async function storeGetInviteAccounts() {
+    await store(hackerAccounts.stored.team);
+    await store(staffAccounts.stored);
+}
+
+async function storeTeamAccount() {
+    await store(hackerAccounts.stored.noTeam);
+    await store(hackerAccounts.stored.team);
+    await store(staffAccounts.stored);
+    await store(sponsorT1Accounts.stored);
+}
+
+async function storeSponsorAccount() {
+    await store(hackerAccounts.stored.team);
+    await store(staffAccounts.stored);
+    await store(sponsorT1Accounts.stored);
+    await store(sponsorT2Accounts.stored);
+    await store(sponsorT1Accounts.new);
+    await store(sponsorT2Accounts.new);
+}
+
+async function storeHackerStaffExtraAccount() {
+    await store(hackerAccounts.stored.noTeam);
+    await store(hackerAccounts.stored.team);
+    await store(staffAccounts.stored);
+    await store(extraAccounts);
+}
+
+async function storeHackerStaffAccounts() {
+    await store(hackerAccounts.stored.team);
+    await store(hackerAccounts.stored.noTeam);
+    await store(staffAccounts.stored);
+}
+
+async function storeExtraAccounts() {
+    await store(extraAccounts);
+}
+
+async function storeVerifyConfirmationAccounts() {
+    await store(hackerAccounts.stored.team);
+    await store(extraAccounts);
+}
+
+async function storeStaffUnlinkedAccount() {
+    await store(staffAccounts.stored);
+    await store(unlinkedAccounts.stored);
+}
+
+async function storeOneOfEach() {
+    await store(hackerAccounts.stored.team);
+    await store(hackerAccounts.stored.noTeam);
+    await store(hackerAccounts.stored.unconfirmed);
+    await store(volunteerAccounts.stored);
+    await store(staffAccounts.stored);
+    await store(unlinkedAccounts.stored);
+    await store(hackerAccounts.new);
+    await store(volunteerAccounts.new);
+    await store(extraAccounts);
 }
 
 async function storeAll() {

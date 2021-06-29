@@ -15,7 +15,9 @@ const Constants = {
 const util = {
     sponsor: require("./util/sponsor.test.util"),
     auth: require("./util/auth.test.util"),
-    account: require("./util/account.test.util")
+    account: require("./util/account.test.util"),
+    role: require("./util/role.test.util"),
+    roleBinding: require("./util/roleBinding.test.util")
 };
 
 const Admin0 = util.account.staffAccounts.stored[0];
@@ -28,6 +30,22 @@ const newT2Sponsor0 = util.sponsor.newT2Sponsor0;
 let duplicateSponsor = util.sponsor.duplicateAccountLinkSponsor1;
 
 describe("GET user's sponsor info", function() {
+    async function storeAll() {
+        await util.roleBinding.storeAll();
+        await util.role.storeAll();
+        await util.sponsor.storeAll();
+        await util.account.storeSponsorAccount();
+    }
+    beforeEach(function(done) {
+        this.timeout(60000);
+        storeAll()
+            .then(() => {
+                done();
+            })
+            .catch((error) => {
+                done(error);
+            });
+    });
     it("should FAIL list a sponsor's information due to authentication from /api/sponsor/self GET", function(done) {
         chai.request(server.app)
             .get(`/api/sponsor/self`)
@@ -138,6 +156,22 @@ describe("GET user's sponsor info", function() {
 });
 
 describe("GET sponsor by id", function() {
+    async function storeAll() {
+        await util.roleBinding.storeAll();
+        await util.role.storeAll();
+        await util.sponsor.storeAll();
+        await util.account.storeSponsorAccount();
+    }
+    beforeEach(function(done) {
+        this.timeout(60000);
+        storeAll()
+            .then(() => {
+                done();
+            })
+            .catch((error) => {
+                done(error);
+            });
+    });
     it("should FAIL list a sponsor's information due to authentication from /api/sponsor/:id GET", function(done) {
         chai.request(server.app)
             .get(`/api/sponsor/` + T1Sponsor0._id)
@@ -270,6 +304,22 @@ describe("GET sponsor by id", function() {
 });
 
 describe("POST create sponsor", function() {
+    async function storeAll() {
+        await util.roleBinding.storeAll();
+        await util.role.storeAll();
+        await util.sponsor.storeAll();
+        await util.account.storeSponsorAccount();
+    }
+    beforeEach(function(done) {
+        this.timeout(60000);
+        storeAll()
+            .then(() => {
+                done();
+            })
+            .catch((error) => {
+                done(error);
+            });
+    });
     it("should FAIL to create a new sponsor due to lack of authentication", function(done) {
         chai.request(server.app)
             .post(`/api/sponsor`)
@@ -368,6 +418,22 @@ describe("POST create sponsor", function() {
 });
 
 describe("PATCH update sponsor", function() {
+    async function storeAll() {
+        await util.roleBinding.storeAll();
+        await util.role.storeAll();
+        await util.sponsor.storeAll();
+        await util.account.storeSponsorAccount();
+    }
+    beforeEach(function(done) {
+        this.timeout(60000);
+        storeAll()
+            .then(() => {
+                done();
+            })
+            .catch((error) => {
+                done(error);
+            });
+    });
     it("should FAIL to update a sponsor due to lack of authentication", function(done) {
         chai.request(server.app)
             .patch(`/api/sponsor/${T1Sponsor0._id}/`)

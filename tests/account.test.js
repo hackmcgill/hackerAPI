@@ -15,7 +15,11 @@ const util = {
     account: require("./util/account.test.util"),
     auth: require("./util/auth.test.util"),
     accountConfirmation: require("./util/accountConfirmation.test.util"),
-    reset: require("./util/resetPassword.test.util")
+    reset: require("./util/resetPassword.test.util"),
+    role: require("./util/role.test.util"),
+    roleBinding: require("./util/roleBinding.test.util"),
+    accountConfirmation: require("./util/accountConfirmation.test.util"),
+    resetPassword: require("./util/resetPassword.test.util.js")
 };
 const agent = chai.request.agent(server.app);
 // tokens
@@ -41,7 +45,21 @@ const newAccount0 = util.account.unlinkedAccounts.new[0];
 const noPhoneAccount = util.account.NoPhoneHackerAccount0;
 
 describe("GET user account", function() {
-    // fail on authentication
+    async function storeAll() {
+        await util.account.storeHackerStaffAccounts();
+        await util.role.storeAll();
+        await util.roleBinding.storeAll();
+    }
+    beforeEach(function(done) {
+        this.timeout(60000);
+        storeAll()
+            .then(() => {
+                done();
+            })
+            .catch((error) => {
+                done(error);
+            });
+    });
     it("should FAIL to list the user's account on /api/account/self GET due to authentication", function(done) {
         chai.request(server.app)
             .get("/api/account/self")
@@ -207,6 +225,21 @@ describe("GET user account", function() {
 });
 
 describe("POST create account", function() {
+    async function storeAll() {
+        await util.account.storeHackerStaffAccounts();
+        await util.role.storeAll();
+        await util.roleBinding.storeAll();
+    }
+    beforeEach(function(done) {
+        this.timeout(60000);
+        storeAll()
+            .then(() => {
+                done();
+            })
+            .catch((error) => {
+                done(error);
+            });
+    });
     it("should SUCCEED and create a new account", function(done) {
         chai.request(server.app)
             .post(`/api/account/`)
@@ -230,7 +263,6 @@ describe("POST create account", function() {
                 done();
             });
     });
-
     it("should FAIL to create an account because the email is already in use", function(done) {
         chai.request(server.app)
             .post(`/api/account/`)
@@ -241,7 +273,6 @@ describe("POST create account", function() {
                 done();
             });
     });
-
     it("should SUCCEED and create a new account without a phone number", function(done) {
         chai.request(server.app)
             .post("/api/account")
@@ -269,6 +300,22 @@ describe("POST create account", function() {
 });
 
 describe("POST confirm account", function() {
+    async function storeAll() {
+        await util.account.storeExtraAccounts();
+        await util.accountConfirmation.storeAll();
+        await util.role.storeAll();
+        await util.roleBinding.storeAll();
+    }
+    beforeEach(function(done) {
+        this.timeout(60000);
+        storeAll()
+            .then(() => {
+                done();
+            })
+            .catch((error) => {
+                done(error);
+            });
+    });
     it("should SUCCEED and confirm the account", function(done) {
         chai.request(server.app)
             .post(`/api/auth/confirm/${confirmationToken}`)
@@ -282,6 +329,7 @@ describe("POST confirm account", function() {
                 done();
             });
     });
+
     it("should FAIL confirming the account", function(done) {
         chai.request(server.app)
             .post(`/api/auth/confirm/${fakeToken}`)
@@ -295,6 +343,7 @@ describe("POST confirm account", function() {
                 done();
             });
     });
+
     it("should FAIL to confirm account that has token with email but no account", function(done) {
         chai.request(server.app)
             .post(`/api/auth/confirm/${fakeToken}`)
@@ -324,7 +373,22 @@ describe("PATCH update account", function() {
         lastName: "fail",
         email: storedAccount1.email
     };
-
+    async function storeAll() {
+        await util.account.storeHackerStaffExtraAccount();
+        await util.accountConfirmation.storeAll();
+        await util.role.storeAll();
+        await util.roleBinding.storeAll();
+    }
+    beforeEach(function(done) {
+        this.timeout(60000);
+        storeAll()
+            .then(() => {
+                done();
+            })
+            .catch((error) => {
+                done(error);
+            });
+    });
     // fail on authentication
     it("should FAIL to update an account due to authentication", function(done) {
         chai.request(server.app)
@@ -446,6 +510,22 @@ describe("POST reset password", function() {
     const password = {
         password: "NewPassword"
     };
+    async function storeAll() {
+        await util.account.storeStoredTeamAccounts();
+        await util.resetPassword.storeAll();
+        await util.role.storeAll();
+        await util.roleBinding.storeAll();
+    }
+    beforeEach(function(done) {
+        this.timeout(60000);
+        storeAll()
+            .then(() => {
+                done();
+            })
+            .catch((error) => {
+                done(error);
+            });
+    });
     it("should SUCCEED and change the password", function(done) {
         chai.request(server.app)
             .post("/api/auth/password/reset")
@@ -472,6 +552,22 @@ describe("PATCH change password for logged in user", function() {
         oldPassword: "WrongPassword",
         newPassword: "password12345"
     };
+    async function storeAll() {
+        await util.account.storeGetInviteAccounts();
+        await util.resetPassword.storeAll();
+        await util.role.storeAll();
+        await util.roleBinding.storeAll();
+    }
+    beforeEach(function(done) {
+        this.timeout(60000);
+        storeAll()
+            .then(() => {
+                done();
+            })
+            .catch((error) => {
+                done(error);
+            });
+    });
     // fail on authentication
     it("should FAIL to change the user's password because they are not logged in", function(done) {
         chai.request(server.app)
@@ -533,6 +629,21 @@ describe("PATCH change password for logged in user", function() {
 });
 
 describe("GET retrieve permissions", function() {
+    async function storeAll() {
+        await util.account.storeHackerStaffAccounts();
+        await util.role.storeAll();
+        await util.roleBinding.storeAll();
+    }
+    beforeEach(function(done) {
+        this.timeout(60000);
+        storeAll()
+            .then(() => {
+                done();
+            })
+            .catch((error) => {
+                done(error);
+            });
+    });
     it("should SUCCEED and retrieve the rolebindings for the user", function(done) {
         util.auth.login(agent, teamHackerAccount0, (error) => {
             if (error) {
@@ -573,6 +684,20 @@ describe("GET retrieve permissions", function() {
 });
 
 describe("GET resend confirmation email", function() {
+    async function storeAll() {
+        await util.account.storeVerifyConfirmationAccounts();
+        await util.accountConfirmation.storeAll();
+    }
+    beforeEach(function(done) {
+        this.timeout(60000);
+        storeAll()
+            .then(() => {
+                done();
+            })
+            .catch((error) => {
+                done(error);
+            });
+    });
     it("should SUCCEED and resend the confirmation email", function(done) {
         util.auth.login(agent, storedAccount1, (error) => {
             if (error) {
@@ -634,6 +759,21 @@ describe("GET resend confirmation email", function() {
 });
 
 describe("POST invite account", function() {
+    async function storeAll() {
+        await util.account.storeStaffUnlinkedAccount();
+        await util.role.storeAll();
+        await util.roleBinding.storeAll();
+    }
+    beforeEach(function(done) {
+        this.timeout(60000);
+        storeAll()
+            .then(() => {
+                done();
+            })
+            .catch((error) => {
+                done(error);
+            });
+    });
     it("Should succeed to invite a user to create an account", function(done) {
         util.auth.login(agent, Admin0, (error) => {
             if (error) {
@@ -666,6 +806,22 @@ describe("POST invite account", function() {
 });
 
 describe("GET invites", function() {
+    async function storeAll() {
+        await util.account.storeGetInviteAccounts();
+        await util.accountConfirmation.storeAll();
+        await util.role.storeAll();
+        await util.roleBinding.storeAll();
+    }
+    beforeEach(function(done) {
+        this.timeout(60000);
+        storeAll()
+            .then(() => {
+                done();
+            })
+            .catch((error) => {
+                done(error);
+            });
+    });
     it("Should FAIL to get all invites due to Authentication", function(done) {
         chai.request(server.app)
             .get("/api/account/invite")

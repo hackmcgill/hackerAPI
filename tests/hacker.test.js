@@ -19,7 +19,9 @@ const util = {
     hacker: require("./util/hacker.test.util"),
     account: require("./util/account.test.util"),
     settings: require("./util/settings.test.util"),
-    accountConfirmation: require("./util/accountConfirmation.test.util")
+    accountConfirmation: require("./util/accountConfirmation.test.util"),
+    role: require("./util/role.test.util"),
+    roleBinding: require("./util/roleBinding.test.util")
 };
 const StorageService = require("../services/storage.service");
 
@@ -63,6 +65,22 @@ const BatchAcceptHackerArrayInvalid = [
 ];
 
 describe("GET hacker", function() {
+    async function storeAll() {
+        await util.hacker.storeAll();
+        await util.account.storeStaffNoTeamTeamUnconfirmedInvalid();
+        await util.role.storeAll();
+        await util.roleBinding.storeAll();
+    }
+    beforeEach(function(done) {
+        this.timeout(60000);
+        storeAll()
+            .then(() => {
+                done();
+            })
+            .catch((error) => {
+                done(error);
+            });
+    });
     // fail on authentication
     it("should FAIL to list a hacker's information on /api/hacker/:id GET due to authentication", function(done) {
         chai.request(server.app)
@@ -369,6 +387,23 @@ describe("GET hacker", function() {
 });
 
 describe("POST create hacker", function() {
+    async function storeAll() {
+        await util.roleBinding.storeAll();
+        await util.role.storeAll();
+        await util.settings.storeAll();
+        await util.hacker.storeAll();
+        await util.account.storeOneOfEach();
+    }
+    beforeEach(function(done) {
+        this.timeout(60000);
+        storeAll()
+            .then(() => {
+                done();
+            })
+            .catch((error) => {
+                done(error);
+            });
+    });
     // fail on authentication
     it("should FAIL to create a new hacker due to lack of authentication", function(done) {
         chai.request(server.app)
@@ -684,6 +719,23 @@ describe("POST create hacker", function() {
 });
 
 describe("PATCH update multiple hackers", function() {
+    async function storeAll() {
+        await util.roleBinding.storeAll();
+        await util.role.storeAll();
+        await util.settings.storeAll();
+        await util.hacker.storeAll();
+        await util.account.storeOneOfEach();
+    }
+    beforeEach(function(done) {
+        this.timeout(60000);
+        storeAll()
+            .then(() => {
+                done();
+            })
+            .catch((error) => {
+                done(error);
+            });
+    });
     it("should FAIL input validation on /api/hacker/batchAccept as an Admin", function(done) {
         util.auth.login(agent, Admin0, (error) => {
             if (error) {
@@ -784,6 +836,23 @@ describe("PATCH update multiple hackers", function() {
 });
 
 describe("PATCH update one hacker", function() {
+    async function storeAll() {
+        await util.roleBinding.storeAll();
+        await util.role.storeAll();
+        await util.settings.storeAll();
+        await util.hacker.storeAll();
+        await util.account.storeOneOfEach();
+    }
+    beforeEach(function(done) {
+        this.timeout(60000);
+        storeAll()
+            .then(() => {
+                done();
+            })
+            .catch((error) => {
+                done(error);
+            });
+    });
     // fail on authentication
     it("should FAIL to update a hacker on /api/hacker/:id GET due to authentication", function(done) {
         chai.request(server.app)
@@ -1516,6 +1585,23 @@ describe("PATCH update one hacker", function() {
 });
 
 describe("POST add a hacker resume", function() {
+    async function storeAll() {
+        await util.roleBinding.storeAll();
+        await util.role.storeAll();
+        await util.settings.storeAll();
+        await util.hacker.storeAll();
+        await util.account.storeOneOfEach();
+    }
+    beforeEach(function(done) {
+        this.timeout(60000);
+        storeAll()
+            .then(() => {
+                done();
+            })
+            .catch((error) => {
+                done(error);
+            });
+    });
     it("It should SUCCEED and upload a resume for a hacker", function(done) {
         //this takes a lot of time for some reason
         util.auth.login(agent, noTeamHacker0, (error) => {
@@ -1563,6 +1649,23 @@ describe("POST add a hacker resume", function() {
 });
 
 describe("GET Hacker stats", function() {
+    async function storeAll() {
+        await util.roleBinding.storeAll();
+        await util.role.storeAll();
+        await util.settings.storeAll();
+        await util.hacker.storeAll();
+        await util.account.storeHackerStaffAccounts();
+    }
+    beforeEach(function(done) {
+        this.timeout(60000);
+        storeAll()
+            .then(() => {
+                done();
+            })
+            .catch((error) => {
+                done(error);
+            });
+    });
     it("It should FAIL and get hacker stats (invalid validation)", function(done) {
         //this takes a lot of time for some reason
         util.auth.login(agent, Admin0, (error) => {
@@ -1647,6 +1750,23 @@ describe("GET Hacker stats", function() {
 });
 
 describe("POST send week-of email", function() {
+    async function storeAll() {
+        await util.roleBinding.storeAll();
+        await util.role.storeAll();
+        await util.settings.storeAll();
+        await util.hacker.storeAll();
+        await util.account.storeStaffNoTeamTeamUnconfirmedInvalid();
+    }
+    beforeEach(function(done) {
+        this.timeout(60000);
+        storeAll()
+            .then(() => {
+                done();
+            })
+            .catch((error) => {
+                done(error);
+            });
+    });
     it("It should FAIL to send the week-of email due to invalid Authentication", function(done) {
         //this takes a lot of time for some reason
         chai.request(server.app)
@@ -1724,6 +1844,23 @@ describe("POST send week-of email", function() {
 });
 
 describe("POST send day-of email", function() {
+    async function storeAll() {
+        await util.roleBinding.storeAll();
+        await util.role.storeAll();
+        await util.settings.storeAll();
+        await util.hacker.storeAll();
+        await util.account.storeOneOfEach();
+    }
+    beforeEach(function(done) {
+        this.timeout(60000);
+        storeAll()
+            .then(() => {
+                done();
+            })
+            .catch((error) => {
+                done(error);
+            });
+    });
     it("It should FAIL to send the day-of email due to invalid Authentication", function(done) {
         //this takes a lot of time for some reason
         chai.request(server.app)
