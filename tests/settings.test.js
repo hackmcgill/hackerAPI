@@ -8,6 +8,9 @@ chai.should();
 const util = {
     account: require("./util/account.test.util"),
     auth: require("./util/auth.test.util"),
+    settings: require("./util/settings.test.util"),
+    role: require("./util/role.test.util"),
+    roleBinding: require("./util/roleBinding.test.util")
 };
 
 const Constants = {
@@ -20,6 +23,22 @@ const invalidAccount = util.account.hackerAccounts.stored.noTeam[0];
 const Admin = util.account.staffAccounts.stored[0];
 
 describe("GET settings", function() {
+    async function storeAll() {
+        await util.account.storeHackerStaffExtraAccount();
+        await util.settings.storeAll();
+        await util.role.storeAll();
+        await util.roleBinding.storeAll();
+    }
+    beforeEach(function(done) {
+        this.timeout(60000);
+        storeAll()
+            .then(() => {
+                done();
+            })
+            .catch((error) => {
+                done(error);
+            });
+    });
     it("should get the current settings", function(done) {
         chai.request(server.app)
             .get(`/api/settings/`)
@@ -35,6 +54,22 @@ describe("GET settings", function() {
 });
 
 describe("PATCH settings", function() {
+    async function storeAll() {
+        await util.account.storeHackerStaffExtraAccount();
+        await util.settings.storeAll();
+        await util.role.storeAll();
+        await util.roleBinding.storeAll();
+    }
+    beforeEach(function(done) {
+        this.timeout(60000);
+        storeAll()
+            .then(() => {
+                done();
+            })
+            .catch((error) => {
+                done(error);
+            });
+    });
     it("should FAIL to update the settings due to lack of authentication", function(done) {
         chai.request(server.app)
             .patch(`/api/settings/`)

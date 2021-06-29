@@ -10,7 +10,8 @@ const should = chai.should();
 const util = {
     role: require("./util/role.test.util"),
     account: require("./util/account.test.util"),
-    auth: require("./util/auth.test.util")
+    auth: require("./util/auth.test.util"),
+    roleBinding: require("./util/roleBinding.test.util")
 };
 
 const Constants = {
@@ -22,6 +23,21 @@ const Admin0 = util.account.staffAccounts.stored[0];
 const Hacker0 = util.account.hackerAccounts.stored.team[0];
 
 describe("POST create role", function() {
+    async function storeAll() {
+        await util.account.storeHackerStaffAccounts();
+        await util.roleBinding.storeAll();
+        await util.role.storeAll();
+    }
+    beforeEach(function(done) {
+        this.timeout(60000);
+        storeAll()
+            .then(() => {
+                done();
+            })
+            .catch((error) => {
+                done(error);
+            });
+    });
     it("should Fail to create a role because staff is not logged in", function(done) {
         chai.request(server.app)
             .post(`/api/role/`)
