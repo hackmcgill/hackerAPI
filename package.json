@@ -39,7 +39,7 @@
         "promise.allsettled": "^1.0.4",
         "q": "^1.5.1",
         "qrcode": "^1.4.4",
-        "winston": "^2.4.5"
+        "winston": "^3.3.3"
     },
     "devDependencies": {
         "@types/express": "^4.17.12",
