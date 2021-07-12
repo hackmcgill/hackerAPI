@@ -46,7 +46,7 @@
         "@types/google-cloud__storage": "^1.7.2",
         "@types/mongodb": "^3.6.18",
         "@types/mongoose": "^5.11.97",
-        "@types/multer": "^1.4.6",
+        "@types/multer": "^1.4.7",
         "apidoc": "^0.28.1",
         "chai": "^4.3.4",
         "chai-http": "^4.3.0",
