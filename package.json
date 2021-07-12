@@ -18,7 +18,7 @@
     },
     "dependencies": {
         "@google-cloud/storage": "^5.8.5",
-        "@sendgrid/mail": "^6.5.5",
+        "@sendgrid/mail": "^7.4.5",
         "bcrypt": "^5.0.1",
         "cookie-parser": "^1.4.5",
         "cookie-session": "^2.0.0-rc.1",
