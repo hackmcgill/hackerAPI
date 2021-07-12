@@ -55,6 +55,6 @@
         "eslint-plugin-prettier": "3.4.0",
         "mocha": "^9.0.2",
         "nodemon": "^2.0.12",
-        "prettier": "1.19.1"
+        "prettier": "2.3.2"
     }
 }
