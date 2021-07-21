@@ -14,14 +14,11 @@
     2. `mongodb`: <https://docs.mongodb.com/manual/installation/>
         1. Make sure you also have the `/data/db` directory.
         2. To test the installation, run `mongod`.
-    3. `node`: <https://nodejs.org/en/download/>
+    3. `node`: <https://nodejs.org/en/download/> (Validated Node version is specified in [`.nvmrc`](../../hackerAPI/.nvmrc) )
     4. `npm`: <https://www.npmjs.com/get-npm>.
     5. `Postman`: <https://www.getpostman.com/downloads/>. We use this for testing the API locally.
-3. Make sure you have the following (only if you are going to be publishing this as a kubernetes cluster on google cloud):
-    1. `kubectl`: <https://kubernetes.io/docs/tasks/tools/install-kubectl/>
-    2. `gcloud`: <https://cloud.google.com/sdk/install>
-4. Create a `.env` file in the root directory, and populate the fields as per `.env.example`.
-5. run `npm install`
+3. Create a `.env` file in the root directory, and populate the fields as per `.env.example`.
+4. run `npm install`
 
 ## Setting up the database
 
@@ -31,4 +28,17 @@
 
 ## Testing the API
 
+### Automated Testing
+
 In order to test that you have set up the API properly, run `npm run test`.
+
+### Testing with Postman
+
+1. Import Postman Collection from [`postman.json`](./api/postman.json)
+2. [Create a new Environment](https://learning.postman.com/docs/sending-requests/managing-environments/) in Postman with **Variables** for `base_url`. Typical values for these might look like this. You may or may not have the same credentials in your Dev Environment as the Production Database.
+
+    |                | Local Dev Environment | Production Environment |
+    |----------------|-----------------------|------------------------|
+    | base_url       | http://localhost:3000/api | https://api.mchacks.ca/api |
+
+API parameters are not currently automatically imported by the Postman generation script. A change to a different API Doc generation tool in future could make this a more supported use case by Postman.
