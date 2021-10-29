@@ -38,6 +38,12 @@ module.exports = {
             "application.accommodation.barriers",
             true
         ),
+        VALIDATOR.enumValidator(
+            "body",
+            "application.accomodation.attendancePreference",
+            Constants.ATTENDANCE_PREFERENCES,
+            false
+        ),
         VALIDATOR.stringValidator(
             "body",
             "application.general.URL.resume",
