@@ -125,7 +125,7 @@ module.exports = {
                         "privacyPolicy": true,
                         "codeOfConduct": true,
                       }
-                      "accomodation": {
+                      "accommodation": {
                         "travel": 0
                       },
                       "location": {
@@ -173,7 +173,7 @@ module.exports = {
                             "privacyPolicy": true,
                             "codeOfConduct": true,
                           }
-                          "accomodation": {
+                          "accommodation": {
                             "travel": 0
                           },
                           "location": {
@@ -469,7 +469,7 @@ module.exports = {
                       "privacyPolicy": true,
                       "codeOfConduct": true,
                     }
-                    "accomodation": {
+                    "accommodation": {
                       "travel": 0
                     },
                     "location": {
@@ -517,7 +517,7 @@ module.exports = {
                             "privacyPolicy": true,
                             "codeOfConduct": true,
                           }
-                          "accomodation": {
+                          "accommodation": {
                             "travel": 0
                           },
                           "location": {
@@ -594,7 +594,7 @@ module.exports = {
                             "privacyPolicy": true,
                             "codeOfConduct": true,
                           }
-                          "accomodation": {
+                          "accommodation": {
                             "travel": 0
                           },
                           "location": {
@@ -667,7 +667,7 @@ module.exports = {
                             "privacyPolicy": true,
                             "codeOfConduct": true,
                           }
-                          "accomodation": {
+                          "accommodation": {
                             "travel": 0
                           },
                           "location": {

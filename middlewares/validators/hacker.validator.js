@@ -40,7 +40,7 @@ module.exports = {
         ),
         VALIDATOR.enumValidator(
             "body",
-            "application.accomodation.attendancePreference",
+            "application.accommodation.attendancePreference",
             Constants.ATTENDANCE_PREFERENCES,
             false
         ),
