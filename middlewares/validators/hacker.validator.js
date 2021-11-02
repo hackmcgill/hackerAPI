@@ -100,7 +100,16 @@ module.exports = {
             Constants.PREVIOUS_HACKATHONS,
             false
         ),
-
+        VALIDATOR.stringValidator(
+            "body",
+            "application.demographics.gender",
+            true
+        ),
+        VALIDATOR.stringValidator(
+            "body",
+            "application.demographics.pronoun",
+            true
+        ),
         VALIDATOR.alphaArrayValidator(
             "body",
             "application.other.ethnicity",
