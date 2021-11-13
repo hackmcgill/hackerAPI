@@ -247,7 +247,7 @@ module.exports = {
         ),
         VALIDATOR.stringValidator(
             "body",
-            "application.demographics.ethnicity",
+            "application.demographics.pronoun",
             false
         ),
         VALIDATOR.alphaArrayValidator(
