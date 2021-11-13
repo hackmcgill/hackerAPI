@@ -502,19 +502,15 @@ function equals(acc1, acc2) {
     const id = id1 === id2;
     const firstName = acc1.firstName === acc2.firstName;
     const lastName = acc1.lastName === acc2.lastName;
-    const pronoun = acc1.pronoun === acc2.pronoun;
     const email = acc1.email === acc2.email;
     const dietaryRestrictions =
         acc1.dietaryRestrictions.join(",") ===
         acc2.dietaryRestrictions.join(",");
-    const gender = acc1.gender === acc2.gender;
     return [
         id,
         firstName,
         lastName,
         email,
         dietaryRestrictions,
-        gender,
-        pronoun
     ];
 }

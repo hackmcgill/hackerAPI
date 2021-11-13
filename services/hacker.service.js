@@ -171,10 +171,10 @@ function getStats(hackers) {
         ]
             ? stats.degree[hacker.application.general.degree] + 1
             : 1;
-        stats.gender[hacker.accountId.gender] = stats.gender[
-            hacker.accountId.gender
+        stats.gender[hacker.application.demographics.gender] = stats.gender[
+            hacker.application.demographics.gender
         ]
-            ? stats.gender[hacker.accountId.gender] + 1
+            ? stats.gender[hacker.application.demographics.gender] + 1
             : 1;
         stats.travel[hacker.application.accommodation.travel] = stats.travel[
             hacker.application.accommodation.travel

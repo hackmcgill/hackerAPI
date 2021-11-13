@@ -93,6 +93,16 @@ const HackerSchema = new mongoose.Schema({
                 required: true
             }
         },
+        demographics: {
+            gender: {
+                type: String,
+                default: ""
+            },
+            pronoun: {
+                type: String,
+                default: ""
+            }
+        },
         other: {
             ethnicity: {
                 type: [
