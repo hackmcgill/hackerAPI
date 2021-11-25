@@ -44,7 +44,7 @@
     "devDependencies": {
         "@types/express": "^4.17.12",
         "@types/google-cloud__storage": "^1.7.2",
-        "@types/mongodb": "^3.6.18",
+        "@types/mongodb": "^4.0.7",
         "@types/mongoose": "^5.11.97",
         "@types/multer": "^1.4.6",
         "apidoc": "^0.17.7",
