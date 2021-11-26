@@ -1,7 +1,8 @@
 "use strict";
 const path = require("path");
 //load up env variables
-require("../services/env.service").load(path.join(__dirname, "../.env"));
+const dotenv = require("dotenv");
+require("../services/env.service").load(dotenv);
 
 const StorageService = require("../services/storage.service");
 
