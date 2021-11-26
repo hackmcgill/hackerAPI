@@ -1,9 +1,6 @@
 "use strict";
 const dotenv = require("dotenv");
 const path = require("path");
-/*dotenv.config({
-    path: path.join(__dirname, "../.env")
-});*/
 const EmailService = require("../services/email.service");
 const assert = require("chai").assert;
 
