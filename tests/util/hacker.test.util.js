@@ -45,7 +45,8 @@ const TeamHacker0 = {
         accommodation: {
             dietaryRestrictions: ["Gluten-Free"],
             shirtSize: "L",
-            travel: 0
+            travel: 0,
+            attendancePreference: "Remote"
         }
     },
     teamId: Constants.MongoId.team1Id
@@ -86,7 +87,8 @@ const TeamHacker1 = {
         accommodation: {
             dietaryRestrictions: ["Gluten-Free"],
             shirtSize: "L",
-            travel: 0
+            travel: 0,
+            attendancePreference: "Remote"
         }
     },
     teamId: Constants.MongoId.team3Id
@@ -127,7 +129,8 @@ const TeamHacker2 = {
         accommodation: {
             dietaryRestrictions: ["Gluten-Free"],
             shirtSize: "L",
-            travel: 0
+            travel: 0,
+            attendancePreference: "Remote"
         }
     },
     teamId: Constants.MongoId.team3Id
@@ -168,7 +171,8 @@ const TeamHacker3 = {
         accommodation: {
             dietaryRestrictions: ["Gluten-Free"],
             shirtSize: "L",
-            travel: 0
+            travel: 0,
+            attendancePreference: "In Person"
         }
     },
     teamId: Constants.MongoId.team3Id
@@ -209,7 +213,8 @@ const TeamHacker4 = {
         accommodation: {
             dietaryRestrictions: ["Gluten-Free"],
             shirtSize: "L",
-            travel: 0
+            travel: 0,
+            attendancePreference: "In Person"
         }
     },
     teamId: Constants.MongoId.team3Id
@@ -250,7 +255,8 @@ const NoTeamHacker0 = {
         accommodation: {
             dietaryRestrictions: ["Gluten-Free"],
             shirtSize: "L",
-            travel: 0
+            travel: 0,
+            attendancePreference: "Remote"
         }
     }
 };
@@ -288,7 +294,8 @@ const newHacker0 = {
         accommodation: {
             dietaryRestrictions: ["Gluten-Free"],
             shirtSize: "L",
-            travel: 0
+            travel: 0,
+            attendancePreference: "Remote"
         }
     }
 };
@@ -326,7 +333,8 @@ const newHacker1 = {
         accommodation: {
             dietaryRestrictions: ["Gluten-Free"],
             shirtSize: "L",
-            travel: 0
+            travel: 0,
+            attendancePreference: "Remote"
         }
     }
 };
@@ -366,7 +374,8 @@ const invalidHacker0 = {
         accommodation: {
             dietaryRestrictions: ["Gluten-Free"],
             shirtSize: "L",
-            travel: 0
+            travel: 0,
+            attendancePreference: "Remote"
         }
     }
 };
@@ -401,7 +410,8 @@ const invalidHacker1 = {
         accommodation: {
             dietaryRestrictions: ["Gluten-Free"],
             shirtSize: "L",
-            travel: "sfg"
+            travel: "sfg",
+            attendancePreference: "Remote"
         }
     }
 };
@@ -441,7 +451,90 @@ const invalidHacker2 = {
             dietaryRestrictions: ["Gluten-Free"],
             shirtSize: "L",
             // must be between [0,100] to be valid
-            travel: 101
+            travel: 101,
+            attendancePreference: "Remote"
+        }
+    }
+};
+
+// duplicate of newHack0, but with invalid attendance preference.
+const invalidHacker3 = {
+    accountId: Util.Account.hackerAccounts.new[0]._id,
+    application: {
+        general: {
+            school: "University of ASDF",
+            degree: "Masters",
+            fieldOfStudy: ["EE"],
+            graduationYear: 2019,
+            jobInterest: "Full Time",
+            URL: {
+                //gcloud bucket link
+                resume: "www.gcloud.com/myResume100",
+                github: "www.github.com/Person1",
+                dribbble: null,
+                personal: "www.person1.com",
+                linkedIn: "www.linkedin.com/in/Person1",
+                other: null
+            }
+        },
+        shortAnswer: {
+            skills: ["CSS", "HTML", "JS"],
+            question1: "a",
+            question2: "a",
+            previousHackathons: 4
+        },
+        other: {
+            ethnicity: ["Caucasian"],
+            codeOfConduct: true,
+            privacyPolicy: true
+        },
+        accommodation: {
+            dietaryRestrictions: ["Gluten-Free"],
+            shirtSize: "L",
+            travel: 0,
+            // Attendence Preference Must Be Remote or In Person
+            attendancePreference: "asdf"
+        }
+    }
+};
+
+// duplicate of newHack0, but with missing attendance preference.
+const invalidHacker4 = {
+    accountId: Util.Account.hackerAccounts.new[0]._id,
+    application: {
+        general: {
+            school: "University of ASDF",
+            degree: "Masters",
+            fieldOfStudy: ["EE"],
+            graduationYear: 2019,
+            jobInterest: "Full Time",
+            URL: {
+                //gcloud bucket link
+                resume: "www.gcloud.com/myResume100",
+                github: "www.github.com/Person1",
+                dribbble: null,
+                personal: "www.person1.com",
+                linkedIn: "www.linkedin.com/in/Person1",
+                other: null
+            }
+        },
+        shortAnswer: {
+            skills: ["CSS", "HTML", "JS"],
+            question1: "a",
+            question2: "a",
+            previousHackathons: 4
+        },
+        other: {
+            ethnicity: ["Caucasian"],
+            codeOfConduct: true,
+            privacyPolicy: true
+        },
+        accommodation: {
+            dietaryRestrictions: ["Gluten-Free"],
+            shirtSize: "L",
+            travel: 0,
+            // Attendence Preference Must Be Remote or In Person
+            // attendancePreference: "asdf"
         }
     }
 };
@@ -636,6 +729,8 @@ module.exports = {
     invalidHacker0: invalidHacker0,
     invalidHacker1: invalidHacker1,
     invalidHacker2: invalidHacker2,
+    invalidHacker3: invalidHacker3,
+    invalidHacker4: invalidHacker4,
 
     duplicateAccountLinkHacker0: duplicateAccountLinkHacker0,
     waitlistedHacker0: waitlistedHacker0,

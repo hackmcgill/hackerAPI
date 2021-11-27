@@ -34,6 +34,8 @@ const newHacker0 = util.hacker.newHacker0;
 const invalidHackerAccount0 = util.account.hackerAccounts.invalid;
 const invalidHacker0 = util.hacker.invalidHacker0;
 const invalidHacker2 = util.hacker.invalidHacker2;
+const invalidHacker3 = util.hacker.invalidHacker3;
+const invalidHacker4 = util.hacker.invalidHacker4;
 const newHacker1 = util.hacker.newHacker1;
 
 const noTeamHackerAccount0 = util.account.hackerAccounts.stored.noTeam[0];
@@ -596,10 +598,10 @@ describe("POST create hacker", function() {
                     res.body.message.should.equal("Validation failed");
                     res.body.should.have.property("data");
                     res.body.data.should.have.property(
-                        "application.other.privacyPolicy"
+                        "application.accomodation.privacyPolicy"
                     );
                     res.body.data[
-                        "application.other.privacyPolicy"
+                        "application.accomodation.privacyPolicy"
                     ].msg.should.equal("Must be equal to true");
                     res.body.data.should.have.property(
                         "application.other.codeOfConduct"
@@ -607,6 +609,62 @@ describe("POST create hacker", function() {
                     res.body.data[
                         "application.other.codeOfConduct"
                     ].msg.should.equal("Must be equal to true");
+                    done();
+                });
+        });
+    });
+
+    // should fail due to 'asdf' on attendance preference.
+    it("should FAIL if the new hacker does not have valid attendance preference", function(done) {
+        util.auth.login(agent, newHackerAccount0, (error) => {
+            if (error) {
+                agent.close();
+                return done(error);
+            }
+            return agent
+                .post(`/api/hacker/`)
+                .type("application/json")
+                .send(invalidHacker3)
+                .end(function(err, res) {
+                    res.should.have.status(422);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal("Validation failed");
+                    res.body.should.have.property("data");
+                    res.body.data.should.have.property(
+                        "application.accommodation.attendancePreference"
+                    );
+                    res.body.data[
+                        "application.accommodation.attendancePreference"
+                    ].msg.should.equal("The value must be part of the enum");
+                    done();
+                });
+        });
+    });
+
+      // should fail due to attendance preference not being passed in the request body.
+      it("should FAIL if the new hacker does not have attendance preference", function(done) {
+        util.auth.login(agent, newHackerAccount0, (error) => {
+            if (error) {
+                agent.close();
+                return done(error);
+            }
+            return agent
+                .post(`/api/hacker/`)
+                .type("application/json")
+                .send(invalidHacker4)
+                .end(function(err, res) {
+                    res.should.have.status(422);
+                    res.should.be.json;
+                    res.body.should.have.property("message");
+                    res.body.message.should.equal("Validation failed");
+                    res.body.should.have.property("data");
+                    res.body.data.should.have.property(
+                        "application.accommodation.attendancePreference"
+                    );
+                    res.body.data[
+                        "application.accommodation.attendancePreference"
+                    ].msg.should.equal("The value being checked agains the enums must exist.");
                     done();
                 });
         });
