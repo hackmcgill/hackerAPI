@@ -574,7 +574,8 @@ const duplicateAccountLinkHacker0 = {
         accommodation: {
             dietaryRestrictions: ["Gluten-Free"],
             shirtSize: "L",
-            travel: 0
+            travel: 0,
+            attendancePreference: "Remote"
         }
     }
 };
@@ -614,7 +615,8 @@ const waitlistedHacker0 = {
         accommodation: {
             dietaryRestrictions: ["Gluten-Free"],
             shirtSize: "L",
-            travel: 0
+            travel: 0,
+            attendancePreference: "Remote"
         }
     },
     teamId: Constants.MongoId.team2Id
@@ -655,7 +657,8 @@ const unconfirmedAccountHacker0 = {
         accommodation: {
             dietaryRestrictions: ["Gluten-Free"],
             shirtSize: "L",
-            travel: 0
+            travel: 0,
+            attendancePreference: "Remote"
         }
     }
 };
@@ -695,7 +698,8 @@ const unconfirmedAccountHacker1 = {
         accommodation: {
             dietaryRestrictions: ["Gluten-Free"],
             shirtSize: "L",
-            travel: 0
+            travel: 0,
+            attendancePreference: "Remote"
         }
     }
 };
