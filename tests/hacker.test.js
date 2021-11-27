@@ -769,6 +769,15 @@ describe("POST create hacker", function() {
                     ].msg.should.equal(
                         "application.accommodation.travel must be an integer."
                     );
+                    res.body.data.should.have.property(
+                        "application.accommodation.attendancePreference"
+                    );
+                    res.body.data[
+                        "application.accommodation.attendancePreference"
+                    ].should.have.property("msg");
+                    res.body.data[
+                        "application.accommodation.attendancePreference"
+                    ].msg.should.equal("The value must be part of the enum");
 
                     done();
                 });
