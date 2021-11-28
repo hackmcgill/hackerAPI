@@ -411,7 +411,7 @@ const invalidHacker1 = {
             dietaryRestrictions: ["Gluten-Free"],
             shirtSize: "L",
             travel: "sfg",
-            attendancePreference: "Remote"
+            attendancePreference: "Remot"
         }
     }
 };
