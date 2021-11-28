@@ -126,7 +126,12 @@ const HackerSchema = new mongoose.Schema({
                 enum: Constants.SHIRT_SIZES,
                 required: true
             },
-            travel: { type: Number, default: 0 }
+            travel: { type: Number, default: 0 },
+            attendancePreference: {
+                type: String,
+                enum: Constants.ATTENDANCE_PREFERENCES,
+                required: true
+            }
         },
         team: {
             type: mongoose.Schema.Types.ObjectId,
@@ -167,7 +172,8 @@ HackerSchema.methods.isApplicationComplete = function() {
     const question1Done = !!hs.application.shortAnswer.question1;
     const question2Done = !!hs.application.shortAnswer.question2;
     const previousHackathonsDone = !!hs.application.shortAnswer.previousHackathons;
-    return portfolioDone && jobInterestDone && question1Done && question2Done && previousHackathonsDone;
+    const attendancePreferenceDone = !!hs.application.accommodation.attendancePreference;
+    return portfolioDone && jobInterestDone && question1Done && question2Done && previousHackathonsDone && attendancePreferenceDone;
 };
 
 /**
