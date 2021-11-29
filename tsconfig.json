@@ -1,0 +1,22 @@
+{
+    "compilerOptions": {
+      "experimentalDecorators": true,
+      "target": "ES5",
+      "lib": ["ES6", "ES2017"],
+      "noImplicitAny": true,
+      "strictNullChecks": true,
+      "alwaysStrict": true,
+      "removeComments": true,
+      "preserveConstEnums": true,
+      "sourceMap": true,
+      "outDir": "dist/",
+      "allowJs": true,
+      //"checkJs": true,
+      "esModuleInterop": true,
+      "moduleResolution": "node",
+      "resolveJsonModule": true,
+      "emitDecoratorMetadata": true
+    },
+    "include": ["./**/*", ".env"],
+    "exclude": ["node_modules", "**/*.spec.ts", ".vscode", ".github", ".idea", "docs", "scripts", "tests"]
+}

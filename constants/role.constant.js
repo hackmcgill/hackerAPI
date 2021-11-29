@@ -3,10 +3,9 @@ const Constants = {
     General: require("./general.constant"),
     Routes: require("./routes.constant")
 };
-const mongoose = require("mongoose");
 
 const accountRole = {
-    _id: mongoose.Types.ObjectId("00000000e285ec4f6ec7e5c2"),
+    identifier: 0,
     name: "account",
     routes: [
         Constants.Routes.authRoutes.login,
@@ -21,13 +20,13 @@ const accountRole = {
 };
 
 const adminRole = {
-    _id: mongoose.Types.ObjectId.createFromTime(1),
+    identifier: 1,
     name: Constants.General.STAFF,
     routes: Constants.Routes.listAllRoutes()
 };
 
 const hackerRole = {
-    _id: mongoose.Types.ObjectId.createFromTime(2),
+    identifier: 2,
     name: Constants.General.HACKER,
     routes: [
         Constants.Routes.hackerRoutes.post,
@@ -51,7 +50,7 @@ const hackerRole = {
 };
 
 const volunteerRole = {
-    _id: mongoose.Types.ObjectId.createFromTime(3),
+    identifier: 3,
     name: Constants.General.VOLUNTEER,
     routes: [
         Constants.Routes.volunteerRoutes.getSelfById,
@@ -65,7 +64,7 @@ const volunteerRole = {
 };
 
 const sponsorT1Role = {
-    _id: mongoose.Types.ObjectId.createFromTime(4),
+    identifier: 4,
     name: Constants.General.SPONSOR_T1,
     routes: [
         Constants.Routes.sponsorRoutes.post,
@@ -80,7 +79,7 @@ const sponsorT1Role = {
 };
 
 const sponsorT2Role = {
-    _id: mongoose.Types.ObjectId.createFromTime(5),
+    identifier: 5,
     name: Constants.General.SPONSOR_T2,
     routes: [
         Constants.Routes.sponsorRoutes.post,
@@ -95,7 +94,7 @@ const sponsorT2Role = {
 };
 
 const sponsorT3Role = {
-    _id: mongoose.Types.ObjectId.createFromTime(6),
+    identifier: 6,
     name: Constants.General.SPONSOR_T3,
     routes: [
         Constants.Routes.sponsorRoutes.post,
@@ -110,7 +109,7 @@ const sponsorT3Role = {
 };
 
 const sponsorT4Role = {
-    _id: mongoose.Types.ObjectId.createFromTime(7),
+    identifier: 7,
     name: Constants.General.SPONSOR_T4,
     routes: [
         Constants.Routes.sponsorRoutes.post,
@@ -125,7 +124,7 @@ const sponsorT4Role = {
 };
 
 const sponsorT5Role = {
-    _id: mongoose.Types.ObjectId.createFromTime(8),
+    identifier: 8,
     name: Constants.General.SPONSOR_T5,
     routes: [
         Constants.Routes.sponsorRoutes.post,

@@ -1,6 +1,6 @@
 "use strict";
 const express = require("express");
-const path = require("path");
+import path from "path";
 const cookieParser = require("cookie-parser");
 const cookieSession = require("cookie-session");
 const cors = require("cors");
@@ -11,7 +11,7 @@ const Services = {
     env: require("./services/env.service")
 };
 
-const envLoadResult = Services.env.load(path.join(__dirname, "./.env"));
+const envLoadResult = Services.env.load(path.resolve(__dirname, ".env"));
 if (envLoadResult.error) {
     Services.log.warn(envLoadResult.error);
 }

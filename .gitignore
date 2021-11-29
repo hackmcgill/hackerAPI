@@ -68,3 +68,6 @@ assets/.DS_Store
 
 #secrets
 secret.yaml
+
+# compile output folder.
+dist/

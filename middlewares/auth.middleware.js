@@ -31,7 +31,7 @@ const Constants = {
  * Failed authentication returns a AUTH 401 error, and errors during login will return res with a LOGIN 500 error.
  */
 function login(req, res, next) {
-    passport.authenticate("emailAndPass", function(err, user) {
+    passport.authenticate(Services.Auth.emailAndPassStrategy, function(err, user) {
         if (err) {
             return next({
                 status: 500,

@@ -502,7 +502,7 @@ async function sendWeekOfEmail(req, res, next) {
     const ticketSVG = await Services.Hacker.generateQRCode(
         singleHackerViewLink
     );
-    const account = await Services.Account.findById(hacker.accountId);
+    const account = await Services.Account.findById(hacker.identifier);
     if (!account || !ticketSVG) {
         return next({
             status: 500,

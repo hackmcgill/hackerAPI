@@ -2,6 +2,7 @@
 /**
  * Module dependencies.
  */
+import "reflect-metadata";
 const app = require("../app").app;
 const debug = require("debug")("hackboard:server");
 const http = require("http");

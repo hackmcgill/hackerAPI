@@ -1,7 +1,6 @@
 "use strict";
 
 const TAG = `[ ADDRESS.MIDDLEWARE.js ]`;
-const mongoose = require("mongoose");
 const Services = {
     RoleBinding: require("../services/roleBinding.service"),
     Logger: require("../services/logger.service"),
@@ -29,7 +28,7 @@ const Constants = {
  * @description Delete the req.body.id that was added by the validation of route parameter.
  */
 function parsePatch(req, res, next) {
-    delete req.body.id;
+    delete req.body.identifier;
     return next();
 }
 
@@ -46,7 +45,7 @@ function parsePatch(req, res, next) {
  */
 function parseAccount(req, res, next) {
     const accountDetails = {
-        _id: mongoose.Types.ObjectId(),
+        _id: req.body.identifier,
         firstName: req.body.firstName,
         lastName: req.body.lastName,
         pronoun: req.body.pronoun,
@@ -96,7 +95,7 @@ async function updatePassword(req, res, next) {
  * @description Retrieves an account's information from mongoId specified in req.body.id, and places it in req.body.account
  */
 async function getById(req, res, next) {
-    const acc = await Services.Account.findById(req.body.id);
+    const acc = await Services.Account.findById(req.body.identifier);
 
     if (!acc) {
         return next({

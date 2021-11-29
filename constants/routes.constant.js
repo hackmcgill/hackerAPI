@@ -14,33 +14,32 @@
  */
 
 const Constants = require("./general.constant");
-const mongoose = require("mongoose");
 
 const authRoutes = {
     login: {
         requestType: Constants.REQUEST_TYPES.POST,
         uri: "/api/auth/login",
-        _id: mongoose.Types.ObjectId.createFromTime(100)
+        _id: 100
     },
     logout: {
         requestType: Constants.REQUEST_TYPES.POST,
         uri: "/api/auth/logout",
-        _id: mongoose.Types.ObjectId.createFromTime(101)
+        _id: 101
     },
     getSelfRoleBindindings: {
         requestType: Constants.REQUEST_TYPES.GET,
         uri: "/api/auth/rolebindings/" + Constants.ROLE_CATEGORIES.SELF,
-        _id: mongoose.Types.ObjectId.createFromTime(102)
+        _id: 102
     },
     getAnyRoleBindings: {
         requestType: Constants.REQUEST_TYPES.GET,
         uri: "/api/auth/rolebindings/" + Constants.ROLE_CATEGORIES.ALL,
-        _id: mongoose.Types.ObjectId.createFromTime(103)
+        _id: 103
     },
     changePassword: {
         requestType: Constants.REQUEST_TYPES.PATCH,
         uri: "/api/auth/password/change",
-        _id: mongoose.Types.ObjectId.createFromTime(104)
+        _id: 104
     }
 };
 
@@ -48,37 +47,37 @@ const accountRoutes = {
     getSelf: {
         requestType: Constants.REQUEST_TYPES.GET,
         uri: "/api/account/self",
-        _id: mongoose.Types.ObjectId.createFromTime(105)
+        _id: 105
     },
     getSelfById: {
         requestType: Constants.REQUEST_TYPES.GET,
         uri: "/api/account/" + Constants.ROLE_CATEGORIES.SELF,
-        _id: mongoose.Types.ObjectId.createFromTime(106)
+        _id: 106
     },
     getAnyById: {
         requestType: Constants.REQUEST_TYPES.GET,
         uri: "/api/account/" + Constants.ROLE_CATEGORIES.ALL,
-        _id: mongoose.Types.ObjectId.createFromTime(107)
+        _id: 107
     },
     post: {
         requestType: Constants.REQUEST_TYPES.POST,
         uri: "/api/account/",
-        _id: mongoose.Types.ObjectId.createFromTime(108)
+        _id: 108
     },
     patchSelfById: {
         requestType: Constants.REQUEST_TYPES.PATCH,
         uri: "/api/account/" + Constants.ROLE_CATEGORIES.SELF,
-        _id: mongoose.Types.ObjectId.createFromTime(109)
+        _id: 109
     },
     patchAnyById: {
         requestType: Constants.REQUEST_TYPES.PATCH,
         uri: "/api/account/" + Constants.ROLE_CATEGORIES.ALL,
-        _id: mongoose.Types.ObjectId.createFromTime(110)
+        _id: 110
     },
     inviteAccount: {
         requestType: Constants.REQUEST_TYPES.POST,
         uri: "/api/account/invite",
-        _id: mongoose.Types.ObjectId.createFromTime(111)
+        _id: 111
     }
 };
 
@@ -86,122 +85,122 @@ const hackerRoutes = {
     getSelf: {
         requestType: Constants.REQUEST_TYPES.GET,
         uri: "/api/hacker/self/",
-        _id: mongoose.Types.ObjectId.createFromTime(112)
+        _id: 112
     },
     getSelfById: {
         requestType: Constants.REQUEST_TYPES.GET,
         uri: "/api/hacker/" + Constants.ROLE_CATEGORIES.SELF,
-        _id: mongoose.Types.ObjectId.createFromTime(113)
+        _id: 113
     },
     getAnyById: {
         requestType: Constants.REQUEST_TYPES.GET,
         uri: "/api/hacker/" + Constants.ROLE_CATEGORIES.ALL,
-        _id: mongoose.Types.ObjectId.createFromTime(114)
+        _id: 114
     },
     getSelfByEmail: {
         requestType: Constants.REQUEST_TYPES.GET,
         uri: "/api/hacker/email/" + Constants.ROLE_CATEGORIES.SELF,
-        _id: mongoose.Types.ObjectId.createFromTime(115)
+        _id: 115
     },
     getAnyByEmail: {
         requestType: Constants.REQUEST_TYPES.GET,
         uri: "/api/hacker/email/" + Constants.ROLE_CATEGORIES.ALL,
-        _id: mongoose.Types.ObjectId.createFromTime(116)
+        _id: 116
     },
     getSelfResumeById: {
         requestType: Constants.REQUEST_TYPES.GET,
         uri: "/api/hacker/resume/" + Constants.ROLE_CATEGORIES.SELF,
-        _id: mongoose.Types.ObjectId.createFromTime(117)
+        _id: 117
     },
     getAnyResumeById: {
         requestType: Constants.REQUEST_TYPES.GET,
         uri: "/api/hacker/resume/" + Constants.ROLE_CATEGORIES.ALL,
-        _id: mongoose.Types.ObjectId.createFromTime(118)
+        _id: 118
     },
     post: {
         requestType: Constants.REQUEST_TYPES.POST,
         uri: "/api/hacker/",
-        _id: mongoose.Types.ObjectId.createFromTime(119)
+        _id: 119
     },
     postSelfResumeById: {
         requestType: Constants.REQUEST_TYPES.POST,
         uri: "/api/hacker/resume/" + Constants.ROLE_CATEGORIES.SELF,
-        _id: mongoose.Types.ObjectId.createFromTime(120)
+        _id: 120
     },
     postAnyResumeById: {
         requestType: Constants.REQUEST_TYPES.POST,
         uri: "/api/hacker/resume/" + Constants.ROLE_CATEGORIES.ALL,
-        _id: mongoose.Types.ObjectId.createFromTime(121)
+        _id: 121
     },
     patchSelfById: {
         requestType: Constants.REQUEST_TYPES.PATCH,
         uri: "/api/hacker/" + Constants.ROLE_CATEGORIES.SELF,
-        _id: mongoose.Types.ObjectId.createFromTime(122)
+        _id: 122
     },
     patchAnyById: {
         requestType: Constants.REQUEST_TYPES.PATCH,
         uri: "/api/hacker/" + Constants.ROLE_CATEGORIES.ALL,
-        _id: mongoose.Types.ObjectId.createFromTime(123)
+        _id: 123
     },
     patchAnyStatusById: {
         requestType: Constants.REQUEST_TYPES.PATCH,
         uri: "/api/hacker/status/" + Constants.ROLE_CATEGORIES.ALL,
-        _id: mongoose.Types.ObjectId.createFromTime(124)
+        _id: 124
     },
     patchSelfStatusById: {
         requestType: Constants.REQUEST_TYPES.PATCH,
         uri: "/api/hacker/status/" + Constants.ROLE_CATEGORIES.SELF,
-        _id: mongoose.Types.ObjectId.createFromTime(125)
+        _id: 125
     },
     patchSelfCheckInById: {
         requestType: Constants.REQUEST_TYPES.PATCH,
         uri: "/api/hacker/checkin/" + Constants.ROLE_CATEGORIES.SELF,
-        _id: mongoose.Types.ObjectId.createFromTime(126)
+        _id: 126
     },
     patchAnyCheckInById: {
         requestType: Constants.REQUEST_TYPES.PATCH,
         uri: "/api/hacker/checkin/" + Constants.ROLE_CATEGORIES.ALL,
-        _id: mongoose.Types.ObjectId.createFromTime(127)
+        _id: 127
     },
     patchSelfConfirmationById: {
         requestType: Constants.REQUEST_TYPES.PATCH,
         uri: "/api/hacker/confirmation/" + Constants.ROLE_CATEGORIES.SELF,
-        _id: mongoose.Types.ObjectId.createFromTime(128)
+        _id: 128
     },
     patchAcceptHackerById: {
         requestType: Constants.REQUEST_TYPES.PATCH,
         uri: "/api/hacker/accept/" + Constants.ROLE_CATEGORIES.ALL,
-        _id: mongoose.Types.ObjectId.createFromTime(129)
+        _id: 129
     },
     patchAcceptHackerByEmail: {
         requestType: Constants.REQUEST_TYPES.PATCH,
         uri: "/api/hacker/acceptEmail/" + Constants.ROLE_CATEGORIES.ALL,
-        _id: mongoose.Types.ObjectId.createFromTime(130)
+        _id: 130
     },
     patchAcceptHackerByArrayOfIds: {
         requestType: Constants.REQUEST_TYPES.PATCH,
         uri: "/api/hacker/batchAccept",
-        _id: mongoose.Types.ObjectId.createFromTime(165)
+        _id: 165
     },
     postAnySendWeekOfEmail: {
         requestType: Constants.REQUEST_TYPES.POST,
         uri: "/api/hacker/email/weekOf/" + Constants.ROLE_CATEGORIES.ALL,
-        _id: mongoose.Types.ObjectId.createFromTime(131)
+        _id: 131
     },
     postSelfSendWeekOfEmail: {
         requestType: Constants.REQUEST_TYPES.POST,
         uri: "/api/hacker/email/weekOf/" + Constants.ROLE_CATEGORIES.SELF,
-        _id: mongoose.Types.ObjectId.createFromTime(132)
+        _id: 132
     },
     postAnySendDayOfEmail: {
         requestType: Constants.REQUEST_TYPES.POST,
         uri: "/api/hacker/email/dayOf/" + Constants.ROLE_CATEGORIES.ALL,
-        _id: mongoose.Types.ObjectId.createFromTime(133)
+        _id: 133
     },
     postSelfSendDayOfEmail: {
         requestType: Constants.REQUEST_TYPES.POST,
         uri: "/api/hacker/email/dayOf/" + Constants.ROLE_CATEGORIES.SELF,
-        _id: mongoose.Types.ObjectId.createFromTime(134)
+        _id: 134
     }
 };
 
@@ -209,42 +208,42 @@ const travelRoutes = {
     getSelf: {
         requestType: Constants.REQUEST_TYPES.GET,
         uri: "/api/travel/self/",
-        _id: mongoose.Types.ObjectId.createFromTime(135)
+        _id: 135
     },
     getSelfById: {
         requestType: Constants.REQUEST_TYPES.GET,
         uri: "/api/travel/" + Constants.ROLE_CATEGORIES.SELF,
-        _id: mongoose.Types.ObjectId.createFromTime(136)
+        _id: 136
     },
     getAnyById: {
         requestType: Constants.REQUEST_TYPES.GET,
         uri: "/api/travel/" + Constants.ROLE_CATEGORIES.ALL,
-        _id: mongoose.Types.ObjectId.createFromTime(137)
+        _id: 137
     },
     getSelfByEmail: {
         requestType: Constants.REQUEST_TYPES.GET,
         uri: "/api/travel/email/" + Constants.ROLE_CATEGORIES.SELF,
-        _id: mongoose.Types.ObjectId.createFromTime(138)
+        _id: 138
     },
     getAnyByEmail: {
         requestType: Constants.REQUEST_TYPES.GET,
         uri: "/api/travel/email/" + Constants.ROLE_CATEGORIES.ALL,
-        _id: mongoose.Types.ObjectId.createFromTime(139)
+        _id: 139
     },
     post: {
         requestType: Constants.REQUEST_TYPES.POST,
         uri: "/api/travel/",
-        _id: mongoose.Types.ObjectId.createFromTime(140)
+        _id: 140
     },
     patchAnyStatusById: {
         requestType: Constants.REQUEST_TYPES.PATCH,
         uri: "/api/travel/status/" + Constants.ROLE_CATEGORIES.ALL,
-        _id: mongoose.Types.ObjectId.createFromTime(141)
+        _id: 141
     },
     patchAnyOfferById: {
         requestType: Constants.REQUEST_TYPES.PATCH,
         uri: "/api/travel/offer/" + Constants.ROLE_CATEGORIES.ALL,
-        _id: mongoose.Types.ObjectId.createFromTime(142)
+        _id: 142
     }
 };
 
@@ -252,32 +251,32 @@ const sponsorRoutes = {
     getSelf: {
         requestType: Constants.REQUEST_TYPES.GET,
         uri: "/api/sponsor/self/",
-        _id: mongoose.Types.ObjectId.createFromTime(143)
+        _id: 143
     },
     getSelfById: {
         requestType: Constants.REQUEST_TYPES.GET,
         uri: "/api/sponsor/" + Constants.ROLE_CATEGORIES.SELF,
-        _id: mongoose.Types.ObjectId.createFromTime(144)
+        _id: 144
     },
     getAnyById: {
         requestType: Constants.REQUEST_TYPES.GET,
         uri: "/api/sponsor/" + Constants.ROLE_CATEGORIES.ALL,
-        _id: mongoose.Types.ObjectId.createFromTime(145)
+        _id: 145
     },
     post: {
         requestType: Constants.REQUEST_TYPES.POST,
         uri: "/api/sponsor/",
-        _id: mongoose.Types.ObjectId.createFromTime(146)
+        _id: 146
     },
     patchSelfById: {
         requestType: Constants.REQUEST_TYPES.PATCH,
         uri: "/api/sponsor/" + Constants.ROLE_CATEGORIES.SELF,
-        _id: mongoose.Types.ObjectId.createFromTime(147)
+        _id: 147
     },
     patchAnyById: {
         requestType: Constants.REQUEST_TYPES.PATCH,
         uri: "/api/sponsor/" + Constants.ROLE_CATEGORIES.ALL,
-        _id: mongoose.Types.ObjectId.createFromTime(148)
+        _id: 148
     }
 };
 
@@ -285,32 +284,32 @@ const teamRoutes = {
     get: {
         requestType: Constants.REQUEST_TYPES.GET,
         uri: "/api/team/" + Constants.ROLE_CATEGORIES.ALL,
-        _id: mongoose.Types.ObjectId.createFromTime(149)
+        _id: 149
     },
     post: {
         requestType: Constants.REQUEST_TYPES.POST,
         uri: "/api/team/",
-        _id: mongoose.Types.ObjectId.createFromTime(150)
+        _id: 150
     },
     join: {
         requestType: Constants.REQUEST_TYPES.PATCH,
         uri: "/api/team/join/",
-        _id: mongoose.Types.ObjectId.createFromTime(151)
+        _id: 151
     },
     patchSelfById: {
         requestType: Constants.REQUEST_TYPES.PATCH,
         uri: "/api/team/" + Constants.ROLE_CATEGORIES.SELF,
-        _id: mongoose.Types.ObjectId.createFromTime(152)
+        _id: 152
     },
     patchAnyById: {
         requestType: Constants.REQUEST_TYPES.PATCH,
         uri: "/api/team/" + Constants.ROLE_CATEGORIES.ALL,
-        _id: mongoose.Types.ObjectId.createFromTime(153)
+        _id: 153
     },
     leave: {
         requestType: Constants.REQUEST_TYPES.PATCH,
         uri: "/api/team/leave/",
-        _id: mongoose.Types.ObjectId.createFromTime(154)
+        _id: 154
     }
 };
 
@@ -318,17 +317,17 @@ const volunteerRoutes = {
     getSelfById: {
         requestType: Constants.REQUEST_TYPES.GET,
         uri: "/api/volunteer/" + Constants.ROLE_CATEGORIES.SELF,
-        _id: mongoose.Types.ObjectId.createFromTime(155)
+        _id: 155
     },
     getAnyById: {
         requestType: Constants.REQUEST_TYPES.GET,
         uri: "/api/volunteer/" + Constants.ROLE_CATEGORIES.ALL,
-        _id: mongoose.Types.ObjectId.createFromTime(156)
+        _id: 156
     },
     post: {
         requestType: Constants.REQUEST_TYPES.POST,
         uri: "/api/volunteer/",
-        _id: mongoose.Types.ObjectId.createFromTime(157)
+        _id: 157
     }
 };
 
@@ -336,7 +335,7 @@ const roleRoutes = {
     post: {
         requestType: Constants.REQUEST_TYPES.POST,
         uri: "/api/role/",
-        _id: mongoose.Types.ObjectId.createFromTime(158)
+        _id: 158
     }
 };
 
@@ -344,7 +343,7 @@ const searchRoutes = {
     get: {
         requestType: Constants.REQUEST_TYPES.GET,
         uri: "/api/search/",
-        _id: mongoose.Types.ObjectId.createFromTime(159)
+        _id: 159
     }
 };
 
@@ -352,17 +351,17 @@ const staffRoutes = {
     hackerStats: {
         requestType: Constants.REQUEST_TYPES.GET,
         uri: "/api/hacker/stats",
-        _id: mongoose.Types.ObjectId.createFromTime(160)
+        _id: 160
     },
     postInvite: {
         requestType: Constants.REQUEST_TYPES.POST,
         uri: "/api/account/invite",
-        _id: mongoose.Types.ObjectId.createFromTime(161)
+        _id: 161
     },
     getInvite: {
         requestType: Constants.REQUEST_TYPES.GET,
         uri: "/api/account/invite",
-        _id: mongoose.Types.ObjectId.createFromTime(162)
+        _id: 162
     }
 };
 
@@ -370,12 +369,12 @@ const settingsRoutes = {
     getSettings: {
         requestType: Constants.REQUEST_TYPES.GET,
         uri: "/api/settings",
-        _id: mongoose.Types.ObjectId.createFromTime(163)
+        _id: 163
     },
     patchSettings: {
         requestType: Constants.REQUEST_TYPES.PATCH,
         uri: "/api/settings",
-        _id: mongoose.Types.ObjectId.createFromTime(164)
+        _id: 164
     }
 };
 
