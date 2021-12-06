@@ -841,8 +841,7 @@ async function checkDuplicateAccountLinks(req, res, next) {
  */
 async function findSelf(req, res, next) {
     if (
-        req.user.accountType != Constants.General.HACKER ||
-        !req.user.confirmed
+        req.user.accountType != Constants.General.HACKER /*|| !req.user.confirmed*/
     ) {
         return next({
             status: 409,
