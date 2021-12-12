@@ -1,37 +1,39 @@
-import { Column, Entity, PrimaryGeneratedColumn, BaseEntity } from "typeorm";
+import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 import { compareSync } from "bcrypt";
-import { IsEmail, IsPhoneNumber } from "class-validator";
+import { IsDate, IsEmail, IsPhoneNumber } from "class-validator";
 import * as Constants from "../constants/general.constant";
+import { classToPlain, Exclude } from "class-transformer";
 
 @Entity()
-export class Account extends BaseEntity {
+export abstract class Account {
     @PrimaryGeneratedColumn()
     identifier: number;
 
-    @Column("varchar", { nullable: false })
+    @Column({ nullable: false })
     firstName: string;
 
-    @Column("varchar", { nullable: false })
+    @Column({ nullable: false })
     lastName: string;
 
-    @Column("varchar", { default: "Prefer not to say" })
+    @Column({ default: "Prefer not to say" })
     pronoun: string;
 
-    @Column("varchar", { default: "Prefer not to say" })
+    @Column({ default: "Prefer not to say" })
     gender: string;
 
-    @Column("varchar", { nullable: false, unique: true })
+    @Column({ nullable: false, unique: true })
     @IsEmail()
     email: string;
 
-    @Column("varchar", { nullable: false })
+    @Column({ nullable: false })
+    @Exclude({ toPlainOnly: true })
     password: string;
 
-    @Column("varchar")
+    @Column()
     dietaryRestrictions: string;
 
-    @Column("bool", { default: false })
-    confirmed: Boolean;
+    @Column({ default: false })
+    confirmed: boolean;
 
     @Column({
         enum: Constants.EXTENDED_USER_TYPES,
@@ -44,15 +46,10 @@ export class Account extends BaseEntity {
 
     @Column()
     @IsPhoneNumber()
-    phoneNumber: number;
+    phoneNumber: string;
 
     toJSON() {
-        return this;
-    }
-
-    // Delete's Password
-    toStrippedJSON() {
-        return { ...this, password: undefined };
+        return classToPlain(this);
     }
 
     /**

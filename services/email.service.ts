@@ -1,16 +1,15 @@
-"use strict";
-const logger = require("./logger.service");
 import client from "@sendgrid/mail";
-import * as fs from "fs";
-import * as path from "path";
-const TAG = `[ EMAIL.SERVICE ]`;
-const env = require("../services/env.service");
+import { readFileSync } from "fs";
+import { join } from "path";
 const Constants = require("../constants/general.constant");
 import * as Handlebars from "handlebars";
+import { autoInjectable } from "tsyringe";
+import { EnvService } from "./env.service";
 
-class EmailService {
-    constructor(apiKey: string = "") {
-        client.setApiKey(apiKey);
+@autoInjectable()
+export class EmailService {
+    constructor(private readonly envService: EnvService) {
+        client.setApiKey(this.envService.get("SENDGRID_API_KEY") ?? "");
     }
 
     /**
@@ -19,7 +18,7 @@ class EmailService {
      * @param {(err?)=>void} callback
      */
     send(mailData: any, callback = (error?: Object) => {}) {
-        if (env.isTest()) {
+        if (this.envService.isTest()) {
             //Silence all actual emails if we're testing
             mailData.mailSettings = {
                 sandboxMode: {
@@ -66,17 +65,14 @@ class EmailService {
         ticket: string,
         callback = (error?: Object) => {}
     ) {
-        const handlebarsPath = path.join(
-            __dirname,
-            `../assets/email/Ticket.hbs`
-        );
+        const handlebarsPath = join(__dirname, `../assets/email/Ticket.hbs`);
         const html = this.renderEmail(handlebarsPath, {
             firstName: firstName,
             ticket: ticket
         });
         const mailData = {
             to: recipient,
-            from: process.env.NO_REPLY_EMAIL,
+            from: this.envService.get("NO_REPLY_EMAIL"),
             subject: Constants.EMAIL_SUBJECTS[Constants.WEEK_OF],
             html: html
         };
@@ -102,16 +98,13 @@ class EmailService {
         recipient: string,
         callback = (error?: Object) => {}
     ) {
-        const handlebarsPath = path.join(
-            __dirname,
-            `../assets/email/Welcome.hbs`
-        );
+        const handlebarsPath = join(__dirname, `../assets/email/Welcome.hbs`);
         const html = this.renderEmail(handlebarsPath, {
             firstName: firstName
         });
         const mailData = {
             to: recipient,
-            from: process.env.NO_REPLY_EMAIL,
+            from: this.envService.get("NO_REPLY_EMAIL"),
             subject: Constants.EMAIL_SUBJECTS[Constants.WEEK_OF],
             html: html
         };
@@ -133,13 +126,13 @@ class EmailService {
         status: string,
         callback = (error?: Object) => {}
     ) {
-        const handlebarsPath = path.join(
+        const handlebarsPath = join(
             __dirname,
             `../assets/email/statusEmail/${status}.hbs`
         );
         const mailData = {
             to: recipient,
-            from: process.env.NO_REPLY_EMAIL,
+            from: this.envService.get("NO_REPLY_EMAIL"),
             subject: Constants.EMAIL_SUBJECTS[status],
             html: this.renderEmail(handlebarsPath, {
                 firstName: firstName
@@ -162,10 +155,8 @@ class EmailService {
      * @param {*} context any variables that need to be replaced in the template file
      */
     renderEmail(path: string, context: Object) {
-        const templateStr = fs.readFileSync(path).toString();
+        const templateStr = readFileSync(path).toString();
         const template = Handlebars.compile(templateStr);
         return template(context);
     }
 }
-
-module.exports = new EmailService(process.env.SENDGRID_API_KEY);
