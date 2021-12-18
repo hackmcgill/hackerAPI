@@ -1,0 +1,11 @@
+<!-- START FOOTER -->
+<mj-section>
+  <mj-column>
+    <mj-social icon-size="32px" mode="horizontal">
+      <mj-social-element name="facebook" href="https://www.facebook.com/mcgillhacks/" />
+      <mj-social-element name="twitter" href="https://twitter.com/mcgillhacks" />
+      <mj-social-element name="web" href="mailto:{{ emailAddress}}" />
+    </mj-social>
+  </mj-column>
+</mj-section>
+<!-- END FOOTER -->

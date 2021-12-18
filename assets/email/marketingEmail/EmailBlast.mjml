@@ -1,0 +1,72 @@
+<mjml>
+  <mj-head>
+    <mj-title>McHacks is back!</mj-title>
+    <mj-font name="Hind" href="http://fonts.googleapis.com/css?family=Hind:400" />
+  </mj-head>
+  <mj-body background-color="#F9F9F9">
+    <mj-include path="../Header.mjml" />
+    <!-- START BODY -->
+    <mj-section background-color="#FFFFFF" border="5px solid #E9E9E9">
+      <mj-column>
+        <mj-spacer />
+        <mj-text font-family="Hind" line-height="150%" font-size="14px" color="#4D4D4D">
+          💾 Installing HackMcGill firmware…
+        </mj-text>
+
+        <mj-text font-family="Hind" line-height="150%" font-size="14px" color="#4D4D4D">
+          💻 Getting the latest McHacks update...
+        </mj-text>
+
+        <mj-text font-family="Hind" line-height="150%" font-size="14px" color="#4D4D4D">
+          🚀 Update complete. You're now ready for McHacks 7! 😀🎉
+        </mj-text>
+
+        <mj-text font-family="Hind" line-height="150%" font-size="14px" color="#4D4D4D">
+          Canada's favorite hackathon is back again this winter and better than
+          ever! Join us on February 1-2, 2020 for a weekend full of engaging
+          workshops, impressive tech, exceptional food, and awesome hacking.
+        </mj-text>
+
+        <mj-text font-family="Hind" line-height="150%" font-size="14px" color="#4D4D4D">
+          Learn something, make new friends, and help build the future in the
+          beautiful city of Montreal. We hope to see you there, whether it's your
+          first hackathon or your 10th.
+        </mj-text>
+
+        <mj-spacer />
+        <mj-button href="{{{ link }}}" font-family="Hind" background-color="#F2463A" color="white" border-radius="40px">
+          Apply Now!
+        </mj-button>
+        <mj-spacer />
+
+        <mj-text font-family="Hind" line-height="150%" font-size="14px" color="#4D4D4D">
+          If you're ahead of the game and applied already, feel free to recycle
+          this email to a friend and help us keep the hype going!
+          <br><br>
+          Follow us on
+          <a href="https://facebook.com/mcgillhacks" style="color:#F2463A; text-decoration:none;">Facebook</a>,
+          <a href="https://twitter.com/mcgillhacks" style="color:#F2463A; text-decoration:none;">Twitter</a>,
+          and
+          <a href="https://instagram.com/mcgillhacks" style="color:#F2463A; text-decoration:none;">Instagram</a>
+          for important updates and news about McHacks! If you have any
+          questions, feel free to reach out at
+          <a href="mailto:contact@mchacks.ca" style="color:#F2463A;text-decoration:none;">contact@mchacks.ca</a>.
+        </mj-text>
+
+        <mj-text font-family="Hind" line-height="150%" font-size="14px" color="#4D4D4D">
+          McHacks Team
+          <br />
+          <a href="https://mchacks.ca" style="color: #F2463A; text-decoration: none;">mchacks.ca</a>
+        </mj-text>
+
+        <mj-text align="right">
+          <a href="{{{ unsubscribe }}}" style="color:#A6A6A6; text-decoration:none;">
+            Unsubscribe
+          </a>
+        </mj-text>
+      </mj-column>
+    </mj-section>
+    <!-- END BODY -->
+    <mj-include path="../Footer.mjml" />
+  </mj-body>
+</mjml>

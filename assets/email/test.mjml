@@ -1,0 +1,12 @@
+<mjml>
+  <mj-body>
+    <mj-section>
+      <mj-column>
+        <mj-text>
+          This is used for testing email service. DO NOT REMOVE. {{ TEST }}.
+          <a href="{{{ NOT_ESCAPED }}}">link</a>
+        </mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

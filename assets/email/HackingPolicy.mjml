@@ -1,0 +1,30 @@
+<mj-section background-color="#FFFFFF" padding-top="0" border-top="none" border-bottom="none" border="5px solid #E9E9E9">
+  <mj-column>
+    <mj-text font-size="18px" font-weight="700" line-height="100%" color="#F2463A">
+      Hacking Policy
+    </mj-text>
+
+    <mj-text font-family="Hind" line-height="150%" font-size="14px" color="#4D4D4D">
+      All projects built at our hackathon can be made by teams of 1-4 people.
+      If you're looking to find like-minded participants to work with, you
+      can post in our
+      <a href="https://mchacks.ca" style="color: #F2463A; text-decoration: none;">Facebook group</a>
+      or in #team-formation on Discord.
+    </mj-text>
+
+    <mj-text font-family="Hind" line-height="150%" font-size="14px" color="#4D4D4D">
+      In the interest of fairness, participants aren't allowed to work on
+      pre-existing projects or begin their projects before hacking at McHacks
+      begins. Any attempts of dishonesty or cheating will result in
+      disqualification.
+    </mj-text>
+
+    <mj-text font-family="Hind" line-height="150%" font-size="14px" color="#4D4D4D">
+      That being said, you're more than welcome to familiarize yourself with
+      all the tech and tools you intend to build with beforehand! You can
+      check our <a href="https://mchacks6.devpost.com" style="-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;color:#F2463A;text-decoration:none;">Devpost</a>
+      which will be updated soon with our available prizes to inspire ideas
+      for your project! 🎁
+    </mj-text>
+  </mj-column>
+</mj-section>

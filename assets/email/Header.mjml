@@ -1,0 +1,7 @@
+<!-- START HEADER -->
+<mj-section>
+  <mj-column>
+    <mj-image src="https://mchacks.ca/mchacks-long-tight.png" alt="" width="180px" height="54px" />
+  </mj-column>
+</mj-section>
+<!-- END HEADER -->

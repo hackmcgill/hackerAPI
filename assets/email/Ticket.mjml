@@ -1,0 +1,145 @@
+<mjml>
+  <mj-head>
+    <mj-title>McHacks 9: Important Information</mj-title>
+    <mj-font name="Hind" href="http://fonts.googleapis.com/css?family=Hind:400,700" />
+  </mj-head>
+  <mj-body background-color="#F9F9F9">
+    <mj-include path="./Header.mjml" />
+    <!-- START BODY -->
+    <mj-section background-color="#FFFFFF" border-bottom="none" border="5px solid #E9E9E9">
+      <mj-column>
+        <mj-spacer />
+        <mj-text font-family="Hind" line-height="150%" font-size="26px" font-weight="700" color="#F2463A">
+          4 Days Until McHacks 9!
+        </mj-text>
+
+        <mj-text font-family="Hind" line-height="150%" font-size="14px" color="#4D4D4D">
+          Hi {{ firstName }}!
+        </mj-text>
+
+        <mj-text font-family="Hind" line-height="150%" font-size="14px" color="#4D4D4D">
+          McHacks 9 is this coming weekend and we're excited to spend an epic
+          weekend with you hacking away! 🎉
+        </mj-text>
+
+        <mj-text font-family="Hind" line-height="150%" font-size="14px" color="#4D4D4D">
+          Before we get to that, let's go through some important information to
+          get you ready for the hackathon:
+        </mj-text>
+      </mj-column>
+    </mj-section>
+
+    <mj-section background-color="#FFFFFF" padding-top="0" border-top="none" border-bottom="none" border="5px solid #E9E9E9">
+      <mj-column>
+        <mj-text font-size="18px" font-weight="700" line-height="100%" color="#F2463A">
+          Communication
+        </mj-text>
+
+        <mj-text font-family="Hind" line-height="150%" font-size="14px" color="#4D4D4D">
+          Join our
+          <a href="https://mchacks.ca" style="color: #F2463A; text-decoration: none;">Facebook group</a>
+          for announcements, to RSVP for workshops/activities, chat with other hackers, and form teams!
+        </mj-text>
+
+        <mj-text font-family="Hind" line-height="150%" font-size="14px" color="#4D4D4D">
+          During the hackathon, we'll be using both the FB group and the official
+          <a href="https://mchacks.ca" style="color: #F2463A; text-decoration: none;">McHacks 9 Discord</a>
+          Be sure to join the Discord so you're updated on
+          everything going on as they happen!
+        </mj-text>
+
+        <mj-text font-family="Hind" line-height="150%" font-size="14px" color="#4D4D4D">
+          We'll also have a live site with the schedule, announcements, and
+          everything else you need to know at
+          <a href="https://mchacks.ca" style="color: #F2463A; text-decoration: none;">mchacks.ca</a>
+          closer to the event
+        </mj-text>
+      </mj-column>
+    </mj-section>
+
+
+    <mj-section background-color="#FFFFFF" padding-top="0" border-top="none" border-bottom="none" border="5px solid #E9E9E9">
+      <mj-column>
+        <mj-text font-size="18px" font-weight="700" line-height="100%" color="#F2463A">
+          Registration
+        </mj-text>
+
+        <mj-text font-family="Hind" line-height="150%" font-size="14px" color="#4D4D4D">
+          Out of town check-in begins on Saturday at 8:00 am and local check-in
+          at 9:30 am. Remember to bring your student ID as you'll need it to
+          register!
+        </mj-text>
+
+        <mj-text font-family="Hind" line-height="150%" font-size="14px" color="#4D4D4D">
+          We'll only be allowing accepted and a limited amount of waitlisted
+          hackers into the hackathon. Your status must be "confirmed" on your
+          <a href="https://app.mchacks.ca" style="color: #F2463A; text-decoration: none;">hacker dashboard</a>
+          to be allowed into the hackathon.
+        </mj-text>
+
+        <mj-text font-family="Hind" line-height="150%" font-size="14px" color="#4D4D4D">
+          You'll also need your Hack Pass so we know who you are! Grab it on your
+          <a href="https://app.mchacks.ca/hacker/pass" style="color: #F2463A; text-decoration: none;">hacker dashboard</a>
+          or save a copy of it right here:
+
+          <mj-image align="center" src="{{ ticket }}" alt="Ticket Image" />
+        </mj-text>
+
+        <mj-text font-family="Hind" line-height="150%" font-size="14px" color="#4D4D4D">
+          That being said, you're more than welcome to familiarize yourself with
+          all the tech and tools you intend to build with beforehand! You can
+          check our <a href="https://mchacks6.devpost.com" style="-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;color:#F2463A;text-decoration:none;">Devpost</a>
+          which will be updated soon with our available prizes to inspire ideas
+          for your project! 🎁
+        </mj-text>
+      </mj-column>
+    </mj-section>
+
+    <mj-section background-color="#FFFFFF" padding-top="0" border-top="none" border-bottom="none" border="5px solid #E9E9E9">
+      <mj-column>
+        <mj-text font-size="18px" font-weight="700" line-height="100%" color="#F2463A">
+          What You'll Need To Bring
+        </mj-text>
+
+        <mj-text font-family="Hind" line-height="150%" font-size="14px" color="#4D4D4D">
+          You should bring your student ID and anything you’d need for a
+          productive, healthy, and fun weekend: laptop, phone, chargers,
+          deodorant (!), change of clothes, etc. We'll have a sleeping space
+          available during the night for hackers to get some rest. 😴
+        </mj-text>
+
+        <mj-text font-family="Hind" line-height="150%" font-size="14px" color="#4D4D4D">
+          Don't worry about food and drinks, we've got you covered there! We also
+          encourage bringing a reusable mug so we can reduce our carbon footprint
+          together. 🍃
+        </mj-text>
+      </mj-column>
+    </mj-section>
+
+    <mj-section background-color="#FFFFFF" padding-top="0" border-top="none" border-bottom="none" border="5px solid #E9E9E9">
+      <mj-column>
+        <mj-text font-size="18px" font-weight="700" line-height="100%" color="#F2463A">
+          Transportation
+        </mj-text>
+
+        <mj-text font-family="Hind" line-height="150%" font-size="14px" color="#4D4D4D">
+          McHacks 9 will be hosted at
+          <a href="https://goo.gl/maps/2nHsXtvLDNK2" style="color: #F2463A; text-decoration: none;">Theatre St James</a>
+          in the Old Port of Montreal.
+        </mj-text>
+
+        <mj-text font-family="Hind" line-height="150%" font-size="14px" color="#4D4D4D">
+          If you have a seat on one of our buses, they'll drop you off right
+          outside the venue. If you're arranging your own travel, you can take
+          the metro to the Square-Victoria–OACI station, a short walk away from
+          the venue.
+        </mj-text>
+      </mj-column>
+    </mj-section>
+    
+    <mj-include path="./HackingPolicy.mjml" />
+    <mj-include path="./SocialMedia.mjml" />
+    <!-- END BODY -->
+    <mj-include path="./Footer.mjml" />
+  </mj-body>
+</mjml>

@@ -1,0 +1,28 @@
+<mjml>
+  <mj-head>
+    <mj-title>We've Got Your Application!</mj-title>
+    <mj-font name="Hind" href="http://fonts.googleapis.com/css?family=Hind:400,700" />
+  </mj-head>
+  <mj-body background-color="#F9F9F9">
+    <mj-include path="../Header.mjml" />
+    <!-- START BODY -->
+    <mj-section background-color="#FFFFFF" border-bottom="none" border="5px solid #E9E9E9">
+      <mj-column>
+        <mj-spacer />
+
+        <mj-text font-family="Hind" line-height="150%" font-size="14px" color="#4D4D4D">
+          Hi {{ firstName }},
+        </mj-text>
+
+        <mj-text font-family="Hind" line-height="150%" font-size="14px" color="#4D4D4D">
+          We're sorry to hear that you won't be able to attend McHacks this year.
+          😢
+        </mj-text>
+      </mj-column>
+    </mj-section>
+
+    <mj-include path="../SocialMedia.mjml" />
+    <!-- END BODY -->
+    <mj-include path="../Footer.mjml" />
+  </mj-body>
+</mjml>

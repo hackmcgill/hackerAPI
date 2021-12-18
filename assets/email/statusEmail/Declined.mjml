@@ -1,0 +1,34 @@
+<mjml>
+  <mj-head>
+    <mj-title>We've Got Your Application!</mj-title>
+    <mj-font name="Hind" href="http://fonts.googleapis.com/css?family=Hind:400,700" />
+  </mj-head>
+  <mj-body background-color="#F9F9F9">
+    <mj-include path="../Header.mjml" />
+    <!-- START BODY -->
+    <mj-section background-color="#FFFFFF" border-bottom="none" border="5px solid #E9E9E9">
+      <mj-column>
+        <mj-spacer />
+
+        <mj-text font-family="Hind" line-height="150%" font-size="14px" color="#4D4D4D">
+          Hi {{ firstName }},
+        </mj-text>
+
+        <mj-text font-family="Hind" line-height="150%" font-size="14px" color="#4D4D4D">
+          Thank you for applying to McHacks! We're sorry to inform you that we're
+          unable to offer you a spot at McHacks.
+        </mj-text>
+
+        <mj-text font-family="Hind" line-height="150%" font-size="14px" color="#4D4D4D">
+          We received an overwhelming number of applicants this year and
+          unfortunately can't accept everyone. We hope you understand and
+          encourage you to apply again in the future.
+        </mj-text>
+      </mj-column>
+    </mj-section>
+
+    <mj-include path="../SocialMedia.mjml" />
+    <!-- END BODY -->
+    <mj-include path="../Footer.mjml" />
+  </mj-body>
+</mjml>
