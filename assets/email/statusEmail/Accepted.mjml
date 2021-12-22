@@ -4,7 +4,7 @@
     <mj-font name="Hind" href="http://fonts.googleapis.com/css?family=Hind:400,700" />
   </mj-head>
   <mj-body background-color="#F9F9F9">
-    <mj-include path="../Header.mjml" />
+    <mj-include path="assets/email/Header.mjml" />
     <!-- START BODY -->
     <mj-section background-color="#FFFFFF" border-bottom="none" border="5px solid #E9E9E9">
       <mj-column>
@@ -34,9 +34,9 @@
       </mj-column>
     </mj-section>
 
-    <mj-include path="../HackingPolicy.mjml" />
-    <mj-include path="../SocialMedia.mjml" />
+    <mj-include path="assets/email/HackingPolicy.mjml" />
+    <mj-include path="assets/email/SocialMedia.mjml" />
     <!-- END BODY -->
-    <mj-include path="../Footer.mjml" />
+    <mj-include path="assets/email/Footer.mjml" />
   </mj-body>
 </mjml>
