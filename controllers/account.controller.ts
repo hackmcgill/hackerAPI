@@ -16,11 +16,19 @@ import Account from "../models/account.model";
 import { EnsureAuthenticated } from "../middlewares/authenticated.middleware";
 import { EnsureAuthorization } from "../middlewares/authorization.middleware";
 import { AuthorizationLevel } from "../constants/authorization-level.constant";
+import { AccountConfirmationService } from "../services/account-confirmation.service";
+import { EmailService } from "../services/email.service";
+import * as GeneralConstants from "../constants/general.constant";
+import { join } from "path";
 
 @autoInjectable()
 @Controller("/account")
 export class AccountController {
-    constructor(private readonly accountService: AccountService) {}
+    constructor(
+        private readonly accountService: AccountService,
+        private readonly accountConfirmationService: AccountConfirmationService,
+        private readonly mailer: EmailService
+    ) {}
 
     @Get("/", [
         EnsureAuthenticated,
@@ -79,12 +87,48 @@ export class AccountController {
     ) {
         const result: Account = await this.accountService.save(account);
 
+        if (result) {
+            const model = await this.accountConfirmationService.save({
+                accountType: GeneralConstants.HACKER,
+                email: result.email,
+                confirmationType: GeneralConstants.CONFIRMATION_TYPE_ORGANIC,
+                account: result
+            });
+
+            await this.mailer.send(
+                {
+                    to: model.email,
+                    subject: "Account Confirmation Instructions",
+                    html: join(
+                        __dirname,
+                        "../assets/email/AccountConfirmation.mjml"
+                    )
+                },
+                {
+                    link: this.accountConfirmationService.generateLink(
+                        "confirm",
+                        this.accountConfirmationService.generateToken(
+                            model.identifier,
+                            model.account!.identifier
+                        )
+                    )
+                },
+                (error?: any) => {
+                    if (error)
+                        response.status(500).send({
+                            message: ErrorConstants.EMAIL_500_MESSAGE,
+                            data: error
+                        });
+                }
+            );
+        }
+
         return result
-            ? response.status(200).json({
+            ? response.status(200).send({
                   message: SuccessConstants.ACCOUNT_CREATE,
                   data: result
               })
-            : response.status(422).json({
+            : response.status(422).send({
                   message: ErrorConstants.ACCOUNT_DUPLICATE_422_MESSAGE
               });
     }
@@ -103,6 +147,7 @@ export class AccountController {
         @Body() update: Partial<Account>
     ) {
         //TODO - Implement resend e-mail confirmation and verification.
+        //TODO - A thrifty user can update their password from here and it would not be hashed, we should attempt to block.
         const result = await this.accountService.update(identifier, update);
 
         return result
@@ -119,4 +164,7 @@ export class AccountController {
     }
 
     //TODO - Implement (gotInvites, invitedAccount)
+    // Invite functionality requires a special account confirmation token change where we verify if the token is valid
+    // without the account field, this was in the previous code (middleware files)
+    // to reimpl this functionality we should reference there.
 }
