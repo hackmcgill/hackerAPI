@@ -23,7 +23,7 @@ export class DatabaseService {
 
     private getDatabaseAttribute(name: string) {
         return this.envService.isDevelopment()
-            ? this.envService.get(`DB_${name}_ENV`)
+            ? this.envService.get(`DB_${name}_DEV`)
             : this.envService.isProduction()
             ? this.envService.get(`DB_${name}_DEPLOY`)
             : this.envService.get(`DB_${name}_TEST`);
