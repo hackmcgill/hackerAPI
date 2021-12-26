@@ -5,6 +5,7 @@ import {
     Params,
     Patch,
     Post,
+    Request,
     Response
 } from "@decorators/express";
 import { autoInjectable } from "tsyringe";
@@ -15,12 +16,20 @@ import Hacker from "../models/hacker.model";
 import { HackerService } from "../services/hacker.service";
 import * as SuccessConstants from "../constants/success.constant";
 import * as ErrorConstants from "../constants/error.constant";
-import { request, Response as ExpressResponse } from "express";
+import {
+    Request as ExpressRequest,
+    Response as ExpressResponse
+} from "express";
+import { StorageService } from "../services/storage.service";
+import { upload } from "../middlewares/multer.middleware";
 
 @autoInjectable()
 @Controller("/hacker")
 export class HackerController {
-    constructor(private readonly hackerService: HackerService) {}
+    constructor(
+        private readonly hackerService: HackerService,
+        private readonly storageService: StorageService
+    ) {}
 
     @Get("/:identifier", [
         EnsureAuthenticated,
@@ -91,4 +100,73 @@ export class HackerController {
                   }
               });
     }
+
+    @Get("/resume/:identifier", [
+        EnsureAuthenticated,
+        EnsureAuthorization([
+            AuthorizationLevel.Staff,
+            AuthorizationLevel.Hacker
+        ])
+    ])
+    async downloadResume(
+        @Response() response: ExpressResponse,
+        @Params("identifier") identifier: number
+    ) {
+        const hacker:
+            | Hacker
+            | undefined = await this.hackerService.findByIdentifier(identifier);
+        const resume = await this.storageService.download(
+            hacker?.application.general.URL.resume!
+        );
+
+        resume
+            ? response.status(200).send({
+                  message: SuccessConstants.RESUME_DOWNLOAD,
+                  data: {
+                      identifier: identifier,
+                      resume: resume
+                  }
+              })
+            : response.status(404).send({
+                  message: ErrorConstants.RESUME_404_MESSAGE
+              });
+    }
+
+    @Post("/resume/:identifier", [
+        EnsureAuthenticated,
+        EnsureAuthorization([
+            AuthorizationLevel.Staff,
+            AuthorizationLevel.Hacker
+        ]),
+        upload.single("file")
+    ])
+    async uploadResume(
+        @Request() request: ExpressRequest,
+        @Response() response: ExpressResponse,
+        @Params("identifier") identifier: number
+    ) {
+        if (!request.file)
+            response.status(400).send({
+                message: ErrorConstants.RESUME_404_MESSAGE
+            });
+        else {
+            const fileName = `resumes/${Date.now()}-${identifier}`;
+
+            await this.storageService.upload(request.file, fileName);
+
+            //TODO - Implement affectedRows > 0 success check.
+            const result = await this.hackerService.updateApplicationField(
+                identifier,
+                "general.URL.resume",
+                request.file
+            );
+
+            response.status(200).send({
+                message: SuccessConstants.RESUME_UPLOAD,
+                data: { fileName: fileName }
+            });
+        }
+    }
 }
+
+//TODO - Implement statistics features, batch accept/application change features, and status change emails.
