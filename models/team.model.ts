@@ -28,10 +28,6 @@ class Team extends BaseEntity {
 
     @Column()
     project: string;
-
-    toJSON() {
-        return this;
-    }
 }
 
 export default Team;

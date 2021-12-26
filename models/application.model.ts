@@ -1,14 +1,15 @@
+import { IsInt, IsJSON, IsString, Max } from "class-validator";
 import {
     Entity,
     BaseEntity,
     PrimaryGeneratedColumn,
     Column,
-    ManyToOne,
-    JoinColumn
+    JoinColumn,
+    OneToOne
 } from "typeorm";
 import Hacker from "./hacker.model";
 
-interface ApplicationSchema {
+export interface ApplicationSchema {
     general: {
         school: string;
         degree: string;
@@ -61,14 +62,15 @@ class Application extends BaseEntity {
     identifier: number;
 
     @Column({ nullable: false })
+    @IsInt()
     year: number;
 
     @Column("jsonb", { nullable: false })
     data: ApplicationSchema;
 
-    @ManyToOne(
+    @OneToOne(
         () => Hacker,
-        (hacker: Hacker) => hacker.applications
+        (hacker: Hacker) => hacker.application
     )
     @JoinColumn()
     hacker: Hacker;

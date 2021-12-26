@@ -1,11 +1,22 @@
 import * as Constants from "../constants/general.constant";
-import { Column, Entity, JoinColumn, OneToMany, ManyToOne } from "typeorm";
+import {
+    Column,
+    Entity,
+    JoinColumn,
+    OneToMany,
+    ManyToOne,
+    OneToOne
+} from "typeorm";
 import Account from "./account.model";
-import Application from "./application.model";
+import Application, { ApplicationSchema } from "./application.model";
 import Team from "./team.model";
 
 @Entity()
-class Hacker extends Account {
+class Hacker {
+    @OneToOne(() => Account, { primary: true })
+    @JoinColumn()
+    account: Account;
+
     @Column({
         enum: Constants.HACKER_STATUSES,
         nullable: false,
@@ -13,35 +24,30 @@ class Hacker extends Account {
     })
     status: string;
 
-    @OneToMany(
-        () => Application,
-        (application) => application.hacker
-    )
-    @JoinColumn()
-    applications: Application[];
+    @Column("jsonb")
+    application: ApplicationSchema;
 
     //TODO: Implement Team One To One
     @ManyToOne(
         () => Team,
         (team) => team.hackers
     )
-    team: Team;
+    team?: Team;
 
     toJSON() {
         return this;
     }
 
     isApplicationComplete() {
-        const application = this.applications[this.applications.length - 1];
-        if (application == null) return false;
+        if (this.application == null) return false;
 
-        const portfolioDone = !!application.data.general.URL.resume;
-        const jobInterestDone = !!application.data.general.jobInterest;
-        const questionOneDone = !!application.data.shortAnswer.question1;
-        const questionTwoDone = !!application.data.shortAnswer.question2;
-        const previousHackathonsDone = !!application.data.shortAnswer
+        const portfolioDone = !!this.application.general.URL.resume;
+        const jobInterestDone = !!this.application.general.jobInterest;
+        const questionOneDone = !!this.application.shortAnswer.question1;
+        const questionTwoDone = !!this.application.shortAnswer.question2;
+        const previousHackathonsDone = !!this.application.shortAnswer
             .previousHackathons;
-        const attendancePreferenceDone = !!application.data.accommodation
+        const attendancePreferenceDone = !!this.application.accommodation
             .attendancePreference;
 
         return (

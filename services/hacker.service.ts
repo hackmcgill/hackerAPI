@@ -1,104 +1,62 @@
-import { UpdateResult } from "typeorm";
+import { autoInjectable, singleton } from "tsyringe";
+import { getRepository, Repository, UpdateResult } from "typeorm";
 import Hacker from "../models/hacker.model";
-const logger = require("./logger.service");
+import { toDataURL } from "qrcode";
+import { EnvService } from "./env.service";
 
 const cache = require("memory-cache");
 
-const Constants = require("../constants/general.constant");
+@autoInjectable()
+@singleton()
+export class HackerService {
+    private readonly hackerRepository: Repository<Hacker>;
 
-const QRCode = require("qrcode");
-
-/**
- * @function createHacker
- * @param {{_id: ObjectId, accountId: ObjectId, application: {Object}}} hackerDetails
- * @return {Promise<Hacker>} The promise will resolve to a hacker object if save is successful.
- * @description Adds a new hacker to database.
- */
-async function createHacker(hackerDetails: Object): Promise<Hacker> {
-    const TAG = `[Hacker Service # createHacker]:`;
-
-    //if (Date.now() < Constants.APPLICATION_CLOSE_TIME) {
-    let hacker = Hacker.create(hackerDetails);
-    return await hacker.save();
-    //}
-    //throw new Error("Sorry, the application deadline has passed!");
-}
-
-/**
- * @function updateOne
- * @param {ObjectId} id
- * @param {{_id?: ObjectId, accountId?: ObjectId, application?: {Object}, teamId?: ObjectId}} hackerDetails
- * @return {DocumentQuery} The document query will resolve to hacker or null.
- * @description Update an account specified by its mongoId with information specified by hackerDetails.
- */
-async function updateOne(
-    identifier: number,
-    hackerDetails: Object
-): Promise<Hacker | UpdateResult> {
-    const TAG = `[Hacker Service # update ]:`;
-
-    return await Hacker.update(identifier, hackerDetails).then((hacker) => {
-        logger.updateCallbackFactory(TAG, "hacker");
-        return hacker;
-    });
-}
-
-/**
- * @function findById
- * @param {ObjectId} id
- * @return {DocumentQuery} The document query will resolve to hacker or null.
- * @description Finds an hacker by the id, which is the mongoId.
- */
-async function findById(identifier: number): Promise<Hacker | undefined> {
-    const TAG = `[Hacker Service # findById ]:`;
-
-    return await Hacker.findOne(identifier).then((hacker) => {
-        logger.queryCallbackFactory(TAG, "hacker", identifier);
-        return hacker;
-    });
-}
-
-/**
- * @async
- * @function findOne
- * @param {ObjectID} query
- * @return {Hacker | null} either hacker or null
- * @description Finds an hacker by some query.
- */
-async function findIds(queries: Object[]): Promise<(Hacker | undefined)[]> {
-    const TAG = `[Hacker Service # findIds ]:`;
-    let ids = [];
-
-    for (const query of queries) {
-        let current = await Hacker.findOne({ where: query }).then(
-            (hacker: Hacker) => {
-                logger.queryCallbackFactory(TAG, "hacker", query);
-                return hacker;
-            }
-        );
-        ids.push(current);
+    constructor(private readonly envService: EnvService) {
+        this.hackerRepository = getRepository(Hacker);
     }
-    return ids;
+
+    public async findByIdentifier(
+        identifier: number
+    ): Promise<Hacker | undefined> {
+        return await this.hackerRepository.findOne({
+            relations: ["account"],
+            where: { account: { identifier: identifier } }
+        });
+    }
+
+    public async save(hacker: Hacker): Promise<Hacker> {
+        return await this.hackerRepository.save(hacker);
+    }
+
+    public async update(
+        identifier: number,
+        hacker: Partial<Hacker>
+    ): Promise<UpdateResult> {
+        return await this.hackerRepository.update(identifier, hacker);
+    }
+
+    public async generateQRCode(data: string) {
+        return await toDataURL(data, {
+            scale: 4
+        });
+    }
+
+    public generateHackerApplicationViewLink(identifier: string): string {
+        const domain = this.getDomain()!;
+        const protocol = domain.includes("localhost") ? "http" : "https";
+        return `${protocol}://${domain}/application/view/${identifier}`;
+    }
+
+    private getDomain() {
+        return this.envService.isDevelopment()
+            ? this.envService.get(`FRONTEND_ADDRESS_DEV`)
+            : this.envService.isProduction()
+            ? this.envService.get(`FRONTEND_ADDRESS_DEPLOY`)
+            : this.envService.get(`FRONTEND_ADDRESS_DEV`);
+    }
 }
 
-//TODO - Remove this function, it is redundant.
-/**
- * @function findByAccountId
- * @param {number} accountId
- * @return {Promise<Hacker | undefined>} A hacker document queried by accountId
- */
-function findByAccountId(accountId: number): Promise<Hacker | undefined> {
-    const TAG = `[ Hacker Service # findByAccountId ]:`;
-    const query = {
-        identifier: accountId
-    };
-
-    return Hacker.findOne({ where: query }).then((hacker: Hacker) => {
-        logger.updateCallbackFactory(TAG, "hacker");
-        return hacker;
-    });
-}
-
+/*
 async function getStatsAllHackersCached() {
     const TAG = `[ hacker Service # getStatsAll ]`;
     if (cache.get(Constants.CACHE_KEY_STATS) !== null) {
@@ -113,35 +71,9 @@ async function getStatsAllHackersCached() {
     const stats = getStats(allHackers);
     cache.put(Constants.CACHE_KEY_STATS, stats, Constants.CACHE_TIMEOUT_STATS); //set a time-out of 5 minutes
     return stats;
-}
+}*/
 
-/**
- * Generate a QR code for the hacker.
- * @param {string} str The string to be encoded in the QR code.
- */
-async function generateQRCode(str: string) {
-    const response = await QRCode.toDataURL(str, {
-        scale: 4
-    });
-    return response;
-}
-
-/**
- * Generate the link for the single hacker view page on frontend.
- * @param {string} httpOrHttps either HTTP or HTTPs
- * @param {string} domain The domain of the frontend site
- * @param {string} id The ID of the hacker to view
- */
-function generateHackerViewLink(
-    httpOrHttps: string,
-    domain: string,
-    id: number
-) {
-    const link = `${httpOrHttps}://${domain}/application/view/${id}`;
-    return link;
-}
-
-function getStats(hackers: Hacker[]): Object {
+/*function getStats(hackers: Hacker[]): Object {
     const TAG = `[ hacker Service # getStats ]`;
     const stats = {
         total: 0,
@@ -236,18 +168,6 @@ function getStats(hackers: Hacker[]): Object {
             ? stats.applicationDate[applicationDate] + 1
             : 1;
             */
-    });
-    return stats;
-}
-
-export {
-    createHacker,
-    findById,
-    updateOne,
-    findIds,
-    findByAccountId,
-    getStats,
-    getStatsAllHackersCached,
-    generateQRCode,
-    generateHackerViewLink
-};
+//});
+//return stats;
+//}

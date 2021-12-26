@@ -1,9 +1,16 @@
+import {
+    Entity,
+    Column,
+    ManyToMany,
+    JoinTable,
+    OneToOne,
+    JoinColumn
+} from "typeorm";
 import Account from "./account.model";
-import { Entity, Column, ManyToMany, JoinTable } from "typeorm";
 import Hacker from "./hacker.model";
 
 @Entity()
-class Sponsor extends Account {
+class Sponsor {
     @Column({ default: 0 })
     tier: number;
 
@@ -16,6 +23,10 @@ class Sponsor extends Account {
     @ManyToMany(() => Hacker)
     @JoinTable()
     nominees: Hacker[];
+
+    @OneToOne(() => Account, { primary: true })
+    @JoinColumn()
+    account: Account;
 }
 
 export default Sponsor;

@@ -5,6 +5,10 @@ import { join } from "path";
 import { container } from "tsyringe";
 import { AccountController } from "./controllers/account.controller";
 import { AuthenticationController } from "./controllers/authentication.controller";
+import { HackerController } from "./controllers/hacker.controller";
+import { SponsorController } from "./controllers/sponsor.controller";
+import { TeamController } from "./controllers/team.controller";
+import { TravelController } from "./controllers/travel.controller";
 import { DatabaseService } from "./services/database.service";
 import { EnvService } from "./services/env.service";
 import { LoggerService } from "./services/logger.service";
@@ -71,7 +75,11 @@ const cors = require("cors");
     const router = express.Router();
     attachControllerInstances(router, [
         container.resolve(AccountController),
-        container.resolve(AuthenticationController)
+        container.resolve(AuthenticationController),
+        container.resolve(HackerController),
+        container.resolve(TeamController),
+        container.resolve(SponsorController),
+        container.resolve(TravelController)
     ]);
     application.use("/api", router);
 

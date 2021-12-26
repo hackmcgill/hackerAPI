@@ -11,10 +11,7 @@ import Hacker from "./hacker.model";
 
 @Entity()
 class Travel extends BaseEntity {
-    @PrimaryGeneratedColumn()
-    identifier: number;
-
-    @OneToOne(() => Hacker)
+    @OneToOne(() => Hacker, { primary: true })
     @JoinColumn()
     hacker: Hacker;
 
@@ -30,10 +27,6 @@ class Travel extends BaseEntity {
 
     @Column({ default: 0 })
     offer: number;
-
-    toJSON() {
-        return this;
-    }
 }
 
 export default Travel;
