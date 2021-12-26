@@ -3,7 +3,10 @@ import { Connection, getConnection } from "typeorm";
 
 @singleton()
 export class SearchService {
-    constructor(private readonly connection: Connection = getConnection()) {}
+    private readonly connection: Connection;
+    constructor() {
+        this.connection = getConnection();
+    }
 
     public executeQuery(
         model: any,

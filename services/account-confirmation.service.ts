@@ -28,6 +28,7 @@ export class AccountConfirmationService {
         identifier: number
     ): Promise<AccountConfirmation | undefined> {
         return await this.accountConfirmationRepository.findOne({
+            relations: ["account"],
             where: { account: { identifier: identifier } }
         });
     }
