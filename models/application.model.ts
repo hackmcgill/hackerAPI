@@ -1,7 +1,6 @@
 import { IsInt, IsJSON, IsString, Max } from "class-validator";
 import {
     Entity,
-    BaseEntity,
     PrimaryGeneratedColumn,
     Column,
     JoinColumn,
@@ -57,9 +56,9 @@ export interface ApplicationSchema {
 }
 
 @Entity()
-class Application extends BaseEntity {
+class Application {
     @PrimaryGeneratedColumn()
-    identifier: number;
+    readonly identifier: number;
 
     @Column({ nullable: false })
     @IsInt()

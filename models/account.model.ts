@@ -1,24 +1,37 @@
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 import { compareSync } from "bcrypt";
-import { IsDate, IsEmail, IsPhoneNumber } from "class-validator";
+import {
+    IsDate,
+    IsEmail,
+    IsEnum,
+    IsInt,
+    IsPhoneNumber,
+    IsString,
+    Length
+} from "class-validator";
 import * as Constants from "../constants/general.constant";
 import { classToPlain, Exclude } from "class-transformer";
 
 @Entity()
-export abstract class Account {
+class Account {
     @PrimaryGeneratedColumn()
-    identifier: number;
+    @IsInt()
+    readonly identifier: number;
 
     @Column({ nullable: false })
+    @IsString()
     firstName: string;
 
     @Column({ nullable: false })
+    @IsString()
     lastName: string;
 
     @Column({ default: "Prefer not to say" })
+    @IsString()
     pronoun: string;
 
     @Column({ default: "Prefer not to say" })
+    @IsString()
     gender: string;
 
     @Column({ nullable: false, unique: true })
@@ -27,9 +40,11 @@ export abstract class Account {
 
     @Column({ nullable: false })
     @Exclude({ toPlainOnly: true })
+    @Length(8, 255)
     password: string;
 
     @Column()
+    @IsString()
     dietaryRestrictions: string;
 
     @Column({ default: false })
@@ -39,9 +54,11 @@ export abstract class Account {
         enum: Constants.EXTENDED_USER_TYPES,
         default: Constants.HACKER
     })
+    @IsEnum(Constants.EXTENDED_USER_TYPES)
     accountType: string;
 
     @Column("date", { nullable: false })
+    @IsDate()
     birthDate: Date;
 
     @Column()

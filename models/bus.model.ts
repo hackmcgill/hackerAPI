@@ -1,4 +1,11 @@
-import { Entity, BaseEntity, Column, ManyToOne, JoinColumn, PrimaryGeneratedColumn } from "typeorm";
+import {
+    Entity,
+    BaseEntity,
+    Column,
+    ManyToOne,
+    JoinColumn,
+    PrimaryGeneratedColumn
+} from "typeorm";
 import Hacker from "./hacker.model";
 
 interface OriginSchema {
@@ -11,9 +18,9 @@ interface OriginSchema {
 }
 
 @Entity()
-class Bus extends BaseEntity {
+class Bus {
     @PrimaryGeneratedColumn()
-    identifier: number;
+    readonly identifier: number;
 
     @Column("jsonb", { nullable: false })
     origin: OriginSchema;
@@ -24,10 +31,6 @@ class Bus extends BaseEntity {
     @ManyToOne(() => Hacker)
     @JoinColumn()
     hackers: Hacker[];
-
-    toJSON() {
-        return this;
-    }
 }
 
 export default Bus;

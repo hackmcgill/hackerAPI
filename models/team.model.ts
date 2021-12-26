@@ -1,3 +1,4 @@
+import { IsString } from "class-validator";
 import {
     Entity,
     BaseEntity,
@@ -5,15 +6,15 @@ import {
     OneToMany,
     PrimaryGeneratedColumn
 } from "typeorm";
-import * as Constants from "../constants/general.constant";
 import Hacker from "./hacker.model";
 
 @Entity()
-class Team extends BaseEntity {
+class Team {
     @PrimaryGeneratedColumn()
     identifier: number;
 
     @Column({ nullable: false, unique: true })
+    @IsString()
     name: string;
 
     //TODO: Implement max team size.
@@ -24,9 +25,11 @@ class Team extends BaseEntity {
     hackers: Hacker[];
 
     @Column({ default: undefined })
+    @IsString()
     submission: string;
 
     @Column()
+    @IsString()
     project: string;
 }
 

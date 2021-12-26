@@ -1,3 +1,4 @@
+import { IsEmail, IsEnum } from "class-validator";
 import {
     Entity,
     BaseEntity,
@@ -7,38 +8,34 @@ import {
     PrimaryGeneratedColumn
 } from "typeorm";
 import Account from "./account.model";
-
-const Constants = {
-    General: require("../constants/general.constant")
-};
+import * as GeneralConstants from "../constants/general.constant";
 
 @Entity()
-class AccountConfirmation extends BaseEntity {
+class AccountConfirmation {
     @PrimaryGeneratedColumn()
-    identifier: number;
+    readonly identifier: number;
 
     @OneToOne(() => Account)
     @JoinColumn()
     account?: Account;
 
     @Column({
-        enum: Constants.General.EXTENDED_USER_TYPES,
-        default: Constants.General.HACKER
+        enum: GeneralConstants.EXTENDED_USER_TYPES,
+        default: GeneralConstants.HACKER
     })
+    @IsEnum(GeneralConstants.EXTENDED_USER_TYPES)
     accountType: string;
 
     @Column({ nullable: false })
+    @IsEmail()
     email: string;
 
     @Column({
-        enum: Constants.General.CONFIRMATION_TYPES,
-        default: Constants.General.CONFIRMATION_TYPE_ORGANIC
+        enum: GeneralConstants.CONFIRMATION_TYPES,
+        default: GeneralConstants.CONFIRMATION_TYPE_ORGANIC
     })
+    @IsEnum(GeneralConstants.CONFIRMATION_TYPES)
     confirmationType: string;
-
-    toJSON() {
-        return this;
-    }
 }
 
 export default AccountConfirmation;

@@ -1,3 +1,4 @@
+import { IsDate } from "class-validator";
 import {
     Entity,
     BaseEntity,
@@ -9,20 +10,17 @@ import {
 import Account from "./account.model";
 
 @Entity()
-class PasswordReset extends BaseEntity {
+class PasswordReset {
     @PrimaryGeneratedColumn()
-    identifier: number;
+    readonly identifier: number;
 
     @OneToOne(() => Account)
     @JoinColumn()
     account: Account;
 
     @Column({ nullable: false })
+    @IsDate()
     createdAt: Date;
-
-    toJSON() {
-        return this;
-    }
 }
 
 export default PasswordReset;
