@@ -1,21 +1,26 @@
 // Imports the Google Cloud client library
 import * as GStorage from "@google-cloud/storage";
-import * as Logger from "./logger.service";
-import * as Env from "./env.service";
+import { autoInjectable } from "tsyringe";
+import { EnvService } from "./env.service";
+import { LoggerService } from "./logger.service";
 
-class StorageService {
+@autoInjectable()
+export class StorageService {
     bucketName: string | undefined;
     storage: any;
     bucket: any;
 
-    constructor() {
+    constructor(
+        private readonly envService: EnvService,
+        loggerService: LoggerService
+    ) {
         this.bucketName = process.env.BUCKET_NAME || "";
         try {
             this.storage = new GStorage.Storage();
         } catch (error) {
-            Logger.error(error);
+            loggerService.getLogger().error(error);
         }
-        if (Env.isProduction())
+        if (this.envService.isProduction())
             this.bucket = this.storage.bucket(this.bucketName);
     }
 
@@ -43,6 +48,7 @@ class StorageService {
             blobStream.end(file.buffer);
         });
     }
+
     /**
      * Download file from storage.
      * @param {string} filename path to file in bucket
@@ -81,6 +87,7 @@ class StorageService {
         const file = this.bucket.file(filename);
         return file.exists();
     }
+
     /**
      * Get the public URL of the file
      * @param {string} filename the path of the file
@@ -89,5 +96,3 @@ class StorageService {
         return `https://storage.googleapis.com/${this.bucket.name}/${filename}`;
     }
 }
-
-export default new StorageService();
