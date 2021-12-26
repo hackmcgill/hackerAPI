@@ -6,6 +6,7 @@ import { container } from "tsyringe";
 import { AccountController } from "./controllers/account.controller";
 import { AuthenticationController } from "./controllers/authentication.controller";
 import { HackerController } from "./controllers/hacker.controller";
+import { SearchController } from "./controllers/search.controller";
 import { SponsorController } from "./controllers/sponsor.controller";
 import { TeamController } from "./controllers/team.controller";
 import { TravelController } from "./controllers/travel.controller";
@@ -79,7 +80,8 @@ const cors = require("cors");
         container.resolve(HackerController),
         container.resolve(TeamController),
         container.resolve(SponsorController),
-        container.resolve(TravelController)
+        container.resolve(TravelController),
+        container.resolve(SearchController)
     ]);
     application.use("/api", router);
 
