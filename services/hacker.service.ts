@@ -35,6 +35,23 @@ export class HackerService {
         return await this.hackerRepository.update(identifier, hacker);
     }
 
+    public async updateApplicationField(
+        identifier: number,
+        key: string,
+        value: any
+    ): Promise<UpdateResult> {
+        return await this.hackerRepository
+            .createQueryBuilder()
+            .update()
+            .set({
+                application: () => `jsonb_set(application,${key},${value})`
+            })
+            .where("accountIdentifier = :identifier", {
+                identifier: identifier
+            })
+            .execute();
+    }
+
     public async generateQRCode(data: string) {
         return await toDataURL(data, {
             scale: 4
