@@ -17,6 +17,6 @@
       "resolveJsonModule": true,
       "emitDecoratorMetadata": true
     },
-    "include": ["./**/*", ".env"],
-    "exclude": ["node_modules", "**/*.spec.ts", ".vscode", ".github", ".idea", "docs", "scripts", "tests"]
+    "include": ["./src/**/*", "./.env"],
+    "exclude": ["node_modules", "**/*.spec.ts", ".vscode", ".github", "docs", "scripts", "./src/tests"]
 }
