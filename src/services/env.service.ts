@@ -21,7 +21,7 @@ interface GoogleCloudPlatformCredentials {
 export class EnvService {
     constructor() {
         const result: DotenvConfigOutput = config({
-            path: join(__dirname, "../.env")
+            path: join(__dirname, "../../.env")
         });
         if (result.error) throw result.error;
         this.createGoogleCloudPlatformFile();
