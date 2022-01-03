@@ -27,9 +27,9 @@ export class LoggerService {
             winston.format.timestamp({
                 format: "MM/D/YYYY HH:MM:SS"
             }),
-            winston.format.printf((info) => {
-                return `${info.timestamp} [${info.level}] : ${info.message}`;
-            })
+            winston.format.printf(
+                (info) => `${info.timestamp} [${info.level}] : ${info.message}`
+            )
         );
 
         this.logger = winston.createLogger({
@@ -40,7 +40,8 @@ export class LoggerService {
         this.requestLogger = expressWinston.logger({
             transports: [new winston.transports.Console()],
             format: format,
-            colorize: !envService.isProduction()
+            colorize: !envService.isProduction(),
+            msg: `{{res.statusCode}} {{req.method}} {{res.responseTime}}ms {{req.url}}`
         });
 
         this.errorLogger = expressWinston.errorLogger({

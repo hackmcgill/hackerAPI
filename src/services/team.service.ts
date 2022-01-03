@@ -12,20 +12,28 @@ export class TeamService {
         this.teamRepository = getRepository(Team);
     }
 
-    public async findByIdentifier(identifier: number) {
-        return await this.teamRepository.findOne(identifier);
+    public async findByIdentifier(
+        identifier: number
+    ): Promise<Team | undefined> {
+        return await this.teamRepository.findOne(identifier, {
+            relations: ["members", "members.account"]
+        });
     }
 
-    public async findByName(name: string) {
-        return await this.teamRepository.findOne({ where: { name: name } });
+    public async findByName(name: string): Promise<Team | undefined> {
+        return await this.teamRepository.findOne({
+            where: { name: name },
+            relations: ["members", "members.account"]
+        });
     }
 
-    public async findByHacker({ account }: Hacker) {
-        const identifier = account.identifier;
+    public async findByHacker({
+        account: { identifier }
+    }: Hacker): Promise<Team | undefined> {
         return await this.teamRepository
             .createQueryBuilder("team")
-            .leftJoinAndSelect("team.hackers", "hacker")
-            .where("hacker.accountIdentifier = :identifier", { identifier })
+            .leftJoinAndSelect("team.members", "hacker")
+            .where("hacker.identifier = :identifier", { identifier })
             .getOne();
     }
 
@@ -35,10 +43,10 @@ export class TeamService {
     ): Promise<boolean> {
         const team = await this.findByIdentifier(identifier);
 
-        if (team && team.hackers.length < 4) {
+        if (team && team.members.length < 4) {
             await this.teamRepository
                 .createQueryBuilder()
-                .relation("hackers")
+                .relation("members")
                 .of(team)
                 .add(hacker);
             return true;
@@ -47,25 +55,12 @@ export class TeamService {
         return false;
     }
 
-    public async removeMember(
-        identifier: number,
-        hacker: Hacker
-    ): Promise<boolean> {
-        const team = await this.findByIdentifier(identifier);
-
-        if (team) {
-            await this.teamRepository
-                .createQueryBuilder()
-                .relation("hackers")
-                .of(team)
-                .remove(hacker);
-            // This team had 1 hacker left, and we removed them just above, thus we delete it.
-            if (team.hackers.length == 1)
-                await this.teamRepository.remove(team);
-            return true;
-        }
-
-        return false;
+    public async removeMember(hacker: Hacker): Promise<void> {
+        await this.teamRepository
+            .createQueryBuilder("team")
+            .relation(Hacker, "team")
+            .of(hacker)
+            .set({ team: null });
     }
 
     public async update(

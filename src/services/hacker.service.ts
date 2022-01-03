@@ -18,10 +18,19 @@ export class HackerService {
     public async findByIdentifier(
         identifier: number
     ): Promise<Hacker | undefined> {
-        return await this.hackerRepository.findOne({
-            relations: ["account"],
-            where: { account: { identifier: identifier } }
-        });
+        /**
+         * This code finds the hacker by it's identifier, loads the account data, and
+         * instead of loading the team as a json, simply returns the identifier.
+         * This approach gives us the best of both worlds.
+         */
+        return await this.hackerRepository
+            .createQueryBuilder("hacker")
+            .where("hacker.identifier = :identifier", {
+                identifier: identifier
+            })
+            .loadAllRelationIds({ relations: ["team"] })
+            .leftJoinAndSelect("hacker.account", "account")
+            .getOne();
     }
 
     public async save(hacker: Hacker): Promise<Hacker> {
@@ -46,7 +55,7 @@ export class HackerService {
             .set({
                 application: () => `jsonb_set(application,${key},${value})`
             })
-            .where("accountIdentifier = :identifier", {
+            .where("identifier = :identifier", {
                 identifier: identifier
             })
             .execute();
