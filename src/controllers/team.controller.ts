@@ -22,6 +22,16 @@ import * as SuccessConstants from "../constants/success.constant";
 import * as ErrorConstants from "../constants/error.constant";
 import { HackerService } from "../services/hacker.service";
 import Hacker from "../models/hacker.model";
+import { HackerStatus } from "@constants/general.constant";
+
+interface MemberInfo {
+    firstName: string;
+    lastName: string;
+    status: string;
+    school: string;
+}
+
+type TeamWithoutMembers = Omit<Team, "members">;
 
 @autoInjectable()
 @Controller("/team")
@@ -33,10 +43,10 @@ export class TeamController {
 
     @Get("/:identifier", [
         EnsureAuthenticated,
-        EnsureAuthorization([
-            AuthorizationLevel.Staff,
-            AuthorizationLevel.Hacker
-        ])
+        EnsureAuthorization(
+            [AuthorizationLevel.Staff, AuthorizationLevel.Hacker],
+            true
+        )
     ])
     async getByIdentifier(
         @Response() response: ExpressResponse,
@@ -46,10 +56,26 @@ export class TeamController {
             identifier
         );
 
+        const teamWithoutMembers: TeamWithoutMembers = team as TeamWithoutMembers;
+        const members: Array<MemberInfo> = [];
+
+        if (team)
+            team.members.forEach((member) =>
+                members.push({
+                    firstName: member.account.firstName,
+                    lastName: member.account.lastName,
+                    school: member.application.general.school,
+                    status: member.status
+                })
+            );
+
         return team
             ? response.status(200).json({
                   message: SuccessConstants.TEAM_READ,
-                  data: team
+                  data: {
+                      team: teamWithoutMembers,
+                      members: members
+                  }
               })
             : response.status(404).json({
                   message: ErrorConstants.TEAM_404_MESSAGE
@@ -65,6 +91,11 @@ export class TeamController {
     ])
     async create(@Response() response: ExpressResponse, @Body() team: Team) {
         const result = await this.teamService.save(team);
+
+        //TODO - Figure out why we do not automatically add the first member to the team.
+        // The cascade should be working and automatically adding the relationship, but it does not.
+        if (result)
+            this.teamService.addMember(result.identifier, team.members[0]);
 
         //TODO - Change duplicate message from Account to Team.
         return result
@@ -87,7 +118,7 @@ export class TeamController {
     async update(
         @Response() response: ExpressResponse,
         @Params("hackerIdentifier") hackerIdentifier: number,
-        @Body() update: Partial<Omit<Team, "hackers">>
+        @Body() update: Partial<Omit<Team, "members">>
     ) {
         const team: Team | undefined = (
             await this.hackerService.findByIdentifier(hackerIdentifier)
@@ -107,7 +138,7 @@ export class TeamController {
         });
     }
 
-    @Patch("/join", [
+    @Patch("/members/join", [
         EnsureAuthenticated,
         EnsureAuthorization([AuthorizationLevel.Hacker])
     ])
@@ -150,10 +181,7 @@ export class TeamController {
                         name: name
                     }
                 });
-            await this.teamService.removeMember(
-                hacker?.team?.identifier,
-                hacker
-            );
+            await this.teamService.removeMember(hacker);
         }
 
         if (!(await this.teamService.addMember(team?.identifier!, hacker!)))
@@ -166,7 +194,7 @@ export class TeamController {
         });
     }
 
-    @Patch("/leave", [
+    @Patch("/members/leave", [
         EnsureAuthenticated,
         EnsureAuthorization([AuthorizationLevel.Hacker])
     ])
@@ -186,11 +214,7 @@ export class TeamController {
                 message: ErrorConstants.HACKER_404_MESSAGE
             });
         else {
-            if (hacker.team)
-                await this.teamService.removeMember(
-                    hacker.team.identifier,
-                    hacker
-                );
+            if (hacker.team) await this.teamService.removeMember(hacker);
             else
                 response.status(404).send({
                     message: ErrorConstants.TEAM_404_MESSAGE
