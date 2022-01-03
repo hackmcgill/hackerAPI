@@ -13,7 +13,10 @@ import { AccountService } from "../services/account.service";
 // TODO - Find a better way to pass parameters rather than encapsulating middleware class.
 // Current solution found from https://github.com/serhiisol/node-decorators/issues/111
 // Library Author Suggest's Dependency Injection.
-export function EnsureAuthorization(roles: Array<AuthorizationLevel>): any {
+export function EnsureAuthorization(
+    roles: Array<AuthorizationLevel>,
+    noIdentifierCheck?: boolean
+): any {
     @injectable()
     class EnsureAuthorizationClass implements Middleware {
         constructor(
@@ -56,8 +59,11 @@ export function EnsureAuthorization(roles: Array<AuthorizationLevel>): any {
                     | undefined = await this.accountService.findByIdentifier(
                     parseInt(request.params["identifier"])
                 );
-                //@ts-ignore
-                if (query?.identifier !== request.user?.identifier)
+                if (
+                    !noIdentifierCheck &&
+                    //@ts-ignore
+                    query?.identifier !== request.user?.identifier
+                )
                     return response.status(403).json({
                         message: ErrorConstants.AUTH_403_MESSAGE,
                         error: { route: request.originalUrl }
