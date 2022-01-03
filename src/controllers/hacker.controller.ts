@@ -31,6 +31,34 @@ export class HackerController {
         private readonly storageService: StorageService
     ) {}
 
+    @Get("/self", [
+        EnsureAuthenticated,
+        EnsureAuthorization([
+            AuthorizationLevel.Staff,
+            AuthorizationLevel.Hacker
+        ])
+    ])
+    async getSelf(
+        @Request() request: ExpressRequest,
+        @Response() response: ExpressResponse
+    ) {
+        const hacker:
+            | Hacker
+            | undefined = await this.hackerService.findByIdentifier(
+            //@ts-ignore
+            request.user?.identifier
+        );
+
+        return hacker
+            ? response.status(200).json({
+                  message: SuccessConstants.HACKER_READ,
+                  data: hacker
+              })
+            : response.status(404).json({
+                  message: ErrorConstants.HACKER_404_MESSAGE
+              });
+    }
+
     @Get("/:identifier", [
         EnsureAuthenticated,
         EnsureAuthorization([
@@ -62,6 +90,7 @@ export class HackerController {
         @Body() hacker: Hacker
     ) {
         //TODO - Check if applications are open when hacker is created.
+        //TODO - Fix bug where Hacker status is None as it is passed into the API. (Maybe override the status variable somehow?)
         const result: Hacker = await this.hackerService.save(hacker);
 
         return result
@@ -116,7 +145,7 @@ export class HackerController {
             | Hacker
             | undefined = await this.hackerService.findByIdentifier(identifier);
         const resume = await this.storageService.download(
-            hacker?.application.general.URL.resume!
+            hacker?.application.general.URL.resume
         );
 
         resume
