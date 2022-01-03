@@ -9,7 +9,7 @@ import {
     IsString,
     Length
 } from "class-validator";
-import * as Constants from "../constants/general.constant";
+import { UserType } from "../constants/general.constant";
 import { classToPlain, Exclude } from "class-transformer";
 
 @Entity()
@@ -43,18 +43,17 @@ class Account {
     @Length(8, 255)
     password: string;
 
-    @Column()
-    @IsString()
+    @Column({ array: true })
     dietaryRestrictions: string;
 
     @Column({ default: false })
     confirmed: boolean;
 
     @Column({
-        enum: Constants.EXTENDED_USER_TYPES,
-        default: Constants.HACKER
+        enum: UserType,
+        default: UserType.Hacker
     })
-    @IsEnum(Constants.EXTENDED_USER_TYPES)
+    @IsEnum(UserType)
     accountType: string;
 
     @Column("date", { nullable: false })
@@ -79,22 +78,12 @@ class Account {
     }
 
     /**
-     * Returns if the accountType corresponds to a sponsor
-     */
-    isSponsor() {
-        return (
-            Constants.SPONSOR_TIERS.includes(this.accountType) ||
-            this.accountType == Constants.SPONSOR
-        );
-    }
-
-    /**
      * Calculates the user's age
      */
     getAge() {
         // birthday is a date
-        var ageDifMs = Date.now() - this.birthDate.getTime();
-        var ageDate = new Date(ageDifMs); // miliseconds from epoch
+        const ageDifMs = Date.now() - this.birthDate.getTime();
+        const ageDate = new Date(ageDifMs); // miliseconds from epoch
         return Math.abs(ageDate.getUTCFullYear() - 1970);
     }
 }

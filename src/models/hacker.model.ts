@@ -1,26 +1,19 @@
-import * as Constants from "../constants/general.constant";
-import {
-    Column,
-    Entity,
-    JoinColumn,
-    OneToMany,
-    ManyToOne,
-    OneToOne
-} from "typeorm";
+import { HackerStatus } from "../constants/general.constant";
+import { Column, Entity, JoinColumn, ManyToOne, OneToOne } from "typeorm";
 import Account from "./account.model";
-import Application, { ApplicationSchema } from "./application.model";
+import { ApplicationSchema } from "./application.model";
 import Team from "./team.model";
 
 @Entity()
 class Hacker {
-    @OneToOne(() => Account, { primary: true })
-    @JoinColumn()
+    @OneToOne(() => Account, { primary: true, cascade: true })
+    @JoinColumn({ name: "identifier" })
     account: Account;
 
     @Column({
-        enum: Constants.HACKER_STATUSES,
+        enum: HackerStatus,
         nullable: false,
-        default: "None"
+        default: HackerStatus.None
     })
     status: string;
 
@@ -30,35 +23,10 @@ class Hacker {
     //TODO: Implement Team One To One
     @ManyToOne(
         () => Team,
-        (team) => team.hackers
+        (team) => team.members
     )
+    @JoinColumn({ referencedColumnName: "identifier" })
     team?: Team;
-
-    toJSON() {
-        return this;
-    }
-
-    isApplicationComplete() {
-        if (this.application == null) return false;
-
-        const portfolioDone = !!this.application.general.URL.resume;
-        const jobInterestDone = !!this.application.general.jobInterest;
-        const questionOneDone = !!this.application.shortAnswer.question1;
-        const questionTwoDone = !!this.application.shortAnswer.question2;
-        const previousHackathonsDone = !!this.application.shortAnswer
-            .previousHackathons;
-        const attendancePreferenceDone = !!this.application.accommodation
-            .attendancePreference;
-
-        return (
-            portfolioDone &&
-            jobInterestDone &&
-            questionOneDone &&
-            questionTwoDone &&
-            previousHackathonsDone &&
-            attendancePreferenceDone
-        );
-    }
 }
 
 export default Hacker;

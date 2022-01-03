@@ -1,10 +1,10 @@
 import { IsString } from "class-validator";
 import {
     Entity,
-    BaseEntity,
     Column,
     OneToMany,
-    PrimaryGeneratedColumn
+    PrimaryGeneratedColumn,
+    JoinColumn
 } from "typeorm";
 import Hacker from "./hacker.model";
 
@@ -20,17 +20,19 @@ class Team {
     //TODO: Implement max team size.
     @OneToMany(
         () => Hacker,
-        (hacker) => hacker.team
+        (hacker) => hacker.team,
+        { cascade: true, eager: true }
     )
-    hackers: Hacker[];
+    @JoinColumn()
+    members: Array<Hacker>;
 
-    @Column({ default: undefined })
+    @Column({ nullable: true })
     @IsString()
-    submission: string;
+    submission?: string;
 
-    @Column()
+    @Column({ nullable: true })
     @IsString()
-    project: string;
+    project?: string;
 }
 
 export default Team;

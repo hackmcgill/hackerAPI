@@ -1,4 +1,4 @@
-import { IsInt, IsJSON, IsString, Max } from "class-validator";
+import { IsInt } from "class-validator";
 import {
     Entity,
     PrimaryGeneratedColumn,
@@ -12,7 +12,7 @@ export interface ApplicationSchema {
     general: {
         school: string;
         degree: string;
-        fieldOfStudy: string[];
+        fieldOfStudy: Array<string>;
         graduationYear: number;
         jobInterest: string;
         URL: {
@@ -26,7 +26,7 @@ export interface ApplicationSchema {
         };
     };
     shortAnswer: {
-        skills: string[];
+        skills: Array<string>;
         //any miscelaneous comments that the user has
         comments: string;
         //"Why do you want to come to our hackathon?"
@@ -36,7 +36,7 @@ export interface ApplicationSchema {
         previousHackathons: number;
     };
     other: {
-        ethnicity: string[];
+        ethnicity: Array<string>;
         privacyPolicy: boolean;
         codeOfConduct: boolean;
     };
@@ -71,7 +71,7 @@ class Application {
         () => Hacker,
         (hacker: Hacker) => hacker.application
     )
-    @JoinColumn()
+    @JoinColumn({ name: "identifier" })
     hacker: Hacker;
 }
 

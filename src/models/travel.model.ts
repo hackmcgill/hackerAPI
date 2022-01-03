@@ -1,13 +1,12 @@
-import * as Constants from "../constants/general.constant";
-import { Entity, BaseEntity, OneToOne, JoinColumn, Column } from "typeorm";
+import { Entity, OneToOne, JoinColumn, Column } from "typeorm";
 import Hacker from "./hacker.model";
 import * as GeneralConstants from "../constants/general.constant";
-import { IsEnum, IsInt, IsNumber, IsString, Max, Min } from "class-validator";
+import { IsEnum, IsNumber, Max, Min } from "class-validator";
 
 @Entity()
-class Travel extends BaseEntity {
+class Travel {
     @OneToOne(() => Hacker, { primary: true })
-    @JoinColumn()
+    @JoinColumn({ name: "identifier" })
     hacker: Hacker;
 
     @Column({
@@ -16,7 +15,7 @@ class Travel extends BaseEntity {
         default: "None"
     })
     @IsEnum(GeneralConstants.TravelStatus)
-    status: String;
+    status: string;
 
     @Column({ nullable: false })
     @IsNumber()

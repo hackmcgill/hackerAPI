@@ -1,6 +1,5 @@
 import {
     Entity,
-    BaseEntity,
     Column,
     ManyToOne,
     JoinColumn,
@@ -29,8 +28,8 @@ class Bus {
     capacity: number;
 
     @ManyToOne(() => Hacker)
-    @JoinColumn()
-    hackers: Hacker[];
+    @JoinColumn({ name: "identifier" })
+    hackers: Array<Hacker>;
 }
 
 export default Bus;

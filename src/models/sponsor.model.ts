@@ -26,10 +26,10 @@ class Sponsor {
 
     @ManyToMany(() => Hacker)
     @JoinTable()
-    nominees: Hacker[];
+    nominees: Array<Hacker>;
 
     @OneToOne(() => Account, { primary: true })
-    @JoinColumn()
+    @JoinColumn({ name: "identifier" })
     account: Account;
 }
 
