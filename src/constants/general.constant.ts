@@ -5,6 +5,18 @@ const HACKATHON_NAME = "McHacks";
 const DEVPOST_REGEX = /^(http(s)?:(\/\/)?)?(www\.)?(([-a-zA-Z0-9@:%._\+~#=]{2,256}\.)?devpost\.com)\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$/;
 // from https://emailregex.com
 const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+enum HackerStatus {
+    None = "None",
+    Applied = "Applied",
+    Accepted = "Accepted",
+    Waitlisted = "Waitlisted",
+    Declined = "Declined",
+    Confirmed = "Confirmed",
+    Withdrawn = "Withdrawn",
+    CheckedIn = "Checked-in"
+}
+
 const HACKER_STATUS_NONE = "None";
 const HACKER_STATUS_APPLIED = "Applied";
 const HACKER_STATUS_ACCEPTED = "Accepted";
@@ -89,6 +101,13 @@ enum ShirtSize {
 enum AttendancePreference {
     Remote = "Remote",
     InPerson = "In Person"
+}
+
+enum UserType {
+    Staff = "Staff",
+    Sponsor = "Sponsor",
+    Volunteer = "Volunteer",
+    Hacker = "Hacker"
 }
 
 // Enums (must match with frontend)
@@ -201,5 +220,10 @@ export {
     SAMPLE_DIET_RESTRICTIONS,
     CONFIRMATION_TYPES,
     CONFIRMATION_TYPE_INVITE,
-    CONFIRMATION_TYPE_ORGANIC
+    CONFIRMATION_TYPE_ORGANIC,
+    UserType,
+    HackerStatus,
+    JobInterest,
+    ShirtSize,
+    AttendancePreference
 };
