@@ -10,12 +10,13 @@ import { SearchController } from "./controllers/search.controller";
 import { SponsorController } from "./controllers/sponsor.controller";
 import { TeamController } from "./controllers/team.controller";
 import { TravelController } from "./controllers/travel.controller";
+import { SettingsController } from "./controllers/settings.controller";
 import { DatabaseService } from "./services/database.service";
 import { EnvService } from "./services/env.service";
 import { LoggerService } from "./services/logger.service";
-const cookieParser = require("cookie-parser");
-const cookieSession = require("cookie-session");
-const cors = require("cors");
+import cookieParser from "cookie-parser";
+import cookieSession from "cookie-session";
+import cors from "cors";
 
 (async () => {
     const application = express();
@@ -81,7 +82,8 @@ const cors = require("cors");
         container.resolve(TeamController),
         container.resolve(SponsorController),
         container.resolve(TravelController),
-        container.resolve(SearchController)
+        container.resolve(SearchController),
+        container.resolve(SettingsController)
     ]);
     application.use("/api", router);
 
