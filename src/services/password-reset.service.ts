@@ -1,7 +1,7 @@
 import { autoInjectable } from "tsyringe";
 import { DeleteResult, getRepository, Repository } from "typeorm";
 import Account from "../models/account.model";
-import PasswordReset from "../models/passwordResetToken.model";
+import PasswordReset from "../models/password-reset-token.model";
 import jwt from "jsonwebtoken";
 import { EnvService } from "./env.service";
 

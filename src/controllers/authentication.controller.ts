@@ -14,7 +14,7 @@ import {
     Request as ExpressRequest,
     Response as ExpressResponse
 } from "express";
-import { EmailAndPasswordStrategy } from "../strategy/emailAndPassword.strategy";
+import { EmailAndPasswordStrategy } from "../strategies/email-and-password.strategy";
 import passport from "passport";
 import Account from "../models/account.model";
 import * as ErrorConstants from "../constants/error.constant";
@@ -22,13 +22,13 @@ import * as SuccessConstants from "../constants/success.constant";
 import { EnsureAuthenticated } from "../middlewares/authenticated.middleware";
 import { PasswordResetService } from "../services/password-reset.service";
 import { AccountService } from "../services/account.service";
-import PasswordReset from "../models/passwordResetToken.model";
+import PasswordReset from "../models/password-reset-token.model";
 import { EmailService } from "../services/email.service";
 import { join } from "path";
 import jwt from "jsonwebtoken";
 import { EnvService } from "../services/env.service";
 import { AccountConfirmationService } from "../services/account-confirmation.service";
-import AccountConfirmation from "../models/accountConfirmationToken.model";
+import AccountConfirmation from "../models/account-confirmation-token.model";
 import { EnsureAuthorization } from "../middlewares/authorization.middleware";
 import { AuthorizationLevel } from "../constants/authorization-level.constant";
 
@@ -137,7 +137,7 @@ export class AuthenticationController {
     @Post("/password/reset")
     async resetPassword(
         @Response() response: ExpressResponse,
-        @Headers("X-Reset-Token") token: string,
+        @Body("X-Reset-Token") token: string,
         @Body("password") password: string
     ) {
         // Check if the JWT is valid and provide deconstructed object of identifier and account identiifer.

@@ -1,7 +1,6 @@
 import { IsDate } from "class-validator";
 import {
     Entity,
-    BaseEntity,
     Column,
     JoinColumn,
     OneToOne,
@@ -15,7 +14,7 @@ class PasswordReset {
     readonly identifier: number;
 
     @OneToOne(() => Account)
-    @JoinColumn()
+    @JoinColumn({ name: "identifier" })
     account: Account;
 
     @Column({ nullable: false })

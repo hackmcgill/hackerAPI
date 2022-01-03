@@ -1,7 +1,6 @@
 import { IsEmail, IsEnum } from "class-validator";
 import {
     Entity,
-    BaseEntity,
     Column,
     JoinColumn,
     OneToOne,
@@ -16,7 +15,7 @@ class AccountConfirmation {
     readonly identifier: number;
 
     @OneToOne(() => Account)
-    @JoinColumn()
+    @JoinColumn({ name: "identifier" })
     account?: Account;
 
     @Column({
