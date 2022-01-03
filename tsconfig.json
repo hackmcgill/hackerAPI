@@ -9,12 +9,21 @@
       "removeComments": true,
       "preserveConstEnums": true,
       "sourceMap": true,
-      "outDir": "dist/",
       "esModuleInterop": true,
       "moduleResolution": "node",
       "resolveJsonModule": true,
-      "emitDecoratorMetadata": true
+      "emitDecoratorMetadata": true,
+      "baseUrl": "src/",
+      "paths": {
+        "@models/*": ["models/*"],
+        "@controllers/*": ["controllers/*"],
+        "@services/*": ["services/*"],
+        "@middlewares/*": ["middlewares/*"],
+        "@strategies/*": ["strategies/*"],
+        "@constants/*": ["constants/*"],
+        "@assets/*": ["assets/*"]
+      }
     },
     "include": ["./src/**/*", "./.env"],
-    "exclude": ["node_modules", "**/*.spec.ts", ".vscode", ".github", "docs", "scripts", "./src/tests"]
+    "exclude": ["node_modules", "src/**/*.spec.ts", ".vscode", ".github", "docs", "scripts", "./src/tests"]
 }

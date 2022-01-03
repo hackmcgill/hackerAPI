@@ -9,8 +9,8 @@
         "deploy": "NODE_ENV=deployment node ./bin/www.js",
         "test": "DEBUG=hackboard:* NODE_ENV=test mocha --parallel --reporter spec tests/**.js --exit",
         "docs": "apidoc -i ./routes -o ./docs/api/",
-        "format": "prettier --write '**/*.js'",
-        "lint": "eslint --fix '**/*.js'"
+        "format": "prettier --write 'src/**/*.ts'",
+        "lint": "eslint --fix 'src/**/*.ts'"
     },
     "dependencies": {
         "@decorators/di": "^1.0.3",
@@ -45,6 +45,9 @@
     },
     "devDependencies": {
         "@types/bcrypt": "^5.0.0",
+        "@types/cookie-parser": "^1.4.2",
+        "@types/cookie-session": "^2.0.44",
+        "@types/cors": "^2.8.12",
         "@types/express": "^4.17.13",
         "@types/express-winston": "^4.0.0",
         "@types/google-cloud__storage": "^1.7.2",
@@ -57,6 +60,8 @@
         "@types/qrcode": "^1.4.2",
         "@types/superagent": "^4.1.13",
         "@types/validator": "^13.7.0",
+        "@typescript-eslint/eslint-plugin": "^5.8.1",
+        "@typescript-eslint/parser": "^5.8.1",
         "apidoc": "^0.28.1",
         "chai": "^4.3.4",
         "chai-http": "^4.3.0",
