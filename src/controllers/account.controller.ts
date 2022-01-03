@@ -1,4 +1,7 @@
-import { Response as ExpressResponse } from "express";
+import {
+    Request as ExpressRequest,
+    Response as ExpressResponse
+} from "express";
 import { autoInjectable } from "tsyringe";
 import { AccountService } from "../services/account.service";
 import * as SuccessConstants from "../constants/success.constant";
@@ -10,6 +13,7 @@ import {
     Params,
     Patch,
     Post,
+    Request,
     Response
 } from "@decorators/express";
 import Account from "../models/account.model";
@@ -42,6 +46,34 @@ export class AccountController {
         @Body("email") email: string
     ) {
         const account = await this.accountService.findByEmail(email);
+
+        return account
+            ? response.status(200).json({
+                  message: SuccessConstants.ACCOUNT_READ,
+                  data: account
+              })
+            : response.status(404).json({
+                  message: ErrorConstants.ACCOUNT_404_MESSAGE
+              });
+    }
+
+    @Get("/self", [
+        EnsureAuthenticated,
+        EnsureAuthorization([
+            AuthorizationLevel.Staff,
+            AuthorizationLevel.Account
+        ])
+    ])
+    async getSelf(
+        @Request() request: ExpressRequest,
+        @Response() response: ExpressResponse
+    ) {
+        const account:
+            | Account
+            | undefined = await this.accountService.findByIdentifier(
+            //@ts-ignore
+            request.user?.identifier
+        );
 
         return account
             ? response.status(200).json({
