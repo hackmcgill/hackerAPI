@@ -1,8 +1,8 @@
-import { HackerStatus } from "../constants/general.constant";
+import { HackerStatus } from "@constants/general.constant";
 import { Column, Entity, JoinColumn, ManyToOne, OneToOne } from "typeorm";
-import Account from "./account.model";
-import { ApplicationSchema } from "./application.model";
-import Team from "./team.model";
+import Account from "@models/account.model";
+import { ApplicationSchema } from "@models/application.model";
+import Team from "@models/team.model";
 
 @Entity()
 class Hacker {

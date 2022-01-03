@@ -7,8 +7,8 @@ import {
     OneToOne,
     JoinColumn
 } from "typeorm";
-import Account from "./account.model";
-import Hacker from "./hacker.model";
+import Account from "@models/account.model";
+import Hacker from "@models/hacker.model";
 
 @Entity()
 class Sponsor {

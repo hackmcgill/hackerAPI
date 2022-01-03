@@ -1,7 +1,7 @@
 import { createConnection } from "typeorm";
 
 import { autoInjectable, singleton } from "tsyringe";
-import { EnvService } from "./env.service";
+import { EnvService } from "@services/env.service";
 
 @autoInjectable()
 @singleton()

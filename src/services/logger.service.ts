@@ -10,8 +10,8 @@ import winston, {
 } from "winston";
 import expressWinston from "express-winston";
 import { inject, injectable, singleton } from "tsyringe";
-import { ErrorRequestHandler, Handler, Response } from "express";
-import { EnvService } from "./env.service";
+import { ErrorRequestHandler, Handler } from "express";
+import { EnvService } from "@services/env.service";
 import { Format } from "logform";
 
 @injectable()

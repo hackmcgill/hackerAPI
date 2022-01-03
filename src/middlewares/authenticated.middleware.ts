@@ -2,7 +2,7 @@ import { Middleware } from "@decorators/express";
 import { Request, Response, NextFunction } from "express";
 import { ParamsDictionary } from "express-serve-static-core";
 import { ParsedQs } from "qs";
-import * as ErrorConstants from "../constants/error.constant";
+import * as ErrorConstants from "@constants/error.constant";
 
 export class EnsureAuthenticated implements Middleware {
     use(

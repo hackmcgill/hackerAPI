@@ -6,7 +6,7 @@ import {
     PrimaryGeneratedColumn,
     JoinColumn
 } from "typeorm";
-import Hacker from "./hacker.model";
+import Hacker from "@models/hacker.model";
 
 @Entity()
 class Team {

@@ -13,16 +13,15 @@ import {
     Request as ExpressRequest,
     Response as ExpressResponse
 } from "express";
-import { EnsureAuthenticated } from "../middlewares/authenticated.middleware";
-import { EnsureAuthorization } from "../middlewares/authorization.middleware";
-import { AuthorizationLevel } from "../constants/authorization-level.constant";
-import Team from "../models/team.model";
-import { TeamService } from "../services/team.service";
-import * as SuccessConstants from "../constants/success.constant";
-import * as ErrorConstants from "../constants/error.constant";
-import { HackerService } from "../services/hacker.service";
-import Hacker from "../models/hacker.model";
-import { HackerStatus } from "@constants/general.constant";
+import { EnsureAuthenticated } from "@middlewares/authenticated.middleware";
+import { EnsureAuthorization } from "@middlewares/authorization.middleware";
+import { AuthorizationLevel } from "@constants/authorization-level.constant";
+import Team from "@models/team.model";
+import { TeamService } from "@services/team.service";
+import * as SuccessConstants from "@constants/success.constant";
+import * as ErrorConstants from "@constants/error.constant";
+import { HackerService } from "@services/hacker.service";
+import Hacker from "@models/hacker.model";
 
 interface MemberInfo {
     firstName: string;

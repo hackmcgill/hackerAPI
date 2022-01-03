@@ -6,7 +6,7 @@ import {
     JoinColumn,
     OneToOne
 } from "typeorm";
-import Hacker from "./hacker.model";
+import Hacker from "@models/hacker.model";
 
 export interface ApplicationSchema {
     general: {

@@ -6,7 +6,7 @@ import {
     OneToOne,
     PrimaryGeneratedColumn
 } from "typeorm";
-import Account from "./account.model";
+import Account from "@models/account.model";
 
 @Entity()
 class PasswordReset {

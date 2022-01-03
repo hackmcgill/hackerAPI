@@ -1,8 +1,8 @@
 import { autoInjectable, singleton } from "tsyringe";
 import { getRepository, Repository } from "typeorm";
-import AccountConfirmation from "../models/account-confirmation-token.model";
+import AccountConfirmation from "@models/account-confirmation-token.model";
 import jwt from "jsonwebtoken";
-import { EnvService } from "./env.service";
+import { EnvService } from "@services/env.service";
 
 @autoInjectable()
 @singleton()

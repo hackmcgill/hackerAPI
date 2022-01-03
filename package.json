@@ -4,7 +4,7 @@
     "private": true,
     "license": "MIT",
     "scripts": {
-        "start": "DEBUG=hackboard:* NODE_ENV=test ts-node-dev --respawn --pretty --transpile-only src/app.ts",
+        "start": "DEBUG=hackboard:* NODE_ENV=test ts-node-dev --respawn --pretty -r tsconfig-paths/register --transpile-only src/app.ts",
         "start-windows": "set DEBUG=hackboard:* && set NODE_ENV=test && ts-node-dev --respawn --pretty --transpile-only src/app.ts",
         "deploy": "NODE_ENV=deployment node ./bin/www.js",
         "test": "DEBUG=hackboard:* NODE_ENV=test mocha --parallel --reporter spec tests/**.js --exit",
@@ -69,6 +69,7 @@
         "eslint-config-prettier": "8.3.0",
         "eslint-plugin-prettier": "3.4.0",
         "mocha": "^9.0.3",
-        "prettier": "1.19.1"
+        "prettier": "1.19.1",
+        "tsconfig-paths": "^3.12.0"
     }
 }

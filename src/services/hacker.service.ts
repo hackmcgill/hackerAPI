@@ -1,8 +1,8 @@
 import { autoInjectable, singleton } from "tsyringe";
 import { getRepository, Repository, UpdateResult } from "typeorm";
-import Hacker from "../models/hacker.model";
+import Hacker from "@models/hacker.model";
 import { toDataURL } from "qrcode";
-import { EnvService } from "./env.service";
+import { EnvService } from "@services/env.service";
 
 const cache = require("memory-cache");
 

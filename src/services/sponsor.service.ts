@@ -1,9 +1,8 @@
 import { UpdateResult } from "typeorm";
-import * as logger from "./logger.service";
 
 import { autoInjectable, singleton } from "tsyringe";
 import { getRepository, Repository } from "typeorm";
-import Sponsor from "../models/sponsor.model";
+import Sponsor from "@models/sponsor.model";
 
 @autoInjectable()
 @singleton()

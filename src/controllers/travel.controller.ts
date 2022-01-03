@@ -8,17 +8,17 @@ import {
     Response
 } from "@decorators/express";
 import { autoInjectable } from "tsyringe";
-import { AuthorizationLevel } from "../constants/authorization-level.constant";
-import { EnsureAuthenticated } from "../middlewares/authenticated.middleware";
-import { EnsureAuthorization } from "../middlewares/authorization.middleware";
-import Travel from "../models/travel.model";
-import { TravelService } from "../services/travel.service";
+import { AuthorizationLevel } from "@constants/authorization-level.constant";
+import { EnsureAuthenticated } from "@middlewares/authenticated.middleware";
+import { EnsureAuthorization } from "@middlewares/authorization.middleware";
+import Travel from "@models/travel.model";
+import { TravelService } from "@services/travel.service";
 import {
     Request as ExpressRequest,
     Response as ExpressResponse
 } from "express";
-import * as SuccessConstants from "../constants/success.constant";
-import * as ErrorConstants from "../constants/error.constant";
+import * as SuccessConstants from "@constants/success.constant";
+import * as ErrorConstants from "@constants/error.constant";
 
 @autoInjectable()
 @Controller("/travel")

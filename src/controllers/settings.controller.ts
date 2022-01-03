@@ -1,6 +1,6 @@
 import { Controller, Get, Response } from "@decorators/express";
 import { Response as ExpressResponse } from "express";
-import * as SuccessConstants from "../constants/success.constant";
+import * as SuccessConstants from "@constants/success.constant";
 
 @Controller("/settings")
 export class SettingsController {

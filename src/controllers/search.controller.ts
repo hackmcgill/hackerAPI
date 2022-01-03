@@ -1,11 +1,11 @@
 import { Controller, Get, Query, Response } from "@decorators/express";
 import { autoInjectable } from "tsyringe";
-import { AuthorizationLevel } from "../constants/authorization-level.constant";
-import { EnsureAuthenticated } from "../middlewares/authenticated.middleware";
-import { EnsureAuthorization } from "../middlewares/authorization.middleware";
-import { SearchService } from "../services/search.service";
+import { AuthorizationLevel } from "@constants/authorization-level.constant";
+import { EnsureAuthenticated } from "@middlewares/authenticated.middleware";
+import { EnsureAuthorization } from "@middlewares/authorization.middleware";
+import { SearchService } from "@services/search.service";
 import { Response as ExpressResponse } from "express";
-import * as SuccessConstants from "../constants/success.constant";
+import * as SuccessConstants from "@constants/success.constant";
 
 @autoInjectable()
 @Controller("/search")

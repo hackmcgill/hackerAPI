@@ -6,8 +6,8 @@ import {
     OneToOne,
     PrimaryGeneratedColumn
 } from "typeorm";
-import Account from "./account.model";
-import * as GeneralConstants from "../constants/general.constant";
+import Account from "@models/account.model";
+import * as GeneralConstants from "@constants/general.constant";
 
 @Entity()
 class AccountConfirmation {

@@ -1,7 +1,7 @@
-import Team from "../models/team.model";
+import Team from "@models/team.model";
 import { getRepository, Repository, UpdateResult } from "typeorm";
 import { autoInjectable, singleton } from "tsyringe";
-import Hacker from "../models/hacker.model";
+import Hacker from "@models/hacker.model";
 
 @autoInjectable()
 @singleton()

@@ -1,8 +1,8 @@
 import passport from "passport";
 import { Strategy } from "passport-local";
 import { autoInjectable, singleton } from "tsyringe";
-import Account from "../models/account.model";
-import { AccountService } from "../services/account.service";
+import Account from "@models/account.model";
+import { AccountService } from "@services/account.service";
 
 @autoInjectable()
 @singleton()

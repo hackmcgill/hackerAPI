@@ -9,7 +9,7 @@ import {
     IsString,
     Length
 } from "class-validator";
-import { UserType } from "../constants/general.constant";
+import { UserType } from "@constants/general.constant";
 import { classToPlain, Exclude } from "class-transformer";
 
 @Entity()

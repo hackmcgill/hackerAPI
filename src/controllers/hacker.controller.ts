@@ -9,19 +9,19 @@ import {
     Response
 } from "@decorators/express";
 import { autoInjectable } from "tsyringe";
-import { AuthorizationLevel } from "../constants/authorization-level.constant";
-import { EnsureAuthenticated } from "../middlewares/authenticated.middleware";
-import { EnsureAuthorization } from "../middlewares/authorization.middleware";
-import Hacker from "../models/hacker.model";
-import { HackerService } from "../services/hacker.service";
-import * as SuccessConstants from "../constants/success.constant";
-import * as ErrorConstants from "../constants/error.constant";
+import { AuthorizationLevel } from "@constants/authorization-level.constant";
+import { EnsureAuthenticated } from "@middlewares/authenticated.middleware";
+import { EnsureAuthorization } from "@middlewares/authorization.middleware";
+import Hacker from "@models/hacker.model";
+import { HackerService } from "@services/hacker.service";
+import * as SuccessConstants from "@constants/success.constant";
+import * as ErrorConstants from "@constants/error.constant";
 import {
     Request as ExpressRequest,
     Response as ExpressResponse
 } from "express";
-import { StorageService } from "../services/storage.service";
-import { upload } from "../middlewares/multer.middleware";
+import { StorageService } from "@services/storage.service";
+import { upload } from "@middlewares/multer.middleware";
 
 @autoInjectable()
 @Controller("/hacker")

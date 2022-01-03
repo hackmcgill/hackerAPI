@@ -1,8 +1,8 @@
 // Imports the Google Cloud client library
 import * as GStorage from "@google-cloud/storage";
 import { autoInjectable } from "tsyringe";
-import { EnvService } from "./env.service";
-import { LoggerService } from "./logger.service";
+import { EnvService } from "@services/env.service";
+import { LoggerService } from "@services/logger.service";
 
 @autoInjectable()
 export class StorageService {

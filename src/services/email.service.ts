@@ -1,10 +1,10 @@
 import { readFileSync } from "fs";
 import { autoInjectable } from "tsyringe";
-import { EnvService } from "./env.service";
+import { EnvService } from "@services/env.service";
 import { createTransport } from "nodemailer";
 import { compile } from "handlebars";
 import mjml2html from "mjml";
-import { LoggerService } from "./logger.service";
+import { LoggerService } from "@services/logger.service";
 
 @autoInjectable()
 export class EmailService {

@@ -5,7 +5,7 @@ import {
     JoinColumn,
     PrimaryGeneratedColumn
 } from "typeorm";
-import Hacker from "./hacker.model";
+import Hacker from "@models/hacker.model";
 
 interface OriginSchema {
     country: string;

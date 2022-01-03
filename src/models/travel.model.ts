@@ -1,6 +1,6 @@
 import { Entity, OneToOne, JoinColumn, Column } from "typeorm";
-import Hacker from "./hacker.model";
-import * as GeneralConstants from "../constants/general.constant";
+import Hacker from "@models/hacker.model";
+import * as GeneralConstants from "@constants/general.constant";
 import { IsEnum, IsNumber, Max, Min } from "class-validator";
 
 @Entity()

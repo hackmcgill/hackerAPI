@@ -1,7 +1,7 @@
-import Travel from "../models/travel.model";
+import Travel from "@models/travel.model";
 import { getRepository, Repository, UpdateResult } from "typeorm";
 import { autoInjectable } from "tsyringe";
-import Hacker from "../models/hacker.model";
+import Hacker from "@models/hacker.model";
 
 @autoInjectable()
 export class TravelService {

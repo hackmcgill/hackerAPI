@@ -1,4 +1,4 @@
-import Account from "../models/account.model";
+import Account from "@models/account.model";
 import { hashSync } from "bcrypt";
 import { getRepository, Repository, UpdateResult } from "typeorm";
 import { autoInjectable } from "tsyringe";

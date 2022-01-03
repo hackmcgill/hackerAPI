@@ -3,9 +3,9 @@ import {
     Response as ExpressResponse
 } from "express";
 import { autoInjectable } from "tsyringe";
-import { AccountService } from "../services/account.service";
-import * as SuccessConstants from "../constants/success.constant";
-import * as ErrorConstants from "../constants/error.constant";
+import { AccountService } from "@services/account.service";
+import * as SuccessConstants from "@constants/success.constant";
+import * as ErrorConstants from "@constants/error.constant";
 import {
     Body,
     Controller,
@@ -16,13 +16,13 @@ import {
     Request,
     Response
 } from "@decorators/express";
-import Account from "../models/account.model";
-import { EnsureAuthenticated } from "../middlewares/authenticated.middleware";
-import { EnsureAuthorization } from "../middlewares/authorization.middleware";
-import { AuthorizationLevel } from "../constants/authorization-level.constant";
-import { AccountConfirmationService } from "../services/account-confirmation.service";
-import { EmailService } from "../services/email.service";
-import * as GeneralConstants from "../constants/general.constant";
+import Account from "@models/account.model";
+import { EnsureAuthenticated } from "@middlewares/authenticated.middleware";
+import { EnsureAuthorization } from "@middlewares/authorization.middleware";
+import { AuthorizationLevel } from "@constants/authorization-level.constant";
+import { AccountConfirmationService } from "@services/account-confirmation.service";
+import { EmailService } from "@services/email.service";
+import * as GeneralConstants from "@constants/general.constant";
 import { join } from "path";
 
 @autoInjectable()

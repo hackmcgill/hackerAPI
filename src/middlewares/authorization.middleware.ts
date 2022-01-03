@@ -3,10 +3,10 @@ import { Request, Response, NextFunction } from "express";
 import { ParamsDictionary } from "express-serve-static-core";
 import { ParsedQs } from "qs";
 import { container, delay, inject, injectable } from "tsyringe";
-import * as ErrorConstants from "../constants/error.constant";
-import { AuthorizationLevel } from "../constants/authorization-level.constant";
-import Account from "../models/account.model";
-import { AccountService } from "../services/account.service";
+import * as ErrorConstants from "@constants/error.constant";
+import { AuthorizationLevel } from "@constants/authorization-level.constant";
+import Account from "@models/account.model";
+import { AccountService } from "@services/account.service";
 
 // TODO - Improve the logic of the middleware to reduce duplication of response.
 // TODO - Provide proper comments / documentation.
