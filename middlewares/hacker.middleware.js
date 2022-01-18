@@ -874,6 +874,11 @@ async function getStats(req, res, next) {
     next();
 }
 
+function addIdToCheckStatus(req, res, next) {
+    req.params.id = req.body.hacker.id;
+    return next();
+}
+
 module.exports = {
     parsePatch: parsePatch,
     parseHacker: parseHacker,
@@ -929,5 +934,6 @@ module.exports = {
     findByEmail: Middleware.Util.asyncMiddleware(findByEmail),
     obtainEmailByHackerId: Middleware.Util.asyncMiddleware(
         obtainEmailByHackerId
-    )
+    ),
+    addIdToCheckStatus: addIdToCheckStatus
 };
