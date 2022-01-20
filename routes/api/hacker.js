@@ -909,7 +909,7 @@ module.exports = {
           Middleware.Auth.ensureAuthenticated(),
           Middleware.Auth.ensureAuthorized(),
           
-          Middleware.parseBody.middleware,
+         // Middleware.parseBody.middleware,
           Middleware.Hacker.findByEmail,
           Middleware.Hacker.addIdToCheckStatus,
           Middleware.Hacker.checkStatus([
