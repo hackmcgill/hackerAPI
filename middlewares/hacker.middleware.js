@@ -127,13 +127,17 @@ function validateConfirmedStatus(account) {
             message: Constants.Error.ACCOUNT_404_MESSAGE,
             data: { account: account }
         };
-    } else if (!account.confirmed) {
+    }
+    /*
+    else if (!account.confirmed) {
         return {
             status: 403,
             message: Constants.Error.ACCOUNT_403_MESSAGE,
             data: { account: { id: account.id, confirmed: account.confirmed } }
         };
-    } else if (account.accountType !== Constants.General.HACKER) {
+    }
+    */
+   else if (account.accountType !== Constants.General.HACKER) {
         return {
             status: 409,
             message: Constants.Error.ACCOUNT_TYPE_409_MESSAGE,
@@ -837,8 +841,7 @@ async function checkDuplicateAccountLinks(req, res, next) {
  */
 async function findSelf(req, res, next) {
     if (
-        req.user.accountType != Constants.General.HACKER ||
-        !req.user.confirmed
+        req.user.accountType != Constants.General.HACKER /*|| !req.user.confirmed*/
     ) {
         return next({
             status: 409,
