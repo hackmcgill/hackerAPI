@@ -905,6 +905,23 @@ module.exports = {
             Controllers.Hacker.sentDayOfEmail
         );
 
+        hackerRouter.route("/discord").post(
+          Middleware.Auth.ensureAuthenticated(),
+          Middleware.Auth.ensureAuthorized(),
+          
+         // Middleware.parseBody.middleware,
+          Middleware.Hacker.findByEmail,
+          Middleware.Hacker.addIdToCheckStatus,
+          Middleware.Hacker.checkStatus([
+              CONSTANTS.HACKER_STATUS_ACCEPTED,
+              CONSTANTS.HACKER_STATUS_CONFIRMED
+          ]),
+          Middleware.Hacker.parseCheckIn,
+          Middleware.Hacker.updateHacker,
+          Middleware.Hacker.sendStatusUpdateEmail,
+          Controllers.Hacker.updatedHacker
+        );
+
         apiRouter.use("/hacker", hackerRouter);
     }
 };

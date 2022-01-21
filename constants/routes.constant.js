@@ -6,7 +6,7 @@
  * ===***===***===***===***===***===***===***===***===
  *
  * If you are adding a route to this list, update this number
- * next avaiable createFromTime value: 166
+ * next avaiable createFromTime value: 168
  *
  * If you are deleting a route from this list, please add the ID to the list of 'reserved' IDs,
  * so that we don't accidentally assign someone to a given ID.
@@ -203,6 +203,12 @@ const hackerRoutes = {
         uri: "/api/hacker/email/dayOf/" + Constants.ROLE_CATEGORIES.SELF,
         _id: mongoose.Types.ObjectId.createFromTime(134)
     }
+    // },
+    // postDiscord: {
+    //     requestType: Constants.REQUEST_TYPES.POST,
+    //     uri: "/api/hacker/discord",
+    //     _id: mongoose.Types.ObjectId.createFromTime(167)
+    // }
 };
 
 const travelRoutes = {
@@ -363,6 +369,11 @@ const staffRoutes = {
         requestType: Constants.REQUEST_TYPES.GET,
         uri: "/api/account/invite",
         _id: mongoose.Types.ObjectId.createFromTime(162)
+    },
+    postDiscord: {
+        requestType: Constants.REQUEST_TYPES.POST,
+        uri: "/api/hacker/discord",
+        _id: mongoose.Types.ObjectId.createFromTime(167)
     }
 };
 

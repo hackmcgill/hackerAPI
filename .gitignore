@@ -68,3 +68,4 @@ assets/.DS_Store
 
 #secrets
 secret.yaml
+package-lock.json
