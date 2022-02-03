@@ -1,21 +1,19 @@
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 import { compareSync } from "bcrypt";
 import {
-    IsDate,
     IsEmail,
     IsEnum,
-    IsInt,
+    IsOptional,
     IsPhoneNumber,
     IsString,
     Length
 } from "class-validator";
 import { UserType } from "@constants/general.constant";
-import { classToPlain, Exclude } from "class-transformer";
+import { Exclude, instanceToPlain } from "class-transformer";
 
 @Entity()
 class Account {
     @PrimaryGeneratedColumn()
-    @IsInt()
     readonly identifier: number;
 
     @Column({ nullable: false })
@@ -53,11 +51,11 @@ class Account {
         enum: UserType,
         default: UserType.Hacker
     })
+    @IsOptional()
     @IsEnum(UserType)
     accountType: string;
 
     @Column("date", { nullable: false })
-    @IsDate()
     birthDate: Date;
 
     @Column()
@@ -65,7 +63,7 @@ class Account {
     phoneNumber: string;
 
     toJSON() {
-        return classToPlain(this);
+        return instanceToPlain(this);
     }
 
     /**

@@ -45,7 +45,10 @@ export class AccountService {
         });
     }
 
-    public async updatePassword(identifier: number, password: string) {
+    public async updatePassword(
+        identifier: number,
+        password: string
+    ): Promise<UpdateResult> {
         return await this.accountRepository.update(identifier, {
             password: this.hashPassword(password)
         });
