@@ -144,8 +144,9 @@ export class HackerController {
         const hacker:
             | Hacker
             | undefined = await this.hackerService.findByIdentifier(identifier);
+
         const resume = await this.storageService.download(
-            hacker?.application.general.URL.resume
+            hacker!.application.general.URL.resume
         );
 
         resume
