@@ -2,7 +2,7 @@
 node_modules
 
 #env file
-.env
+.env.*
 
 #creds
 gcp_creds.json
