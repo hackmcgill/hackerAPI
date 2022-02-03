@@ -26,7 +26,6 @@ import PasswordReset from "@models/password-reset-token.model";
 import { EmailService } from "@services/email.service";
 import { join } from "path";
 import jwt from "jsonwebtoken";
-import { EnvService } from "@services/env.service";
 import { AccountConfirmationService } from "@services/account-confirmation.service";
 import AccountConfirmation from "@models/account-confirmation-token.model";
 import { EnsureAuthorization } from "@middlewares/authorization.middleware";
@@ -40,8 +39,7 @@ export class AuthenticationController {
         private readonly accountService: AccountService,
         private readonly passwordResetService: PasswordResetService,
         private readonly accountConfirmationService: AccountConfirmationService,
-        private readonly mailer: EmailService,
-        private readonly envService: EnvService
+        private readonly mailer: EmailService
     ) {}
 
     @Post("/sign-in")
@@ -141,10 +139,7 @@ export class AuthenticationController {
         @Body("password") password: string
     ) {
         // Check if the JWT is valid and provide deconstructed object of identifier and account identiifer.
-        const data = jwt.verify(
-            token,
-            this.envService.get("JWT_RESET_PWD_SECRET")!
-        ) as {
+        const data = jwt.verify(token, process.env.JWT_RESET_PWD_SECRET!) as {
             identifier: number;
         };
 
@@ -210,12 +205,14 @@ export class AuthenticationController {
         @Response() response: ExpressResponse
     ) {
         // We use the non-null asseration opearator as we are sure that the user exists befure of the EnsureAuthenticated middleware.
-        const account: Account = (await this.accountService.findByIdentifier(
+        const account:
+            | Account
+            | undefined = await this.accountService.findByIdentifier(
             //@ts-ignore
             request.user?.identifier
-        ))!;
+        );
 
-        if (account.confirmed)
+        if (account!.confirmed)
             response.status(422).send({
                 message: "Account already confirmed"
             });
@@ -223,7 +220,7 @@ export class AuthenticationController {
         const model:
             | AccountConfirmation
             | undefined = await this.accountConfirmationService.findByAccount(
-            account.identifier
+            account!.identifier
         );
 
         if (!model)
@@ -233,7 +230,7 @@ export class AuthenticationController {
 
         await this.mailer.send(
             {
-                to: account.email,
+                to: account?.email,
                 subject: "Account Confirmation Instructions",
                 html: join(
                     __dirname,
@@ -245,7 +242,7 @@ export class AuthenticationController {
                     "confirm",
                     this.accountConfirmationService.generateToken(
                         model!.identifier,
-                        account.identifier
+                        account!.identifier
                     )
                 )
             },
@@ -270,10 +267,7 @@ export class AuthenticationController {
         @Params("token") token: string
     ) {
         // Check if the JWT is valid and provide deconstructed object of identifier and account identiifer.
-        const data = jwt.verify(
-            token,
-            this.envService.get("JWT_CONFIRM_ACC_SECRET")!
-        ) as {
+        const data = jwt.verify(token, process.env.JWT_CONFIRM_ACC_SECRET!) as {
             identifier: number;
             account: number;
         };

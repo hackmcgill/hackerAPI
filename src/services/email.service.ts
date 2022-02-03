@@ -1,6 +1,5 @@
 import { readFileSync } from "fs";
 import { autoInjectable } from "tsyringe";
-import { EnvService } from "@services/env.service";
 import { createTransport } from "nodemailer";
 import { compile } from "handlebars";
 import mjml2html from "mjml";
@@ -10,10 +9,7 @@ import { LoggerService } from "@services/logger.service";
 export class EmailService {
     protected readonly mailer;
 
-    constructor(
-        private readonly envService: EnvService,
-        private readonly loggerService: LoggerService
-    ) {
+    constructor(private readonly loggerService: LoggerService) {
         this.mailer = createTransport({
             host: this.getEmailAttribute("HOST"),
             port: parseInt(this.getEmailAttribute("PORT")!),
@@ -27,12 +23,16 @@ export class EmailService {
             .catch((error) =>
                 this.loggerService
                     .getLogger()
-                    .error(`Failed to connect to SMTP server. Error: ${error}`)
+                    .error(`Failed to connect to SMTP server. ${error}`)
             );
     }
 
-    public async send({ ...args }: any, { ...context }: any, callback?: any) {
-        args.from = this.envService.get("NO_REPLY_EMAIL");
+    public async send(
+        { ...args }: any,
+        { ...context }: any,
+        callback?: any
+    ): Promise<void> {
+        args.from = process.env.NO_REPLY_EMAIL;
         if (args.html)
             args.html = compile(
                 mjml2html(readFileSync(args.html, "utf-8")).html
@@ -40,16 +40,12 @@ export class EmailService {
         await this.mailer
             .sendMail({
                 ...args,
-                from: this.envService.get("NO_REPLY_EMAIL")
+                from: process.env.NO_REPLY_EMAIL
             })
             .catch((error) => callback(error));
     }
 
-    private getEmailAttribute(name: string) {
-        return this.envService.isDevelopment()
-            ? this.envService.get(`EMAIL_${name}_DEV`)
-            : this.envService.isProduction()
-            ? this.envService.get(`EMAIL_${name}_DEPLOY`)
-            : this.envService.get(`EMAIL_${name}_TEST`);
+    private getEmailAttribute(name: string): string | undefined {
+        return process.env[`EMAIL_${name}`];
     }
 }

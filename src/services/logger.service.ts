@@ -1,27 +1,16 @@
-import winston, {
-    error,
-    warn,
-    info,
-    log,
-    verbose,
-    debug,
-    silly,
-    Logger
-} from "winston";
+import winston, { Logger } from "winston";
 import expressWinston from "express-winston";
-import { inject, injectable, singleton } from "tsyringe";
+import { singleton } from "tsyringe";
 import { ErrorRequestHandler, Handler } from "express";
-import { EnvService } from "@services/env.service";
 import { Format } from "logform";
 
-@injectable()
 @singleton()
 export class LoggerService {
     private readonly logger: Logger;
     private readonly requestLogger: Handler;
     private readonly errorLogger: ErrorRequestHandler;
 
-    constructor(@inject(EnvService) envService: EnvService) {
+    constructor() {
         const format: Format = winston.format.combine(
             winston.format.colorize({ all: true }),
             winston.format.timestamp({
@@ -40,7 +29,7 @@ export class LoggerService {
         this.requestLogger = expressWinston.logger({
             transports: [new winston.transports.Console()],
             format: format,
-            colorize: !envService.isProduction(),
+            colorize: process.env.NODE_ENV != "production",
             msg: `{{res.statusCode}} {{req.method}} {{res.responseTime}}ms {{req.url}}`
         });
 

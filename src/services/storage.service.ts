@@ -1,7 +1,6 @@
 // Imports the Google Cloud client library
 import * as GStorage from "@google-cloud/storage";
 import { autoInjectable } from "tsyringe";
-import { EnvService } from "@services/env.service";
 import { LoggerService } from "@services/logger.service";
 
 @autoInjectable()
@@ -10,17 +9,14 @@ export class StorageService {
     storage: any;
     bucket: any;
 
-    constructor(
-        private readonly envService: EnvService,
-        loggerService: LoggerService
-    ) {
+    constructor(loggerService: LoggerService) {
         this.bucketName = process.env.BUCKET_NAME || "";
         try {
             this.storage = new GStorage.Storage();
         } catch (error) {
             loggerService.getLogger().error(error);
         }
-        if (this.envService.isProduction())
+        if (process.env.NODE_ENV !== "production")
             this.bucket = this.storage.bucket(this.bucketName);
     }
 

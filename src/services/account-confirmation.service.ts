@@ -1,8 +1,7 @@
 import { autoInjectable, singleton } from "tsyringe";
-import { getRepository, Repository } from "typeorm";
+import { DeleteResult, getRepository, Repository } from "typeorm";
 import AccountConfirmation from "@models/account-confirmation-token.model";
 import jwt from "jsonwebtoken";
-import { EnvService } from "@services/env.service";
 
 @autoInjectable()
 @singleton()
@@ -11,7 +10,7 @@ export class AccountConfirmationService {
         AccountConfirmation
     >;
 
-    constructor(private readonly envService: EnvService) {
+    constructor() {
         this.accountConfirmationRepository = getRepository(AccountConfirmation);
     }
 
@@ -39,24 +38,14 @@ export class AccountConfirmationService {
         return await this.accountConfirmationRepository.save(confirmation);
     }
 
-    public async delete(identifier: number) {
+    public async delete(identifier: number): Promise<DeleteResult> {
         return await this.accountConfirmationRepository.delete({
             identifier: identifier
         });
     }
 
     public generateLink(route: string, token: string): string {
-        const domain = this.getDomain()!;
-        const protocol = domain.includes("localhost") ? "http" : "https";
-        return `${protocol}://${domain}/${route}?token=${token}`;
-    }
-
-    private getDomain() {
-        return this.envService.isDevelopment()
-            ? this.envService.get(`FRONTEND_ADDRESS_DEV`)
-            : this.envService.isProduction()
-            ? this.envService.get(`FRONTEND_ADDRESS_DEPLOY`)
-            : this.envService.get(`FRONTEND_ADDRESS_DEV`);
+        return `${process.env.FRONTEND_ADDRESS_DEV}/${route}?token=${token}`;
     }
 
     public generateToken(identifier: number, account: number): string {

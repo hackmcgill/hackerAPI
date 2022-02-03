@@ -2,16 +2,13 @@ import { autoInjectable, singleton } from "tsyringe";
 import { getRepository, Repository, UpdateResult } from "typeorm";
 import Hacker from "@models/hacker.model";
 import { toDataURL } from "qrcode";
-import { EnvService } from "@services/env.service";
-
-const cache = require("memory-cache");
 
 @autoInjectable()
 @singleton()
 export class HackerService {
     private readonly hackerRepository: Repository<Hacker>;
 
-    constructor(private readonly envService: EnvService) {
+    constructor() {
         this.hackerRepository = getRepository(Hacker);
     }
 
@@ -68,17 +65,7 @@ export class HackerService {
     }
 
     public generateHackerApplicationViewLink(identifier: string): string {
-        const domain = this.getDomain()!;
-        const protocol = domain.includes("localhost") ? "http" : "https";
-        return `${protocol}://${domain}/application/view/${identifier}`;
-    }
-
-    private getDomain() {
-        return this.envService.isDevelopment()
-            ? this.envService.get(`FRONTEND_ADDRESS_DEV`)
-            : this.envService.isProduction()
-            ? this.envService.get(`FRONTEND_ADDRESS_DEPLOY`)
-            : this.envService.get(`FRONTEND_ADDRESS_DEV`);
+        return `${process.env.FRONTEND_ADDRESS}/application/view/${identifier}`;
     }
 }
 
