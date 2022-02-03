@@ -6,223 +6,35 @@
     "configurations": [
         {
             "type": "node",
-            "runtimeVersion": "10.17.0",
+            "name": "Jest Tests - All",
             "request": "launch",
-            "name": "Mocha Tests - Current File",
-            "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen",
+            "disableOptimisticBPs": true,
+            "cwd": "${workspaceFolder}",
+            "runtimeExecutable": "npm",
             "args": [
-                "-u",
-                "bdd",
-                "--timeout",
-                "999999",
-                "--colors",
-                "${workspaceFolder}/tests/setup.spec.js",
-                "${file}"
-            ],
-            "internalConsoleOptions": "openOnSessionStart"
+                "run",
+                "test",
+                "--"
+            ]
         },
         {
             "type": "node",
-            "runtimeVersion": "10.17.0",
+            "name": "vscode-jest-tests",
             "request": "launch",
-            "name": "Mocha Tests",
-            "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen",
+            "disableOptimisticBPs": true,
+            "cwd": "${workspaceFolder}",
+            "runtimeExecutable": "npm",
             "args": [
-                "-u",
-                "bdd",
-                "--timeout",
-                "999999",
-                "--colors",
-                "${workspaceFolder}/tests"
-            ],
-            "internalConsoleOptions": "openOnSessionStart"
-        },
-        {
-            "type": "node",
-            "runtimeVersion": "10.17.0",
-            "request": "launch",
-            "name": "Mocha Tests - Hacker",
-            "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
-            "args": [
-                "-u",
-                "bdd",
-                "--timeout",
-                "999999",
-                "--colors",
-                "${workspaceFolder}/tests/setup.spec.js",
-                "${workspaceFolder}/tests/hacker.test.js"
-            ],
-            "internalConsoleOptions": "openOnSessionStart"
-        },
-        {
-            "type": "node",
-            "runtimeVersion": "10.17.0",
-            "request": "launch",
-            "name": "Mocha Tests - Sponsor",
-            "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
-            "args": [
-                "-u",
-                "bdd",
-                "--timeout",
-                "999999",
-                "--colors",
-                "${workspaceFolder}/tests/setup.spec.js",
-                "${workspaceFolder}/tests/sponsor.test.js"
-            ],
-            "internalConsoleOptions": "openOnSessionStart"
-        },
-        {
-            "type": "node",
-            "runtimeVersion": "10.17.0",
-            "request": "launch",
-            "name": "Mocha Tests - Volunteer",
-            "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
-            "args": [
-                "-u",
-                "bdd",
-                "--timeout",
-                "999999",
-                "--colors",
-                "${workspaceFolder}/tests/setup.spec.js",
-                "${workspaceFolder}/tests/volunteer.test.js"
-            ],
-            "internalConsoleOptions": "openOnSessionStart"
-        },
-        {
-            "type": "node",
-            "runtimeVersion": "10.17.0",
-            "request": "launch",
-            "name": "Mocha Tests - Account",
-            "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
-            "args": [
-                "-u",
-                "bdd",
-                "--timeout",
-                "999999",
-                "--colors",
-                "${workspaceFolder}/tests/setup.spec.js",
-                "${workspaceFolder}/tests/account.test.js"
-            ],
-            "internalConsoleOptions": "openOnSessionStart"
-        },
-        {
-            "type": "node",
-            "runtimeVersion": "10.17.0",
-            "request": "launch",
-            "name": "Mocha Tests - Team",
-            "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
-            "args": [
-                "-u",
-                "bdd",
-                "--timeout",
-                "999999",
-                "--colors",
-                "${workspaceFolder}/tests/setup.spec.js",
-                "${workspaceFolder}/tests/team.test.js"
-            ],
-            "internalConsoleOptions": "openOnSessionStart"
-        },
-        {
-            "type": "node",
-            "runtimeVersion": "10.17.0",
-            "request": "launch",
-            "name": "Mocha Tests - Storage",
-            "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
-            "args": [
-                "-u",
-                "bdd",
-                "--timeout",
-                "999999",
-                "--colors",
-                "${workspaceFolder}/tests/setup.spec.js",
-                "${workspaceFolder}/tests/storage.spec.js"
-            ],
-            "internalConsoleOptions": "openOnSessionStart"
-        },
-        {
-            "type": "node",
-            "runtimeVersion": "10.17.0",
-            "request": "launch",
-            "name": "Mocha Tests - Search",
-            "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
-            "args": [
-                "-u",
-                "bdd",
-                "--timeout",
-                "999999",
-                "--colors",
-                "${workspaceFolder}/tests/setup.spec.js",
-                "${workspaceFolder}/tests/search.service.spec.js"
-            ],
-            "internalConsoleOptions": "openOnSessionStart"
-        },
-        {
-            "type": "node",
-            "runtimeVersion": "10.17.0",
-            "request": "launch",
-            "name": "Mocha Tests - Settings",
-            "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
-            "args": [
-                "-u",
-                "bdd",
-                "--timeout",
-                "999999",
-                "--colors",
-                "${workspaceFolder}/tests/setup.spec.js",
-                "${workspaceFolder}/tests/settings.test.js"
-            ],
-            "internalConsoleOptions": "openOnSessionStart"
-        },
-        {
-            "type": "node",
-            "runtimeVersion": "10.17.0",
-            "request": "launch",
-            "name": "Mocha Tests - Email",
-            "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
-            "args": [
-                "-u",
-                "bdd",
-                "--timeout",
-                "999999",
-                "--colors",
-                "${workspaceFolder}/tests/setup.spec.js",
-                "${workspaceFolder}/tests/email.service.spec.js"
-            ],
-            "internalConsoleOptions": "openOnSessionStart"
-        },
-        {
-            "type": "node",
-            "runtimeVersion": "10.17.0",
-            "request": "launch",
-            "name": "Mocha Tests - Auth",
-            "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
-            "args": [
-                "-u",
-                "bdd",
-                "--timeout",
-                "999999",
-                "--colors",
-                "${workspaceFolder}/tests/setup.spec.js",
-                "${workspaceFolder}/tests/auth.test.js"
-            ],
-            "internalConsoleOptions": "openOnSessionStart"
-        },
-        {
-            "type": "node",
-            "runtimeVersion": "10.17.0",
-            "request": "launch",
-            "name": "Mocha Tests - Role",
-            "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
-            "args": [
-                "-u",
-                "bdd",
-                "--timeout",
-                "999999",
-                "--colors",
-                "${workspaceFolder}/tests/setup.spec.js",
-                "${workspaceFolder}/tests/role.test.js"
-            ],
-            "internalConsoleOptions": "openOnSessionStart"
+                "run",
+                "test",
+                "--",
+                "--runInBand",
+                "--watchAll=false"
+            ]
         }
     ]
 }

@@ -15,6 +15,7 @@
       "emitDecoratorMetadata": true,
       "baseUrl": "src/",
       "paths": {
+        "@app/*": ["./*"],
         "@models/*": ["models/*"],
         "@controllers/*": ["controllers/*"],
         "@services/*": ["services/*"],
@@ -25,5 +26,5 @@
       }
     },
     "include": ["./src/**/*", "./.env"],
-    "exclude": ["node_modules", "src/**/*.spec.ts", ".vscode", ".github", "docs", "scripts", "./src/tests"]
+    "exclude": ["node_modules", ".vscode", ".github", "docs", "scripts", "tests"]
 }
