@@ -1,80 +1,103 @@
-import { attachControllerInstances } from "@decorators/express";
-import express from "express";
-import passport from "passport";
+import { config } from "dotenv";
+import express, {
+    Application as ExpressApplication,
+    json,
+    Router,
+    urlencoded
+} from "express";
 import { join } from "path";
 import { container } from "tsyringe";
+import cors from "cors";
+import { Connection, createConnection } from "typeorm";
+import { attachControllerInstances } from "@decorators/express";
 import { AccountController } from "@controllers/account.controller";
 import { AuthenticationController } from "@controllers/authentication.controller";
 import { HackerController } from "@controllers/hacker.controller";
 import { SearchController } from "@controllers/search.controller";
+import { SettingsController } from "@controllers/settings.controller";
 import { SponsorController } from "@controllers/sponsor.controller";
 import { TeamController } from "@controllers/team.controller";
 import { TravelController } from "@controllers/travel.controller";
-import { SettingsController } from "@controllers/settings.controller";
-import { DatabaseService } from "@services/database.service";
-import { EnvService } from "@services/env.service";
-import { LoggerService } from "@services/logger.service";
 import cookieParser from "cookie-parser";
 import cookieSession from "cookie-session";
-import cors from "cors";
+import passport from "passport";
+import { LoggerService } from "./services/logger.service";
 
-(async () => {
-    const application = express();
-
-    const envService: EnvService = container.resolve(EnvService);
+async function createApplication(): Promise<ExpressApplication> {
+    const application: ExpressApplication = express();
     const loggerService: LoggerService = container.resolve(LoggerService);
-    const databaseService: DatabaseService = container.resolve(DatabaseService);
-    await databaseService.connect();
 
-    let corsOptions = {};
+    useLogging(application, loggerService);
+    useEnvironmentFile();
+    useCors(application);
+    useMiddleware(application);
+    await useDatabase(loggerService);
+    useControllers(application);
 
-    if (!envService.isProduction()) {
-        corsOptions = {
-            origin: [`http://${process.env.FRONTEND_ADDRESS_DEV}`],
-            credentials: true
-        };
-    } else {
-        // TODO: change this when necessary
-        corsOptions = {
-            origin: [
-                `https://${process.env.FRONTEND_ADDRESS_DEPLOY}`,
-                `https://${process.env.FRONTEND_ADDRESS_BETA}`,
-                `https://docs.mchacks.ca`
-            ],
-            credentials: true
-        };
-    }
+    return application;
+}
 
-    application.use(cors(corsOptions));
-
-    application.use(
+function useLogging(express: ExpressApplication, loggerService: LoggerService) {
+    express.use(
         loggerService.getRequestLogger(),
         loggerService.getErrorLogger()
     );
+}
 
-    application.use(
-        express.json(),
-        express.urlencoded({
-            extended: false
-        })
-    );
+function useEnvironmentFile(): void {
+    const { error } = config({
+        path: join(__dirname, "../", `.env.${process.env.NODE_ENV}`)
+    });
 
-    //Cookie-based session tracking
-    application.use(
+    if (error) throw error;
+}
+
+function useCors(express: ExpressApplication): void {
+    const options =
+        process.env.NODE_ENV === "production"
+            ? {
+                  origin: [
+                      `${process.env.FRONTEND_ADDRESS}`,
+                      `https://docs.mchacks.ca`
+                  ],
+                  credentials: true
+              }
+            : {
+                  origin: [`${process.env.FRONTEND_ADDRESS}`],
+                  credentials: true
+              };
+    express.use(cors(options));
+}
+
+function useMiddleware(express: ExpressApplication): void {
+    express.use(json(), urlencoded({ extended: false }));
+    express.use(
         cookieParser(),
         cookieSession({
             name: "session",
-            keys: [process.env.COOKIE_SECRET],
+            keys: [`${process.env.COOKIE_SECRET}`],
             // Cookie Options
             maxAge: 48 * 60 * 60 * 1000 //Logged in for 48 hours
         })
     );
+    express.use(passport.initialize(), passport.session());
+}
 
-    application.use(passport.initialize(), passport.session()); //persistent login session
+async function useDatabase(loggerService: LoggerService): Promise<void> {
+    await createConnection()
+        .then((connection: Connection) => {
+            loggerService.getLogger().info("Connected to the database.");
+            container.registerInstance(Connection, connection);
+        })
+        .catch((error) =>
+            loggerService
+                .getLogger()
+                .error(`Failed to connect to the database. ${error}`)
+        );
+}
 
-    application.use(express.static(join(__dirname, "public")));
-
-    const router = express.Router();
+function useControllers(express: ExpressApplication): void {
+    const router: Router = Router();
     attachControllerInstances(router, [
         container.resolve(AccountController),
         container.resolve(AuthenticationController),
@@ -85,10 +108,7 @@ import cors from "cors";
         container.resolve(SearchController),
         container.resolve(SettingsController)
     ]);
-    application.use("/api", router);
+    express.use("/api", router);
+}
 
-    const port = process.env.PORT ?? 3000;
-    application.listen(port, () => {
-        loggerService.getLogger().info(`Listening on port ${port}...`);
-    });
-})();
+export default createApplication;
