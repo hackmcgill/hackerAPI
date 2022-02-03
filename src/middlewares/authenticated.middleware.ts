@@ -13,12 +13,11 @@ export class EnsureAuthenticated implements Middleware {
             ParsedQs,
             Record<string, any>
         >,
-        _: Response<any, Record<string, any>>,
+        response: Response<any, Record<string, any>>,
         next: NextFunction
     ): void {
         if (request.isUnauthenticated())
-            return next({
-                status: 401,
+            response.status(401).send({
                 message: ErrorConstants.AUTH_401_MESSAGE,
                 error: { route: request.path }
             });
