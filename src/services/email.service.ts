@@ -4,20 +4,27 @@ import { createTransport } from "nodemailer";
 import { compile } from "handlebars";
 import mjml2html from "mjml";
 import { LoggerService } from "@services/logger.service";
+import nodemailerSgTransport from "nodemailer-sendgrid";
 
 @autoInjectable()
 export class EmailService {
     protected readonly mailer;
 
     constructor(private readonly loggerService: LoggerService) {
-        this.mailer = createTransport({
-            host: this.getEmailAttribute("HOST"),
-            port: parseInt(this.getEmailAttribute("PORT")!),
-            auth: {
-                user: this.getEmailAttribute("USERNAME"),
-                pass: this.getEmailAttribute("PASSWORD")
-            }
-        });
+        this.mailer = createTransport(
+            process.env.NODE_ENV !== "deployment"
+                ? {
+                      host: this.getEmailAttribute("HOST"),
+                      port: parseInt(this.getEmailAttribute("PORT")!),
+                      auth: {
+                          user: this.getEmailAttribute("USERNAME"),
+                          pass: this.getEmailAttribute("PASSWORD")
+                      }
+                  }
+                : nodemailerSgTransport({
+                      apiKey: this.getEmailAttribute("SENDGRID_API_KEY")!
+                  })
+        );
         this.mailer
             .verify()
             .catch((error) =>
