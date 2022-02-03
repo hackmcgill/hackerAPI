@@ -19,6 +19,7 @@ import {
 } from "express";
 import * as SuccessConstants from "@constants/success.constant";
 import * as ErrorConstants from "@constants/error.constant";
+import { Validator } from "@app/middlewares/validator.middleware";
 
 @autoInjectable()
 @Controller("/travel")
@@ -55,7 +56,8 @@ export class TravelController {
         EnsureAuthorization([
             AuthorizationLevel.Staff,
             AuthorizationLevel.Hacker
-        ])
+        ]),
+        Validator(Travel)
     ])
     async create(
         @Response() response: ExpressResponse,
@@ -82,7 +84,8 @@ export class TravelController {
 
     @Patch("/:identifier", [
         EnsureAuthenticated,
-        EnsureAuthorization([AuthorizationLevel.Staff])
+        EnsureAuthorization([AuthorizationLevel.Staff]),
+        Validator(Travel)
     ])
     async updateByStaff(
         @Response() response: ExpressResponse,
@@ -106,7 +109,8 @@ export class TravelController {
 
     @Patch("/", [
         EnsureAuthenticated,
-        EnsureAuthorization([AuthorizationLevel.Hacker])
+        EnsureAuthorization([AuthorizationLevel.Hacker]),
+        Validator(Travel)
     ])
     async update(
         @Request() request: ExpressRequest,

@@ -22,6 +22,7 @@ import * as SuccessConstants from "@constants/success.constant";
 import * as ErrorConstants from "@constants/error.constant";
 import { HackerService } from "@services/hacker.service";
 import Hacker from "@models/hacker.model";
+import { Validator } from "@app/middlewares/validator.middleware";
 
 interface MemberInfo {
     firstName: string;
@@ -86,7 +87,8 @@ export class TeamController {
         EnsureAuthorization([
             AuthorizationLevel.Staff,
             AuthorizationLevel.Hacker
-        ])
+        ]),
+        Validator(Team)
     ])
     async create(@Response() response: ExpressResponse, @Body() team: Team) {
         const result = await this.teamService.save(team);
@@ -112,7 +114,8 @@ export class TeamController {
         EnsureAuthorization([
             AuthorizationLevel.Staff,
             AuthorizationLevel.Hacker
-        ])
+        ]),
+        Validator(Team)
     ])
     async update(
         @Response() response: ExpressResponse,

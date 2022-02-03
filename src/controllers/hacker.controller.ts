@@ -22,6 +22,7 @@ import {
 } from "express";
 import { StorageService } from "@services/storage.service";
 import { upload } from "@middlewares/multer.middleware";
+import { Validator } from "@app/middlewares/validator.middleware";
 
 @autoInjectable()
 @Controller("/hacker")
@@ -84,7 +85,7 @@ export class HackerController {
               });
     }
 
-    @Post("/", [EnsureAuthenticated])
+    @Post("/", [EnsureAuthenticated, Validator(Hacker)])
     async create(
         @Response() response: ExpressResponse,
         @Body() hacker: Hacker
@@ -108,7 +109,8 @@ export class HackerController {
         EnsureAuthorization([
             AuthorizationLevel.Staff,
             AuthorizationLevel.Hacker
-        ])
+        ]),
+        Validator(Hacker)
     ])
     async update(
         @Response() response: ExpressResponse,

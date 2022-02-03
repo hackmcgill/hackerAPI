@@ -24,6 +24,7 @@ import { AccountConfirmationService } from "@services/account-confirmation.servi
 import { EmailService } from "@services/email.service";
 import * as GeneralConstants from "@constants/general.constant";
 import { join } from "path";
+import { Validator } from "@app/middlewares/validator.middleware";
 
 @autoInjectable()
 @Controller("/account")
@@ -112,7 +113,7 @@ export class AccountController {
               });
     }
 
-    @Post("/")
+    @Post("/", [Validator(Account)])
     async create(
         @Response() response: ExpressResponse,
         @Body() account: Account
@@ -155,14 +156,10 @@ export class AccountController {
             );
         }
 
-        return result
-            ? response.status(200).send({
-                  message: SuccessConstants.ACCOUNT_CREATE,
-                  data: result
-              })
-            : response.status(422).send({
-                  message: ErrorConstants.ACCOUNT_DUPLICATE_422_MESSAGE
-              });
+        return response.status(200).send({
+            message: SuccessConstants.ACCOUNT_CREATE,
+            data: result
+        });
     }
 
     // (Add middleware for sendConfirmAccountEmail and update database confirmed: false, email: newEmail)
@@ -171,7 +168,8 @@ export class AccountController {
         EnsureAuthorization([
             AuthorizationLevel.Staff,
             AuthorizationLevel.Account
-        ])
+        ]),
+        Validator(Account)
     ])
     async update(
         @Response() response: ExpressResponse,

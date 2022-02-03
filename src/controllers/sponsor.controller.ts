@@ -16,6 +16,7 @@ import { SponsorService } from "@services/sponsor.service";
 import { Response as ExpressResponse } from "express";
 import * as SuccessConstants from "@constants/success.constant";
 import * as ErrorConstants from "@constants/error.constant";
+import { Validator } from "@app/middlewares/validator.middleware";
 
 @autoInjectable()
 @Controller("/sponsor")
@@ -51,7 +52,8 @@ export class SponsorController {
 
     @Post("/", [
         EnsureAuthenticated,
-        EnsureAuthorization([AuthorizationLevel.Staff])
+        EnsureAuthorization([AuthorizationLevel.Staff]),
+        Validator(Sponsor)
     ])
     async create(
         @Response() response: ExpressResponse,
@@ -74,7 +76,8 @@ export class SponsorController {
         EnsureAuthorization([
             AuthorizationLevel.Staff,
             AuthorizationLevel.Sponsor
-        ])
+        ]),
+        Validator(Sponsor)
     ])
     async update(
         @Response() response: ExpressResponse,
