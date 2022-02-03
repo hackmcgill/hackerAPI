@@ -4,17 +4,14 @@
     "repository": "https://github.com/hackmcgill/hackerAPI",
     "keywords": ["node", "express", "mongo", "react", "hackathon"],
     "env": {
-        "FRONTEND_ADDRESS_DEPLOY": {
+        "FRONTEND_ADDRESS": {
             "description": "URL for application front end"
         },
-        "DB_ADDRESS_DEPLOY": {
-            "description": "Connection string for MongoDB"
+        "TYPEORM_URL": {
+            "description": "Connection string for the database"
         },
-        "DB_USER_DEPLOY": {
-            "description": "DB Username"
-        },
-        "DB_PASS_DEPLOY": {
-            "description": "DB Password"
+        "TYPEORM_CONNECTION": {
+            "description": "Database type (Postgres, MySQL, SQLite, etc...)"
         },
         "JWT_INVITE_SECRET": {
             "generator": "secret"
@@ -25,13 +22,13 @@
         "JWT_CONFIRM_ACC_SECRET": {
             "generator": "secret"
         },
-        "SENDGRID_API_KEY": {
+        "EMAIL_SENDGRID_API_KEY": {
             "description": "Sendgrid API Key"
         },
         "NO_REPLY_EMAIL": {
-            "description": "Noreply email address"
+            "description": "No reply email address"
         },
-        "NO_REPLY_EMAIL": {
+        "BUCKET_NAME": {
             "description": "GCP Storage Bucket Name"
         },
         "TYPE": {
@@ -53,7 +50,7 @@
             "description": "GCP Auth URI"
         },
         "TOKEN_URI": {
-            "description": "GCP TOken URI"
+            "description": "GCP Token URI"
         },
         "AUTH_PROVIDER_X509_CERT_URL": {
             "description": "GCP Provider Cert URL"
