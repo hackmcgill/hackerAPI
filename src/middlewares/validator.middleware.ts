@@ -19,7 +19,12 @@ export function Validator(model: any): any {
             response: Response<any, Record<string, any>>,
             next: NextFunction
         ): Promise<void> {
-            await validateOrReject(plainToClass(model, request.body))
+            await validateOrReject(
+                plainToClass(model, request.body),
+                request.method === "PATCH"
+                    ? { skipMissingProperties: true }
+                    : {}
+            )
                 .then(() => next())
                 .catch((errors) => {
                     response.status(422).send({
