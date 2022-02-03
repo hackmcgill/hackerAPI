@@ -62,7 +62,9 @@ export function EnsureAuthorization(
                 if (
                     !noIdentifierCheck &&
                     //@ts-ignore
-                    query?.identifier !== request.user?.identifier
+                    query &&
+                    //@ts-ignore
+                    query.identifier !== request.user?.identifier
                 )
                     return response.status(403).json({
                         message: ErrorConstants.AUTH_403_MESSAGE,
