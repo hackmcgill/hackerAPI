@@ -14,7 +14,7 @@ import { AccountController } from "@controllers/account.controller";
 import { AuthenticationController } from "@controllers/authentication.controller";
 import { HackerController } from "@controllers/hacker.controller";
 import { SearchController } from "@controllers/search.controller";
-import { SettingsController } from "@controllers/settings.controller";
+import { SettingController } from "@app/controllers/setting.controller";
 import { SponsorController } from "@controllers/sponsor.controller";
 import { TeamController } from "@controllers/team.controller";
 import { TravelController } from "@controllers/travel.controller";
@@ -106,7 +106,7 @@ function useControllers(express: ExpressApplication): void {
         container.resolve(SponsorController),
         container.resolve(TravelController),
         container.resolve(SearchController),
-        container.resolve(SettingsController)
+        container.resolve(SettingController)
     ]);
     express.use("/api", router);
 }
