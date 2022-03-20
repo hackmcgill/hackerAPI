@@ -120,7 +120,7 @@ export class AccountController {
     async create(
         @Response() response: ExpressResponse,
         @Body() account: Account,
-        @Headers("X-Invite-Token") token: string
+        @Headers("X-Invite-Token") token?: string
     ) {
         if (token) {
             const data = jwt.verify(
@@ -129,6 +129,7 @@ export class AccountController {
             ) as {
                 identifier: number;
             };
+
             const result = await this.accountConfirmationService.findByIdentifier(
                 data.identifier
             );
