@@ -14,6 +14,10 @@ export class AccountConfirmationService {
         this.accountConfirmationRepository = getRepository(AccountConfirmation);
     }
 
+    public async find(): Promise<Array<AccountConfirmation>> {
+        return await this.accountConfirmationRepository.find();
+    }
+
     public async findByIdentifier(
         identifier: number
     ): Promise<AccountConfirmation | undefined> {

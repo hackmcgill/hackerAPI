@@ -10,6 +10,7 @@ import {
     Body,
     Controller,
     Get,
+    Headers,
     Params,
     Patch,
     Post,
@@ -24,7 +25,9 @@ import { AccountConfirmationService } from "@services/account-confirmation.servi
 import { EmailService } from "@services/email.service";
 import * as GeneralConstants from "@constants/general.constant";
 import { join } from "path";
-import { Validator } from "@app/middlewares/validator.middleware";
+import { Validator } from "@middlewares/validator.middleware";
+import AccountConfirmation from "@models/account-confirmation-token.model";
+import * as jwt from "jsonwebtoken";
 
 @autoInjectable()
 @Controller("/account")
@@ -116,8 +119,28 @@ export class AccountController {
     @Post("/", [Validator(Account)])
     async create(
         @Response() response: ExpressResponse,
-        @Body() account: Account
+        @Body() account: Account,
+        @Headers("X-Invite-Token") token: string
     ) {
+        if (token) {
+            const data = jwt.verify(
+                token,
+                process.env.JWT_CONFIRM_ACC_SECRET!
+            ) as {
+                identifier: number;
+            };
+            const result = await this.accountConfirmationService.findByIdentifier(
+                data.identifier
+            );
+
+            if (result) {
+                account.confirmed = true;
+                account.accountType = result.accountType;
+
+                this.accountConfirmationService.delete(result.identifier);
+            }
+        }
+
         const result: Account = await this.accountService.save(account);
 
         if (result) {
@@ -193,8 +216,63 @@ export class AccountController {
               });
     }
 
-    //TODO - Implement (gotInvites, invitedAccount)
-    // Invite functionality requires a special account confirmation token change where we verify if the token is valid
-    // without the account field, this was in the previous code (middleware files)
-    // to reimpl this functionality we should reference there.
+    @Post("/invite", [
+        EnsureAuthenticated,
+        EnsureAuthorization([AuthorizationLevel.Staff])
+    ])
+    async createWithInvite(
+        @Response() response: ExpressResponse,
+        @Body("email") email: string,
+        @Body("accountType") accountType: string
+    ) {
+        const model = await this.accountConfirmationService.save({
+            email: email,
+            accountType: accountType
+        });
+
+        await this.mailer.send(
+            {
+                to: model.email,
+                subject: "Account Confirmation Instructions",
+                html: join(
+                    __dirname,
+                    "../assets/email/AccountConfirmation.mjml"
+                )
+            },
+            {
+                link: this.accountConfirmationService.generateLink(
+                    "confirm",
+                    this.accountConfirmationService.generateToken(
+                        model.identifier,
+                        model.account!.identifier
+                    )
+                )
+            },
+            (error?: any) => {
+                if (error)
+                    response.status(500).send({
+                        message: ErrorConstants.EMAIL_500_MESSAGE,
+                        data: error
+                    });
+            }
+        );
+
+        return response.status(200).send({
+            message: SuccessConstants.ACCOUNT_INVITE,
+            data: {}
+        });
+    }
+
+    @Get("/invites", [
+        EnsureAuthenticated,
+        EnsureAuthorization([AuthorizationLevel.Staff])
+    ])
+    async getInvited(@Response() response: ExpressResponse) {
+        const result: Array<AccountConfirmation> = await this.accountConfirmationService.find();
+
+        response.status(200).json({
+            message: SuccessConstants.ACCOUNT_READ,
+            data: result
+        });
+    }
 }
