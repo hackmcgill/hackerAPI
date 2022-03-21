@@ -2,6 +2,10 @@ import { getRepository, MigrationInterface, QueryRunner } from "typeorm";
 
 export const SettingsSeed = [
     {
+        key: "HACKATHON_YEAR",
+        value: "10"
+    },
+    {
         key: "APPLICATION_OPEN",
         value: `${Date.now() - 100}`
     },
@@ -26,8 +30,20 @@ export const SettingsSeed = [
         value: "https://twitter.com/mcgillhacks"
     },
     {
+        key: "SOCIAL_MEDIA_INSTAGRAM",
+        value: "https://instagram.com/mcgillhacks"
+    },
+    {
         key: "SOCIAL_MEDIA_DISCORD",
         value: ""
+    },
+    {
+        key: "SOCIAL_MEDIA_EMAIL",
+        value: "contact@mchacks.ca"
+    },
+    {
+        key: "SOCIAL_MEDIA_DEVPOST",
+        value: "mchacks.devpost.com"
     }
 ];
 

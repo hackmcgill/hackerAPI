@@ -23,6 +23,7 @@
           Confirm your attendance on our
           <a href="https://app.mchacks.ca/" style="color: #F2463A; text-decoration: none;">hacker dashboard</a>
           no later than <b>January 25th at 11:59PM EST</b>.
+          <!-- CHANGE YEARLY-->
         </mj-text>
 
         <mj-text font-family="Hind" line-height="150%" font-size="14px" color="#4D4D4D">

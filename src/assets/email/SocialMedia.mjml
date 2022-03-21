@@ -7,13 +7,13 @@
 
     <mj-text font-family="Hind" line-height="150%" font-size="14px" color="#4D4D4D">
       Follow us on
-      <a href="https://facebook.com/mcgillhacks" style="color: #F2463A; text-decoration: none;">Facebook</a>,
-      <a href="https://twitter.com/mcgillhacks" style="color: #F2463A; text-decoration: none;">Twitter</a>,
+      <a href="{{SOCIAL_MEDIA_FACEBOOK}}" style="color: #F2463A; text-decoration: none;">Facebook</a>,
+      <a href="{{SOCIAL_MEDIA_TWITTER}}" style="color: #F2463A; text-decoration: none;">Twitter</a>,
       and
-      <a href="https://instagram.com/mcgillhacks" style="color: #F2463A; text-decoration: none;">Instagram</a>
+      <a href="{{SOCIAL_MEDIA_INSTAGRAM}}" style="color: #F2463A; text-decoration: none;">Instagram</a>
       for important updates and news about McHacks! If you have any
       questions, feel free to reach out at
-      <a href="mailto:contact@mchacks.ca" style="color: #F2463A; text-decoration: none;">contact@mchacks.ca</a>.
+      <a href="mailto:{{SOCIAL_MEDIA_EMAIL}}" style="color: #F2463A; text-decoration: none;">contact@mchacks.ca</a>.
     </mj-text>
   </mj-column>
 </mj-section>

@@ -20,7 +20,7 @@
 
         <mj-text font-family="Hind" line-height="150%" font-size="14px" color="#4D4D4D">
           Don't forget to join the McHacks participants
-          <a href="https://facebook.com/groups/mchacks9" style="color: #F2463A; text-decoration: none;">Facebook group</a>
+          <a href="{{SOCIAL_MEDIA_FACEBOOK}}" style="color: #F2463A; text-decoration: none;">Facebook group</a>
           and
           <a href="https://app.mchacks.ca" style="color: #F2463A; text-decoration: none;">Discord</a>
           for announcements, to chat with other hackers, ask questions, and form teams!

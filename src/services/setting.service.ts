@@ -1,4 +1,4 @@
-import { Setting } from "@app/models/setting.model";
+import { Setting } from "@models/setting.model";
 import { getRepository, Repository, UpdateResult } from "typeorm";
 
 export class SettingService {

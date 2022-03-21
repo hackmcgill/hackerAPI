@@ -1,6 +1,6 @@
 <mjml>
   <mj-head>
-    <mj-title>McHacks 9: Important Information</mj-title>
+    <mj-title>McHacks {{HACKATHON_YEAR}}: Important Information</mj-title>
     <mj-font name="Hind" href="http://fonts.googleapis.com/css?family=Hind:400,700" />
   </mj-head>
   <mj-body background-color="#F9F9F9">
@@ -10,7 +10,7 @@
       <mj-column>
         <mj-spacer />
         <mj-text font-family="Hind" line-height="150%" font-size="26px" font-weight="700" color="#F2463A">
-          4 Days Until McHacks 9!
+          4 Days Until McHacks {{HACKATHON_YEAR}}!
         </mj-text>
 
         <mj-text font-family="Hind" line-height="150%" font-size="14px" color="#4D4D4D">
@@ -18,7 +18,7 @@
         </mj-text>
 
         <mj-text font-family="Hind" line-height="150%" font-size="14px" color="#4D4D4D">
-          McHacks 9 is this coming weekend and we're excited to spend an epic
+          McHacks {{HACKATHON_YEAR}} is this coming weekend and we're excited to spend an epic
           weekend with you hacking away! 🎉
         </mj-text>
 
@@ -43,7 +43,7 @@
 
         <mj-text font-family="Hind" line-height="150%" font-size="14px" color="#4D4D4D">
           During the hackathon, we'll be using both the FB group and the official
-          <a href="https://mchacks.ca" style="color: #F2463A; text-decoration: none;">McHacks 9 Discord</a>
+          <a href="https://mchacks.ca" style="color: #F2463A; text-decoration: none;">McHacks {{HACKATHON_YEAR}} Discord</a>
           Be sure to join the Discord so you're updated on
           everything going on as they happen!
         </mj-text>
@@ -123,7 +123,7 @@
         </mj-text>
 
         <mj-text font-family="Hind" line-height="150%" font-size="14px" color="#4D4D4D">
-          McHacks 9 will be hosted at
+          McHacks {{HACKATHON_YEAR}} will be hosted at
           <a href="https://goo.gl/maps/2nHsXtvLDNK2" style="color: #F2463A; text-decoration: none;">Theatre St James</a>
           in the Old Port of Montreal.
         </mj-text>

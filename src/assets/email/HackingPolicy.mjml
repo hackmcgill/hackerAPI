@@ -22,7 +22,7 @@
     <mj-text font-family="Hind" line-height="150%" font-size="14px" color="#4D4D4D">
       That being said, you're more than welcome to familiarize yourself with
       all the tech and tools you intend to build with beforehand! You can
-      check our <a href="https://mchacks6.devpost.com" style="-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;color:#F2463A;text-decoration:none;">Devpost</a>
+      check our <a href="{{SOCIAL_MEDIA_DEVPOST}}" style="-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;color:#F2463A;text-decoration:none;">Devpost</a>
       which will be updated soon with our available prizes to inspire ideas
       for your project! 🎁
     </mj-text>

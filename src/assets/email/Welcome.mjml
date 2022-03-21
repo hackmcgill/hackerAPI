@@ -1,6 +1,6 @@
 <mjml>
   <mj-head>
-    <mj-title>McHacks 9: Important Information</mj-title>
+    <mj-title>McHacks {{HACKATHON_YEAR}}: Important Information</mj-title>
     <mj-font name="Hind" href="http://fonts.googleapis.com/css?family=Hind:400,700" />
   </mj-head>
   <mj-body background-color="#F9F9F9">
@@ -10,7 +10,7 @@
       <mj-column>
         <mj-spacer />
         <mj-text font-family="Hind" line-height="150%" font-size="26px" font-weight="700" color="#F2463A">
-          Welcome To McHacks 9!
+          Welcome To McHacks {{HACKATHON_YEAR}}!
         </mj-text>
 
         <mj-text font-family="Hind" line-height="150%" font-size="14px" color="#4D4D4D">
@@ -18,7 +18,7 @@
         </mj-text>
 
         <mj-text font-family="Hind" line-height="150%" font-size="14px" color="#4D4D4D">
-          McHacks 6 is finally here, and we're excited to spend an epic
+          McHacks {{HACKATHON_YEAR}} is finally here, and we're excited to spend an epic
           weekend with you hacking away! 🎉
         </mj-text>
 
@@ -37,13 +37,13 @@
 
         <mj-text font-family="Hind" line-height="150%" font-size="14px" color="#4D4D4D">
           Join our
-          <a href="https://mchacks.ca" style="color: #F2463A; text-decoration: none;">Facebook group</a>
+          <a href="{{SOCIAL_MEDIA_FACEBOOK}}" style="color: #F2463A; text-decoration: none;">Facebook group</a>
           for announcements, to RSVP for workshops/activities, chat with other hackers, and form teams!
         </mj-text>
 
         <mj-text font-family="Hind" line-height="150%" font-size="14px" color="#4D4D4D">
           During the hackathon, we'll be using both the FB group and the official
-          <a href="https://mchacks.ca" style="color: #F2463A; text-decoration: none;">McHacks 9 Discord</a>
+          <a href="{{SOCIAL_MEDIA_DISCORD}}" style="color: #F2463A; text-decoration: none;">McHacks {{HACKATHON_YEAR}} Discord</a>
           Be sure to join the Discord so you're updated on
           everything going on as they happen!
         </mj-text>

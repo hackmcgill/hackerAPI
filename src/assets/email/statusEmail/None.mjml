@@ -23,7 +23,7 @@
 
         <mj-text font-family="Hind" line-height="150%" font-size="14px" color="#4D4D4D">
           Applications close on
-          <b style="font-weight: 700;">December 26th at 12:00pm ET</b>
+          <b style="font-weight: 700;">December 26th at 12:00pm ET</b> <!-- CHANGE YEARLY -->
           so be sure to click submit before then to be considered.
         </mj-text>
       </mj-column>
