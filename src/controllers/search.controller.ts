@@ -1,9 +1,9 @@
-import { Controller, Get, Query, Response } from "@decorators/express";
+import { Body, Controller, Get, Query, Response } from "@decorators/express";
 import { autoInjectable } from "tsyringe";
 import { AuthorizationLevel } from "@constants/authorization-level.constant";
 import { EnsureAuthenticated } from "@middlewares/authenticated.middleware";
 import { EnsureAuthorization } from "@middlewares/authorization.middleware";
-import { SearchService } from "@services/search.service";
+import { Filter, SearchService } from "@services/search.service";
 import { Response as ExpressResponse } from "express";
 import * as SuccessConstants from "@constants/success.constant";
 
@@ -23,12 +23,9 @@ export class SearchController {
     async execute(
         @Response() response: ExpressResponse,
         @Query("model") model: string,
-        @Query("q") q: string
+        @Body("filters") filters: Array<Filter>
     ) {
-        const result = await this.searchService.executeQuery(
-            model,
-            JSON.parse(q)
-        );
+        const result = await this.searchService.executeQuery(model, filters);
 
         response.status(200).send({
             message:
