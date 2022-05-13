@@ -16,4 +16,4 @@ certbot/
 secret.yaml
 
 # compile output folder.
-dist/
+build/
