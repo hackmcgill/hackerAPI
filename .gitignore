@@ -1,19 +1,17 @@
-# Node JS
+# Node Modules
 node_modules
 
-#env file
+# All Environment Files
 .env.*
 
-#creds
+# Google Cloud Platform Credentials
 gcp_creds.json
 
-#certbot 
-certbot/
-
+# Mac Metadata
 .DS_Store
 
-#secrets
-secret.yaml
-
-# compile output folder.
+# Compiled Output Folder
 build/
+
+# Visual Studio Code
+.vscode/
