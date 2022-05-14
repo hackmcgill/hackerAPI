@@ -6,11 +6,17 @@
     "scripts": {
         "start": "DEBUG=hackboard:* NODE_ENV=development ts-node-dev --respawn --pretty -r tsconfig-paths/register --transpile-only src/index.ts",
         "start-windows": "set DEBUG=hackboard:* && set NODE_ENV=test && ts-node-dev --respawn --pretty --transpile-only src/index.ts",
-        "deploy": "NODE_ENV=deployment node ./bin/www.js",
+        "build": "tsc",
+        "deploy": "NODE_ENV=deployment npm run build && node -r ts-node/register/transpile-only -r tsconfig-paths/register ./build/index.js",
         "docs": "apidoc -i ./routes -o ./docs/api/",
-        "format": "prettier --write 'src/**/*.ts'",
-        "lint": "eslint --fix 'src/**/*.ts'",
-        "test": "DEBUG=hackboard:* NODE_ENV=test jest --detectOpenHandles"
+        "lint": "eslint --ext .ts",
+        "lint:fix": "eslint --ext .ts --fix",
+        "prettify": "prettier '{src,tests}/**/*.ts' --check",
+        "prettify:fix": "prettier '{src,tests}/**/*.ts' --write",
+        "format": "npm run lint && npm run prettify",
+        "format:fix": "npm run lint:fix && npm run prettify:fix",
+        "test": "DEBUG=hackboard:* NODE_ENV=test jest --detectOpenHandles",
+        "prepare": "husky install"
     },
     "dependencies": {
         "@decorators/di": "^1.0.3",
@@ -45,6 +51,8 @@
         "winston": "^3.3.3"
     },
     "devDependencies": {
+        "@commitlint/cli": "^16.2.4",
+        "@commitlint/config-conventional": "^16.2.4",
         "@types/bcrypt": "^5.0.0",
         "@types/cookie-parser": "^1.4.2",
         "@types/cookie-session": "^2.0.44",
@@ -67,10 +75,14 @@
         "@typescript-eslint/eslint-plugin": "^5.10.0",
         "@typescript-eslint/parser": "^5.10.0",
         "apidoc": "^0.28.1",
+        "commitizen": "^4.2.4",
+        "cz-conventional-changelog": "^3.3.0",
         "eslint": "^7.31.0",
         "eslint-config-prettier": "^8.3.0",
         "eslint-plugin-prettier": "^3.4.0",
+        "husky": "^8.0.1",
         "jest": "^27.4.5",
+        "lint-staged": "^12.4.1",
         "prettier": "1.19.1",
         "supertest": "^6.1.6",
         "ts-jest": "^27.1.2",
