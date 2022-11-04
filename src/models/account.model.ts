@@ -55,11 +55,11 @@ class Account {
     @IsEnum(UserType)
     accountType: string;
 
-    @Column("date", { nullable: false })
+    @Column("timestamp", { nullable: false })
     birthDate: Date;
 
     @Column()
-    @IsPhoneNumber()
+    // @IsPhoneNumber()
     phoneNumber: string;
 
     toJSON() {

@@ -202,6 +202,7 @@ export class AccountController {
     ) {
         //TODO - Implement resend e-mail confirmation and verification.
         //TODO - A thrifty user can update their password from here and it would not be hashed, we should attempt to block.
+        delete update.password;
         const result = await this.accountService.update(identifier, update);
 
         return result

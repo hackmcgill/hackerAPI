@@ -43,14 +43,14 @@ export class HackerService {
 
     public async updateApplicationField(
         identifier: number,
-        key: string,
+        path: string,
         value: any
     ): Promise<UpdateResult> {
         return await this.hackerRepository
             .createQueryBuilder()
             .update()
             .set({
-                application: () => `jsonb_set(application,${key},${value})`
+                application: () => `jsonb_set(application, '${path}', '"${value}"')`
             })
             .where("identifier = :identifier", {
                 identifier: identifier

@@ -23,9 +23,9 @@ export class SearchController {
     async execute(
         @Response() response: ExpressResponse,
         @Query("model") model: string,
-        @Body("filters") filters: Array<Filter>
+        @Query("q") filters: string
     ) {
-        const result = await this.searchService.executeQuery(model, filters);
+        const result = await this.searchService.executeQuery(model, JSON.parse(filters));
 
         response.status(200).send({
             message:
