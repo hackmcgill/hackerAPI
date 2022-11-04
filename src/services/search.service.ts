@@ -23,6 +23,10 @@ export class SearchService {
         this.connection = getConnection();
     }
 
+    public parseValueList(values: string[]) {
+        return "(" + values.map((value) => `'${value}'`) + ")";
+    }
+
     public parseParam(param: string) {
         const path = param.split('.');
         return path[0] + '->' + path.slice(1, path.length - 1).map((s) => `'${s}'`).join('->') + "->>" + `'${path[path.length - 1]}'`;
@@ -43,9 +47,7 @@ export class SearchService {
             switch (operation.toUpperCase()) {
                 case Operation.Equal:
                 case Operation.In:
-                    builder.andWhere(`${param} ${operation} (:...value)`, {
-                        value
-                    });
+                    builder.andWhere(`${param} ${operation} ${this.parseValueList(value as string[])}`);
                     break;
                 case Operation.Like:
                     builder.andWhere(`${param} ${operation} %:value%`, {
@@ -62,7 +64,6 @@ export class SearchService {
                     break;
             }
         });
-
         return builder.getMany();
     }
 }
