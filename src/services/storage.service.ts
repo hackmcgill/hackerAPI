@@ -16,8 +16,6 @@ export class StorageService {
         } catch (error) {
             loggerService.getLogger().error(error);
         }
-        if (process.env.NODE_ENV !== "production")
-            this.bucket = this.storage.bucket(this.bucketName);
     }
 
     /**

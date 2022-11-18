@@ -1,16 +1,23 @@
 import { HackerStatus } from "@constants/general.constant";
-import { Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import {
+    Column,
+    Entity,
+    JoinColumn,
+    ManyToOne,
+    OneToOne,
+    PrimaryColumn
+} from "typeorm";
 import Account from "@models/account.model";
 import { ApplicationSchema } from "@models/application.model";
 import Team from "@models/team.model";
 
 @Entity()
 class Hacker {
-    @PrimaryGeneratedColumn()
-    readonly identifier: number;
+    @PrimaryColumn()
+    identifier: number;
 
     @OneToOne(() => Account)
-    @JoinColumn()
+    @JoinColumn({ name: "identifier" })
     readonly account: Account;
 
     @Column({
