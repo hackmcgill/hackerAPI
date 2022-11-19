@@ -28,6 +28,7 @@ import { join } from "path";
 import { Validator } from "@middlewares/validator.middleware";
 import AccountConfirmation from "@models/account-confirmation-token.model";
 import * as jwt from "jsonwebtoken";
+import { InvitationService } from "@app/services/invitation.service";
 
 @autoInjectable()
 @Controller("/account")
@@ -35,8 +36,73 @@ export class AccountController {
     constructor(
         private readonly accountService: AccountService,
         private readonly accountConfirmationService: AccountConfirmationService,
+        private readonly invitationService: InvitationService,
         private readonly mailer: EmailService
     ) {}
+
+    @Post("/invite", [
+        EnsureAuthenticated,
+        EnsureAuthorization([AuthorizationLevel.Staff])
+    ])
+    async createWithInvite(
+        @Request() request: ExpressRequest,
+        @Response() response: ExpressResponse,
+        @Body("email") email: string,
+        @Body("accountType") accountType: string
+    ) {
+        const inviter = await this.accountService.findByIdentifier(
+            //@ts-ignore
+            request.user?.identifier
+        );
+
+        if (inviter) {
+            const invitation = await this.invitationService.save({email, accountType, inviter});
+            await this.mailer.send(
+                {
+                    to: invitation.email,
+                    subject: "Account Confirmation Instructions",
+                    html: join(
+                        __dirname,
+                        "../assets/email/AccountConfirmation.mjml"
+                    )
+                },
+                {
+                    link: this.accountConfirmationService.generateLink(
+                        "confirm",
+                        this.invitationService.generateToken(invitation)
+                    )
+                },
+                (error?: any) => {
+                    if (error)
+                        response.status(500).send({
+                            message: ErrorConstants.EMAIL_500_MESSAGE,
+                            data: error
+                        });
+                }
+            );
+            return response.status(200).send({
+                message: SuccessConstants.ACCOUNT_INVITE,
+                data: {}
+            });
+        } else {
+            return response.status(404).json({
+                message: ErrorConstants.ACCOUNT_404_MESSAGE,
+            });
+        }
+    }
+
+    @Get("/invite", [
+        EnsureAuthenticated,
+        EnsureAuthorization([AuthorizationLevel.Staff])
+    ])
+    async getInvited(@Response() response: ExpressResponse) {
+        const result = await this.invitationService.find();
+
+        response.status(200).json({
+            message: SuccessConstants.ACCOUNT_READ,
+            data: result
+        });
+    }
 
     @Get("/", [
         EnsureAuthenticated,
@@ -216,65 +282,5 @@ export class AccountController {
                       identifier: identifier
                   }
               });
-    }
-
-    @Post("/invite", [
-        EnsureAuthenticated,
-        EnsureAuthorization([AuthorizationLevel.Staff])
-    ])
-    async createWithInvite(
-        @Response() response: ExpressResponse,
-        @Body("email") email: string,
-        @Body("accountType") accountType: string
-    ) {
-        const model = await this.accountConfirmationService.save({
-            email: email,
-            accountType: accountType
-        });
-
-        await this.mailer.send(
-            {
-                to: model.email,
-                subject: "Account Confirmation Instructions",
-                html: join(
-                    __dirname,
-                    "../assets/email/AccountConfirmation.mjml"
-                )
-            },
-            {
-                link: this.accountConfirmationService.generateLink(
-                    "confirm",
-                    this.accountConfirmationService.generateToken(
-                        model.identifier,
-                        model.account!.identifier
-                    )
-                )
-            },
-            (error?: any) => {
-                if (error)
-                    response.status(500).send({
-                        message: ErrorConstants.EMAIL_500_MESSAGE,
-                        data: error
-                    });
-            }
-        );
-
-        return response.status(200).send({
-            message: SuccessConstants.ACCOUNT_INVITE,
-            data: {}
-        });
-    }
-
-    @Get("/invites", [
-        EnsureAuthenticated,
-        EnsureAuthorization([AuthorizationLevel.Staff])
-    ])
-    async getInvited(@Response() response: ExpressResponse) {
-        const result: Array<AccountConfirmation> = await this.accountConfirmationService.find();
-
-        response.status(200).json({
-            message: SuccessConstants.ACCOUNT_READ,
-            data: result
-        });
     }
 }
