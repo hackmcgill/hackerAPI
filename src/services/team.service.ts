@@ -56,11 +56,26 @@ export class TeamService {
     }
 
     public async removeMember(hacker: Hacker): Promise<void> {
+        // hacker.team does return a number (it's the identifier).
+        // However, the underlying model dictates that team attribute of Hacker should be Team.
+        // I'm not sure why? I didn't want to change that incase it breaked something else.
+        // This throws a parsing error. But it will work.
+        const team = await this.findByIdentifier(hacker.team);
+
         await this.teamRepository
             .createQueryBuilder("team")
             .relation(Hacker, "team")
             .of(hacker)
             .set({ team: null });
+
+        // If the person we're removing is the last one left on the team. Clean up teams as well.
+        if (team && team.members.length == 1) {
+            await this.teamRepository
+                .createQueryBuilder("team")
+                .delete()
+                .where("name = :name", { name: team.name })
+                .execute();
+        }
     }
 
     public async update(
