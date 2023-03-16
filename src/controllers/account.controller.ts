@@ -29,6 +29,7 @@ import { Validator } from "@middlewares/validator.middleware";
 import AccountConfirmation from "@models/account-confirmation-token.model";
 import * as jwt from "jsonwebtoken";
 import { InvitationService } from "@app/services/invitation.service";
+import Invitation from "@app/models/invitation.model";
 
 @autoInjectable()
 @Controller("/account")
@@ -56,20 +57,25 @@ export class AccountController {
         );
 
         if (inviter) {
-            const invitation = await this.invitationService.save({email, accountType, inviter});
+            const invitation = await this.invitationService.save({
+                email,
+                accountType,
+                inviter
+            });
             await this.mailer.send(
                 {
                     to: invitation.email,
-                    subject: "Account Confirmation Instructions",
+                    subject: "Account Creation Instructions",
                     html: join(
                         __dirname,
-                        "../assets/email/AccountConfirmation.mjml"
+                        "../assets/email/AccountInvitation.mjml"
                     )
                 },
                 {
-                    link: this.accountConfirmationService.generateLink(
-                        "confirm",
-                        this.invitationService.generateToken(invitation)
+                    link: this.invitationService.generateLink(
+                        "account/create",
+                        this.invitationService.generateToken(invitation),
+                        accountType
                     )
                 },
                 (error?: any) => {
@@ -86,7 +92,7 @@ export class AccountController {
             });
         } else {
             return response.status(404).json({
-                message: ErrorConstants.ACCOUNT_404_MESSAGE,
+                message: ErrorConstants.ACCOUNT_404_MESSAGE
             });
         }
     }
@@ -186,25 +192,24 @@ export class AccountController {
     async create(
         @Response() response: ExpressResponse,
         @Body() account: Account,
-        @Headers("X-Invite-Token") token?: string
+        // @Params("token") token?: string,
+        // @Params("accountType") accType?: string,
+        @Headers("token") token?: string
     ) {
         if (token) {
-            const data = jwt.verify(
-                token,
-                process.env.JWT_CONFIRM_ACC_SECRET!
-            ) as {
-                identifier: number;
+            const data = jwt.verify(token, process.env.JWT_INVITE_SECRET!) as {
+                invitation: Invitation;
             };
 
-            const result = await this.accountConfirmationService.findByIdentifier(
-                data.identifier
+            const result = await this.invitationService.findByIdentifier(
+                data.email
             );
 
             if (result) {
                 account.confirmed = true;
                 account.accountType = result.accountType;
 
-                this.accountConfirmationService.delete(result.identifier);
+                this.invitationService.delete(data.email);
             }
         }
 
@@ -212,7 +217,7 @@ export class AccountController {
 
         if (result) {
             const model = await this.accountConfirmationService.save({
-                accountType: GeneralConstants.HACKER,
+                accountType: result.accountType,
                 email: result.email,
                 confirmationType: GeneralConstants.CONFIRMATION_TYPE_ORGANIC,
                 account: result

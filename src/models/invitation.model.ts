@@ -5,18 +5,18 @@ import { UserType } from "@constants/general.constant";
 
 @Entity()
 class Invitation {
-  @PrimaryColumn()
-  @IsEmail()
-  email: string;
+    @PrimaryColumn()
+    @IsEmail()
+    email: string;
 
-  @Column({
-    enum: UserType,
-    default: UserType.Hacker
-  })
-  accountType: string;
+    @Column({
+        enum: UserType,
+        default: UserType.Hacker
+    })
+    accountType: string;
 
-  @ManyToOne(() => Account)
-  inviter: Account;
+    @ManyToOne(() => Account)
+    inviter: Account;
 }
 
 export default Invitation;

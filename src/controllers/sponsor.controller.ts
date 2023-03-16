@@ -14,7 +14,10 @@ import { EnsureAuthenticated } from "@middlewares/authenticated.middleware";
 import { EnsureAuthorization } from "@middlewares/authorization.middleware";
 import Sponsor from "@models/sponsor.model";
 import { SponsorService } from "@services/sponsor.service";
-import { Request as ExpressRequest, Response as ExpressResponse } from "express";
+import {
+    Request as ExpressRequest,
+    Response as ExpressResponse
+} from "express";
 import * as SuccessConstants from "@constants/success.constant";
 import * as ErrorConstants from "@constants/error.constant";
 import { Validator } from "@app/middlewares/validator.middleware";
@@ -22,7 +25,7 @@ import { Validator } from "@app/middlewares/validator.middleware";
 @autoInjectable()
 @Controller("/sponsor")
 export class SponsorController {
-    constructor(private readonly sponsorService: SponsorService) { }
+    constructor(private readonly sponsorService: SponsorService) {}
 
     @Get("/self", [
         EnsureAuthenticated,
@@ -33,22 +36,22 @@ export class SponsorController {
     ])
     async getSelf(
         @Request() request: ExpressRequest,
-        @Response() response: ExpressResponse,
+        @Response() response: ExpressResponse
     ) {
         const sponsor:
             | Sponsor
             | undefined = await this.sponsorService.findByIdentifier(
-                //@ts-ignore
-                request.user?.identifier
-            );
+            //@ts-ignore
+            request.user?.identifier
+        );
         return sponsor
             ? response.status(200).json({
-                message: SuccessConstants.SPONSOR_READ,
-                data: sponsor
-            })
+                  message: SuccessConstants.SPONSOR_READ,
+                  data: sponsor
+              })
             : response.status(404).json({
-                message: ErrorConstants.SPONSOR_404_MESSAGE
-            });
+                  message: ErrorConstants.SPONSOR_404_MESSAGE
+              });
     }
 
     @Get("/:identifier", [
@@ -65,17 +68,17 @@ export class SponsorController {
         const sponsor:
             | Sponsor
             | undefined = await this.sponsorService.findByIdentifier(
-                identifier
-            );
+            identifier
+        );
 
         return sponsor
             ? response.status(200).json({
-                message: SuccessConstants.SPONSOR_READ,
-                data: sponsor
-            })
+                  message: SuccessConstants.SPONSOR_READ,
+                  data: sponsor
+              })
             : response.status(404).json({
-                message: ErrorConstants.SPONSOR_404_MESSAGE
-            });
+                  message: ErrorConstants.SPONSOR_404_MESSAGE
+              });
     }
 
     @Post("/", [
@@ -91,12 +94,12 @@ export class SponsorController {
 
         return result
             ? response.status(200).send({
-                message: SuccessConstants.SPONSOR_CREATE,
-                data: result
-            })
+                  message: SuccessConstants.SPONSOR_CREATE,
+                  data: result
+              })
             : response.status(422).send({
-                message: ErrorConstants.ACCOUNT_DUPLICATE_422_MESSAGE
-            });
+                  message: ErrorConstants.ACCOUNT_DUPLICATE_422_MESSAGE
+              });
     }
 
     @Patch("/:identifier", [
@@ -116,14 +119,14 @@ export class SponsorController {
 
         return result
             ? response.status(200).json({
-                message: SuccessConstants.SPONSOR_UPDATE,
-                data: result
-            })
+                  message: SuccessConstants.SPONSOR_UPDATE,
+                  data: result
+              })
             : response.status(404).json({
-                message: ErrorConstants.SPONSOR_404_MESSAGE,
-                data: {
-                    identifier: identifier
-                }
-            });
+                  message: ErrorConstants.SPONSOR_404_MESSAGE,
+                  data: {
+                      identifier: identifier
+                  }
+              });
     }
 }
