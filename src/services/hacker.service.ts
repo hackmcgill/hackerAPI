@@ -50,7 +50,8 @@ export class HackerService {
             .createQueryBuilder()
             .update()
             .set({
-                application: () => `jsonb_set(application, '${path}', '"${value}"')`
+                application: () =>
+                    `jsonb_set(application, '${path}', '"${value}"')`
             })
             .where("identifier = :identifier", {
                 identifier: identifier

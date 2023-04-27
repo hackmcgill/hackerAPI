@@ -18,12 +18,16 @@ export class SettingService {
         } else if (value == "false") {
             value = false;
         }
-        return { [key]: value }
+        return { [key]: value };
     }
 
-    public flatten(settings: Array<Setting>): { [setting: string]: string | number | boolean } {
+    public flatten(
+        settings: Array<Setting>
+    ): { [setting: string]: string | number | boolean } {
         const flattened = {};
-        settings.forEach((setting) => Object.assign(flattened, this.flattenOne(setting)))
+        settings.forEach((setting) =>
+            Object.assign(flattened, this.flattenOne(setting))
+        );
         return flattened;
     }
 
@@ -47,7 +51,9 @@ export class SettingService {
         return await this.settingRepository.save(setting);
     }
 
-    public async update(settings: { [setting: string]: string | number | boolean }) {
+    public async update(settings: {
+        [setting: string]: string | number | boolean;
+    }) {
         for (let [key, value] of Object.entries(settings)) {
             value = value.toString();
             const setting = await this.findByKey(key);
@@ -55,7 +61,7 @@ export class SettingService {
                 setting.value = value.toString();
                 await this.settingRepository.save(setting);
             } else {
-                await this.settingRepository.save({key, value});
+                await this.settingRepository.save({ key, value });
             }
         }
     }

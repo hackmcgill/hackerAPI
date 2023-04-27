@@ -28,8 +28,17 @@ export class SearchService {
     }
 
     public parseParam(param: string) {
-        const path = param.split('.');
-        return path[0] + '->' + path.slice(1, path.length - 1).map((s) => `'${s}'`).join('->') + "->>" + `'${path[path.length - 1]}'`;
+        const path = param.split(".");
+        return (
+            path[0] +
+            "->" +
+            path
+                .slice(1, path.length - 1)
+                .map((s) => `'${s}'`)
+                .join("->") +
+            "->>" +
+            `'${path[path.length - 1]}'`
+        );
     }
 
     public async executeQuery(
@@ -47,7 +56,11 @@ export class SearchService {
             switch (operation.toUpperCase()) {
                 case Operation.Equal:
                 case Operation.In:
-                    builder.andWhere(`${param} ${operation} ${this.parseValueList(value as string[])}`);
+                    builder.andWhere(
+                        `${param} ${operation} ${this.parseValueList(
+                            value as string[]
+                        )}`
+                    );
                     break;
                 case Operation.Like:
                     builder.andWhere(`${param} ${operation} %:value%`, {

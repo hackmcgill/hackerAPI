@@ -25,7 +25,10 @@ export class SearchController {
         @Query("model") model: string,
         @Query("q") filters: string
     ) {
-        const result = await this.searchService.executeQuery(model, JSON.parse(filters));
+        const result = await this.searchService.executeQuery(
+            model,
+            JSON.parse(filters)
+        );
 
         response.status(200).send({
             message:

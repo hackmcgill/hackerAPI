@@ -21,7 +21,7 @@ import { Validator } from "@app/middlewares/validator.middleware";
 @autoInjectable()
 @Controller("/settings")
 export class SettingController {
-    constructor(private readonly settingService: SettingService) { }
+    constructor(private readonly settingService: SettingService) {}
 
     @Get("/")
     async getAll(@Response() response: ExpressResponse) {
@@ -55,17 +55,17 @@ export class SettingController {
 
         return result
             ? response.status(200).send({
-                message: SuccessConstants.SETTINGS_POST,
-                data: result
-            })
+                  message: SuccessConstants.SETTINGS_POST,
+                  data: result
+              })
             : response.status(422).send({
-                message: ErrorConstants.SETTINGS_422_MESSAGE
-            });
+                  message: ErrorConstants.SETTINGS_422_MESSAGE
+              });
     }
 
     @Patch("", [
         EnsureAuthenticated,
-        EnsureAuthorization([AuthorizationLevel.Staff]),
+        EnsureAuthorization([AuthorizationLevel.Staff])
     ])
     async update(
         @Response() response: ExpressResponse,
@@ -74,7 +74,7 @@ export class SettingController {
         await this.settingService.update(settings);
         return response.status(200).json({
             message: SuccessConstants.SETTINGS_PATCH
-        })
+        });
     }
 
     @Patch("/:identifier", [
@@ -91,14 +91,14 @@ export class SettingController {
 
         return result
             ? response.status(200).json({
-                message: SuccessConstants.SETTINGS_PATCH,
-                data: result
-            })
+                  message: SuccessConstants.SETTINGS_PATCH,
+                  data: result
+              })
             : response.status(404).json({
-                message: ErrorConstants.SETTINGS_404_MESSAGE,
-                data: {
-                    identifier: identifier
-                }
-            });
+                  message: ErrorConstants.SETTINGS_404_MESSAGE,
+                  data: {
+                      identifier: identifier
+                  }
+              });
     }
 }
