@@ -16,9 +16,9 @@ class Hacker {
     @PrimaryColumn()
     identifier: number;
 
-    @OneToOne(() => Account)
+    @OneToOne(() => Account, { cascade: false })
     @JoinColumn({ name: "identifier" })
-    readonly account: Account;
+    account: Account;
 
     @Column({
         enum: HackerStatus,

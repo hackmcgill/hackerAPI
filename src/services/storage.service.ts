@@ -6,8 +6,8 @@ import { LoggerService } from "@services/logger.service";
 @autoInjectable()
 export class StorageService {
     bucketName: string | undefined;
-    storage: any;
-    bucket: any;
+    storage: GStorage.Storage;
+    bucket: GStorage.Bucket;
 
     constructor(loggerService: LoggerService) {
         this.bucketName = process.env.BUCKET_NAME || "";
@@ -16,6 +16,7 @@ export class StorageService {
         } catch (error) {
             loggerService.getLogger().error(error);
         }
+        this.bucket = this.storage.bucket(this.bucketName);
     }
 
     /**
@@ -48,14 +49,16 @@ export class StorageService {
      * @param {string} filename path to file in bucket
      * @returns {Promise<[Buffer]>} the file data that was returned
      */
-    download(filename: string): Promise<Buffer> {
+    download(filename: string): Promise<[Buffer]> {
         const file = this.bucket.file(filename);
-        return new Promise((resolve, reject) => {
-            file.exists().then((doesExist: boolean) => {
+        return new Promise<[Buffer]>((resolve, reject) => {
+            file.exists().then((doesExist: [boolean]) => {
                 if (doesExist) {
                     file.download()
-                        .then(resolve)
-                        .catch(reject);
+                        .then((res) => resolve(res))
+                        .catch(() =>
+                            reject("error occured when downloading from bucket")
+                        );
                 } else {
                     reject("file does not exist");
                 }
@@ -75,9 +78,9 @@ export class StorageService {
     /**
      *
      * @param {*} filename the file that you want to check exists
-     * @returns {Promise<[Boolean]>}
+     * @returns {Promise<[boolean]>}
      */
-    exists(filename: string): boolean {
+    exists(filename: string): Promise<[boolean]> {
         const file = this.bucket.file(filename);
         return file.exists();
     }

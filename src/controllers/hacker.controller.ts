@@ -96,7 +96,6 @@ export class HackerController {
         @Body() hacker: Hacker
     ) {
         //TODO - Check if applications are open when hacker is created.
-        //TODO - Fix bug where Hacker status is None as it is passed into the API. (Maybe override the status variable somehow?)
         hacker.status = HackerStatus.Applied;
         const result: Hacker = await this.hackerService.save(hacker);
 
@@ -121,9 +120,11 @@ export class HackerController {
     async update(
         @Response() response: ExpressResponse,
         @Params("identifier") identifier: number,
-        @Body() update: Hacker
+        @Body() update: Partial<Hacker>
     ) {
-        const result = await this.hackerService.update(identifier, update);
+        // Project only application to prevent overposting
+        const toUpdate: Partial<Hacker> = { application: update.application };
+        const result = await this.hackerService.update(identifier, toUpdate);
 
         return result
             ? response.status(200).json({
@@ -176,7 +177,7 @@ export class HackerController {
             AuthorizationLevel.Staff,
             AuthorizationLevel.Hacker
         ]),
-        upload.single("resume")
+        upload.single("file")
     ])
     async uploadResume(
         @Request() request: ExpressRequest,
