@@ -2,9 +2,9 @@ import { singleton } from "tsyringe";
 import { Connection, getConnection } from "typeorm";
 
 export interface Filter {
-    parameter: string;
+    param: string;
     operation: Operation;
-    value: string;
+    value: string | string[];
 }
 
 enum Operation {
@@ -23,6 +23,24 @@ export class SearchService {
         this.connection = getConnection();
     }
 
+    public parseValueList(values: string[]) {
+        return "(" + values.map((value) => `'${value}'`) + ")";
+    }
+
+    public parseParam(param: string) {
+        const path = param.split(".");
+        return (
+            path[0] +
+            "->" +
+            path
+                .slice(1, path.length - 1)
+                .map((s) => `'${s}'`)
+                .join("->") +
+            "->>" +
+            `'${path[path.length - 1]}'`
+        );
+    }
+
     public async executeQuery(
         model: string,
         query: Array<Filter>
@@ -31,34 +49,34 @@ export class SearchService {
         const builder = this.connection
             .getRepository(metadata)
             .createQueryBuilder(model)
-            .loadAllRelationIds();
+            .leftJoinAndSelect("hacker.account", "account");
 
-        query.forEach(({ parameter, operation, value }: Filter) => {
-            switch (operation) {
+        query.forEach(({ param, operation, value }: Filter) => {
+            param = this.parseParam(param);
+            switch (operation.toUpperCase()) {
                 case Operation.Equal:
                 case Operation.In:
-                    builder.andWhere(`:parameter :operation :value`, {
-                        parameter: parameter,
-                        operation: operation,
-                        value: value
-                    });
+                    builder.andWhere(
+                        `${param} ${operation} ${this.parseValueList(
+                            value as string[]
+                        )}`
+                    );
                     break;
                 case Operation.Like:
-                    builder.andWhere(`:parameter :operation %:value%`, {
-                        parameter: parameter,
-                        operation: operation,
-                        value: value
+                    builder.andWhere(`${param} ${operation} %:value%`, {
+                        param,
+                        operation,
+                        value
                     });
                     break;
                 case Operation.Limit:
-                    builder.skip(Number.parseInt(value));
+                    builder.skip(Number.parseInt(value as string));
                     break;
                 case Operation.Skip:
-                    builder.skip(Number.parseInt(value));
+                    builder.skip(Number.parseInt(value as string));
                     break;
             }
         });
-
         return builder.getMany();
     }
 }

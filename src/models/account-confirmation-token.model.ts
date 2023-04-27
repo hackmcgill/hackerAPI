@@ -4,14 +4,15 @@ import {
     Column,
     JoinColumn,
     OneToOne,
-    PrimaryGeneratedColumn
+    PrimaryGeneratedColumn,
+    PrimaryColumn
 } from "typeorm";
 import Account from "@models/account.model";
 import * as GeneralConstants from "@constants/general.constant";
 
 @Entity()
 class AccountConfirmation {
-    @PrimaryGeneratedColumn()
+    @PrimaryColumn()
     readonly identifier: number;
 
     @OneToOne(() => Account)

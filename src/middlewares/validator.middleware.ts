@@ -1,6 +1,6 @@
 import { Middleware } from "@decorators/express";
-import { plainToClass } from "class-transformer";
-import { validateOrReject } from "class-validator";
+import { plainToInstance } from "class-transformer";
+import { validate, validateOrReject } from "class-validator";
 import { Request, Response, NextFunction } from "express";
 import { ParamsDictionary } from "express-serve-static-core";
 import { ParsedQs } from "qs";
@@ -20,7 +20,7 @@ export function Validator(model: any): any {
             next: NextFunction
         ): Promise<void> {
             await validateOrReject(
-                plainToClass(model, request.body),
+                plainToInstance(model, request.body),
                 request.method === "PATCH"
                     ? { skipMissingProperties: true }
                     : {}

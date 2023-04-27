@@ -63,17 +63,31 @@ export class SettingController {
               });
     }
 
+    @Patch("", [
+        EnsureAuthenticated,
+        EnsureAuthorization([AuthorizationLevel.Staff])
+    ])
+    async update(
+        @Response() response: ExpressResponse,
+        @Body() settings: { [setting: string]: string | number | boolean }
+    ) {
+        await this.settingService.update(settings);
+        return response.status(200).json({
+            message: SuccessConstants.SETTINGS_PATCH
+        });
+    }
+
     @Patch("/:identifier", [
         EnsureAuthenticated,
         EnsureAuthorization([AuthorizationLevel.Staff]),
         Validator(Setting)
     ])
-    async update(
+    async updateOne(
         @Response() response: ExpressResponse,
         @Params("identifier") identifier: number,
         @Body() setting: Partial<Setting>
     ) {
-        const result = await this.settingService.update(identifier, setting);
+        const result = await this.settingService.updateOne(identifier, setting);
 
         return result
             ? response.status(200).json({

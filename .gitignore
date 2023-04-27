@@ -2,6 +2,7 @@
 node_modules
 
 # All Environment Files
+*.env
 .env.*
 
 # Google Cloud Platform Credentials

@@ -23,13 +23,18 @@ import {
 import { StorageService } from "@services/storage.service";
 import { upload } from "@middlewares/multer.middleware";
 import { Validator } from "@app/middlewares/validator.middleware";
+import { HackerStatus } from "@app/constants/general.constant";
+import { AccountService } from "@app/services/account.service";
+import Account from "@app/models/account.model";
+import { QueryFailedError } from "typeorm";
 
 @autoInjectable()
 @Controller("/hacker")
 export class HackerController {
     constructor(
         private readonly hackerService: HackerService,
-        private readonly storageService: StorageService
+        private readonly storageService: StorageService,
+        private readonly accountService: AccountService
     ) {}
 
     @Get("/self", [
@@ -91,7 +96,7 @@ export class HackerController {
         @Body() hacker: Hacker
     ) {
         //TODO - Check if applications are open when hacker is created.
-        //TODO - Fix bug where Hacker status is None as it is passed into the API. (Maybe override the status variable somehow?)
+        hacker.status = HackerStatus.Applied;
         const result: Hacker = await this.hackerService.save(hacker);
 
         return result
@@ -117,7 +122,9 @@ export class HackerController {
         @Params("identifier") identifier: number,
         @Body() update: Partial<Hacker>
     ) {
-        const result = await this.hackerService.update(identifier, update);
+        // Project only application to prevent overposting
+        const toUpdate: Partial<Hacker> = { application: update.application };
+        const result = await this.hackerService.update(identifier, toUpdate);
 
         return result
             ? response.status(200).json({
@@ -189,8 +196,8 @@ export class HackerController {
             //TODO - Implement affectedRows > 0 success check.
             const result = await this.hackerService.updateApplicationField(
                 identifier,
-                "general.URL.resume",
-                request.file
+                "{general,URL,resume}",
+                fileName
             );
 
             response.status(200).send({
@@ -198,6 +205,30 @@ export class HackerController {
                 data: { fileName: fileName }
             });
         }
+    }
+
+    @Patch("/status/:identifier", [
+        EnsureAuthenticated,
+        EnsureAuthorization([AuthorizationLevel.Staff])
+    ])
+    async updateStatus(
+        @Params("identifier") identifier: number,
+        @Body("status") status: string,
+        @Response() response: ExpressResponse
+    ) {
+        const result = await this.hackerService.update(identifier, { status });
+
+        return result
+            ? response.status(200).json({
+                  message: SuccessConstants.HACKER_UPDATE,
+                  data: result
+              })
+            : response.status(404).json({
+                  message: ErrorConstants.HACKER_404_MESSAGE,
+                  data: {
+                      identifier: identifier
+                  }
+              });
     }
 }
 

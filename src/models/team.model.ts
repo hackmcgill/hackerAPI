@@ -26,13 +26,11 @@ class Team {
     @JoinColumn()
     members: Array<Hacker>;
 
-    @Column({ nullable: true })
-    @IsString()
-    submission?: string;
+    @Column({ type: String, nullable: true })
+    submission?: string | null;
 
-    @Column({ nullable: true })
-    @IsString()
-    project?: string;
+    @Column({ type: String, nullable: true })
+    project?: string | null;
 }
 
 export default Team;

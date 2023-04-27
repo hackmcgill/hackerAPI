@@ -1,12 +1,22 @@
 import { HackerStatus } from "@constants/general.constant";
-import { Column, Entity, JoinColumn, ManyToOne, OneToOne } from "typeorm";
+import {
+    Column,
+    Entity,
+    JoinColumn,
+    ManyToOne,
+    OneToOne,
+    PrimaryColumn
+} from "typeorm";
 import Account from "@models/account.model";
 import { ApplicationSchema } from "@models/application.model";
 import Team from "@models/team.model";
 
 @Entity()
 class Hacker {
-    @OneToOne(() => Account, { primary: true, cascade: true })
+    @PrimaryColumn()
+    identifier: number;
+
+    @OneToOne(() => Account, { cascade: false })
     @JoinColumn({ name: "identifier" })
     account: Account;
 

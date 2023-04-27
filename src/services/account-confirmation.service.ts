@@ -49,7 +49,7 @@ export class AccountConfirmationService {
     }
 
     public generateLink(route: string, token: string): string {
-        return `${process.env.FRONTEND_ADDRESS_DEV}/${route}?token=${token}`;
+        return `${process.env.FRONTEND_ADDRESS}/account/${route}?token=${token}`;
     }
 
     public generateToken(identifier: number, account: number): string {
