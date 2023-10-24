@@ -81,10 +81,9 @@ async function ensureAuthorized(req, findByIdFns) {
     }
 
     // get the route ids
-    const twoDRoutes = roleBinding.roles.map((role) => {
-        return role.routes;
-    });
-    const routes = [].concat(...twoDRoutes);
+    const routes = roleBinding.roles
+        .flatMap((role) => role.routes)
+        .filter((role) => role != null);
 
     // each route is an object with an uri and a request type
     // for each uri, separate by '/', check each section to see if it's the same as requested uri
