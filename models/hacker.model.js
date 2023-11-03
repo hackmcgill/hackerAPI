@@ -126,7 +126,16 @@ const HackerSchema = new mongoose.Schema({
                 enum: Constants.SHIRT_SIZES,
                 required: true
             },
-            travel: { type: Number, default: 0 },
+            travel: {
+                amount: {
+                    type: Number,
+                    default: 0
+                },
+                reason: {
+                    type: String,
+                    default: ""
+                }
+            },
             attendancePreference: {
                 type: String,
                 enum: Constants.ATTENDANCE_PREFERENCES,
@@ -155,7 +164,7 @@ const HackerSchema = new mongoose.Schema({
     teamId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Team"
-    },
+    }
 });
 
 HackerSchema.methods.toJSON = function() {
@@ -171,9 +180,18 @@ HackerSchema.methods.isApplicationComplete = function() {
     const jobInterestDone = !!hs.application.general.jobInterest;
     const question1Done = !!hs.application.shortAnswer.question1;
     const question2Done = !!hs.application.shortAnswer.question2;
-    const previousHackathonsDone = !!hs.application.shortAnswer.previousHackathons;
-    const attendancePreferenceDone = !!hs.application.accommodation.attendancePreference;
-    return portfolioDone && jobInterestDone && question1Done && question2Done && previousHackathonsDone && attendancePreferenceDone;
+    const previousHackathonsDone = !!hs.application.shortAnswer
+        .previousHackathons;
+    const attendancePreferenceDone = !!hs.application.accommodation
+        .attendancePreference;
+    return (
+        portfolioDone &&
+        jobInterestDone &&
+        question1Done &&
+        question2Done &&
+        previousHackathonsDone &&
+        attendancePreferenceDone
+    );
 };
 
 /**

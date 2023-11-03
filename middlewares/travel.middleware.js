@@ -5,7 +5,7 @@ const mongoose = require("mongoose");
 const Services = {
     Travel: require("../services/travel.service"),
     Hacker: require("../services/hacker.service"),
-    Account: require("../services/account.service"),
+    Account: require("../services/account.service")
 };
 const Middleware = {
     Util: require("./util.middleware")
@@ -27,7 +27,6 @@ function parsePatch(req, res, next) {
     delete req.body.id;
     return next();
 }
-
 
 /**
  * @function parseTravel
@@ -57,7 +56,7 @@ function parseTravel(req, res, next) {
 
 /**
  * @function addRequestFromHacker
- * @param {{body: {travelDetails: {request: Number}}}} req
+ * @param {{body: {travelDetails: {request: {amount: number, reason: string}}}}} req
  * @param {JSON} res
  * @param {(err?)=>void} next
  * @return {void}
@@ -66,7 +65,9 @@ function parseTravel(req, res, next) {
  * req.body.travelDetails
  */
 async function addRequestFromHacker(req, res, next) {
-    const hacker = await Services.Hacker.findById(req.body.travelDetails.accountId);
+    const hacker = await Services.Hacker.findById(
+        req.body.travelDetails.accountId
+    );
     if (!hacker) {
         return next({
             status: 500,
@@ -77,6 +78,7 @@ async function addRequestFromHacker(req, res, next) {
             }
         });
     }
+    // eslint-disable-next-line require-atomic-updates
     req.body.travelDetails.request = hacker.application.accommodation.travel;
     return next();
 }

@@ -3,33 +3,45 @@ const Constants = require("../constants/general.constant");
 const mongoose = require("mongoose");
 //describes the data type
 const TravelSchema = new mongoose.Schema({
-    accountId: { // The account this travel data is associated with
+    accountId: {
+        // The account this travel data is associated with
         type: mongoose.Schema.Types.ObjectId,
         ref: "Account",
         required: true
     },
-    hackerId: { // The hacker this travel data is associated with
+    hackerId: {
+        // The hacker this travel data is associated with
         type: mongoose.Schema.Types.ObjectId,
         ref: "Hacker",
         required: true
     },
-    status: { // Has this hacker been approved for funds, etc.
+    status: {
+        // Has this hacker been approved for funds, etc.
         type: String,
         enum: Constants.TRAVEL_STATUSES,
         required: true,
         default: "None"
     },
-    request: { // Amount of money hacker has requested for travel
-        type: Number,
-        required: true
+    request: {
+        // Amount of money hacker has requested for travel
+        amount: {
+            type: Number,
+            required: true
+        },
+        reason: {
+            type: String,
+            required: true,
+            default: ""
+        }
     },
-    offer: { // Amount of money we have offered hacker for travel
+    offer: {
+        // Amount of money we have offered hacker for travel
         type: Number,
         default: 0
     }
 });
 
-TravelSchema.methods.toJSON = function () {
+TravelSchema.methods.toJSON = function() {
     const hs = this.toObject();
     delete hs.__v;
     hs.id = hs._id;
