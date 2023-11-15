@@ -126,16 +126,24 @@ module.exports = {
         ),
         VALIDATOR.integerValidator(
             "body",
-            "application.accommodation.travel",
+            "application.accommodation.travel.amount",
             true,
-            0,
-            100
+            0
+        ),
+        VALIDATOR.stringValidator(
+            "body",
+            "application.accommodation.travel.reason",
+            true
         ),
         VALIDATOR.mongoIdValidator("body", "application.team", true),
-        VALIDATOR.stringValidator("body", "application.location.timeZone", true),
+        VALIDATOR.stringValidator(
+            "body",
+            "application.location.timeZone",
+            true
+        ),
         VALIDATOR.stringValidator("body", "application.location.country", true),
         VALIDATOR.stringValidator("body", "application.location.city", true),
-        VALIDATOR.mongoIdValidator("body", "teamId", true),
+        VALIDATOR.mongoIdValidator("body", "teamId", true)
     ],
 
     updateConfirmationValidator: [
@@ -257,15 +265,23 @@ module.exports = {
         ),
         VALIDATOR.integerValidator(
             "body",
-            "application.accommodation.travel",
+            "application.accommodation.travel.amount",
             true,
-            0,
-            100
+            0
+        ),
+        VALIDATOR.stringValidator(
+            "body",
+            "application.accommodation.travel.reason",
+            true
         ),
         VALIDATOR.mongoIdValidator("body", "application.team", true),
-        VALIDATOR.stringValidator("body", "application.location.timeZone", true),
+        VALIDATOR.stringValidator(
+            "body",
+            "application.location.timeZone",
+            true
+        ),
         VALIDATOR.stringValidator("body", "application.location.country", true),
-        VALIDATOR.stringValidator("body", "application.location.city", true),
+        VALIDATOR.stringValidator("body", "application.location.city", true)
     ],
     updateStatusValidator: [
         VALIDATOR.enumValidator(

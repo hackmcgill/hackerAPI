@@ -70,7 +70,9 @@ app.use(
         name: "session",
         keys: [process.env.COOKIE_SECRET],
         // Cookie Options
-        maxAge: 48 * 60 * 60 * 1000 //Logged in for 48 hours
+        maxAge: 48 * 60 * 60 * 1000, //Logged in for 48 hours
+        sameSite: process.env.COOKIE_SAME_SITE,
+        secureProxy: true
     })
 );
 app.use(passport.initialize());
@@ -89,7 +91,7 @@ Services.log.info("Hacker router activated");
 teamRouter.activate(apiRouter);
 Services.log.info("Team router activated");
 travelRouter.activate(apiRouter);
-Services.log.info("Travel router activated")
+Services.log.info("Travel router activated");
 sponsorRouter.activate(apiRouter);
 Services.log.info("Sponsor router activated");
 volunteerRouter.activate(apiRouter);
