@@ -381,7 +381,7 @@ const invalidHacker0 = {
 };
 
 const invalidHacker1 = {
-    _id: mongoose.Types.ObjectId(),
+    _id: new mongoose.Types.ObjectId(),
     // invalid mongoID
     accountId: Util.Account.hackerAccounts.invalid[1]._invalidId,
     application: {
@@ -540,7 +540,7 @@ const invalidHacker4 = {
 };
 
 const duplicateAccountLinkHacker0 = {
-    _id: mongoose.Types.ObjectId(),
+    _id: new mongoose.Types.ObjectId(),
     accountId: Util.Account.hackerAccounts.stored.team[0]._id,
     status: "Applied",
     application: {

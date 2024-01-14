@@ -284,7 +284,7 @@ describe("GET sponsor by id", function() {
                 return done(error);
             }
             return agent
-                .get(`/api/sponsor/${mongoose.Types.ObjectId()}`)
+                .get(`/api/sponsor/${new mongoose.Types.ObjectId()}`)
                 .end(function(err, res) {
                     if (err) {
                         return done(err);

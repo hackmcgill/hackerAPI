@@ -46,7 +46,7 @@ function parsePatch(req, res, next) {
  */
 function parseAccount(req, res, next) {
     const accountDetails = {
-        _id: mongoose.Types.ObjectId(),
+        _id: new mongoose.Types.ObjectId(),
         firstName: req.body.firstName,
         lastName: req.body.lastName,
         pronoun: req.body.pronoun,

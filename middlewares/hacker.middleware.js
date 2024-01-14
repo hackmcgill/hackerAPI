@@ -48,7 +48,7 @@ function parsePatch(req, res, next) {
  */
 function parseHacker(req, res, next) {
     const hackerDetails = {
-        _id: mongoose.Types.ObjectId(),
+        _id: new mongoose.Types.ObjectId(),
         accountId: req.body.accountId,
         application: req.body.application,
         teamId: req.body.teamId

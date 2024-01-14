@@ -33,7 +33,7 @@ const volunteerRouter = require("./routes/api/volunteer");
 const roleRouter = require("./routes/api/role");
 
 const app = express();
-Services.db.connect(app);
+Services.db.connect();
 
 let corsOptions = {};
 
@@ -115,7 +115,7 @@ app.use((err, req, res, next) => {
     const message = err.message ? err.message : "Internal Server Error";
     //Only show bad error when we're not in deployment
     let errorContents;
-    if (status === 500 && Services.env.isProduction) {
+    if (status === 500 && Services.env.isProduction()) {
         errorContents = {};
     } else if (err.error) {
         errorContents = err.error;

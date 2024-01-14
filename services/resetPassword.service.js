@@ -9,20 +9,14 @@ const Services = {
 
 function findByAccountId(accountId) {
     const TAG = `[ PasswordReset Service # findByAccountId ]`;
-    return PasswordReset.findOne(
-        {
-            accountId: accountId
-        },
-        logger.queryCallbackFactory(TAG, "passwordReset", "accountId")
-    );
+    return logger.logQuery(TAG, "passwordReset", "accountId", PasswordReset.findOne({
+        accountId: accountId
+    }));
 }
 
 function findById(id) {
     const TAG = `[ PasswordReset Service # findById ]`;
-    return PasswordReset.findById(
-        id,
-        logger.queryCallbackFactory(TAG, "passwordReset", "mongoId")
-    );
+    return logger.logQuery(TAG, "passwordReset", "mongoId", PasswordReset.findById(id));
 }
 
 async function create(accountId) {
@@ -34,7 +28,7 @@ async function create(accountId) {
     });
 
     //invalidate all of the previous reset tokens such that they do not work anymore
-    await PasswordReset.update(
+    await PasswordReset.updateOne(
         {
             accountId: accountId
         },

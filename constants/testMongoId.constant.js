@@ -2,18 +2,18 @@
 
 const mongoose = require("mongoose");
 
-const team1Id = mongoose.Types.ObjectId();
-const team2Id = mongoose.Types.ObjectId();
-const team3Id = mongoose.Types.ObjectId();
+const team1Id = new mongoose.Types.ObjectId();
+const team2Id = new mongoose.Types.ObjectId();
+const team3Id = new mongoose.Types.ObjectId();
 
-const hackerAId = mongoose.Types.ObjectId();
-const hackerBId = mongoose.Types.ObjectId();
-const hackerCId = mongoose.Types.ObjectId();
-const hackerDId = mongoose.Types.ObjectId();
-const hackerEId = mongoose.Types.ObjectId();
-const hackerFId = mongoose.Types.ObjectId();
-const hackerGId = mongoose.Types.ObjectId();
-const hackerHId = mongoose.Types.ObjectId();
+const hackerAId = new mongoose.Types.ObjectId();
+const hackerBId = new mongoose.Types.ObjectId();
+const hackerCId = new mongoose.Types.ObjectId();
+const hackerDId = new mongoose.Types.ObjectId();
+const hackerEId = new mongoose.Types.ObjectId();
+const hackerFId = new mongoose.Types.ObjectId();
+const hackerGId = new mongoose.Types.ObjectId();
+const hackerHId = new mongoose.Types.ObjectId();
 
 module.exports = {
     team1Id: team1Id,

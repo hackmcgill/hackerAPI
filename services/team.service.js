@@ -21,7 +21,7 @@ function findTeamByHackerId(hackerId) {
         members: hackerId
     };
 
-    return Team.findOne(query, logger.queryCallbackFactory(TAG, "team", query));
+    return logger.logQuery(TAG, "team", query, Team.findOne(query));
 }
 
 /**
@@ -53,11 +53,7 @@ function updateOne(id, teamDetails) {
         _id: id
     };
 
-    return Team.findOneAndUpdate(
-        query,
-        teamDetails,
-        logger.updateCallbackFactory(TAG, "team")
-    );
+    return logger.logUpdate(TAG, "team", Team.findOneAndUpdate(query, teamDetails));
 }
 
 /**
@@ -71,10 +67,7 @@ function findById(id) {
     const query = {
         _id: id
     };
-    return Team.findById(
-        query,
-        logger.queryCallbackFactory(TAG, "team", query)
-    );
+    return logger.logQuery(TAG, "team", query, Team.findById(query));
 }
 
 /**
@@ -90,7 +83,7 @@ function findByName(name) {
         name: name
     };
 
-    return Team.findOne(query, logger.queryCallbackFactory(TAG, "team", query));
+    return logger.logQuery(TAG, "team", query, Team.findOne(query));
 }
 
 /**
@@ -145,7 +138,7 @@ async function addMember(teamId, hackerId) {
         return null;
     }
 
-    return Team.update(
+    return Team.updateOne(
         {
             _id: teamId
         },

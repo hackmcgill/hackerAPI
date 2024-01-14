@@ -36,7 +36,7 @@ function getPassFromEnvironment() {
 }
 
 module.exports = {
-    connect: function(app, callback) {
+    connect: function(callback) {
         mongoose.Promise = Q.promise;
         const user = getUserFromEnvironment();
         const pass = getPassFromEnvironment();
@@ -47,18 +47,10 @@ module.exports = {
                 : `mongodb://${address}`;
         logger.info(`${TAG} Connecting to db on ${url}`);
         mongoose
-            .connect(url, {
-                useNewUrlParser: true,
-                useCreateIndex: true,
-                useFindAndModify: false,
-                useUnifiedTopology: true
-            })
+            .connect(url)
             .then(
                 function() {
                     logger.info(`${TAG} Connected to database on ${url}`);
-                    if (app) {
-                        app.emit("event:connected to db");
-                    }
                     if (callback) {
                         callback();
                     }

@@ -15,10 +15,7 @@ function findById(id) {
     const query = {
         _id: id
     };
-    return Account.findById(
-        query,
-        logger.queryCallbackFactory(TAG, "account", query)
-    );
+    return logger.logQuery(TAG, "account", query, Account.findById(query));
 }
 
 /**
@@ -32,10 +29,7 @@ async function findByHackerId(id) {
     const query = {
         _id: id
     };
-    const hacker = await Hacker.findById(
-        query,
-        logger.queryCallbackFactory(TAG, "account", query)
-    ).populate({
+    const hacker = await logger.logQuery(TAG, "account", query, Hacker.findById(query)).populate({
         path: "accountId",
         select: " -password"
     });
@@ -91,11 +85,7 @@ function hashPassword(password) {
  */
 function findOne(query) {
     const TAG = `[Account Service # findOne ]:`;
-
-    return Account.findOne(
-        query,
-        logger.queryCallbackFactory(TAG, "account", query)
-    );
+    return logger.logQuery(TAG, "account", query, Account.findOne(query));
 }
 
 /**
@@ -126,11 +116,7 @@ function updateOne(id, accountDetails) {
         _id: id
     };
 
-    return Account.findOneAndUpdate(
-        query,
-        accountDetails,
-        logger.updateCallbackFactory(TAG, "account")
-    );
+    return logger.logUpdate(TAG, "account", Account.findOneAndUpdate(query, accountDetails));
 }
 
 /**
