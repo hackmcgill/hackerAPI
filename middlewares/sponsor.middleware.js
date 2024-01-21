@@ -49,7 +49,7 @@ function parsePatch(req, res, next) {
  */
 function parseSponsor(req, res, next) {
     const sponsorDetails = {
-        _id: mongoose.Types.ObjectId(),
+        _id: new mongoose.Types.ObjectId(),
         accountId: req.body.accountId,
         tier: req.body.tier,
         company: req.body.company,

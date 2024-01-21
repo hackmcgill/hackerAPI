@@ -15,26 +15,26 @@ const Constants = require("../../constants/general.constant");
 const logger = require("../../services/logger.service");
 
 const HackerConfirmation = {
-    _id: mongoose.Types.ObjectId(),
+    _id: new mongoose.Types.ObjectId(),
     accountId: Util.Account.NonConfirmedAccount1._id,
     accountType: Constants.HACKER,
     email: Util.Account.NonConfirmedAccount1.email
 };
 
 const HackerConfirmation2 = {
-    _id: mongoose.Types.ObjectId(),
+    _id: new mongoose.Types.ObjectId(),
     accountId: Util.Account.NonConfirmedAccount2._id,
     accountType: Constants.HACKER,
     email: Util.Account.NonConfirmedAccount2.email
 };
 
 const HackerConfirmation3 = {
-    _id: mongoose.Types.ObjectId(),
+    _id: new mongoose.Types.ObjectId(),
     email: Util.Account.unlinkedAccounts.new[0].email
 };
 
 const InvitedConfirmation1 = {
-    _id: mongoose.Types.ObjectId(),
+    _id: new mongoose.Types.ObjectId(),
     accountType: Constants.HACKER,
     email: "abcd@efgh.com",
     confirmationType: Constants.CONFIRMATION_TYPE_INVITE

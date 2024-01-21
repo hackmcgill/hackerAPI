@@ -19,7 +19,7 @@ const Constants = {
  */
 function parseRole(req, res, next) {
     const roleDetails = {
-        _id: mongoose.Types.ObjectId(),
+        _id: new mongoose.Types.ObjectId(),
         name: req.body.name,
         routes: req.body.routes
     };

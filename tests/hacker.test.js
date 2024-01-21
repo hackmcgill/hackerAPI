@@ -33,9 +33,9 @@ const newHackerAccount0 = util.account.hackerAccounts.new[0];
 const newHacker0 = util.hacker.newHacker0;
 const invalidHackerAccount0 = util.account.hackerAccounts.invalid;
 const invalidHacker0 = util.hacker.invalidHacker0;
+const invalidHacker1 = util.hacker.invalidHacker1;
 const invalidHacker2 = util.hacker.invalidHacker2;
 const invalidHacker3 = util.hacker.invalidHacker3;
-const invalidHacker4 = util.hacker.invalidHacker4;
 const newHacker1 = util.hacker.newHacker1;
 
 const noTeamHackerAccount0 = util.account.hackerAccounts.stored.noTeam[0];
@@ -53,7 +53,6 @@ const unconfirmedHackerAccount0 = util.hacker.unconfirmedAccountHacker0;
 
 const unconfirmedHacker1 = util.hacker.unconfirmedAccountHacker1;
 
-const invalidHacker1 = util.hacker.invalidHacker1;
 
 const BatchAcceptHackerArrayValid = [
     util.hacker.TeamHacker0._id,
@@ -114,9 +113,9 @@ describe("GET hacker", function() {
                 res.body.should.have.property("data");
 
                 let hacker = new Hacker(TeamHacker0);
-                chai.assert.equal(
-                    JSON.stringify(res.body.data),
-                    JSON.stringify(hacker.toJSON())
+                chai.assert.deepStrictEqual(
+                    res.body.data,
+                    JSON.parse(JSON.stringify(hacker)),
                 );
                 done();
             });
@@ -185,9 +184,9 @@ describe("GET hacker", function() {
                         res.body.should.have.property("data");
 
                         let hacker = new Hacker(TeamHacker0);
-                        chai.assert.equal(
-                            JSON.stringify(res.body.data),
-                            JSON.stringify(hacker.toJSON())
+                        chai.assert.deepStrictEqual(
+                            res.body.data,
+                            JSON.parse(JSON.stringify(hacker)),
                         );
 
                         done();
@@ -221,9 +220,9 @@ describe("GET hacker", function() {
 
                         let hacker = new Hacker(TeamHacker0);
 
-                        chai.assert.equal(
-                            JSON.stringify(res.body.data),
-                            JSON.stringify(hacker.toJSON())
+                        chai.assert.deepStrictEqual(
+                            res.body.data,
+                            JSON.parse(JSON.stringify(hacker)),
                         );
 
                         done();
@@ -311,9 +310,9 @@ describe("GET hacker", function() {
                         res.body.should.have.property("data");
 
                         let hacker = new Hacker(TeamHacker0);
-                        chai.assert.equal(
-                            JSON.stringify(res.body.data),
-                            JSON.stringify(hacker.toJSON())
+                        chai.assert.deepStrictEqual(
+                            res.body.data,
+                            JSON.parse(JSON.stringify(hacker))
                         );
 
                         done();
@@ -347,9 +346,9 @@ describe("GET hacker", function() {
 
                         let hacker = new Hacker(TeamHacker0);
 
-                        chai.assert.equal(
-                            JSON.stringify(res.body.data),
-                            JSON.stringify(hacker.toJSON())
+                        chai.assert.deepStrictEqual(
+                            res.body.data,
+                            JSON.parse(JSON.stringify(hacker))
                         );
 
                         done();
@@ -450,9 +449,9 @@ describe("POST create hacker", function() {
                     hacker.status = Constants.General.HACKER_STATUS_APPLIED;
                     delete res.body.data.id;
                     delete hacker.id;
-                    chai.assert.equal(
-                        JSON.stringify(res.body.data),
-                        JSON.stringify(hacker),
+                    chai.assert.deepStrictEqual(
+                        res.body.data,
+                        JSON.parse(JSON.stringify(hacker)),
                         "objects do not match"
                     );
 
@@ -488,9 +487,9 @@ describe("POST create hacker", function() {
                     hacker.status = Constants.General.HACKER_STATUS_APPLIED;
                     delete res.body.data.id;
                     delete hacker.id;
-                    chai.assert.equal(
-                        JSON.stringify(res.body.data),
-                        JSON.stringify(hacker)
+                    chai.assert.deepStrictEqual(
+                        res.body.data,
+                        JSON.parse(JSON.stringify(hacker)),
                     );
                     done();
                 });
@@ -547,39 +546,6 @@ describe("POST create hacker", function() {
         );
     });
 
-    // should fail due to travel request larger than 100
-    it("should FAIL if the new hacker inputs a value larger than 100 for travel reimbursement", function(done) {
-        util.auth.login(agent, newHackerAccount0, (error) => {
-            if (error) {
-                agent.close();
-                return done(error);
-            }
-            return agent
-                .post(`/api/hacker/`)
-                .type("application/json")
-                .send(invalidHacker2)
-                .end(function(err, res) {
-                    res.should.have.status(422);
-                    res.should.be.json;
-                    res.body.should.have.property("message");
-                    res.body.message.should.equal("Validation failed");
-                    res.body.should.have.property("data");
-                    res.body.data.should.have.property(
-                        "application.accommodation.travel"
-                    );
-                    res.body.data[
-                        "application.accommodation.travel"
-                    ].should.have.property("msg");
-                    res.body.data[
-                        "application.accommodation.travel"
-                    ].msg.should.equal(
-                        "application.accommodation.travel must be between 0 and 100"
-                    );
-                    done();
-                });
-        });
-    });
-
     // should fail due to 'false' on code of conduct
     it("should FAIL if the new hacker does not accept code of conduct", function(done) {
         util.auth.login(agent, newHackerAccount0, (error) => {
@@ -624,7 +590,7 @@ describe("POST create hacker", function() {
             return agent
                 .post(`/api/hacker/`)
                 .type("application/json")
-                .send(invalidHacker3)
+                .send(invalidHacker2)
                 .end(function(err, res) {
                     res.should.have.status(422);
                     res.should.be.json;
@@ -652,7 +618,7 @@ describe("POST create hacker", function() {
             return agent
                 .post(`/api/hacker/`)
                 .type("application/json")
-                .send(invalidHacker4)
+                .send(invalidHacker3)
                 .end(function(err, res) {
                     res.should.have.status(422);
                     res.should.be.json;
@@ -759,15 +725,15 @@ describe("POST create hacker", function() {
                         "application.general.jobInterest"
                     ].msg.should.equal("The value must be part of the enum");
                     res.body.data.should.have.property(
-                        "application.accommodation.travel"
+                        "application.accommodation.travel.amount"
                     );
                     res.body.data[
-                        "application.accommodation.travel"
+                        "application.accommodation.travel.amount"
                     ].should.have.property("msg");
                     res.body.data[
-                        "application.accommodation.travel"
+                        "application.accommodation.travel.amount"
                     ].msg.should.equal(
-                        "application.accommodation.travel must be an integer."
+                        "application.accommodation.travel.amount must be an integer."
                     );
                     res.body.data.should.have.property(
                         "application.accommodation.attendancePreference"

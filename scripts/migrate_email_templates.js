@@ -15,7 +15,7 @@ if (envLoadResult.error) {
 }
 
 // connect to db
-db.connect(undefined, () => {
+db.connect(() => {
     onConnected()
         .catch((reason) => {
             console.error(reason);
@@ -55,7 +55,7 @@ async function migrateAll() {
 
 /**
  * Inserts an EmailTemplate document to the db. Prevents duplicate name.
- * @param {EmailTemplate} emailTemplateDoc 
+ * @param {EmailTemplate} emailTemplateDoc
  */
 async function insertOne(emailTemplateDoc) {
     const dup = await EmailTemplate.collection.findOne({ name: emailTemplateDoc.name });

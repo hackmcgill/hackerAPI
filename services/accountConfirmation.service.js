@@ -16,12 +16,9 @@ const Services = {
  */
 function findByAccountId(accountId) {
     const TAG = `[ AccountConfirmation Reset Service # findByAccountId ]`;
-    return AccountConfirmation.findOne(
-        {
-            accountId: accountId
-        },
-        logger.queryCallbackFactory(TAG, "AccountConfirmation", "accountId")
-    );
+    return logger.logQuery(TAG, "AccountConfirmation", "accountId", AccountConfirmation.findOne({
+        accountId: accountId
+    }));
 }
 
 /**
@@ -32,10 +29,7 @@ function findByAccountId(accountId) {
  */
 function findById(id) {
     const TAG = `[ AccountConfirmation Service # findById ]`;
-    return AccountConfirmation.findById(
-        id,
-        logger.queryCallbackFactory(TAG, "AccountConfirmation", "mongoId")
-    );
+    return logger.logQuery(TAG, "AccountConfirmation", "mongoId", AccountConfirmation.findById(id));
 }
 
 /**
@@ -46,10 +40,9 @@ function findById(id) {
  */
 function find(query) {
     const TAG = `[ AccountConfirmation Service # find ]`;
-    return AccountConfirmation.find(
+    return logger.logQuery(TAG, "AccountConfirmation", query, AccountConfirmation.find(
         query,
-        logger.queryCallbackFactory(TAG, "AccountConfirmation", query)
-    );
+    ));
 }
 
 /**

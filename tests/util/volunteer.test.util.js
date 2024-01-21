@@ -15,12 +15,12 @@ const duplicateVolunteer1 = {
 };
 
 const Volunteer0 = {
-    _id: mongoose.Types.ObjectId(),
+    _id: new mongoose.Types.ObjectId(),
     accountId: Util.Account.volunteerAccounts.stored[0]._id
 };
 
 const invalidVolunteer0 = {
-    _id: mongoose.Types.ObjectId(),
+    _id: new mongoose.Types.ObjectId(),
     accountId: Util.Account.staffAccounts.stored[0]._id
 };
 

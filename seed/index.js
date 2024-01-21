@@ -21,7 +21,7 @@ if (envLoadResult.error) {
 
 const db = require("../services/database.service");
 //connect to db
-db.connect(undefined, () => {
+db.connect(() => {
     onConnected()
         .catch((reason) => {
             console.error(reason);

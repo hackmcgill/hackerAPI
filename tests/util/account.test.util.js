@@ -33,7 +33,7 @@ function extractAccountInfo(acc) {
 function generateRandomValue(atr) {
     switch (atr) {
         case "_id":
-            return mongoose.Types.ObjectId();
+            return new mongoose.Types.ObjectId();
         case "firstName":
             // generates a random string between length 5 and 10 of random characters from a-z
             return Math.random()
@@ -253,7 +253,7 @@ let unlinkedAccounts = {
 };
 
 const waitlistedHacker0 = {
-    _id: mongoose.Types.ObjectId(),
+    _id: new mongoose.Types.ObjectId(),
     firstName: "abcd",
     lastName: "defg3",
     pronoun: "They/Them",
@@ -270,7 +270,7 @@ const waitlistedHacker0 = {
 
 // non confirmed account for hacker
 const NonConfirmedAccount1 = {
-    _id: mongoose.Types.ObjectId(),
+    _id: new mongoose.Types.ObjectId(),
     firstName: "LMAO",
     lastName: "ROFL",
     pronoun: "Ey/Em",
@@ -286,7 +286,7 @@ const NonConfirmedAccount1 = {
 };
 
 const NonConfirmedAccount2 = {
-    _id: mongoose.Types.ObjectId(),
+    _id: new mongoose.Types.ObjectId(),
     firstName: "LMAO",
     lastName: "ROFL",
     gender: "Female",
@@ -305,7 +305,7 @@ const NonConfirmedAccount3 = createAccount({
 });
 
 const NoPhoneHackerAccount0 = {
-    _id: mongoose.Types.ObjectId(),
+    _id: new mongoose.Types.ObjectId(),
     firstName: "LMAO",
     lastName: "ROFL",
     pronoun: "Ey/Em",

@@ -6,7 +6,7 @@ const Constants = {
 const mongoose = require("mongoose");
 
 const accountRole = {
-    _id: mongoose.Types.ObjectId("00000000e285ec4f6ec7e5c2"),
+    _id: new mongoose.Types.ObjectId("00000000e285ec4f6ec7e5c2"),
     name: "account",
     routes: [
         Constants.Routes.authRoutes.login,
@@ -37,7 +37,6 @@ const hackerRole = {
         Constants.Routes.hackerRoutes.patchSelfById,
         Constants.Routes.hackerRoutes.patchSelfConfirmationById,
         Constants.Routes.hackerRoutes.getSelf,
-        Constants.Routes.hackerRoutes.postDiscord,
 
         Constants.Routes.travelRoutes.getSelf,
         Constants.Routes.travelRoutes.getSelfById,

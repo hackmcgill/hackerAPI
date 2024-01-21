@@ -12,11 +12,7 @@ async function updateSettings(settingsDetails) {
     const TAG = "[Setting service # updateSettings]:";
     const existingSetting = await getSettings();
     if (existingSetting) {
-        return Settings.findOneAndUpdate(
-            {},
-            settingsDetails,
-            logger.queryCallbackFactory(TAG, "settings", {})
-        );
+        return logger.logQuery(TAG, "settings", {}, Settings.findOneAndUpdate({}, settingsDetails, { new: true }));
     } else {
         const setting = new Settings(settingsDetails);
         return setting.save();
@@ -30,10 +26,7 @@ async function updateSettings(settingsDetails) {
  */
 function getSettings() {
     const TAG = "[Setting service # getSettings]:";
-    return Settings.findOne(
-        {},
-        logger.queryCallbackFactory(TAG, "settings", {})
-    );
+    return logger.logQuery(TAG, "settings", {}, Settings.findOne({}));
 }
 
 module.exports = {

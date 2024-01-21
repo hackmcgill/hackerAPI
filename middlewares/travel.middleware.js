@@ -40,7 +40,7 @@ function parsePatch(req, res, next) {
  */
 function parseTravel(req, res, next) {
     const travelDetails = {
-        _id: mongoose.Types.ObjectId(),
+        _id: new mongoose.Types.ObjectId(),
         accountId: req.body.accountId,
         hackerId: req.body.hackerId
     };

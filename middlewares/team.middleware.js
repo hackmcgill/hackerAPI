@@ -445,7 +445,7 @@ async function populateMemberAccountsById(req, res, next) {
  */
 function parseTeam(req, res, next) {
     const teamDetails = {
-        _id: mongoose.Types.ObjectId(),
+        _id: new mongoose.Types.ObjectId(),
         name: req.body.name,
         members: req.body.members,
         devpostURL: req.body.devpostURL,
@@ -492,7 +492,7 @@ function parsePatch(req, res, next) {
 
 async function parseNewTeam(req, res, next) {
     const teamDetails = {
-        _id: mongoose.Types.ObjectId(),
+        _id: new mongoose.Types.ObjectId(),
         name: req.body.name,
         members: [],
         devpostURL: req.body.devpostURL,

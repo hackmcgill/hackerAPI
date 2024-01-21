@@ -1,7 +1,6 @@
 "use strict";
 const winston = require("winston");
 winston.remove(winston.transports.Console);
-const server = require("../app.js");
 const Util = {
     Account: require("./util/account.test.util"),
     Bus: require("./util/bus.test.util"),
@@ -14,28 +13,22 @@ const Util = {
     Team: require("./util/team.test.util"),
     Volunteer: require("./util/volunteer.test.util"),
     AccountConfirmation: require("./util/accountConfirmation.test.util"),
-    ResetPassword: require("./util/resetPassword.test.util.js")
+    ResetPassword: require("./util/resetPassword.test.util.js"),
 };
-const logger = require("../services/logger.service");
 
 //make sure that we are connected to the database
-before(function(done) {
+before(function (done) {
     this.timeout(60000);
-
-    server.app.on("event:connected to db", () => {
-        /**
-         * Give the database time to create an index on existing schemas before we delete them.
-         * Hacky way to get around a new error.
-         */
-        setTimeout(() => {
-            dropAll()
-                .then(done)
-                .catch(done);
-        }, 1000);
-    });
+    /**
+     * Give the database time to create an index on existing schemas before we delete them.
+     * Hacky way to get around a new error.
+     */
+    setTimeout(() => {
+        dropAll().then(done).catch(done);
+    }, 1000);
 });
 
-after(function(done) {
+after(function (done) {
     this.timeout(60000);
     dropAll()
         .then(() => {
@@ -46,7 +39,7 @@ after(function(done) {
         });
 });
 
-afterEach(function(done) {
+afterEach(function (done) {
     this.timeout(60000);
     dropAll()
         .then(() => {
