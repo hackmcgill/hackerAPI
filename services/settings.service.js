@@ -12,7 +12,7 @@ async function updateSettings(settingsDetails) {
     const TAG = "[Setting service # updateSettings]:";
     const existingSetting = await getSettings();
     if (existingSetting) {
-        return logger.logQuery(TAG, "settings", {}, Settings.findOneAndUpdate({}, settingsDetails));
+        return logger.logQuery(TAG, "settings", {}, Settings.findOneAndUpdate({}, settingsDetails, { new: true }));
     } else {
         const setting = new Settings(settingsDetails);
         return setting.save();

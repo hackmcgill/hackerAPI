@@ -72,7 +72,7 @@ app.use(
         // Cookie Options
         maxAge: 48 * 60 * 60 * 1000, //Logged in for 48 hours
         sameSite: process.env.COOKIE_SAME_SITE,
-        secureProxy: true
+        secureProxy: !Services.env.isTest()
     })
 );
 app.use(passport.initialize());

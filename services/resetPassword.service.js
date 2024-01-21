@@ -60,16 +60,7 @@ async function create(accountId) {
 function deleteToken(id) {
     const TAG = `[ PasswordReset Service # deleteToken]:`;
     //Create new instance of password reset token
-    return PasswordReset.deleteOne(
-        {
-            _id: id
-        },
-        (err) => {
-            if (err) {
-                logger.erro(`${TAG} could not delete token id: ${id}`);
-            }
-        }
-    );
+    return logger.logUpdate(TAG, `token id: ${id}`, PasswordReset.deleteOne({ _id: id }));
 }
 
 function generateToken(resetId, accountId) {

@@ -53,7 +53,7 @@ function updateOne(id, teamDetails) {
         _id: id
     };
 
-    return logger.logUpdate(TAG, "team", Team.findOneAndUpdate(query, teamDetails));
+    return logger.logUpdate(TAG, "team", Team.findOneAndUpdate(query, teamDetails, { new: true }));
 }
 
 /**
@@ -113,6 +113,9 @@ async function removeMember(teamId, hackerId) {
             $pull: {
                 members: hackerId
             }
+        },
+        {
+            new: true
         }
     );
 }

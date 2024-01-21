@@ -116,7 +116,7 @@ function updateOne(id, accountDetails) {
         _id: id
     };
 
-    return logger.logUpdate(TAG, "account", Account.findOneAndUpdate(query, accountDetails));
+    return logger.logUpdate(TAG, "account", Account.findOneAndUpdate(query, accountDetails, { new: true }));
 }
 
 /**

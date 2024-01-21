@@ -33,7 +33,7 @@ function updateOne(id, travelDetails) {
         _id: id
     };
 
-    return logger.logUpdate(TAG, "travel", Travel.findOneAndUpdate(query, travelDetails));
+    return logger.logUpdate(TAG, "travel", Travel.findOneAndUpdate(query, travelDetails, { new: true }));
 }
 
 /**

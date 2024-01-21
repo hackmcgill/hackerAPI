@@ -40,7 +40,7 @@ function updateOne(id, hackerDetails) {
         _id: id
     };
 
-    return logger.logUpdate(TAG, "hacker", Hacker.findOneAndUpdate(query, hackerDetails));
+    return logger.logUpdate(TAG, "hacker", Hacker.findOneAndUpdate(query, hackerDetails, { new: true }));
 }
 
 /**
