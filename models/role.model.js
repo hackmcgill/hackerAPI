@@ -28,12 +28,12 @@ const RoleSchema = new mongoose.Schema({
     ]
 });
 
-RoleSchema.methods.toJSON = function() {
-    const ps = this.toObject();
-    delete ps.__v;
-    ps.id = ps._id;
-    delete ps._id;
-    return ps;
+RoleSchema.methods.toJSON = function(options) {
+    const rs = this.toObject(options);
+    delete rs.__v;
+    rs.id = rs._id;
+    delete rs._id;
+    return rs;
 };
 //export the model
 module.exports = mongoose.model("Role", RoleSchema);

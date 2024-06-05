@@ -29,8 +29,8 @@ function validateTeamSize(membersArr) {
     return membersArr.length <= Constants.MAX_TEAM_SIZE;
 }
 
-TeamSchema.methods.toJSON = function() {
-    const ts = this.toObject();
+TeamSchema.methods.toJSON = function(options) {
+    const ts = this.toObject(options);
     delete ts.__v;
     ts.id = ts._id;
     delete ts._id;

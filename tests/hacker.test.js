@@ -115,7 +115,7 @@ describe("GET hacker", function() {
                 let hacker = new Hacker(TeamHacker0);
                 chai.assert.deepStrictEqual(
                     res.body.data,
-                    JSON.parse(JSON.stringify(hacker)),
+                    hacker.toJSON({ flattenObjectIds: true}),
                 );
                 done();
             });
@@ -186,7 +186,7 @@ describe("GET hacker", function() {
                         let hacker = new Hacker(TeamHacker0);
                         chai.assert.deepStrictEqual(
                             res.body.data,
-                            JSON.parse(JSON.stringify(hacker)),
+                            hacker.toJSON({ flattenObjectIds: true }),
                         );
 
                         done();
@@ -222,7 +222,7 @@ describe("GET hacker", function() {
 
                         chai.assert.deepStrictEqual(
                             res.body.data,
-                            JSON.parse(JSON.stringify(hacker)),
+                            hacker.toJSON({ flattenObjectIds: true }),
                         );
 
                         done();
@@ -312,7 +312,7 @@ describe("GET hacker", function() {
                         let hacker = new Hacker(TeamHacker0);
                         chai.assert.deepStrictEqual(
                             res.body.data,
-                            JSON.parse(JSON.stringify(hacker))
+                            hacker.toJSON({ flattenObjectIds: true }),
                         );
 
                         done();
@@ -348,7 +348,7 @@ describe("GET hacker", function() {
 
                         chai.assert.deepStrictEqual(
                             res.body.data,
-                            JSON.parse(JSON.stringify(hacker))
+                            hacker.toJSON({ flattenObjectIds: true }),
                         );
 
                         done();
@@ -445,13 +445,13 @@ describe("POST create hacker", function() {
                     // create JSON version of model
                     // delete id as they will be different between model objects
                     // update status to be applied on the comparator hacker object
-                    const hacker = new Hacker(newHacker0).toJSON();
+                    const hacker = new Hacker(newHacker0).toJSON({ flattenObjectIds: true });
                     hacker.status = Constants.General.HACKER_STATUS_APPLIED;
                     delete res.body.data.id;
                     delete hacker.id;
                     chai.assert.deepStrictEqual(
                         res.body.data,
-                        JSON.parse(JSON.stringify(hacker)),
+                        hacker,
                         "objects do not match"
                     );
 
@@ -483,13 +483,13 @@ describe("POST create hacker", function() {
                     // create JSON version of model
                     // delete id as they will be different between model objects
                     // update status to be applied on the comparator hacker object
-                    const hacker = new Hacker(newHacker0).toJSON();
+                    const hacker = new Hacker(newHacker0).toJSON({ flattenObjectIds: true });
                     hacker.status = Constants.General.HACKER_STATUS_APPLIED;
                     delete res.body.data.id;
                     delete hacker.id;
                     chai.assert.deepStrictEqual(
                         res.body.data,
-                        JSON.parse(JSON.stringify(hacker)),
+                        hacker,
                     );
                     done();
                 });

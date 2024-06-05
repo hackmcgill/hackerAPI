@@ -26,12 +26,12 @@ const AccountConfirmationSchema = new mongoose.Schema({
     }
 });
 
-AccountConfirmationSchema.methods.toJSON = function() {
-    const resetObj = this.toObject();
-    delete resetObj.__v;
-    resetObj.id = resetObj._id;
-    delete resetObj._id;
-    return resetObj;
+AccountConfirmationSchema.methods.toJSON = function(options) {
+    const acs = this.toObject(options);
+    delete acs.__v;
+    acs.id = acs._id;
+    delete acs._id;
+    return acs;
 };
 
 module.exports = mongoose.model(
