@@ -24,7 +24,7 @@ const Constants = {
  */
 function parseVolunteer(req, res, next) {
     const volunteerDetails = {
-        _id: mongoose.Types.ObjectId(),
+        _id: new mongoose.Types.ObjectId(),
         accountId: req.body.accountId
     };
 

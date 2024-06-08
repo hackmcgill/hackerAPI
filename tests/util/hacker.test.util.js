@@ -381,7 +381,7 @@ const invalidHacker0 = {
 };
 
 const invalidHacker1 = {
-    _id: mongoose.Types.ObjectId(),
+    _id: new mongoose.Types.ObjectId(),
     // invalid mongoID
     accountId: Util.Account.hackerAccounts.invalid[1]._invalidId,
     application: {
@@ -410,55 +410,16 @@ const invalidHacker1 = {
         accommodation: {
             dietaryRestrictions: ["Gluten-Free"],
             shirtSize: "L",
-            travel: "sfg",
+            travel: {
+                amount: "sfg",
+            },
             attendancePreference: "Remot"
         }
     }
 };
 
-// duplicate of newHack0, but with 101 for travel
-const invalidHacker2 = {
-    accountId: Util.Account.hackerAccounts.new[0]._id,
-    application: {
-        general: {
-            school: "University of ASDF",
-            degree: "Masters",
-            fieldOfStudy: ["EE"],
-            graduationYear: 2019,
-            jobInterest: "Full Time",
-            URL: {
-                //gcloud bucket link
-                resume: "www.gcloud.com/myResume100",
-                github: "www.github.com/Person1",
-                dribbble: null,
-                personal: "www.person1.com",
-                linkedIn: "www.linkedin.com/in/Person1",
-                other: null
-            }
-        },
-        shortAnswer: {
-            skills: ["CSS", "HTML", "JS"],
-            question1: "a",
-            question2: "a",
-            previousHackathons: 1
-        },
-        other: {
-            ethnicity: ["Caucasian"],
-            codeOfConduct: true,
-            privacyPolicy: true
-        },
-        accommodation: {
-            dietaryRestrictions: ["Gluten-Free"],
-            shirtSize: "L",
-            // must be between [0,100] to be valid
-            travel: 101,
-            attendancePreference: "Remote"
-        }
-    }
-};
-
 // duplicate of newHack0, but with invalid attendance preference.
-const invalidHacker3 = {
+const invalidHacker2 = {
     accountId: Util.Account.hackerAccounts.new[0]._id,
     application: {
         general: {
@@ -499,7 +460,7 @@ const invalidHacker3 = {
 };
 
 // duplicate of newHack0, but with missing attendance preference.
-const invalidHacker4 = {
+const invalidHacker3 = {
     accountId: Util.Account.hackerAccounts.new[0]._id,
     application: {
         general: {
@@ -540,7 +501,7 @@ const invalidHacker4 = {
 };
 
 const duplicateAccountLinkHacker0 = {
-    _id: mongoose.Types.ObjectId(),
+    _id: new mongoose.Types.ObjectId(),
     accountId: Util.Account.hackerAccounts.stored.team[0]._id,
     status: "Applied",
     application: {
@@ -734,7 +695,6 @@ module.exports = {
     invalidHacker1: invalidHacker1,
     invalidHacker2: invalidHacker2,
     invalidHacker3: invalidHacker3,
-    invalidHacker4: invalidHacker4,
 
     duplicateAccountLinkHacker0: duplicateAccountLinkHacker0,
     waitlistedHacker0: waitlistedHacker0,

@@ -19,12 +19,12 @@ const roleBinding = new mongoose.Schema({
     }
 });
 
-roleBinding.methods.toJSON = function() {
-    const ps = this.toObject();
-    delete ps.__v;
-    ps.id = ps._id;
-    delete ps._id;
-    return ps;
+roleBinding.methods.toJSON = function(options) {
+    const rb = this.toObject(options);
+    delete rb.__v;
+    rb.id = rb._id;
+    delete rb._id;
+    return rb;
 };
 //export the model
 module.exports = mongoose.model("RoleBinding", roleBinding);

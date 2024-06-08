@@ -167,8 +167,8 @@ const HackerSchema = new mongoose.Schema({
     }
 });
 
-HackerSchema.methods.toJSON = function() {
-    const hs = this.toObject();
+HackerSchema.methods.toJSON = function(options) {
+    const hs = this.toObject(options);
     delete hs.__v;
     hs.id = hs._id;
     delete hs._id;

@@ -5,14 +5,14 @@ const Success = require("../constants/success.constant");
 module.exports = {
     onSuccessfulLogin: function(req, res) {
         return res.status(200).json({
-            message: Success.LOGIN,
+            message: Success.AUTH_LOGIN,
             data: {}
         });
     },
     logout: function(req, res) {
         req.logout();
         return res.status(200).json({
-            message: Success.LOGOUT,
+            message: Success.AUTH_LOGOUT,
             data: {}
         });
     },

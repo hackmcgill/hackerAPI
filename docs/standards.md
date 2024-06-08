@@ -82,7 +82,7 @@ Things to take note of:
         message: string,
         error: any
     }
-    ```  
+    ```
 * **Wrapping async functions**: Asynchronous middleware must be wrapped with `Util.asyncMiddleware(...)`. This is so that if a `Promise` is rejected, the reject reason is handled gracefully. To understand how this works, please look at the code for `asyncMiddleware`.
 * **Organization of import statements**: We organize our import statements according to their general function. If a file is a `Service` (such as `user.service.js`), then we place it inside of the `Service` object. This is to make code readability better.
 
@@ -201,9 +201,9 @@ Things to take note of:
 * **`activate` function**: Every route file contains one exported function, called `activate`. This takes as input an `ExpressRouter`, to which we will attach the sub router to. We will also define all of the sub-routes in this function.
 * **Chaining middlewares in a route**: We chain middlewares together by placing them one after another as arguments to the http request of the route.
 * **Ordering of middleware**:
-  * If input is expected, validation of that input should be done promptly. Therefore validators are generally the first middlewares. 
+  * If input is expected, validation of that input should be done promptly. Therefore validators are generally the first middlewares.
     * The first middleware should be the validator for the inputted data of a route. In this case, we have the validator for a new account.
-    * The next middleware should be `Middleware.parseBody.middleware` to parse the validated information. This middleware also places the data inside of `req.body`. If validation fails, it fails the request. 
+    * The next middleware should be `Middleware.parseBody.middleware` to parse the validated information. This middleware also places the data inside of `req.body`. If validation fails, it fails the request.
   * The following middlewares will depend on what type of route it is. In this case, we are creating a new item in our database, so we want to create a new `Account` object. This is what `Middleware.Account.parseAccount` does.
   * Finally, we want to interact with the database. This is done either in the `Controller` function, or in another `middleware` function.
   * the last middleware should always be a `Controller` (since we want to respond to the user of the api).
@@ -233,7 +233,7 @@ function findById(id) {
         _id: id
     };
 
-    return Account.findById(query, logger.queryCallbackFactory(TAG, "account", query));
+    return logger.logQuery(TAG, "account", query, Account.findById(query));
 }
 ...
 module.exports = {
@@ -242,7 +242,7 @@ module.exports = {
 ```
 
 Things to take note of:
-* **async & await**: When the service call is to a mongoose model, they generally return a mongoose query. These can be handled as a promise, and Mongoose has further documentation on it [here](https://mongoosejs.com/docs/api.html). We handle then by using `await` on the service call. For example, a middleware function that uses `findById` would be: 
+* **async & await**: When the service call is to a mongoose model, they generally return a mongoose query. These can be handled as a promise, and Mongoose has further documentation on it [here](https://mongoosejs.com/docs/api.html). We handle then by using `await` on the service call. For example, a middleware function that uses `findById` would be:
   ```javascript
     async function getById(req, res, next) {
         const acc = await Services.Account.findById(req.body.id);
@@ -256,14 +256,14 @@ Things to take note of:
 
         req.body.account = acc;
         return next();
-    }   
+    }
   ```
-It's important to: 
+It's important to:
   * Use `await` when calling the service function
   * Put `async` in the method head
   * Check the output of the service function call for any errors. In the code snippet we need to check for a scenario where the account is not found, which is a 404 error. A full list of the current error messages are in [error.constant.js](../constants/error.constant.js).
 More information on asynchronous functions can be found [here](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function).
-* **queryCallbackFactory**: The query callback factory returns a function that uses winston to log the success or failure of the service call. The callback factory is used for mongoose service calls.
+* **logQuery**: This function wraps the query's `then` method and uses winston to log the success or failure of the mongoose service call.
 
 ### Test files
 
@@ -281,7 +281,7 @@ We repopulate the test server before each test to ensure consistency. [setup.spe
 
 ##### Motivation
 
-We wanted to have a scalable way to create new entities that properly reference each other. The biggest challenge lied in creating enough accounts that can be properly referenced during specific tests. 
+We wanted to have a scalable way to create new entities that properly reference each other. The biggest challenge lied in creating enough accounts that can be properly referenced during specific tests.
 
 ##### Util.js
 
@@ -309,7 +309,7 @@ let hackerAccounts = {
 };
 ```
 
-In this example the `new` accounts are accounts that exist, but the hacker objects have not been created. The `stored.team` accounts are those linked to a hacker object that is in a team. The `stored.noTeam` accounts link to  a hacker that is not in a team. The `invalid` accounts are created accounts that are linked to a hacker object that does not fit with the Hacker schema. The invalid accounts are used to test fail cases. The value for each key is an array of account objects. 
+In this example the `new` accounts are accounts that exist, but the hacker objects have not been created. The `stored.team` accounts are those linked to a hacker object that is in a team. The `stored.noTeam` accounts link to  a hacker that is not in a team. The `invalid` accounts are created accounts that are linked to a hacker object that does not fit with the Hacker schema. The invalid accounts are used to test fail cases. The value for each key is an array of account objects.
 
 On the other end of the account-hacker link, [hacker.util.js](../tests/util/hacker.test.util.js) contains the hacker data in the form of hacker objects. These hacker objects have an `accountId` attribute which references an account's `_id`. The matching between the hacker object and the respective account object it needs to link to is also done by nomenclature. For example, a hacker on a team would be called `TeamHackerX` where X is a number. This hacker's account object would be within the array specified by `hackerAccounts.stored.team`. The specific account object is referenced by its index in the array. That index is the same as the value X in the name of the hacker object.
 
@@ -335,7 +335,7 @@ function stringValidator(fieldLocation, fieldname, optional = true) {
 ```
 It's important to note the use of `setProperValidationChainBuilder` to parse the input value from the appropriate input location. This is consistent across generic validators. It is also important to create a validator for situations where the input is optional.
 
-A validator example, using generic validator functions. 
+A validator example, using generic validator functions.
 ```javascript
 "use strict";
 const VALIDATOR = require("./validator.helper");
@@ -358,7 +358,7 @@ module.exports = {
 };
 ```
 
-A route would use a validator in the following manner: 
+A route would use a validator in the following manner:
 ```javascript
     accountRouter.route("/:id").patch(
         ...
@@ -377,8 +377,8 @@ A route would use a validator in the following manner:
 {
   "A": "foo",
   "B": true,
-  "C": { 
-    "bar": "baz" 
+  "C": {
+    "bar": "baz"
   }
 }
 ```

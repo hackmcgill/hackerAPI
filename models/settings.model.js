@@ -20,8 +20,8 @@ const settings = new mongoose.Schema({
     }
 });
 
-settings.methods.toJSON = function() {
-    const ss = this.toObject();
+settings.methods.toJSON = function(options) {
+    const ss = this.toObject(options);
     delete ss.__v;
     ss.id = ss._id;
     delete ss._id;

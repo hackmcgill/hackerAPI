@@ -28,7 +28,7 @@ function getRole(roleName) {
     };
     //get the roleBinding for account
     //Populate roles for roleBinding
-    return Role.findOne(query, logger.queryCallbackFactory(TAG, "role", query));
+    return logger.logQuery(TAG, "role", query, Role.findOne(query));
 }
 
 /**
@@ -44,10 +44,7 @@ function getById(id) {
     };
     //get the roleBinding for account
     //Populate roles for roleBinding
-    return Role.findById(
-        query,
-        logger.queryCallbackFactory(TAG, "role", query)
-    );
+    return logger.logQuery(TAG, "role", query, Role.findById(query));
 }
 
 /**
@@ -57,7 +54,7 @@ function getById(id) {
  */
 function getAll() {
     const TAG = "[Role Service # getAll]:";
-    return Role.find({}, logger.queryCallbackFactory(TAG, "role", {}));
+    return logger.logQuery(TAG, "role", {}, Role.find({}));
 }
 
 module.exports = {

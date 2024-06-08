@@ -13,7 +13,7 @@ const ResetPassword = require("../../models/passwordResetToken.model");
 const logger = require("../../services/logger.service");
 
 const ResetPasswordToken1 = {
-    _id: mongoose.Types.ObjectId(),
+    _id: new mongoose.Types.ObjectId(),
     accountId: Util.Account.hackerAccounts.stored.team[0]._id
 };
 

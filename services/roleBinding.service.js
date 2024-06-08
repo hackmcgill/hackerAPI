@@ -23,15 +23,14 @@ async function createRoleBinding(accountId, roleId = undefined) {
         });
         return newRb.save();
     } else {
-        return RoleBinding.findByIdAndUpdate(
+        return logger.logQuery(TAG, "roleBinding", query, RoleBinding.findByIdAndUpdate(
             roleBindingModel._id,
             {
                 $addToSet: {
                     roles: roleId
                 }
-            },
-            logger.queryCallbackFactory(TAG, "roleBinding", query)
-        );
+            }
+        ));
     }
 }
 
@@ -55,15 +54,14 @@ async function createRoleBindingByRoleName(accountId, roleName) {
 async function removeRoleBinding(accountId, roleId) {
     const TAG = "[RoleBinding Service # removeRoleBinding]:";
     const roleBindingModel = await getRoleBindingForAcct(accountId);
-    return RoleBinding.findByIdAndUpdate(
+    return logger.logQuery(TAG, "roleBinding", roleBindingModel._id, RoleBinding.findByIdAndUpdate(
         roleBindingModel._id,
         {
             $pop: {
                 roles: roleId
             }
-        },
-        logger.queryCallbackFactory(TAG, "roleBinding", roleBindingModel._id)
-    );
+        }
+    ));
 }
 
 /**
@@ -82,10 +80,7 @@ async function getRoleBindingForAcct(accountId) {
     //get the roleBinding for account
     //Populate roles for roleBinding
 
-    return RoleBinding.findOne(
-        query,
-        logger.queryCallbackFactory(TAG, "roleBinding", query)
-    ).populate({
+    return logger.logQuery(TAG, "roleBinding", query, RoleBinding.findOne(query)).populate({
         path: "roles"
     });
 }
@@ -104,10 +99,7 @@ async function getById(id) {
     };
     //get the roleBinding for account
     //Populate roles for roleBinding
-    return await RoleBinding.findById(
-        query,
-        logger.queryCallbackFactory(TAG, "roleBinding", query)
-    );
+    return await logger.logQuery(TAG, "roleBinding", query, RoleBinding.findById(query));
 }
 
 module.exports = {

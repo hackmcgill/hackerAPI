@@ -8,7 +8,7 @@ const mongoose = require("mongoose");
 const logger = require("../../services/logger.service");
 
 const T1Sponsor0 = {
-    _id: mongoose.Types.ObjectId(),
+    _id: new mongoose.Types.ObjectId(),
     accountId: Util.Account.sponsorT1Accounts.stored[0]._id,
     tier: 1,
     company: "Best company NA",
@@ -26,7 +26,7 @@ const newT2Sponsor0 = {
 };
 
 const duplicateAccountLinkSponsor1 = {
-    _id: mongoose.Types.ObjectId(),
+    _id: new mongoose.Types.ObjectId(),
     accountId: Util.Account.sponsorT1Accounts.stored[0]._id,
     tier: 3,
     company: "Best company NA1",

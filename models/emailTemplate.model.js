@@ -13,12 +13,12 @@ const EmailTemplateSchema = new mongoose.Schema({
     }
 });
 
-EmailTemplateSchema.methods.toJSON = function () {
-    const emailTemplateObj = this.toObject();
-    delete emailTemplateObj.__v;
-    emailTemplateObj.id = emailTemplateObj._id;
-    delete emailTemplateObj._id;
-    return emailTemplateObj;
+EmailTemplateSchema.methods.toJSON = function (options) {
+    const ets = this.toObject(options);
+    delete ets.__v;
+    ets.id = ets._id;
+    delete ets._id;
+    return ets;
 };
 
 // export the model

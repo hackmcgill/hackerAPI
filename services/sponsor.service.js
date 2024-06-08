@@ -14,10 +14,7 @@ function findById(id) {
         _id: id
     };
 
-    return Sponsor.findById(
-        query,
-        logger.queryCallbackFactory(TAG, "sponsor", JSON.stringify(query))
-    );
+    return logger.logQuery(TAG, "sponsor", query, Sponsor.findById(query));
 }
 
 /**
@@ -65,7 +62,7 @@ function findByAccountId(accountId) {
         accountId: accountId
     };
 
-    return Sponsor.findOne(query, logger.updateCallbackFactory(TAG, "sponsor"));
+    return logger.logUpdate(TAG, "sponsor", Sponsor.findOne(query));
 }
 
 module.exports = {

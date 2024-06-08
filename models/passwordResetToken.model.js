@@ -12,12 +12,12 @@ const passwordResetSchema = new mongoose.Schema({
     }
 });
 
-passwordResetSchema.methods.toJSON = function() {
-    const resetObj = this.toObject();
-    delete resetObj.__v;
-    resetObj.id = resetObj._id;
-    delete resetObj._id;
-    return resetObj;
+passwordResetSchema.methods.toJSON = function(options) {
+    const prs = this.toObject(options);
+    delete prs.__v;
+    prs.id = prs._id;
+    delete prs._id;
+    return prs;
 };
 
 module.exports = mongoose.model("PasswordResetToken", passwordResetSchema);

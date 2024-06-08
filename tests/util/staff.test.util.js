@@ -7,7 +7,7 @@ const mongoose = require("mongoose");
 const logger = require("../../services/logger.service");
 
 const Staff0 = {
-    _id: mongoose.Types.ObjectId(),
+    _id: new mongoose.Types.ObjectId(),
     accountId: Util.Account.staffAccounts.stored[0]
 };
 const Staffs = [Staff0];

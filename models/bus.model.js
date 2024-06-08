@@ -41,8 +41,8 @@ const BusSchema = new mongoose.Schema({
     }
 });
 
-BusSchema.methods.toJSON = function() {
-    const bs = this.toObject();
+BusSchema.methods.toJSON = function(options) {
+    const bs = this.toObject(options);
     delete bs.__v;
     bs.id = bs._id;
     delete bs._id;

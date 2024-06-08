@@ -4,69 +4,101 @@ const expressWinston = require("express-winston");
 
 const colorize = process.env.NODE_ENV !== "deployment";
 
+winston.add(
+    new winston.transports.Console({
+        format: winston.format.combine(
+            winston.format.printf((l) => `${l.level}: ${l.message}`),
+        ),
+    }),
+);
+
 const errorLogger = expressWinston.errorLogger({
     transports: [
         new winston.transports.Console({
-            json: true,
-            colorize: colorize,
-            timestamp: true
-        })
-    ]
+            format: winston.format.combine(
+                ...(colorize ? [winston.format.colorize()] : []),
+                winston.format.timestamp(),
+                winston.format.json(),
+            ),
+        }),
+    ],
 });
 
 const requestLogger = expressWinston.logger({
     transports: [
         new winston.transports.Console({
-            json: false,
-            colorize: colorize,
-            timestamp: true
-        })
+            format: winston.format.combine(
+                winston.format.timestamp(),
+                ...(colorize ? [winston.format.colorize()] : []),
+                winston.format.printf(
+                    (l) => `${l.timestamp} - ${l.level}: ${l.message}`,
+                ),
+            ),
+        }),
     ],
     expressFormat: true,
-    meta: false
+    meta: false,
 });
 
-function queryCallbackFactory(TAG, model, query) {
-    // err is error, res is result
-    return (err, res) => {
-        if (err) {
-            winston.error(
-                `${TAG} Failed to verify if ${model} exist or not using ${JSON.stringify(
-                    query
-                )}`,
-                err
-            );
-        } else if (res) {
-            winston.debug(
-                `${TAG} ${model} using ${JSON.stringify(
-                    query
-                )} exist in the database`
-            );
-        } else {
-            winston.debug(
-                `${TAG} ${model} using ${JSON.stringify(
-                    query
-                )} do not exist in the database`
-            );
-        }
+function logQuery(TAG, model, queryInfo, query) {
+    query.then = function (onfulfilled, onrejected) {
+        return Object.getPrototypeOf(this).then.call(
+            this,
+            (res) => {
+                if (res) {
+                    winston.debug(
+                        `${TAG} ${model} using ${JSON.stringify(
+                            queryInfo,
+                        )} exist in the database`,
+                    );
+                } else {
+                    winston.debug(
+                        `${TAG} ${model} using ${JSON.stringify(
+                            queryInfo,
+                        )} do not exist in the database`,
+                    );
+                }
+                if (onfulfilled) onfulfilled(res);
+            },
+            (err) => {
+                winston.error(
+                    `${TAG} Failed to verify if ${model} exist or not using ${JSON.stringify(
+                        queryInfo,
+                    )}`,
+                    err,
+                );
+                if (onrejected) onrejected(err);
+            },
+        );
     };
+
+    return query;
 }
 
-function updateCallbackFactory(TAG, model) {
-    return (err, res) => {
-        if (err) {
-            winston.error(`${TAG} failed to change ${model}`);
-        } else if (!res) {
-            winston.error(`${TAG} failed to find ${model} in database`);
-        } else {
-            winston.debug(`${TAG} changed ${model} information`);
-        }
+function logUpdate(TAG, model, query) {
+    query.then = function(onfulfilled, onrejected) {
+        return Object.getPrototypeOf(this).then.call(this,
+            res => {
+                if (res) {
+                    winston.debug(`${TAG} changed ${model} information`);
+                } else {
+                    winston.error(`${TAG} failed to find ${model} in database`);
+                }
+                if (onfulfilled) onfulfilled(res);
+            },
+            err => {
+                winston.error(`${TAG} failed to change ${model}`);
+                if (onrejected) onrejected(err);
+            },
+        )
     };
+
+    return query;
 }
 
 module.exports = {
-    updateCallbackFactory: updateCallbackFactory,
-    queryCallbackFactory: queryCallbackFactory,
+    logUpdate: logUpdate,
+    logQuery: logQuery,
     requestLogger: requestLogger,
     errorLogger: errorLogger,
     error: winston.error,
@@ -75,5 +107,5 @@ module.exports = {
     log: winston.log,
     verbose: winston.verbose,
     debug: winston.debug,
-    silly: winston.silly
+    silly: winston.silly,
 };

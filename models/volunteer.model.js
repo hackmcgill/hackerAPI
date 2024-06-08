@@ -9,8 +9,8 @@ const VolunteerSchema = new mongoose.Schema({
     }
 });
 
-VolunteerSchema.methods.toJSON = function() {
-    const vs = this.toObject();
+VolunteerSchema.methods.toJSON = function(options) {
+    const vs = this.toObject(options);
     delete vs.__v;
     vs.id = vs._id;
     delete vs._id;

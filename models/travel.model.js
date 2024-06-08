@@ -41,12 +41,12 @@ const TravelSchema = new mongoose.Schema({
     }
 });
 
-TravelSchema.methods.toJSON = function() {
-    const hs = this.toObject();
-    delete hs.__v;
-    hs.id = hs._id;
-    delete hs._id;
-    return hs;
+TravelSchema.methods.toJSON = function(options) {
+    const ts = this.toObject(options);
+    delete ts.__v;
+    ts.id = ts._id;
+    delete ts._id;
+    return ts;
 };
 
 //export the model

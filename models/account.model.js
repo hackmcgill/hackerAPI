@@ -55,8 +55,8 @@ const AccountSchema = new mongoose.Schema({
     }
 });
 
-AccountSchema.methods.toJSON = function() {
-    const as = this.toObject();
+AccountSchema.methods.toJSON = function(options) {
+    const as = this.toObject(options);
     delete as.__v;
     as.id = as._id;
     delete as._id;

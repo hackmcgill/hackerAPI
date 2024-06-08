@@ -33,11 +33,7 @@ function updateOne(id, travelDetails) {
         _id: id
     };
 
-    return Travel.findOneAndUpdate(
-        query,
-        travelDetails,
-        logger.updateCallbackFactory(TAG, "travel")
-    );
+    return logger.logUpdate(TAG, "travel", Travel.findOneAndUpdate(query, travelDetails, { new: true }));
 }
 
 /**
@@ -49,7 +45,7 @@ function updateOne(id, travelDetails) {
 function findById(id) {
     const TAG = `[Travel Service # findById ]:`;
 
-    return Travel.findById(id, logger.queryCallbackFactory(TAG, "travel", id));
+    return logger.logQuery(TAG, "travel", id, Travel.findById(id));
 }
 
 /**
@@ -64,11 +60,7 @@ async function findIds(queries) {
     let ids = [];
 
     for (const query of queries) {
-        let currId = await Travel.findOne(
-            query,
-            "_id",
-            logger.queryCallbackFactory(TAG, "travel", query)
-        );
+        let currId = await logger.logQuery(TAG, "travel", query, Travel.findOne(query, "_id"));
         ids.push(currId);
     }
     return ids;
@@ -85,7 +77,7 @@ function findByAccountId(accountId) {
         accountId: accountId
     };
 
-    return Travel.findOne(query, logger.updateCallbackFactory(TAG, "travel"));
+    return logger.logUpdate(TAG, "travel", Travel.findOne(query));
 }
 
 /**
@@ -99,7 +91,7 @@ function findByHackerId(hackerId) {
         hackerId: hackerId
     };
 
-    return Travel.findOne(query, logger.updateCallbackFactory(TAG, "travel"));
+    return logger.logUpdate(TAG, "travel", Travel.findOne(query));
 }
 
 module.exports = {

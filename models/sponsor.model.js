@@ -31,8 +31,8 @@ const SponsorSchema = new mongoose.Schema({
     ]
 });
 
-SponsorSchema.methods.toJSON = function() {
-    const ss = this.toObject();
+SponsorSchema.methods.toJSON = function(options) {
+    const ss = this.toObject(options);
     delete ss.__v;
     ss.id = ss._id;
     delete ss._id;

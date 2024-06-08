@@ -40,11 +40,7 @@ function updateOne(id, hackerDetails) {
         _id: id
     };
 
-    return Hacker.findOneAndUpdate(
-        query,
-        hackerDetails,
-        logger.updateCallbackFactory(TAG, "hacker")
-    );
+    return logger.logUpdate(TAG, "hacker", Hacker.findOneAndUpdate(query, hackerDetails, { new: true }));
 }
 
 /**
@@ -56,7 +52,7 @@ function updateOne(id, hackerDetails) {
 function findById(id) {
     const TAG = `[Hacker Service # findById ]:`;
 
-    return Hacker.findById(id, logger.queryCallbackFactory(TAG, "hacker", id));
+    return logger.logQuery(TAG, "hacker", id, Hacker.findById(id));
 }
 
 /**
@@ -71,11 +67,7 @@ async function findIds(queries) {
     let ids = [];
 
     for (const query of queries) {
-        let currId = await Hacker.findOne(
-            query,
-            "_id",
-            logger.queryCallbackFactory(TAG, "hacker", query)
-        );
+        let currId = await logger.logQuery(TAG, "hacker", query, Hacker.findOne(query, "_id"));
         ids.push(currId);
     }
     return ids;
@@ -92,7 +84,7 @@ function findByAccountId(accountId) {
         accountId: accountId
     };
 
-    return Hacker.findOne(query, logger.updateCallbackFactory(TAG, "hacker"));
+    return logger.logUpdate(TAG, "hacker", Hacker.findOne(query));
 }
 
 async function getStatsAllHackersCached() {
@@ -101,10 +93,7 @@ async function getStatsAllHackersCached() {
         logger.info(`${TAG} Getting cached stats`);
         return cache.get(Constants.CACHE_KEY_STATS);
     }
-    const allHackers = await Hacker.find(
-        {},
-        logger.updateCallbackFactory(TAG, "hacker")
-    ).populate({
+    const allHackers = await logger.logUpdate(TAG, "hacker", Hacker.find({})).populate({
         path: "accountId"
     });
     cache.put(Constants.CACHE_KEY_STATS, stats, Constants.CACHE_TIMEOUT_STATS); //set a time-out of 5 minutes
