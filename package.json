@@ -45,7 +45,7 @@
         "@types/mongoose": "^5.11.97",
         "@types/multer": "^1.4.11",
         "apidoc": "^1.2.0",
-        "chai": "^4.4.1",
+        "chai": "^5.1.1",
         "chai-http": "^4.4.0",
         "eslint": "8.56.0",
         "eslint-config-prettier": "9.1.0",
