@@ -60,7 +60,7 @@ define({ "api": [
           },
           {
             "group": "body",
-            "type": "Number",
+            "type": "String",
             "optional": false,
             "field": "age",
             "description": "<p>The user's age.</p>"
