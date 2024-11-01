@@ -201,8 +201,12 @@ function getStats(hackers) {
             .shirtSize[hacker.application.accommodation.shirtSize]
             ? stats.shirtSize[hacker.application.accommodation.shirtSize] + 1
             : 1;
-        const age = hacker.accountId.getAge();
-        stats.age[age] = stats.age[age] ? stats.age[age] + 1 : 1;
+
+        // CHANGED BIRTHDATE TO AGE
+        // const age = hacker.accountId.getAge();
+        // stats.age[age] = stats.age[age] ? stats.age[age] + 1 : 1;
+
+        stats.age[hacker.accountId.age] = stats.age[hacker.accountId.age] ? stats.age[age] + 1 : 1;
 
         const applicationDate = hacker._id
             .getTimestamp() //

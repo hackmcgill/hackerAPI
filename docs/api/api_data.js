@@ -60,10 +60,10 @@ define({ "api": [
           },
           {
             "group": "body",
-            "type": "String",
+            "type": "Number",
             "optional": false,
-            "field": "birthDate",
-            "description": "<p>a Date parsable string.</p>"
+            "field": "age",
+            "description": "<p>The user's age.</p>"
           },
           {
             "group": "body",
@@ -86,7 +86,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Request-Example:",
-          "content": "{ \n               \"firstName\": \"Theo\",\n               \"lastName\":\"Klein\",\n               \"pronoun\":\"he/him\",\n               \"email\":\"theo@klein.com\",\n               \"password\":\"hunter2\",\n               \"phoneNumber\":1234567890,\n               \"gender\":\"Male\",\n               \"birthDate\":\"10/30/1997\"\n}",
+          "content": "{ \n               \"firstName\": \"Theo\",\n               \"lastName\":\"Klein\",\n               \"pronoun\":\"he/him\",\n               \"email\":\"theo@klein.com\",\n               \"password\":\"hunter2\",\n               \"phoneNumber\":1234567890,\n               \"gender\":\"Male\",\n               \"age\":23,\n}",
           "type": "json"
         }
       ]
@@ -113,7 +113,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response: ",
-          "content": "{\n               \"message\": \"Account creation successful\", \n               \"data\": {\n                       \"id\": ObjectId(\"5bff8b9f3274cf001bc71048\"),\n                   \t\"firstName\": \"Theo\",\n                       \"lastName\":\"Klein\",\n                       \"pronoun\":\"he/him\",\n                       \"email\":\"theo@klein.com\",\n                       \"phoneNumber\":1234567890,\n                   \t\"gender\":\"Male\",\n                       \"birthDate\":Date(\"10/30/1997\")\n               }\n           }",
+          "content": "{\n               \"message\": \"Account creation successful\", \n               \"data\": {\n                       \"id\": ObjectId(\"5bff8b9f3274cf001bc71048\"),\n                   \t\"firstName\": \"Theo\",\n                       \"lastName\":\"Klein\",\n                       \"pronoun\":\"he/him\",\n                       \"email\":\"theo@klein.com\",\n                       \"phoneNumber\":1234567890,\n                   \t\"gender\":\"Male\",\n                       \"age\":23,\n               }\n           }",
           "type": "object"
         }
       ]
@@ -195,7 +195,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response: ",
-          "content": "{\n               \"message\": \"Account found by user id\", \n               \"data\": {\n                   \"id\": ObjectId(\"5bff8b9f3274cf001bc71048\"),\n                   \"firstName\": \"Theo\",\n                   \"lastName\":\"Klein\",\n                   \"pronoun\":\"he/him\",\n                   \"email\":\"theo@klein.com\",\n                   \"phoneNumber\":1234567890,\n                   \"gender\":\"Male\",\n                   \"birthDate\":Date(\"10/30/1997\")\n               }\n           }",
+          "content": "{\n               \"message\": \"Account found by user id\", \n               \"data\": {\n                   \"id\": ObjectId(\"5bff8b9f3274cf001bc71048\"),\n                   \"firstName\": \"Theo\",\n                   \"lastName\":\"Klein\",\n                   \"pronoun\":\"he/him\",\n                   \"email\":\"theo@klein.com\",\n                   \"phoneNumber\":1234567890,\n                   \"gender\":\"Male\",\n                   \"age\":23,\n               }\n           }",
           "type": "object"
         }
       ]
@@ -379,7 +379,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response: ",
-          "content": "{\n               \"message\": \"Account found by user email\", \n               \"data\": {\n                   \t\"id\": ObjectId(\"5bff8b9f3274cf001bc71048\"),\n                   \t\"firstName\": \"Theo\",\n                       \"lastName\":\"Klein\",\n                       \"pronoun\":\"he/him\",\n                       \"email\":\"theo@klein.com\",\n                       \"phoneNumber\":1234567890,\n                   \t\"gender\":\"Male\",\n                       \"birthDate\":Date(\"10/30/1997\")\n               }\n           }",
+          "content": "{\n               \"message\": \"Account found by user email\", \n               \"data\": {\n                   \t\"id\": ObjectId(\"5bff8b9f3274cf001bc71048\"),\n                   \t\"firstName\": \"Theo\",\n                       \"lastName\":\"Klein\",\n                       \"pronoun\":\"he/him\",\n                       \"email\":\"theo@klein.com\",\n                       \"phoneNumber\":1234567890,\n                   \t\"gender\":\"Male\",\n                       \"age\":23,\n               }\n           }",
           "type": "object"
         }
       ]
@@ -466,10 +466,10 @@ define({ "api": [
           },
           {
             "group": "body",
-            "type": "String",
+            "type": "Number",
             "optional": true,
-            "field": "birthDate",
-            "description": "<p>A Date parsable string.</p>"
+            "field": "age",
+            "description": "<p>The user's age.</p>"
           },
           {
             "group": "body",
@@ -517,7 +517,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response: ",
-          "content": "{\n               \"message\": \"Account update successful.\", \n               \"data\": {\n                       \"id\": ObjectId(\"5bff8b9f3274cf001bc71048\"),\n                   \t\"firstName\": \"Theo\",\n                       \"lastName\":\"Klein\",\n                       \"pronoun\":\"he/him\",\n                       \"email\":\"theo@klein.com\",\n                       \"phoneNumber\":1234567890,\n                   \t\"gender\": \"Male\",\n                       \"birthDate\":Date(\"10/30/1997\")\n               }\n           }",
+          "content": "{\n               \"message\": \"Account update successful.\", \n               \"data\": {\n                       \"id\": ObjectId(\"5bff8b9f3274cf001bc71048\"),\n                   \t\"firstName\": \"Theo\",\n                       \"lastName\":\"Klein\",\n                       \"pronoun\":\"he/him\",\n                       \"email\":\"theo@klein.com\",\n                       \"phoneNumber\":1234567890,\n                   \t\"gender\": \"Male\",\n                       \"age\":23,\n               }\n           }",
           "type": "object"
         }
       ]

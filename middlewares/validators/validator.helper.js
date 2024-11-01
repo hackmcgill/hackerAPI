@@ -848,6 +848,50 @@ function dateValidator(fieldLocation, fieldname, optional = true) {
                 isValid: date
             });
     }
+} 
+
+/**
+ * Validates that field must be a valid age between 0 and 100.
+ * @param {"query" | "body" | "header" | "param"} fieldLocation the location where the field should be found
+ * @param {string} fieldname name of the field that needs to be validated.
+ * @param {boolean} optional whether the field is optional or not.
+ */
+function ageValidator(fieldLocation, fieldname, optional = true) {
+    const age = setProperValidationChainBuilder(
+        fieldLocation,
+        fieldname,
+        "Invalid age"
+    );
+    if (optional) {
+        return age
+            .optional({
+                checkFalsy: true
+            })
+            .custom((value) => {
+                // Check if the value is empty or undefined
+                if (!value) return true; // Allow empty values if optional
+
+                // Validate age: must be a number between 0 and 100
+                const ageNumber = Number(value);
+                return !isNaN(ageNumber) && ageNumber >= 0 && ageNumber <= 100;
+            })
+            .withMessage({
+                message: "Age is not valid. It must be between 0 and 100.",
+                isValid: age
+            });
+    } else {
+        return age
+            .exists()
+            .withMessage("Age field must be specified") // Ensure field exists
+            .custom((value) => {
+                const ageNumber = Number(value);
+                return !isNaN(ageNumber) && ageNumber >= 0 && ageNumber <= 100;
+            })
+            .withMessage({
+                message: "Age is not valid. It must be between 0 and 100.",
+                isValid: age
+            });
+    }
 }
 
 /**
@@ -1036,6 +1080,7 @@ module.exports = {
     searchSortValidator: searchSortValidator,
     phoneNumberValidator: phoneNumberValidator,
     dateValidator: dateValidator,
+    ageValidator: ageValidator,
     enumValidator: enumValidator,
     routesValidator: routesValidator,
     stringValidator: stringValidator
