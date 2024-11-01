@@ -43,7 +43,7 @@ module.exports = {
                             "email":"theo@klein.com",
                             "phoneNumber":1234567890,
                         	"gender":"Male",
-                            "birthDate":Date("10/30/1997")
+                            "age":23")
                     }
                 }
          * @apiError {string} message Error message
@@ -72,7 +72,7 @@ module.exports = {
          * @apiParam (body) {String} gender Gender of the account creator.
          * @apiParam (body) {String[]} dietaryRestrictions Any dietary restrictions for the user. 'None' if there are no restrictions
          * @apiParam (body) {String} password The password of the account.
-         * @apiParam (body) {String} birthDate a Date parsable string.
+         * @apiParam (body) {Number} age The user's age.
          * @apiParam (body) {Number} [phoneNumber] the user's phone number, represented as a string.
          * @apiParam (header) {JWT} [token] the user's invite token.
          * 
@@ -85,7 +85,7 @@ module.exports = {
                     "password":"hunter2",
                     "phoneNumber":1234567890,
                     "gender":"Male",
-                    "birthDate":"10/30/1997"
+                    "age:23"
          *      }
          * 
          * @apiSuccess {string} message Success message
@@ -101,7 +101,7 @@ module.exports = {
                             "email":"theo@klein.com",
                             "phoneNumber":1234567890,
                         	"gender":"Male",
-                            "birthDate":Date("10/30/1997")
+                            "age:23")
                     }
                 }
 
@@ -212,9 +212,8 @@ module.exports = {
          * @apiParam (body) {String} [pronoun] The pronoun of the account creator.
          * @apiParam (body) {String} [email] Email of the account.
          * @apiParam (body) {String} [gender] Gender of the account creator.
-         * @apiParam (body) {String} [birthDate] A Date parsable string.
+         * @apiParam (body) {String} [age] Age of the account creator.
          * @apiParam (body) {Number} [phoneNumber] The user's phone number, represented as a string.
-         * @apiParam (body) {String} [birthDate] a Date parsable string.
          * @apiParam (body) {String[]} [dietaryRestrictions] Any dietary restrictions for the user. 'None' if there are no restrictions
          * @apiParamExample {json} Request-Example:
          *      { "gender": "Male" }
@@ -233,7 +232,7 @@ module.exports = {
                             "email":"theo@klein.com",
                             "phoneNumber":1234567890,
                         	"gender": "Male",
-                            "birthDate":Date("10/30/1997")
+                            "age:23")
                     }
                 }
 
@@ -280,7 +279,7 @@ module.exports = {
                         "email":"theo@klein.com",
                         "phoneNumber":1234567890,
                         "gender":"Male",
-                        "birthDate":Date("10/30/1997")
+                        "age:23")
                     }
                 }
 

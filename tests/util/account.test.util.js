@@ -83,8 +83,9 @@ function generateRandomValue(atr) {
             return Constants.EXTENDED_USER_TYPES[
                 Math.floor(Math.random() * Constants.EXTENDED_USER_TYPES.length)
             ];
-        case "birthDate":
-            return new Date();
+        case "age":
+            // Generate a random age between 0 and 100
+            return Math.floor(Math.random() * 101); // 0 to 100
         case "phoneNumber":
             return Math.floor(Math.random() * 10000000000);
     }
@@ -264,7 +265,7 @@ const waitlistedHacker0 = {
     gender: "Male",
     confirmed: true,
     accountType: Constants.HACKER,
-    birthDate: "1990-01-04",
+    age: 23,
     phoneNumber: 1000000004
 };
 
@@ -280,7 +281,7 @@ const NonConfirmedAccount1 = {
     dietaryRestrictions: ["something1", "something2"],
     gender: "Male",
     confirmed: false,
-    birthDate: "1980-07-30",
+    age: 23,
     phoneNumber: 1001230236,
     accountType: Constants.HACKER
 };
@@ -315,7 +316,7 @@ const NoPhoneHackerAccount0 = {
     dietaryRestrictions: ["something1", "something2"],
     gender: "Male",
     confirmed: false,
-    birthDate: "1980-07-30",
+    age: "23",
     accountType: Constants.HACKER
 };
 

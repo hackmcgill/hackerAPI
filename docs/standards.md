@@ -352,7 +352,7 @@ module.exports = {
         VALIDATOR.regexValidator("body", "email", true, Constants.EMAIL_REGEX),
         VALIDATOR.alphaArrayValidator("body", "dietaryRestrictions", true),
         VALIDATOR.enumValidator("body", "shirtSize", Constants.SHIRT_SIZES, true),
-        VALIDATOR.dateValidator("body", "birthDate", true),
+        VALIDATOR.ageValidator("body", "age", true),
         VALIDATOR.phoneNumberValidator("body", "phoneNumber", true)
     ],
 };

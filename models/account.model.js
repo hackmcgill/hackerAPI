@@ -46,8 +46,8 @@ const AccountSchema = new mongoose.Schema({
         enum: Constants.EXTENDED_USER_TYPES,
         default: Constants.HACKER
     },
-    birthDate: {
-        type: Date,
+    age: {
+        type: Number,
         required: true
     },
     phoneNumber: {
@@ -85,15 +85,16 @@ AccountSchema.methods.isSponsor = function() {
         this.accountType == Constants.SPONSOR
     );
 };
+
 /**
- * Calculates the user's age
+ * CHANGED BIRTHDATE TO AGE - Calculates the user's age
  */
-AccountSchema.methods.getAge = function() {
-    // birthday is a date
-    var ageDifMs = Date.now() - this.birthDate.getTime();
-    var ageDate = new Date(ageDifMs); // miliseconds from epoch
-    return Math.abs(ageDate.getUTCFullYear() - 1970);
-};
+// AccountSchema.methods.getAge = function() {
+//     // birthday is a date
+//     var ageDifMs = Date.now() - this.birthDate.getTime();
+//     var ageDate = new Date(ageDifMs); // miliseconds from epoch
+//     return Math.abs(ageDate.getUTCFullYear() - 1970);
+// };
 
 //export the model
 module.exports = mongoose.model("Account", AccountSchema);

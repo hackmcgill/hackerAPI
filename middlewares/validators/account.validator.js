@@ -18,7 +18,7 @@ module.exports = {
             process.env.JWT_CONFIRM_ACC_SECRET,
             true
         ),
-        VALIDATOR.dateValidator("body", "birthDate", false),
+        VALIDATOR.ageValidator("body", "age", false),
         VALIDATOR.phoneNumberValidator("body", "phoneNumber", true)
     ],
     updateAccountValidator: [
@@ -29,7 +29,7 @@ module.exports = {
         VALIDATOR.regexValidator("body", "email", true, Constants.EMAIL_REGEX),
         VALIDATOR.alphaArrayValidator("body", "dietaryRestrictions", true),
         VALIDATOR.stringValidator("body", "gender", true),
-        VALIDATOR.dateValidator("body", "birthDate", true),
+        VALIDATOR.ageValidator("body", "age", true),
         VALIDATOR.phoneNumberValidator("body", "phoneNumber", true)
     ],
     inviteAccountValidator: [
