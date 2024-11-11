@@ -505,6 +505,7 @@ function applicationValidator(fieldLocation, fieldname, optional = true) {
                     hasValid.ethnicity &&
                     hasValid.sendEmail &&
                     hasValid.country &&
+                    hasValid.sendEmail &&
                     hasValid.privacyPolicy &&
                     hasValid.codeOfConduct
                 );

@@ -126,6 +126,7 @@ module.exports = {
                         "ethnicity": "Asian or Pacific Islander",
                         "sendEmail": true,
                         "country": "Canada",
+                        "sendEmail": true,
                         "privacyPolicy": true,
                         "codeOfConduct": true,
                       }
@@ -174,7 +175,6 @@ module.exports = {
                           "other:" {
                             "gender": "male",
                             "ethnicity": "Asian or Pacific Islander",
-                            "sendEmail": true,
                             "country": "Canada",
                             "privacyPolicy": true,
                             "codeOfConduct": true,
@@ -474,7 +474,6 @@ module.exports = {
                     "other:" {
                       "gender": "male",
                       "ethnicity": "Asian or Pacific Islander",
-                      "sendEmail": true,
                       "country": "Canada",
                       "privacyPolicy": true,
                       "codeOfConduct": true,
@@ -524,7 +523,6 @@ module.exports = {
                           "other:" {
                             "gender": "male",
                             "ethnicity": "Asian or Pacific Islander",
-                            "sendEmail": true,
                             "country": "Canada",
                             "privacyPolicy": true,
                             "codeOfConduct": true,
@@ -603,7 +601,6 @@ module.exports = {
                           "other:" {
                             "gender": "male",
                             "ethnicity": "Asian or Pacific Islander",
-                            "sendEmail": true,
                             "country": "Canada",
                             "privacyPolicy": true,
                             "codeOfConduct": true,
@@ -678,7 +675,6 @@ module.exports = {
                           "other:" {
                             "gender": "male",
                             "ethnicity": "Asian or Pacific Islander",
-                            "sendEmail": true,
                             "country": "Canada",
                             "privacyPolicy": true,
                             "codeOfConduct": true,
