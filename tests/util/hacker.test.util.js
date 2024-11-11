@@ -40,7 +40,8 @@ const TeamHacker0 = {
         other: {
             ethnicity: ["Native American"],
             codeOfConduct: true,
-            privacyPolicy: true
+            privacyPolicy: true,
+            sendEmail: true
         },
         accommodation: {
             dietaryRestrictions: ["Gluten-Free"],
@@ -82,7 +83,8 @@ const TeamHacker1 = {
         other: {
             ethnicity: ["European"],
             codeOfConduct: true,
-            privacyPolicy: true
+            privacyPolicy: true,
+            sendEmail: false
         },
         accommodation: {
             dietaryRestrictions: ["Gluten-Free"],
@@ -124,7 +126,8 @@ const TeamHacker2 = {
         other: {
             ethnicity: ["European"],
             codeOfConduct: true,
-            privacyPolicy: true
+            privacyPolicy: true,
+            sendEmail: true
         },
         accommodation: {
             dietaryRestrictions: ["Gluten-Free"],
@@ -166,7 +169,8 @@ const TeamHacker3 = {
         other: {
             ethnicity: ["European"],
             codeOfConduct: true,
-            privacyPolicy: true
+            privacyPolicy: true,
+            sendEmail: false
         },
         accommodation: {
             dietaryRestrictions: ["Gluten-Free"],
@@ -208,7 +212,8 @@ const TeamHacker4 = {
         other: {
             ethnicity: ["European"],
             codeOfConduct: true,
-            privacyPolicy: true
+            privacyPolicy: true,
+            sendEmail: true
         },
         accommodation: {
             dietaryRestrictions: ["Gluten-Free"],
@@ -250,7 +255,8 @@ const NoTeamHacker0 = {
         other: {
             ethnicity: ["European"],
             codeOfConduct: true,
-            privacyPolicy: true
+            privacyPolicy: true,
+            sendEmail: true
         },
         accommodation: {
             dietaryRestrictions: ["Gluten-Free"],
@@ -289,7 +295,8 @@ const newHacker0 = {
         other: {
             ethnicity: ["Caucasian"],
             codeOfConduct: true,
-            privacyPolicy: true
+            privacyPolicy: true,
+            sendEmail: true
         },
         accommodation: {
             dietaryRestrictions: ["Gluten-Free"],
@@ -328,7 +335,8 @@ const newHacker1 = {
         other: {
             ethnicity: ["African American"],
             codeOfConduct: true,
-            privacyPolicy: true
+            privacyPolicy: true,
+            sendEmail: false
         },
         accommodation: {
             dietaryRestrictions: ["Gluten-Free"],
@@ -369,7 +377,8 @@ const invalidHacker0 = {
             ethnicity: ["Caucasian"],
             // must accept code of conduct to be valid
             codeOfConduct: false,
-            privacyPolicy: false
+            privacyPolicy: false,
+            sendEmail: true
         },
         accommodation: {
             dietaryRestrictions: ["Gluten-Free"],
@@ -405,7 +414,8 @@ const invalidHacker1 = {
         other: {
             ethnicity: ["Caucasian"],
             codeOfConduct: true,
-            privacyPolicy: true
+            privacyPolicy: true,
+            sendEmail: true
         },
         accommodation: {
             dietaryRestrictions: ["Gluten-Free"],
@@ -447,7 +457,8 @@ const invalidHacker2 = {
         other: {
             ethnicity: ["Caucasian"],
             codeOfConduct: true,
-            privacyPolicy: true
+            privacyPolicy: true,
+            sendEmail: false
         },
         accommodation: {
             dietaryRestrictions: ["Gluten-Free"],
@@ -488,7 +499,8 @@ const invalidHacker3 = {
         other: {
             ethnicity: ["Caucasian"],
             codeOfConduct: true,
-            privacyPolicy: true
+            privacyPolicy: true,
+            sendEmail: true
         },
         accommodation: {
             dietaryRestrictions: ["Gluten-Free"],
@@ -530,7 +542,8 @@ const duplicateAccountLinkHacker0 = {
         other: {
             ethnicity: ["Caucasian"],
             codeOfConduct: true,
-            privacyPolicy: true
+            privacyPolicy: true,
+            sendEmail: false
         },
         accommodation: {
             dietaryRestrictions: ["Gluten-Free"],
@@ -571,7 +584,8 @@ const waitlistedHacker0 = {
         other: {
             ethnicity: ["European"],
             codeOfConduct: true,
-            privacyPolicy: true
+            privacyPolicy: true,
+            sendEmail: true
         },
         accommodation: {
             dietaryRestrictions: ["Gluten-Free"],
@@ -613,7 +627,8 @@ const unconfirmedAccountHacker0 = {
         other: {
             ethnicity: ["European"],
             codeOfConduct: true,
-            privacyPolicy: true
+            privacyPolicy: true,
+            sendEmail: false
         },
         accommodation: {
             dietaryRestrictions: ["Gluten-Free"],
@@ -654,7 +669,8 @@ const unconfirmedAccountHacker1 = {
         other: {
             ethnicity: ["European"],
             codeOfConduct: true,
-            privacyPolicy: true
+            privacyPolicy: true,
+            sendEmail: true
         },
         accommodation: {
             dietaryRestrictions: ["Gluten-Free"],

@@ -122,6 +122,7 @@ module.exports = {
                       "other:" {
                         "gender": "male",
                         "ethnicity": "Asian or Pacific Islander",
+                        "sendEmail": true,
                         "privacyPolicy": true,
                         "codeOfConduct": true,
                       }
@@ -170,6 +171,7 @@ module.exports = {
                           "other:" {
                             "gender": "male",
                             "ethnicity": "Asian or Pacific Islander",
+                            "sendEmail": true,
                             "privacyPolicy": true,
                             "codeOfConduct": true,
                           }
@@ -466,6 +468,7 @@ module.exports = {
                     "other:" {
                       "gender": "male",
                       "ethnicity": "Asian or Pacific Islander",
+                      "sendEmail": true,
                       "privacyPolicy": true,
                       "codeOfConduct": true,
                     }
@@ -514,6 +517,7 @@ module.exports = {
                           "other:" {
                             "gender": "male",
                             "ethnicity": "Asian or Pacific Islander",
+                            "sendEmail": true,
                             "privacyPolicy": true,
                             "codeOfConduct": true,
                           }
@@ -591,6 +595,7 @@ module.exports = {
                           "other:" {
                             "gender": "male",
                             "ethnicity": "Asian or Pacific Islander",
+                            "sendEmail": true,
                             "privacyPolicy": true,
                             "codeOfConduct": true,
                           }
@@ -664,6 +669,7 @@ module.exports = {
                           "other:" {
                             "gender": "male",
                             "ethnicity": "Asian or Pacific Islander",
+                            "sendEmail": true,
                             "privacyPolicy": true,
                             "codeOfConduct": true,
                           }
