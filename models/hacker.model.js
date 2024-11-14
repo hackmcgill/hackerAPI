@@ -106,6 +106,10 @@ const HackerSchema = new mongoose.Schema({
             sendEmail: {
                 type: Boolean
             },
+            country: {
+                type: String,
+                required: true
+            },
             privacyPolicy: {
                 type: Boolean,
                 required: true

@@ -392,6 +392,7 @@ function applicationValidator(fieldLocation, fieldname, optional = true) {
         shirtSize: false,
         other: false,
         ethnicity: false,
+        country: false,
         codeOfConduct: false,
         privacyPolicy: false,
         sendEmail: false
@@ -440,6 +441,7 @@ function applicationValidator(fieldLocation, fieldname, optional = true) {
                 hasValid.other = app.hasOwnProperty("other");
                 if (hasValid.other) {
                     hasValid.ethnicity = app.other.hasOwnProperty("ethnicity");
+                    hasValid.country = app.other.hasOwnProperty("country");
                     hasValid.codeOfConduct = app.other.hasOwnProperty(
                         "codeOfConduct"
                     );
@@ -502,6 +504,7 @@ function applicationValidator(fieldLocation, fieldname, optional = true) {
                     hasValid.other &&
                     hasValid.ethnicity &&
                     hasValid.sendEmail &&
+                    hasValid.country &&
                     hasValid.privacyPolicy &&
                     hasValid.codeOfConduct
                 );
@@ -550,6 +553,7 @@ function applicationValidator(fieldLocation, fieldname, optional = true) {
                 hasValid.other = app.hasOwnProperty("other");
                 if (hasValid.other) {
                     hasValid.ethnicity = app.other.hasOwnProperty("ethnicity");
+                    hasValid.country = app.other.hasOwnProperty("country");
                     hasValid.codeOfConduct = app.other.hasOwnProperty(
                         "codeOfConduct"
                     );
@@ -611,7 +615,6 @@ function applicationValidator(fieldLocation, fieldname, optional = true) {
                     hasValid.shirtSize &&
                     hasValid.other &&
                     hasValid.ethnicity &&
-                    hasValid.sendEmail &&
                     hasValid.privacyPolicy &&
                     hasValid.codeOfConduct
                 );

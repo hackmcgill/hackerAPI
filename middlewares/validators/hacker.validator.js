@@ -256,6 +256,11 @@ module.exports = {
             "application.other.ethnicity",
             false
         ),
+        VALIDATOR.stringValidator(
+            "body", 
+            "application.other.country", 
+            false
+        ),
         VALIDATOR.booleanValidator(
             "body",
             "application.other.sendEmail",

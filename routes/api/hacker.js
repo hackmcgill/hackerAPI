@@ -56,6 +56,7 @@ module.exports = {
                         },
                         "status":"Applied",
                         "ethnicity":["White or Caucasian"," Asian or Pacific Islander"],
+                        "country":"Canada",
                         "accountId":"5bff2a35e533b0f6562b4998",
                         "school":"McPherson College",
                         "gender":"Female",
@@ -90,6 +91,7 @@ module.exports = {
          * @apiParam (body) {String} gender Gender of the hacker
          * @apiParam (body) {Number} travel Whether the hacker requires a bus for transportation
          * @apiParam (body) {String[]} ethnicity the ethnicities of the hacker
+         * @apiParam (body) {String} country Name of the country of residence of the hacker
          * @apiParam (body) {String[]} major the major of the hacker
          * @apiParam (body) {Number} graduationYear the graduation year of the hacker
          * @apiParam (body) {Boolean} codeOfConduct acceptance of the code of conduct 
@@ -123,6 +125,7 @@ module.exports = {
                         "gender": "male",
                         "ethnicity": "Asian or Pacific Islander",
                         "sendEmail": true,
+                        "country": "Canada",
                         "privacyPolicy": true,
                         "codeOfConduct": true,
                       }
@@ -172,6 +175,7 @@ module.exports = {
                             "gender": "male",
                             "ethnicity": "Asian or Pacific Islander",
                             "sendEmail": true,
+                            "country": "Canada",
                             "privacyPolicy": true,
                             "codeOfConduct": true,
                           }
@@ -237,6 +241,7 @@ module.exports = {
                             gender: { "Male": 1, "Female": 9 },
                             travel: { "true": 7, "false": 3 },
                             ethnicity: { "White": 10, },
+                            country: {"Canada": 10},
                             jobInterest: { "Internship": 10 },
                             major: { "Computer Science": 10 },
                             graduationYear: { "2019": 10 },
@@ -437,6 +442,7 @@ module.exports = {
          * @apiParam (body) {String} [gender] Gender of the hacker
          * @apiParam (body) {Number} [travel] How much the hacker requires a bus for transportation
          * @apiParam (body) {String[]} [ethnicity] the ethnicities of the hacker
+         * @apiParam (body) {String} [country] Country of residence of the hacker
          * @apiParam (body) {String[]} [major] the major of the hacker
          * @apiParam (body) {Number} [graduationYear] the graduation year of the hacker
          * @apiParam (body) {Json} [application] The hacker's application
@@ -469,6 +475,7 @@ module.exports = {
                       "gender": "male",
                       "ethnicity": "Asian or Pacific Islander",
                       "sendEmail": true,
+                      "country": "Canada",
                       "privacyPolicy": true,
                       "codeOfConduct": true,
                     }
@@ -518,6 +525,7 @@ module.exports = {
                             "gender": "male",
                             "ethnicity": "Asian or Pacific Islander",
                             "sendEmail": true,
+                            "country": "Canada",
                             "privacyPolicy": true,
                             "codeOfConduct": true,
                           }
@@ -596,6 +604,7 @@ module.exports = {
                             "gender": "male",
                             "ethnicity": "Asian or Pacific Islander",
                             "sendEmail": true,
+                            "country": "Canada",
                             "privacyPolicy": true,
                             "codeOfConduct": true,
                           }
@@ -670,6 +679,7 @@ module.exports = {
                             "gender": "male",
                             "ethnicity": "Asian or Pacific Islander",
                             "sendEmail": true,
+                            "country": "Canada",
                             "privacyPolicy": true,
                             "codeOfConduct": true,
                           }

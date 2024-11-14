@@ -132,6 +132,7 @@ function getStats(hackers) {
         gender: {},
         travel: {},
         ethnicity: {},
+        country: {},
         jobInterest: {},
         fieldOfStudy: {},
         graduationYear: {},
@@ -176,6 +177,12 @@ function getStats(hackers) {
                 ? stats.ethnicity[ethnicity] + 1
                 : 1;
         }
+
+        stats.country[hacker.application.other.country] = stats.country[
+            hacker.application.other.country
+        ]
+            ? stats.country[hacker.application.other.country] + 1
+            : 1;
 
         stats.jobInterest[hacker.application.general.jobInterest] = stats
             .jobInterest[hacker.application.general.jobInterest]

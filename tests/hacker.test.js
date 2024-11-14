@@ -1739,6 +1739,7 @@ describe("GET Hacker stats", function() {
                     res.body.data.stats.should.have.property("gender");
                     res.body.data.stats.should.have.property("travel");
                     res.body.data.stats.should.have.property("ethnicity");
+                    res.body.data.stats.should.have.property("country");
                     res.body.data.stats.should.have.property("jobInterest");
                     res.body.data.stats.should.have.property("fieldOfStudy");
                     res.body.data.stats.should.have.property("graduationYear");

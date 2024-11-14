@@ -39,6 +39,7 @@ const TeamHacker0 = {
         },
         other: {
             ethnicity: ["Native American"],
+            country: "Canada",
             codeOfConduct: true,
             privacyPolicy: true,
             sendEmail: true
@@ -82,6 +83,7 @@ const TeamHacker1 = {
         },
         other: {
             ethnicity: ["European"],
+            country: "Canada",
             codeOfConduct: true,
             privacyPolicy: true,
             sendEmail: false
@@ -125,6 +127,7 @@ const TeamHacker2 = {
         },
         other: {
             ethnicity: ["European"],
+            country: "Canada",
             codeOfConduct: true,
             privacyPolicy: true,
             sendEmail: true
@@ -168,6 +171,7 @@ const TeamHacker3 = {
         },
         other: {
             ethnicity: ["European"],
+            country: "Canada",
             codeOfConduct: true,
             privacyPolicy: true,
             sendEmail: false
@@ -211,6 +215,7 @@ const TeamHacker4 = {
         },
         other: {
             ethnicity: ["European"],
+            country: "Canada",
             codeOfConduct: true,
             privacyPolicy: true,
             sendEmail: true
@@ -254,6 +259,7 @@ const NoTeamHacker0 = {
         },
         other: {
             ethnicity: ["European"],
+            country: "Canada",
             codeOfConduct: true,
             privacyPolicy: true,
             sendEmail: true
@@ -294,6 +300,7 @@ const newHacker0 = {
         },
         other: {
             ethnicity: ["Caucasian"],
+            country: "Canada",
             codeOfConduct: true,
             privacyPolicy: true,
             sendEmail: true
@@ -334,6 +341,7 @@ const newHacker1 = {
         },
         other: {
             ethnicity: ["African American"],
+            country: "Canada",
             codeOfConduct: true,
             privacyPolicy: true,
             sendEmail: false
@@ -375,6 +383,7 @@ const invalidHacker0 = {
         },
         other: {
             ethnicity: ["Caucasian"],
+            country: "Canada",
             // must accept code of conduct to be valid
             codeOfConduct: false,
             privacyPolicy: false,
@@ -413,6 +422,7 @@ const invalidHacker1 = {
         },
         other: {
             ethnicity: ["Caucasian"],
+            country: "Canada",
             codeOfConduct: true,
             privacyPolicy: true,
             sendEmail: true
@@ -456,6 +466,7 @@ const invalidHacker2 = {
         },
         other: {
             ethnicity: ["Caucasian"],
+            country: "Canada",
             codeOfConduct: true,
             privacyPolicy: true,
             sendEmail: false
@@ -498,6 +509,7 @@ const invalidHacker3 = {
         },
         other: {
             ethnicity: ["Caucasian"],
+            country: "Canada",
             codeOfConduct: true,
             privacyPolicy: true,
             sendEmail: true
@@ -541,6 +553,7 @@ const duplicateAccountLinkHacker0 = {
         },
         other: {
             ethnicity: ["Caucasian"],
+            country: "Canada",
             codeOfConduct: true,
             privacyPolicy: true,
             sendEmail: false
@@ -583,6 +596,7 @@ const waitlistedHacker0 = {
         },
         other: {
             ethnicity: ["European"],
+            country: "Canada",
             codeOfConduct: true,
             privacyPolicy: true,
             sendEmail: true
@@ -626,6 +640,7 @@ const unconfirmedAccountHacker0 = {
         },
         other: {
             ethnicity: ["European"],
+            country: "Canada",
             codeOfConduct: true,
             privacyPolicy: true,
             sendEmail: false
@@ -668,6 +683,7 @@ const unconfirmedAccountHacker1 = {
         },
         other: {
             ethnicity: ["European"],
+            country: "Canada",
             codeOfConduct: true,
             privacyPolicy: true,
             sendEmail: true
