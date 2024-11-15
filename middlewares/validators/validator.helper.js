@@ -506,6 +506,7 @@ function applicationValidator(fieldLocation, fieldname, optional = true) {
                     hasValid.sendEmail &&
                     hasValid.country &&
                     hasValid.sendEmail &&
+                    hasValid.country &&
                     hasValid.privacyPolicy &&
                     hasValid.codeOfConduct
                 );
@@ -616,6 +617,7 @@ function applicationValidator(fieldLocation, fieldname, optional = true) {
                     hasValid.shirtSize &&
                     hasValid.other &&
                     hasValid.ethnicity &&
+                    hasValid.country &&
                     hasValid.privacyPolicy &&
                     hasValid.codeOfConduct
                 );

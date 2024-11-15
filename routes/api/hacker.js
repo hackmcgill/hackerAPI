@@ -126,7 +126,6 @@ module.exports = {
                         "ethnicity": "Asian or Pacific Islander",
                         "sendEmail": true,
                         "country": "Canada",
-                        "sendEmail": true,
                         "privacyPolicy": true,
                         "codeOfConduct": true,
                       }
