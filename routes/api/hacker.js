@@ -124,6 +124,7 @@ module.exports = {
                       "other:" {
                         "gender": "male",
                         "ethnicity": "Asian or Pacific Islander",
+                        "sendEmail": true,
                         "country": "Canada",
                         "privacyPolicy": true,
                         "codeOfConduct": true,

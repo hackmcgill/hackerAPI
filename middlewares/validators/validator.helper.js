@@ -394,7 +394,8 @@ function applicationValidator(fieldLocation, fieldname, optional = true) {
         ethnicity: false,
         country: false,
         codeOfConduct: false,
-        privacyPolicy: false
+        privacyPolicy: false,
+        sendEmail: false
     };
 
     if (optional) {
@@ -446,6 +447,9 @@ function applicationValidator(fieldLocation, fieldname, optional = true) {
                     );
                     hasValid.privacyPolicy = app.other.hasOwnProperty(
                         "privacyPolicy"
+                    );
+                    hasValid.sendEmail = app.other.hasOwnProperty(
+                        "sendEmail"
                     );
                 }
                 // hasValid.github =
@@ -499,6 +503,9 @@ function applicationValidator(fieldLocation, fieldname, optional = true) {
                     hasValid.shirtSize &&
                     hasValid.other &&
                     hasValid.ethnicity &&
+                    hasValid.sendEmail &&
+                    hasValid.country &&
+                    hasValid.sendEmail &&
                     hasValid.country &&
                     hasValid.privacyPolicy &&
                     hasValid.codeOfConduct
@@ -554,6 +561,9 @@ function applicationValidator(fieldLocation, fieldname, optional = true) {
                     );
                     hasValid.privacyPolicy = app.other.hasOwnProperty(
                         "privacyPolicy"
+                    );
+                    hasValid.sendEmail = app.other.hasOwnProperty(
+                        "sendEmail"
                     );
                 }
                 // hasValid.github =

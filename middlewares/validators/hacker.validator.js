@@ -114,6 +114,11 @@ module.exports = {
         ),
         VALIDATOR.booleanValidator(
             "body",
+            "application.other.sendEmail",
+            true
+        ),
+        VALIDATOR.booleanValidator(
+            "body",
             "application.other.privacyPolicy",
             false,
             true
@@ -255,6 +260,11 @@ module.exports = {
             "body", 
             "application.other.country", 
             false
+        ),
+        VALIDATOR.booleanValidator(
+            "body",
+            "application.other.sendEmail",
+            true
         ),
         VALIDATOR.booleanValidator(
             "body",

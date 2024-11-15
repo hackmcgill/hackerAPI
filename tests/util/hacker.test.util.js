@@ -41,7 +41,8 @@ const TeamHacker0 = {
             ethnicity: ["Native American"],
             country: "Canada",
             codeOfConduct: true,
-            privacyPolicy: true
+            privacyPolicy: true,
+            sendEmail: true
         },
         accommodation: {
             dietaryRestrictions: ["Gluten-Free"],
@@ -84,7 +85,8 @@ const TeamHacker1 = {
             ethnicity: ["European"],
             country: "Canada",
             codeOfConduct: true,
-            privacyPolicy: true
+            privacyPolicy: true,
+            sendEmail: false
         },
         accommodation: {
             dietaryRestrictions: ["Gluten-Free"],
@@ -127,7 +129,8 @@ const TeamHacker2 = {
             ethnicity: ["European"],
             country: "Canada",
             codeOfConduct: true,
-            privacyPolicy: true
+            privacyPolicy: true,
+            sendEmail: true
         },
         accommodation: {
             dietaryRestrictions: ["Gluten-Free"],
@@ -170,7 +173,8 @@ const TeamHacker3 = {
             ethnicity: ["European"],
             country: "Canada",
             codeOfConduct: true,
-            privacyPolicy: true
+            privacyPolicy: true,
+            sendEmail: false
         },
         accommodation: {
             dietaryRestrictions: ["Gluten-Free"],
@@ -213,7 +217,8 @@ const TeamHacker4 = {
             ethnicity: ["European"],
             country: "Canada",
             codeOfConduct: true,
-            privacyPolicy: true
+            privacyPolicy: true,
+            sendEmail: true
         },
         accommodation: {
             dietaryRestrictions: ["Gluten-Free"],
@@ -256,7 +261,8 @@ const NoTeamHacker0 = {
             ethnicity: ["European"],
             country: "Canada",
             codeOfConduct: true,
-            privacyPolicy: true
+            privacyPolicy: true,
+            sendEmail: true
         },
         accommodation: {
             dietaryRestrictions: ["Gluten-Free"],
@@ -296,7 +302,8 @@ const newHacker0 = {
             ethnicity: ["Caucasian"],
             country: "Canada",
             codeOfConduct: true,
-            privacyPolicy: true
+            privacyPolicy: true,
+            sendEmail: true
         },
         accommodation: {
             dietaryRestrictions: ["Gluten-Free"],
@@ -336,7 +343,8 @@ const newHacker1 = {
             ethnicity: ["African American"],
             country: "Canada",
             codeOfConduct: true,
-            privacyPolicy: true
+            privacyPolicy: true,
+            sendEmail: false
         },
         accommodation: {
             dietaryRestrictions: ["Gluten-Free"],
@@ -378,7 +386,8 @@ const invalidHacker0 = {
             country: "Canada",
             // must accept code of conduct to be valid
             codeOfConduct: false,
-            privacyPolicy: false
+            privacyPolicy: false,
+            sendEmail: true
         },
         accommodation: {
             dietaryRestrictions: ["Gluten-Free"],
@@ -415,7 +424,8 @@ const invalidHacker1 = {
             ethnicity: ["Caucasian"],
             country: "Canada",
             codeOfConduct: true,
-            privacyPolicy: true
+            privacyPolicy: true,
+            sendEmail: true
         },
         accommodation: {
             dietaryRestrictions: ["Gluten-Free"],
@@ -458,7 +468,8 @@ const invalidHacker2 = {
             ethnicity: ["Caucasian"],
             country: "Canada",
             codeOfConduct: true,
-            privacyPolicy: true
+            privacyPolicy: true,
+            sendEmail: false
         },
         accommodation: {
             dietaryRestrictions: ["Gluten-Free"],
@@ -500,7 +511,8 @@ const invalidHacker3 = {
             ethnicity: ["Caucasian"],
             country: "Canada",
             codeOfConduct: true,
-            privacyPolicy: true
+            privacyPolicy: true,
+            sendEmail: true
         },
         accommodation: {
             dietaryRestrictions: ["Gluten-Free"],
@@ -543,7 +555,8 @@ const duplicateAccountLinkHacker0 = {
             ethnicity: ["Caucasian"],
             country: "Canada",
             codeOfConduct: true,
-            privacyPolicy: true
+            privacyPolicy: true,
+            sendEmail: false
         },
         accommodation: {
             dietaryRestrictions: ["Gluten-Free"],
@@ -585,7 +598,8 @@ const waitlistedHacker0 = {
             ethnicity: ["European"],
             country: "Canada",
             codeOfConduct: true,
-            privacyPolicy: true
+            privacyPolicy: true,
+            sendEmail: true
         },
         accommodation: {
             dietaryRestrictions: ["Gluten-Free"],
@@ -628,7 +642,8 @@ const unconfirmedAccountHacker0 = {
             ethnicity: ["European"],
             country: "Canada",
             codeOfConduct: true,
-            privacyPolicy: true
+            privacyPolicy: true,
+            sendEmail: false
         },
         accommodation: {
             dietaryRestrictions: ["Gluten-Free"],
@@ -670,7 +685,8 @@ const unconfirmedAccountHacker1 = {
             ethnicity: ["European"],
             country: "Canada",
             codeOfConduct: true,
-            privacyPolicy: true
+            privacyPolicy: true,
+            sendEmail: true
         },
         accommodation: {
             dietaryRestrictions: ["Gluten-Free"],
