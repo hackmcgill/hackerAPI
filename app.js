@@ -55,8 +55,7 @@ if (!Services.env.isProduction()) {
 
             if (
                 allowedOrigins.includes(origin) || // Explicitly allowed origins
-                regex.test(origin) ||              // Matches dashboard subdomains
-                !origin                            // Allow non-origin requests
+                regex.test(origin)                 // Matches dashboard subdomains
             ) {
                 callback(null, true);
             } else {
