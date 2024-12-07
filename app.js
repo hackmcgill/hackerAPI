@@ -43,16 +43,30 @@ if (!Services.env.isProduction()) {
         credentials: true
     };
 } else {
-    // TODO: change this when necessary
     corsOptions = {
-        origin: [
-            `https://${process.env.FRONTEND_ADDRESS_DEPLOY}`,
-            `https://${process.env.FRONTEND_ADDRESS_BETA}`,
-            `https://docs.mchacks.ca`
-        ],
+        origin: (origin, callback) => {
+            const allowedOrigins = [
+                `https://${process.env.FRONTEND_ADDRESS_DEPLOY}`,
+                `https://${process.env.FRONTEND_ADDRESS_BETA}`,
+                `https://docs.mchacks.ca`
+            ];
+
+            const regex = /^https:\/\/dashboard-[\w-]+\.vercel\.app$/;
+
+            if (
+                allowedOrigins.includes(origin) || // Explicitly allowed origins
+                regex.test(origin)                 // Matches dashboard subdomains
+            ) {
+                callback(null, true);
+            } else {
+                callback(new Error('Not allowed by CORS'));
+            }
+        },
         credentials: true
     };
 }
+
+
 
 app.use(cors(corsOptions));
 app.use(Services.log.requestLogger);
