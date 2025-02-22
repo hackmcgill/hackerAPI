@@ -102,6 +102,7 @@ function parseConfirmation(req, res, next) {
     return next();
 }
 
+//  * @param {{body: {hackerDetails: {reviewerStatus: String}}}} req
 /**
  * @function addDefaultStatus
  * @param {{body: {hackerDetails: {status: String}}}} req
@@ -112,6 +113,7 @@ function parseConfirmation(req, res, next) {
  */
 function addDefaultStatus(req, res, next) {
     req.body.hackerDetails.status = "Applied";
+    // req.body.hackerDetails.reviewerStatus = "none";
     return next();
 }
 

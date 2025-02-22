@@ -15,6 +15,12 @@ const HackerSchema = new mongoose.Schema({
         required: true,
         default: "None"
     },
+    reviewerStatus: {
+        type: String,
+        enum: Constants.HACKER_REVIEWER_STATUSES,
+        required: true,
+        default: "None"
+    },
     application: {
         general: {
             school: {

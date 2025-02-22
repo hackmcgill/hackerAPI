@@ -299,6 +299,36 @@ module.exports = {
             Controllers.Hacker.updatedHacker
         );
 
+      //    /**
+      //    * @api {patch} /hacker/reviewerStatus/:id update a hacker's reviewer status
+      //    * @apiName patchHackerReviewerStatus
+      //    * @apiGroup Hacker
+      //    * @apiVersion 0.0.9
+      //    *
+      //    * @apiParam (body) {string} [reviewerStatus] Reviewer status of the hacker's application ("None"|"Yes"|"No"|"Maybe")
+      //    * @apiSuccess {string} message Success message
+      //    * @apiSuccess {object} data Hacker object
+      //    * @apiSuccessExample {object} Success-Response:
+      //    *      {
+      //    *          "message": "Changed hacker information",
+      //    *          "data": {
+      //    *              "reviewerStatus": "Yes"
+      //    *          }
+      //    *      }
+      //    * @apiPermission Administrator
+      //    */
+      //    hackerRouter.route("/reviewerStatus/:id").patch(
+      //     Middleware.Validator.RouteParam.idValidator,
+      //     Middleware.Auth.ensureAuthenticated(),
+      //     Middleware.Auth.ensureAuthorized([Services.Hacker.findById]),
+      //     Middleware.Validator.Hacker.updateReviewerStatusValidator,
+      //     Middleware.parseBody.middleware,
+      //     Middleware.Hacker.parsePatch,
+
+      //     Middleware.Hacker.updateHacker,
+      //     Controllers.Hacker.updatedHacker
+      // );
+
         /**
          * @api {patch} /hacker/accept/:id accept a Hacker
          * @apiName acceptHacker

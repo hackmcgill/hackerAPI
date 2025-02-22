@@ -14,6 +14,7 @@ const TeamHacker0 = {
     _id: Constants.MongoId.hackerAId,
     accountId: Util.Account.hackerAccounts.stored.team[0]._id,
     status: "Confirmed",
+    reviewerStatus: "Yes",
     application: {
         general: {
             school: "University of Blah",
@@ -58,6 +59,7 @@ const TeamHacker1 = {
     _id: Constants.MongoId.hackerDId,
     accountId: Util.Account.hackerAccounts.stored.team[1]._id,
     status: "Checked-in",
+    reviewerStatus: "Yes",
     application: {
         general: {
             school: "University of Blah",
@@ -102,6 +104,7 @@ const TeamHacker2 = {
     _id: Constants.MongoId.hackerEId,
     accountId: Util.Account.hackerAccounts.stored.team[2]._id,
     status: "Waitlisted",
+    reviewerStatus: "No",
     application: {
         general: {
             school: "University of Blah",
@@ -146,6 +149,7 @@ const TeamHacker3 = {
     _id: Constants.MongoId.hackerFId,
     accountId: Util.Account.hackerAccounts.stored.team[3]._id,
     status: "Waitlisted",
+    reviewerStatus: "Yes",
     application: {
         general: {
             school: "University of Blah",
@@ -190,6 +194,7 @@ const TeamHacker4 = {
     _id: Constants.MongoId.hackerGId,
     accountId: Util.Account.hackerAccounts.stored.team[4]._id,
     status: "Waitlisted",
+    reviewerStatus: "Maybe",
     application: {
         general: {
             school: "University of Blah",
@@ -234,6 +239,7 @@ const NoTeamHacker0 = {
     _id: Constants.MongoId.hackerBId,
     accountId: Util.Account.hackerAccounts.stored.noTeam[0]._id,
     status: "Accepted",
+    reviewerStatus: "Yes",
     application: {
         general: {
             school: "University of Blah",
@@ -658,6 +664,7 @@ const unconfirmedAccountHacker1 = {
     _id: Constants.MongoId.hackerHId,
     accountId: Util.Account.hackerAccounts.stored.unconfirmed[0]._id,
     status: "Accepted",
+    reviewerStatus: "Yes",
     application: {
         general: {
             school: "University of Blah2",

@@ -21,13 +21,20 @@ VALID_STATUSES = {
     '6': 'Withdrawn',
     '7': 'Checked-in'
 }
+VALID_REVIEWER_STATUSES = {
+    '1': 'None',
+    '2': 'Yes',
+    '3': 'No',
+    '4': 'Maybe'
+}
 BATCH_ACTIONS = {
     '1': 'updateStatus',
     '2': 'dayOf',
     '3': 'weekOf',
     '4': 'downloadResume',
     '5': 'inviteUsers',
-    '6': 'getHackers'
+    '6': 'getHackers',
+    '7': 'updateReviewerStatus'
 }
 LOG_VERBOSITIES = {
     '0': 'None',
@@ -212,6 +219,18 @@ def batchAction() -> str:
     )
     return batch_action
 
+def reviewerStatus(prefixStr) -> str:
+    reviewerStatus_list = ['{0}: {1}\n'.format(k, v)
+                   for k, v in VALID_REVIEWER_STATUSES.items()]
+    initial_reviewerStatus = requestUntilSuccess(
+        'Input {0} status:\n{1}'.format(prefixStr, ''.join(reviewerStatus_list)),
+        'Invalid {0} status'.format(prefixStr),
+        lambda x: x in VALID_REVIEWER_STATUSES.keys(),
+        lambda x: VALID_REVIEWER_STATUSES[x]
+    )
+    return initial_reviewerStatus
+
+
 
 def getHacker(ID):
     r = s.get('{0}/api/hacker/{1}'.format(API_URL, ID))
@@ -224,6 +243,12 @@ def getHacker(ID):
 
 def hasValidStatus(status, hackerInfo):
     if hackerInfo is not None and hackerInfo['status'] == status:
+        return True
+    else:
+        return False
+
+def hasValidReviewerStatus(reviewerStatus, hackerInfo):
+    if hackerInfo is not None and hackerInfo['reviewerStatus'] == reviewerStatus:
         return True
     else:
         return False
@@ -261,6 +286,31 @@ def updateStatus():
             else:
                 _print('{0} {1}'.format(
                     NEW_STATUS, ID), 3, index, len(HACKER_IDs))
+        elif hacker is not None:
+            _print('invalid status for {0}'.format(
+                ID), 1, index, len(HACKER_IDs))
+        else:
+            _print('could not find {0}'.format(
+                ID), 1, index, len(HACKER_IDs))
+
+def updateReviewerStatus():
+    INITIAL_REVIEWER_STATUS = reviewerStatus('initial')
+    NEW_REVIEWER_STATUS = reviewerStatus('new')
+    HACKER_IDs = loadIDs()
+    for index, ID in enumerate(HACKER_IDs):
+        # so that we aren't 0-based index
+        index = index + 1
+        hacker = getHacker(ID)
+        validReviewerStatus = hasValidReviewerStatus(INITIAL_REVIEWER_STATUS, hacker)
+        if validReviewerStatus:
+            r = s.patch('{0}/api/hacker/reviewerStatus/{1}'.format(API_URL, ID),
+                        {"reviewerStatus": NEW_REVIEWER_STATUS})
+            # if r.status_code != 200:
+            #     _print('cannot update status for {0}'.format(
+            #         ID), 1, index, len(HACKER_IDs))
+            # else:
+            _print('{0} {1}'.format(
+                NEW_REVIEWER_STATUS, ID), 3, index, len(HACKER_IDs))
         elif hacker is not None:
             _print('invalid status for {0}'.format(
                 ID), 1, index, len(HACKER_IDs))
@@ -421,6 +471,8 @@ if __name__ == "__main__":
                 inviteUsers()
             elif BATCH_ACTION == 'getHackers':
                 getHackers()
+            elif BATCH_ACTION == 'updateReviewerStatus':
+                updateReviewerStatus()
             print('Finished {0}'.format(BATCH_ACTION))
         except Exception as e:
             _print('Failed to perform action {0}: {1}'.format(
