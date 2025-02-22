@@ -291,6 +291,14 @@ module.exports = {
             false
         )
     ],
+    // updateReviewerStatusValidator: [
+    //     VALIDATOR.enumValidator(
+    //         "body",
+    //         "reviewerStatus",
+    //         Constants.HACKER_REVIEWER_STATUSES,
+    //         false
+    //     )
+    // ],
     checkInStatusValidator: [
         VALIDATOR.enumValidator(
             "body",
