@@ -2117,6 +2117,66 @@ define({ "api": [
       }
     ]
   },
+  // {
+  //   "type": "patch",
+  //   "url": "/hacker/reviewerStatus/:id",
+  //   "title": "update a hacker's reviewer status",
+  //   "name": "patchHackerReviewerStatus",
+  //   "group": "Hacker",
+  //   "version": "0.0.9",
+  //   "parameter": {
+  //     "fields": {
+  //       "body": [
+  //         {
+  //           "group": "body",
+  //           "type": "string",
+  //           "optional": true,
+  //           "field": "reviewerStatus",
+  //           "description": "<p>Reviewer status of the hacker's application (&quot;None&quot;|&quot;Yes&quot;|&quot;No&quot;|&quot;Maybe&quot;)</p>"
+  //         }
+  //       ]
+  //     }
+  //   },
+  //   "success": {
+  //     "fields": {
+  //       "Success 200": [
+  //         {
+  //           "group": "Success 200",
+  //           "type": "string",
+  //           "optional": false,
+  //           "field": "message",
+  //           "description": "<p>Success message</p>"
+  //         },
+  //         {
+  //           "group": "Success 200",
+  //           "type": "object",
+  //           "optional": false,
+  //           "field": "data",
+  //           "description": "<p>Hacker object</p>"
+  //         }
+  //       ]
+  //     },
+  //     "examples": [
+  //       {
+  //         "title": "Success-Response:",
+  //         "content": "{\n    \"message\": \"Changed hacker information\",\n    \"data\": {\n        \"status\": \"Yes\"\n    }\n}",
+  //         "type": "object"
+  //       }
+  //     ]
+  //   },
+  //   "permission": [
+  //     {
+  //       "name": "Administrator"
+  //     }
+  //   ],
+  //   "filename": "routes/api/hacker.js",
+  //   "groupTitle": "Hacker",
+  //   "sampleRequest": [
+  //     {
+  //       "url": "https://api.mchacks.ca/api/hacker/reviewerStatus/:id"
+  //     }
+  //   ]
+  // },
   {
     "type": "patch",
     "url": "/hacker/reviewerStatus/:id",
