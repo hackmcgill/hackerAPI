@@ -102,7 +102,6 @@ function parseConfirmation(req, res, next) {
     return next();
 }
 
-//  * @param {{body: {hackerDetails: {reviewerStatus: String}}}} req
 /**
  * @function addDefaultStatus
  * @param {{body: {hackerDetails: {status: String}}}} req

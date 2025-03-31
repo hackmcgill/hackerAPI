@@ -14,7 +14,7 @@ const TeamHacker0 = {
     _id: Constants.MongoId.hackerAId,
     accountId: Util.Account.hackerAccounts.stored.team[0]._id,
     status: "Confirmed",
-    reviewerStatus: "Yes",
+    reviewerStatus: "Outstanding",
     application: {
         general: {
             school: "University of Blah",
@@ -194,7 +194,7 @@ const TeamHacker4 = {
     _id: Constants.MongoId.hackerGId,
     accountId: Util.Account.hackerAccounts.stored.team[4]._id,
     status: "Waitlisted",
-    reviewerStatus: "Maybe",
+    reviewerStatus: "",
     application: {
         general: {
             school: "University of Blah",
