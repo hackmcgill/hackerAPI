@@ -153,16 +153,16 @@ const hackerRoutes = {
         uri: "/api/hacker/status/" + Constants.ROLE_CATEGORIES.SELF,
         _id: mongoose.Types.ObjectId.createFromTime(125)
     },
-    // patchAnyReviewerStatusById: {
-    //     requestType: Constants.REQUEST_TYPES.PATCH,
-    //     uri: "/api/hacker/reviewerStatus/" + Constants.ROLE_CATEGORIES.ALL,
-    //     _id: mongoose.Types.ObjectId.createFromTime(168)
-    // },
-    // patchSelfReviewerStatusById: {
-    //     requestType: Constants.REQUEST_TYPES.PATCH,
-    //     uri: "/api/hacker/reviewerStatus/" + Constants.ROLE_CATEGORIES.SELF,
-    //     _id: mongoose.Types.ObjectId.createFromTime(169)
-    // },
+    patchAnyReviewerStatusById: {
+        requestType: Constants.REQUEST_TYPES.PATCH,
+        uri: "/api/hacker/reviewerStatus/" + Constants.ROLE_CATEGORIES.ALL,
+        _id: mongoose.Types.ObjectId.createFromTime(168)
+    },
+    patchSelfReviewerStatusById: {
+        requestType: Constants.REQUEST_TYPES.PATCH,
+        uri: "/api/hacker/reviewerStatus/" + Constants.ROLE_CATEGORIES.SELF,
+        _id: mongoose.Types.ObjectId.createFromTime(169)
+    },
     patchSelfCheckInById: {
         requestType: Constants.REQUEST_TYPES.PATCH,
         uri: "/api/hacker/checkin/" + Constants.ROLE_CATEGORIES.SELF,

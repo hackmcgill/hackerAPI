@@ -23,9 +23,12 @@ VALID_STATUSES = {
 }
 VALID_REVIEWER_STATUSES = {
     '1': 'None',
-    '2': 'Yes',
-    '3': 'No',
-    '4': 'Maybe',
+    '2': 'Poor',
+    '3': 'Weak',
+    '4': 'Average',
+    '5': 'Strong',
+    '6': 'Outstanding',
+    '7': 'Whitelist'
 }
 BATCH_ACTIONS = {
     '1': 'updateStatus',
