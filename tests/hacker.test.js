@@ -1735,6 +1735,11 @@ describe("GET Hacker stats", function() {
                     res.body.data.stats.should.have.property("total");
                     res.body.data.stats.should.have.property("status");
                     res.body.data.stats.should.have.property("reviewerStatus");
+                    res.body.data.stats.should.have.property("reviewerStatus2");
+                    res.body.data.stats.should.have.property("reviewerName");
+                    res.body.data.stats.should.have.property("reviewerName2");
+                    res.body.data.stats.should.have.property("reviewerComments");
+                    res.body.data.stats.should.have.property("reviewerComments2");
                     res.body.data.stats.should.have.property("school");
                     res.body.data.stats.should.have.property("degree");
                     res.body.data.stats.should.have.property("gender");
