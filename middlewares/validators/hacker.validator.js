@@ -299,6 +299,42 @@ module.exports = {
             false
         )
     ],
+    updateReviewerStatus2Validator: [
+        VALIDATOR.enumValidator(
+            "body",
+            "reviewerStatus2",
+            Constants.HACKER_REVIEWER_STATUSES,
+            false
+        )
+    ],
+    updateReviewerNameValidator: [
+        VALIDATOR.stringValidator(
+            "body",
+            "reviewerName",
+            false
+        )
+    ],
+    updateReviewerName2Validator: [
+        VALIDATOR.stringValidator(
+            "body",
+            "reviewerName2",
+            false
+        )
+    ],
+    updateReviewerCommentsValidator: [
+        VALIDATOR.stringValidator(
+            "body",
+            "reviewerComments",
+            false
+        )
+    ],
+    updateReviewerComments2Validator: [
+        VALIDATOR.stringValidator(
+            "body",
+            "reviewerComments2",
+            false
+        )
+    ],
     checkInStatusValidator: [
         VALIDATOR.enumValidator(
             "body",

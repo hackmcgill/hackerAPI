@@ -233,6 +233,60 @@ def reviewerStatus(prefixStr) -> str:
     )
     return initial_reviewerStatus
 
+def reviewerStatus2(prefixStr) -> str:
+    reviewerStatus2_list = ['{0}: {1}\n'.format(k, v)
+                   for k, v in VALID_REVIEWER_STATUSES.items()]
+    initial_reviewerStatus2 = requestUntilSuccess(
+        'Input {0} status:\n{1}'.format(prefixStr, ''.join(reviewerStatus2_list)),
+        'Invalid {0} status'.format(prefixStr),
+        lambda x: x in VALID_REVIEWER_STATUSES.keys(),
+        lambda x: VALID_REVIEWER_STATUSES[x]
+    )
+    return initial_reviewerStatus2
+
+def reviewerName(prefixStr) -> str:
+    reviewerName_list = ['{0}: {1}\n'.format(k, v)
+                   for k, v in str]
+    initial_reviewerName = requestUntilSuccess(
+        'Input {0} status:\n{1}'.format(prefixStr, ''.join(reviewerName_list)),
+        'Invalid {0} status'.format(prefixStr),
+        # lambda x: x in VALID_REVIEWER_STATUSES.keys(),
+        # lambda x: VALID_REVIEWER_STATUSES[x]
+    )
+    return initial_reviewerName
+
+def reviewerName2(prefixStr) -> str:
+    reviewerName2_list = ['{0}: {1}\n'.format(k, v)
+                   for k, v in str]
+    initial_reviewerName2 = requestUntilSuccess(
+        'Input {0} status:\n{1}'.format(prefixStr, ''.join(reviewerName2_list)),
+        'Invalid {0} status'.format(prefixStr),
+        # lambda x: x in VALID_REVIEWER_STATUSES.keys(),
+        # lambda x: VALID_REVIEWER_STATUSES[x]
+    )
+    return initial_reviewerName2
+
+def reviewerComments(prefixStr) -> str:
+    reviewerComments_list = ['{0}: {1}\n'.format(k, v)
+                   for k, v in str]
+    initial_reviewerComments = requestUntilSuccess(
+        'Input {0} status:\n{1}'.format(prefixStr, ''.join(reviewerComments_list)),
+        'Invalid {0} status'.format(prefixStr),
+        # lambda x: x in VALID_REVIEWER_STATUSES.keys(),
+        # lambda x: VALID_REVIEWER_STATUSES[x]
+    )
+    return initial_reviewerComments
+
+def reviewerComments2(prefixStr) -> str:
+    reviewerComments2_list = ['{0}: {1}\n'.format(k, v)
+                   for k, v in str]
+    initial_reviewerComments2 = requestUntilSuccess(
+        'Input {0} status:\n{1}'.format(prefixStr, ''.join(reviewerComments2_list)),
+        'Invalid {0} status'.format(prefixStr),
+        # lambda x: x in VALID_REVIEWER_STATUSES.keys(),
+        # lambda x: VALID_REVIEWER_STATUSES[x]
+    )
+    return initial_reviewerComments2
 
 
 def getHacker(ID):
@@ -252,6 +306,36 @@ def hasValidStatus(status, hackerInfo):
 
 def hasValidReviewerStatus(reviewerStatus, hackerInfo):
     if hackerInfo is not None and hackerInfo['reviewerStatus'] == reviewerStatus:
+        return True
+    else:
+        return False
+
+def hasValidReviewerStatus2(reviewerStatus2, hackerInfo):
+    if hackerInfo is not None and hackerInfo['reviewerStatus2'] == reviewerStatus2:
+        return True
+    else:
+        return False
+
+def hasValidReviewerName(reviewerName, hackerInfo):
+    if hackerInfo is not None and hackerInfo['reviewerName'] == reviewerName:
+        return True
+    else:
+        return False
+
+def hasValidReviewerName2(reviewerName2, hackerInfo):
+    if hackerInfo is not None and hackerInfo['reviewerName2'] == reviewerName2:
+        return True
+    else:
+        return False
+
+def hasValidReviewerComments(reviewerComments, hackerInfo):
+    if hackerInfo is not None and hackerInfo['reviewerComments'] == reviewerComments:
+        return True
+    else:
+        return False
+
+def hasValidReviewerComments2(reviewerComments2, hackerInfo):
+    if hackerInfo is not None and hackerInfo['reviewerComments2'] == reviewerComments2:
         return True
     else:
         return False
@@ -314,6 +398,131 @@ def updateReviewerStatus():
             # else:
             _print('{0} {1}'.format(
                 NEW_REVIEWER_STATUS, ID), 3, index, len(HACKER_IDs))
+        elif hacker is not None:
+            _print('invalid status for {0}'.format(
+                ID), 1, index, len(HACKER_IDs))
+        else:
+            _print('could not find {0}'.format(
+                ID), 1, index, len(HACKER_IDs))
+
+def updateReviewerStatus2():
+    INITIAL_REVIEWER_STATUS2 = reviewerStatus2('initial')
+    NEW_REVIEWER_STATUS2 = reviewerStatus2('new')
+    HACKER_IDs = loadIDs()
+    for index, ID in enumerate(HACKER_IDs):
+        # so that we aren't 0-based index
+        index = index + 1
+        hacker = getHacker(ID)
+        validReviewerStatus2 = hasValidReviewerStatus2(INITIAL_REVIEWER_STATUS2, hacker)
+        if validReviewerStatus2:
+            r = s.patch('{0}/api/hacker/reviewerStatus2/{1}'.format(API_URL, ID),
+                        {"reviewerStatus2": NEW_REVIEWER_STATUS2})
+            # if r.status_code != 200:
+            #     _print('cannot update status for {0}'.format(
+            #         ID), 1, index, len(HACKER_IDs))
+            # else:
+            _print('{0} {1}'.format(
+                NEW_REVIEWER_STATUS2, ID), 3, index, len(HACKER_IDs))
+        elif hacker is not None:
+            _print('invalid status for {0}'.format(
+                ID), 1, index, len(HACKER_IDs))
+        else:
+            _print('could not find {0}'.format(
+                ID), 1, index, len(HACKER_IDs))
+
+def updateReviewerName():
+    INITIAL_REVIEWER_NAME = reviewerName('initial')
+    NEW_REVIEWER_NAME = reviewerName('new')
+    HACKER_IDs = loadIDs()
+    for index, ID in enumerate(HACKER_IDs):
+        # so that we aren't 0-based index
+        index = index + 1
+        hacker = getHacker(ID)
+        validReviewerName = hasValidReviewerName(INITIAL_REVIEWER_NAME, hacker)
+        if validReviewerName:
+            r = s.patch('{0}/api/hacker/reviewerName/{1}'.format(API_URL, ID),
+                        {"reviewerName": NEW_REVIEWER_NAME})
+            # if r.status_code != 200:
+            #     _print('cannot update status for {0}'.format(
+            #         ID), 1, index, len(HACKER_IDs))
+            # else:
+            _print('{0} {1}'.format(
+                NEW_REVIEWER_NAME, ID), 3, index, len(HACKER_IDs))
+        elif hacker is not None:
+            _print('invalid status for {0}'.format(
+                ID), 1, index, len(HACKER_IDs))
+        else:
+            _print('could not find {0}'.format(
+                ID), 1, index, len(HACKER_IDs))
+
+def updateReviewerName2():
+    INITIAL_REVIEWER_NAME2 = reviewerName2('initial')
+    NEW_REVIEWER_NAME2 = reviewerName2('new')
+    HACKER_IDs = loadIDs()
+    for index, ID in enumerate(HACKER_IDs):
+        # so that we aren't 0-based index
+        index = index + 1
+        hacker = getHacker(ID)
+        validReviewerName2 = hasValidReviewerName2(INITIAL_REVIEWER_NAME2, hacker)
+        if validReviewerName2:
+            r = s.patch('{0}/api/hacker/reviewerName2/{1}'.format(API_URL, ID),
+                        {"reviewerName2": NEW_REVIEWER_NAME2})
+            # if r.status_code != 200:
+            #     _print('cannot update status for {0}'.format(
+            #         ID), 1, index, len(HACKER_IDs))
+            # else:
+            _print('{0} {1}'.format(
+                NEW_REVIEWER_NAME2, ID), 3, index, len(HACKER_IDs))
+        elif hacker is not None:
+            _print('invalid status for {0}'.format(
+                ID), 1, index, len(HACKER_IDs))
+        else:
+            _print('could not find {0}'.format(
+                ID), 1, index, len(HACKER_IDs))
+
+def updateReviewerComments():
+    INITIAL_REVIEWER_COMMENTS = reviewerComments('initial')
+    NEW_REVIEWER_COMMENTS = reviewerComments('new')
+    HACKER_IDs = loadIDs()
+    for index, ID in enumerate(HACKER_IDs):
+        # so that we aren't 0-based index
+        index = index + 1
+        hacker = getHacker(ID)
+        validReviewerComments = hasValidReviewerComments(INITIAL_REVIEWER_COMMENTS, hacker)
+        if validReviewerComments:
+            r = s.patch('{0}/api/hacker/reviewerComments/{1}'.format(API_URL, ID),
+                        {"reviewerComments": NEW_REVIEWER_COMMENTS})
+            # if r.status_code != 200:
+            #     _print('cannot update status for {0}'.format(
+            #         ID), 1, index, len(HACKER_IDs))
+            # else:
+            _print('{0} {1}'.format(
+                NEW_REVIEWER_COMMENTS, ID), 3, index, len(HACKER_IDs))
+        elif hacker is not None:
+            _print('invalid status for {0}'.format(
+                ID), 1, index, len(HACKER_IDs))
+        else:
+            _print('could not find {0}'.format(
+                ID), 1, index, len(HACKER_IDs))
+
+def updateReviewerComments2():
+    INITIAL_REVIEWER_COMMENTS2 = reviewerComments2('initial')
+    NEW_REVIEWER_COMMENTS2 = reviewerComments2('new')
+    HACKER_IDs = loadIDs()
+    for index, ID in enumerate(HACKER_IDs):
+        # so that we aren't 0-based index
+        index = index + 1
+        hacker = getHacker(ID)
+        validReviewerComments2 = hasValidReviewerComments2(INITIAL_REVIEWER_COMMENTS2, hacker)
+        if validReviewerComments2:
+            r = s.patch('{0}/api/hacker/reviewerComments2/{1}'.format(API_URL, ID),
+                        {"reviewerComments2": NEW_REVIEWER_COMMENTS2})
+            # if r.status_code != 200:
+            #     _print('cannot update status for {0}'.format(
+            #         ID), 1, index, len(HACKER_IDs))
+            # else:
+            _print('{0} {1}'.format(
+                NEW_REVIEWER_COMMENTS2, ID), 3, index, len(HACKER_IDs))
         elif hacker is not None:
             _print('invalid status for {0}'.format(
                 ID), 1, index, len(HACKER_IDs))
@@ -476,6 +685,16 @@ if __name__ == "__main__":
                 getHackers()
             elif BATCH_ACTION == 'updateReviewerStatus':
                 updateReviewerStatus()
+            elif BATCH_ACTION == 'updateReviewerStatus2':
+                updateReviewerStatus2()
+            elif BATCH_ACTION == 'updateReviewerName':
+                updateReviewerName()
+            elif BATCH_ACTION == 'updateReviewerName2':
+                updateReviewerName2()
+            elif BATCH_ACTION == 'updateReviewerComments':
+                updateReviewerComments()
+            elif BATCH_ACTION == 'updateReviewerComments2':
+                updateReviewerComments2()
             print('Finished {0}'.format(BATCH_ACTION))
         except Exception as e:
             _print('Failed to perform action {0}: {1}'.format(
