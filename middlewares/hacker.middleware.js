@@ -106,6 +106,11 @@ function parseConfirmation(req, res, next) {
  * @function addDefaultStatus
  * @param {{body: {hackerDetails: {status: String}}}} req
  * @param {{body: {hackerDetails: {reviewerStatus: String}}}} req
+ * @param {{body: {hackerDetails: {reviewerStatus2: String}}}} req
+ * @param {{body: {hackerDetails: {reviewerName: String}}}} req
+ * @param {{body: {hackerDetails: {reviewerName2: String}}}} req
+ * @param {{body: {hackerDetails: {reviewerComments: String}}}} req
+ * @param {{body: {hackerDetails: {reviewerComments2: String}}}} req
  * @param {JSON} res
  * @param {(err?)=>void} next
  * @return {void}
@@ -114,6 +119,11 @@ function parseConfirmation(req, res, next) {
 function addDefaultStatus(req, res, next) {
     req.body.hackerDetails.status = "Applied";
     req.body.hackerDetails.reviewerStatus = "none";
+    req.body.hackerDetails.reviewerStatus2 = "none";
+    req.body.hackerDetails.reviewerName = "";
+    req.body.hackerDetails.reviewerName2 = "";
+    req.body.hackerDetails.reviewerComments = "";
+    req.body.hackerDetails.reviewerComments2 = "";
     return next();
 }
 

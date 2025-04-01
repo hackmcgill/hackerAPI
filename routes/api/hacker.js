@@ -312,22 +312,166 @@ module.exports = {
          *      {
          *          "message": "Changed hacker information",
          *          "data": {
-         *              "reviewerStatus": "Yes"
+         *              "reviewerStatus": "Outstanding"
          *          }
          *      }
          * @apiPermission Administrator
          */
          hackerRouter.route("/reviewerStatus/:id").patch(
-          // Middleware.Validator.RouteParam.idValidator,
+          Middleware.Validator.RouteParam.idValidator,
           // Middleware.Auth.ensureAuthenticated(),
           // Middleware.Auth.ensureAuthorized([Services.Hacker.findById]),
-          // Middleware.Validator.Hacker.updateReviewerStatusValidator,
+          Middleware.Validator.Hacker.updateReviewerStatusValidator,
           // Middleware.parseBody.middleware,
-          // Middleware.Hacker.parsePatch,
-
+          Middleware.Hacker.parsePatch,
           Middleware.Hacker.updateHacker,
           Controllers.Hacker.updatedHacker
       );
+
+      /**
+      * @api {patch} /hacker/reviewerStatus2/:id update a hacker's reviewer status 2
+      * @apiName patchHackerReviewerStatus2
+      * @apiGroup Hacker
+      * @apiVersion 0.0.9
+      *
+      * @apiParam (body) {string} [reviewerStatus2] Reviewer status of the hacker's application ("None"|"Poor"|"Weak"|"Average"|"Strong"|"Outstanding"|"Whitelist")
+      * @apiSuccess {string} message Success message
+      * @apiSuccess {object} data Hacker object
+      * @apiSuccessExample {object} Success-Response:
+      *      {
+      *          "message": "Changed hacker information",
+      *          "data": {
+      *              "reviewerStatus2": "Outstanding"
+      *          }
+      *      }
+      * @apiPermission Administrator
+      */
+      hackerRouter.route("/reviewerStatus2/:id").patch(
+       Middleware.Validator.RouteParam.idValidator,
+       // Middleware.Auth.ensureAuthenticated(),
+       // Middleware.Auth.ensureAuthorized([Services.Hacker.findById]),
+       Middleware.Validator.Hacker.updateReviewerStatus2Validator,
+       // Middleware.parseBody.middleware,
+       Middleware.Hacker.parsePatch,
+       Middleware.Hacker.updateHacker,
+       Controllers.Hacker.updatedHacker
+   );
+
+   /**
+   * @api {patch} /hacker/reviewerName/:id update a hacker's reviewer name
+   * @apiName patchHackerReviewerName
+   * @apiGroup Hacker
+   * @apiVersion 0.0.9
+   *
+   * @apiParam (body) {string} [reviewerName] Reviewer name of the hacker's application ("None"|"Poor"|"Weak"|"Average"|"Strong"|"Outstanding"|"Whitelist")
+   * @apiSuccess {string} message Success message
+   * @apiSuccess {string} data name
+   * @apiSuccessExample {object} Success-Response:
+   *      {
+   *          "message": "Changed hacker information",
+   *          "data": {
+   *              "reviewerName": "John Doe"
+   *          }
+   *      }
+   * @apiPermission Administrator
+   */
+   hackerRouter.route("/reviewerName/:id").patch(
+    Middleware.Validator.RouteParam.idValidator,
+    // Middleware.Auth.ensureAuthenticated(),
+    // Middleware.Auth.ensureAuthorized([Services.Hacker.findById]),
+    Middleware.Validator.Hacker.updateReviewerNameValidator,
+    // Middleware.parseBody.middleware,
+    Middleware.Hacker.parsePatch,
+    Middleware.Hacker.updateHacker,
+    Controllers.Hacker.updatedHacker
+);
+
+/**
+* @api {patch} /hacker/reviewerName2/:id update a hacker's reviewer name
+* @apiName patchHackerReviewerName2
+* @apiGroup Hacker
+* @apiVersion 0.0.9
+*
+* @apiParam (body) {string} [reviewerName2] Reviewer name of the hacker's application ("None"|"Poor"|"Weak"|"Average"|"Strong"|"Outstanding"|"Whitelist")
+* @apiSuccess {string} message Success message
+* @apiSuccess {string} data name
+* @apiSuccessExample {object} Success-Response:
+*      {
+*          "message": "Changed hacker information",
+*          "data": {
+*              "reviewerName2": "John Doe"
+*          }
+*      }
+* @apiPermission Administrator
+*/
+hackerRouter.route("/reviewerName2/:id").patch(
+ Middleware.Validator.RouteParam.idValidator,
+ // Middleware.Auth.ensureAuthenticated(),
+ // Middleware.Auth.ensureAuthorized([Services.Hacker.findById]),
+ Middleware.Validator.Hacker.updateReviewerName2Validator,
+ // Middleware.parseBody.middleware,
+ Middleware.Hacker.parsePatch,
+ Middleware.Hacker.updateHacker,
+ Controllers.Hacker.updatedHacker
+);
+
+/**
+* @api {patch} /hacker/reviewerComments/:id update a hacker's reviewer comments
+* @apiName patchHackerReviewerComments
+* @apiGroup Hacker
+* @apiVersion 0.0.9
+*
+* @apiParam (body) {string} [reviewerComments] Reviewer comments of the hacker's application ("None"|"Poor"|"Weak"|"Average"|"Strong"|"Outstanding"|"Whitelist")
+* @apiSuccess {string} message Success message
+* @apiSuccess {string} data name
+* @apiSuccessExample {object} Success-Response:
+*      {
+*          "message": "Changed hacker information",
+*          "data": {
+*              "reviewerComments": "John Doe"
+*          }
+*      }
+* @apiPermission Administrator
+*/
+hackerRouter.route("/reviewerComments/:id").patch(
+ Middleware.Validator.RouteParam.idValidator,
+ // Middleware.Auth.ensureAuthenticated(),
+ // Middleware.Auth.ensureAuthorized([Services.Hacker.findById]),
+ Middleware.Validator.Hacker.updateReviewerCommentsValidator,
+ // Middleware.parseBody.middleware,
+ Middleware.Hacker.parsePatch,
+ Middleware.Hacker.updateHacker,
+ Controllers.Hacker.updatedHacker
+);
+
+/**
+* @api {patch} /hacker/reviewerComments/:id update a hacker's reviewer comments
+* @apiName patchHackerReviewerComments
+* @apiGroup Hacker
+* @apiVersion 0.0.9
+*
+* @apiParam (body) {string} [reviewerComments] Reviewer comments of the hacker's application ("None"|"Poor"|"Weak"|"Average"|"Strong"|"Outstanding"|"Whitelist")
+* @apiSuccess {string} message Success message
+* @apiSuccess {string} data name
+* @apiSuccessExample {object} Success-Response:
+*      {
+*          "message": "Changed hacker information",
+*          "data": {
+*              "reviewerComments": "John Doe"
+*          }
+*      }
+* @apiPermission Administrator
+*/
+hackerRouter.route("/reviewerComments2/:id").patch(
+ Middleware.Validator.RouteParam.idValidator,
+ // Middleware.Auth.ensureAuthenticated(),
+ // Middleware.Auth.ensureAuthorized([Services.Hacker.findById]),
+ Middleware.Validator.Hacker.updateReviewerComments2Validator,
+ // Middleware.parseBody.middleware,
+ Middleware.Hacker.parsePatch,
+ Middleware.Hacker.updateHacker,
+ Controllers.Hacker.updatedHacker
+);
 
         /**
          * @api {patch} /hacker/accept/:id accept a Hacker
