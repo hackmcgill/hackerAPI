@@ -2132,7 +2132,7 @@ define({ "api": [
             "type": "string",
             "optional": true,
             "field": "reviewerStatus",
-            "description": "<p>Reviewer status of the hacker's application (&quot;None&quot;|&quot;Yes&quot;|&quot;No&quot;|&quot;Maybe&quot;)</p>"
+            "description": "<p>Reviewer status of the hacker's application (&quot;None&quot;|&quot;Poor&quot;|&quot;Weak&quot;|&quot;Poor&quot;|&quot;Average&quot;|&quot;Strong&quot;|&quot;Outstanding&quot;|&quot;Whitelist&quot;)</p>"
           }
         ]
       }
