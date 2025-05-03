@@ -31,6 +31,7 @@ const searchRouter = require("./routes/api/search");
 const settingsRouter = require("./routes/api/settings");
 const volunteerRouter = require("./routes/api/volunteer");
 const roleRouter = require("./routes/api/role");
+const checkinRouter = require("./routes/api/checkin");
 
 const app = express();
 Services.db.connect();
@@ -116,6 +117,8 @@ settingsRouter.activate(apiRouter);
 Services.log.info("Settings router activated");
 roleRouter.activate(apiRouter);
 Services.log.info("Role router activated");
+checkinRouter.activate(apiRouter);
+Services.log.info("Checkin router activated");
 
 apiRouter.use("/", indexRouter);
 app.use("/", indexRouter);
