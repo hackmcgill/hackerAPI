@@ -14,20 +14,15 @@ class SheetsService {
         // Initialize Google Sheets API
         this.sheets = google.sheets('v4');
         
-        // Set up authentication using service account credentials
+        // Set up authentication using the service account credentials file
+        // The GOOGLE_APPLICATION_CREDENTIALS environment variable should point to the JSON file
+        if (!process.env.GOOGLE_APPLICATION_CREDENTIALS) {
+            Logger.error('GOOGLE_APPLICATION_CREDENTIALS is not set in environment variables');
+            throw new Error('GOOGLE_APPLICATION_CREDENTIALS is not set in environment variables');
+        }
+        
         this.auth = new google.auth.GoogleAuth({
-            credentials: {
-                type: process.env.TYPE,
-                project_id: process.env.PROJECT_ID,
-                private_key_id: process.env.PRIVATE_KEY_ID,
-                private_key: process.env.PRIVATE_KEY.replace(/\\n/g, '\n'),
-                client_email: process.env.CLIENT_EMAIL,
-                client_id: process.env.CLIENT_ID,
-                auth_uri: process.env.AUTH_URI,
-                token_uri: process.env.TOKEN_URI,
-                auth_provider_x509_cert_url: process.env.AUTH_PROVIDER_X509_CERT_URL,
-                client_x509_cert_url: process.env.CLIENT_X509_CERT_URL
-            },
+            keyFile: process.env.GOOGLE_APPLICATION_CREDENTIALS,
             scopes: ['https://www.googleapis.com/auth/spreadsheets']
         });
     }
@@ -39,19 +34,31 @@ class SheetsService {
      */
     async appendCheckinData(formData) {
         try {
+            Logger.info('Attempting to append check-in data to spreadsheet');
+            Logger.info('Spreadsheet ID:', this.spreadsheetId);
+            Logger.info('Google Application Credentials path:', process.env.GOOGLE_APPLICATION_CREDENTIALS);
+            
             const authClient = await this.auth.getClient();
+            Logger.info('Successfully obtained auth client');
+            
+            // Validate form data
+            if (!formData) {
+                throw new Error('Form data is required');
+            }
             
             // Format the data for the spreadsheet
             const values = [[
                 new Date().toISOString(),
-                formData.teamMember1,
-                formData.teamMember2,
-                formData.teamMember3,
-                formData.teamMember4,
-                formData.prizeCategories.join(', '),
-                formData.sponsorChallenges.join(', '),
-                formData.workshopsAttended.join(', ')
+                formData.teamMember1 || '',
+                formData.teamMember2 || '',
+                formData.teamMember3 || '',
+                formData.teamMember4 || '',
+                Array.isArray(formData.prizeCategories) ? formData.prizeCategories.join(', ') : '',
+                Array.isArray(formData.sponsorChallenges) ? formData.sponsorChallenges.join(', ') : '',
+                Array.isArray(formData.workshopsAttended) ? formData.workshopsAttended.join(', ') : ''
             ]];
+
+            Logger.info('Formatted data for spreadsheet:', values);
 
             const request = {
                 spreadsheetId: this.spreadsheetId,
@@ -64,10 +71,15 @@ class SheetsService {
                 auth: authClient
             };
 
-            await this.sheets.spreadsheets.values.append(request);
+            Logger.info('Making request to Google Sheets API');
+            const response = await this.sheets.spreadsheets.values.append(request);
+            Logger.info('Google Sheets API response:', response.status, response.statusText);
             Logger.info('Successfully appended check-in data to spreadsheet');
         } catch (error) {
-            Logger.error('Error appending data to spreadsheet:', error);
+            Logger.error('Error appending data to spreadsheet:', error.message);
+            if (error.response) {
+                Logger.error('Google Sheets API error response:', error.response.status, error.response.data);
+            }
             throw error;
         }
     }
