@@ -55,14 +55,15 @@ class SheetsService {
                 formData.teamMember4 || '',
                 Array.isArray(formData.prizeCategories) ? formData.prizeCategories.join(', ') : '',
                 Array.isArray(formData.sponsorChallenges) ? formData.sponsorChallenges.join(', ') : '',
-                Array.isArray(formData.workshopsAttended) ? formData.workshopsAttended.join(', ') : ''
+                Array.isArray(formData.workshopsAttended) ? formData.workshopsAttended.join(', ') : '',
+                formData.teamId || '' // Add teamId as the 9th column
             ]];
 
             Logger.info('Formatted data for spreadsheet:', values);
 
             const request = {
                 spreadsheetId: this.spreadsheetId,
-                range: 'Sheet1!A:H', // Adjust range as needed
+                range: 'Sheet1!A:I', // Updated to include column I for teamId
                 valueInputOption: 'USER_ENTERED',
                 insertDataOption: 'INSERT_ROWS',
                 resource: {

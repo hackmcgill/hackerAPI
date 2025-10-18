@@ -16,13 +16,13 @@ const Middleware = {
  * @api {post} /api/hacker/checkin Submit check-in form data
  * @apiName SubmitCheckin
  * @apiGroup Checkin
- * @apiVersion 1.0.0
+ * @apiVersion 2.0.0
+ *
+ * @apiDescription Submits check-in form for the logged-in hacker's team.
+ * Team member emails are automatically fetched from the team.
+ * Hacker must be part of a team to submit.
  *
  * @apiParam {Object} formData The check-in form data
- * @apiParam {String} formData.teamMember1 First team member's name
- * @apiParam {String} [formData.teamMember2] Second team member's name
- * @apiParam {String} [formData.teamMember3] Third team member's name
- * @apiParam {String} [formData.teamMember4] Fourth team member's name
  * @apiParam {String[]} formData.prizeCategories Array of prize categories
  * @apiParam {String[]} formData.sponsorChallenges Array of sponsor challenges
  * @apiParam {String[]} formData.workshopsAttended Array of workshops attended
@@ -30,6 +30,8 @@ const Middleware = {
  * @apiSuccess {String} message Success message
  *
  * @apiError {String} message Error message
+ * @apiError (400) {String} message "You must be part of a team to submit check-in"
+ * @apiError (404) {String} message "Hacker not found" or "Team not found"
  */
 router.post(
     "/checkin",
