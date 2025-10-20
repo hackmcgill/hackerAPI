@@ -101,16 +101,21 @@ function findByAccountId(accountId) {
  * @param {string} status - The status to search for (e.g., "Accepted", "Declined")
  * @return {Promise<Array<Hacker>>} Array of hacker documents with the specified status
  */
-function findByStatus(status) {
+async function findByStatus(status) {
     const TAG = `[ Hacker Service # findByStatus ]:`;
     const query = { status: status };
 
-    return logger.logQuery(
+    const result = await logger.logQuery(
         TAG,
         "hacker",
         query,
         Hacker.find(query).populate("accountId"),
     );
+    // Always return an array
+    if (!Array.isArray(result)) {
+        return [];
+    }
+    return result;
 }
 
 async function getStatsAllHackersCached() {

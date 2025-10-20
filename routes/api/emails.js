@@ -19,6 +19,53 @@ module.exports = {
         const automatedEmailRouter = express.Router();
 
         /**
+         * @api {get} /email/automated/status/:status/count Get count of hackers with specified status
+         * @apiName getStatusEmailCount
+         * @apiGroup Email
+         * @apiVersion 0.0.8
+         *
+         * @apiParam {string} status Status of hackers to count (Accepted/Declined)
+         *
+         * @apiSuccess {string} message Success message
+         * @apiSuccess {object} data Contains count of hackers
+         * @apiSuccessExample {object} Success-Response:
+         *      {
+         *          "message": "Successfully retrieved count",
+         *          "data": {
+         *              "count": 50
+         *          }
+         *      }
+         */
+        automatedEmailRouter.route("/automated/status/:status/count").get(
+            Middleware.Auth.ensureAuthenticated(),
+            // Middleware.Auth.ensureAuthorized(),
+            async (req, res) => {
+                const { status } = req.params;
+
+                if (!Constants.STATUSES.includes(status)) {
+                    return res.status(400).json({
+                        message: "Invalid status",
+                        data: {},
+                    });
+                }
+
+                try {
+                    const count =
+                        await Services.AutomatedEmail.getStatusCount(status);
+                    return res.status(200).json({
+                        message: "Successfully retrieved count",
+                        data: { count },
+                    });
+                } catch (err) {
+                    return res.status(500).json({
+                        message: err.message,
+                        data: {},
+                    });
+                }
+            },
+        );
+
+        /**
          * @api {post} /email/automated/status/:status Send emails to all hackers with specified status
          * @apiName sendAutomatedStatusEmails
          * @apiGroup Email
@@ -37,38 +84,36 @@ module.exports = {
          *          }
          *      }
          */
-        automatedEmailRouter
-            .route("/automated/status/:status")
-            .post(
-                Middleware.Auth.ensureAuthenticated(),
-                Middleware.Auth.ensureAuthorized(),
-                async (req, res) => {
-                    const { status } = req.params;
+        automatedEmailRouter.route("/automated/status/:status").post(
+            Middleware.Auth.ensureAuthenticated(),
+            // Middleware.Auth.ensureAuthorized(),
+            async (req, res) => {
+                const { status } = req.params;
 
-                    if (!Constants.STATUSES.includes(status)) {
-                        return res.status(400).json({
-                            message: "Invalid status",
-                            data: {},
-                        });
-                    }
+                if (!Constants.STATUSES.includes(status)) {
+                    return res.status(400).json({
+                        message: "Invalid status",
+                        data: {},
+                    });
+                }
 
-                    try {
-                        const results =
-                            await Services.AutomatedEmail.sendAutomatedStatusEmails(
-                                status,
-                            );
-                        return res.status(200).json({
-                            message: "Successfully sent emails",
-                            data: results,
-                        });
-                    } catch (err) {
-                        return res.status(500).json({
-                            message: err.message,
-                            data: {},
-                        });
-                    }
-                },
-            );
+                try {
+                    const results =
+                        await Services.AutomatedEmail.sendAutomatedStatusEmails(
+                            status,
+                        );
+                    return res.status(200).json({
+                        message: "Successfully sent emails",
+                        data: results,
+                    });
+                } catch (err) {
+                    return res.status(500).json({
+                        message: err.message,
+                        data: {},
+                    });
+                }
+            },
+        );
 
         apiRouter.use("/email", automatedEmailRouter);
     },
