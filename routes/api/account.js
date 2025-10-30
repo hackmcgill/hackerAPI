@@ -67,7 +67,7 @@ module.exports = {
          * 
          * @apiParam (body) {String} firstName First name of the account creator.
          * @apiParam (body) {String} lastName Last name of the account creator.
-         * @apiParam (body) {String} pronoun the pronoun of the account creator.
+         * @apiParam (body) {String[]} pronoun the pronoun of the account creator.
          * @apiParam (body) {String} email Email of the account.
          * @apiParam (body) {String} gender Gender of the account creator.
          * @apiParam (body) {String[]} dietaryRestrictions Any dietary restrictions for the user. 'None' if there are no restrictions
@@ -209,7 +209,7 @@ module.exports = {
          * 
          * @apiParam (body) {String} [firstName] First name of the account creator.
          * @apiParam (body) {String} [lastName] Last name of the account creator.
-         * @apiParam (body) {String} [pronoun] The pronoun of the account creator.
+         * @apiParam (body) {String[]} [pronoun] The pronoun of the account creator.
          * @apiParam (body) {String} [email] Email of the account.
          * @apiParam (body) {String} [gender] Gender of the account creator.
          * @apiParam (body) {String} [age] Age of the account creator.

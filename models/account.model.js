@@ -12,10 +12,10 @@ const AccountSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    pronoun: {
+    pronoun: [{
         type: String,
         default: "Prefer not to say"
-    },
+    }],
     gender: {
         type: String,
         default: "Prefer not to say"
