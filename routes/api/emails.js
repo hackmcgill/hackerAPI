@@ -1,17 +1,13 @@
 "use strict";
 const express = require("express");
-const Services = {
-    AutomatedEmail: require("../../services/automatedEmails.service"),
-};
+
 const Middleware = {
     Auth: require("../../middlewares/auth.middleware"),
+    Email: require("../../middlewares/email.middleware"),
 };
-const PROJECT_CONSTANTS = require("../../constants/general.constant");
-const Constants = {
-    STATUSES: [
-        PROJECT_CONSTANTS.HACKER_STATUS_ACCEPTED,
-        PROJECT_CONSTANTS.HACKER_STATUS_DECLINED,
-    ],
+
+const Controllers = {
+    Email: require("../../controllers/email.controller"),
 };
 
 module.exports = {
@@ -39,30 +35,9 @@ module.exports = {
         automatedEmailRouter.route("/automated/status/:status/count").get(
             Middleware.Auth.ensureAuthenticated(),
             // Middleware.Auth.ensureAuthorized(),
-            async (req, res) => {
-                const { status } = req.params;
-
-                if (!Constants.STATUSES.includes(status)) {
-                    return res.status(400).json({
-                        message: "Invalid status",
-                        data: {},
-                    });
-                }
-
-                try {
-                    const count =
-                        await Services.AutomatedEmail.getStatusCount(status);
-                    return res.status(200).json({
-                        message: "Successfully retrieved count",
-                        data: { count },
-                    });
-                } catch (err) {
-                    return res.status(500).json({
-                        message: err.message,
-                        data: {},
-                    });
-                }
-            },
+            Middleware.Email.validateStatus,
+            Middleware.Email.getStatusCount,
+            Controllers.Email.getStatusCount,
         );
 
         /**
@@ -87,32 +62,9 @@ module.exports = {
         automatedEmailRouter.route("/automated/status/:status").post(
             Middleware.Auth.ensureAuthenticated(),
             // Middleware.Auth.ensureAuthorized(),
-            async (req, res) => {
-                const { status } = req.params;
-
-                if (!Constants.STATUSES.includes(status)) {
-                    return res.status(400).json({
-                        message: "Invalid status",
-                        data: {},
-                    });
-                }
-
-                try {
-                    const results =
-                        await Services.AutomatedEmail.sendAutomatedStatusEmails(
-                            status,
-                        );
-                    return res.status(200).json({
-                        message: "Successfully sent emails",
-                        data: results,
-                    });
-                } catch (err) {
-                    return res.status(500).json({
-                        message: err.message,
-                        data: {},
-                    });
-                }
-            },
+            Middleware.Email.validateStatus,
+            Middleware.Email.sendAutomatedStatusEmails,
+            Controllers.Email.sendAutomatedStatusEmails,
         );
 
         apiRouter.use("/email", automatedEmailRouter);
