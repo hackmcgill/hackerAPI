@@ -1,4 +1,14 @@
 #!/usr/bin/env python3
+"""
+This script sends templated emails to a list of recipients from a CSV file.
+
+USAGE:
+    python interest_form_emails.py <path_to_csv_file>
+
+REQUIREMENTS:
+    - CSV file must contain an "Email" column with valid email addresses
+"""
+
 import os
 import sys
 import csv
@@ -50,7 +60,7 @@ def parse_csv(csv_filename):
                 else:
                     failed_count += 1
 
-                time.sleep(0.1) # Add delay to avoid rate limiting
+                time.sleep(0.1)  # Add delay to avoid rate limiting
 
             print(f"\nSent: {sent_count} | Failed: {failed_count}")
 
