@@ -68,6 +68,8 @@ async function submitCheckin(req, res) {
             prizeCategories: req.body.formData.prizeCategories,
             sponsorChallenges: req.body.formData.sponsorChallenges,
             workshopsAttended: req.body.formData.workshopsAttended,
+            discordTag: req.body.formData.discordTag,
+            devpostLink: req.body.formData.devpostLink,
             teamId: teamIdString
         };
 
