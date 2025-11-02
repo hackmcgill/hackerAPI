@@ -65,7 +65,7 @@ class SheetsService {
 
             const request = {
                 spreadsheetId: this.spreadsheetId,
-                range: 'Sheet1!A:I', // Updated to include column I for teamId
+                range: 'Sheet1!A:K', // Updated to include columns through K (teamId)
                 valueInputOption: 'USER_ENTERED',
                 insertDataOption: 'INSERT_ROWS',
                 resource: {

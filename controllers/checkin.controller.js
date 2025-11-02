@@ -57,6 +57,13 @@ async function submitCheckin(req, res) {
             }
         }
 
+        // Update team's devpostURL in the database if provided
+        if (req.body.formData.devpostLink) {
+            await Services.Team.updateOne(hacker.teamId, {
+                devpostURL: req.body.formData.devpostLink
+            });
+        }
+
         // Prepare data for Google Sheets with team member emails
         const teamIdString = team._id ? team._id.toString() : hacker.teamId.toString();
         
