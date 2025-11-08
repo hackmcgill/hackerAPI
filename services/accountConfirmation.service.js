@@ -172,8 +172,6 @@ function generateAccountInvitationEmail(address, receiverEmail, type, token) {
         emailSubject = Constants.CREATE_ACC_EMAIL_SUBJECTS[Constants.SPONSOR];
     } else if (type === Constants.STAFF) {
         emailSubject = Constants.CREATE_ACC_EMAIL_SUBJECTS[Constants.STAFF];
-    } else if (type === Constants.HACKBOARD) {
-        emailSubject = Constants.CREATE_ACC_EMAIL_SUBJECTS[Constants.HACKBOARD];
     }
     const handlebarPath = path.join(
         __dirname,

@@ -25,9 +25,6 @@ function createRoleBinding(accountId, accountType = null, specificRoles = []) {
         case Constants.General.STAFF:
             roleBinding.roles.push(Constants.Role.adminRole);
             break;
-        case Constants.General.HACKBOARD:
-            roleBinding.roles.push(Constants.Role.hackboardRole);
-            break;
         case Constants.General.SPONSOR_T1:
             roleBinding.roles.push(Constants.Role.sponsorT1Role);
             break;
