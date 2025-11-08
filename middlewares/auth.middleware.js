@@ -477,11 +477,6 @@ async function addCreationRoleBindings(req, res, next) {
             req.body.account.id,
             Constants.Role.adminRole.name
         );
-    } else if (req.body.account.accountType === Constants.General.HACKBOARD) {
-        await Services.RoleBinding.createRoleBindingByRoleName(
-            req.body.account.id,
-            Constants.Role.hackboardRole.name
-        );
     } else {
         // Get the default role for the account type given
         const roleName =
