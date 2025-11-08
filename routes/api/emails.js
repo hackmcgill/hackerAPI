@@ -34,7 +34,7 @@ module.exports = {
          */
         automatedEmailRouter.route("/automated/status/:status/count").get(
             Middleware.Auth.ensureAuthenticated(),
-            // Middleware.Auth.ensureAuthorized(),
+            Middleware.Auth.ensureAuthorized(),
             Middleware.Email.validateStatus,
             Middleware.Email.getStatusCount,
             Controllers.Email.getStatusCount,
@@ -59,13 +59,16 @@ module.exports = {
          *          }
          *      }
          */
-        automatedEmailRouter.route("/automated/status/:status").post(
-            Middleware.Auth.ensureAuthenticated(),
-            // Middleware.Auth.ensureAuthorized(),
-            Middleware.Email.validateStatus,
-            Middleware.Email.sendAutomatedStatusEmails,
-            Controllers.Email.sendAutomatedStatusEmails,
-        );
+
+        automatedEmailRouter
+            .route("/automated/status/:status")
+            .post(
+                Middleware.Auth.ensureAuthenticated(),
+                Middleware.Auth.ensureAuthorized(),
+                Middleware.Email.validateStatus,
+                Middleware.Email.sendAutomatedStatusEmails,
+                Controllers.Email.sendAutomatedStatusEmails,
+            );
 
         apiRouter.use("/email", automatedEmailRouter);
     },
