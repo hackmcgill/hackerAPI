@@ -72,7 +72,6 @@ const SAMPLE_DIET_RESTRICTIONS = [
 const HACKER = "Hacker";
 const VOLUNTEER = "Volunteer";
 const STAFF = "Staff";
-const HACKBOARD = "Hackboard";
 const SPONSOR = "Sponsor";
 
 const SPONSOR_T1 = "SponsorT1";
@@ -110,9 +109,8 @@ POST_ROLES[SPONSOR_T4] = "postSponsor";
 POST_ROLES[SPONSOR_T5] = "postSponsor";
 POST_ROLES[VOLUNTEER] = "postVolunteer";
 POST_ROLES[STAFF] = "postStaff";
-POST_ROLES[HACKBOARD] = "Hackboard";
 
-const USER_TYPES = [HACKER, VOLUNTEER, STAFF, HACKBOARD, SPONSOR];
+const USER_TYPES = [HACKER, VOLUNTEER, STAFF, SPONSOR];
 const SPONSOR_TIERS = [
     SPONSOR_T1,
     SPONSOR_T2,
@@ -124,7 +122,6 @@ const EXTENDED_USER_TYPES = [
     HACKER,
     VOLUNTEER,
     STAFF,
-    HACKBOARD,
     SPONSOR_T1,
     SPONSOR_T2,
     SPONSOR_T3,
@@ -171,9 +168,6 @@ CREATE_ACC_EMAIL_SUBJECTS[
 CREATE_ACC_EMAIL_SUBJECTS[
     STAFF
 ] = `You've been invited to create a staff account for ${HACKATHON_NAME}`;
-CREATE_ACC_EMAIL_SUBJECTS[
-    HACKBOARD
-] = `You've been invited to create a hackboard account for ${HACKATHON_NAME}`;
 
 const CACHE_TIMEOUT_STATS = 5 * 60 * 1000;
 const CACHE_KEY_STATS = "hackerStats";
@@ -217,7 +211,6 @@ module.exports = {
     SPONSOR: SPONSOR,
     VOLUNTEER: VOLUNTEER,
     STAFF: STAFF,
-    HACKBOARD: HACKBOARD,
     SPONSOR_T1: SPONSOR_T1,
     SPONSOR_T2: SPONSOR_T2,
     SPONSOR_T3: SPONSOR_T3,
