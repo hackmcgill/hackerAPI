@@ -2118,6 +2118,426 @@ define({ "api": [
     ]
   },
   {
+    "type": "patch",
+    "url": "/hacker/reviewerStatus/:id",
+    "title": "update a hacker's reviewer status",
+    "name": "patchHackerReviewerStatus",
+    "group": "Hacker",
+    "version": "0.0.9",
+    "parameter": {
+      "fields": {
+        "body": [
+          {
+            "group": "body",
+            "type": "string",
+            "optional": true,
+            "field": "reviewerStatus",
+            "description": "<p>Reviewer status of the hacker's application (&quot;None&quot;|&quot;Poor&quot;|&quot;Weak&quot;|&quot;Poor&quot;|&quot;Average&quot;|&quot;Strong&quot;|&quot;Outstanding&quot;|&quot;Whitelist&quot;)</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "message",
+            "description": "<p>Success message</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>Hacker object</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n    \"message\": \"Changed hacker information\",\n    \"data\": {\n        \"status\": \"Yes\"\n    }\n}",
+          "type": "object"
+        }
+      ]
+    },
+    "permission": [
+      {
+        "name": "Administrator"
+      }
+    ],
+    "filename": "routes/api/hacker.js",
+    "groupTitle": "Hacker",
+    "sampleRequest": [
+      {
+        "url": "https://api.mchacks.ca/api/hacker/reviewerStatus/:id"
+      }
+    ]
+  },
+  {
+    "type": "patch",
+    "url": "/hacker/reviewerStatus/:id",
+    "title": "update a hacker's reviewer status",
+    "name": "patchHackerReviewerStatus",
+    "group": "Hacker",
+    "version": "0.0.9",
+    "parameter": {
+      "fields": {
+        "body": [
+          {
+            "group": "body",
+            "type": "string",
+            "optional": true,
+            "field": "reviewerStatus",
+            "description": "<p>Reviewer status of the hacker's application (&quot;None&quot;|&quot;Poor&quot;|&quot;Weak&quot;|&quot;Poor&quot;|&quot;Average&quot;|&quot;Strong&quot;|&quot;Outstanding&quot;|&quot;Whitelist&quot;)</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "message",
+            "description": "<p>Success message</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>Hacker object</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n    \"message\": \"Changed hacker information\",\n    \"data\": {\n        \"reviewerStatus\": \"Poor\"\n    }\n}",
+          "type": "object"
+        }
+      ]
+    },
+    "permission": [
+      {
+        "name": "Administrator"
+      }
+    ],
+    "filename": "routes/api/hacker.js",
+    "groupTitle": "Hacker",
+    "sampleRequest": [
+      {
+        "url": "https://api.mchacks.ca/api/hacker/reviewerStatus/:id"
+      }
+    ]
+  },
+  {
+    "type": "patch",
+    "url": "/hacker/reviewerStatus2/:id",
+    "title": "update a hacker's reviewer status (2)",
+    "name": "patchHackerReviewerStatus2",
+    "group": "Hacker",
+    "version": "0.0.9",
+    "parameter": {
+      "fields": {
+        "body": [
+          {
+            "group": "body",
+            "type": "string",
+            "optional": true,
+            "field": "reviewerStatus2",
+            "description": "<p>Reviewer status of the hacker's application (&quot;None&quot;|&quot;Poor&quot;|&quot;Weak&quot;|&quot;Poor&quot;|&quot;Average&quot;|&quot;Strong&quot;|&quot;Outstanding&quot;|&quot;Whitelist&quot;)</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "message",
+            "description": "<p>Success message</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>Hacker object</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n    \"message\": \"Changed hacker information\",\n    \"data\": {\n        \"reviewerStatus2\": \"Outstanding\"\n    }\n}",
+          "type": "object"
+        }
+      ]
+    },
+    "permission": [
+      {
+        "name": "Administrator"
+      }
+    ],
+    "filename": "routes/api/hacker.js",
+    "groupTitle": "Hacker",
+    "sampleRequest": [
+      {
+        "url": "https://api.mchacks.ca/api/hacker/reviewerStatus2/:id"
+      }
+    ]
+  },
+  {
+    "type": "patch",
+    "url": "/hacker/reviewerName/:id",
+    "title": "update a hacker's reviewer name",
+    "name": "patchHackerReviewerName",
+    "group": "Hacker",
+    "version": "0.0.9",
+    "parameter": {
+      "fields": {
+        "body": [
+          {
+            "group": "body",
+            "type": "string",
+            "optional": true,
+            "field": "reviewerName",
+            "description": "<p>Reviewer's name of the hacker's application</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "message",
+            "description": "<p>Success message</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>Hacker object</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n    \"message\": \"Changed hacker information\",\n    \"data\": {\n        \"reviewerName\": \"Jane Doe\"\n    }\n}",
+          "type": "object"
+        }
+      ]
+    },
+    "permission": [
+      {
+        "name": "Administrator"
+      }
+    ],
+    "filename": "routes/api/hacker.js",
+    "groupTitle": "Hacker",
+    "sampleRequest": [
+      {
+        "url": "https://api.mchacks.ca/api/hacker/reviewerName/:id"
+      }
+    ]
+  },
+  {
+    "type": "patch",
+    "url": "/hacker/reviewerName2/:id",
+    "title": "update a hacker's reviewer name (2)",
+    "name": "patchHackerReviewerName2",
+    "group": "Hacker",
+    "version": "0.0.9",
+    "parameter": {
+      "fields": {
+        "body": [
+          {
+            "group": "body",
+            "type": "string",
+            "optional": true,
+            "field": "reviewerName2",
+            "description": "<p>Reviewer's name (2) of the hacker's application</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "message",
+            "description": "<p>Success message</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>Hacker object</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n    \"message\": \"Changed hacker information\",\n    \"data\": {\n        \"reviewerName2\": \"John Doe\"\n    }\n}",
+          "type": "object"
+        }
+      ]
+    },
+    "permission": [
+      {
+        "name": "Administrator"
+      }
+    ],
+    "filename": "routes/api/hacker.js",
+    "groupTitle": "Hacker",
+    "sampleRequest": [
+      {
+        "url": "https://api.mchacks.ca/api/hacker/reviewerName2/:id"
+      }
+    ]
+  },
+  {
+    "type": "patch",
+    "url": "/hacker/reviewerComments/:id",
+    "title": "update a hacker's reviewer's comments",
+    "name": "patchHackerReviewerComments",
+    "group": "Hacker",
+    "version": "0.0.9",
+    "parameter": {
+      "fields": {
+        "body": [
+          {
+            "group": "body",
+            "type": "string",
+            "optional": true,
+            "field": "reviewerComments",
+            "description": "<p>Reviewer's comments of the hacker's application</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "message",
+            "description": "<p>Success message</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>Hacker object</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n    \"message\": \"Changed hacker information\",\n    \"data\": {\n        \"reviewerComments\": \"The application was good and expressed a strong desire and aspiration of joining the team.\"\n    }\n}",
+          "type": "object"
+        }
+      ]
+    },
+    "permission": [
+      {
+        "name": "Administrator"
+      }
+    ],
+    "filename": "routes/api/hacker.js",
+    "groupTitle": "Hacker",
+    "sampleRequest": [
+      {
+        "url": "https://api.mchacks.ca/api/hacker/reviewerComments/:id"
+      }
+    ]
+  },
+  {
+    "type": "patch",
+    "url": "/hacker/reviewerComments2/:id",
+    "title": "update a hacker's reviewer's comments (2)",
+    "name": "patchHackerReviewerComments2",
+    "group": "Hacker",
+    "version": "0.0.9",
+    "parameter": {
+      "fields": {
+        "body": [
+          {
+            "group": "body",
+            "type": "string",
+            "optional": true,
+            "field": "reviewerComments2",
+            "description": "<p>Reviewer's comments (2) of the hacker's application</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "message",
+            "description": "<p>Success message</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>Hacker object</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "{\n    \"message\": \"Changed hacker information\",\n    \"data\": {\n        \"reviewerComments2\": \"The application was good and expressed a strong desire and aspiration of joining the team.\"\n    }\n}",
+          "type": "object"
+        }
+      ]
+    },
+    "permission": [
+      {
+        "name": "Administrator"
+      }
+    ],
+    "filename": "routes/api/hacker.js",
+    "groupTitle": "Hacker",
+    "sampleRequest": [
+      {
+        "url": "https://api.mchacks.ca/api/hacker/reviewerComments2/:id"
+      }
+    ]
+  },
+  {
     "type": "post",
     "url": "/hacker/resume/:id",
     "title": "upload or update resume for a hacker.",
