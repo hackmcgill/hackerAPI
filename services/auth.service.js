@@ -8,9 +8,9 @@ module.exports = {
     emailAndPassStrategy: new LocalStrategy(
         {
             usernameField: "email",
-            passwordField: "password"
+            passwordField: "password",
         },
-        function(email, password, done) {
+        function (email, password, done) {
             email = email.toLowerCase();
             Account.getAccountIfValid(email, password).then(
                 (account) => {
@@ -22,29 +22,29 @@ module.exports = {
                 },
                 (reason) => {
                     done(reason, false);
-                }
+                },
             );
-        }
+        },
     ),
     /**
      * Takes as input the id of the user. If the user id exists, it passes the user object to the callback
      * (done). The two arguments of the callback must be (failureReason, userObject). If there is no user,
      * then the userObject will be undefined.
      */
-    deserializeUser: function(id, done) {
+    deserializeUser: function (id, done) {
         Account.findById(id).then(
             (user) => {
                 done(null, user);
             },
             (reason) => {
                 done(reason);
-            }
+            },
         );
     },
-    serializeUser: function(user, done) {
+    serializeUser: function (user, done) {
         done(null, user.id);
     },
-    ensureAuthorized: ensureAuthorized
+    ensureAuthorized: ensureAuthorized,
 };
 
 /**
@@ -125,9 +125,12 @@ async function ensureAuthorized(req, findByIdFns) {
                         currentlyValid = await verifySelfCase(
                             findByIdFns[findByParamCount],
                             splitPath[i],
-                            req.user.id
+                            req.user.id,
                         );
                         findByParamCount += 1;
+                        break;
+                    case ":status":
+                        currentlyValid = true;
                         break;
                     default:
                         currentlyValid = false;
@@ -156,12 +159,23 @@ async function ensureAuthorized(req, findByIdFns) {
  */
 function verifyParamsFunctions(params, idFns) {
     let numParams = Object.values(params).length;
+
     let validRoute = true;
 
     if (numParams === 0) {
+        // No params - should have no functions or undefined functions
         validRoute = !idFns || idFns.length === 0;
     } else {
-        validRoute = numParams === idFns.length;
+        // Has params - if no functions provided (undefined), assume general params like :status
+        if (!idFns) {
+            console.log(
+                `[Auth Service] Allowing general parameters (no validation functions needed)`,
+            );
+            validRoute = true;
+        } else {
+            // Functions provided - must match param count
+            validRoute = numParams === idFns.length;
+        }
     }
 
     return validRoute;
