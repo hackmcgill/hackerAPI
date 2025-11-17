@@ -23,18 +23,19 @@ class EmailService {
             //Silence all actual emails if we're testing
             mailData.mailSettings = {
                 sandboxMode: {
-                    enable: true
-                }
+                    enable: true,
+                },
             };
         }
-        return client.send(mailData, false)
-            .then(response => {
-                callback()
-                return response
+        return client
+            .send(mailData, false)
+            .then((response) => {
+                callback();
+                return response;
             })
-            .catch(error => {
-                callback(error)
-            })
+            .catch((error) => {
+                callback(error);
+            });
     }
     /**
      * Send separate emails to the list of users in mailData
@@ -42,14 +43,15 @@ class EmailService {
      * @param {(err?)=>void} callback
      */
     sendMultiple(mailData, callback = () => {}) {
-        return client.sendMultiple(mailData)
-            .then(response => {
-                callback()
+        return client
+            .sendMultiple(mailData)
+            .then((response) => {
+                callback();
                 return response;
             })
-            .catch(error => {
-                callback(error)
-            })
+            .catch((error) => {
+                callback(error);
+            });
     }
     /**
      * Send email with ticket.
@@ -61,17 +63,17 @@ class EmailService {
     sendWeekOfEmail(firstName, recipient, ticket, callback) {
         const handlebarsPath = path.join(
             __dirname,
-            `../assets/email/Ticket.hbs`
+            `../assets/email/Ticket.hbs`,
         );
         const html = this.renderEmail(handlebarsPath, {
             firstName: firstName,
-            ticket: ticket
+            ticket: ticket,
         });
         const mailData = {
             to: recipient,
             from: process.env.NO_REPLY_EMAIL,
             subject: Constants.EMAIL_SUBJECTS[Constants.WEEK_OF],
-            html: html
+            html: html,
         };
         this.send(mailData).then((response) => {
             if (
@@ -93,16 +95,16 @@ class EmailService {
     sendDayOfEmail(firstName, recipient, callback) {
         const handlebarsPath = path.join(
             __dirname,
-            `../assets/email/Welcome.hbs`
+            `../assets/email/Welcome.hbs`,
         );
         const html = this.renderEmail(handlebarsPath, {
-            firstName: firstName
+            firstName: firstName,
         });
         const mailData = {
             to: recipient,
             from: process.env.NO_REPLY_EMAIL,
             subject: Constants.EMAIL_SUBJECTS[Constants.WEEK_OF],
-            html: html
+            html: html,
         };
         this.send(mailData).then((response) => {
             if (
@@ -119,15 +121,15 @@ class EmailService {
     sendStatusUpdate(firstName, recipient, status, callback) {
         const handlebarsPath = path.join(
             __dirname,
-            `../assets/email/statusEmail/${status}.hbs`
+            `../assets/email/statusEmail/${status}.hbs`,
         );
         const mailData = {
             to: recipient,
             from: process.env.NO_REPLY_EMAIL,
             subject: Constants.EMAIL_SUBJECTS[status],
             html: this.renderEmail(handlebarsPath, {
-                firstName: firstName
-            })
+                firstName: firstName,
+            }),
         };
         this.send(mailData).then((response) => {
             if (
