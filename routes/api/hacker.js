@@ -319,10 +319,10 @@ module.exports = {
          */
          hackerRouter.route("/reviewerStatus/:id").patch(
           Middleware.Validator.RouteParam.idValidator,
-          // Middleware.Auth.ensureAuthenticated(),
-          // Middleware.Auth.ensureAuthorized([Services.Hacker.findById]),
+          Middleware.Auth.ensureAuthenticated(),
+          Middleware.Auth.ensureAuthorized([Services.Hacker.findById]),
           Middleware.Validator.Hacker.updateReviewerStatusValidator,
-          // Middleware.parseBody.middleware,
+          Middleware.parseBody.middleware,
           Middleware.Hacker.parsePatch,
           Middleware.Hacker.updateHacker,
           Controllers.Hacker.updatedHacker
@@ -348,10 +348,10 @@ module.exports = {
       */
       hackerRouter.route("/reviewerStatus2/:id").patch(
        Middleware.Validator.RouteParam.idValidator,
-       // Middleware.Auth.ensureAuthenticated(),
-       // Middleware.Auth.ensureAuthorized([Services.Hacker.findById]),
+       Middleware.Auth.ensureAuthenticated(),
+       Middleware.Auth.ensureAuthorized([Services.Hacker.findById]),
        Middleware.Validator.Hacker.updateReviewerStatus2Validator,
-       // Middleware.parseBody.middleware,
+       Middleware.parseBody.middleware,
        Middleware.Hacker.parsePatch,
        Middleware.Hacker.updateHacker,
        Controllers.Hacker.updatedHacker
@@ -377,10 +377,10 @@ module.exports = {
    */
    hackerRouter.route("/reviewerName/:id").patch(
     Middleware.Validator.RouteParam.idValidator,
-    // Middleware.Auth.ensureAuthenticated(),
-    // Middleware.Auth.ensureAuthorized([Services.Hacker.findById]),
+    Middleware.Auth.ensureAuthenticated(),
+    Middleware.Auth.ensureAuthorized([Services.Hacker.findById]),
     Middleware.Validator.Hacker.updateReviewerNameValidator,
-    // Middleware.parseBody.middleware,
+    Middleware.parseBody.middleware,
     Middleware.Hacker.parsePatch,
     Middleware.Hacker.updateHacker,
     Controllers.Hacker.updatedHacker
@@ -406,10 +406,10 @@ module.exports = {
 */
 hackerRouter.route("/reviewerName2/:id").patch(
  Middleware.Validator.RouteParam.idValidator,
- // Middleware.Auth.ensureAuthenticated(),
- // Middleware.Auth.ensureAuthorized([Services.Hacker.findById]),
+ Middleware.Auth.ensureAuthenticated(),
+ Middleware.Auth.ensureAuthorized([Services.Hacker.findById]),
  Middleware.Validator.Hacker.updateReviewerName2Validator,
- // Middleware.parseBody.middleware,
+ Middleware.parseBody.middleware,
  Middleware.Hacker.parsePatch,
  Middleware.Hacker.updateHacker,
  Controllers.Hacker.updatedHacker
@@ -435,10 +435,10 @@ hackerRouter.route("/reviewerName2/:id").patch(
 */
 hackerRouter.route("/reviewerComments/:id").patch(
  Middleware.Validator.RouteParam.idValidator,
- // Middleware.Auth.ensureAuthenticated(),
- // Middleware.Auth.ensureAuthorized([Services.Hacker.findById]),
+ Middleware.Auth.ensureAuthenticated(),
+ Middleware.Auth.ensureAuthorized([Services.Hacker.findById]),
  Middleware.Validator.Hacker.updateReviewerCommentsValidator,
- // Middleware.parseBody.middleware,
+ Middleware.parseBody.middleware,
  Middleware.Hacker.parsePatch,
  Middleware.Hacker.updateHacker,
  Controllers.Hacker.updatedHacker
@@ -464,10 +464,10 @@ hackerRouter.route("/reviewerComments/:id").patch(
 */
 hackerRouter.route("/reviewerComments2/:id").patch(
  Middleware.Validator.RouteParam.idValidator,
- // Middleware.Auth.ensureAuthenticated(),
- // Middleware.Auth.ensureAuthorized([Services.Hacker.findById]),
+ Middleware.Auth.ensureAuthenticated(),
+ Middleware.Auth.ensureAuthorized([Services.Hacker.findById]),
  Middleware.Validator.Hacker.updateReviewerComments2Validator,
- // Middleware.parseBody.middleware,
+ Middleware.parseBody.middleware,
  Middleware.Hacker.parsePatch,
  Middleware.Hacker.updateHacker,
  Controllers.Hacker.updatedHacker
