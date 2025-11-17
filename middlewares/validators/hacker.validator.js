@@ -326,6 +326,7 @@ module.exports = {
         VALIDATOR.stringValidator(
             "body",
             "reviewerName",
+            Constants.HACKER_REVIEWER_NAMES,
             false
         )
     ],
@@ -333,6 +334,7 @@ module.exports = {
         VALIDATOR.stringValidator(
             "body",
             "reviewerName2",
+            Constants.HACKER_REVIEWER_NAMES,
             false
         )
     ],
@@ -340,6 +342,7 @@ module.exports = {
         VALIDATOR.stringValidator(
             "body",
             "reviewerComments",
+            String,
             false
         )
     ],
@@ -347,6 +350,7 @@ module.exports = {
         VALIDATOR.stringValidator(
             "body",
             "reviewerComments2",
+            String,
             false
         )
     ],

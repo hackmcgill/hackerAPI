@@ -19,35 +19,33 @@ const HackerSchema = new mongoose.Schema({
         type: String,
         enum: Constants.HACKER_REVIEWER_STATUSES,
         required: false,
-        default: "None"
+        default: Constants.HACKER_REVIEWER_STATUS_NONE
     },
     reviewerStatus2: {
         type: String,
         enum: Constants.HACKER_REVIEWER_STATUSES,
         required: false,
-        default: "None"
+        default: Constants.HACKER_REVIEWER_STATUS_NONE
     },
     reviewerName: {
         type: String,
-        enum: String,
+        enum: Constants.HACKER_REVIEWER_NAMES,
         required: false,
-        default: ""
+        default: Constants.HACKER_REVIEWER_NAMES.find(r => r === '')
     },
     reviewerName2: {
         type: String,
-        enum: String,
+        enum: Constants.HACKER_REVIEWER_NAMES,
         required: false,
-        default: ""
+        default: Constants.HACKER_REVIEWER_NAMES.find(r => r === '')
     },
     reviewerComments: {
         type: String,
-        enum: String,
         required: false,
         default: ""
     },
     reviewerComments2: {
         type: String,
-        enum: String,
         required: false,
         default: ""
     },
