@@ -342,7 +342,6 @@ module.exports = {
         VALIDATOR.stringValidator(
             "body",
             "reviewerComments",
-            String,
             false
         )
     ],
@@ -350,7 +349,6 @@ module.exports = {
         VALIDATOR.stringValidator(
             "body",
             "reviewerComments2",
-            String,
             false
         )
     ],
