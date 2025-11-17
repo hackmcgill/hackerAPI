@@ -37,10 +37,14 @@ function updateOne(id, hackerDetails) {
     const TAG = `[Hacker Service # update ]:`;
 
     const query = {
-        _id: id
+        _id: id,
     };
 
-    return logger.logUpdate(TAG, "hacker", Hacker.findOneAndUpdate(query, hackerDetails, { new: true }));
+    return logger.logUpdate(
+        TAG,
+        "hacker",
+        Hacker.findOneAndUpdate(query, hackerDetails, { new: true }),
+    );
 }
 
 /**
@@ -67,7 +71,12 @@ async function findIds(queries) {
     let ids = [];
 
     for (const query of queries) {
-        let currId = await logger.logQuery(TAG, "hacker", query, Hacker.findOne(query, "_id"));
+        let currId = await logger.logQuery(
+            TAG,
+            "hacker",
+            query,
+            Hacker.findOne(query, "_id"),
+        );
         ids.push(currId);
     }
     return ids;
@@ -81,10 +90,32 @@ async function findIds(queries) {
 function findByAccountId(accountId) {
     const TAG = `[ Hacker Service # findByAccountId ]:`;
     const query = {
-        accountId: accountId
+        accountId: accountId,
     };
 
     return logger.logUpdate(TAG, "hacker", Hacker.findOne(query));
+}
+
+/**
+ * Find all hackers with a specific status
+ * @param {string} status - The status to search for (e.g., "Accepted", "Declined")
+ * @return {Promise<Array<Hacker>>} Array of hacker documents with the specified status
+ */
+async function findByStatus(status) {
+    const TAG = `[ Hacker Service # findByStatus ]:`;
+    const query = { status: status };
+
+    const result = await logger.logQuery(
+        TAG,
+        "hacker",
+        query,
+        Hacker.find(query).populate("accountId"),
+    );
+    // Always return an array
+    if (!Array.isArray(result)) {
+        return [];
+    }
+    return result;
 }
 
 async function getStatsAllHackersCached() {
@@ -93,9 +124,11 @@ async function getStatsAllHackersCached() {
         logger.info(`${TAG} Getting cached stats`);
         return cache.get(Constants.CACHE_KEY_STATS);
     }
-    const allHackers = await logger.logUpdate(TAG, "hacker", Hacker.find({})).populate({
-        path: "accountId"
-    });
+    const allHackers = await logger
+        .logUpdate(TAG, "hacker", Hacker.find({}))
+        .populate({
+            path: "accountId",
+        });
     cache.put(Constants.CACHE_KEY_STATS, stats, Constants.CACHE_TIMEOUT_STATS); //set a time-out of 5 minutes
     return getStats(allHackers);
 }
@@ -106,7 +139,7 @@ async function getStatsAllHackersCached() {
  */
 async function generateQRCode(str) {
     const response = await QRCode.toDataURL(str, {
-        scale: 4
+        scale: 4,
     });
     return response;
 }
@@ -139,7 +172,7 @@ function getStats(hackers) {
         dietaryRestrictions: {},
         shirtSize: {},
         age: {},
-        applicationDate: {}
+        applicationDate: {},
     };
 
     hackers.forEach((hacker) => {
@@ -213,7 +246,9 @@ function getStats(hackers) {
         // const age = hacker.accountId.getAge();
         // stats.age[age] = stats.age[age] ? stats.age[age] + 1 : 1;
 
-        stats.age[hacker.accountId.age] = stats.age[hacker.accountId.age] ? stats.age[age] + 1 : 1;
+        stats.age[hacker.accountId.age] = stats.age[hacker.accountId.age]
+            ? stats.age[age] + 1
+            : 1;
 
         const applicationDate = hacker._id
             .getTimestamp() //
@@ -235,8 +270,9 @@ module.exports = {
     updateOne: updateOne,
     findIds: findIds,
     findByAccountId: findByAccountId,
+    findByStatus: findByStatus,
     getStats: getStats,
     getStatsAllHackersCached: getStatsAllHackersCached,
     generateQRCode: generateQRCode,
-    generateHackerViewLink: generateHackerViewLink
+    generateHackerViewLink: generateHackerViewLink,
 };
