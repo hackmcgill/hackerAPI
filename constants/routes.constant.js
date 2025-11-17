@@ -173,6 +173,16 @@ const hackerRoutes = {
         uri: "/api/hacker/reviewerStatus2/" + Constants.ROLE_CATEGORIES.SELF,
         _id: mongoose.Types.ObjectId.createFromTime(169)
     },
+    // patchAnyReviewerNameById: {
+    //     requestType: Constants.REQUEST_TYPES.PATCH,
+    //     uri: "/api/hacker/reviewerName/" + Constants.ROLE_CATEGORIES.ALL,
+    //     _id: mongoose.Types.ObjectId.createFromTime(168)
+    // },
+    // patchSelfReviewerNameById: {
+    //     requestType: Constants.REQUEST_TYPES.PATCH,
+    //     uri: "/api/hacker/reviewerName/" + Constants.ROLE_CATEGORIES.SELF,
+    //     _id: mongoose.Types.ObjectId.createFromTime(169)
+    // },
     patchSelfCheckInById: {
         requestType: Constants.REQUEST_TYPES.PATCH,
         uri: "/api/hacker/checkin/" + Constants.ROLE_CATEGORIES.SELF,
