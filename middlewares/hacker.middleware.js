@@ -762,9 +762,8 @@ async function assignReviewers(req, res, next) {
 
         const hackerModel = require('../models/hacker.model');
 
-        // find all hackers without assigned reviewers and created before the cutoff date
+        // find all hackers created before the cutoff date
         const hackers = await hackerModel.find({
-            reviewerName: '',
             _id: { $lte: cutoffObjectId }
         }).select('_id');
 
