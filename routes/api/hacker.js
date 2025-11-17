@@ -315,11 +315,6 @@ module.exports = {
          * @apiPermission Administrator
          */
          hackerRouter.route("/assignReviewers").post(
-          // console.log("sup"),
-          (req, res, next) => {
-              console.log('🔥 HIT THE ROUTE!');
-              next();
-          },
           // Middleware.Validator.RouteParam.idValidator,
           // Middleware.Auth.ensureAuthenticated(),
           // Middleware.Auth.ensureAuthorized([Services.Hacker.findById]),
