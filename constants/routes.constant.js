@@ -6,7 +6,7 @@
  * ===***===***===***===***===***===***===***===***===
  *
  * If you are adding a route to this list, update this number
- * next avaiable createFromTime value: 180
+ * next avaiable createFromTime value: 182
  *
  * If you are deleting a route from this list, please add the ID to the list of 'reserved' IDs,
  * so that we don't accidentally assign someone to a given ID.
@@ -438,12 +438,12 @@ const staffRoutes = {
     postAutomatedStatusEmails: {
         requestType: Constants.REQUEST_TYPES.POST,
         uri: "/api/email/automated/status/:status",
-        _id: mongoose.Types.ObjectId.createFromTime(168),
+        _id: mongoose.Types.ObjectId.createFromTime(180),
     },
     getAutomatedStatusEmailCount: {
         requestType: Constants.REQUEST_TYPES.GET,
         uri: "/api/email/automated/status/:status/count",
-        _id: mongoose.Types.ObjectId.createFromTime(169),
+        _id: mongoose.Types.ObjectId.createFromTime(181),
     },
 };
 
