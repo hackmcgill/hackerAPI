@@ -268,7 +268,7 @@ module.exports = {
             );
 
         /**
-         * @api {patch} /hacker/status/:id update a hacker's status
+         * @api {patch} /hacker/status/:id update a hacker's status - DOES NOT trigger an email to the hacker
          * @apiName patchHackerStatus
          * @apiGroup Hacker
          * @apiVersion 0.0.9
@@ -293,9 +293,7 @@ module.exports = {
             Middleware.parseBody.middleware,
             Middleware.Hacker.parsePatch,
             Middleware.Hacker.validateConfirmedStatusFromHackerId,
-
             Middleware.Hacker.updateHacker,
-            Middleware.Hacker.sendStatusUpdateEmail,
             Controllers.Hacker.updatedHacker
         );
 
@@ -568,7 +566,7 @@ hackerRouter.route("/reviewerComments2/:id").patch(
                 Controllers.Hacker.updatedHackerBatch
             );
         /**
-         * @api {patch} /hacker/checkin/:id update a hacker's status to be 'Checked-in'. Note that the Hacker must eitehr be Accepted or Confirmed.
+         * @api {patch} /hacker/checkin/:id update a hacker's status to be 'Checked-in'. Note that the Hacker must eitehr be Accepted or Confirmed. Emails the hacker that they have been checked in.
          * @apiName checkinHacker
          * @apiGroup Hacker
          * @apiVersion 0.0.9
@@ -956,7 +954,7 @@ hackerRouter.route("/reviewerComments2/:id").patch(
 
         /**
          * @api {patch} /hacker/confirmation/:id
-         * Allows confirmation of hacker attendence if they are accepted. Also allows change from 'confirmed' to 'withdrawn'.
+         * Allows confirmation of hacker attendence if they are accepted. Also allows change from 'confirmed' to 'withdrawn'. Sends email confirmation of status change.
          * @apiName patchHackerConfirmed
          * @apiGroup Hacker
          * @apiVersion 0.0.9
