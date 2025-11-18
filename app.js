@@ -8,7 +8,7 @@ const Services = {
     log: require("./services/logger.service"),
     db: require("./services/database.service"),
     auth: require("./services/auth.service"),
-    env: require("./services/env.service")
+    env: require("./services/env.service"),
 };
 
 const envLoadResult = Services.env.load(path.join(__dirname, "./.env"));
@@ -31,6 +31,7 @@ const searchRouter = require("./routes/api/search");
 const settingsRouter = require("./routes/api/settings");
 const volunteerRouter = require("./routes/api/volunteer");
 const roleRouter = require("./routes/api/role");
+const emailsRouter = require("./routes/api/emails");
 
 const app = express();
 Services.db.connect();
@@ -40,7 +41,7 @@ let corsOptions = {};
 if (!Services.env.isProduction()) {
     corsOptions = {
         origin: [`http://${process.env.FRONTEND_ADDRESS_DEV}`],
-        credentials: true
+        credentials: true,
     };
 } else {
     corsOptions = {
@@ -48,25 +49,23 @@ if (!Services.env.isProduction()) {
             const allowedOrigins = [
                 `https://${process.env.FRONTEND_ADDRESS_DEPLOY}`,
                 `https://${process.env.FRONTEND_ADDRESS_BETA}`,
-                `https://docs.mchacks.ca`
+                `https://docs.mchacks.ca`,
             ];
 
             const regex = /^https:\/\/dashboard-[\w-]+\.vercel\.app$/;
 
             if (
                 allowedOrigins.includes(origin) || // Explicitly allowed origins
-                regex.test(origin)                 // Matches dashboard subdomains
+                regex.test(origin) // Matches dashboard subdomains
             ) {
                 callback(null, true);
             } else {
-                callback(new Error('Not allowed by CORS'));
+                callback(new Error("Not allowed by CORS"));
             }
         },
-        credentials: true
+        credentials: true,
     };
 }
-
-
 
 app.use(cors(corsOptions));
 app.use(Services.log.requestLogger);
@@ -74,8 +73,8 @@ app.use(Services.log.errorLogger);
 app.use(express.json());
 app.use(
     express.urlencoded({
-        extended: false
-    })
+        extended: false,
+    }),
 );
 app.use(cookieParser());
 //Cookie-based session tracking
@@ -86,8 +85,8 @@ app.use(
         // Cookie Options
         maxAge: 48 * 60 * 60 * 1000, //Logged in for 48 hours
         sameSite: process.env.COOKIE_SAME_SITE,
-        secureProxy: !Services.env.isTest()
-    })
+        secureProxy: !Services.env.isTest(),
+    }),
 );
 app.use(passport.initialize());
 app.use(passport.session()); //persistent login session
@@ -116,10 +115,10 @@ settingsRouter.activate(apiRouter);
 Services.log.info("Settings router activated");
 roleRouter.activate(apiRouter);
 Services.log.info("Role router activated");
+emailsRouter.activate(apiRouter);
+Services.log.info("Emails router activated");
 
-apiRouter.use("/", indexRouter);
 app.use("/", indexRouter);
-
 app.use("/api", apiRouter);
 
 //Custom error handler
@@ -140,10 +139,10 @@ app.use((err, req, res, next) => {
     }
     res.status(status).json({
         message: message,
-        data: errorContents
+        data: errorContents,
     });
 });
 
 module.exports = {
-    app: app
+    app: app,
 };
