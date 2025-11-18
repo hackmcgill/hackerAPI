@@ -25,10 +25,11 @@ const hackboardRestrictedRoutes = [ // hackboard permissions is all staff routes
     Constants.Routes.hackerRoutes.postSelfSendWeekOfEmail,
     Constants.Routes.hackerRoutes.postAnySendDayOfEmail,
     Constants.Routes.hackerRoutes.postSelfSendDayOfEmail,
+    Constants.Routes.staffRoutes.postAutomatedStatusEmails,
+    Constants.Routes.staffRoutes.getAutomatedStatusEmailCount,
     Constants.Routes.hackerRoutes.patchAcceptHackerById,
     Constants.Routes.hackerRoutes.patchAcceptHackerByEmail,
     Constants.Routes.hackerRoutes.patchAcceptHackerByArrayOfIds,
-    Constants.Routes.hackerRoutes.patchAnyStatusById,
     Constants.Routes.settingsRoutes.getSettings,
     Constants.Routes.settingsRoutes.patchSettings
 ];
