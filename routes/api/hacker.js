@@ -268,7 +268,7 @@ module.exports = {
             );
 
         /**
-         * @api {patch} /hacker/status/:id update a hacker's status
+         * @api {patch} /hacker/status/:id update a hacker's status - DOES NOT trigger an email to the hacker
          * @apiName patchHackerStatus
          * @apiGroup Hacker
          * @apiVersion 0.0.9
@@ -293,11 +293,183 @@ module.exports = {
             Middleware.parseBody.middleware,
             Middleware.Hacker.parsePatch,
             Middleware.Hacker.validateConfirmedStatusFromHackerId,
-
             Middleware.Hacker.updateHacker,
-            Middleware.Hacker.sendStatusUpdateEmail,
             Controllers.Hacker.updatedHacker
         );
+
+         /**
+         * @api {patch} /hacker/reviewerStatus/:id update a hacker's reviewer status
+         * @apiName patchHackerReviewerStatus
+         * @apiGroup Hacker
+         * @apiVersion 0.0.9
+         *
+         * @apiParam (body) {string} [reviewerStatus] Reviewer status of the hacker's application ("None"|"Poor"|"Weak"|"Average"|"Strong"|"Outstanding"|"Whitelist")
+         * @apiSuccess {string} message Success message
+         * @apiSuccess {object} data Hacker object
+         * @apiSuccessExample {object} Success-Response:
+         *      {
+         *          "message": "Changed hacker information",
+         *          "data": {
+         *              "reviewerStatus": "Outstanding"
+         *          }
+         *      }
+         * @apiPermission Administrator
+         */
+         hackerRouter.route("/reviewerStatus/:id").patch(
+          Middleware.Validator.RouteParam.idValidator,
+          Middleware.Auth.ensureAuthenticated(),
+          Middleware.Auth.ensureAuthorized([Services.Hacker.findById]),
+          Middleware.Validator.Hacker.updateReviewerStatusValidator,
+          Middleware.parseBody.middleware,
+          Middleware.Hacker.parsePatch,
+          Middleware.Hacker.updateHacker,
+          Controllers.Hacker.updatedHacker
+      );
+
+      /**
+      * @api {patch} /hacker/reviewerStatus2/:id update a hacker's reviewer status 2
+      * @apiName patchHackerReviewerStatus2
+      * @apiGroup Hacker
+      * @apiVersion 0.0.9
+      *
+      * @apiParam (body) {string} [reviewerStatus2] Reviewer status of the hacker's application ("None"|"Poor"|"Weak"|"Average"|"Strong"|"Outstanding"|"Whitelist")
+      * @apiSuccess {string} message Success message
+      * @apiSuccess {object} data Hacker object
+      * @apiSuccessExample {object} Success-Response:
+      *      {
+      *          "message": "Changed hacker information",
+      *          "data": {
+      *              "reviewerStatus2": "Outstanding"
+      *          }
+      *      }
+      * @apiPermission Administrator
+      */
+      hackerRouter.route("/reviewerStatus2/:id").patch(
+       Middleware.Validator.RouteParam.idValidator,
+       Middleware.Auth.ensureAuthenticated(),
+       Middleware.Auth.ensureAuthorized([Services.Hacker.findById]),
+       Middleware.Validator.Hacker.updateReviewerStatus2Validator,
+       Middleware.parseBody.middleware,
+       Middleware.Hacker.parsePatch,
+       Middleware.Hacker.updateHacker,
+       Controllers.Hacker.updatedHacker
+   );
+
+   /**
+   * @api {patch} /hacker/reviewerName/:id update a hacker's reviewer name
+   * @apiName patchHackerReviewerName
+   * @apiGroup Hacker
+   * @apiVersion 0.0.9
+   *
+   * @apiParam (body) {string} [reviewerName] Reviewer name of the hacker's application ("None"|"Poor"|"Weak"|"Average"|"Strong"|"Outstanding"|"Whitelist")
+   * @apiSuccess {string} message Success message
+   * @apiSuccess {string} data name
+   * @apiSuccessExample {object} Success-Response:
+   *      {
+   *          "message": "Changed hacker information",
+   *          "data": {
+   *              "reviewerName": "John Doe"
+   *          }
+   *      }
+   * @apiPermission Administrator
+   */
+   hackerRouter.route("/reviewerName/:id").patch(
+    Middleware.Validator.RouteParam.idValidator,
+    Middleware.Auth.ensureAuthenticated(),
+    Middleware.Auth.ensureAuthorized([Services.Hacker.findById]),
+    Middleware.Validator.Hacker.updateReviewerNameValidator,
+    Middleware.parseBody.middleware,
+    Middleware.Hacker.parsePatch,
+    Middleware.Hacker.updateHacker,
+    Controllers.Hacker.updatedHacker
+);
+
+/**
+* @api {patch} /hacker/reviewerName2/:id update a hacker's reviewer name
+* @apiName patchHackerReviewerName2
+* @apiGroup Hacker
+* @apiVersion 0.0.9
+*
+* @apiParam (body) {string} [reviewerName2] Reviewer name of the hacker's application ("None"|"Poor"|"Weak"|"Average"|"Strong"|"Outstanding"|"Whitelist")
+* @apiSuccess {string} message Success message
+* @apiSuccess {string} data name
+* @apiSuccessExample {object} Success-Response:
+*      {
+*          "message": "Changed hacker information",
+*          "data": {
+*              "reviewerName2": "John Doe"
+*          }
+*      }
+* @apiPermission Administrator
+*/
+hackerRouter.route("/reviewerName2/:id").patch(
+ Middleware.Validator.RouteParam.idValidator,
+ Middleware.Auth.ensureAuthenticated(),
+ Middleware.Auth.ensureAuthorized([Services.Hacker.findById]),
+ Middleware.Validator.Hacker.updateReviewerName2Validator,
+ Middleware.parseBody.middleware,
+ Middleware.Hacker.parsePatch,
+ Middleware.Hacker.updateHacker,
+ Controllers.Hacker.updatedHacker
+);
+
+/**
+* @api {patch} /hacker/reviewerComments/:id update a hacker's reviewer comments
+* @apiName patchHackerReviewerComments
+* @apiGroup Hacker
+* @apiVersion 0.0.9
+*
+* @apiParam (body) {string} [reviewerComments] Reviewer comments of the hacker's application ("None"|"Poor"|"Weak"|"Average"|"Strong"|"Outstanding"|"Whitelist")
+* @apiSuccess {string} message Success message
+* @apiSuccess {string} data name
+* @apiSuccessExample {object} Success-Response:
+*      {
+*          "message": "Changed hacker information",
+*          "data": {
+*              "reviewerComments": "John Doe"
+*          }
+*      }
+* @apiPermission Administrator
+*/
+hackerRouter.route("/reviewerComments/:id").patch(
+ Middleware.Validator.RouteParam.idValidator,
+ Middleware.Auth.ensureAuthenticated(),
+ Middleware.Auth.ensureAuthorized([Services.Hacker.findById]),
+ Middleware.Validator.Hacker.updateReviewerCommentsValidator,
+ Middleware.parseBody.middleware,
+ Middleware.Hacker.parsePatch,
+ Middleware.Hacker.updateHacker,
+ Controllers.Hacker.updatedHacker
+);
+
+/**
+* @api {patch} /hacker/reviewerComments/:id update a hacker's reviewer comments
+* @apiName patchHackerReviewerComments
+* @apiGroup Hacker
+* @apiVersion 0.0.9
+*
+* @apiParam (body) {string} [reviewerComments] Reviewer comments of the hacker's application ("None"|"Poor"|"Weak"|"Average"|"Strong"|"Outstanding"|"Whitelist")
+* @apiSuccess {string} message Success message
+* @apiSuccess {string} data name
+* @apiSuccessExample {object} Success-Response:
+*      {
+*          "message": "Changed hacker information",
+*          "data": {
+*              "reviewerComments": "John Doe"
+*          }
+*      }
+* @apiPermission Administrator
+*/
+hackerRouter.route("/reviewerComments2/:id").patch(
+ Middleware.Validator.RouteParam.idValidator,
+ Middleware.Auth.ensureAuthenticated(),
+ Middleware.Auth.ensureAuthorized([Services.Hacker.findById]),
+ Middleware.Validator.Hacker.updateReviewerComments2Validator,
+ Middleware.parseBody.middleware,
+ Middleware.Hacker.parsePatch,
+ Middleware.Hacker.updateHacker,
+ Controllers.Hacker.updatedHacker
+);
 
         /**
          * @api {patch} /hacker/accept/:id accept a Hacker
@@ -394,7 +566,7 @@ module.exports = {
                 Controllers.Hacker.updatedHackerBatch
             );
         /**
-         * @api {patch} /hacker/checkin/:id update a hacker's status to be 'Checked-in'. Note that the Hacker must eitehr be Accepted or Confirmed.
+         * @api {patch} /hacker/checkin/:id update a hacker's status to be 'Checked-in'. Note that the Hacker must eitehr be Accepted or Confirmed. Emails the hacker that they have been checked in.
          * @apiName checkinHacker
          * @apiGroup Hacker
          * @apiVersion 0.0.9
@@ -782,7 +954,7 @@ module.exports = {
 
         /**
          * @api {patch} /hacker/confirmation/:id
-         * Allows confirmation of hacker attendence if they are accepted. Also allows change from 'confirmed' to 'withdrawn'.
+         * Allows confirmation of hacker attendence if they are accepted. Also allows change from 'confirmed' to 'withdrawn'. Sends email confirmation of status change.
          * @apiName patchHackerConfirmed
          * @apiGroup Hacker
          * @apiVersion 0.0.9
