@@ -30,6 +30,50 @@ VALID_REVIEWER_STATUSES = {
     '6': 'Outstanding',
     '7': 'Whitelist'
 }
+VALID_REVIEWER_NAME = {
+    '0': '',
+    '1': 'Amy',
+    '2': 'Carolyn',
+    '3': 'Clara',
+    '4': 'Debo',
+    '5': 'Deon',
+    '6': 'Doaa',
+    '7': 'Emily',
+    '8': 'Emma',
+    '9': 'Ethan',
+    '10': 'Evan',
+    '11': 'Finnley',
+    '12': 'Gabriel',
+    '13': 'Ian',
+    '14': 'Inaya',
+    '15': 'Jake',
+    '16': 'Jamie',
+    '17': 'Jane J.',
+    '18': 'Jane K.',
+    '19': 'Jeffrey',
+    '20': 'Joshua',
+    '21': 'Jyothsna',
+    '22': 'Khyati',
+    '23': 'Michael',
+    '24': 'Mika',
+    '25': 'Mubeen',
+    '26': 'Mira',
+    '27': 'Oishika',
+    '28': 'Olivia',
+    '29': 'Qi',
+    '30': 'Rémi',
+    '31': 'Sebastian',
+    '32': 'Shirley',
+    '33': 'Sihan',
+    '34': 'Siva',
+    '35': 'Snigdha',
+    '36': 'Stephanie',
+    '37': 'Tavi',
+    '38': 'Tina',
+    '39': 'Vipul',
+    '40': 'Yue Qian',
+}
+
 BATCH_ACTIONS = {
     '1': 'updateStatus',
     '2': 'dayOf',
@@ -236,7 +280,7 @@ def reviewerStatus2(prefixStr) -> str:
 
 def reviewerName(prefixStr) -> str:
     reviewerName_list = ['{0}: {1}\n'.format(k, v)
-                   for k, v in str]
+                   for k, v in VALID_REVIEWER_NAME.items()]
     initial_reviewerName = requestUntilSuccess(
         'Input {0} reviewerName:\n{1}'.format(prefixStr, ''.join(reviewerName_list)),
         'Invalid {0} reviewerName'.format(prefixStr),
@@ -247,7 +291,7 @@ def reviewerName(prefixStr) -> str:
 
 def reviewerName2(prefixStr) -> str:
     reviewerName2_list = ['{0}: {1}\n'.format(k, v)
-                   for k, v in str]
+                   for k, v in VALID_REVIEWER_NAME.items()]
     initial_reviewerName2 = requestUntilSuccess(
         'Input {0} reviewerName2:\n{1}'.format(prefixStr, ''.join(reviewerName2_list)),
         'Invalid {0} reviewerName2'.format(prefixStr),
@@ -575,7 +619,12 @@ def updateReviewerComments2():
         else:
             _print('could not find {0}'.format(
                 ID), 1, index, len(HACKER_IDs))
-            
+
+def assignReviewers():
+    HACKER_IDs = getIdList()
+    numHackers = HACKER_IDs.count
+    
+
 # def sendDayOfEmail():
 #     INITIAL_STATUS = status('initial')
 #     HACKER_IDs = loadIDs()

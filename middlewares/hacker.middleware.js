@@ -3,6 +3,10 @@
 
 const TAG = `[ HACKER.MIDDLEWARE.js ]`;
 const mongoose = require("mongoose");
+const { HACKER_REVIEWER_STATUS_NONE } = require("../constants/general.constant");
+const { HACKER_REVIEWER_STATUSES } = require("../constants/general.constant");
+const { HACKER_REVIEWER_NAMES } = require("../constants/general.constant");
+const { HACKER_DEFAULT_REVIEWER } = HACKER_REVIEWER_NAMES.find(r => r === '');
 
 // shim to allow us to use Promise.allSettled
 require("promise.allsettled").shim();
@@ -105,10 +109,10 @@ function parseConfirmation(req, res, next) {
 /**
  * @function addDefaultStatus
  * @param {{body: {hackerDetails: {status: String}}}} req
- * @param {{body: {hackerDetails: {reviewerStatus: String}}}} req
- * @param {{body: {hackerDetails: {reviewerStatus2: String}}}} req
- * @param {{body: {hackerDetails: {reviewerName: String}}}} req
- * @param {{body: {hackerDetails: {reviewerName2: String}}}} req
+ * @param {{body: {hackerDetails: {reviewerStatus: HACKER_REVIEWER_STATUSES}}}} req
+ * @param {{body: {hackerDetails: {reviewerStatus2: HACKER_REVIEWER_STATUSES}}}} req
+ * @param {{body: {hackerDetails: {reviewerName: HACKER_REVIEWER_NAMES}}}} req
+ * @param {{body: {hackerDetails: {reviewerName2: HACKER_REVIEWER_NAMES}}}} req
  * @param {{body: {hackerDetails: {reviewerComments: String}}}} req
  * @param {{body: {hackerDetails: {reviewerComments2: String}}}} req
  * @param {JSON} res
@@ -118,10 +122,10 @@ function parseConfirmation(req, res, next) {
  */
 function addDefaultStatus(req, res, next) {
     req.body.hackerDetails.status = "Applied";
-    req.body.hackerDetails.reviewerStatus = "none";
-    req.body.hackerDetails.reviewerStatus2 = "none";
-    req.body.hackerDetails.reviewerName = "";
-    req.body.hackerDetails.reviewerName2 = "";
+    req.body.hackerDetails.reviewerStatus = HACKER_REVIEWER_STATUS_NONE;
+    req.body.hackerDetails.reviewerStatus2 = HACKER_REVIEWER_STATUS_NONE;
+    req.body.hackerDetails.reviewerName = HACKER_DEFAULT_REVIEWER;
+    req.body.hackerDetails.reviewerName2 = HACKER_DEFAULT_REVIEWER;
     req.body.hackerDetails.reviewerComments = "";
     req.body.hackerDetails.reviewerComments2 = "";
     return next();
