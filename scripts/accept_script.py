@@ -619,10 +619,6 @@ def updateReviewerComments2():
         else:
             _print('could not find {0}'.format(
                 ID), 1, index, len(HACKER_IDs))
-
-def assignReviewers():
-    HACKER_IDs = getIdList()
-    numHackers = HACKER_IDs.count
     
 
 # def sendDayOfEmail():

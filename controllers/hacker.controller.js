@@ -102,9 +102,27 @@ function updatedHackerBatch(req, res) {
     });
 }
 
+/**
+ * @function assignReviewers
+ * @param {{body: {names: string[]}}} req
+ * @param {*} res
+ * @return {JSON} Success or error status
+ * @description
+ *      Assign reviewers to hackers who've not yet been assigned reviewers and submitted applications before the deadline.
+ *      Returns a 200 status after bulk assignment reviewers.
+ *      The assignments are located in req.body.
+ */
+function assignedReviewers(req, res) {
+    return res.status(200).json({
+        message: 'Successfully assigned reviewers to hackers',
+        data: req.body
+    });
+}
+
 module.exports = {
     updatedHacker: updatedHacker,
     updatedHackerBatch: updatedHackerBatch,
+    assignedReviewers: assignedReviewers,
     createdHacker: createdHacker,
     uploadedResume: uploadedResume,
     downloadedResume: downloadedResume,

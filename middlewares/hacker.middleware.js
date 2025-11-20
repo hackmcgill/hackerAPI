@@ -3,6 +3,7 @@
 
 const TAG = `[ HACKER.MIDDLEWARE.js ]`;
 const mongoose = require("mongoose");
+const ObjectId = mongoose.Types.ObjectId;
 const { HACKER_REVIEWER_STATUS_NONE } = require("../constants/general.constant");
 const { HACKER_REVIEWER_STATUSES } = require("../constants/general.constant");
 const { HACKER_REVIEWER_NAMES } = require("../constants/general.constant");
@@ -740,6 +741,97 @@ async function updateBatchHacker(req, res, next) {
     next();
 }
 
+
+/**
+ * Updates a hacker that is specified by req.params.id, and then sets req.email
+ * to the email of the hacker, found in Account.
+ * Assigns reviewers to hackers in a batch process.
+ * @param {*} req
+ * @param {*} res
+ * @param {*} next
+ */
+async function assignReviewers(req, res, next) {
+    try {
+        console.log('Starting assignReviewers');
+        
+        // const REVIEWER_NAMES = HACKER_REVIEWER_NAMES.filter(name => name !== ''); // get all non-empty reviewer names
+        const REVIEWER_NAMES = req.body.names;
+        console.log('Reviewer names:', REVIEWER_NAMES);
+        
+        const cutoff = new Date('2025-11-27T17:23:59.000Z'); // EDIT: set your desired cutoff date here
+        const cutoffObjectId = new ObjectId(Math.floor(cutoff.getTime() / 1000).toString(16) + "0000000000000000");
+
+        const hackerModel = require('../models/hacker.model');
+
+        // find all hackers created before the cutoff date
+        const hackers = await hackerModel.find({
+            _id: { $lte: cutoffObjectId }
+        }).select('_id');
+
+        console.log('Found hackers:', hackers.length);
+
+        // get counts
+        const hackerCount = hackers.length;
+        const revwiewerCount = REVIEWER_NAMES.length;
+
+        if (hackerCount === 0) {
+            console.log('No hackers found for reviewer assignment.');
+
+            req.body = {
+                success: true,
+                assigned: 0,
+                reviewers: revwiewerCount,
+                assignments: []
+            }
+
+            return next();
+        }
+        
+        console.log(`Found ${hackerCount} assignable reviewers.`);
+
+        let assignments = [];
+        let hackerIndex = 0;
+        let updatePromises = [];
+
+        // assign reviewers to hackers
+        for (const hacker of hackers) {
+            const assignedReviewer1 = REVIEWER_NAMES[hackerIndex % revwiewerCount];
+            const assignedReviewer2 = REVIEWER_NAMES[(hackerIndex + 1) % revwiewerCount];
+            
+            assignments.push({ hackerId: hacker._id, reviewer: assignedReviewer1, reviewer2: assignedReviewer2 });
+
+            updatePromises.push(
+                Services.Hacker.updateOne(hacker._id, { reviewerName: assignedReviewer1, reviewerName2: assignedReviewer2 })
+            );
+
+            hackerIndex++;
+        }
+
+        // exec all updates
+        await Promise.all(updatePromises);
+
+        console.log(`Completed reviewer assignment at ${new Date().toISOString()}`);
+        console.log(`Assignments:`, assignments);
+
+        req.body = {
+            success: true,
+            assigned: hackerCount,
+            reviewers: revwiewerCount,
+            assignments: assignments
+        }
+
+        return next();
+
+    } catch (error) {
+        console.error('Error during reviewer assignment:', error);
+        return next({
+            status: 500,
+            message: Constants.Error.GENERIC_500_MESSAGE,
+            data: { error: error }
+        });
+    }
+}
+
 /**
  * Sets req.body.status to Accepted for next middleware, and store req.params.id as req.hackerId
  * @param {{params:{id: string}, body: *}} req
@@ -911,6 +1003,7 @@ module.exports = {
     ),
     updateHacker: Middleware.Util.asyncMiddleware(updateHacker),
     updateBatchHacker: Middleware.Util.asyncMiddleware(updateBatchHacker),
+    assignReviewers: Middleware.Util.asyncMiddleware(assignReviewers),
     parseAccept: parseAccept,
     parseAcceptBatch: parseAcceptBatch,
     parseAcceptEmail: parseAcceptEmail,

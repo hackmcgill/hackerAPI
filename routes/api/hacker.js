@@ -300,6 +300,32 @@ module.exports = {
         );
 
          /**
+         * @api {post} /hacker/assignReviewers update a hacker's reviewer status
+         * @apiName patchAssignReviewers
+         * @apiGroup Hacker
+         * @apiVersion 0.0.9
+         *
+         * @apiParam (body) None
+         * @apiSuccess {string} message Success message
+         * @apiSuccess {object} data Hacker object
+         * @apiSuccessExample {object} Success-Response:
+         *      {
+         *          "message": "Assigned reviewers to hackers",
+         *      }
+         * @apiPermission Administrator
+         */
+         hackerRouter.route("/assignReviewers").post(
+          // Middleware.Validator.RouteParam.idValidator,
+          // Middleware.Auth.ensureAuthenticated(),
+          // Middleware.Auth.ensureAuthorized([Services.Hacker.findById]),
+          // Middleware.Validator.Hacker.updateReviewerStatusValidator,
+          // Middleware.parseBody.middleware,
+          // Middleware.Hacker.parsePatch,
+          Middleware.Hacker.assignReviewers,
+          Controllers.Hacker.assignedReviewers
+      );
+
+         /**
          * @api {patch} /hacker/reviewerStatus/:id update a hacker's reviewer status
          * @apiName patchHackerReviewerStatus
          * @apiGroup Hacker
