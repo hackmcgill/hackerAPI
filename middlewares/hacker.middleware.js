@@ -754,7 +754,8 @@ async function assignReviewers(req, res, next) {
     try {
         console.log('Starting assignReviewers');
         
-        const REVIEWER_NAMES = HACKER_REVIEWER_NAMES.filter(name => name !== ''); // get all non-empty reviewer names
+        // const REVIEWER_NAMES = HACKER_REVIEWER_NAMES.filter(name => name !== ''); // get all non-empty reviewer names
+        const REVIEWER_NAMES = req.body.names;
         console.log('Reviewer names:', REVIEWER_NAMES);
         
         const cutoff = new Date('2025-11-27T17:23:59.000Z'); // EDIT: set your desired cutoff date here

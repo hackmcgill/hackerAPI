@@ -104,7 +104,7 @@ function updatedHackerBatch(req, res) {
 
 /**
  * @function assignReviewers
- * @param {*} req
+ * @param {{body: {names: string[]}}} req
  * @param {*} res
  * @return {JSON} Success or error status
  * @description
