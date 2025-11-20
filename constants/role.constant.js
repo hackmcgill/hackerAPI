@@ -20,10 +20,30 @@ const accountRole = {
     ]
 };
 
+const hackboardRestrictedRoutes = [ // hackboard permissions is all staff routes minus these routes
+    Constants.Routes.hackerRoutes.postAnySendWeekOfEmail,
+    Constants.Routes.hackerRoutes.postSelfSendWeekOfEmail,
+    Constants.Routes.hackerRoutes.postAnySendDayOfEmail,
+    Constants.Routes.hackerRoutes.postSelfSendDayOfEmail,
+    Constants.Routes.staffRoutes.postAutomatedStatusEmails,
+    Constants.Routes.staffRoutes.getAutomatedStatusEmailCount,
+    Constants.Routes.hackerRoutes.patchAcceptHackerById,
+    Constants.Routes.hackerRoutes.patchAcceptHackerByEmail,
+    Constants.Routes.hackerRoutes.patchAcceptHackerByArrayOfIds,
+    Constants.Routes.settingsRoutes.getSettings,
+    Constants.Routes.settingsRoutes.patchSettings
+];
+
 const adminRole = {
     _id: mongoose.Types.ObjectId.createFromTime(1),
     name: Constants.General.STAFF,
     routes: Constants.Routes.listAllRoutes()
+};
+
+const hackboardRole = {
+    _id: mongoose.Types.ObjectId.createFromTime(9),
+    name: "Hackboard",
+    routes: createHackboardRoutes()
 };
 
 const hackerRole = {
@@ -143,6 +163,15 @@ const singularRoles = createAllSingularRoles();
 const allRolesObject = createAllRoles();
 const allRolesArray = Object.values(allRolesObject);
 
+function createHackboardRoutes() {
+    const restrictedRouteIds = new Set(
+        hackboardRestrictedRoutes.map((route) => route._id.toString())
+    );
+    return Constants.Routes.listAllRoutes().filter((route) => {
+        return !restrictedRouteIds.has(route._id.toString());
+    });
+}
+
 /**
  * Creates all the roles that are of a specific uri and request type
  * @return {Role[]}
@@ -185,6 +214,7 @@ function createAllRoles() {
     let allRolesObject = {
         accountRole: accountRole,
         adminRole: adminRole,
+        hackboardRole: hackboardRole,
         hackerRole: hackerRole,
         volunteerRole: volunteerRole,
         sponsorT1Role: sponsorT1Role,
@@ -208,6 +238,7 @@ function createAllRoles() {
 module.exports = {
     accountRole: accountRole,
     adminRole: adminRole,
+    hackboardRole: hackboardRole,
     hackerRole: hackerRole,
     volunteerRole: volunteerRole,
     sponsorT1Role: sponsorT1Role,

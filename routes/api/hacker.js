@@ -269,11 +269,12 @@ module.exports = {
 
         /**
          * @api {patch} /hacker/status/:id update a hacker's status - DOES NOT trigger an email to the hacker
+         * updates all hacker data fields passed
          * @apiName patchHackerStatus
          * @apiGroup Hacker
          * @apiVersion 0.0.9
          *
-         * @apiParam (body) {string} [status] Status of the hacker's application ("None"|"Applied"|"Accepted"|"Declined"|"Waitlisted"|"Confirmed"|"Withdrawn"|"Checked-in")
+         * @apiParam (body) {string} [status] Status of the hacker's application ("None"|"Applied"|"Accepted"|"Declined"|"Waitlisted"|"Confirmed"|"Withdrawn"|"Checked-in") as well as reviewer fields and any other hacker data in hacker data object
          * @apiSuccess {string} message Success message
          * @apiSuccess {object} data Hacker object
          * @apiSuccessExample {object} Success-Response:
@@ -283,7 +284,8 @@ module.exports = {
          *              "status": "Accepted"
          *          }
          *      }
-         * @apiPermission Administrator
+         * @apiPermission Administrator / Hackboard
+         *
          */
         hackerRouter.route("/status/:id").patch(
             Middleware.Validator.RouteParam.idValidator,
@@ -296,6 +298,32 @@ module.exports = {
             Middleware.Hacker.updateHacker,
             Controllers.Hacker.updatedHacker
         );
+
+         /**
+         * @api {post} /hacker/assignReviewers update a hacker's reviewer status
+         * @apiName patchAssignReviewers
+         * @apiGroup Hacker
+         * @apiVersion 0.0.9
+         *
+         * @apiParam (body) None
+         * @apiSuccess {string} message Success message
+         * @apiSuccess {object} data Hacker object
+         * @apiSuccessExample {object} Success-Response:
+         *      {
+         *          "message": "Assigned reviewers to hackers",
+         *      }
+         * @apiPermission Administrator
+         */
+         hackerRouter.route("/assignReviewers").post(
+          // Middleware.Validator.RouteParam.idValidator,
+          // Middleware.Auth.ensureAuthenticated(),
+          // Middleware.Auth.ensureAuthorized([Services.Hacker.findById]),
+          // Middleware.Validator.Hacker.updateReviewerStatusValidator,
+          // Middleware.parseBody.middleware,
+          // Middleware.Hacker.parsePatch,
+          Middleware.Hacker.assignReviewers,
+          Controllers.Hacker.assignedReviewers
+      );
 
          /**
          * @api {patch} /hacker/reviewerStatus/:id update a hacker's reviewer status
