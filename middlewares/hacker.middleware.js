@@ -766,8 +766,10 @@ async function assignReviewers(req, res, next) {
         // find all hackers created before the cutoff date
         const hackers = await hackerModel.find({
             $or: [
-                { reviewerStatus: HACKER_REVIEWER_STATUS_NONE },
-                { reviewerStatus2: HACKER_REVIEWER_STATUS_NONE }
+                { reviewerStatus: 'None' },
+                { reviewerStatus2: 'None' },
+                { reviewerStatus: { $exists: false } },
+                { reviewerStatus2: { $exists: false } }
             ],
             _id: { $lte: cutoffObjectId }
         }).select('_id reviewerStatus reviewerStatus2 accountId');
@@ -802,24 +804,19 @@ async function assignReviewers(req, res, next) {
             const assignedReviewer1 = REVIEWER_NAMES[hackerIndex % revwiewerCount];
             const assignedReviewer2 = REVIEWER_NAMES[(hackerIndex + 1) % revwiewerCount];
 
-
-            console.log(`Hacker ${hacker.accountId} - Current Statuses: reviewerStatus=${hacker.reviewerStatus}, reviewerStatus2=${hacker.reviewerStatus2}`);
-            if (hacker.reviewerStatus !== HACKER_REVIEWER_STATUS_NONE) {
-                console.log(`Assigning reviewer2 ${assignedReviewer2} to hacker ${hacker.accountId}`);
+            if (hacker.reviewerStatus !== HACKER_REVIEWER_STATUS_NONE && ("reviewerStatus" in hacker)) {
                 assignments.push({ hackerId: hacker._id, reviewer2: assignedReviewer2 });
 
                 updatePromises.push(
                     Services.Hacker.updateOne(hacker._id, { reviewerName2: assignedReviewer2 })
                 );
-            } else if (hacker.reviewerStatus2 !== HACKER_REVIEWER_STATUS_NONE) {
-                console.log(`Assigning reviewer1 ${assignedReviewer1} to hacker ${hacker.accountId}`);
+            } else if (hacker.reviewerStatus2 !== HACKER_REVIEWER_STATUS_NONE && ("reviewerStatus2" in hacker)) {
                 assignments.push({ hackerId: hacker._id, reviewer: assignedReviewer1 });
 
                 updatePromises.push(
                     Services.Hacker.updateOne(hacker._id, { reviewerName: assignedReviewer1 })
                 );
             } else {
-                console.log(`Assigning reviewer1 ${assignedReviewer1} and reviewer2 ${assignedReviewer2} to hacker ${hacker.accountId} to hacker ${hacker.accountId}`);
                 assignments.push({ hackerId: hacker._id, reviewer: assignedReviewer1, reviewer2: assignedReviewer2 });
 
                 updatePromises.push(
