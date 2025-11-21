@@ -758,15 +758,21 @@ async function assignReviewers(req, res, next) {
         const REVIEWER_NAMES = req.body.names;
         console.log('Reviewer names:', REVIEWER_NAMES);
         
-        const cutoff = new Date('2025-11-27T17:23:59.000Z'); // EDIT: set your desired cutoff date here
+        const cutoff = new Date('2025-11-17T23:59:59.000Z'); // EDIT: set your desired cutoff date here
         const cutoffObjectId = new ObjectId(Math.floor(cutoff.getTime() / 1000).toString(16) + "0000000000000000");
 
         const hackerModel = require('../models/hacker.model');
 
         // find all hackers created before the cutoff date
         const hackers = await hackerModel.find({
+            $or: [
+                { reviewerStatus: 'None' },
+                { reviewerStatus2: 'None' },
+                { reviewerStatus: { $exists: false } },
+                { reviewerStatus2: { $exists: false } }
+            ],
             _id: { $lte: cutoffObjectId }
-        }).select('_id');
+        }).select('_id reviewerStatus reviewerStatus2 accountId reviewerName reviewerName2');
 
         console.log('Found hackers:', hackers.length);
 
@@ -795,14 +801,37 @@ async function assignReviewers(req, res, next) {
 
         // assign reviewers to hackers
         for (const hacker of hackers) {
-            const assignedReviewer1 = REVIEWER_NAMES[hackerIndex % revwiewerCount];
-            const assignedReviewer2 = REVIEWER_NAMES[(hackerIndex + 1) % revwiewerCount];
-            
-            assignments.push({ hackerId: hacker._id, reviewer: assignedReviewer1, reviewer2: assignedReviewer2 });
+            let assignedReviewer1 = REVIEWER_NAMES[hackerIndex % revwiewerCount];
+            let assignedReviewer2 = REVIEWER_NAMES[(hackerIndex + 1) % revwiewerCount];
 
-            updatePromises.push(
-                Services.Hacker.updateOne(hacker._id, { reviewerName: assignedReviewer1, reviewerName2: assignedReviewer2 })
-            );
+            if (hacker.reviewerStatus !== HACKER_REVIEWER_STATUS_NONE && ("reviewerStatus" in hacker)) {
+                if (hacker.reviewerName === assignedReviewer2) {
+                    assignedReviewer2 = assignedReviewer1;
+                }
+
+                assignments.push({ hackerId: hacker._id, reviewer2: assignedReviewer2 });
+
+                updatePromises.push(
+                    Services.Hacker.updateOne(hacker._id, { reviewerName2: assignedReviewer2 })
+                );
+            } else if (hacker.reviewerStatus2 !== HACKER_REVIEWER_STATUS_NONE && ("reviewerStatus2" in hacker)) {
+
+                if (hacker.reviewerName2 === assignedReviewer1) {
+                    assignedReviewer1 = assignedReviewer2;
+                }
+                
+                assignments.push({ hackerId: hacker._id, reviewer: assignedReviewer1 });
+
+                updatePromises.push(
+                    Services.Hacker.updateOne(hacker._id, { reviewerName: assignedReviewer1 })
+                );
+            } else {
+                assignments.push({ hackerId: hacker._id, reviewer: assignedReviewer1, reviewer2: assignedReviewer2 });
+
+                updatePromises.push(
+                    Services.Hacker.updateOne(hacker._id, { reviewerName: assignedReviewer1, reviewerName2: assignedReviewer2 })
+                );
+            }
 
             hackerIndex++;
         }
