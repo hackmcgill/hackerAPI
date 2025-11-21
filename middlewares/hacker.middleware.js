@@ -805,8 +805,7 @@ async function assignReviewers(req, res, next) {
             let assignedReviewer2 = REVIEWER_NAMES[(hackerIndex + 1) % revwiewerCount];
 
             if (hacker.reviewerStatus !== HACKER_REVIEWER_STATUS_NONE && ("reviewerStatus" in hacker)) {
-                // console.log(`${hacker.reviewerName2} , ${assignedReviewer2} assigned to reviewer 2 for hacker ${hacker._id}. equals: ${hacker.reviewerName2 === assignedReviewer2}`);
-                if (hacker.reviewerName2 === assignedReviewer2) {
+                if (hacker.reviewerName === assignedReviewer2) {
                     assignedReviewer2 = assignedReviewer1;
                 }
 
@@ -817,7 +816,7 @@ async function assignReviewers(req, res, next) {
                 );
             } else if (hacker.reviewerStatus2 !== HACKER_REVIEWER_STATUS_NONE && ("reviewerStatus2" in hacker)) {
 
-                if (hacker.reviewerName === assignedReviewer1) {
+                if (hacker.reviewerName2 === assignedReviewer1) {
                     assignedReviewer1 = assignedReviewer2;
                 }
                 
