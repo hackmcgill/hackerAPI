@@ -772,7 +772,7 @@ async function assignReviewers(req, res, next) {
                 { reviewerStatus2: { $exists: false } }
             ],
             _id: { $lte: cutoffObjectId }
-        }).select('_id reviewerStatus reviewerStatus2 accountId');
+        }).select('_id reviewerStatus reviewerStatus2 accountId reviewerName reviewerName2');
 
         console.log('Found hackers:', hackers.length);
 
@@ -801,16 +801,26 @@ async function assignReviewers(req, res, next) {
 
         // assign reviewers to hackers
         for (const hacker of hackers) {
-            const assignedReviewer1 = REVIEWER_NAMES[hackerIndex % revwiewerCount];
-            const assignedReviewer2 = REVIEWER_NAMES[(hackerIndex + 1) % revwiewerCount];
+            let assignedReviewer1 = REVIEWER_NAMES[hackerIndex % revwiewerCount];
+            let assignedReviewer2 = REVIEWER_NAMES[(hackerIndex + 1) % revwiewerCount];
 
             if (hacker.reviewerStatus !== HACKER_REVIEWER_STATUS_NONE && ("reviewerStatus" in hacker)) {
+                // console.log(`${hacker.reviewerName2} , ${assignedReviewer2} assigned to reviewer 2 for hacker ${hacker._id}. equals: ${hacker.reviewerName2 === assignedReviewer2}`);
+                if (hacker.reviewerName2 === assignedReviewer2) {
+                    assignedReviewer2 = assignedReviewer1;
+                }
+
                 assignments.push({ hackerId: hacker._id, reviewer2: assignedReviewer2 });
 
                 updatePromises.push(
                     Services.Hacker.updateOne(hacker._id, { reviewerName2: assignedReviewer2 })
                 );
             } else if (hacker.reviewerStatus2 !== HACKER_REVIEWER_STATUS_NONE && ("reviewerStatus2" in hacker)) {
+
+                if (hacker.reviewerName === assignedReviewer1) {
+                    assignedReviewer1 = assignedReviewer2;
+                }
+                
                 assignments.push({ hackerId: hacker._id, reviewer: assignedReviewer1 });
 
                 updatePromises.push(
