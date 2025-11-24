@@ -420,10 +420,11 @@ async function populateMemberAccountsById(req, res, next) {
 
     for (const member of team.members) {
         teamMembers.push({
+            id: member._id.toString(),
             school: member.application.general.school,
             status: member.status,
             firstName: member.accountId.firstName,
-            lastName: member.accountId.lastName
+            lastName: member.accountId.lastName,
         });
         hackerIds.push(member._id);
     }
