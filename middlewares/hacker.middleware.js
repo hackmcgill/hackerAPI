@@ -758,7 +758,7 @@ async function assignReviewers(req, res, next) {
         const REVIEWER_NAMES = req.body.names;
         console.log('Reviewer names:', REVIEWER_NAMES);
         
-        const cutoff = new Date('2025-12-02T5:00:00.000Z'); // EDIT: set your desired cutoff date here
+        const cutoff = new Date('2025-12-02T05:00:00.000Z'); // EDIT: set your desired cutoff date here
         const cutoffObjectId = new ObjectId(Math.floor(cutoff.getTime() / 1000).toString(16) + "0000000000000000");
 
         const hackerModel = require('../models/hacker.model');
