@@ -9,7 +9,8 @@ const Middleware = {
     Auth: require("../../middlewares/auth.middleware"),
     Validators: {
         checkinValidator: require("../../middlewares/validators/checkin.validator")
-    }
+    },
+    Settings: require("../../middlewares/settings.middleware"),
 };
 
 /**
@@ -36,6 +37,7 @@ const Middleware = {
 router.post(
     "/checkin",
     Middleware.Auth.ensureAuthenticated(),
+    Middleware.Settings.confirmCheckinOpen,
     Middleware.Validators.checkinValidator,
     Controllers.Checkin.submitCheckin
 );

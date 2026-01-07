@@ -15,7 +15,7 @@ const Middleware = {
     Hacker: require("../../middlewares/hacker.middleware"),
     Auth: require("../../middlewares/auth.middleware"),
     Search: require("../../middlewares/search.middleware"),
-    Settings: require("../../middlewares/settings.middleware")
+    Settings: require("../../middlewares/settings.middleware"),
 };
 const Services = {
     Hacker: require("../../services/hacker.service"),
@@ -416,6 +416,7 @@ module.exports = {
             Middleware.Auth.ensureAuthenticated(),
             Middleware.Auth.ensureAuthorized([Services.Hacker.findById]),
 
+            Middleware.Settings.confirmCheckinOpen,
             Middleware.parseBody.middleware,
             Middleware.Hacker.parsePatch,
             Middleware.Hacker.validateConfirmedStatusFromHackerId,
