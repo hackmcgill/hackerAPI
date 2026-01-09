@@ -19,6 +19,7 @@ function validateStatus(req, res, next) {
     const validStatuses = [
         Constants.General.HACKER_STATUS_ACCEPTED,
         Constants.General.HACKER_STATUS_DECLINED,
+        Constants.General.HACKER_STATUS_APPLIED,
     ];
 
     if (!validStatuses.includes(status)) {
