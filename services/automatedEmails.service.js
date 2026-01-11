@@ -43,13 +43,16 @@ class AutomatedEmailService {
                 );
             }
 
+            // Override: send Declined emails to Applied hackers
+            const emailStatus = status === "Applied" ? "Declined" : status;
+
             const emailPromises = hackers.map(async (hacker) => {
                 try {
                     await new Promise((resolve, reject) => {
                         Services.Email.sendStatusUpdate(
                             hacker.accountId.firstName,
                             hacker.accountId.email,
-                            status,
+                            emailStatus,
                             (err) => {
                                 if (err) {
                                     reject(err);
@@ -62,7 +65,7 @@ class AutomatedEmailService {
                     results.success++;
                 } catch (err) {
                     Services.Logger.error(
-                        `${TAG} Failed to send ${status} email to ${hacker.accountId.email}: ${err}`,
+                        `${TAG} Failed to send ${emailStatus} email to ${hacker.accountId.email}: ${err}`,
                     );
                     results.failed++;
                 }
