@@ -8,7 +8,7 @@ const { body } = require('express-validator');
 const checkinValidator = [
     body('formData.prizeCategories').isArray().withMessage('Prize categories must be an array'),
     body('formData.sponsorChallenges').isArray().withMessage('Sponsor challenges must be an array'),
-    body('formData.workshopsAttended').isArray().withMessage('Workshops attended must be an array'),
+    // body('formData.workshopsAttended').isArray().withMessage('Workshops attended must be an array'),
     body('formData.discordTag').notEmpty().withMessage('Discord tag is required'),
     body('formData.devpostLink').notEmpty().withMessage('Devpost link is required')
 ];

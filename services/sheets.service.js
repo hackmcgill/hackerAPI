@@ -55,7 +55,7 @@ class SheetsService {
                 formData.teamMember4 || '',
                 Array.isArray(formData.prizeCategories) ? formData.prizeCategories.join(', ') : '',
                 Array.isArray(formData.sponsorChallenges) ? formData.sponsorChallenges.join(', ') : '',
-                Array.isArray(formData.workshopsAttended) ? formData.workshopsAttended.join(', ') : '',
+                // Array.isArray(formData.workshopsAttended) ? formData.workshopsAttended.join(', ') : '',
                 formData.discordTag || '',
                 formData.devpostLink || '',
                 formData.teamId || '' // Add teamId at the 'K' column
