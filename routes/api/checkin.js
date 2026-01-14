@@ -26,6 +26,7 @@ const Middleware = {
  * @apiParam {Object} formData The check-in form data
  * @apiParam {String[]} formData.prizeCategories Array of prize categories
  * @apiParam {String[]} formData.sponsorChallenges Array of sponsor challenges
+ * @apiParam {String[]} formData.mlhChallenges Array of MLH challenges
  * @apiParam {String[]} formData.workshopsAttended Array of workshops attended
  *
  * @apiSuccess {String} message Success message

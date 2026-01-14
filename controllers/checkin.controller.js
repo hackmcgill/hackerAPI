@@ -74,6 +74,7 @@ async function submitCheckin(req, res) {
             teamMember4: teamMemberEmails[3] || '',
             prizeCategories: req.body.formData.prizeCategories,
             sponsorChallenges: req.body.formData.sponsorChallenges,
+            mlhChallenges: req.body.formData.mlhChallenges,
             // workshopsAttended: req.body.formData.workshopsAttended,
             discordTag: req.body.formData.discordTag,
             devpostLink: req.body.formData.devpostLink,

@@ -27,6 +27,31 @@ class SheetsService {
         });
     }
 
+    sanitizeForSheet(value) {
+        if (typeof value !== 'string') {
+            return value;
+        }
+        if (
+            value.startsWith('=') ||
+            value.startsWith('+') ||
+            value.startsWith('-') ||
+            value.startsWith('@')
+        ) {
+            return `'${value}`;
+        }
+        return value;
+    }
+
+    sanitizeArrayForSheet(values) {
+        if (!Array.isArray(values)) {
+            return '';
+        }
+        return values
+            .filter((value) => typeof value === 'string')
+            .map((value) => this.sanitizeForSheet(value))
+            .join(', ');
+    }
+
     /**
      * Append check-in data to the spreadsheet
      * @param {Object} formData The check-in form data
@@ -49,16 +74,17 @@ class SheetsService {
             // Format the data for the spreadsheet
             const values = [[
                 new Date().toISOString(),
-                formData.teamMember1 || '',
-                formData.teamMember2 || '',
-                formData.teamMember3 || '',
-                formData.teamMember4 || '',
-                Array.isArray(formData.prizeCategories) ? formData.prizeCategories.join(', ') : '',
-                Array.isArray(formData.sponsorChallenges) ? formData.sponsorChallenges.join(', ') : '',
+                this.sanitizeForSheet(formData.teamMember1 || ''),
+                this.sanitizeForSheet(formData.teamMember2 || ''),
+                this.sanitizeForSheet(formData.teamMember3 || ''),
+                this.sanitizeForSheet(formData.teamMember4 || ''),
+                this.sanitizeArrayForSheet(formData.prizeCategories),
+                this.sanitizeArrayForSheet(formData.sponsorChallenges),
+                this.sanitizeArrayForSheet(formData.mlhChallenges),
                 // Array.isArray(formData.workshopsAttended) ? formData.workshopsAttended.join(', ') : '',
-                formData.discordTag || '',
-                formData.devpostLink || '',
-                formData.teamId || '' // Add teamId at the 'K' column
+                this.sanitizeForSheet(formData.discordTag || ''),
+                this.sanitizeForSheet(formData.devpostLink || ''),
+                this.sanitizeForSheet(formData.teamId || '') // Add teamId at the 'K' column
             ]];
 
             Logger.info('Formatted data for spreadsheet:', values);
