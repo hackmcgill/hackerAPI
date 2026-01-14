@@ -5,7 +5,7 @@ const PRIZE_CATEGORIES = [
     "Best Beginner Hack",
     "Best Design",
     "Chaotic Evil",
-    "Best Use of AI or AI Agents"
+    "Best Use of AI or AI Agents",
 ];
 
 const SPONSOR_CHALLENGES = [
