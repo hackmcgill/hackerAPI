@@ -6,6 +6,7 @@ const Logger = require('./logger.service');
 class SheetsService {
     constructor() {
         this.spreadsheetId = process.env.SPREADSHEET_ID;
+        this.sheetName = process.env.CHECKIN_SHEET_NAME || "Team Check-in";
         if (!this.spreadsheetId) {
             Logger.error('SPREADSHEET_ID is not set in environment variables');
             throw new Error('SPREADSHEET_ID is not set in environment variables');
@@ -13,18 +14,28 @@ class SheetsService {
 
         // Initialize Google Sheets API
         this.sheets = google.sheets('v4');
-        
+
         // Set up authentication using the service account credentials file
         // The GOOGLE_APPLICATION_CREDENTIALS environment variable should point to the JSON file
         if (!process.env.GOOGLE_APPLICATION_CREDENTIALS) {
             Logger.error('GOOGLE_APPLICATION_CREDENTIALS is not set in environment variables');
             throw new Error('GOOGLE_APPLICATION_CREDENTIALS is not set in environment variables');
         }
-        
+
         this.auth = new google.auth.GoogleAuth({
             keyFile: process.env.GOOGLE_APPLICATION_CREDENTIALS,
             scopes: ['https://www.googleapis.com/auth/spreadsheets']
         });
+    }
+
+    formatSheetRange(range) {
+        const safeSheetName = this.sheetName.includes("'")
+            ? this.sheetName.replace(/'/g, "''")
+            : this.sheetName;
+        const quotedName = /[^A-Za-z0-9_]/.test(safeSheetName)
+            ? `'${safeSheetName}'`
+            : safeSheetName;
+        return `${quotedName}!${range}`;
     }
 
     sanitizeForSheet(value) {
@@ -62,15 +73,15 @@ class SheetsService {
             Logger.info('Attempting to append check-in data to spreadsheet');
             Logger.info('Spreadsheet ID:', this.spreadsheetId);
             Logger.info('Google Application Credentials path:', process.env.GOOGLE_APPLICATION_CREDENTIALS);
-            
+
             const authClient = await this.auth.getClient();
             Logger.info('Successfully obtained auth client');
-            
+
             // Validate form data
             if (!formData) {
                 throw new Error('Form data is required');
             }
-            
+
             // Format the data for the spreadsheet
             const values = [[
                 new Date().toISOString(),
@@ -91,7 +102,7 @@ class SheetsService {
 
             const request = {
                 spreadsheetId: this.spreadsheetId,
-                range: 'Sheet1!A:K', // Updated to include columns through K (teamId)
+                range: this.formatSheetRange('A:K'),
                 valueInputOption: 'USER_ENTERED',
                 insertDataOption: 'INSERT_ROWS',
                 resource: {
