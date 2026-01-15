@@ -33,7 +33,6 @@ const volunteerRouter = require("./routes/api/volunteer");
 const roleRouter = require("./routes/api/role");
 const checkinRouter = require("./routes/api/checkin");
 const emailsRouter = require("./routes/api/emails");
-const checkinRouter = require("./routes/api/checkin");
 
 const app = express();
 Services.db.connect();
