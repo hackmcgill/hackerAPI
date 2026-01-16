@@ -127,7 +127,7 @@ app.use("/", indexRouter);
 app.use("/api", apiRouter);
 
 //Custom error handler
-app.use((err, req, res) => {
+app.use((err, req, res, next) => {
     // log the error...
     const status = err.status ? err.status : 500;
     const message = err.message ? err.message : "Internal Server Error";
