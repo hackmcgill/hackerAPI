@@ -616,7 +616,6 @@ hackerRouter.route("/reviewerComments2/:id").patch(
             Middleware.Auth.ensureAuthenticated(),
             Middleware.Auth.ensureAuthorized([Services.Hacker.findById]),
 
-            Middleware.Settings.confirmCheckinOpen,
             Middleware.parseBody.middleware,
             Middleware.Hacker.parsePatch,
             Middleware.Hacker.validateConfirmedStatusFromHackerId,
