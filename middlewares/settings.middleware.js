@@ -64,6 +64,11 @@ async function updateSettings(req, res, next) {
  * @description Confirms that openTime < closeTime < confirmTime
  */
 function confirmValidPatch(req, res, next) {
+    if (!req.body.settingsDetails.openTime &&
+        !req.body.settingsDetails.closeTime &&
+        !req.body.settingsDetails.confirmTime) {
+        return next();
+    }
     const openTime = new Date(req.body.settingsDetails.openTime);
     const closeTime = new Date(req.body.settingsDetails.closeTime);
     const confirmTime = new Date(req.body.settingsDetails.confirmTime);
@@ -126,9 +131,35 @@ async function confirmAppsOpen(req, res, next) {
     }
 }
 
+/**
+ * @function confirmCheckinOpen
+ * @param {*} req
+ * @param {*} res
+ * @param {*} next
+ * @description Only succeeds if check-in is currently open
+ */
+async function confirmCheckinOpen(req, res, next) {
+    const settings = await Services.Settings.getSettings();
+    if (!settings) {
+        return next({
+            status: 500,
+            message: Constants.Error.GENERIC_500_MESSAGE
+        });
+    }
+    if (settings.checkinOpen) {
+        return next();
+    }
+
+    return next({
+        status: 403,
+        message: Constants.Error.SETTINGS_403_MESSAGE
+    });
+}
+
 module.exports = {
     parsePatch: parsePatch,
     confirmValidPatch: confirmValidPatch,
+    confirmCheckinOpen: Middleware.Util.asyncMiddleware(confirmCheckinOpen),
     confirmAppsOpen: Middleware.Util.asyncMiddleware(confirmAppsOpen),
     updateSettings: Middleware.Util.asyncMiddleware(updateSettings),
     getSettings: Middleware.Util.asyncMiddleware(getSettings)

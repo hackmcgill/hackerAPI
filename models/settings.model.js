@@ -17,6 +17,10 @@ const settings = new mongoose.Schema({
     isRemote: {
         type: Boolean,
         default: false
+    },
+    checkinOpen: {
+        type: Boolean,
+        default: false
     }
 });
 
