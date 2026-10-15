@@ -1637,7 +1637,7 @@ describe("POST add a hacker resume", function() {
     });
     it("It should SUCCEED and upload a resume for a hacker", function(done) {
         //this takes a lot of time for some reason
-        util.auth.login(agent, noTeamHacker0, (error) => {
+        util.auth.login(agent, noTeamHackerAccount0, (error) => {
             if (error) {
                 return done(error);
             }
