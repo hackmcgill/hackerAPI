@@ -621,6 +621,8 @@ hackerRouter.route("/reviewerComments2/:id").patch(
             Middleware.Hacker.validateConfirmedStatusFromHackerId,
             Middleware.Hacker.checkStatus([
                 CONSTANTS.HACKER_STATUS_ACCEPTED,
+                CONSTANTS.HACKER_STATUS_ACCEPTED_WAVE1,
+                CONSTANTS.HACKER_STATUS_ACCEPTED_WAVE2,
                 CONSTANTS.HACKER_STATUS_CONFIRMED
             ]),
             Middleware.Hacker.parseCheckIn,
@@ -1011,6 +1013,8 @@ hackerRouter.route("/reviewerComments2/:id").patch(
             Middleware.Hacker.validateConfirmedStatusFromHackerId,
             Middleware.Hacker.checkStatus([
                 CONSTANTS.HACKER_STATUS_ACCEPTED,
+                CONSTANTS.HACKER_STATUS_ACCEPTED_WAVE1,
+                CONSTANTS.HACKER_STATUS_ACCEPTED_WAVE2,
                 CONSTANTS.HACKER_STATUS_CONFIRMED,
                 CONSTANTS.HACKER_STATUS_WITHDRAWN
             ]),
@@ -1125,6 +1129,8 @@ hackerRouter.route("/reviewerComments2/:id").patch(
           Middleware.Hacker.addIdToCheckStatus,
           Middleware.Hacker.checkStatus([
               CONSTANTS.HACKER_STATUS_ACCEPTED,
+              CONSTANTS.HACKER_STATUS_ACCEPTED_WAVE1,
+              CONSTANTS.HACKER_STATUS_ACCEPTED_WAVE2,
               CONSTANTS.HACKER_STATUS_CONFIRMED
           ]),
           Middleware.Hacker.parseCheckIn,

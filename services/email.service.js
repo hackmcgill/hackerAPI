@@ -119,9 +119,10 @@ class EmailService {
     }
 
     sendStatusUpdate(firstName, recipient, status, callback) {
+        const template = (status === Constants.HACKER_STATUS_ACCEPTED_WAVE1 || status === Constants.HACKER_STATUS_ACCEPTED_WAVE2) ? Constants.HACKER_STATUS_ACCEPTED : status;
         const handlebarsPath = path.join(
             __dirname,
-            `../assets/email/statusEmail/${status}.hbs`,
+            `../assets/email/statusEmail/${template}.hbs`,
         );
         const mailData = {
             to: recipient,
