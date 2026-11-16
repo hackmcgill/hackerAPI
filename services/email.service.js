@@ -6,6 +6,7 @@ const path = require("path");
 const TAG = `[ EMAIL.SERVICE ]`;
 const env = require("../services/env.service");
 const Constants = require("../constants/general.constant");
+const EmailConstants = require("../constants/email.constant");
 const Handlebars = require("handlebars");
 
 class EmailService {
@@ -150,7 +151,7 @@ class EmailService {
     renderEmail(path, context) {
         const templateStr = fs.readFileSync(path).toString();
         const template = Handlebars.compile(templateStr);
-        return template(context);
+        return template({ ...EmailConstants.EMAIL_GLOBALS, ...context });
     }
 }
 
