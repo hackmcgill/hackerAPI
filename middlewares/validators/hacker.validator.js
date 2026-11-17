@@ -114,12 +114,18 @@ module.exports = {
         ),
         VALIDATOR.booleanValidator(
             "body",
-            "application.other.sendEmail",
+            "application.other.mlhSendEmail",
             true
         ),
         VALIDATOR.booleanValidator(
             "body",
-            "application.other.privacyPolicy",
+            "application.other.mlhPrivacyPolicy",
+            false,
+            true
+        ),
+        VALIDATOR.booleanValidator(
+            "body",
+            "application.other.mlhCodeOfConduct",
             false,
             true
         ),
@@ -263,12 +269,18 @@ module.exports = {
         ),
         VALIDATOR.booleanValidator(
             "body",
-            "application.other.sendEmail",
+            "application.other.mlhSendEmail",
             true
         ),
         VALIDATOR.booleanValidator(
             "body",
-            "application.other.privacyPolicy",
+            "application.other.mlhPrivacyPolicy",
+            false,
+            true
+        ),
+        VALIDATOR.booleanValidator(
+            "body",
+            "application.other.mlhCodeOfConduct",
             false,
             true
         ),
