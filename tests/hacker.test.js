@@ -564,10 +564,16 @@ describe("POST create hacker", function() {
                     res.body.message.should.equal("Validation failed");
                     res.body.should.have.property("data");
                     res.body.data.should.have.property(
-                        "application.other.privacyPolicy"
+                        "application.other.mlhPrivacyPolicy"
                     );
                     res.body.data[
-                        "application.other.privacyPolicy"
+                        "application.other.mlhPrivacyPolicy"
+                    ].msg.should.equal("Must be equal to true");
+                    res.body.data.should.have.property(
+                        "application.other.mlhCodeOfConduct"
+                    );
+                    res.body.data[
+                        "application.other.mlhCodeOfConduct"
                     ].msg.should.equal("Must be equal to true");
                     res.body.data.should.have.property(
                         "application.other.codeOfConduct"

@@ -124,9 +124,9 @@ module.exports = {
                       "other:" {
                         "gender": "male",
                         "ethnicity": "Asian or Pacific Islander",
-                        "sendEmail": true,
+                        "mlhSendEmail": true,
                         "country": "Canada",
-                        "privacyPolicy": true,
+                        "mlhPrivacyPolicy": true,
                         "codeOfConduct": true,
                       }
                       "accommodation": {
@@ -175,7 +175,7 @@ module.exports = {
                             "gender": "male",
                             "ethnicity": "Asian or Pacific Islander",
                             "country": "Canada",
-                            "privacyPolicy": true,
+                            "mlhPrivacyPolicy": true,
                             "codeOfConduct": true,
                           }
                           "accommodation": {
@@ -677,7 +677,7 @@ hackerRouter.route("/reviewerComments2/:id").patch(
                       "gender": "male",
                       "ethnicity": "Asian or Pacific Islander",
                       "country": "Canada",
-                      "privacyPolicy": true,
+                      "mlhPrivacyPolicy": true,
                       "codeOfConduct": true,
                     }
                     "accommodation": {
@@ -726,7 +726,7 @@ hackerRouter.route("/reviewerComments2/:id").patch(
                             "gender": "male",
                             "ethnicity": "Asian or Pacific Islander",
                             "country": "Canada",
-                            "privacyPolicy": true,
+                            "mlhPrivacyPolicy": true,
                             "codeOfConduct": true,
                           }
                           "accommodation": {
@@ -804,7 +804,7 @@ hackerRouter.route("/reviewerComments2/:id").patch(
                             "gender": "male",
                             "ethnicity": "Asian or Pacific Islander",
                             "country": "Canada",
-                            "privacyPolicy": true,
+                            "mlhPrivacyPolicy": true,
                             "codeOfConduct": true,
                           }
                           "accommodation": {
@@ -878,7 +878,7 @@ hackerRouter.route("/reviewerComments2/:id").patch(
                             "gender": "male",
                             "ethnicity": "Asian or Pacific Islander",
                             "country": "Canada",
-                            "privacyPolicy": true,
+                            "mlhPrivacyPolicy": true,
                             "codeOfConduct": true,
                           }
                           "accommodation": {

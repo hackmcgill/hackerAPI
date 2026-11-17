@@ -394,8 +394,9 @@ function applicationValidator(fieldLocation, fieldname, optional = true) {
         ethnicity: false,
         country: false,
         codeOfConduct: false,
-        privacyPolicy: false,
-        sendEmail: false
+        mlhPrivacyPolicy: false,
+        mlhCodeOfConduct: false,
+        mlhSendEmail: false
     };
 
     if (optional) {
@@ -445,11 +446,14 @@ function applicationValidator(fieldLocation, fieldname, optional = true) {
                     hasValid.codeOfConduct = app.other.hasOwnProperty(
                         "codeOfConduct"
                     );
-                    hasValid.privacyPolicy = app.other.hasOwnProperty(
-                        "privacyPolicy"
+                    hasValid.mlhCodeOfConduct = app.other.hasOwnProperty(
+                        "mlhCodeOfConduct"
                     );
-                    hasValid.sendEmail = app.other.hasOwnProperty(
-                        "sendEmail"
+                    hasValid.mlhPrivacyPolicy = app.other.hasOwnProperty(
+                        "mlhPrivacyPolicy"
+                    );
+                    hasValid.mlhSendEmail = app.other.hasOwnProperty(
+                        "mlhSendEmail"
                     );
                 }
                 // hasValid.github =
@@ -503,11 +507,11 @@ function applicationValidator(fieldLocation, fieldname, optional = true) {
                     hasValid.shirtSize &&
                     hasValid.other &&
                     hasValid.ethnicity &&
-                    hasValid.sendEmail &&
                     hasValid.country &&
-                    hasValid.sendEmail &&
+                    hasValid.mlhSendEmail &&
                     hasValid.country &&
-                    hasValid.privacyPolicy &&
+                    hasValid.mlhPrivacyPolicy &&
+                    hasValid.mlhCodeOfConduct &&
                     hasValid.codeOfConduct
                 );
             })
@@ -559,11 +563,14 @@ function applicationValidator(fieldLocation, fieldname, optional = true) {
                     hasValid.codeOfConduct = app.other.hasOwnProperty(
                         "codeOfConduct"
                     );
-                    hasValid.privacyPolicy = app.other.hasOwnProperty(
-                        "privacyPolicy"
+                    hasValid.mlhCodeOfConduct = app.other.hasOwnProperty(
+                        "mlhCodeOfConduct"
                     );
-                    hasValid.sendEmail = app.other.hasOwnProperty(
-                        "sendEmail"
+                    hasValid.mlhPrivacyPolicy = app.other.hasOwnProperty(
+                        "mlhPrivacyPolicy"
+                    );
+                    hasValid.mlhSendEmail = app.other.hasOwnProperty(
+                        "mlhSendEmail"
                     );
                 }
                 // hasValid.github =
@@ -618,7 +625,8 @@ function applicationValidator(fieldLocation, fieldname, optional = true) {
                     hasValid.other &&
                     hasValid.ethnicity &&
                     hasValid.country &&
-                    hasValid.privacyPolicy &&
+                    hasValid.mlhPrivacyPolicy &&
+                    hasValid.mlhCodeOfConduct &&
                     hasValid.codeOfConduct
                 );
             })
