@@ -6,12 +6,12 @@ const EMAIL_GLOBALS = {
     // Branding and logos
     hackathonName: HACKATHON_NAME,
     hackathonEdition: `${HACKATHON_NAME} 14`,
-    logoUrl: "https://mchacks.ca/martlet-text-14.webp",
+    logoUrl: "https://mchacks.ca/martlet-text-14.png",
 
     // Event dates & deadlines (shown verbatim in emails)
     eventDates: "Jan. 16-17, 2027",
     applicationDeadline: "December 14th, 2026 at 11:59pm EST",
-    applicationEditDeadline: "December 31st, 2026 at 11:59 PM EST",
+    applicationEditDeadline: "December 14th, 2026 at 11:59 PM EST",
     confirmationDeadline: "January 3rd at 11:59PM EST",
 
     // Event links
