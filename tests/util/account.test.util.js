@@ -46,11 +46,13 @@ function generateRandomValue(atr) {
                 .replace(/[^a-z]+/g, "")
                 .substr(0, Math.floor(Math.random() * 6 + 5));
         case "pronoun":
-            // generate random string between length 2 and 4
-            return Math.random()
-                .toString(36)
-                .replace(/[^a-z]+/g, "")
-                .substr(0, Math.floor(Math.random() * 3 + 2));
+            // generate random array with one string between length 2 and 4
+            return [
+                Math.random()
+                    .toString(36)
+                    .replace(/[^a-z]+/g, "")
+                    .substr(0, Math.floor(Math.random() * 3 + 2))
+            ];
         case "gender":
             return "Female";
         case "email":
@@ -503,7 +505,9 @@ function equals(acc1, acc2) {
     const id = id1 === id2;
     const firstName = acc1.firstName === acc2.firstName;
     const lastName = acc1.lastName === acc2.lastName;
-    const pronoun = acc1.pronoun === acc2.pronoun;
+    const pronoun =
+        (Array.isArray(acc1.pronoun) ? acc1.pronoun.join(",") : acc1.pronoun) ===
+        (Array.isArray(acc2.pronoun) ? acc2.pronoun.join(",") : acc2.pronoun);
     const email = acc1.email === acc2.email;
     const dietaryRestrictions =
         acc1.dietaryRestrictions.join(",") ===

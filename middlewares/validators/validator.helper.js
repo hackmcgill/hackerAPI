@@ -330,6 +330,47 @@ function alphaArrayValidationHelper(value) {
 }
 
 /**
+ * Validates a pronoun field. Accepts either a single string (legacy clients)
+ * or an array of strings, normalizing a string into a single-element array
+ * so both payload shapes are stored consistently.
+ * @param {"query" | "body" | "header" | "param"} fieldLocation the location where the field should be found
+ * @param {string} fieldname name of the field that needs to be validated.
+ * @param {boolean} optional whether the field is optional or not.
+ */
+function pronounValidator(fieldLocation, fieldname, optional = true) {
+    const name = setProperValidationChainBuilder(
+        fieldLocation,
+        fieldname,
+        "Invalid pronoun"
+    );
+
+    if (optional) {
+        return name
+            .optional({
+                checkFalsy: true
+            })
+            .customSanitizer(normalizePronoun)
+            .custom(alphaArrayValidationHelper)
+            .withMessage("must be a string or an array of strings");
+    } else {
+        return name
+            .exists()
+            .withMessage("must exist")
+            .customSanitizer(normalizePronoun)
+            .custom(alphaArrayValidationHelper)
+            .withMessage("must be a string or an array of strings");
+    }
+}
+
+/**
+ * Wraps a single string pronoun in an array, leaving arrays untouched.
+ * @param {*} value value to normalize
+ */
+function normalizePronoun(value) {
+    return typeof value === "string" ? [value] : value;
+}
+
+/**
  * Validates that field must be at least 6 characters long.
  * TODO: impose better restrictions.
  * @param {"query" | "body" | "header" | "param"} fieldLocation the location where the field should be found
@@ -1085,6 +1126,7 @@ module.exports = {
     asciiValidator: asciiValidator,
     alphaValidator: alphaValidator,
     alphaArrayValidator: alphaArrayValidator,
+    pronounValidator: pronounValidator,
     passwordValidator: passwordValidator,
     booleanValidator: booleanValidator,
     applicationValidator: applicationValidator,
