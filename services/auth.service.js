@@ -72,7 +72,9 @@ async function ensureAuthorized(req, findByIdFns) {
         path += "/";
     }
     // splitPath[0] will be '', but assuming that routes will also start with '/', splitRoles will start with '' as well
-    const splitPath = path.split("/");
+    const splitPath = path.split("/").map((segment) =>
+        decodeURIComponent(segment)
+    );
 
     // if account doesn't have a role binding, then not authenticated
     const roleBinding = await RoleBinding.getRoleBindingForAcct(req.user.id);

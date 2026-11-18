@@ -18,6 +18,8 @@ function validateStatus(req, res, next) {
     const { status } = req.params;
     const validStatuses = [
         Constants.General.HACKER_STATUS_ACCEPTED,
+        Constants.General.HACKER_STATUS_ACCEPTED_WAVE1,
+        Constants.General.HACKER_STATUS_ACCEPTED_WAVE2,
         Constants.General.HACKER_STATUS_DECLINED,
         Constants.General.HACKER_STATUS_APPLIED,
     ];
