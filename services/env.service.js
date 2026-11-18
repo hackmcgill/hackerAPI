@@ -12,7 +12,7 @@ module.exports = {
         return result;
     },
     isDevelopment: function() {
-        return process.env.NODE_ENV === "development";
+        return process.env.NODE_ENV.trim() === "development";
     },
     isProduction: function() {
         return process.env.NODE_ENV === "deployment";
