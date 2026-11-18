@@ -13,8 +13,8 @@ const AccountSchema = new mongoose.Schema({
         required: true
     },
     pronoun: {
-        type: String,
-        default: "Prefer not to say"
+        type: [String],
+        default: ["Prefer not to say"]
     },
     gender: {
         type: String,

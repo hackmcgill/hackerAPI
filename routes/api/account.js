@@ -39,7 +39,7 @@ module.exports = {
                         	"id": ObjectId("5bff8b9f3274cf001bc71048"),
                         	"firstName": "Theo",
                             "lastName":"Klein",
-                            "pronoun":"he/him",
+                            "pronoun":["he/him"],
                             "email":"theo@klein.com",
                             "phoneNumber":1234567890,
                         	"gender":"Male",
@@ -67,7 +67,7 @@ module.exports = {
          * 
          * @apiParam (body) {String} firstName First name of the account creator.
          * @apiParam (body) {String} lastName Last name of the account creator.
-         * @apiParam (body) {String} pronoun the pronoun of the account creator.
+         * @apiParam (body) {String[]} pronoun the pronoun of the account creator.
          * @apiParam (body) {String} email Email of the account.
          * @apiParam (body) {String} gender Gender of the account creator.
          * @apiParam (body) {String[]} dietaryRestrictions Any dietary restrictions for the user. 'None' if there are no restrictions
@@ -80,7 +80,7 @@ module.exports = {
          *      { 
                     "firstName": "Theo",
                     "lastName":"Klein",
-                    "pronoun":"he/him",
+                    "pronoun":["he/him"],
                     "email":"theo@klein.com",
                     "password":"hunter2",
                     "phoneNumber":1234567890,
@@ -97,7 +97,7 @@ module.exports = {
                             "id": ObjectId("5bff8b9f3274cf001bc71048"),
                         	"firstName": "Theo",
                             "lastName":"Klein",
-                            "pronoun":"he/him",
+                            "pronoun":["he/him"],
                             "email":"theo@klein.com",
                             "phoneNumber":1234567890,
                         	"gender":"Male",
@@ -209,7 +209,7 @@ module.exports = {
          * 
          * @apiParam (body) {String} [firstName] First name of the account creator.
          * @apiParam (body) {String} [lastName] Last name of the account creator.
-         * @apiParam (body) {String} [pronoun] The pronoun of the account creator.
+         * @apiParam (body) {String[]} [pronoun] The pronoun of the account creator.
          * @apiParam (body) {String} [email] Email of the account.
          * @apiParam (body) {String} [gender] Gender of the account creator.
          * @apiParam (body) {String} [age] Age of the account creator.
@@ -228,7 +228,7 @@ module.exports = {
                             "id": ObjectId("5bff8b9f3274cf001bc71048"),
                         	"firstName": "Theo",
                             "lastName":"Klein",
-                            "pronoun":"he/him",
+                            "pronoun":["he/him"],
                             "email":"theo@klein.com",
                             "phoneNumber":1234567890,
                         	"gender": "Male",
@@ -275,7 +275,7 @@ module.exports = {
                         "id": ObjectId("5bff8b9f3274cf001bc71048"),
                         "firstName": "Theo",
                         "lastName":"Klein",
-                        "pronoun":"he/him",
+                        "pronoun":["he/him"],
                         "email":"theo@klein.com",
                         "phoneNumber":1234567890,
                         "gender":"Male",
