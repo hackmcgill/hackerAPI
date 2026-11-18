@@ -6,7 +6,7 @@ module.exports = {
     newAccountValidator: [
         VALIDATOR.stringValidator("body", "firstName", false),
         VALIDATOR.stringValidator("body", "lastName", false),
-        VALIDATOR.alphaArrayValidator("body", "pronoun", false),
+        VALIDATOR.pronounValidator("body", "pronoun", false),
         VALIDATOR.stringValidator("body", "gender", false),
         VALIDATOR.regexValidator("body", "email", false, Constants.EMAIL_REGEX),
         VALIDATOR.alphaArrayValidator("body", "dietaryRestrictions", false),
@@ -24,7 +24,7 @@ module.exports = {
     updateAccountValidator: [
         VALIDATOR.stringValidator("body", "firstName", true),
         VALIDATOR.stringValidator("body", "lastName", true),
-        VALIDATOR.alphaArrayValidator("body", "pronoun", true),
+        VALIDATOR.pronounValidator("body", "pronoun", true),
         VALIDATOR.stringValidator("body", "gender", true),
         VALIDATOR.regexValidator("body", "email", true, Constants.EMAIL_REGEX),
         VALIDATOR.alphaArrayValidator("body", "dietaryRestrictions", true),
