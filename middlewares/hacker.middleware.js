@@ -304,8 +304,7 @@ function ensureAccountLinkedToHacker(req, res, next) {
             if (
                 hacker &&
                 req.user &&
-                String.toString(hacker.accountId) ===
-                    String.toString(req.user.id)
+                String(hacker.accountId) === String(req.user.id)
             ) {
                 return next();
             } else {

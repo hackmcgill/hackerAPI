@@ -129,8 +129,9 @@ async function getStatsAllHackersCached() {
         .populate({
             path: "accountId",
         });
+    const stats = getStats(allHackers);
     cache.put(Constants.CACHE_KEY_STATS, stats, Constants.CACHE_TIMEOUT_STATS); //set a time-out of 5 minutes
-    return getStats(allHackers);
+    return stats;
 }
 
 /**
@@ -160,6 +161,12 @@ function getStats(hackers) {
     const stats = {
         total: 0,
         status: {},
+        reviewerStatus: {},
+        reviewerStatus2: {},
+        reviewerName: {},
+        reviewerName2: {},
+        reviewerComments: {},
+        reviewerComments2: {},
         school: {},
         degree: {},
         gender: {},
@@ -183,6 +190,35 @@ function getStats(hackers) {
         stats.total += 1;
         stats.status[hacker.status] = stats.status[hacker.status]
             ? stats.status[hacker.status] + 1
+            : 1;
+        stats.reviewerStatus[hacker.reviewerStatus] = stats.reviewerStatus[
+            hacker.reviewerStatus
+        ]
+            ? stats.reviewerStatus[hacker.reviewerStatus] + 1
+            : 1;
+        stats.reviewerStatus2[hacker.reviewerStatus2] = stats.reviewerStatus2[
+            hacker.reviewerStatus2
+        ]
+            ? stats.reviewerStatus2[hacker.reviewerStatus2] + 1
+            : 1;
+        stats.reviewerName[hacker.reviewerName] = stats.reviewerName[
+            hacker.reviewerName
+        ]
+            ? stats.reviewerName[hacker.reviewerName] + 1
+            : 1;
+        stats.reviewerName2[hacker.reviewerName2] = stats.reviewerName2[
+            hacker.reviewerName2
+        ]
+            ? stats.reviewerName2[hacker.reviewerName2] + 1
+            : 1;
+        stats.reviewerComments[hacker.reviewerComments] = stats.reviewerComments[
+            hacker.reviewerComments
+        ]
+            ? stats.reviewerComments[hacker.reviewerComments] + 1
+            : 1;
+        stats.reviewerComments2[hacker.reviewerComments2] = stats
+            .reviewerComments2[hacker.reviewerComments2]
+            ? stats.reviewerComments2[hacker.reviewerComments2] + 1
             : 1;
         stats.school[hacker.application.general.school] = stats.school[
             hacker.application.general.school
@@ -221,17 +257,19 @@ function getStats(hackers) {
             .jobInterest[hacker.application.general.jobInterest]
             ? stats.jobInterest[hacker.application.general.jobInterest] + 1
             : 1;
-        stats.fieldOfStudy[hacker.application.general.fieldOfStudy] = stats
-            .fieldOfStudy[hacker.application.general.fieldOfStudy]
-            ? stats.fieldOfStudy[hacker.application.general.fieldOfStudy] + 1
-            : 1;
+        for (const field of hacker.application.general.fieldOfStudy) {
+            stats.fieldOfStudy[field] = stats.fieldOfStudy[field]
+                ? stats.fieldOfStudy[field] + 1
+                : 1;
+        }
         stats.graduationYear[hacker.application.general.graduationYear] = stats
             .graduationYear[hacker.application.general.graduationYear]
             ? stats.graduationYear[hacker.application.general.graduationYear] +
               1
             : 1;
-        for (const dietaryRestrictions of hacker.accountId
-            .dietaryRestrictions) {
+        const dietaryRestrictionsList =
+            hacker.accountId.dietaryRestrictions || [];
+        for (const dietaryRestrictions of dietaryRestrictionsList) {
             stats.dietaryRestrictions[dietaryRestrictions] = stats
                 .dietaryRestrictions[dietaryRestrictions]
                 ? stats.dietaryRestrictions[dietaryRestrictions] + 1
@@ -246,8 +284,9 @@ function getStats(hackers) {
         // const age = hacker.accountId.getAge();
         // stats.age[age] = stats.age[age] ? stats.age[age] + 1 : 1;
 
-        stats.age[hacker.accountId.age] = stats.age[hacker.accountId.age]
-            ? stats.age[age] + 1
+        const hackerAge = hacker.accountId.age;
+        stats.age[hackerAge] = stats.age[hackerAge]
+            ? stats.age[hackerAge] + 1
             : 1;
 
         const applicationDate = hacker._id
