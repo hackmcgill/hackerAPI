@@ -28,9 +28,9 @@ function getUserFromEnvironment() {
 }
 
 function getPassFromEnvironment() {
-    return process.env.NODE_ENV === "development"
+    return env.isDevelopment()
         ? process.env.DB_PASS_DEV
-        : process.env.NODE_ENV === "deployment"
+        : env.isProduction()
         ? process.env.DB_PASS_DEPLOY
         : process.env.DB_PASS_TEST;
 }
